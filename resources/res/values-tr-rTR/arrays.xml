@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Gezinme</item>
+        <item>Video</item>
+        <item>Müzik</item>
+        <item>Telefon</item>
+        <item>Araç</item>
+        <item>Dash Kurulu</item>
+        <item>PhoneLink</item>
+        <item>Dosyalar</item>
+        <item>DVR</item>
+        <item>Ayarlar</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Gezinme</item>
+        <item>Müzik</item>
+        <item>Telefon</item>
+        <item>Araç</item>
+        <item>Ayarlar</item>
+        <item>Video</item>
+        <item>Dosyalar</item>
+        <item>PhoneLink</item>
+        <item>Dash Kurulu</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Gezinme</item>
+        <item>Müzik</item>
+        <item>Telefon</item>
+        <item>Araç</item>
+        <item>Ayarlar</item>
+        <item>Video</item>
+        <item>Apps</item>
+        <item>PhoneLink</item>
+        <item>Dash Kurulu</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>Aug</item>
+        <item>Sept</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="set_factory">
+        <item>Fonksiyon</item>
+        <item>Araç</item>
+        <item>Araba Görüntüleme</item>
+        <item>CAN Protokolü</item>
+        <item>UI Yapılandırması</item>
+        <item>Profil içe aktarma</item>
+        <item>Boot Logo</item>
+    </array>
+    <array name="set_function">
+        <item>Sistem</item>
+        <item>Gezinme</item>
+        <item>Hacim</item>
+        <item>Ses</item>
+        <item>Dil</item>
+        <item>Zaman</item>
+        <item>Sistem Bilgisi</item>
+        <item>Android</item>
+        <item>Fabrika</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Gezinme</item>
+        <item>Sistem</item>
+        <item>Hacim</item>
+        <item>Ses</item>
+        <item>Dil</item>
+        <item>Zaman</item>
+        <item>Sistem Bilgisi</item>
+        <item>Android</item>
+        <item>Fabrika</item>
+    </array>
+</resources>

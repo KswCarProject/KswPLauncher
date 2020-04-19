@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:drawable="@drawable/seven_color_speed_red" android:maxLevel="0"/>
+    <item android:drawable="@drawable/seven_color_speed_orange" android:maxLevel="1"/>
+    <item android:drawable="@drawable/seven_color_speed_yellow" android:maxLevel="2"/>
+    <item android:drawable="@drawable/seven_color_speed_green" android:maxLevel="3"/>
+    <item android:drawable="@drawable/seven_color_speed_cyan" android:maxLevel="4"/>
+    <item android:drawable="@drawable/seven_color_speed_blue" android:maxLevel="5"/>
+    <item android:drawable="@drawable/seven_color_speed_violet" android:maxLevel="6"/>
+</level-list>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/img_twoDefaul" android:background="@mipmap/id7_rp_settings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="30dp"/>
+    <RelativeLayout android:id="@+id/relate_shext" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <RadioGroup android:id="@+id/rdg_shext" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:checkedButton="@+id/rdb_shext1">
+            <RadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_shext1" android:background="@drawable/ksw_id7_seting_rp_bg" android:focusable="true" android:nextFocusUp="@+id/rdb_shext1" android:layout_width="317dp" android:layout_height="78dp" android:button="@drawable/rad_btn_sel" android:text="@string/shext_1"/>
+            <ImageView android:background="@mipmap/id7_rp_line" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <RadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_shext2" android:background="@drawable/ksw_id7_seting_rp_bg" android:focusable="true" android:layout_width="317dp" android:layout_height="78dp" android:button="@drawable/rad_btn_sel" android:text="@string/shext_2"/>
+            <ImageView android:background="@mipmap/id7_rp_line" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <RadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_shext3" android:background="@drawable/ksw_id7_seting_rp_bg" android:focusable="true" android:nextFocusDown="@+id/rdb_shext3" android:layout_width="317dp" android:layout_height="78dp" android:button="@drawable/rad_btn_sel" android:text="@string/shext_3"/>
+            <ImageView android:background="@mipmap/id7_rp_line" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </RadioGroup>
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/relate_beigld" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_tebgld" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp" android:text="@string/text_13"/>
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_beigSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp" android:text="10" android:layout_toRightOf="@+id/tv_tebgld"/>
+        <SeekBar android:id="@+id/seekbar_brightness" android:background="@mipmap/id7_progress_bar_bk" android:paddingBottom="10dp" android:focusable="false" android:layout_width="297dp" android:layout_height="30dp" android:layout_marginLeft="10dp" android:layout_marginTop="5dp" android:progressDrawable="@null" android:thumb="@drawable/seek_thumb" android:layout_below="@+id/tv_beigSize"/>
+    </RelativeLayout>
+    <LinearLayout android:orientation="vertical" android:id="@+id/relate_auxweiz" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true">
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:text="@string/set_caraux1" android:lines="1"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="400dp" android:layout_height="wrap_content" android:layout_marginRight="40dp">
+            <SeekBar android:id="@+id/seekbar_caux" android:focusable="false" android:layout_width="274dp" android:layout_height="10dp" android:layout_marginLeft="20dp" android:maxHeight="15dp" android:progressDrawable="@drawable/layer_ntg6_progress" android:minHeight="15dp" android:thumb="@null"/>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_cauxSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"/>
+        </LinearLayout>
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:text="@string/set_caraux2" android:lines="1"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="400dp" android:layout_height="wrap_content" android:layout_marginRight="40dp">
+            <SeekBar android:id="@+id/seekbar_caux2" android:focusable="false" android:layout_width="274dp" android:layout_height="10dp" android:layout_marginLeft="20dp" android:maxHeight="15dp" android:progressDrawable="@drawable/layer_ntg6_progress" android:minHeight="15dp" android:thumb="@null"/>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_cauxSize2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"/>
+        </LinearLayout>
+    </LinearLayout>
+    <RadioGroup android:id="@+id/rdg_temp_group" android:visibility="gone" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:checkedButton="@+id/rdb_shext1">
+        <RadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdg_temp_group1" android:background="@drawable/ksw_id7_seting_rp_bg" android:focusable="true" android:nextFocusUp="@+id/rdb_shext1" android:layout_width="317dp" android:layout_height="78dp" android:button="@drawable/rad_btn_sel" android:text="℃" android:drawableBottom="@mipmap/id7_rp_line"/>
+        <RadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdg_temp_group2" android:background="@drawable/ksw_id7_seting_rp_bg" android:focusable="true" android:layout_width="317dp" android:layout_height="78dp" android:button="@drawable/rad_btn_sel" android:text="°F" android:drawableBottom="@mipmap/id7_rp_line"/>
+    </RadioGroup>
+</RelativeLayout>

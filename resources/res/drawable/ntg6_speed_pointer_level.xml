@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:drawable="@drawable/ntg55_pointer_160_0" android:maxLevel="0"/>
+    <item android:drawable="@drawable/ntg55_pointer_180_0" android:maxLevel="1"/>
+    <item android:drawable="@drawable/ntg55_pointer_260_0" android:maxLevel="2"/>
+    <item android:drawable="@drawable/ntg55_pointer_280_0" android:maxLevel="3"/>
+</level-list>

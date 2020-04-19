@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>导航</item>
+        <item>视频</item>
+        <item>音乐</item>
+        <item>电话</item>
+        <item>车辆信息</item>
+        <item>仪表盘</item>
+        <item>手机互联</item>
+        <item>文件浏览器</item>
+        <item>DVR</item>
+        <item>设置</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>导航</item>
+        <item>音乐</item>
+        <item>电话</item>
+        <item>车辆信息</item>
+        <item>设置</item>
+        <item>视频</item>
+        <item>文件浏览器</item>
+        <item>手机互联</item>
+        <item>仪表盘</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>导航</item>
+        <item>音乐</item>
+        <item>电话</item>
+        <item>车辆信息</item>
+        <item>设置</item>
+        <item>视频</item>
+        <item>应用</item>
+        <item>手机互联</item>
+        <item>仪表盘</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </array>
+    <array name="set_factory">
+        <item>功能配置</item>
+        <item>车载配置</item>
+        <item>原车显示</item>
+        <item>CAN协议选择</item>
+        <item>UI配置</item>
+        <item>配置导入</item>
+        <item>开机Logo</item>
+    </array>
+    <array name="set_function">
+        <item>系统设置</item>
+        <item>导航设置</item>
+        <item>音量设置</item>
+        <item>音效设置</item>
+        <item>语言设置</item>
+        <item>时间设置</item>
+        <item>系统信息</item>
+        <item>安卓设置</item>
+        <item>工厂设置</item>
+    </array>
+    <array name="set_id6_function">
+        <item>导航设置</item>
+        <item>系统设置</item>
+        <item>音量设置</item>
+        <item>音效设置</item>
+        <item>语言设置</item>
+        <item>时间设置</item>
+        <item>系统信息</item>
+        <item>安卓设置</item>
+        <item>工厂设置</item>
+    </array>
+</resources>

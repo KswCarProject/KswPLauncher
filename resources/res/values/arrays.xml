@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Navigation</item>
+        <item>Video</item>
+        <item>Music</item>
+        <item>Telephone</item>
+        <item>NTG Menu</item>
+        <item>Dashboard</item>
+        <item>PhoneLink</item>
+        <item>File Browser</item>
+        <item>DVR</item>
+        <item>Settings</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Navigation</item>
+        <item>Music</item>
+        <item>Telephone</item>
+        <item>NTG Menu</item>
+        <item>Settings</item>
+        <item>Video</item>
+        <item>File Browser</item>
+        <item>PhoneLink</item>
+        <item>Dashboard</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Navigation</item>
+        <item>Music</item>
+        <item>Telephone</item>
+        <item>NTG Menu</item>
+        <item>Settings</item>
+        <item>Video</item>
+        <item>Apps</item>
+        <item>PhoneLink</item>
+        <item>Dashboard</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>Aug</item>
+        <item>Sept</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="set_factory">
+        <item>Function</item>
+        <item>Vehicle</item>
+        <item>Car Display</item>
+        <item>CAN Protocol</item>
+        <item>UI Configuration</item>
+        <item>Profile Import</item>
+        <item>Boot Logo</item>
+    </array>
+    <array name="set_function">
+        <item>System</item>
+        <item>Navigation</item>
+        <item>Volume</item>
+        <item>Sound</item>
+        <item>Language</item>
+        <item>Time</item>
+        <item>System Info</item>
+        <item>Android</item>
+        <item>Factory</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Navigation</item>
+        <item>System</item>
+        <item>Volume</item>
+        <item>Sound</item>
+        <item>Language</item>
+        <item>Time</item>
+        <item>System Info</item>
+        <item>Android</item>
+        <item>Factory</item>
+    </array>
+</resources>
