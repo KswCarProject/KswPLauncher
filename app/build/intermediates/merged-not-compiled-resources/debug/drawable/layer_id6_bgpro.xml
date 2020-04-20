@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:id="@android:id/progress" android:top="10dp" android:bottom="1dp">
+        <clip>
+            <shape>
+                <solid android:color="#b5b5b5"/>
+            </shape>
+        </clip>
+    </item>
+</layer-list>

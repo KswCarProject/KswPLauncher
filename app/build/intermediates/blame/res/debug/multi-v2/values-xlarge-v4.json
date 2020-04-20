@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\src\\main\\res\\values-xlarge\\dimens.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "57,117,177,235",
+                        "endColumns": "58,58,56,56",
+                        "endOffsets": "111,171,229,287"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,114,173,230",
+                        "endColumns": "58,58,56,56",
+                        "endOffsets": "109,168,225,282"
+                    }
+                }
+            ]
+        }
+    ]
+}

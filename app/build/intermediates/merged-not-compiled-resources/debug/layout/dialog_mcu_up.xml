@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="vertical" android:background="@mipmap/dialog_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/line_proTitel" android:layout_width="match_parent" android:layout_height="match_parent">
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:layout_gravity="center_horizontal" android:id="@+id/dlg_msg" android:padding="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center" android:id="@+id/dlg_ok" android:background="@drawable/btn_dialog" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:text="@string/app_ok" android:lines="1"/>
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center" android:id="@+id/dlg_cancel" android:background="@drawable/btn_dialog" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="@string/app_cancel" android:lines="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

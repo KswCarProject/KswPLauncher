@@ -1,0 +1,28 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v28\\values-v28.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\src\\main\\res\\values-v28\\styles.xml",
+                    "from": {
+                        "startLines": "2,4,6,9",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "57,112,173,307",
+                        "endLines": "3,5,8,11",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "106,167,301,441"
+                    },
+                    "to": {
+                        "startLines": "2,4,6,9",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,108,167,298",
+                        "endLines": "3,5,8,11",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "103,162,293,430"
+                    }
+                }
+            ]
+        }
+    ]
+}

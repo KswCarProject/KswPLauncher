@@ -1,0 +1,28 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "from": {
+                        "startLines": "2,4,6,8,10,12,14",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "57,116,189,255,327,402,477",
+                        "endLines": "3,5,7,9,11,13,15",
+                        "endColumns": "12,12,12,12,12,12,12",
+                        "endOffsets": "110,183,249,321,396,471,542"
+                    },
+                    "to": {
+                        "startLines": "2,4,6,8,10,12,14",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,112,183,247,317,390,463",
+                        "endLines": "3,5,7,9,11,13,15",
+                        "endColumns": "12,12,12,12,12,12,12",
+                        "endOffsets": "107,178,242,312,385,458,527"
+                    }
+                }
+            ]
+        }
+    ]
+}

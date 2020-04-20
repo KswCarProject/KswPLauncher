@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Điều hướng</item>
+        <item>Video</item>
+        <item>Âm nhạc</item>
+        <item>Điện thoại</item>
+        <item>Xe</item>
+        <item>Bảng điều khiển</item>
+        <item>PhoneLink</item>
+        <item>Trình duyệt tệp</item>
+        <item>DVR</item>
+        <item>Cài đặt</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Điều hướng</item>
+        <item>Âm nhạc</item>
+        <item>Điện thoại</item>
+        <item>Xe</item>
+        <item>Cài đặt</item>
+        <item>Video</item>
+        <item>Trình duyệt tệp</item>
+        <item>PhoneLink</item>
+        <item>Bảng điều khiển</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Điều hướng</item>
+        <item>Âm nhạc</item>
+        <item>Điện thoại</item>
+        <item>Xe</item>
+        <item>Cài đặt</item>
+        <item>Video</item>
+        <item>Apps</item>
+        <item>PhoneLink</item>
+        <item>Bảng điều khiển</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>Aug</item>
+        <item>Sept</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="set_factory">
+        <item>Chức năng</item>
+        <item>Xe</item>
+        <item>Hiển thị xe hơi</item>
+        <item>CAN Protocol</item>
+        <item>Cấu hình giao diện người dùng</item>
+        <item>Nhập cấu hình</item>
+        <item>Boot Logo</item>
+    </array>
+    <array name="set_function">
+        <item>Hệ thống</item>
+        <item>Điều hướng</item>
+        <item>Âm lượng</item>
+        <item>Âm thanh</item>
+        <item>Ngôn ngữ</item>
+        <item>Thời gian</item>
+        <item>Thông tin hệ thống</item>
+        <item>Android</item>
+        <item>Nhà máy</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Điều hướng</item>
+        <item>Hệ thống</item>
+        <item>Âm lượng</item>
+        <item>Âm thanh</item>
+        <item>Ngôn ngữ</item>
+        <item>Thời gian</item>
+        <item>Thông tin hệ thống</item>
+        <item>Android</item>
+        <item>Nhà máy</item>
+    </array>
+    <string name="app_aux">AUX</string>
+    <string name="app_cancel">Hủy</string>
+    <string name="app_dtv">DTV</string>
+    <string name="app_dvr">DVR</string>
+    <string name="app_name">KswCarProject</string>
+    <string name="app_not_update">Không được phép nâng cấp!</string>
+    <string name="app_ok">OK</string>
+    <string name="audi_factory_home_right_option1">Ẩn giấu</string>
+    <string name="audi_factory_home_right_option2">Hiển thị Logo của Audi Hoặc Thông tin điều hướng AMAP</string>
+    <string name="audi_factory_home_right_option3">Hiển thị Logo của Audi</string>
+    <string name="audi_factory_home_right_option4">Hiển thị thông tin xe</string>
+    <string name="audi_factory_home_right_option5">Hiển thị thông tin âm nhạc</string>
+    <string name="audi_home_left_widget">Widget ở bên trái trang chủ</string>
+    <string name="audi_home_right_widget">Widget ở bên phải trang chủ</string>
+    <string name="audi_set_temp_unit">Đơn vị nhiệt độ</string>
+    <string name="bc_apps_btn_text">Ứng dụng khác</string>
+    <string name="benz_gs_home_navi">Điều hướng</string>
+    <string name="boot_record_mode">Ghi nhớ Chế độ cuối cùng</string>
+    <string name="boot_record_mode_radio1">Kích hoạt</string>
+    <string name="boot_record_mode_radio2">Hệ thống OEM</string>
+    <string name="boot_record_mode_radio3">Trang chủ Android</string>
+    <string name="can_bus">Thu thập dữ liệu CAN Bus</string>
+    <string name="dialog_update1">Không tìm thấy thư mục tệp</string>
+    <string name="dialog_update10">Có chọn mô hình này không</string>
+    <string name="dialog_update11">Có nên chọn loại màn hình này</string>
+    <string name="dialog_update2">Không tìm thấy tệp nâng cấp</string>
+    <string name="dialog_update3">Nâng cấp thành công!</string>
+    <string name="dialog_update4">Nâng cấp thất bại!</string>
+    <string name="dialog_update5">Có nên nhập tệp cấu hình không?</string>
+    <string name="dialog_update6">Có nên nâng cấp MCU không?</string>
+    <string name="dialog_update7">Có lỗi trong tệp nâng cấp. Vui lòng thử lại sau</string>
+    <string name="dialog_update8">Vui lòng không tắt hoặc khởi động lại trong quá trình nâng cấp.</string>
+    <string name="dialog_update9">Lưu cài đặt giao diện người dùng, vui lòng khởi động lại máy sau 10 giây!</string>
+    <string name="dialog_updatein">Nhập tệp ...</string>
+    <string name="eq_text1">Người dùng</string>
+    <string name="eq_text2">POP</string>
+    <string name="eq_text3">Khiêu vũ</string>
+    <string name="eq_text4">Rock</string>
+    <string name="eq_text5">Jazz</string>
+    <string name="eq_text6">Cổ điển</string>
+    <string name="eq_text7">Bass</string>
+    <string name="eq_text8">Alto</string>
+    <string name="eq_text9">Treble</string>
+    <string name="eq_user">Người dùng</string>
+    <string name="fac_1">khẩu:</string>
+    <string name="factory_benc">Kích hoạt AUX của Benz</string>
+    <string name="factory_bencPank">Bảng điều khiển Benz</string>
+    <string name="factory_carseep">Lựa chọn đồng hồ tốc độ</string>
+    <string name="factory_carseep1">240km/h</string>
+    <string name="factory_carseep2">260km/h</string>
+    <string name="factory_carseep3">300km/h</string>
+    <string name="factory_carseep4">280km/h</string>
+    <string name="factory_ccci">Loại núm</string>
+    <string name="factory_ccci1">Nút vặn_A</string>
+    <string name="factory_ccci2">Nút vặn_B</string>
+    <string name="factory_cdoor">Cài đặt cửa</string>
+    <string name="factory_cdoor1">Người lái xe bên trái</string>
+    <string name="factory_cdoor2">Người lái xe ở bên phải</string>
+    <string name="factory_cdoor3">Ẩn cửa</string>
+    <string name="factory_cdoor_numb">Số lượng cửa</string>
+    <string name="factory_cdoor_numb1">4 cửa</string>
+    <string name="factory_cdoor_numb2">2 cửa</string>
+    <string name="factory_danwei">Lựa chọn thiết bị</string>
+    <string name="factory_danwei1">Tự động</string>
+    <string name="factory_danwei2">Hướng dẫn</string>
+    <string name="factory_input1">Nhập từ thư mục OEM của bộ lưu trữ ngoài Factory_config.xml</string>
+    <string name="factory_input2">Phiên bản hồ sơ</string>
+    <string name="factory_input3">Nhập cấu hình</string>
+    <string name="factory_input4">Lựa chọn UI</string>
+    <string name="factory_mapkey">Lựa chọn khóa MAP</string>
+    <string name="factory_mapkey1">Navi Android</string>
+    <string name="factory_mapkey2">Xe Navi</string>
+    <string name="factory_modekey">Lựa chọn khóa MODE</string>
+    <string name="factory_modekey1">Bật</string>
+    <string name="factory_modekey2">Tắt</string>
+    <string name="factory_nbt0">Tự động chuyển đổi AUX</string>
+    <string name="factory_nbt1">Alpine</string>
+    <string name="factory_nbt2">Harman</string>
+    <string name="factory_restart">Khởi động lại</string>
+    <string name="factory_text">Cài đặt gốc</string>
+    <string name="factory_text0">Sơ đồ chuyển đổi AUX</string>
+    <string name="factory_text1">Xe không có màn hình OEM</string>
+    <string name="factory_text2">Tự động chuyển đổi</string>
+    <string name="factory_text3">Chuyển đổi thủ công</string>
+    <string name="factory_yuyinkey">Lựa chọn phím thoại</string>
+    <string name="factory_yuyinkey1">Không được sử dụng</string>
+    <string name="factory_yuyinkey2">Bấm nhanh vô dụng press Bấm dài có nghĩa là NAVI</string>
+    <string name="factory_yuyinkey3">Bấm nhanh có nghĩa là VOICE press Bấm dài có nghĩa là NAVI</string>
+    <string name="factory_yuyinkey4">Bấm nhanh có nghĩa là NAVI press Bấm lâu vô dụng</string>
+    <string name="function_text1">USB HOST</string>
+    <string name="function_text10">CVBS DVR</string>
+    <string name="function_text11">USB DVR</string>
+    <string name="function_text12">Lựa chọn Bluetooth</string>
+    <string name="function_text13">OEM Bluetooth</string>
+    <string name="function_text14">Android Bluetooth</string>
+    <string name="function_text15">Lựa chọn bộ khuếch đại</string>
+    <string name="function_text16">Bộ khuếch đại ô tô gốc</string>
+    <string name="function_text17">Hộp khuếch đại bên ngoài</string>
+    <string name="function_text18">Loại máy ảnh 360</string>
+    <string name="function_text19">Camera CVBS</string>
+    <string name="function_text2">Không cài đặt apps của bên thứ ba</string>
+    <string name="function_text20">Camera VGA</string>
+    <string name="function_text21">Điều khiển tự động đèn nền</string>
+    <string name="function_text22">Điều khiển đèn chiều rộng</string>
+    <string name="function_text23">Đóng</string>
+    <string name="function_text24">Lựa chọn đơn vị</string>
+    <string name="function_text25">Đơn vị số liệu</string>
+    <string name="function_text26">Đơn vị hoàng gia</string>
+    <string name="function_text3">Google APPS</string>
+    <string name="function_text4">AUX</string>
+    <string name="function_text5">DTV</string>
+    <string name="function_text6">Bảng điều khiển</string>
+    <string name="function_text7">Trợ lý Txzing</string>
+    <string name="function_text8">DVR</string>
+    <string name="function_text9">Đóng</string>
+    <string name="gs_application">Apps</string>
+    <string name="gs_application_mess">Ngăn kéo ứng dụng Android</string>
+    <string name="gs_browser_mess">AVINUSA.com</string>
+    <string name="gs_filemanager_mess">Truy cập tập tin trên thẻ SD và ổ flash USB</string>
+    <string name="gs_navigate">Điều hướng</string>
+    <string name="gs_phone_connected_bt_mess">Bluetooth được kết nối</string>
+    <string name="gs_phone_unconnected_bt_mess">Bluetooth không được kết nối</string>
+    <string name="gs_real_time_navi">Khám phá những nơi và khám phá</string>
+    <string name="id6_apps_mess">Nhận thêm APPS</string>
+    <string name="id6_browser">Trình duyệt</string>
+    <string name="id6_browser_mess">Duyệt web</string>
+    <string name="id6_filemanager">Trình quản lý tệp</string>
+    <string name="id6_filemanager_mess">Quản lý tệp</string>
+    <string name="id6_phone">Điện thoại</string>
+    <string name="id6_phone_mess">Thực hiện cuộc gọi</string>
+    <string name="id6_setting_mess">Cài đặt chức năng hệ thống</string>
+    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian_mess">Hỗ trợ kết nối điện thoại</string>
+    <string name="id6_xingchejily_mess">Quay video lái xe</string>
+    <string name="id7_als_item_one">ECO PRO</string>
+    <string name="id7_als_item_three">THỂ THAO</string>
+    <string name="id7_als_item_two">HOÀN TOÀN</string>
+    <string name="item1">Hệ thống</string>
+    <string name="item2">Điều hướng</string>
+    <string name="item3">Âm lượng</string>
+    <string name="item4">Âm thanh</string>
+    <string name="item5">Ngôn ngữ</string>
+    <string name="item6">Thời gian</string>
+    <string name="item7">Thông tin hệ thống</string>
+    <string name="item8">Android</string>
+    <string name="item9">Nhà máy</string>
+    <string name="ksw_id7_apps">Apps</string>
+    <string name="ksw_id7_brake1">TẮT</string>
+    <string name="ksw_id7_brake2">BẬT</string>
+    <string name="ksw_id7_car">Xe</string>
+    <string name="ksw_id7_car_info">Thông tin xe hơi</string>
+    <string name="ksw_id7_communication">Giao tiếp</string>
+    <string name="ksw_id7_connected_phone">Điện thoại được kết nối</string>
+    <string name="ksw_id7_dashboard_lable">Bảng điều khiển</string>
+    <string name="ksw_id7_ecu">Bảng điều khiển</string>
+    <string name="ksw_id7_hd_video">Video HD</string>
+    <string name="ksw_id7_hd_video_warning">Không xem video khi lái xe</string>
+    <string name="ksw_id7_month">Tháng</string>
+    <string name="ksw_id7_music">Âm nhạc</string>
+    <string name="ksw_id7_navi">Điều hướng</string>
+    <string name="ksw_id7_navi_left">Navi</string>
+    <string name="ksw_id7_not_connected_phone">Không có điện thoại được kết nối</string>
+    <string name="ksw_id7_real_time_navi">Điều hướng cho bạn trong thời gian thực</string>
+    <string name="ksw_id7_seatbelt1">TẮT</string>
+    <string name="ksw_id7_seatbelt2">BẬT</string>
+    <string name="ksw_id7_setting">Cài đặt</string>
+    <string name="ksw_id7_switch_to_carinfo_window">Hiển thị thông tin xe gốc</string>
+    <string name="ksw_id7_system_app_not_uninstall">Ứng dụng hệ thống không thể được gỡ cài đặt</string>
+    <string name="ksw_idf7_unknow_artis">Nghệ sĩ không xác định</string>
+    <string name="ksw_idf7_unkonw_album">Album không xác định</string>
+    <string name="ksw_idf7_unkonw_soung">Bài hát không xác định</string>
+    <string name="lb_password_error">Lỗi mật khẩu!</string>
+    <string name="mcu_file_corrupted">Nâng cấp tệp bị hỏng!</string>
+    <string name="ntg6_dvr_toast">Không có thiết bị!</string>
+    <string name="oil_size">dầu: %s</string>
+    <string name="raw_car_text1">hiển thị toàn màn hình</string>
+    <string name="raw_car_text2">Lựa chọn hiện tại:</string>
+    <string name="sele_navi_map">Chọn bản đồ điều hướng</string>
+    <string name="sele_navi_soft">Chọn phần mềm điều hướng</string>
+    <string name="set_caraux">Vị trí AUX</string>
+    <string name="set_caraux1">Vị trí AUX 1</string>
+    <string name="set_caraux2">Vị trí AUX 2</string>
+    <string name="set_text1">Máy ảnh đảo ngược nhân đôi</string>
+    <string name="set_text10">Đóng</string>
+    <string name="set_text2">Tắt video khi lái xe</string>
+    <string name="set_text3">Theo dõi ngược</string>
+    <string name="set_text4">Radar đảo ngược</string>
+    <string name="set_text5">Lựa chọn máy ảnh</string>
+    <string name="set_text6">Độ sáng của đèn nền</string>
+    <string name="set_text7">Tắt tiếng</string>
+    <string name="set_text8">Tỷ lệ trộn điều hướng</string>
+    <string name="set_text9">Lựa chọn ứng dụng Navi</string>
+    <string name="seven_color_menu_item_text1">Đỏ</string>
+    <string name="seven_color_menu_item_text2">Orange</string>
+    <string name="seven_color_menu_item_text3">Vàng</string>
+    <string name="seven_color_menu_item_text4">Xanh</string>
+    <string name="seven_color_menu_item_text5">Cyan</string>
+    <string name="seven_color_menu_item_text6">Màu xanh</string>
+    <string name="seven_color_menu_item_text7">Màu tím</string>
+    <string name="shext_1">Thêm máy ảnh</string>
+    <string name="shext_2">Camera xe hơi gốc</string>
+    <string name="shext_3">camera 360</string>
+    <string name="show_msg_one">Cài đặt hệ thống Android</string>
+    <string name="show_msg_two">Để cài đặt và gỡ lỗi</string>
+    <string name="string_is_this_logo">Có nên sử dụng logo khởi động này?</string>
+    <string name="string_other">Khác</string>
+    <string name="string_sele_apk">Chọn apk</string>
+    <string name="string_sele_play_apk">Music App Launcher của</string>
+    <string name="string_set_logo_over">Logo được đặt thành công!</string>
+    <string name="text_1">Cài đặt Android</string>
+    <string name="text_10">OS Ver: %s</string>
+    <string name="text_11">Nâng cấp MCU</string>
+    <string name="text_12">Phục hồi hệ thống</string>
+    <string name="text_13">Độ sáng</string>
+    <string name="text_14">RAM: %s</string>
+    <string name="text_15">Lưu trữ:%s</string>
+    <string name="text_2">Đồng bộ hóa thời gian</string>
+    <string name="text_3">Hệ thống thời gian</string>
+    <string name="text_4">Giờ xe</string>
+    <string name="text_5">Thời gian Android</string>
+    <string name="text_6">thời gian 12 giờ</string>
+    <string name="text_7">thời gian 24 giờ</string>
+    <string name="text_8">MCU Ver: %s</string>
+    <string name="text_9">APP Ver: %s</string>
+    <string name="text_ahd_cam">Không được hỗ trợ</string>
+    <string name="text_ahd_cam1">AHD-1080P-30HZ</string>
+    <string name="text_ahd_cam2">AHD-1080P-25HZ</string>
+    <string name="text_ahd_cam3">AHD-720P-30HZ</string>
+    <string name="text_ahd_cam4">AHD-720P-25HZ</string>
+    <string name="text_ahd_cam5">AHD-720P-50HZ</string>
+    <string name="text_ahd_cam6">CVBS-NTSC</string>
+    <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_select">AHD Máy ảnh</string>
+    <string name="text_flash">Flash: %s</string>
+    <string name="text_logo_input">Nhập khẩu</string>
+    <string name="text_logo_input_msg">Bạn có muốn nhập tệp Logo mới không?</string>
+    <string name="text_logo_input_non">Không có tập tin Logo!</string>
+    <string name="text_logo_input_ok">Nhập khẩu thành công!</string>
+    <string name="text_logo_one">P1</string>
+    <string name="text_logo_two">P2</string>
+    <string name="text_ram">RAM: %s</string>
+    <string name="ug_apps_text">Ứng dụng khác</string>
+    <string name="ug_bluetooth">Bluetooth</string>
+    <string name="ug_navigation">Điều hướng</string>
+    <string name="uninstall">Chưa cài đặt</string>
+    <string name="unkonw">Không xác định</string>
+    <string name="update_factory_file">Bạn có muốn nâng cấp tệp cấu hình không?</string>
+    <string name="update_mcu_file">Bạn có muốn nâng cấp MCU không?</string>
+    <string name="update_reset_all">Bạn có muốn khôi phục cài đặt gốc không?</string>
+    <string name="video">Video</string>
+    <string name="voic_1">Âm lượng chế độ Android</string>
+    <string name="voic_2">Phương tiện</string>
+    <string name="voic_3">Gọi</string>
+    <string name="voic_4">Âm lượng chế độ xe nguyên bản</string>
+    <string name="voic_5">Navi</string>
+    <string name="voice_set_show">Cài đặt âm thanh</string>
+</resources>
