@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
-    <Space android:id="@+id/space" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="100dp"/>
-    <TextView android:id="@+id/audio_seekbar_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="未知未知" android:layout_weight="1" style="@style/audi_set_default_text"/>
-    <TextView android:gravity="center" android:id="@+id/audio_seekbar_left_text" android:layout_width="50dp" android:layout_height="wrap_content" style="@style/audi_set_default_text"/>
-    <SeekBar android:id="@+id/audio_seekbar" android:layout_width="450dp" android:layout_height="wrap_content" android:progressDrawable="@drawable/audi_seekbar_progress" android:thumb="@null"/>
-    <TextView android:gravity="center" android:id="@+id/audio_seekbar_right_text" android:layout_width="50dp" android:layout_height="wrap_content" android:layout_marginRight="16dp" android:text="100" style="@style/audi_set_default_text"/>
-</LinearLayout>

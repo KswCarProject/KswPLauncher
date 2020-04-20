@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
-    <item android:state_pressed="true" android:drawable="@drawable/ntg55_ctrlpanel_btn_add_d"/>
-    <item android:drawable="@drawable/ntg55_ctrlpanel_btn_add_n"/>
-</selector>

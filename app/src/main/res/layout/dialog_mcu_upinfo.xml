@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="vertical" android:background="@mipmap/dialog_bk" android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/line_proBra" android:layout_width="match_parent" android:layout_height="match_parent">
         <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_gravity="center_horizontal" android:id="@+id/tv_prossToast" android:padding="5dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dialog_update8"/>
-        <ProgressBar android:id="@+id/mcuProgBar" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" style="@style/Widget.ProgressBar.Horizontal"/>
+        <ProgressBar android:id="@+id/mcuProgBar" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" style="@android:style/Widget.ProgressBar.Horizontal"/>
         <TextView android:textSize="25sp" android:textColor="@color/color1" android:layout_gravity="center_horizontal" android:id="@+id/mcuTvPro" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     </LinearLayout>
 </LinearLayout>

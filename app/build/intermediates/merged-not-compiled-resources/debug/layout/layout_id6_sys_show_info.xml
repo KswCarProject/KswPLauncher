@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:background="@mipmap/id6_bg_right" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView android:textSize="30sp" android:textColor="@color/text_an" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="25dp" android:text="@string/item7"/>
-    <LinearLayout android:orientation="vertical" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="80dp">
-        <TextView android:textSize="25sp" android:textColor="@color/text_an" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_infoMcuv" android:focusable="false" android:layout_width="340dp" android:layout_height="63dp" android:layout_marginLeft="30dp" android:text="@string/text_8" android:lines="1"/>
-        <TextView android:textSize="25sp" android:textColor="@color/text_an" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_infoAppv" android:focusable="false" android:layout_width="340dp" android:layout_height="63dp" android:layout_marginLeft="30dp" android:text="@string/text_9" android:lines="1"/>
-        <TextView android:textSize="25sp" android:textColor="@color/text_an" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_infoSysv" android:focusable="false" android:layout_width="450dp" android:layout_height="63dp" android:layout_marginLeft="30dp" android:text="@string/text_10" android:lines="1"/>
-    </LinearLayout>
-</RelativeLayout>

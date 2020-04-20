@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
-    <item android:state_focused="true" android:drawable="@drawable/ug_b2_easyconnection_d"/>
-    <item android:state_selected="true" android:drawable="@drawable/ug_b2_easyconnection_d"/>
-    <item android:drawable="@drawable/ug_b2_easyconnection"/>
-</selector>

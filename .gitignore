@@ -12,3 +12,4 @@ app/.idea
 keystore.properties
 *.jks
 output.json
+app/build

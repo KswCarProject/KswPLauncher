@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="bg_arc_color" format="color">
+    </attr>
+    <attr name="bg_arc_width" format="dimension">
+    </attr>
+
+    <attr name="datePattern" format="string" />
+
+    <attr name="direction">
+        <enum name="left" value="0" />
+        <enum name="right" value="1" />
+        <enum name="top_to_bottom" value="2" />
+    </attr>
+
+    <attr name="orientation">
+        <enum name="horizontal" value="1" />
+        <enum name="vertical" value="0" />
+    </attr>
+
+    <attr name="front_color1" format="color">
+    </attr>
+    <attr name="front_color2" format="color">
+    </attr>
+    <attr name="front_color3" format="color">
+    </attr>
+    <attr name="front_width" format="dimension">
+    </attr>
+    <attr name="gapBetweenBars" format="dimension">
+    </attr>
+    <attr name="goIcon" format="reference">
+    </attr>
+
+    <attr name="is_seek_enable" format="boolean">
+    </attr>
+
+    <attr name="max_value" format="float">
+    </attr>
+
+    <attr name="sweep_angle" format="integer">
+    </attr>
+
+</resources>
