@@ -2,11 +2,13 @@ package com.wits.ksw.launcher.model;
 
 import android.content.Context;
 import android.database.ContentObserver;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableInt;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
+
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 

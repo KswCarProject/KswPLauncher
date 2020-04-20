@@ -1,16 +1,18 @@
 package com.wits.ksw.launcher.base;
 
 import android.app.Activity;
-import android.arch.lifecycle.ViewModel;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.databinding.BindingMethod;
+import androidx.databinding.BindingMethods;
+import androidx.lifecycle.ViewModel;
+
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.view.AppsActivity;

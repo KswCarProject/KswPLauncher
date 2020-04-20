@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
-import android.databinding.BindingAdapter;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +17,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
+
+import com.wits.ksw.BuildConfig;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.launcher.base.BaseViewModel;

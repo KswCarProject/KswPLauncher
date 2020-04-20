@@ -1,22 +1,23 @@
 package com.wits.ksw.launcher.adpater;
 
-import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
-import com.wits.ksw.databinding.BcItemBinding;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.utils.ClientManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder> {
+public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<BenzMbuxRecyclerViewAdpater.ViewHolder> {
     private static String[] bcItemArrys;
     private static int[] resId;
     private List<BcItem> bcItemList;

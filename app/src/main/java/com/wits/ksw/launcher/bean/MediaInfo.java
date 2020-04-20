@@ -1,8 +1,9 @@
 package com.wits.ksw.launcher.bean;
 
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.graphics.drawable.BitmapDrawable;
+
+import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 
 public class MediaInfo {
     public ObservableField<String> currentTime = new ObservableField<>();

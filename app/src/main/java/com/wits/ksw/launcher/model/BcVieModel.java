@@ -1,9 +1,5 @@
 package com.wits.ksw.launcher.model;
 
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableInt;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
@@ -11,6 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import androidx.databinding.BindingMethod;
+import androidx.databinding.BindingMethods;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
+
+import com.wits.ksw.BuildConfig;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.utils.ClientManager;

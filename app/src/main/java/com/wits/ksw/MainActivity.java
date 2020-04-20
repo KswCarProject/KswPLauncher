@@ -2,29 +2,17 @@ package com.wits.ksw;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.viewpager.widget.ViewPager;
+
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import com.wits.ksw.databinding.ActivityMainAudiBinding;
-import com.wits.ksw.databinding.ActivityMainBcBinding;
-import com.wits.ksw.databinding.ActivityMainBenzGsBinding;
-import com.wits.ksw.databinding.ActivityMainBenzMbuxBindingImpl;
-import com.wits.ksw.databinding.ActivityMainGsugBindingImpl;
-import com.wits.ksw.databinding.ActivityMainId6GsBinding;
-import com.wits.ksw.databinding.ID5MaindBind;
 import com.wits.ksw.launcher.adpater.BMWViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BenzGsHomePagerAdpater;
 import com.wits.ksw.launcher.adpater.BenzMbuxRecyclerViewAdpater;

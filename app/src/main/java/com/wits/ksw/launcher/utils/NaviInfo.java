@@ -1,7 +1,8 @@
 package com.wits.ksw.launcher.utils;
 
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
+import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
+
 import com.wits.ksw.R;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

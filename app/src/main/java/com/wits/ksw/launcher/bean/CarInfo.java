@@ -1,9 +1,9 @@
 package com.wits.ksw.launcher.bean;
 
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
-import android.databinding.ObservableFloat;
-import android.databinding.ObservableInt;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableFloat;
+import androidx.databinding.ObservableInt;
 
 public class CarInfo {
     public ObservableInt airtemperature = new ObservableInt();

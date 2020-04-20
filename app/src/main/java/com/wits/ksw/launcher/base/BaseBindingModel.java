@@ -1,10 +1,12 @@
 package com.wits.ksw.launcher.base;
 
-import android.databinding.BindingAdapter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.wits.ksw.R;

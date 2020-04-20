@@ -1,20 +1,21 @@
 package com.wits.ksw.launcher.adpater;
 
-import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
-import com.wits.ksw.databinding.BenzMbuxItemBinding;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BenzMbuxRecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder> {
+public class BenzMbuxRecyclerViewAdpater extends RecyclerView.Adapter<BenzMbuxRecyclerViewAdpater.ViewHolder> {
     static String[] bcItemArrys;
     static int[] resId = {R.drawable.benz_mbux_home_navi_selector, R.drawable.benz_mbux_home_music_selector, R.drawable.benz_mbux_home_bt_selector, R.drawable.benz_mbux_home_car_selector, R.drawable.benz_mbux_home_setting_selector, R.drawable.benz_mbux_home_video_selector, R.drawable.benz_mbux_home_app_selector, R.drawable.benz_mbux_home_easy_selector, R.drawable.benz_mbux_home_dashboard_selector, R.drawable.benz_mbux_home_dvr_selector};
     static int[] subIcon1resId = {R.drawable.mbux_navi1_selector, R.drawable.mbux_music1_selector, R.drawable.mbux_bt1_selector, R.drawable.mbux_car1_selector, R.drawable.mbux_settings1_selector, R.drawable.mbux_video1_selector, R.drawable.mbux_app1_selector, R.drawable.mbux_easyconn1_selector, R.drawable.mbux_dashboard1_selector, R.drawable.mbux_dvr1_selector};

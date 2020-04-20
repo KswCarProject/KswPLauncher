@@ -1,8 +1,9 @@
 package com.wits.ksw.launcher.adpater;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+
 import com.wits.ksw.launcher.view.id5.FragmentId5Left;
 import com.wits.ksw.launcher.view.id5.FragmentId5Right;
 import java.util.ArrayList;

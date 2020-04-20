@@ -1,11 +1,13 @@
 package com.wits.ksw.launcher.model;
 
 import android.database.ContentObserver;
-import android.databinding.Observable;
-import android.databinding.ObservableInt;
 import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
+
+import androidx.databinding.Observable;
+import androidx.databinding.ObservableInt;
+
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.view.LoopRotarySwitchView;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
