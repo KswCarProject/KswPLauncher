@@ -4,22 +4,14 @@
             "outputFile": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\src\\main\\res\\values-hdpi\\styles.xml",
+                    "source": "C:\\Users\\Nicholas\\.gradle\\caches\\transforms-2\\files-2.1\\bdd1648e7eac898f49e294f5fbff43a3\\appcompat-1.1.0\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "57",
-                        "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "270"
-                    },
-                    "to": {
                         "startLines": "2",
                         "startColumns": "4",
                         "startOffsets": "55",
                         "endLines": "6",
-                        "endColumns": "12",
-                        "endOffsets": "264"
+                        "endColumns": "13",
+                        "endOffsets": "327"
                     }
                 }
             ]

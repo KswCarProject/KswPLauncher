@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../KswPLauncher.iml" filepath="$PROJECT_DIR$/../KswPLauncher.iml" group="KswPLauncher" />
+      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" group="KswPLauncher/app" />
     </modules>
   </component>
 </project>

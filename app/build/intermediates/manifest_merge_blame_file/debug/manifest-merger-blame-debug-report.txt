@@ -1,0 +1,280 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    coreApp="true"
+4    package="com.wits.ksw"
+5    platformBuildVersionCode="2"
+6    platformBuildVersionName="1"
+7    android:compileSdkVersion="28"
+8    android:compileSdkVersionCodename="9"
+9    android:sharedUserId="android.uid.system"
+10    android:versionCode="6"
+11    android:versionName="6" >
+12
+13    <uses-sdk
+13-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:13:5-46
+14        android:minSdkVersion="21"
+14-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:13:5-46
+15        android:targetSdkVersion="28" />
+15-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:13:15-44
+16
+17    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
+17-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:14:5-73
+17-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:14:22-71
+18    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+18-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:15:5-74
+18-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:15:22-72
+19    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+19-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:16:5-74
+19-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:16:22-72
+20    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+20-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:17:5-81
+20-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:17:22-79
+21    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+21-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:18:5-83
+21-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:18:22-81
+22    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+22-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:19:5-80
+22-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:19:22-78
+23    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+23-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:20:5-79
+23-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:20:22-77
+24    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+24-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:21:5-83
+24-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:21:22-81
+25
+26    <application
+26-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:5-78:19
+27        android:name="com.wits.ksw.KswApplication"
+27-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:162-204
+28        android:allowBackup="true"
+28-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:231-257
+29        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+29-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:331-404
+30        android:debuggable="true"
+30-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:205-230
+31        android:icon="@mipmap/ic_launcher"
+31-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:127-161
+32        android:label="@string/app_name"
+32-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:94-126
+33        android:roundIcon="@mipmap/ic_launcher_round"
+33-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:285-330
+34        android:supportsRtl="true"
+34-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:258-284
+35        android:testOnly="true"
+36        android:theme="@style/AppTheme" >
+36-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:22:62-93
+37        <activity
+37-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:9-31:20
+38            android:name="com.wits.ksw.MainActivity"
+38-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:19-59
+39            android:clearTaskOnLaunch="true"
+39-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:60-92
+40            android:excludeFromRecents="true"
+40-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:123-156
+41            android:launchMode="singleTask"
+41-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:157-188
+42            android:screenOrientation="landscape"
+42-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:189-226
+43            android:stateNotNeeded="true"
+43-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:93-122
+44            android:windowSoftInputMode="adjustPan" >
+44-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:23:227-266
+45            <intent-filter>
+45-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:24:13-30:29
+46                <action android:name="android.intent.action.MAIN" />
+46-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:25:17-68
+46-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:25:25-66
+47
+48                <category android:name="android.intent.category.MONKEY" />
+48-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:26:17-74
+48-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:26:27-72
+49                <category android:name="android.intent.category.HOME" />
+49-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:27:17-72
+49-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:27:27-70
+50                <category android:name="android.intent.category.DEFAULT" />
+50-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:17-75
+50-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:27-73
+51                <category android:name="android.intent.category.LAUNCHER" />
+51-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:29:17-76
+51-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:29:27-74
+52            </intent-filter>
+53        </activity>
+54        <activity
+54-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:32:9-37:20
+55            android:name="com.wits.ksw.launcher.view.AppsActivity"
+55-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:32:60-114
+56            android:excludeFromRecents="true"
+56-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:32:115-148
+57            android:screenOrientation="landscape"
+57-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:32:149-186
+58            android:theme="@style/BaseActivityTheme" >
+58-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:32:19-59
+59            <intent-filter>
+59-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:33:13-36:29
+60                <action android:name="com.wits.ksw.ACTION_APPS" />
+60-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:34:17-66
+60-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:34:25-64
+61
+62                <category android:name="android.intent.category.DEFAULT" />
+62-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:17-75
+62-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:27-73
+63            </intent-filter>
+64        </activity>
+65        <activity
+65-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:38:9-43:20
+66            android:name="com.wits.ksw.launcher.view.DashboardActivity"
+66-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:38:19-78
+67            android:screenOrientation="landscape" >
+67-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:38:79-116
+68            <intent-filter>
+68-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:39:13-42:29
+69                <action android:name="com.wits.ksw.ACTION_DASHBOARD" />
+69-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:40:17-71
+69-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:40:25-69
+70
+71                <category android:name="android.intent.category.DEFAULT" />
+71-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:17-75
+71-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:27-73
+72            </intent-filter>
+73        </activity>
+74        <activity
+74-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:44:9-50:20
+75            android:name="com.wits.ksw.settings.SettingsActivity"
+75-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:44:19-72
+76            android:exported="true" >
+76-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:44:73-96
+77            <intent-filter>
+77-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:45:13-49:29
+78                <action android:name="com.on.systemUi.start.voice.function" />
+78-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:46:17-78
+78-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:46:25-76
+79                <action android:name="com.on.systemUi.start.voice" />
+79-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:47:17-69
+79-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:47:25-67
+80
+81                <category android:name="android.intent.category.DEFAULT" />
+81-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:17-75
+81-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:27-73
+82            </intent-filter>
+83        </activity>
+84        <activity
+84-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:51:9-147
+85            android:name="com.wits.ksw.settings.id7.FactoryActivity"
+85-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:51:19-75
+86            android:excludeFromRecents="true"
+86-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:51:76-109
+87            android:launchMode="singleInstance" />
+87-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:51:110-145
+88        <activity
+88-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:52:9-153
+89            android:name="com.wits.ksw.settings.id7.ID7SettingsActivity"
+89-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:52:55-115
+90            android:launchMode="singleInstance"
+90-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:52:116-151
+91            android:theme="@style/AppThemeTran" />
+91-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:52:19-54
+92        <activity
+92-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:53:9-155
+93            android:name="com.wits.ksw.settings.ntg6.Ntg6SettingsActivity"
+93-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:53:55-117
+94            android:launchMode="singleInstance"
+94-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:53:118-153
+95            android:theme="@style/AppThemeTran" />
+95-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:53:19-54
+96        <activity
+96-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:54:9-153
+97            android:name="com.wits.ksw.settings.id6.ID6SettingsActivity"
+97-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:54:55-115
+98            android:launchMode="singleInstance"
+98-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:54:116-151
+99            android:theme="@style/AppThemeTran" />
+99-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:54:19-54
+100        <activity
+100-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:55:9-187
+101            android:name="com.wits.ksw.launcher.id7_new.Id7NewActivity"
+101-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:55:60-119
+102            android:excludeFromRecents="true"
+102-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:55:120-153
+103            android:launchMode="singleTask"
+103-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:55:154-185
+104            android:theme="@style/BaseActivityTheme" />
+104-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:55:19-59
+105        <activity android:name="com.wits.ksw.settings.id7.layout_factory.LogoSelect" />
+105-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:56:9-87
+105-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:56:19-85
+106        <activity
+106-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:57:9-62:20
+107            android:name="com.wits.ksw.settings.audi.AudiSettingMainActivity"
+107-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:57:55-120
+108            android:screenOrientation="landscape"
+108-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:57:121-158
+109            android:theme="@style/AudiAppTheme" >
+109-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:57:19-54
+110            <intent-filter>
+110-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:58:13-61:29
+111                <action android:name="com.wits.ksw.AUDI_SETTINGS" />
+111-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:59:17-68
+111-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:59:25-66
+112
+113                <category android:name="android.intent.category.DEFAULT" />
+113-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:17-75
+113-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:28:27-73
+114            </intent-filter>
+115        </activity>
+116        <activity android:name="com.wits.ksw.settings.audi.AudiLanguageActivity" />
+116-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:63:9-83
+116-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:63:19-81
+117        <activity android:name="com.wits.ksw.settings.audi.AudiTimeActivity" />
+117-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:64:9-79
+117-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:64:19-77
+118        <activity android:name="com.wits.ksw.settings.audi.AudiSoundActivity" />
+118-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:65:9-80
+118-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:65:19-78
+119        <activity android:name="com.wits.ksw.settings.audi.AudiSystemActivity" />
+119-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:66:9-81
+119-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:66:19-79
+120        <activity android:name="com.wits.ksw.settings.audi.AudiNaviActivity" />
+120-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:67:9-79
+120-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:67:19-77
+121        <activity android:name="com.wits.ksw.settings.audi.AudiSystemInfoActivity" />
+121-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:68:9-85
+121-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:68:19-83
+122        <activity android:name="com.wits.ksw.settings.audi.AudiEqActivity" />
+122-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:69:9-77
+122-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:69:19-75
+123        <activity android:name="com.wits.ksw.settings.audi.AudiSpeedUnitActivity" />
+123-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:70:9-84
+123-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:70:19-82
+124        <activity android:name="com.wits.ksw.settings.audi.AudiReverCameraActivity" />
+124-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:71:9-86
+124-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:71:19-84
+125        <activity android:name="com.wits.ksw.settings.audi.AudiBrightnessActivity" />
+125-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:72:9-85
+125-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:72:19-83
+126        <activity android:name="com.wits.ksw.settings.audi.AudiAuxActivity" />
+126-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:73:9-78
+126-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:73:19-76
+127        <activity android:name="com.wits.ksw.settings.audi.AudiTempActivity" />
+127-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:74:9-79
+127-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:74:19-77
+128        <activity android:name="com.wits.ksw.settings.audi.AudiPasswordActivity" />
+128-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:75:9-83
+128-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:75:19-81
+129
+130        <service android:name="com.wits.ksw.KswRunService" />
+130-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:76:9-61
+130-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:76:18-59
+131
+132        <provider
+132-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:77:9-196
+133            android:name="android.arch.lifecycle.ProcessLifecycleOwnerInitializer"
+133-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:77:19-89
+134            android:authorities="com.wits.ksw.lifecycle-trojan"
+134-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:77:143-194
+135            android:exported="false"
+135-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:77:90-114
+136            android:multiprocess="true" />
+136-->C:\Users\Nicholas\Documents\GitHub\KswPLauncher\app\src\main\AndroidManifest.xml:77:115-142
+137    </application>
+138
+139</manifest>

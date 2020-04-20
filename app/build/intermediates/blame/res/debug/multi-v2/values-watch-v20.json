@@ -4,22 +4,14 @@
             "outputFile": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-watch-v20\\values-watch-v20.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\src\\main\\res\\values-watch\\styles.xml",
+                    "source": "C:\\Users\\Nicholas\\.gradle\\caches\\transforms-2\\files-2.1\\bdd1648e7eac898f49e294f5fbff43a3\\appcompat-1.1.0\\res\\values-watch-v20\\values-watch-v20.xml",
                     "from": {
-                        "startLines": "2,6,10",
+                        "startLines": "2,5,8",
                         "startColumns": "4,4,4",
-                        "startOffsets": "57,236,421",
-                        "endLines": "5,9,13",
+                        "startOffsets": "55,214,385",
+                        "endLines": "4,7,10",
                         "endColumns": "12,12,12",
-                        "endOffsets": "230,415,601"
-                    },
-                    "to": {
-                        "startLines": "2,6,10",
-                        "startColumns": "4,4,4",
-                        "startOffsets": "55,230,411",
-                        "endLines": "5,9,13",
-                        "endColumns": "12,12,12",
-                        "endOffsets": "225,406,588"
+                        "endOffsets": "209,380,553"
                     }
                 }
             ]

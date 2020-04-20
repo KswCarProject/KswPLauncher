@@ -4,20 +4,13 @@
             "outputFile": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-h720dp-v13\\values-h720dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Nicholas\\Documents\\GitHub\\KswPLauncher\\app\\src\\main\\res\\values-h720dp\\dimens.xml",
+                    "source": "C:\\Users\\Nicholas\\.gradle\\caches\\transforms-2\\files-2.1\\bdd1648e7eac898f49e294f5fbff43a3\\appcompat-1.1.0\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
-                        "startOffsets": "57",
-                        "endColumns": "65",
-                        "endOffsets": "118"
-                    },
-                    "to": {
-                        "startLines": "2",
-                        "startColumns": "4",
                         "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
+                        "endColumns": "66",
+                        "endOffsets": "117"
                     }
                 }
             ]

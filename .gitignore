@@ -1,7 +1,9 @@
 *.iml
 .gradle
 /local.properties
+.idea
 /.idea
+app/.idea
 /projectFilesBackup
 .DS_Store
 /build

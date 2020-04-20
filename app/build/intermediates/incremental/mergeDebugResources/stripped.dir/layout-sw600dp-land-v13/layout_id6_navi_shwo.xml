@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:background="@mipmap/id6_bg_right" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
-    <TextView android:textSize="30sp" android:textColor="#7b858e" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="25dp" android:text="@string/item2"/>
-    <TextView android:textSize="28sp" android:textColor="#7b858e" android:ellipsize="end" android:layout_width="300dp" android:layout_height="wrap_content" android:layout_marginLeft="60dp" android:layout_marginTop="90dp" android:text="@string/sele_navi_map" android:lines="1"/>
-    <android.support.v7.widget.RecyclerView android:id="@+id/navi_recycle" android:focusable="true" android:layout_width="317dp" android:layout_height="wrap_content" android:layout_marginLeft="60dp" android:layout_marginTop="140dp"/>
-</RelativeLayout>
