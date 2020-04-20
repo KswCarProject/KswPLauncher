@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.wits.ksw.BuildConfig;
+
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.ID6FragmentOne;
 import com.wits.ksw.launcher.model.MediaImpl;

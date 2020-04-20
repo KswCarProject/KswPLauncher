@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.wits.ksw.BuildConfig;
+
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.id7_new.SavaUtils;

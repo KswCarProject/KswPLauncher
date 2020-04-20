@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wits.ksw.BuildConfig;
+
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;

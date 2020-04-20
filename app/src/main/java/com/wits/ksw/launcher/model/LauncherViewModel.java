@@ -19,7 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import com.wits.ksw.BuildConfig;
+
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.launcher.base.BaseViewModel;

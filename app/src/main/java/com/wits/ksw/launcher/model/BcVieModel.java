@@ -10,7 +10,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
-import com.wits.ksw.BuildConfig;
+
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.utils.ClientManager;
