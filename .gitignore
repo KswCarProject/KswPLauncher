@@ -8,7 +8,6 @@ app/.idea
 .DS_Store
 /build
 /captures
-*.apk
 keystore.properties
 *.jks
 output.json
