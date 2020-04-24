@@ -116,17 +116,17 @@ public class AudiNaviActivity extends AudiSubActivity {
                 r0 = 0
                 if (r7 != 0) goto L_0x002d
                 android.view.LayoutInflater r1 = r5.layoutInflater
-                r2 = 2131361853(0x7f0a003d, float:1.834347E38)
+                r2 = 2131361854(0x7f0a003e, float:1.8343472E38)
                 r3 = 0
                 android.view.View r7 = r1.inflate(r2, r3)
                 com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder r1 = new com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder
                 r1.<init>()
                 r0 = r1
-                r1 = 2131231171(0x7f0801c3, float:1.8078415E38)
+                r1 = 2131231187(0x7f0801d3, float:1.8078448E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.RadioButton r1 = (android.widget.RadioButton) r1
                 r0.radioButton = r1
-                r1 = 2131231170(0x7f0801c2, float:1.8078413E38)
+                r1 = 2131231186(0x7f0801d2, float:1.8078446E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.ImageView r1 = (android.widget.ImageView) r1
                 r0.icon = r1

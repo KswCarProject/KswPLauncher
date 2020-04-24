@@ -42,8 +42,10 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
     private CheckBox cbox_function5;
     private CheckBox cbox_function6;
     private CheckBox cbox_function7;
+    private CheckBox cbox_function_google_off;
     private CheckBox cbox_sysXcjz;
     private int cheVideo = 0;
+    private CheckBox chox_function_fcam;
     private int danwei = 0;
     private String defDev = "";
     private String defPlayApp = "";
@@ -51,6 +53,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
     public List<DevBean> devBanList;
     /* access modifiers changed from: private */
     public DialogViews dialogViews;
+    private int fcamType;
     private int funtion1;
     private int funtion3;
     private int funtion4;
@@ -58,6 +61,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
     private int funtion6;
     private int funtion7;
     private int gongfang = 0;
+    private int googleOff;
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -114,7 +118,9 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
             this.gongfang = PowerManagerApp.getSettingsInt(KeyConfig.AMP_TYPE);
             this.bootMode = PowerManagerApp.getSettingsInt(KeyConfig.DEFAULT_POWER_BOOT);
             this.bt = PowerManagerApp.getSettingsInt(KeyConfig.Android_Bt_Switch);
-            Log.d(TAG, "initData get data==\tUSBHost:" + this.funtion1 + "\tgoogapp:" + this.funtion3 + "\taux:" + this.funtion4 + "\tdtv:" + this.funtion5 + "\tdishboard:" + this.funtion6 + "\ttxz:" + this.funtion7 + "\tbootMode:" + this.bootMode + "\tbt:" + this.bt);
+            this.fcamType = PowerManagerApp.getSettingsInt("Front_view_camera");
+            this.googleOff = PowerManagerApp.getSettingsInt(KeyConfig.ZLINK_AUTO_START);
+            Log.d(TAG, "initData get data==\tUSBHost:" + this.funtion1 + "\tgoogapp:" + this.funtion3 + "\taux:" + this.funtion4 + "\tdtv:" + this.funtion5 + "\tdishboard:" + this.funtion6 + "\ttxz:" + this.funtion7 + "\tbootMode:" + this.bootMode + "\tbt:" + this.bt + "\tfcamType:" + this.fcamType + "\tgoogleOff:" + this.googleOff);
             this.defDev = PowerManagerApp.getSettingsString(KeyConfig.DEF_DVRAPK);
             StringBuilder sb = new StringBuilder();
             sb.append("defDvrApk:");
@@ -140,7 +146,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
         });
         this.cbox_bt = (CheckBox) this.view.findViewById(R.id.cbox_bt);
         this.cbox_function1 = (CheckBox) this.view.findViewById(R.id.cbox_function1);
-        boolean z = true;
+        boolean z = false;
         this.cbox_function1.setChecked(this.funtion1 != 0);
         this.cbox_function3 = (CheckBox) this.view.findViewById(R.id.cbox_function3);
         this.cbox_function3.setChecked(this.funtion3 != 0);
@@ -154,6 +160,10 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
         this.cbox_function7.setChecked(this.funtion7 != 0);
         this.cbox_sysXcjz = (CheckBox) this.view.findViewById(R.id.cbox_sysXcjz);
         this.cbox_sysXcjz.setChecked(this.cheVideo != 0);
+        this.chox_function_fcam = (CheckBox) this.view.findViewById(R.id.cbox_function_fcam);
+        this.chox_function_fcam.setChecked(this.fcamType == 1);
+        this.cbox_function_google_off = (CheckBox) this.view.findViewById(R.id.cbox_function_google_off);
+        this.cbox_function_google_off.setChecked(this.googleOff == 1);
         if (UiThemeUtils.isBMW_EVO_ID6(this.m_con) || UiThemeUtils.isBMW_EVO_ID5(this.m_con) || UiThemeUtils.isCommon_UI_GS(this.m_con)) {
             this.cbox_sysXcjz.setVisibility(0);
         } else {
@@ -266,6 +276,8 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
         this.cbox_function5.setOnCheckedChangeListener(this);
         this.cbox_function6.setOnCheckedChangeListener(this);
         this.cbox_function7.setOnCheckedChangeListener(this);
+        this.chox_function_fcam.setOnCheckedChangeListener(this);
+        this.cbox_function_google_off.setOnCheckedChangeListener(this);
         this.rdg_funxcjl.setOnCheckedChangeListener(this);
         this.rdg_funbt.setOnCheckedChangeListener(this);
         this.rdg_fungf.setOnCheckedChangeListener(this);
@@ -281,8 +293,8 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
             }
         });
         CheckBox checkBox = this.cbox_bt;
-        if (this.bt != 1) {
-            z = false;
+        if (this.bt == 1) {
+            z = true;
         }
         checkBox.setChecked(z);
     }
@@ -310,6 +322,12 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
                     return;
                 case R.id.cbox_function7:
                     FileUtils.savaData(KeyConfig.TXZ, isChecked);
+                    return;
+                case R.id.cbox_function_fcam:
+                    FileUtils.savaData("Front_view_camera", isChecked);
+                    return;
+                case R.id.cbox_function_google_off:
+                    FileUtils.savaData(KeyConfig.ZLINK_AUTO_START, isChecked);
                     return;
                 default:
                     return;

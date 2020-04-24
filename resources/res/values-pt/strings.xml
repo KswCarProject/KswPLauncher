@@ -48,6 +48,7 @@
     <string name="boot_record_mode_radio1">Habilitar</string>
     <string name="boot_record_mode_radio2">Ir para o sistema OEM</string>
     <string name="boot_record_mode_radio3">Para a página inicial do Android</string>
+    <string name="bt_text_bt_closed">Fechadas</string>
     <string name="can_bus">Colete dados do barramento CAN</string>
     <string name="dialog_update1">Diretório de arquivo não encontrado</string>
     <string name="dialog_update10">Se deve escolher este modelo</string>

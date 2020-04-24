@@ -18,6 +18,7 @@ import com.wits.ksw.databinding.ActivityMainBcBindingImpl;
 import com.wits.ksw.databinding.ActivityMainBcBindingSw600dpLandImpl;
 import com.wits.ksw.databinding.ActivityMainBenzGsBindingImpl;
 import com.wits.ksw.databinding.ActivityMainBenzMbuxBindingImpl;
+import com.wits.ksw.databinding.ActivityMainBenzNtg5BindingImpl;
 import com.wits.ksw.databinding.ActivityMainGsugBindingImpl;
 import com.wits.ksw.databinding.ActivityMainId6GsBindingImpl;
 import com.wits.ksw.databinding.ActivityNtg6DashBoardBindingImpl;
@@ -38,6 +39,7 @@ import com.wits.ksw.databinding.AudiSystemSetBindingImpl;
 import com.wits.ksw.databinding.AudiTempBindingImpl;
 import com.wits.ksw.databinding.BcItemBindingImpl;
 import com.wits.ksw.databinding.BcItemBindingSw600dpLandImpl;
+import com.wits.ksw.databinding.BcNtg5ItemBindingImpl;
 import com.wits.ksw.databinding.BcSubViewBindingImpl;
 import com.wits.ksw.databinding.BcSubViewBindingSw600dpLandImpl;
 import com.wits.ksw.databinding.BenzControlBindImpl;
@@ -86,6 +88,7 @@ import com.wits.ksw.databinding.NaviFragmentImpl;
 import com.wits.ksw.databinding.NaviFragmentSw600dpLandImpl;
 import com.wits.ksw.databinding.NaviSubViewImpl;
 import com.wits.ksw.databinding.NaviSubViewSw600dpLandImpl;
+import com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl;
 import com.wits.ksw.databinding.SevenDasoardBindImpl;
 import com.wits.ksw.databinding.UgHomeFourBindingImpl;
 import com.wits.ksw.databinding.UgHomeOneBindingImpl;
@@ -96,7 +99,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DataBinderMapperImpl extends DataBinderMapper {
-    private static final SparseIntArray INTERNAL_LAYOUT_ID_LOOKUP = new SparseIntArray(59);
+    private static final SparseIntArray INTERNAL_LAYOUT_ID_LOOKUP = new SparseIntArray(62);
     private static final int LAYOUT_ACTIVITYAUDI = 1;
     private static final int LAYOUT_ACTIVITYAUDISOUND = 2;
     private static final int LAYOUT_ACTIVITYAUDITIME = 3;
@@ -108,54 +111,57 @@ public class DataBinderMapperImpl extends DataBinderMapper {
     private static final int LAYOUT_ACTIVITYMAINBC = 9;
     private static final int LAYOUT_ACTIVITYMAINBENZGS = 10;
     private static final int LAYOUT_ACTIVITYMAINBENZMBUX = 11;
-    private static final int LAYOUT_ACTIVITYMAINBMW = 12;
-    private static final int LAYOUT_ACTIVITYMAINGSUG = 13;
-    private static final int LAYOUT_ACTIVITYMAINID5 = 14;
-    private static final int LAYOUT_ACTIVITYMAINID6GS = 15;
-    private static final int LAYOUT_ACTIVITYNTG6DASHBOARD = 16;
-    private static final int LAYOUT_AUDIAUX = 17;
-    private static final int LAYOUT_AUDIBRIGHTNESS = 18;
-    private static final int LAYOUT_AUDIEQVIEW = 19;
-    private static final int LAYOUT_AUDINAVI = 20;
-    private static final int LAYOUT_AUDIPASSWORD = 21;
-    private static final int LAYOUT_AUDIREVERCAMERA = 22;
-    private static final int LAYOUT_AUDIRIGHTCARINFO = 23;
-    private static final int LAYOUT_AUDIRIGHTLOGO = 24;
-    private static final int LAYOUT_AUDIRIGHTMEDIA = 25;
-    private static final int LAYOUT_AUDIRIGHTNAVI = 26;
-    private static final int LAYOUT_AUDISPEEDUNIT = 27;
-    private static final int LAYOUT_AUDISYSINFO = 28;
-    private static final int LAYOUT_AUDISYSTEMSET = 29;
-    private static final int LAYOUT_AUDITEMP = 30;
-    private static final int LAYOUT_BCITEM = 31;
-    private static final int LAYOUT_BCSUBVIEW = 32;
-    private static final int LAYOUT_BENZMBUXITEM = 33;
-    private static final int LAYOUT_FRABENZGSONE = 34;
-    private static final int LAYOUT_FRABENZGSTWO = 35;
-    private static final int LAYOUT_FRABMWEVOID6GSONE = 36;
-    private static final int LAYOUT_FRABMWEVOID6GSTHREE = 37;
-    private static final int LAYOUT_FRABMWEVOID6GSTWO = 38;
-    private static final int LAYOUT_FRAGMENTID5TWO = 39;
-    private static final int LAYOUT_ID6FRAGMENTFOUR = 40;
-    private static final int LAYOUT_ID6FRAGMENTONE = 41;
-    private static final int LAYOUT_ID6FRAGMENTTHREE = 42;
-    private static final int LAYOUT_ID6FRAGMENTTOW = 43;
-    private static final int LAYOUT_ID6ONE = 44;
-    private static final int LAYOUT_ID7APPITEM = 45;
-    private static final int LAYOUT_ID7FRAGMENTCAR = 46;
-    private static final int LAYOUT_ID7FRAGMENTMEDIA = 47;
-    private static final int LAYOUT_ID7FRAGMENTNAVI = 48;
-    private static final int LAYOUT_ID7SUBCARVIEW = 49;
-    private static final int LAYOUT_ID7SUBDASHBOARDVIEW = 50;
-    private static final int LAYOUT_ID7SUBMUSICVIEW = 51;
-    private static final int LAYOUT_ID7SUBNAVIVIEW = 52;
-    private static final int LAYOUT_ID7SUBPHONEVIEW = 53;
-    private static final int LAYOUT_ID7SUBVIDEOVIEW = 54;
-    private static final int LAYOUT_NTG6CONTROLPOPUP = 55;
-    private static final int LAYOUT_UGHOMEFOUR = 56;
-    private static final int LAYOUT_UGHOMEONE = 57;
-    private static final int LAYOUT_UGHOMETHREE = 58;
-    private static final int LAYOUT_UGHOMETWO = 59;
+    private static final int LAYOUT_ACTIVITYMAINBENZNTG5 = 12;
+    private static final int LAYOUT_ACTIVITYMAINBMW = 13;
+    private static final int LAYOUT_ACTIVITYMAINGSUG = 14;
+    private static final int LAYOUT_ACTIVITYMAINID5 = 15;
+    private static final int LAYOUT_ACTIVITYMAINID6GS = 16;
+    private static final int LAYOUT_ACTIVITYNTG6DASHBOARD = 17;
+    private static final int LAYOUT_AUDIAUX = 18;
+    private static final int LAYOUT_AUDIBRIGHTNESS = 19;
+    private static final int LAYOUT_AUDIEQVIEW = 20;
+    private static final int LAYOUT_AUDINAVI = 21;
+    private static final int LAYOUT_AUDIPASSWORD = 22;
+    private static final int LAYOUT_AUDIREVERCAMERA = 23;
+    private static final int LAYOUT_AUDIRIGHTCARINFO = 24;
+    private static final int LAYOUT_AUDIRIGHTLOGO = 25;
+    private static final int LAYOUT_AUDIRIGHTMEDIA = 26;
+    private static final int LAYOUT_AUDIRIGHTNAVI = 27;
+    private static final int LAYOUT_AUDISPEEDUNIT = 28;
+    private static final int LAYOUT_AUDISYSINFO = 29;
+    private static final int LAYOUT_AUDISYSTEMSET = 30;
+    private static final int LAYOUT_AUDITEMP = 31;
+    private static final int LAYOUT_BCITEM = 32;
+    private static final int LAYOUT_BCNTG5ITEM = 33;
+    private static final int LAYOUT_BCSUBVIEW = 34;
+    private static final int LAYOUT_BENZMBUXITEM = 35;
+    private static final int LAYOUT_FRABENZGSONE = 36;
+    private static final int LAYOUT_FRABENZGSTWO = 37;
+    private static final int LAYOUT_FRABMWEVOID6GSONE = 38;
+    private static final int LAYOUT_FRABMWEVOID6GSTHREE = 39;
+    private static final int LAYOUT_FRABMWEVOID6GSTWO = 40;
+    private static final int LAYOUT_FRAGMENTID5TWO = 41;
+    private static final int LAYOUT_ID6FRAGMENTFOUR = 42;
+    private static final int LAYOUT_ID6FRAGMENTONE = 43;
+    private static final int LAYOUT_ID6FRAGMENTTHREE = 44;
+    private static final int LAYOUT_ID6FRAGMENTTOW = 45;
+    private static final int LAYOUT_ID6ONE = 46;
+    private static final int LAYOUT_ID7APPITEM = 47;
+    private static final int LAYOUT_ID7FRAGMENTCAR = 48;
+    private static final int LAYOUT_ID7FRAGMENTMEDIA = 49;
+    private static final int LAYOUT_ID7FRAGMENTNAVI = 50;
+    private static final int LAYOUT_ID7SUBCARVIEW = 51;
+    private static final int LAYOUT_ID7SUBDASHBOARDVIEW = 52;
+    private static final int LAYOUT_ID7SUBMUSICVIEW = 53;
+    private static final int LAYOUT_ID7SUBNAVIVIEW = 54;
+    private static final int LAYOUT_ID7SUBPHONEVIEW = 55;
+    private static final int LAYOUT_ID7SUBVIDEOVIEW = 56;
+    private static final int LAYOUT_NTG630CONTROLPOPUP = 57;
+    private static final int LAYOUT_NTG6CONTROLPOPUP = 58;
+    private static final int LAYOUT_UGHOMEFOUR = 59;
+    private static final int LAYOUT_UGHOMEONE = 60;
+    private static final int LAYOUT_UGHOMETHREE = 61;
+    private static final int LAYOUT_UGHOMETWO = 62;
 
     static {
         INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_audi, 1);
@@ -169,54 +175,57 @@ public class DataBinderMapperImpl extends DataBinderMapper {
         INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_bc, 9);
         INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_benz_gs, 10);
         INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_benz_mbux, 11);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_bmw, 12);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_gsug, 13);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_id5, 14);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_id6_gs, 15);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_ntg6_dash_board, 16);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_aux, 17);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_brightness, 18);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_eq_view, 19);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_navi, 20);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_password, 21);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_rever_camera, 22);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_carinfo, 23);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_logo, 24);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_media, 25);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_navi, 26);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_speed_unit, 27);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_sysinfo, 28);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_system_set, 29);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_temp, 30);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.bc_item, 31);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.bc_sub_view, 32);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.benz_mbux_item, 33);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_benzgs_one, 34);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_benzgs_two, 35);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_bmw_evo_id6_gs_one, 36);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_bmw_evo_id6_gs_three, 37);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_bmw_evo_id6_gs_two, 38);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fragment_id5_two, 39);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_four, 40);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_one, 41);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_three, 42);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_tow, 43);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_one, 44);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_app_item, 45);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_fragment_car, 46);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_fragment_media, 47);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_fragment_navi, 48);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_car_view, 49);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_dashboard_view, 50);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_music_view, 51);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_navi_view, 52);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_phone_view, 53);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_video_view, 54);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ntg6_control_popup, 55);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_four, 56);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_one, 57);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_three, 58);
-        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_two, 59);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_benz_ntg5, 12);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_bmw, 13);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_gsug, 14);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_id5, 15);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_main_id6_gs, 16);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.activity_ntg6_dash_board, 17);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_aux, 18);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_brightness, 19);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_eq_view, 20);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_navi, 21);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_password, 22);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_rever_camera, 23);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_carinfo, 24);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_logo, 25);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_media, 26);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_right_navi, 27);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_speed_unit, 28);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_sysinfo, 29);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_system_set, 30);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.audi_temp, 31);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.bc_item, 32);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.bc_ntg5_item, 33);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.bc_sub_view, 34);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.benz_mbux_item, 35);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_benzgs_one, 36);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_benzgs_two, 37);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_bmw_evo_id6_gs_one, 38);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_bmw_evo_id6_gs_three, 39);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fra_bmw_evo_id6_gs_two, 40);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.fragment_id5_two, 41);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_four, 42);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_one, 43);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_three, 44);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_fragment_tow, 45);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id6_one, 46);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_app_item, 47);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_fragment_car, 48);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_fragment_media, 49);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_fragment_navi, 50);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_car_view, 51);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_dashboard_view, 52);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_music_view, 53);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_navi_view, 54);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_phone_view, 55);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.id7_sub_video_view, 56);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ntg630_control_popup, 57);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ntg6_control_popup, 58);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_four, 59);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_one, 60);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_three, 61);
+        INTERNAL_LAYOUT_ID_LOOKUP.put(R.layout.ug_home_two, 62);
     }
 
     private final ViewDataBinding internalGetViewDataBinding0(DataBindingComponent component, View view, int internalId, Object tag) {
@@ -289,6 +298,11 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                 }
                 throw new IllegalArgumentException("The tag for activity_main_benz_mbux is invalid. Received: " + tag);
             case 12:
+                if ("layout/activity_main_benz_ntg5_0".equals(tag)) {
+                    return new ActivityMainBenzNtg5BindingImpl(component, view);
+                }
+                throw new IllegalArgumentException("The tag for activity_main_benz_ntg5 is invalid. Received: " + tag);
+            case 13:
                 if ("layout/activity_main_bmw_0".equals(tag)) {
                     return new MainActivityImpl(component, view);
                 }
@@ -296,12 +310,12 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new MainActivitySw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for activity_main_bmw is invalid. Received: " + tag);
-            case 13:
+            case 14:
                 if ("layout/activity_main_gsug_0".equals(tag)) {
                     return new ActivityMainGsugBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for activity_main_gsug is invalid. Received: " + tag);
-            case 14:
+            case 15:
                 if ("layout/activity_main_id5_0".equals(tag)) {
                     return new ID5MaindBindImpl(component, view);
                 }
@@ -309,12 +323,12 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new ID5MaindBindSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for activity_main_id5 is invalid. Received: " + tag);
-            case 15:
+            case 16:
                 if ("layout/activity_main_id6_gs_0".equals(tag)) {
                     return new ActivityMainId6GsBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for activity_main_id6_gs is invalid. Received: " + tag);
-            case 16:
+            case 17:
                 if ("layout/activity_ntg6_dash_board_0".equals(tag)) {
                     return new ActivityNtg6DashBoardBindingImpl(component, view);
                 }
@@ -322,77 +336,77 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new ActivityNtg6DashBoardBindingSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for activity_ntg6_dash_board is invalid. Received: " + tag);
-            case 17:
+            case 18:
                 if ("layout/audi_aux_0".equals(tag)) {
                     return new AudiAuxBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_aux is invalid. Received: " + tag);
-            case 18:
+            case 19:
                 if ("layout/audi_brightness_0".equals(tag)) {
                     return new AudiBrightnessBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_brightness is invalid. Received: " + tag);
-            case 19:
+            case 20:
                 if ("layout/audi_eq_view_0".equals(tag)) {
                     return new AudiEqViewBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_eq_view is invalid. Received: " + tag);
-            case 20:
+            case 21:
                 if ("layout/audi_navi_0".equals(tag)) {
                     return new AudiNaviBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_navi is invalid. Received: " + tag);
-            case 21:
+            case 22:
                 if ("layout/audi_password_0".equals(tag)) {
                     return new AudiPasswordBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_password is invalid. Received: " + tag);
-            case 22:
+            case 23:
                 if ("layout/audi_rever_camera_0".equals(tag)) {
                     return new AudiReverCameraBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_rever_camera is invalid. Received: " + tag);
-            case 23:
+            case 24:
                 if ("layout/audi_right_carinfo_0".equals(tag)) {
                     return new AudiRightCarinfoBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_right_carinfo is invalid. Received: " + tag);
-            case 24:
+            case 25:
                 if ("layout/audi_right_logo_0".equals(tag)) {
                     return new AudiRightLogoBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_right_logo is invalid. Received: " + tag);
-            case 25:
+            case 26:
                 if ("layout/audi_right_media_0".equals(tag)) {
                     return new AudiRightMediaBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_right_media is invalid. Received: " + tag);
-            case 26:
+            case 27:
                 if ("layout/audi_right_navi_0".equals(tag)) {
                     return new AudiRightNaviBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_right_navi is invalid. Received: " + tag);
-            case 27:
+            case 28:
                 if ("layout/audi_speed_unit_0".equals(tag)) {
                     return new AudiSpeedUnitBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_speed_unit is invalid. Received: " + tag);
-            case 28:
+            case 29:
                 if ("layout/audi_sysinfo_0".equals(tag)) {
                     return new AudiSysinfoBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_sysinfo is invalid. Received: " + tag);
-            case 29:
+            case 30:
                 if ("layout/audi_system_set_0".equals(tag)) {
                     return new AudiSystemSetBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_system_set is invalid. Received: " + tag);
-            case 30:
+            case 31:
                 if ("layout/audi_temp_0".equals(tag)) {
                     return new AudiTempBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for audi_temp is invalid. Received: " + tag);
-            case 31:
+            case 32:
                 if ("layout-sw600dp-land/bc_item_0".equals(tag)) {
                     return new BcItemBindingSw600dpLandImpl(component, view);
                 }
@@ -400,7 +414,12 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new BcItemBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for bc_item is invalid. Received: " + tag);
-            case 32:
+            case 33:
+                if ("layout/bc_ntg5_item_0".equals(tag)) {
+                    return new BcNtg5ItemBindingImpl(component, view);
+                }
+                throw new IllegalArgumentException("The tag for bc_ntg5_item is invalid. Received: " + tag);
+            case 34:
                 if ("layout/bc_sub_view_0".equals(tag)) {
                     return new BcSubViewBindingImpl(component, view);
                 }
@@ -408,37 +427,37 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new BcSubViewBindingSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for bc_sub_view is invalid. Received: " + tag);
-            case 33:
+            case 35:
                 if ("layout/benz_mbux_item_0".equals(tag)) {
                     return new BenzMbuxItemBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for benz_mbux_item is invalid. Received: " + tag);
-            case 34:
+            case 36:
                 if ("layout/fra_benzgs_one_0".equals(tag)) {
                     return new FraBenzgsOneBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for fra_benzgs_one is invalid. Received: " + tag);
-            case 35:
+            case 37:
                 if ("layout/fra_benzgs_two_0".equals(tag)) {
                     return new FraBenzgsTwoBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for fra_benzgs_two is invalid. Received: " + tag);
-            case 36:
+            case 38:
                 if ("layout/fra_bmw_evo_id6_gs_one_0".equals(tag)) {
                     return new FraBmwEvoId6GsOneBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for fra_bmw_evo_id6_gs_one is invalid. Received: " + tag);
-            case 37:
+            case 39:
                 if ("layout/fra_bmw_evo_id6_gs_three_0".equals(tag)) {
                     return new FraBmwEvoId6GsThreeBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for fra_bmw_evo_id6_gs_three is invalid. Received: " + tag);
-            case 38:
+            case 40:
                 if ("layout/fra_bmw_evo_id6_gs_two_0".equals(tag)) {
                     return new FraBmwEvoId6GsTwoBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for fra_bmw_evo_id6_gs_two is invalid. Received: " + tag);
-            case 39:
+            case 41:
                 if ("layout-sw600dp-land/fragment_id5_two_0".equals(tag)) {
                     return new FragmentId5TwoBindingSw600dpLandImpl(component, view);
                 }
@@ -446,7 +465,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new FragmentId5TwoBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for fragment_id5_two is invalid. Received: " + tag);
-            case 40:
+            case 42:
                 if ("layout/id6_fragment_four_0".equals(tag)) {
                     return new ID6FragmentFourImpl(component, view);
                 }
@@ -454,7 +473,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new ID6FragmentFourSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id6_fragment_four is invalid. Received: " + tag);
-            case 41:
+            case 43:
                 if ("layout/id6_fragment_one_0".equals(tag)) {
                     return new ID6FragmentOneImpl(component, view);
                 }
@@ -462,7 +481,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new ID6FragmentOneSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id6_fragment_one is invalid. Received: " + tag);
-            case 42:
+            case 44:
                 if ("layout-sw600dp-land/id6_fragment_three_0".equals(tag)) {
                     return new ID6FragmentThreeSw600dpLandImpl(component, view);
                 }
@@ -470,7 +489,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new ID6FragmentThreeImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id6_fragment_three is invalid. Received: " + tag);
-            case 43:
+            case 45:
                 if ("layout/id6_fragment_tow_0".equals(tag)) {
                     return new ID6FragmentTowImpl(component, view);
                 }
@@ -478,7 +497,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new ID6FragmentTowSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id6_fragment_tow is invalid. Received: " + tag);
-            case 44:
+            case 46:
                 if ("layout/id6_one_0".equals(tag)) {
                     return new ID6OneImpl(component, view);
                 }
@@ -486,7 +505,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new ID6OneSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id6_one is invalid. Received: " + tag);
-            case 45:
+            case 47:
                 if ("layout-sw600dp-land/id7_app_item_0".equals(tag)) {
                     return new Id7AppItemBindingSw600dpLandImpl(component, view);
                 }
@@ -494,7 +513,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new Id7AppItemBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_app_item is invalid. Received: " + tag);
-            case 46:
+            case 48:
                 if ("layout/id7_fragment_car_0".equals(tag)) {
                     return new CarInfoImpl(component, view);
                 }
@@ -502,7 +521,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new CarInfoSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_fragment_car is invalid. Received: " + tag);
-            case 47:
+            case 49:
                 if ("layout-sw600dp-land/id7_fragment_media_0".equals(tag)) {
                     return new MediaFragmentSw600dpLandImpl(component, view);
                 }
@@ -510,7 +529,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new MediaFragmentImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_fragment_media is invalid. Received: " + tag);
-            case 48:
+            case 50:
                 if ("layout-sw600dp-land/id7_fragment_navi_0".equals(tag)) {
                     return new NaviFragmentSw600dpLandImpl(component, view);
                 }
@@ -518,22 +537,6 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new NaviFragmentImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_fragment_navi is invalid. Received: " + tag);
-            case 49:
-                if ("layout/id7_sub_car_view_0".equals(tag)) {
-                    return new Id7SubCarViewBindingImpl(component, view);
-                }
-                if ("layout-sw600dp-land/id7_sub_car_view_0".equals(tag)) {
-                    return new Id7SubCarViewBindingSw600dpLandImpl(component, view);
-                }
-                throw new IllegalArgumentException("The tag for id7_sub_car_view is invalid. Received: " + tag);
-            case 50:
-                if ("layout-sw600dp-land/id7_sub_dashboard_view_0".equals(tag)) {
-                    return new Id7SubDashboardViewBindingSw600dpLandImpl(component, view);
-                }
-                if ("layout/id7_sub_dashboard_view_0".equals(tag)) {
-                    return new Id7SubDashboardViewBindingImpl(component, view);
-                }
-                throw new IllegalArgumentException("The tag for id7_sub_dashboard_view is invalid. Received: " + tag);
             default:
                 return null;
         }
@@ -542,6 +545,22 @@ public class DataBinderMapperImpl extends DataBinderMapper {
     private final ViewDataBinding internalGetViewDataBinding1(DataBindingComponent component, View view, int internalId, Object tag) {
         switch (internalId) {
             case 51:
+                if ("layout/id7_sub_car_view_0".equals(tag)) {
+                    return new Id7SubCarViewBindingImpl(component, view);
+                }
+                if ("layout-sw600dp-land/id7_sub_car_view_0".equals(tag)) {
+                    return new Id7SubCarViewBindingSw600dpLandImpl(component, view);
+                }
+                throw new IllegalArgumentException("The tag for id7_sub_car_view is invalid. Received: " + tag);
+            case 52:
+                if ("layout-sw600dp-land/id7_sub_dashboard_view_0".equals(tag)) {
+                    return new Id7SubDashboardViewBindingSw600dpLandImpl(component, view);
+                }
+                if ("layout/id7_sub_dashboard_view_0".equals(tag)) {
+                    return new Id7SubDashboardViewBindingImpl(component, view);
+                }
+                throw new IllegalArgumentException("The tag for id7_sub_dashboard_view is invalid. Received: " + tag);
+            case 53:
                 if ("layout/id7_sub_music_view_0".equals(tag)) {
                     return new Id7SubMusicViewBindingImpl(component, view);
                 }
@@ -549,7 +568,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new Id7SubMusicViewBindingSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_sub_music_view is invalid. Received: " + tag);
-            case 52:
+            case 54:
                 if ("layout/id7_sub_navi_view_0".equals(tag)) {
                     return new NaviSubViewImpl(component, view);
                 }
@@ -557,7 +576,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new NaviSubViewSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_sub_navi_view is invalid. Received: " + tag);
-            case 53:
+            case 55:
                 if ("layout-sw600dp-land/id7_sub_phone_view_0".equals(tag)) {
                     return new Id7SubPhoneViewBindingSw600dpLandImpl(component, view);
                 }
@@ -565,7 +584,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new Id7SubPhoneViewBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_sub_phone_view is invalid. Received: " + tag);
-            case 54:
+            case 56:
                 if ("layout/id7_sub_video_view_0".equals(tag)) {
                     return new Id7SubVideoViewBindingImpl(component, view);
                 }
@@ -573,7 +592,12 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new Id7SubVideoViewBindingSw600dpLandImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for id7_sub_video_view is invalid. Received: " + tag);
-            case 55:
+            case 57:
+                if ("layout/ntg630_control_popup_0".equals(tag)) {
+                    return new Ntg630ControlPopupBindingImpl(component, view);
+                }
+                throw new IllegalArgumentException("The tag for ntg630_control_popup is invalid. Received: " + tag);
+            case 58:
                 if ("layout-sw600dp-land/ntg6_control_popup_0".equals(tag)) {
                     return new BenzControlBindSw600dpLandImpl(component, view);
                 }
@@ -581,22 +605,22 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                     return new BenzControlBindImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for ntg6_control_popup is invalid. Received: " + tag);
-            case 56:
+            case 59:
                 if ("layout/ug_home_four_0".equals(tag)) {
                     return new UgHomeFourBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for ug_home_four is invalid. Received: " + tag);
-            case 57:
+            case 60:
                 if ("layout/ug_home_one_0".equals(tag)) {
                     return new UgHomeOneBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for ug_home_one is invalid. Received: " + tag);
-            case 58:
+            case 61:
                 if ("layout/ug_home_three_0".equals(tag)) {
                     return new UgHomeThreeBindingImpl(component, view);
                 }
                 throw new IllegalArgumentException("The tag for ug_home_three is invalid. Received: " + tag);
-            case 59:
+            case 62:
                 if ("layout/ug_home_two_0".equals(tag)) {
                     return new UgHomeTwoBindingImpl(component, view);
                 }
@@ -678,7 +702,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
     }
 
     private static class InnerLayoutIdLookup {
-        static final HashMap<String, Integer> sKeys = new HashMap<>(85);
+        static final HashMap<String, Integer> sKeys = new HashMap<>(88);
 
         private InnerLayoutIdLookup() {
         }
@@ -699,6 +723,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
             sKeys.put("layout/activity_main_bc_0", Integer.valueOf(R.layout.activity_main_bc));
             sKeys.put("layout/activity_main_benz_gs_0", Integer.valueOf(R.layout.activity_main_benz_gs));
             sKeys.put("layout/activity_main_benz_mbux_0", Integer.valueOf(R.layout.activity_main_benz_mbux));
+            sKeys.put("layout/activity_main_benz_ntg5_0", Integer.valueOf(R.layout.activity_main_benz_ntg5));
             sKeys.put("layout/activity_main_bmw_0", Integer.valueOf(R.layout.activity_main_bmw));
             sKeys.put("layout-sw600dp-land/activity_main_bmw_0", Integer.valueOf(R.layout.activity_main_bmw));
             sKeys.put("layout/activity_main_gsug_0", Integer.valueOf(R.layout.activity_main_gsug));
@@ -723,6 +748,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
             sKeys.put("layout/audi_temp_0", Integer.valueOf(R.layout.audi_temp));
             sKeys.put("layout-sw600dp-land/bc_item_0", Integer.valueOf(R.layout.bc_item));
             sKeys.put("layout/bc_item_0", Integer.valueOf(R.layout.bc_item));
+            sKeys.put("layout/bc_ntg5_item_0", Integer.valueOf(R.layout.bc_ntg5_item));
             sKeys.put("layout/bc_sub_view_0", Integer.valueOf(R.layout.bc_sub_view));
             sKeys.put("layout-sw600dp-land/bc_sub_view_0", Integer.valueOf(R.layout.bc_sub_view));
             sKeys.put("layout/benz_mbux_item_0", Integer.valueOf(R.layout.benz_mbux_item));
@@ -763,6 +789,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
             sKeys.put("layout/id7_sub_phone_view_0", Integer.valueOf(R.layout.id7_sub_phone_view));
             sKeys.put("layout/id7_sub_video_view_0", Integer.valueOf(R.layout.id7_sub_video_view));
             sKeys.put("layout-sw600dp-land/id7_sub_video_view_0", Integer.valueOf(R.layout.id7_sub_video_view));
+            sKeys.put("layout/ntg630_control_popup_0", Integer.valueOf(R.layout.ntg630_control_popup));
             sKeys.put("layout-sw600dp-land/ntg6_control_popup_0", Integer.valueOf(R.layout.ntg6_control_popup));
             sKeys.put("layout/ntg6_control_popup_0", Integer.valueOf(R.layout.ntg6_control_popup));
             sKeys.put("layout/ug_home_four_0", Integer.valueOf(R.layout.ug_home_four));

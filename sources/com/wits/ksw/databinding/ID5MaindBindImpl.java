@@ -4,10 +4,10 @@ import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
+import com.wits.ksw.launcher.view.RtlLayout;
 
 public class ID5MaindBindImpl extends ID5MaindBind {
     @Nullable
@@ -16,7 +16,7 @@ public class ID5MaindBindImpl extends ID5MaindBind {
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     private long mDirtyFlags;
     @NonNull
-    private final ConstraintLayout mboundView0;
+    private final RtlLayout mboundView0;
 
     static {
         sViewsWithIds.put(R.id.id5_main_view_pager, 1);

@@ -194,4 +194,29 @@ public class KswUtils {
     public static int tempToF(float tmep) {
         return (int) (((9.0f * tmep) / 5.0f) + 32.0f);
     }
+
+    public static int getBenzpaneVersion() {
+        String str;
+        StringBuilder sb;
+        int benzpane = 0;
+        try {
+            benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
+            str = TAG;
+            sb = new StringBuilder();
+        } catch (Exception e) {
+            e.printStackTrace();
+            String str2 = TAG;
+            Log.e(str2, "getBenzpaneVersion: RemoteException=" + e.getMessage());
+            str = TAG;
+            sb = new StringBuilder();
+        } catch (Throwable th) {
+            String str3 = TAG;
+            Log.d(str3, "getBenzpaneVersion: benzpane=" + 0);
+            throw th;
+        }
+        sb.append("getBenzpaneVersion: benzpane=");
+        sb.append(benzpane);
+        Log.d(str, sb.toString());
+        return benzpane;
+    }
 }

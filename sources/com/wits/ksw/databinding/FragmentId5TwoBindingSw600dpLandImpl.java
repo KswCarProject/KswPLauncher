@@ -21,7 +21,7 @@ public class FragmentId5TwoBindingSw600dpLandImpl extends FragmentId5TwoBinding 
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback31;
+    private final View.OnClickListener mCallback32;
     private long mDirtyFlags;
     @NonNull
     private final CustomBcImageView mboundView1;
@@ -41,7 +41,7 @@ public class FragmentId5TwoBindingSw600dpLandImpl extends FragmentId5TwoBinding 
         this.mboundView2.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback31 = new OnClickListener(this, 1);
+        this.mCallback32 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -116,7 +116,7 @@ public class FragmentId5TwoBindingSw600dpLandImpl extends FragmentId5TwoBinding 
             TextViewBindingAdapter.setText(this.mboundView2, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.mboundView1.setOnClickListener(this.mCallback31);
+            this.mboundView1.setOnClickListener(this.mCallback32);
         }
     }
 

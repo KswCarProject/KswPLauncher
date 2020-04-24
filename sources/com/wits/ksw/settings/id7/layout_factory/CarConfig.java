@@ -36,6 +36,9 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
     private int carseep = 0;
     private CheckBox cbox_bencAux;
     private CheckBox cbox_bencPank;
+    /* access modifiers changed from: private */
+    public RadioGroup cbox_bencPank_rgd;
+    private View cbox_bencPank_root;
     private CheckBox cbox_canBus;
     private CheckBox cbox_dcld;
     private TextView ccciDTextView;
@@ -127,6 +130,26 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
                     FileUtils.savaIntData(KeyConfig.BENZPANE, 1);
                 } else {
                     FileUtils.savaIntData(KeyConfig.BENZPANE, 0);
+                }
+            }
+        });
+        this.cbox_bencPank_root = this.view.findViewById(R.id.cbox_bencPank_root);
+        this.cbox_bencPank_rgd = (RadioGroup) this.view.findViewById(R.id.cbox_bencPank_rgd);
+        int count = this.cbox_bencPank_rgd.getChildCount();
+        int i2 = 0;
+        while (i2 < count) {
+            ((RadioButton) this.cbox_bencPank_rgd.getChildAt(i2)).setChecked(this.benzpane == i2);
+            i2++;
+        }
+        this.cbox_bencPank_rgd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int count = CarConfig.this.cbox_bencPank_rgd.getChildCount();
+                for (int i = 0; i < count; i++) {
+                    if (checkedId == CarConfig.this.cbox_bencPank_rgd.getChildAt(i).getId()) {
+                        FileUtils.savaIntData(KeyConfig.BENZPANE, i);
+                        String access$100 = CarConfig.TAG;
+                        Log.i(access$100, "save BenzPanelEnable : " + i);
+                    }
                 }
             }
         });
@@ -268,21 +291,22 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
         boolean enableAux = UiThemeUtils.isBenz_MBUX(this.m_con) || UiThemeUtils.isBenz_NTG6(this.m_con) || UiThemeUtils.isBenz_GS(this.m_con);
         this.cbox_bencAux.setVisibility(enableAux ? 0 : 8);
         this.cbox_bencPank.setVisibility(enableAux ? 0 : 8);
+        this.cbox_bencPank_root.setVisibility(enableAux ? 0 : 8);
         this.audi_home_left_widget_textview = (TextView) this.view.findViewById(R.id.audi_home_left_widget_textview);
         this.audi_home_right_widget_textview = (TextView) this.view.findViewById(R.id.audi_home_right_widget_textview);
         this.audiHomeLeftRadioGroup = (RadioGroup) this.view.findViewById(R.id.audiHomeLeftRadioGroup);
         this.audiHomeRightRadioGroup = (RadioGroup) this.view.findViewById(R.id.audiHomeRightRadioGroup);
         Log.i(TAG, "audiLeftLogoIndex: " + this.audiLeftLogoIndex);
         Log.i(TAG, "audiRightWidgetIndex: " + this.audiRightWidgetIndex);
-        int i2 = 0;
-        while (i2 < this.audiHomeLeftRadioGroup.getChildCount()) {
-            ((RadioButton) this.audiHomeLeftRadioGroup.getChildAt(i2)).setChecked(this.audiLeftLogoIndex == i2);
-            i2++;
-        }
         int i3 = 0;
-        while (i3 < this.audiHomeRightRadioGroup.getChildCount()) {
-            ((RadioButton) this.audiHomeRightRadioGroup.getChildAt(i3)).setChecked(this.audiRightWidgetIndex == i3);
+        while (i3 < this.audiHomeLeftRadioGroup.getChildCount()) {
+            ((RadioButton) this.audiHomeLeftRadioGroup.getChildAt(i3)).setChecked(this.audiLeftLogoIndex == i3);
             i3++;
+        }
+        int i4 = 0;
+        while (i4 < this.audiHomeRightRadioGroup.getChildCount()) {
+            ((RadioButton) this.audiHomeRightRadioGroup.getChildAt(i4)).setChecked(this.audiRightWidgetIndex == i4);
+            i4++;
         }
         this.audiHomeLeftRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {

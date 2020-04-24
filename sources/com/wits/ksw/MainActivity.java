@@ -22,12 +22,14 @@ import com.wits.ksw.databinding.ActivityMainAudiBinding;
 import com.wits.ksw.databinding.ActivityMainBcBinding;
 import com.wits.ksw.databinding.ActivityMainBenzGsBinding;
 import com.wits.ksw.databinding.ActivityMainBenzMbuxBindingImpl;
+import com.wits.ksw.databinding.ActivityMainBenzNtg5Binding;
 import com.wits.ksw.databinding.ActivityMainGsugBindingImpl;
 import com.wits.ksw.databinding.ActivityMainId6GsBinding;
 import com.wits.ksw.databinding.ID5MaindBind;
 import com.wits.ksw.launcher.adpater.BMWViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BenzGsHomePagerAdpater;
 import com.wits.ksw.launcher.adpater.BenzMbuxRecyclerViewAdpater;
+import com.wits.ksw.launcher.adpater.BenzNTG5RecyclerViewAdapter;
 import com.wits.ksw.launcher.adpater.BenzNTG6RecyclerViewAdpater;
 import com.wits.ksw.launcher.adpater.BmwId5ViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BmwId6ViewPagerAdpater;
@@ -36,6 +38,7 @@ import com.wits.ksw.launcher.adpater.UgHomePagerAdpater;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.id7_new.Id7NewActivity;
 import com.wits.ksw.launcher.model.AudiViewModel;
+import com.wits.ksw.launcher.model.BcNTG5ViewModel;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KeyUtils;
@@ -59,13 +62,15 @@ public class MainActivity extends BaseThemeActivity {
     public com.wits.ksw.databinding.MainActivity bmwBinding;
     private BmwId6ViewPagerAdpater bmwId6ViewPagerAdpater;
     public ID5MaindBind id5MaindBind;
-    @InjectView(2131231054)
+    @InjectView(2131231065)
     ImageView id6LeftBtn;
-    @InjectView(2131231055)
+    @InjectView(2131231066)
     public ViewPager id6MainViewPager;
-    @InjectView(2131231067)
+    @InjectView(2131231078)
     ImageView id6RightBtn;
+    public BcNTG5ViewModel mBcNTG5ViewModel;
     public BcVieModel mBcVieModel;
+    public ActivityMainBenzNtg5Binding ntg5Binding;
     public MutableLiveData<UgPager> select = new MutableLiveData<>();
     public ActivityMainGsugBindingImpl ugBinding;
     private LauncherViewModel viewModel;
@@ -221,6 +226,23 @@ public class MainActivity extends BaseThemeActivity {
                 return false;
             }
         });
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBenzNTG5View() {
+        setFull();
+        this.mBcNTG5ViewModel = (BcNTG5ViewModel) ViewModelProviders.of((FragmentActivity) this).get(BcNTG5ViewModel.class);
+        this.mBcNTG5ViewModel.setActivity(this);
+        this.ntg5Binding = (ActivityMainBenzNtg5Binding) DataBindingUtil.setContentView(this, R.layout.activity_main_benz_ntg5);
+        this.ntg5Binding.recyclerView2.setLayoutManager(new LinearLayoutManager(this, 0, false));
+        this.ntg5Binding.recyclerView2.setAdapter(new BenzNTG5RecyclerViewAdapter(this.mBcNTG5ViewModel));
+        new LinearSnapHelper() {
+            public boolean onFling(int velocityX, int velocityY) {
+                return false;
+            }
+        }.attachToRecyclerView(this.ntg5Binding.recyclerView2);
+        this.ntg5Binding.setMBcVieModel(this.mBcNTG5ViewModel);
+        this.mBcNTG5ViewModel.initData();
     }
 
     /* access modifiers changed from: protected */

@@ -43,7 +43,7 @@ public class KswRunService extends Service {
             if (type == 5) {
                 KswRunService.this.handleCarinfo(status1);
             } else if (type == 21) {
-                MusicStatus musicStatus = MusicStatus.getMusicStatusFromJson(status1.jsonArg);
+                MusicStatus musicStatus = MusicStatus.getStatusFromJson(status1.jsonArg);
                 if (musicStatus == null) {
                     String access$0003 = KswRunService.TAG;
                     Log.e(access$0003, "updateStatusInfo: MusicStatusFromJson:" + musicStatus);

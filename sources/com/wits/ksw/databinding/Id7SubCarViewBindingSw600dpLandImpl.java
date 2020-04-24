@@ -16,7 +16,7 @@ public class Id7SubCarViewBindingSw600dpLandImpl extends Id7SubCarViewBinding im
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback69;
+    private final View.OnClickListener mCallback70;
     private long mDirtyFlags;
 
     static {
@@ -34,7 +34,7 @@ public class Id7SubCarViewBindingSw600dpLandImpl extends Id7SubCarViewBinding im
         this.carConstraintLayout.setTag((Object) null);
         this.carImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback69 = new OnClickListener(this, 1);
+        this.mCallback70 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -89,7 +89,7 @@ public class Id7SubCarViewBindingSw600dpLandImpl extends Id7SubCarViewBinding im
             carViewModelCarViewFocusChangeListener = carViewModel.carViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback69);
+            this.carImageView.setOnClickListener(this.mCallback70);
         }
         if ((3 & dirtyFlags) != 0) {
             this.carImageView.setOnFocusChangeListener(carViewModelCarViewFocusChangeListener);

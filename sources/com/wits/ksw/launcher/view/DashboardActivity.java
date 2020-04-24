@@ -113,6 +113,12 @@ public class DashboardActivity extends BaseThemeActivity {
         initSevenDasoard();
     }
 
+    /* access modifiers changed from: protected */
+    public void initBenzNTG5View() {
+        setActivityFull();
+        initSevenDasoard();
+    }
+
     private void initAlsDashboard() {
         final ALSDasoardBind binding = (ALSDasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_als);
         if (UiThemeUtils.isBenz_NTG6(this)) {

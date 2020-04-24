@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import com.wits.ksw.R;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
+import com.wits.ksw.settings.utlis_view.McuUtil;
 import com.wits.ksw.settings.utlis_view.SystemProperties;
 import com.wits.ksw.settings.utlis_view.TimeUtil;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
@@ -72,7 +73,7 @@ public class AudiSettingViewModel extends AndroidViewModel {
         super(application);
         this.context = application.getApplicationContext();
         String appVerStr = this.context.getString(R.string.audi_set_sys_info_app_ver, new Object[]{getAppVersion()});
-        String mcuVerStr = this.context.getString(R.string.audi_set_sys_info_mcu_ver, new Object[]{getMcuVersion()});
+        String mcuVerStr = this.context.getString(R.string.audi_set_sys_info_mcu_ver, new Object[]{McuUtil.getMcuVersion()});
         String ramStr = this.context.getString(R.string.audi_set_sys_info_ram, new Object[]{UtilsInfo.getRAMSize(this.context)});
         String flashStr = this.context.getString(R.string.audi_set_sys_info_nanndflash, new Object[]{UtilsInfo.getROMSize()});
         this.nandflash.set(flashStr);
@@ -185,7 +186,7 @@ public class AudiSettingViewModel extends AndroidViewModel {
     }
 
     public void updatMcuVersion() {
-        this.mcuVer.set(this.context.getString(R.string.audi_set_sys_info_mcu_ver, new Object[]{getMcuVersion()}));
+        this.mcuVer.set(this.context.getString(R.string.audi_set_sys_info_mcu_ver, new Object[]{McuUtil.getMcuVersion()}));
     }
 
     public void onKeyClick(View view, int key) {

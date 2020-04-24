@@ -48,6 +48,7 @@
     <string name="boot_record_mode_radio1">사용</string>
     <string name="boot_record_mode_radio2">OEM 시스템으로 이동</string>
     <string name="boot_record_mode_radio3">안드로이드 홈페이지로</string>
+    <string name="bt_text_bt_closed">닫기</string>
     <string name="can_bus">CAN 버스 데이터 수집</string>
     <string name="dialog_update1">파일을 찾을수 없습니다!</string>
     <string name="dialog_update10">모델 선택?</string>

@@ -15,11 +15,11 @@ public class UgHomeFourBindingImpl extends UgHomeFourBinding implements OnClickL
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback65;
-    @Nullable
     private final View.OnClickListener mCallback66;
     @Nullable
     private final View.OnClickListener mCallback67;
+    @Nullable
+    private final View.OnClickListener mCallback68;
     private long mDirtyFlags;
 
     public UgHomeFourBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
@@ -34,9 +34,9 @@ public class UgHomeFourBindingImpl extends UgHomeFourBinding implements OnClickL
         this.ugHomeDvrVaiw.setTag((Object) null);
         this.ugHomeFileVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback67 = new OnClickListener(this, 3);
-        this.mCallback65 = new OnClickListener(this, 1);
-        this.mCallback66 = new OnClickListener(this, 2);
+        this.mCallback67 = new OnClickListener(this, 2);
+        this.mCallback68 = new OnClickListener(this, 3);
+        this.mCallback66 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -87,9 +87,9 @@ public class UgHomeFourBindingImpl extends UgHomeFourBinding implements OnClickL
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeBrowserVaiw.setOnClickListener(this.mCallback65);
-            this.ugHomeDvrVaiw.setOnClickListener(this.mCallback66);
-            this.ugHomeFileVaiw.setOnClickListener(this.mCallback67);
+            this.ugHomeBrowserVaiw.setOnClickListener(this.mCallback66);
+            this.ugHomeDvrVaiw.setOnClickListener(this.mCallback67);
+            this.ugHomeFileVaiw.setOnClickListener(this.mCallback68);
         }
     }
 

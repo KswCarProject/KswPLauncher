@@ -48,6 +48,7 @@
     <string name="boot_record_mode_radio1">включить</string>
     <string name="boot_record_mode_radio2">К системе OEM</string>
     <string name="boot_record_mode_radio3">На главную страницу Android</string>
+    <string name="bt_text_bt_closed">Закрыто</string>
     <string name="can_bus">Сбор данных шины CAN</string>
     <string name="dialog_update1">Каталог файлов не найден</string>
     <string name="dialog_update10">Нужно ли выбирать эту модель?</string>

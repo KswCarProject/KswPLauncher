@@ -24,7 +24,7 @@ public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
 
     public BenzNTG6RecyclerViewAdpater(BcVieModel viewModel2) {
         this.viewModel = viewModel2;
-        if (ClientManager.getInstance().isAls6208Client()) {
+        if (ClientManager.getInstance().isAls6208Client() || ClientManager.getInstance().isYC2306Client()) {
             bcItemArrys = KswApplication.appContext.getResources().getStringArray(R.array.bc_home_netg6_als_6208_item_text_array);
             resId = new int[]{R.drawable.bc_ntg6_navi_normal, R.drawable.bc_ntg6_video_normal, R.drawable.bc_ntg6_music_normal, R.drawable.bc_ntg6_bt_normal, R.drawable.bc_ntg6_car_normal, R.drawable.bc_ntg6_dash_board_normal, R.drawable.bc_ntg6_easyconn_normal, R.drawable.bc_ntg6_file_manager_normal, R.drawable.ntg6_dvr_small, R.drawable.bc_ntg6_settings_normal};
             Log.i(KswApplication.TAG, "BenzNTG6RecyclerViewAdpater: resId=" + resId.length + " bcItemArrys=" + bcItemArrys.length);

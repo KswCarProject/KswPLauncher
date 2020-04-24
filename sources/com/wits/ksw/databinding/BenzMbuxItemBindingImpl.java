@@ -21,11 +21,11 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback46;
-    @Nullable
     private final View.OnClickListener mCallback47;
     @Nullable
     private final View.OnClickListener mCallback48;
+    @Nullable
+    private final View.OnClickListener mCallback49;
     private long mDirtyFlags;
     @NonNull
     private final ImageView mboundView3;
@@ -51,9 +51,9 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         this.mboundView4.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback47 = new OnClickListener(this, 2);
-        this.mCallback48 = new OnClickListener(this, 3);
-        this.mCallback46 = new OnClickListener(this, 1);
+        this.mCallback49 = new OnClickListener(this, 3);
+        this.mCallback47 = new OnClickListener(this, 1);
+        this.mCallback48 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -128,9 +128,9 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
             listItemSubIcon2 = listItem.getSubIcon2();
         }
         if ((4 & dirtyFlags) != 0) {
-            this.benzMbuxImageView.setOnClickListener(this.mCallback46);
-            this.mboundView3.setOnClickListener(this.mCallback47);
-            this.mboundView4.setOnClickListener(this.mCallback48);
+            this.benzMbuxImageView.setOnClickListener(this.mCallback47);
+            this.mboundView3.setOnClickListener(this.mCallback48);
+            this.mboundView4.setOnClickListener(this.mCallback49);
         }
         if ((5 & dirtyFlags) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.benzMbuxImageView, listItemAppIcon);

@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.wits.pms.ICmdListener;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.IPowerManagerAppService;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,15 +101,29 @@ public class PowerManagerApp {
     }
 
     public static void sendStatus(WitsStatus witsStatus) {
-        try {
-            getManager().sendStatus(new Gson().toJson((Object) witsStatus));
-        } catch (RemoteException e) {
+        if (getManager() != null) {
+            try {
+                getManager().sendStatus(new Gson().toJson((Object) witsStatus));
+            } catch (RemoteException e) {
+            }
         }
     }
 
     public static List<String> getDataListFromJsonKey(String key) {
         return (List) new Gson().fromJson(Settings.System.getString(context.getContentResolver(), key), new TypeToken<ArrayList<String>>() {
         }.getType());
+    }
+
+    public static void setBooleanStatus(String key, boolean value) throws RemoteException {
+        getManager().addBooleanStatus(key, value);
+    }
+
+    public static void setStatusString(String key, String value) throws RemoteException {
+        getManager().addStringStatus(key, value);
+    }
+
+    public static void setStatusInt(String key, int value) throws RemoteException {
+        getManager().addIntStatus(key, value);
     }
 
     public static boolean getStatusBoolean(String key) throws RemoteException {
@@ -137,5 +152,78 @@ public class PowerManagerApp {
 
     public static void setSettingsString(String key, String value) throws RemoteException {
         getManager().setSettingsString(key, value);
+    }
+
+    public static void main(String... arg) {
+        int i;
+        double bl2max;
+        double result;
+        double bl1max = 0.21d;
+        double result2 = 0.3d;
+        double shouyi1 = 14.77d;
+        double zj = 14.0d;
+        double max = 2000.0d;
+        int i2 = 0;
+        double qd = 0.0d;
+        double gzj = 0.0d;
+        double gqd = 0.0d;
+        while (true) {
+            double result3 = qd;
+            double gzj2 = gzj;
+            int i3 = i2;
+            if (((double) i3) <= max) {
+                double qd2 = (double) i3;
+                double shouyi2 = zj;
+                double zj2 = max - ((double) i3);
+                double realdamge = (((qd2 / 17.0d) / 100.0d) + 1.0d) * 15000.0d;
+                double shouyi12 = shouyi1;
+                double yingzi = realdamge * bl1max * (((zj2 / shouyi1) / 100.0d) + 1.0d);
+                double max2 = max;
+                double juanyun = realdamge * result2 * (((zj2 / shouyi2) / 100.0d) + 1.0d);
+                double bl1max2 = bl1max;
+                double step2 = juanyun + yingzi + (((1.0d - bl1max) - result2) * realdamge);
+                if (zj2 % 100.0d == 0.0d || zj2 == 0.0d || qd2 == 0.0d) {
+                    PrintStream printStream = System.out;
+                    bl2max = result2;
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("影子 卷云:");
+                    i = i3;
+                    sb.append((realdamge / 15000.0d) * (((zj2 / 15.18d) / 100.0d) + 1.0d));
+                    sb.append("-");
+                    sb.append((realdamge / 15000.0d) * (((zj2 / 8.728d) / 100.0d) + 1.0d));
+                    printStream.print(sb.toString());
+                    System.out.print("-----专精:" + zj2 + " -强度:" + qd2);
+                    System.out.println("-----卷云:" + ((int) juanyun) + " -影子:" + ((int) yingzi) + "-一共:" + ((int) step2));
+                } else {
+                    bl2max = result2;
+                    i = i3;
+                }
+                double temp = step2;
+                if (result3 < temp) {
+                    result = temp;
+                    gqd = qd2;
+                    gzj = zj2;
+                } else {
+                    gzj = gzj2;
+                    result = result3;
+                }
+                i2 = i + 1;
+                double d = qd2;
+                qd = result;
+                double d2 = zj2;
+                zj = shouyi2;
+                shouyi1 = shouyi12;
+                max = max2;
+                bl1max = bl1max2;
+                result2 = bl2max;
+            } else {
+                double d3 = result2;
+                double d4 = shouyi1;
+                double d5 = zj;
+                double d6 = max;
+                System.out.println("-----" + result3 + "    专精:" + gzj2 + "强度:" + gqd);
+                return;
+            }
+        }
     }
 }

@@ -15,11 +15,11 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback58;
-    @Nullable
     private final View.OnClickListener mCallback59;
     @Nullable
     private final View.OnClickListener mCallback60;
+    @Nullable
+    private final View.OnClickListener mCallback61;
     private long mDirtyFlags;
 
     public UgHomeTwoBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
@@ -34,9 +34,9 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         this.ugHomeEasyVaiw.setTag((Object) null);
         this.ugHomeHdvideoVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback59 = new OnClickListener(this, 2);
-        this.mCallback60 = new OnClickListener(this, 3);
-        this.mCallback58 = new OnClickListener(this, 1);
+        this.mCallback59 = new OnClickListener(this, 1);
+        this.mCallback60 = new OnClickListener(this, 2);
+        this.mCallback61 = new OnClickListener(this, 3);
         invalidateAll();
     }
 
@@ -87,9 +87,9 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeAppVaiw.setOnClickListener(this.mCallback60);
-            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback59);
-            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback58);
+            this.ugHomeAppVaiw.setOnClickListener(this.mCallback61);
+            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback60);
+            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback59);
         }
     }
 

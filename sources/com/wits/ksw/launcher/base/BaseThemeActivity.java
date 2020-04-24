@@ -23,6 +23,9 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initBenzMBUXView();
 
     /* access modifiers changed from: protected */
+    public abstract void initBenzNTG5View();
+
+    /* access modifiers changed from: protected */
     public abstract void initBmwEvoId6GS();
 
     /* access modifiers changed from: protected */
@@ -62,6 +65,8 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initBenzGSView();
         } else if (UiThemeUtils.isAudi_MMI_4G(this)) {
             initAudiView();
+        } else if (UiThemeUtils.isBenz_NTG5(this)) {
+            initBenzNTG5View();
         } else {
             initBmwid7UiView();
         }

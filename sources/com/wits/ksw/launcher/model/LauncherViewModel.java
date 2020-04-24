@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import com.wits.ksw.BuildConfig;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.MainActivity;
+import com.wits.ksw.R;
 import com.wits.ksw.launcher.base.BaseViewModel;
 import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.bean.MediaInfo;
@@ -36,6 +37,7 @@ import java.util.Date;
 public class LauncherViewModel extends BaseViewModel {
     public static CarInfo carInfo = McuImpl.getInstance().getCarInfo();
     public static MediaInfo mediaInfo = MediaImpl.getInstance().getMediaInfo();
+    public ObservableField<String> btState = new ObservableField<>();
     public View.OnFocusChangeListener carViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus && MainActivity.mainActivity != null) {
@@ -101,6 +103,7 @@ public class LauncherViewModel extends BaseViewModel {
         int bluetooth = Settings.System.getInt(this.contentResolver, "ksw_bluetooth", 0);
         Log.i(KswApplication.TAG, "initData: bluetooth:" + bluetooth);
         setPhoneConState(bluetooth);
+        setBtState();
         setMonthDay(new Date());
         registerTimeReceiver();
         registerOtherReceiver();
@@ -264,9 +267,15 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     private void registerBtContentObserver() {
+        this.contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.Android_Bt_Switch), false, new ContentObserver(new Handler()) {
+            public void onChange(boolean selfChange, Uri uri) {
+                LauncherViewModel.this.setBtState();
+            }
+        });
         this.contentResolver.registerContentObserver(Settings.System.getUriFor("ksw_bluetooth"), false, new ContentObserver(new Handler()) {
             public void onChange(boolean selfChange, Uri uri) {
                 LauncherViewModel.this.setPhoneConState(Settings.System.getInt(LauncherViewModel.this.contentResolver, "ksw_bluetooth", 0));
+                LauncherViewModel.this.setBtState();
             }
         });
     }
@@ -289,6 +298,22 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void setPhoneConState(int state) {
         this.phoneConState.set(state);
+    }
+
+    public void setBtState() {
+        String btOff = Settings.System.getString(this.contentResolver, KeyConfig.Android_Bt_Switch);
+        Log.d(KswApplication.TAG, "setBtState:android_Bt_Switch===" + btOff);
+        if (TextUtils.equals(btOff, "0")) {
+            this.btState.set(this.context.getString(R.string.bt_text_bt_closed));
+            return;
+        }
+        int state = Settings.System.getInt(this.contentResolver, "ksw_bluetooth", 0);
+        Log.d(KswApplication.TAG, "setBtState:ksw_bluetooth===" + state);
+        if (state == 1) {
+            this.btState.set(this.context.getString(R.string.ksw_id7_connected_phone));
+        } else {
+            this.btState.set(this.context.getString(R.string.ksw_id7_not_connected_phone));
+        }
     }
 
     public void setMonthDay(Date date) {

@@ -512,8 +512,8 @@ public class JsonReader implements Closeable {
             case ':':
             case '[':
             case ']':
-            case WitsCommand.SystemCommand.CALL_BUTTON /*123*/:
-            case '}':
+            case '{':
+            case WitsCommand.MediaSubCommand.MUSIC_LIST_CLOSE /*125*/:
                 return false;
             case '#':
             case '/':
@@ -716,8 +716,8 @@ public class JsonReader implements Closeable {
                     case ':':
                     case '[':
                     case ']':
-                    case WitsCommand.SystemCommand.CALL_BUTTON /*123*/:
-                    case '}':
+                    case '{':
+                    case WitsCommand.MediaSubCommand.MUSIC_LIST_CLOSE /*125*/:
                         break;
                     case '#':
                     case '/':
@@ -796,8 +796,8 @@ public class JsonReader implements Closeable {
                     case ':':
                     case '[':
                     case ']':
-                    case WitsCommand.SystemCommand.CALL_BUTTON /*123*/:
-                    case '}':
+                    case '{':
+                    case WitsCommand.MediaSubCommand.MUSIC_LIST_CLOSE /*125*/:
                         break;
                     case '#':
                     case '/':
@@ -962,19 +962,19 @@ public class JsonReader implements Closeable {
                 }
             }
             int p3 = p2 + 1;
-            char c = buffer2[p2];
-            if (c == 10) {
+            char p4 = buffer2[p2];
+            if (p4 == 10) {
                 this.lineNumber++;
                 this.lineStart = p3;
-            } else if (!(c == ' ' || c == 13 || c == 9)) {
-                if (c == '/') {
+            } else if (!(p4 == ' ' || p4 == 13 || p4 == 9)) {
+                if (p4 == '/') {
                     this.pos = p3;
                     if (p3 == l) {
                         this.pos--;
                         boolean charsLoaded = fillBuffer(2);
                         this.pos++;
                         if (!charsLoaded) {
-                            return c;
+                            return p4;
                         }
                     }
                     checkLenient();
@@ -988,14 +988,14 @@ public class JsonReader implements Closeable {
                             throw syntaxError("Unterminated comment");
                         }
                     } else if (peek != '/') {
-                        return c;
+                        return p4;
                     } else {
                         this.pos++;
                         skipToEndOfLine();
                         p = this.pos;
                         l = this.limit;
                     }
-                } else if (c == '#') {
+                } else if (p4 == '#') {
                     this.pos = p3;
                     checkLenient();
                     skipToEndOfLine();
@@ -1003,7 +1003,7 @@ public class JsonReader implements Closeable {
                     l = this.limit;
                 } else {
                     this.pos = p3;
-                    return c;
+                    return p4;
                 }
                 p2 = p;
             }

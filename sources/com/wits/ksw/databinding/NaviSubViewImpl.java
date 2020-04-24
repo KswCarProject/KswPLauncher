@@ -16,7 +16,7 @@ public class NaviSubViewImpl extends NaviSubView implements OnClickListener.List
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback19;
+    private final View.OnClickListener mCallback20;
     private long mDirtyFlags;
 
     static {
@@ -34,7 +34,7 @@ public class NaviSubViewImpl extends NaviSubView implements OnClickListener.List
         this.naviConstraintLayout.setTag((Object) null);
         this.naviImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback19 = new OnClickListener(this, 1);
+        this.mCallback20 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -85,7 +85,7 @@ public class NaviSubViewImpl extends NaviSubView implements OnClickListener.List
         }
         LauncherViewModel launcherViewModel = this.mNaviViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.naviImageView.setOnClickListener(this.mCallback19);
+            this.naviImageView.setOnClickListener(this.mCallback20);
         }
     }
 

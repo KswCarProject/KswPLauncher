@@ -19,6 +19,9 @@ public class MusicStatus {
         this.position = position2;
     }
 
+    public MusicStatus() {
+    }
+
     public boolean isPlay() {
         return this.play;
     }
@@ -51,7 +54,7 @@ public class MusicStatus {
         this.position = position2;
     }
 
-    public static MusicStatus getMusicStatusFromJson(String jsonArg) {
+    public static MusicStatus getStatusFromJson(String jsonArg) {
         return (MusicStatus) new Gson().fromJson(jsonArg, MusicStatus.class);
     }
 

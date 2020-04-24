@@ -21,6 +21,7 @@
     <string name="boot_record_mode_radio1">Kích hoạt</string>
     <string name="boot_record_mode_radio2">Hệ thống OEM</string>
     <string name="boot_record_mode_radio3">Trang chủ Android</string>
+    <string name="bt_text_bt_closed">Đã đóng</string>
     <string name="can_bus">Thu thập dữ liệu CAN Bus</string>
     <string name="dialog_update1">Không tìm thấy thư mục tệp</string>
     <string name="dialog_update10">Có chọn mô hình này không</string>

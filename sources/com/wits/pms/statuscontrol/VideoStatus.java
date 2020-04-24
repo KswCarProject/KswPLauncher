@@ -50,7 +50,7 @@ public class VideoStatus {
         this.mask = mask2;
     }
 
-    public static VideoStatus getVideoStatusFromJson(String jsonArg) {
+    public static VideoStatus getStatusFromJson(String jsonArg) {
         return (VideoStatus) new Gson().fromJson(jsonArg, VideoStatus.class);
     }
 }

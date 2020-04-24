@@ -48,6 +48,7 @@
     <string name="boot_record_mode_radio1">使能</string>
     <string name="boot_record_mode_radio2">原車界面</string>
     <string name="boot_record_mode_radio3">安卓界面</string>
+    <string name="bt_text_bt_closed">已關閉</string>
     <string name="can_bus">採集CAN總線數據</string>
     <string name="dialog_update1">沒有找到文件目錄</string>
     <string name="dialog_update10">是否選擇這個車型?</string>

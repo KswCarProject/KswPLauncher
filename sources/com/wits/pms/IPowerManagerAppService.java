@@ -9,6 +9,14 @@ import com.wits.pms.ICmdListener;
 import com.wits.pms.IContentObserver;
 
 public interface IPowerManagerAppService extends IInterface {
+    void addBooleanStatus(String str, boolean z) throws RemoteException;
+
+    void addIntStatus(String str, int i) throws RemoteException;
+
+    void addStringStatus(String str, String str2) throws RemoteException;
+
+    String getJsonConfig(String str) throws RemoteException;
+
     int getSettingsInt(String str) throws RemoteException;
 
     String getSettingsString(String str) throws RemoteException;
@@ -22,6 +30,8 @@ public interface IPowerManagerAppService extends IInterface {
     void registerCmdListener(ICmdListener iCmdListener) throws RemoteException;
 
     void registerObserver(String str, IContentObserver iContentObserver) throws RemoteException;
+
+    void saveJsonConfig(String str, String str2) throws RemoteException;
 
     boolean sendCommand(String str) throws RemoteException;
 
@@ -37,6 +47,10 @@ public interface IPowerManagerAppService extends IInterface {
 
     public static abstract class Stub extends Binder implements IPowerManagerAppService {
         private static final String DESCRIPTOR = "com.wits.pms.IPowerManagerAppService";
+        static final int TRANSACTION_addBooleanStatus = 15;
+        static final int TRANSACTION_addIntStatus = 14;
+        static final int TRANSACTION_addStringStatus = 16;
+        static final int TRANSACTION_getJsonConfig = 18;
         static final int TRANSACTION_getSettingsInt = 10;
         static final int TRANSACTION_getSettingsString = 11;
         static final int TRANSACTION_getStatusBoolean = 7;
@@ -44,6 +58,7 @@ public interface IPowerManagerAppService extends IInterface {
         static final int TRANSACTION_getStatusString = 9;
         static final int TRANSACTION_registerCmdListener = 3;
         static final int TRANSACTION_registerObserver = 5;
+        static final int TRANSACTION_saveJsonConfig = 17;
         static final int TRANSACTION_sendCommand = 1;
         static final int TRANSACTION_sendStatus = 2;
         static final int TRANSACTION_setSettingsInt = 12;
@@ -144,6 +159,32 @@ public interface IPowerManagerAppService extends IInterface {
                         data.enforceInterface(DESCRIPTOR);
                         setSettingsString(data.readString(), data.readString());
                         reply.writeNoException();
+                        return true;
+                    case 14:
+                        data.enforceInterface(DESCRIPTOR);
+                        addIntStatus(data.readString(), data.readInt());
+                        reply.writeNoException();
+                        return true;
+                    case 15:
+                        data.enforceInterface(DESCRIPTOR);
+                        addBooleanStatus(data.readString(), data.readInt() != 0);
+                        reply.writeNoException();
+                        return true;
+                    case 16:
+                        data.enforceInterface(DESCRIPTOR);
+                        addStringStatus(data.readString(), data.readString());
+                        reply.writeNoException();
+                        return true;
+                    case 17:
+                        data.enforceInterface(DESCRIPTOR);
+                        saveJsonConfig(data.readString(), data.readString());
+                        reply.writeNoException();
+                        return true;
+                    case 18:
+                        data.enforceInterface(DESCRIPTOR);
+                        String _result8 = getJsonConfig(data.readString());
+                        reply.writeNoException();
+                        reply.writeString(_result8);
                         return true;
                     default:
                         return super.onTransact(code, data, reply, flags);
@@ -367,6 +408,81 @@ public interface IPowerManagerAppService extends IInterface {
                     _data.writeString(value);
                     this.mRemote.transact(13, _data, _reply, 0);
                     _reply.readException();
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void addIntStatus(String key, int value) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(key);
+                    _data.writeInt(value);
+                    this.mRemote.transact(14, _data, _reply, 0);
+                    _reply.readException();
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void addBooleanStatus(String key, boolean value) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(key);
+                    _data.writeInt(value);
+                    this.mRemote.transact(15, _data, _reply, 0);
+                    _reply.readException();
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void addStringStatus(String key, String value) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(key);
+                    _data.writeString(value);
+                    this.mRemote.transact(16, _data, _reply, 0);
+                    _reply.readException();
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void saveJsonConfig(String pkgName, String json) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(pkgName);
+                    _data.writeString(json);
+                    this.mRemote.transact(17, _data, _reply, 0);
+                    _reply.readException();
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public String getJsonConfig(String pkgName) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(pkgName);
+                    this.mRemote.transact(18, _data, _reply, 0);
+                    _reply.readException();
+                    return _reply.readString();
                 } finally {
                     _reply.recycle();
                     _data.recycle();

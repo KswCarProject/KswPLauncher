@@ -39,6 +39,7 @@ public class KeyConfig {
     public static final String EQ_MIDDLE = "Middle_value";
     public static final String EQ_MODE = "EQ_mode";
     public static final String EQ_TREBLE = "Treble_value";
+    public static final String F_CAM_Type = "Front_view_camera";
     public static final String GOOGLE_APP = "GoogleAPP";
     public static final String HAND_SET_AUTOMATIC = "HandsetAutomaticSelect";
     public static final String HOU_SHI_SX = "RearCamMirror";
@@ -60,4 +61,5 @@ public class KeyConfig {
     public static final String USB_HOST = "USB_HOST";
     public static final String VOICE_KEY = "Voice_key";
     public static final String XING_CHE_JZSP = "DoNotPlayVideosWhileDriving";
+    public static final String ZLINK_AUTO_START = "zlink_auto_start";
 }

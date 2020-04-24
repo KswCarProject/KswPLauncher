@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Nawigacja</item>
+        <item>Wideo</item>
+        <item>Muzyka</item>
+        <item>Telefon</item>
+        <item>Samochodzie</item>
+        <item>Dashboard</item>
+        <item>PhoneLink</item>
+        <item>Pliki</item>
+        <item>DVR</item>
+        <item>Ustawienia</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Nawigacja</item>
+        <item>Muzyka</item>
+        <item>Telefon</item>
+        <item>Samochodzie</item>
+        <item>Ustawienia</item>
+        <item>Wideo</item>
+        <item>Pliki</item>
+        <item>PhoneLink</item>
+        <item>Dashboard</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Nawigacja</item>
+        <item>Muzyka</item>
+        <item>Telefon</item>
+        <item>Menu NTG</item>
+        <item>Ustawienia</item>
+        <item>Wideo</item>
+        <item>Apps</item>
+        <item>PhoneLink</item>
+        <item>Dashboard</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Styczeń</item>
+        <item>Luty</item>
+        <item>Marzec</item>
+        <item>Kwiecień</item>
+        <item>Maj</item>
+        <item>Czerwiec</item>
+        <item>Lipiec</item>
+        <item>Sierpień</item>
+        <item>Wrzesień</item>
+        <item>Październik</item>
+        <item>Listopad</item>
+        <item>Grudzień</item>
+    </array>
+    <array name="set_factory">
+        <item>Konfiguracja funkcji</item>
+        <item>Konfiguracja pojazdu</item>
+        <item>Wyświetl parametry</item>
+        <item>Protokół CAN</item>
+        <item>UI Aby skonfigurować</item>
+        <item>Import konfiguracji</item>
+        <item>Logo rozruchowe</item>
+    </array>
+    <array name="set_function">
+        <item>System</item>
+        <item>Nawigacja</item>
+        <item>Głośności</item>
+        <item>Dźwięk</item>
+        <item>Języki</item>
+        <item>Czas</item>
+        <item>Wersja</item>
+        <item>Androida</item>
+        <item>Zaawansowany</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Nawigacja</item>
+        <item>System</item>
+        <item>Głośności</item>
+        <item>Dźwięk</item>
+        <item>Języki</item>
+        <item>Czas</item>
+        <item>Wersja</item>
+        <item>Androida</item>
+        <item>Zaawansowany</item>
+    </array>
+</resources>

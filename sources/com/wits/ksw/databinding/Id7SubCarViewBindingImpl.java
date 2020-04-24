@@ -16,7 +16,7 @@ public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements On
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback45;
+    private final View.OnClickListener mCallback46;
     private long mDirtyFlags;
 
     static {
@@ -34,7 +34,7 @@ public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements On
         this.carConstraintLayout.setTag((Object) null);
         this.carImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback45 = new OnClickListener(this, 1);
+        this.mCallback46 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -89,7 +89,7 @@ public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements On
             carViewModelCarViewFocusChangeListener = carViewModel.carViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback45);
+            this.carImageView.setOnClickListener(this.mCallback46);
         }
         if ((3 & dirtyFlags) != 0) {
             this.carImageView.setOnFocusChangeListener(carViewModelCarViewFocusChangeListener);

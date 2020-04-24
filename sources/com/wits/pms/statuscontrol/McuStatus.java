@@ -116,21 +116,6 @@ public class McuStatus {
         public float speed;
         public boolean sync;
 
-        private float getTmp(int dataTmp) {
-            if (dataTmp == -1 || dataTmp == 0) {
-                return (float) dataTmp;
-            }
-            return (((float) (dataTmp - 1)) * 0.5f) + 16.0f;
-        }
-
-        public void setRightTmp(int rightTmp2) {
-            this.rightTmp = getTmp(rightTmp2);
-        }
-
-        public void setLeftTmp(int leftTmp2) {
-            this.leftTmp = getTmp(leftTmp2);
-        }
-
         public boolean isOpen(int type) {
             return (this.mode & type) != 0;
         }
@@ -152,9 +137,10 @@ public class McuStatus {
         public int airMaticStatus;
         public boolean auxiliaryRadar;
         public boolean highChassisSwitch;
+        public int key3;
         public int light1 = 0;
         public int light2 = 0;
-        private int pressButton;
+        public int pressButton;
 
         public void pressButton(int which) {
             this.pressButton = which;
@@ -171,7 +157,7 @@ public class McuStatus {
         }
     }
 
-    public static class CarData {
+    public class CarData {
         public static final int AHEAD_COVER = 8;
         public static final int BACK_COVER = 4;
         public static final int LEFT_AHEAD = 16;
@@ -191,6 +177,9 @@ public class McuStatus {
         public boolean safetyBelt;
         public int speed;
         public int temperatureUnitType;
+
+        public CarData() {
+        }
 
         public boolean isOpen(int type) {
             return (this.carDoor & type) != 0;
@@ -298,14 +287,6 @@ public class McuStatus {
 
         public void setOilUnitType(int oilUnitType2) {
             this.oilUnitType = oilUnitType2;
-        }
-
-        public static CarData getStatusFromJson(String jsonArg) {
-            return (CarData) new Gson().fromJson(jsonArg, CarData.class);
-        }
-
-        public String getJson() {
-            return new Gson().toJson((Object) this);
         }
     }
 

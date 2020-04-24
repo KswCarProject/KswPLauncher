@@ -17,8 +17,6 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback53;
-    @Nullable
     private final View.OnClickListener mCallback54;
     @Nullable
     private final View.OnClickListener mCallback55;
@@ -26,6 +24,8 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
     private final View.OnClickListener mCallback56;
     @Nullable
     private final View.OnClickListener mCallback57;
+    @Nullable
+    private final View.OnClickListener mCallback58;
     private long mDirtyFlags;
     @NonNull
     private final ConstraintLayout mboundView0;
@@ -55,11 +55,11 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
         this.menuButton4.setTag((Object) null);
         this.menuButton5.setTag((Object) null);
         setRootTag(root);
-        this.mCallback55 = new OnClickListener(this, 3);
-        this.mCallback56 = new OnClickListener(this, 4);
-        this.mCallback54 = new OnClickListener(this, 2);
-        this.mCallback53 = new OnClickListener(this, 1);
-        this.mCallback57 = new OnClickListener(this, 5);
+        this.mCallback55 = new OnClickListener(this, 2);
+        this.mCallback56 = new OnClickListener(this, 3);
+        this.mCallback54 = new OnClickListener(this, 1);
+        this.mCallback57 = new OnClickListener(this, 4);
+        this.mCallback58 = new OnClickListener(this, 5);
         invalidateAll();
     }
 
@@ -110,11 +110,11 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
         }
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.menuButton1.setOnClickListener(this.mCallback55);
-            this.menuButton2.setOnClickListener(this.mCallback54);
-            this.menuButton3.setOnClickListener(this.mCallback53);
-            this.menuButton4.setOnClickListener(this.mCallback56);
-            this.menuButton5.setOnClickListener(this.mCallback57);
+            this.menuButton1.setOnClickListener(this.mCallback56);
+            this.menuButton2.setOnClickListener(this.mCallback55);
+            this.menuButton3.setOnClickListener(this.mCallback54);
+            this.menuButton4.setOnClickListener(this.mCallback57);
+            this.menuButton5.setOnClickListener(this.mCallback58);
         }
     }
 

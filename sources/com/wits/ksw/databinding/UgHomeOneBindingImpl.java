@@ -15,11 +15,11 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback40;
-    @Nullable
     private final View.OnClickListener mCallback41;
     @Nullable
     private final View.OnClickListener mCallback42;
+    @Nullable
+    private final View.OnClickListener mCallback43;
     private long mDirtyFlags;
 
     public UgHomeOneBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
@@ -34,9 +34,9 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         this.ugHomeMusicVaiw.setTag((Object) null);
         this.ugHomeNaviVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback42 = new OnClickListener(this, 3);
-        this.mCallback40 = new OnClickListener(this, 1);
-        this.mCallback41 = new OnClickListener(this, 2);
+        this.mCallback43 = new OnClickListener(this, 3);
+        this.mCallback42 = new OnClickListener(this, 2);
+        this.mCallback41 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -87,9 +87,9 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeBtVaiw.setOnClickListener(this.mCallback41);
-            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback42);
-            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback40);
+            this.ugHomeBtVaiw.setOnClickListener(this.mCallback42);
+            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback43);
+            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback41);
         }
     }
 

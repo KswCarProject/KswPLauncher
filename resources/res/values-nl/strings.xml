@@ -48,6 +48,7 @@
     <string name="boot_record_mode_radio1">Inschakelen</string>
     <string name="boot_record_mode_radio2">Naar OEM-systeem</string>
     <string name="boot_record_mode_radio3">Naar Android-startpagina</string>
+    <string name="bt_text_bt_closed">Gesloten</string>
     <string name="can_bus">Verzamel CAN Bus-gegevens</string>
     <string name="dialog_update1">Bestandsdirectory niet gevonden!</string>
     <string name="dialog_update10">Of dit model te kiezen?</string>

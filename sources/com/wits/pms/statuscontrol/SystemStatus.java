@@ -7,20 +7,23 @@ import java.util.List;
 
 public class SystemStatus {
     public static final int TYPE_SYSTEM_STATUS = 1;
-    public int acc = 2;
+    public int acc;
     public int ccd;
     public boolean dormant;
     public int epb;
     public KeyEvent event;
     public int ill;
     public int lastMode;
+    public int llight;
+    public String realCurrentApp;
     public int rlight;
-    public int screenSwitch = 2;
+    public int screenSwitch;
     public String topApp;
 
     public static final class ACC {
         public static final int NORMAL = 2;
         public static final int OFF = 0;
+        public static final int OFF_READY = -1;
         public static final int ON = 1;
     }
 
@@ -40,11 +43,14 @@ public class SystemStatus {
     }
 
     public static final class MODE {
-        public static final int AUX = 2;
-        public static final int FM = 0;
-        public static final int MEDIA = 1;
-        public static final int NAVI = 3;
-        public static final int OTHER = 4;
+        public static final int AUX = 4;
+        public static final int BROWSER = 5;
+        public static final int BT = 1;
+        public static final int CAN = 6;
+        public static final int FM = 2;
+        public static final int MEDIA = 3;
+        public static final int NAVI = 0;
+        public static final int OTHER = 7;
     }
 
     public static final class RLIGHT {
@@ -58,6 +64,15 @@ public class SystemStatus {
         public static final int ON = 1;
     }
 
+    public SystemStatus() {
+        this.topApp = "";
+        this.realCurrentApp = "";
+        this.lastMode = -1;
+        this.acc = 2;
+        this.screenSwitch = 2;
+        this.topApp = "";
+    }
+
     public List<String> compare(SystemStatus systemStatus) {
         List<String> keys = new ArrayList<>();
         if (this.acc != systemStatus.acc) {
@@ -65,6 +80,9 @@ public class SystemStatus {
         }
         if (this.rlight != systemStatus.rlight) {
             keys.add("rlight");
+        }
+        if (this.llight != systemStatus.llight) {
+            keys.add("llight");
         }
         if (this.screenSwitch != systemStatus.screenSwitch) {
             keys.add("screenSwitch");
@@ -130,16 +148,32 @@ public class SystemStatus {
         this.lastMode = lastMode2;
     }
 
-    public int getScreenSwitch() {
-        return this.screenSwitch;
-    }
-
     public void setScreenSwitch(int screenSwitch2) {
         this.screenSwitch = screenSwitch2;
     }
 
-    public static SystemStatus getSystemStatusFormJson(String jsonArg) {
+    public static SystemStatus getStatusFormJson(String jsonArg) {
         return (SystemStatus) new Gson().fromJson(jsonArg, SystemStatus.class);
+    }
+
+    public boolean isRlightOpen() {
+        return this.rlight == 1;
+    }
+
+    public boolean isEpbOpen() {
+        return this.epb == 1;
+    }
+
+    public boolean isIllOpen() {
+        return this.ill == 1;
+    }
+
+    public boolean isRevering() {
+        return this.ccd == 1;
+    }
+
+    public boolean getScreenSwitch() {
+        return this.screenSwitch == 1;
     }
 
     public int getRlight() {
@@ -172,5 +206,9 @@ public class SystemStatus {
 
     public void setEpb(int epb2) {
         this.epb = epb2;
+    }
+
+    public boolean isAcc() {
+        return this.acc == 2 || this.acc == 1;
     }
 }

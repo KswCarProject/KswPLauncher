@@ -3,7 +3,6 @@ package com.wits.ksw.settings.utlis_view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import com.wits.ksw.settings.id7.bean.MapBean;
@@ -58,10 +57,21 @@ public class ScanNaviList {
             public void run() {
                 if (!ScanNaviList.this.isScanNavi) {
                     boolean unused = ScanNaviList.this.isScanNavi = true;
+                    Intent intent = new Intent("android.intent.action.MAIN", (Uri) null);
+                    intent.addCategory("android.intent.category.LAUNCHER");
+                    List<ResolveInfo> apps = context.getPackageManager().queryIntentActivities(intent, 0);
+                    Collections.sort(apps, new Comparator<ResolveInfo>() {
+                        public int compare(ResolveInfo a, ResolveInfo b) {
+                            return String.CASE_INSENSITIVE_ORDER.compare(a.loadLabel(context.getPackageManager()).toString(), b.loadLabel(context.getPackageManager()).toString());
+                        }
+                    });
+                    Log.i("naviSCAN", "run: apps size = " + apps.size());
+                    Log.i("naviSCAN", "run: naviList size = " + naviList.size());
                     for (String paca : naviList) {
-                        ScanNaviList.this.isAvilible(context, paca, ScanNaviList.this.tempList);
+                        ScanNaviList.this.isAvilible(context, paca, ScanNaviList.this.tempList, apps);
                     }
                     List unused2 = ScanNaviList.this.mapList = ScanNaviList.this.tempList;
+                    Log.i("naviSCAN", "run: " + ScanNaviList.this.tempList);
                     if (ScanNaviList.this.mapListScanListener != null) {
                         ScanNaviList.this.mapListScanListener.onScanFinish(ScanNaviList.this.tempList);
                     }
@@ -72,45 +82,24 @@ public class ScanNaviList {
     }
 
     /* access modifiers changed from: private */
-    public void isAvilible(Context context, String packageName, List<MapBean> mbList) {
-        ScanNaviList scanNaviList = this;
-        List<MapBean> list = mbList;
-        Intent intent = new Intent("android.intent.action.MAIN", (Uri) null);
-        intent.addCategory("android.intent.category.LAUNCHER");
-        int i = 0;
-        List apps = context.getPackageManager().queryIntentActivities(intent, 0);
-        final Context context2 = context;
-        Collections.sort(apps, new Comparator<ResolveInfo>() {
-            public int compare(ResolveInfo a, ResolveInfo b) {
-                return String.CASE_INSENSITIVE_ORDER.compare(a.loadLabel(context2.getPackageManager()).toString(), b.loadLabel(context2.getPackageManager()).toString());
-            }
-        });
-        while (i < apps.size()) {
+    public void isAvilible(Context context, String packageName, List<MapBean> mbList, List<ResolveInfo> apps) {
+        for (int i = 0; i < apps.size(); i++) {
             ResolveInfo info = apps.get(i);
             String packName = info.activityInfo.packageName;
-            CharSequence appName = info.activityInfo.loadLabel(context.getPackageManager());
-            Drawable iconbm = info.activityInfo.loadIcon(context.getPackageManager());
             if (packageName.equals(packName)) {
                 MapBean mapBean = new MapBean();
                 mapBean.setPackageName(packName);
-                mapBean.setName(appName.toString());
-                mapBean.setMapicon(iconbm);
-                if (packName.equals(scanNaviList.naviDefual)) {
-                    mapBean.setCheck(true);
-                }
-                for (MapBean map : mbList) {
-                    if (map.getName().equals(mapBean.getName()) && map.getPackageName().equals(mapBean.getPackageName())) {
-                    }
-                }
-                if (mbList.isEmpty() || !list.contains(mapBean)) {
+                mapBean.setName(info.activityInfo.loadLabel(context.getPackageManager()).toString());
+                mapBean.setMapicon(info.activityInfo.loadIcon(context.getPackageManager()));
+                mapBean.setCheck(packName.equals(this.naviDefual));
+                if (mbList.isEmpty() || !mbList.contains(mapBean)) {
                     Log.d("naviSCAN", "===appPackage===" + packName);
-                    list.add(mapBean);
+                    mbList.add(mapBean);
+                } else {
+                    return;
                 }
             }
-            i++;
-            scanNaviList = this;
         }
-        String str = packageName;
     }
 
     public void setMapListScanListener(OnMapListScanListener mapListScanListener2) {

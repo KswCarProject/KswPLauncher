@@ -6,6 +6,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class ClientManager {
     public static final String CLIENT_ALS_6208 = "ALS_6208";
+    public static final String CLIENT_yc_2306 = "yc_2306";
     private static final String TAG = ("KSWLauncher." + ClientManager.class.getSimpleName());
     private static ClientManager instance;
 
@@ -47,5 +48,9 @@ public class ClientManager {
 
     public boolean isAls6208Client() {
         return TextUtils.equals(getClient(), CLIENT_ALS_6208);
+    }
+
+    public boolean isYC2306Client() {
+        return TextUtils.equals(getClient(), CLIENT_yc_2306);
     }
 }

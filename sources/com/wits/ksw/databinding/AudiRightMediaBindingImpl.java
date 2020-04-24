@@ -21,13 +21,13 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback49;
-    @Nullable
     private final View.OnClickListener mCallback50;
     @Nullable
     private final View.OnClickListener mCallback51;
     @Nullable
     private final View.OnClickListener mCallback52;
+    @Nullable
+    private final View.OnClickListener mCallback53;
     private long mDirtyFlags;
 
     static {
@@ -49,10 +49,10 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
         this.btnMusicPrev.setTag((Object) null);
         this.tvMusicTitleInfor.setTag((Object) null);
         setRootTag(root);
-        this.mCallback49 = new OnClickListener(this, 1);
-        this.mCallback52 = new OnClickListener(this, 4);
-        this.mCallback50 = new OnClickListener(this, 2);
-        this.mCallback51 = new OnClickListener(this, 3);
+        this.mCallback52 = new OnClickListener(this, 3);
+        this.mCallback53 = new OnClickListener(this, 4);
+        this.mCallback50 = new OnClickListener(this, 1);
+        this.mCallback51 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -153,10 +153,10 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
             }
         }
         if ((8 & dirtyFlags) != 0) {
-            this.IvRightMusicIcon.setOnClickListener(this.mCallback49);
-            this.btnMusicNext.setOnClickListener(this.mCallback52);
-            this.btnMusicPlayPause.setOnClickListener(this.mCallback51);
-            this.btnMusicPrev.setOnClickListener(this.mCallback50);
+            this.IvRightMusicIcon.setOnClickListener(this.mCallback50);
+            this.btnMusicNext.setOnClickListener(this.mCallback53);
+            this.btnMusicPlayPause.setOnClickListener(this.mCallback52);
+            this.btnMusicPrev.setOnClickListener(this.mCallback51);
         }
         if ((14 & dirtyFlags) != 0) {
             this.KSWA4LRightShowMedia.setVisibility(vmMediaViewGet);

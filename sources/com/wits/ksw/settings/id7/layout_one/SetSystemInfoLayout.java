@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
 import com.wits.ksw.settings.utlis_view.DialogViews;
+import com.wits.ksw.settings.utlis_view.McuUtil;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
@@ -29,7 +30,7 @@ public class SetSystemInfoLayout extends RelativeLayout implements View.OnClickL
             super.handleMessage(msg);
             if (msg.what == 0) {
                 try {
-                    SetSystemInfoLayout.this.tv_infoMcuv.setText(String.format(SetSystemInfoLayout.this.getResources().getString(R.string.text_8), new Object[]{PowerManagerApp.getStatusString("mcuVerison")}));
+                    SetSystemInfoLayout.this.tv_infoMcuv.setText(String.format(SetSystemInfoLayout.this.getResources().getString(R.string.text_8), new Object[]{McuUtil.getMcuVersion()}));
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -69,7 +70,7 @@ public class SetSystemInfoLayout extends RelativeLayout implements View.OnClickL
         String pingtai;
         this.dialogViews = new DialogViews(this.context);
         try {
-            String mvformat = String.format(getResources().getString(R.string.text_8), new Object[]{PowerManagerApp.getStatusString("mcuVerison")});
+            String mvformat = String.format(getResources().getString(R.string.text_8), new Object[]{McuUtil.getMcuVersion()});
             this.tv_infoMcuv = (TextView) view.findViewById(R.id.tv_infoMcuv);
             this.tv_infoMcuv.setText(mvformat);
         } catch (Exception e) {

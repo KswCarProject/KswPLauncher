@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
 import com.wits.ksw.settings.utlis_view.DialogViews;
+import com.wits.ksw.settings.utlis_view.McuUtil;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
@@ -31,7 +32,7 @@ public class ID6SystemInfoLayout extends RelativeLayout implements View.OnClickL
             super.handleMessage(msg);
             if (msg.what == 0) {
                 try {
-                    String mvformat = String.format(ID6SystemInfoLayout.this.getResources().getString(R.string.text_8), new Object[]{PowerManagerApp.getStatusString("mcuVerison")});
+                    String mvformat = String.format(ID6SystemInfoLayout.this.getResources().getString(R.string.text_8), new Object[]{McuUtil.getMcuVersion()});
                     SpannableString ss1 = new SpannableString(mvformat);
                     ss1.setSpan(new RelativeSizeSpan(0.7f), ID6SystemInfoLayout.this.getResources().getString(R.string.text_8).length() - 2, mvformat.length(), 17);
                     ID6SystemInfoLayout.this.tv_infoMcuv.setText(ss1);
@@ -74,7 +75,7 @@ public class ID6SystemInfoLayout extends RelativeLayout implements View.OnClickL
         String pingtai;
         this.dialogViews = new DialogViews(this.context);
         try {
-            String mvformat = String.format(getResources().getString(R.string.text_8), new Object[]{PowerManagerApp.getStatusString("mcuVerison")});
+            String mvformat = String.format(getResources().getString(R.string.text_8), new Object[]{McuUtil.getMcuVersion()});
             SpannableString ss1 = new SpannableString(mvformat);
             ss1.setSpan(new RelativeSizeSpan(0.7f), getResources().getString(R.string.text_8).length() - 2, mvformat.length(), 17);
             this.tv_infoMcuv = (TextView) view.findViewById(R.id.tv_infoMcuv);

@@ -21,6 +21,7 @@
     <string name="boot_record_mode_radio1">Etkinleştirme</string>
     <string name="boot_record_mode_radio2">Oem sistemi</string>
     <string name="boot_record_mode_radio3">Android Ana Sayfasına</string>
+    <string name="bt_text_bt_closed">Kapalı</string>
     <string name="can_bus">CAN Bus verilerini topla</string>
     <string name="dialog_update1">Dosya dizini bulunamadı</string>
     <string name="dialog_update10">Bu modelin seçilip seçilmeyeceği</string>

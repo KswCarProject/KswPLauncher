@@ -48,6 +48,7 @@
     <string name="boot_record_mode_radio1">使能</string>
     <string name="boot_record_mode_radio2">原车界面</string>
     <string name="boot_record_mode_radio3">安卓界面</string>
+    <string name="bt_text_bt_closed">已关闭</string>
     <string name="can_bus">CAN_BUS采集</string>
     <string name="dialog_update1">没有找到文件目录</string>
     <string name="dialog_update10">是否选择这个车型?</string>
@@ -116,6 +117,7 @@
     <string name="factory_yuyinkey2">短按无作用，长按是导航功能</string>
     <string name="factory_yuyinkey3">短按是语音功能，长按是导航功能</string>
     <string name="factory_yuyinkey4">短按是导航功能，长按无作用</string>
+    <string name="function_fcam">前视</string>
     <string name="function_text1">USB 主机模式</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>

@@ -1,10 +1,8 @@
 package com.wits.ksw.databinding;
 
-import android.content.res.Resources;
 import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.support.annotation.NonNull;
@@ -21,7 +19,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback68;
+    private final View.OnClickListener mCallback69;
     private long mDirtyFlags;
 
     static {
@@ -41,7 +39,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         this.phoneConstraintLayout.setTag((Object) null);
         this.phoneImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback68 = new OnClickListener(this, 1);
+        this.mCallback69 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -82,17 +80,17 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeNaviViewModelDay((ObservableField) object, fieldId);
+                return onChangeNaviViewModelBtState((ObservableField) object, fieldId);
             case 1:
-                return onChangeNaviViewModelMonth((ObservableField) object, fieldId);
+                return onChangeNaviViewModelDay((ObservableField) object, fieldId);
             case 2:
-                return onChangeNaviViewModelPhoneConState((ObservableInt) object, fieldId);
+                return onChangeNaviViewModelMonth((ObservableField) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeNaviViewModelDay(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeNaviViewModelBtState(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -102,7 +100,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         return true;
     }
 
-    private boolean onChangeNaviViewModelMonth(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeNaviViewModelDay(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -112,7 +110,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         return true;
     }
 
-    private boolean onChangeNaviViewModelPhoneConState(ObservableInt NaviViewModelPhoneConState, int fieldId) {
+    private boolean onChangeNaviViewModelMonth(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -125,86 +123,61 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
-        Resources resources;
-        int i;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
+        ObservableField<String> naviViewModelBtState = null;
         ObservableField<String> naviViewModelDay = null;
+        String naviViewModelBtStateGet = null;
         ObservableField<String> naviViewModelMonth = null;
-        int naviViewModelPhoneConStateGet = 0;
         String naviViewModelDayGet = null;
         String naviViewModelMonthGet = null;
         LauncherViewModel naviViewModel = this.mNaviViewModel;
-        String naviViewModelPhoneConStateInt0PhoneConnectionTextViewAndroidStringKswId7NotConnectedPhonePhoneConnectionTextViewAndroidStringKswId7ConnectedPhone = null;
-        ObservableInt naviViewModelPhoneConState = null;
         View.OnFocusChangeListener naviViewModelPhoneViewFocusChangeListener = null;
         if ((31 & dirtyFlags) != 0) {
             if ((dirtyFlags & 25) != 0) {
                 if (naviViewModel != null) {
+                    naviViewModelBtState = naviViewModel.btState;
+                }
+                updateRegistration(0, (Observable) naviViewModelBtState);
+                if (naviViewModelBtState != null) {
+                    naviViewModelBtStateGet = naviViewModelBtState.get();
+                }
+            }
+            if ((dirtyFlags & 26) != 0) {
+                if (naviViewModel != null) {
                     naviViewModelDay = naviViewModel.day;
                 }
-                updateRegistration(0, (Observable) naviViewModelDay);
+                updateRegistration(1, (Observable) naviViewModelDay);
                 if (naviViewModelDay != null) {
                     naviViewModelDayGet = naviViewModelDay.get();
                 }
             }
-            boolean z = true;
-            if ((dirtyFlags & 26) != 0) {
+            if ((dirtyFlags & 28) != 0) {
                 if (naviViewModel != null) {
                     naviViewModelMonth = naviViewModel.month;
                 }
-                updateRegistration(1, (Observable) naviViewModelMonth);
+                updateRegistration(2, (Observable) naviViewModelMonth);
                 if (naviViewModelMonth != null) {
                     naviViewModelMonthGet = naviViewModelMonth.get();
                 }
-            }
-            if ((dirtyFlags & 28) != 0) {
-                if (naviViewModel != null) {
-                    naviViewModelPhoneConState = naviViewModel.phoneConState;
-                }
-                updateRegistration(2, (Observable) naviViewModelPhoneConState);
-                if (naviViewModelPhoneConState != null) {
-                    naviViewModelPhoneConStateGet = naviViewModelPhoneConState.get();
-                }
-                if (naviViewModelPhoneConStateGet != 0) {
-                    z = false;
-                }
-                boolean naviViewModelPhoneConStateInt0 = z;
-                if ((dirtyFlags & 28) != 0) {
-                    if (naviViewModelPhoneConStateInt0) {
-                        dirtyFlags |= 64;
-                    } else {
-                        dirtyFlags |= 32;
-                    }
-                }
-                if (naviViewModelPhoneConStateInt0) {
-                    resources = this.phoneConnectionTextView.getResources();
-                    i = R.string.ksw_id7_not_connected_phone;
-                } else {
-                    resources = this.phoneConnectionTextView.getResources();
-                    i = R.string.ksw_id7_connected_phone;
-                }
-                String string = resources.getString(i);
-                boolean z2 = naviViewModelPhoneConStateInt0;
-                naviViewModelPhoneConStateInt0PhoneConnectionTextViewAndroidStringKswId7NotConnectedPhonePhoneConnectionTextViewAndroidStringKswId7ConnectedPhone = string;
             }
             if (!((dirtyFlags & 24) == 0 || naviViewModel == null)) {
                 naviViewModelPhoneViewFocusChangeListener = naviViewModel.phoneViewFocusChangeListener;
             }
         }
-        if ((dirtyFlags & 25) != 0) {
+        if ((dirtyFlags & 26) != 0) {
             TextViewBindingAdapter.setText(this.dayTextView, naviViewModelDayGet);
         }
-        if ((dirtyFlags & 26) != 0) {
+        if ((dirtyFlags & 28) != 0) {
             TextViewBindingAdapter.setText(this.monthTextView, naviViewModelMonthGet);
         }
-        if ((dirtyFlags & 28) != 0) {
-            TextViewBindingAdapter.setText(this.phoneConnectionTextView, naviViewModelPhoneConStateInt0PhoneConnectionTextViewAndroidStringKswId7NotConnectedPhonePhoneConnectionTextViewAndroidStringKswId7ConnectedPhone);
+        if ((dirtyFlags & 25) != 0) {
+            TextViewBindingAdapter.setText(this.phoneConnectionTextView, naviViewModelBtStateGet);
         }
-        if ((16 & dirtyFlags) != 0) {
-            this.phoneImageView.setOnClickListener(this.mCallback68);
+        if ((dirtyFlags & 16) != 0) {
+            this.phoneImageView.setOnClickListener(this.mCallback69);
         }
         if ((dirtyFlags & 24) != 0) {
             this.phoneImageView.setOnFocusChangeListener(naviViewModelPhoneViewFocusChangeListener);

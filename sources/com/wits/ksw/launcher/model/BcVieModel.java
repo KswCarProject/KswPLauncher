@@ -14,6 +14,8 @@ import com.wits.ksw.BuildConfig;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.utils.ClientManager;
+import com.wits.ksw.launcher.utils.KswUtils;
+import com.wits.ksw.launcher.view.Ntg630ControlView;
 import com.wits.ksw.launcher.view.Ntg6ControlView;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxBean;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
@@ -32,7 +34,7 @@ public class BcVieModel extends LauncherViewModel {
             Log.i(KswApplication.TAG, "onCheckedChanged: " + isChecked);
             BcVieModel.this.benzData.highChassisSwitch = isChecked;
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
-            Log.i("控制面板", "onCheckedChanged: 底盘升降开关:" + BcVieModel.this.benzData.auxiliaryRadar);
+            Log.i(KswApplication.TAG, "onCheckedChanged: 底盘升降开关:" + BcVieModel.this.benzData.auxiliaryRadar);
         }
     };
     public ControlBean controlBean = new ControlBean(this.context);
@@ -52,7 +54,7 @@ public class BcVieModel extends LauncherViewModel {
             Log.i(KswApplication.TAG, "onCheckedChanged: " + isChecked);
             BcVieModel.this.benzData.auxiliaryRadar = isChecked;
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
-            Log.i("控制面板", "onCheckedChanged: 辅助雷达开关:" + BcVieModel.this.benzData.auxiliaryRadar);
+            Log.i(KswApplication.TAG, "onCheckedChanged: 辅助雷达开关:" + BcVieModel.this.benzData.auxiliaryRadar);
         }
     };
     public final CompoundButton.OnCheckedChangeListener rightOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -69,7 +71,7 @@ public class BcVieModel extends LauncherViewModel {
             Log.i(KswApplication.TAG, "onCheckedChanged: " + isChecked);
             BcVieModel.this.benzData.airMaticStatus = isChecked;
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcVieModel.this.benzData.getJson());
-            Log.i("控制面板", "onCheckedChanged: 运动模式开关:" + BcVieModel.this.benzData.airMaticStatus);
+            Log.i(KswApplication.TAG, "onCheckedChanged: 运动模式开关:" + BcVieModel.this.benzData.airMaticStatus);
         }
     };
     private Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -226,7 +228,7 @@ public class BcVieModel extends LauncherViewModel {
         this.uiHandler.removeCallbacksAndMessages((Object) null);
         this.uiHandler.postDelayed(new Runnable() {
             public void run() {
-                if (ClientManager.getInstance().isAls6208Client()) {
+                if (ClientManager.getInstance().isAls6208Client() || ClientManager.getInstance().isYC2306Client()) {
                     BcVieModel.this.openAls6208(view, item.getId());
                 } else {
                     BcVieModel.this.open(view, item.getId());
@@ -235,7 +237,7 @@ public class BcVieModel extends LauncherViewModel {
         }, 200);
     }
 
-    /* access modifiers changed from: private */
+    /* access modifiers changed from: protected */
     public void open(View view, int id) {
         switch (id) {
             case 0:
@@ -312,31 +314,66 @@ public class BcVieModel extends LauncherViewModel {
     }
 
     public void onControlClick(View view) {
-        if (Ntg6ControlView.getInstance().isShowing()) {
-            Ntg6ControlView.getInstance().dismiss();
-            Log.i(KswApplication.TAG, "onControlClick: dismiss");
-            return;
+        int benzpane = KswUtils.getBenzpaneVersion();
+        Log.i(KswApplication.TAG, "onControlClick: benzpane = " + benzpane);
+        if (benzpane == 1) {
+            if (Ntg6ControlView.getInstance().isShowing()) {
+                Ntg6ControlView.getInstance().dismiss();
+            } else {
+                Ntg6ControlView.getInstance().showBenzControl(this.context, this, view);
+            }
+        } else if (benzpane != 2) {
+        } else {
+            if (Ntg630ControlView.getInstance().isShowing()) {
+                Ntg630ControlView.getInstance().dismiss();
+            } else {
+                Ntg630ControlView.getInstance().showBenzControl(this.context, this, view);
+            }
         }
-        Ntg6ControlView.getInstance().showBenzControl(this.context, this, view);
-        Log.i(KswApplication.TAG, "onControlClick: showBenzControl");
     }
 
     public void onHighChasssisClick(View view) {
+        this.benzData.key3 = 0;
         this.benzData.pressButton(1);
-        Log.i("控制面板", "onCheckedChanged: 底盘升降开关:" + this.benzData.auxiliaryRadar);
+        Log.i(KswApplication.TAG, "onCheckedChanged: 底盘升降开关:" + this.benzData.getJson());
     }
 
     public void onAuxiliaryRadarClick(View view) {
+        this.benzData.key3 = 0;
         this.benzData.pressButton(3);
-        Log.i("控制面板", "onCheckedChanged: 辅助雷达开关:" + this.benzData.auxiliaryRadar);
+        Log.i(KswApplication.TAG, "onCheckedChanged: 辅助雷达开关:" + this.benzData.getJson());
+    }
+
+    public void onEspClick(View view) {
+        this.benzData.key3 = 5;
+        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
+        Log.d(KswApplication.TAG, "onEspClick: " + this.benzData.getJson());
+    }
+
+    public void onFoldLeftClick(View view) {
+        this.benzData.key3 = 6;
+        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
+        Log.d(KswApplication.TAG, "onFoldLeftClick: " + this.benzData.getJson());
+    }
+
+    public void onFoldRigtClick(View view) {
+        this.benzData.key3 = 7;
+        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
+        Log.d(KswApplication.TAG, "onFoldRigtClick: " + this.benzData.getJson());
     }
 
     public void onSportClick(View view) {
+        this.benzData.key3 = 0;
         this.benzData.pressButton(2);
-        Log.i("控制面板", "onCheckedChanged: 辅助雷达开关:" + this.benzData.auxiliaryRadar);
+        Log.i("控制面板", "onCheckedChanged: 辅助雷达开关:" + this.benzData.getJson());
     }
 
     public void showBrightnessDialog(View view) {
-        Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this);
+        int benzpane = KswUtils.getBenzpaneVersion();
+        if (benzpane == 1) {
+            Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this);
+        } else if (benzpane == 2) {
+            Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this);
+        }
     }
 }

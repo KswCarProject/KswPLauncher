@@ -12,16 +12,21 @@ public class UiThemeUtils {
     public static final String BMW_EVO_ID7 = "BMW_EVO_ID7";
     public static final String Benz_GS = "Benz_GS";
     public static final String Benz_MBUX = "Benz_MBUX";
+    public static final String Benz_NTG5 = "Benz_NTG5";
     public static final String Benz_NTG6 = "Benz_NTG6";
     public static final String Common_UI_GS = "Common_UI_GS";
     public static final String Common_UI_GS_UG = "Common_UI_GS_UG";
 
     public static boolean isId7AndDefaultUi(Context context) {
-        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context);
+        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context) && !isBenz_NTG5(context);
     }
 
     public static boolean isBenz_NTG6(Context context) {
         return TextUtils.equals(getUiName(context), Benz_NTG6);
+    }
+
+    public static boolean isBenz_NTG5(Context context) {
+        return TextUtils.equals(getUiName(context), Benz_NTG5);
     }
 
     public static boolean isBMW_EVO_ID7(Context context) {

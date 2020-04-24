@@ -43,6 +43,7 @@
     <string name="app_cancel">Cancel</string>
     <string name="app_dtv">DTV</string>
     <string name="app_dvr">DVR</string>
+    <string name="app_fcam">@string/function_fcam</string>
     <string name="app_name">KswCarProject</string>
     <string name="app_not_update">Upgrade not allowed!</string>
     <string name="app_ok">OK</string>
@@ -158,6 +159,7 @@
     <string name="boot_record_mode_radio1">Enable</string>
     <string name="boot_record_mode_radio2">To OEM System</string>
     <string name="boot_record_mode_radio3">To Android Homepage</string>
+    <string name="bt_text_bt_closed">Closed</string>
     <string name="can_bus">Collect CAN Bus Data</string>
     <string name="dialog_update1">File directory not found</string>
     <string name="dialog_update10">Whether to choose this model</string>
@@ -227,6 +229,8 @@
     <string name="factory_yuyinkey3">Short press opens Voice Command, Long press opens NAVI</string>
     <string name="factory_yuyinkey4">Short press opens NAVI, Long press does nothing</string>
     <string name="function_bt">BT</string>
+    <string name="function_fcam">F_CAM</string>
+    <string name="function_google_off">Zlink</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>

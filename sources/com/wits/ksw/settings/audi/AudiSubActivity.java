@@ -10,7 +10,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.settings.BaseActivity;
 
 public class AudiSubActivity extends BaseActivity {
-    @InjectView(2131230802)
+    @InjectView(2131230804)
     RelativeLayout contentLayout;
 
     /* access modifiers changed from: protected */

@@ -34,6 +34,7 @@ public final class AppViewModel extends LauncherViewModel {
     private static final String DESKCLOCK_PKG = "com.android.deskclock";
     public static final String DTV_TYPE = "DTV_Type";
     public static final String DVR_TYPE = "DVR_Type";
+    public static final String F_CAM_Type = "Front_view_camera";
     private static final String GAODE_MAP_PKG = "com.autonavi.amapauto";
     private static final String GOOGLE_SEARCH_PKG = "com.google.android.googlequicksearchbox";
     private static final String IFLYTEK_PKG = "com.iflytek.inputmethod.google";
@@ -49,6 +50,10 @@ public final class AppViewModel extends LauncherViewModel {
     public static Drawable dvrIcon = KswApplication.appContext.getDrawable(R.drawable.ic_dvr);
     /* access modifiers changed from: private */
     public static String dvrLable = KswApplication.appContext.getString(R.string.app_dvr);
+    /* access modifiers changed from: private */
+    public static Drawable fcamIcon = KswApplication.appContext.getDrawable(R.drawable.icon_fcam);
+    /* access modifiers changed from: private */
+    public static String fcamLable = KswApplication.appContext.getString(R.string.app_fcam);
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             AppViewModel.this.queryApps();
@@ -92,6 +97,8 @@ public final class AppViewModel extends LauncherViewModel {
                 AppViewModel.this.onSendCommand(1, WitsCommand.SystemCommand.OPEN_DTV);
             } else if (TextUtils.equals(appInfo.getApppkg(), "DVR_Type")) {
                 AppViewModel.this.onSendCommand(1, WitsCommand.SystemCommand.OPEN_CVBSDVR);
+            } else if (TextUtils.equals(appInfo.getApppkg(), "Front_view_camera")) {
+                AppViewModel.this.onSendCommand(1, WitsCommand.SystemCommand.OPEN_F_CAM);
             } else {
                 AppViewModel.this.openApp(AppViewModel.this.context.getPackageManager().getLaunchIntentForPackage(appInfo.getApppkg()));
             }
@@ -101,7 +108,7 @@ public final class AppViewModel extends LauncherViewModel {
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             AppInfo appInfo = (AppInfo) parent.getItemAtPosition(position);
             Log.i("AppViewModel", "onItemLongClick: " + appInfo.toString());
-            if (TextUtils.equals(appInfo.getApppkg(), "AUX_Type") || TextUtils.equals(appInfo.getApppkg(), "DTV_Type") || TextUtils.equals(appInfo.getApppkg(), "DVR_Type") || KswUtils.isSystemapp(appInfo.getApppkg())) {
+            if (TextUtils.equals(appInfo.getApppkg(), "AUX_Type") || TextUtils.equals(appInfo.getApppkg(), "DTV_Type") || TextUtils.equals(appInfo.getApppkg(), "DVR_Type") || KswUtils.isSystemapp(appInfo.getApppkg()) || TextUtils.equals(appInfo.getApppkg(), "Front_view_camera")) {
                 Toast.makeText(view.getContext(), view.getContext().getString(R.string.ksw_id7_system_app_not_uninstall), 0).show();
                 return true;
             }
@@ -175,6 +182,7 @@ public final class AppViewModel extends LauncherViewModel {
             AppViewModel.this.addCustomApp(listLiveData, "AUX_Type", AppViewModel.auxIcon, AppViewModel.auxLable);
             AppViewModel.this.addCustomApp(listLiveData, "DTV_Type", AppViewModel.dtvIcon, AppViewModel.dtvLable);
             AppViewModel.this.addCustomApp(listLiveData, "DVR_Type", AppViewModel.dvrIcon, AppViewModel.dvrLable);
+            AppViewModel.this.addCustomApp(listLiveData, "Front_view_camera", AppViewModel.fcamIcon, AppViewModel.fcamLable);
             AppViewModel.this.mListLiveData.clear();
             for (int i = 0; i < AppViewModel.this.mAppLists.size(); i++) {
                 int j = 0;

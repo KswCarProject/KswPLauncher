@@ -22,45 +22,45 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KswUtils;
 
 public class FragmentId5Right extends Fragment implements View.OnKeyListener, View.OnClickListener {
-    @InjectView(2131231009)
-    CheckBox id5ItemApps;
-    @InjectView(2131231010)
-    ImageView id5ItemAppsCursor;
-    @InjectView(2131231018)
-    ImageView id5ItemDahsCursor;
-    @InjectView(2131231017)
-    CheckBox id5ItemDash;
     @InjectView(2131231020)
-    CheckBox id5ItemJly;
+    CheckBox id5ItemApps;
     @InjectView(2131231021)
-    ImageView id5ItemJlyCursor;
-    @InjectView(2131231026)
-    CheckBox id5ItemSet;
-    @InjectView(2131231027)
-    ImageView id5ItemSetCursor;
-    @InjectView(2131231028)
-    CheckBox id5ItemSjhl;
+    ImageView id5ItemAppsCursor;
     @InjectView(2131231029)
-    ImageView id5ItemSjhlCursor;
-    @InjectView(2131231030)
-    CheckBox id5ItemVideo;
+    ImageView id5ItemDahsCursor;
+    @InjectView(2131231028)
+    CheckBox id5ItemDash;
     @InjectView(2131231031)
+    CheckBox id5ItemJly;
+    @InjectView(2131231032)
+    ImageView id5ItemJlyCursor;
+    @InjectView(2131231037)
+    CheckBox id5ItemSet;
+    @InjectView(2131231038)
+    ImageView id5ItemSetCursor;
+    @InjectView(2131231039)
+    CheckBox id5ItemSjhl;
+    @InjectView(2131231040)
+    ImageView id5ItemSjhlCursor;
+    @InjectView(2131231041)
+    CheckBox id5ItemVideo;
+    @InjectView(2131231042)
     ImageView id5ItemVideoCursor;
-    @InjectView(2131231089)
+    @InjectView(2131231100)
     ImageView imageView8;
     /* access modifiers changed from: private */
     public MainActivity mainActivity;
-    @InjectView(2131231414)
+    @InjectView(2131231430)
     TextView textView11;
-    @InjectView(2131231415)
+    @InjectView(2131231431)
     TextView textView12;
-    @InjectView(2131231416)
+    @InjectView(2131231432)
     TextView textView13;
-    @InjectView(2131231417)
+    @InjectView(2131231433)
     TextView textView14;
-    @InjectView(2131231418)
+    @InjectView(2131231434)
     TextView textView15;
-    @InjectView(2131231419)
+    @InjectView(2131231435)
     TextView textView16;
     private LauncherViewModel viewModel;
 

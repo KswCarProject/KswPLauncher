@@ -22,9 +22,9 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback72;
-    @Nullable
     private final View.OnClickListener mCallback73;
+    @Nullable
+    private final View.OnClickListener mCallback74;
     private long mDirtyFlags;
     private OnClickListenerImpl mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
     private OnClickListenerImpl1 mMBcVieModelOpenAppsAndroidViewViewOnClickListener;
@@ -49,8 +49,8 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
         this.linearLayout3.setTag((Object) null);
         this.recyclerView2.setTag((Object) null);
         setRootTag(root);
-        this.mCallback72 = new OnClickListener(this, 1);
-        this.mCallback73 = new OnClickListener(this, 2);
+        this.mCallback74 = new OnClickListener(this, 2);
+        this.mCallback73 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -239,8 +239,8 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
             this.controlBtn.setOnClickListener(mBcVieModelOnControlClickAndroidViewViewOnClickListener);
         }
         if ((16 & dirtyFlags) != 0) {
-            this.bcArrowLeftButton.setOnClickListener(this.mCallback72);
-            this.bcArrowRightButton.setOnClickListener(this.mCallback73);
+            this.bcArrowLeftButton.setOnClickListener(this.mCallback73);
+            this.bcArrowRightButton.setOnClickListener(this.mCallback74);
         }
         if ((dirtyFlags & 26) != 0) {
             this.controlBtn.setVisibility(mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE);

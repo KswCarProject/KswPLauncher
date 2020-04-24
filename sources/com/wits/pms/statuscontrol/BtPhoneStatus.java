@@ -76,6 +76,9 @@ public class BtPhoneStatus {
         this.btSwitch = btSwitch2;
     }
 
+    public BtPhoneStatus() {
+    }
+
     public static BtPhoneStatus getStatusForJson(String jsonArg) {
         return (BtPhoneStatus) new Gson().fromJson(jsonArg, BtPhoneStatus.class);
     }

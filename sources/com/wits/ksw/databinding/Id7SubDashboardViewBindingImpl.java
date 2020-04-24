@@ -24,7 +24,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback62;
+    private final View.OnClickListener mCallback63;
     private long mDirtyFlags;
 
     static {
@@ -50,7 +50,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         this.speedTextView.setTag((Object) null);
         this.tempTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback62 = new OnClickListener(this, 1);
+        this.mCallback63 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -339,7 +339,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         }
         if ((dirtyFlags & 128) != 0) {
             String str4 = carViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake1;
-            this.dashboardImageView.setOnClickListener(this.mCallback62);
+            this.dashboardImageView.setOnClickListener(this.mCallback63);
         }
         if ((dirtyFlags & 132) != 0) {
             TextViewBindingAdapter.setText(this.oilTextView, stringValueOfCarViewModelCarInfoOilValueJavaLangStringL);

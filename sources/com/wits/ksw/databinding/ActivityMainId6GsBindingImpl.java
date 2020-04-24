@@ -18,9 +18,9 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback43;
-    @Nullable
     private final View.OnClickListener mCallback44;
+    @Nullable
+    private final View.OnClickListener mCallback45;
     private long mDirtyFlags;
     @NonNull
     private final ConstraintLayout mboundView0;
@@ -38,8 +38,8 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         this.mboundView0 = bindings[0];
         this.mboundView0.setTag((Object) null);
         setRootTag(root);
-        this.mCallback43 = new OnClickListener(this, 1);
-        this.mCallback44 = new OnClickListener(this, 2);
+        this.mCallback44 = new OnClickListener(this, 1);
+        this.mCallback45 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -142,8 +142,8 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
             vmPageIndexInt0ViewINVISIBLEViewVISIBLE = i;
         }
         if ((4 & dirtyFlags) != 0) {
-            this.id6GsLeftBtn.setOnClickListener(this.mCallback43);
-            this.id6GsRightBtn.setOnClickListener(this.mCallback44);
+            this.id6GsLeftBtn.setOnClickListener(this.mCallback44);
+            this.id6GsRightBtn.setOnClickListener(this.mCallback45);
         }
         if ((7 & dirtyFlags) != 0) {
             this.id6GsLeftBtn.setVisibility(vmPageIndexInt0ViewINVISIBLEViewVISIBLE);

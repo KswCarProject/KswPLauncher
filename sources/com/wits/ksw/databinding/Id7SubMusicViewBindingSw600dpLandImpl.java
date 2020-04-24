@@ -19,7 +19,7 @@ public class Id7SubMusicViewBindingSw600dpLandImpl extends Id7SubMusicViewBindin
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback63;
+    private final View.OnClickListener mCallback64;
     private long mDirtyFlags;
 
     static {
@@ -46,7 +46,7 @@ public class Id7SubMusicViewBindingSw600dpLandImpl extends Id7SubMusicViewBindin
         this.seekBar.setTag((Object) null);
         this.totalTimeTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback63 = new OnClickListener(this, 1);
+        this.mCallback64 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -495,7 +495,7 @@ public class Id7SubMusicViewBindingSw600dpLandImpl extends Id7SubMusicViewBindin
             android.widget.TextView r6 = r1.artistTextView
             android.content.res.Resources r6 = r6.getResources()
             r56 = r8
-            r8 = 2131493170(0x7f0c0132, float:1.8609813E38)
+            r8 = 2131493174(0x7f0c0136, float:1.860982E38)
             java.lang.String r6 = r6.getString(r8)
             goto L_0x01ed
         L_0x01e7:
@@ -516,7 +516,7 @@ public class Id7SubMusicViewBindingSw600dpLandImpl extends Id7SubMusicViewBindin
             android.widget.TextView r8 = r1.albumTextView
             android.content.res.Resources r8 = r8.getResources()
             r57 = r11
-            r11 = 2131493171(0x7f0c0133, float:1.8609815E38)
+            r11 = 2131493175(0x7f0c0137, float:1.8609823E38)
             java.lang.String r8 = r8.getString(r11)
             goto L_0x0210
         L_0x020c:
@@ -535,7 +535,7 @@ public class Id7SubMusicViewBindingSw600dpLandImpl extends Id7SubMusicViewBindin
             if (r10 == 0) goto L_0x022c
             android.widget.TextView r8 = r1.nameTextView
             android.content.res.Resources r8 = r8.getResources()
-            r11 = 2131493172(0x7f0c0134, float:1.8609817E38)
+            r11 = 2131493176(0x7f0c0138, float:1.8609825E38)
             java.lang.String r8 = r8.getString(r11)
             goto L_0x022e
         L_0x022c:
@@ -571,7 +571,7 @@ public class Id7SubMusicViewBindingSw600dpLandImpl extends Id7SubMusicViewBindin
             if (r11 == 0) goto L_0x0268
             com.wits.ksw.launcher.view.CustomBmwMusicLayout r11 = r1.imageFrameLayout
             r58 = r0
-            android.view.View$OnClickListener r0 = r1.mCallback63
+            android.view.View$OnClickListener r0 = r1.mCallback64
             r11.setOnClickListener(r0)
             goto L_0x026a
         L_0x0268:

@@ -104,11 +104,13 @@ public class Ntg6ControlView {
 
     static /* synthetic */ void lambda$showBenzBrightnessDailog$0(McuStatus.BenzData benzData, View v) {
         benzData.light1 = 1;
+        benzData.key3 = 0;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }
 
     static /* synthetic */ void lambda$showBenzBrightnessDailog$1(McuStatus.BenzData benzData, View v) {
         benzData.light1 = 255;
+        benzData.key3 = 0;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }
 
