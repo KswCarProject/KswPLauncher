@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Navigation</item>
+        <item>Video</item>
+        <item>Musik</item>
+        <item>Telefon</item>
+        <item>NTG Menü</item>
+        <item>Dashboard</item>
+        <item>PhoneLink</item>
+        <item>Dateimanager</item>
+        <item>DVR</item>
+        <item>Einstellungen</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Navigation</item>
+        <item>Musik</item>
+        <item>Telefon</item>
+        <item>NTG Menü</item>
+        <item>Einstellungen</item>
+        <item>Video</item>
+        <item>Dateimanager</item>
+        <item>PhoneLink</item>
+        <item>Dashboard</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Navigation</item>
+        <item>Musik</item>
+        <item>Telefon</item>
+        <item>NTG Menu</item>
+        <item>Einstellungen</item>
+        <item>Video</item>
+        <item>Apps</item>
+        <item>PhoneLink</item>
+        <item>Dashboard</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Jan.</item>
+        <item>Feb.</item>
+        <item>Mär.</item>
+        <item>Apr.</item>
+        <item>Mai.</item>
+        <item>Jun.</item>
+        <item>Jul.</item>
+        <item>Aug.</item>
+        <item>Sep.</item>
+        <item>Okt.</item>
+        <item>Nov.</item>
+        <item>Dez.</item>
+    </array>
+    <array name="set_factory">
+        <item>Funktion</item>
+        <item>Fahrzeug</item>
+        <item>Auto-Display</item>
+        <item>CAN-Protokoll</item>
+        <item>Menü Design</item>
+        <item>Konfigurationsimport</item>
+        <item>Boot Logo</item>
+    </array>
+    <array name="set_function">
+        <item>System</item>
+        <item>Navigation</item>
+        <item>Lautstärke</item>
+        <item>Sound</item>
+        <item>Sprache</item>
+        <item>Uhrzeit</item>
+        <item>Systeminfo</item>
+        <item>Android</item>
+        <item>Erweitert</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Navigation</item>
+        <item>System</item>
+        <item>Lautstärke</item>
+        <item>Sound</item>
+        <item>Sprache</item>
+        <item>Uhrzeit</item>
+        <item>Systeminfo</item>
+        <item>Android</item>
+        <item>Erweitert</item>
+    </array>
+</resources>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Навигация</item>
+        <item>Видео</item>
+        <item>Музыка</item>
+        <item>Телефон</item>
+        <item>Автомобиль</item>
+        <item>Панель</item>
+        <item>Зеркало</item>
+        <item>Файлы</item>
+        <item>Видеорегистратор</item>
+        <item>Настройки</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Навигация</item>
+        <item>Музыка</item>
+        <item>Телефон</item>
+        <item>Автомобиль</item>
+        <item>Настройки</item>
+        <item>Видео</item>
+        <item>Файлы</item>
+        <item>Зеркало</item>
+        <item>Панель</item>
+        <item>Видеорегистратор</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Навигация</item>
+        <item>Музыка</item>
+        <item>Телефон</item>
+        <item>Автомобиль</item>
+        <item>Настройки</item>
+        <item>Видео</item>
+        <item>Apps</item>
+        <item>PhoneLink</item>
+        <item>Панель</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </array>
+    <array name="set_factory">
+        <item>Функции</item>
+        <item>Автомобиль</item>
+        <item>Car Display</item>
+        <item>Протокол CAN</item>
+        <item>UI Config</item>
+        <item>Импорт конфигурации</item>
+        <item>Boot Logo</item>
+    </array>
+    <array name="set_function">
+        <item>Система</item>
+        <item>Навигация</item>
+        <item>Громкость</item>
+        <item>Звук</item>
+        <item>Язык</item>
+        <item>Время</item>
+        <item>Номер версии</item>
+        <item>Android</item>
+        <item>Завод</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Навигация</item>
+        <item>Система</item>
+        <item>Громкость</item>
+        <item>Звук</item>
+        <item>Язык</item>
+        <item>Время</item>
+        <item>Номер версии</item>
+        <item>Android</item>
+        <item>Завод</item>
+    </array>
+</resources>
