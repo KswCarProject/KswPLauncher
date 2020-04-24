@@ -17,6 +17,7 @@ import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.view.Ntg630ControlView;
 import com.wits.ksw.launcher.view.Ntg6ControlView;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxBean;
+import com.wits.ksw.launcher.view.ug.WiewFocusUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.McuStatus;
@@ -220,8 +221,14 @@ public class BcNTG5ViewModel extends BcVieModel {
         }, 200);
     }
 
+    public void showLastViewFocus() {
+        int resId = KswUtils.getLastViewId(this.context);
+        Log.i(KswApplication.TAG, "showLastViewFocus: resId=" + resId);
+        WiewFocusUtils.setViewRequestFocus(this.activity.getWindow().getDecorView().findViewById(resId));
+    }
+
     public void onItemClick(final View view, final BcItem item) {
-        Log.i(KswApplication.TAG, "onItemClick: " + item.getId());
+        Log.i(KswApplication.TAG, "onItemClick: " + item.getId() + " " + view.getId());
         addLastViewFocused(view);
         refreshLastViewFocused();
         this.uiHandler.removeCallbacksAndMessages((Object) null);

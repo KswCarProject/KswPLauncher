@@ -234,7 +234,9 @@ public class MainActivity extends BaseThemeActivity {
         this.mBcNTG5ViewModel = (BcNTG5ViewModel) ViewModelProviders.of((FragmentActivity) this).get(BcNTG5ViewModel.class);
         this.mBcNTG5ViewModel.setActivity(this);
         this.ntg5Binding = (ActivityMainBenzNtg5Binding) DataBindingUtil.setContentView(this, R.layout.activity_main_benz_ntg5);
-        this.ntg5Binding.recyclerView2.setLayoutManager(new LinearLayoutManager(this, 0, false));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, 0, false);
+        this.ntg5Binding.recyclerView2.setItemViewCacheSize(3);
+        this.ntg5Binding.recyclerView2.setLayoutManager(linearLayoutManager);
         this.ntg5Binding.recyclerView2.setAdapter(new BenzNTG5RecyclerViewAdapter(this.mBcNTG5ViewModel));
         new LinearSnapHelper() {
             public boolean onFling(int velocityX, int velocityY) {

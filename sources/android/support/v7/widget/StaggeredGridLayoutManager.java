@@ -1046,7 +1046,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     }
 
     /* JADX WARNING: type inference failed for: r14v0 */
-    /* JADX WARNING: type inference failed for: r14v1, types: [boolean, int] */
+    /* JADX WARNING: type inference failed for: r14v1, types: [int, boolean] */
     /* JADX WARNING: type inference failed for: r14v5 */
     private int fill(RecyclerView.Recycler recycler, LayoutState layoutState, RecyclerView.State state) {
         int targetLine;

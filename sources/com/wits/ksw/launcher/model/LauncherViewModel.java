@@ -266,6 +266,17 @@ public class LauncherViewModel extends BaseViewModel {
         Log.i(KswApplication.TAG, "refreshLastViewFocused: lastViewFocused null  ");
     }
 
+    public void refreshViewFocused(View view) {
+        if (view != null) {
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+            view.setFocusableInTouchMode(false);
+            Log.i(KswApplication.TAG, "refreshLastViewFocused: lastViewFocused=" + view.getId());
+            return;
+        }
+        Log.i(KswApplication.TAG, "refreshLastViewFocused: lastViewFocused null  ");
+    }
+
     private void registerBtContentObserver() {
         this.contentResolver.registerContentObserver(Settings.System.getUriFor(KeyConfig.Android_Bt_Switch), false, new ContentObserver(new Handler()) {
             public void onChange(boolean selfChange, Uri uri) {

@@ -10,9 +10,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.wits.ksw.launcher.adpater.BenzNTG5RecyclerViewAdapter;
 
 public class NTG5ImageView extends AppCompatImageView implements View.OnFocusChangeListener {
     public static final String TAG = "NTG5ImageView";
+    private BenzNTG5RecyclerViewAdapter adapter;
     private TextView mTextView;
 
     public NTG5ImageView(Context context) {
@@ -21,6 +23,14 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
 
     public TextView getTextView() {
         return this.mTextView;
+    }
+
+    public BenzNTG5RecyclerViewAdapter getAdapter() {
+        return this.adapter;
+    }
+
+    public void setAdapter(BenzNTG5RecyclerViewAdapter adapter2) {
+        this.adapter = adapter2;
     }
 
     public void bindTextView(TextView textView) {
@@ -51,6 +61,9 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.mTextView.getLayoutParams();
             lp.setMargins(0, 0, 0, 144);
             this.mTextView.setLayoutParams(lp);
+        }
+        if (this.adapter != null) {
+            this.adapter.setFocusPosition(this);
         }
     }
 

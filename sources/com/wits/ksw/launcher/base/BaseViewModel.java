@@ -18,7 +18,7 @@ import com.wits.ksw.launcher.view.AppsActivity;
 @BindingMethods({@BindingMethod(attribute = "setOnClickListener", method = "onClickListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnCheckedChangeListener", method = "onCheckedChangeListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnFocusChangeListener", method = "onFocusChangeListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnItemClickListener", method = "onItemClickListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnItemLongClickListener", method = "onItemLongClickListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnItemChangeListener", method = "onItemChangerListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnSeekBarChangeListener", method = "onSeekBarChangeListener", type = BaseViewModel.class)})
 public abstract class BaseViewModel extends ViewModel {
     protected static final String TAG = "KSWLauncher";
-    private Activity activity;
+    protected Activity activity;
     /* access modifiers changed from: protected */
     public ContentResolver contentResolver;
     /* access modifiers changed from: protected */
