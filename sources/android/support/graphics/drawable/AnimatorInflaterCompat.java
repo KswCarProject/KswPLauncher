@@ -862,17 +862,17 @@ public class AnimatorInflaterCompat {
                         while (true) {
                             keyframes = keyframes2;
                             type = j;
-                            int type2 = j2;
-                            if (type2 >= count - 1) {
+                            int j3 = j2;
+                            if (j3 >= count - 1) {
                                 f = 0.0f;
                                 break;
                             }
                             f = 0.0f;
-                            if (keyframeArray[type2].getFraction() >= 0.0f) {
+                            if (keyframeArray[j3].getFraction() >= 0.0f) {
                                 break;
                             }
-                            endIndex = type2;
-                            j2 = type2 + 1;
+                            endIndex = j3;
+                            j2 = j3 + 1;
                             keyframes2 = keyframes;
                             j = type;
                         }

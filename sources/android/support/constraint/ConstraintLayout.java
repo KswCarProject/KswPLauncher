@@ -385,7 +385,7 @@ public class ConstraintLayout extends ViewGroup {
                             int resolvedRightToLeft3 = layoutParams2.rightToLeft;
                             resolvedRightToRight2 = layoutParams2.rightToRight;
                             int i12 = layoutParams2.goneLeftMargin;
-                            int resolveGoneRightMargin3 = layoutParams2.goneRightMargin;
+                            int resolvedLeftToRight4 = layoutParams2.goneRightMargin;
                             float resolvedHorizontalBias4 = layoutParams2.horizontalBias;
                             if (resolvedLeftToLeft7 == -1 && resolvedLeftToRight3 == -1) {
                                 resolvedLeftToLeft4 = resolvedLeftToLeft7;
@@ -401,7 +401,7 @@ public class ConstraintLayout extends ViewGroup {
                                             resolvedRightToRight2 = layoutParams2.endToEnd;
                                         }
                                     }
-                                    resolveGoneRightMargin = resolveGoneRightMargin3;
+                                    resolveGoneRightMargin = resolvedLeftToRight4;
                                     resolvedLeftToRight = resolvedLeftToRight3;
                                     i2 = -1;
                                     resolvedLeftToLeft = resolvedLeftToLeft3;
@@ -418,7 +418,7 @@ public class ConstraintLayout extends ViewGroup {
                             if (resolvedRightToLeft3 == -1) {
                             }
                             resolvedLeftToLeft3 = resolvedLeftToLeft2;
-                            resolveGoneRightMargin = resolveGoneRightMargin3;
+                            resolveGoneRightMargin = resolvedLeftToRight4;
                             resolvedLeftToRight = resolvedLeftToRight3;
                             i2 = -1;
                             resolvedLeftToLeft = resolvedLeftToLeft3;

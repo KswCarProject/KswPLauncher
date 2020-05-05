@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 
 public class DashboardViewModel extends LauncherViewModel {
     private static final int time = 150;
+    public ObservableBoolean hideOil = new ObservableBoolean(false);
     public ObservableBoolean showAls = new ObservableBoolean();
     public ObservableBoolean showSevenMenu = new ObservableBoolean(false);
 

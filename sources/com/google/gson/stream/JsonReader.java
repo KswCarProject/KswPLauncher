@@ -673,21 +673,21 @@ public class JsonReader implements Closeable {
             int c = start;
             while (c < l) {
                 int p = c + 1;
-                char p2 = buffer2[c];
-                if (p2 == quote) {
+                char c2 = buffer2[c];
+                if (c2 == quote) {
                     this.pos = p;
                     builder.append(buffer2, start, (p - start) - 1);
                     return builder.toString();
-                } else if (p2 == '\\') {
+                } else if (c2 == '\\') {
                     this.pos = p;
                     builder.append(buffer2, start, (p - start) - 1);
                     builder.append(readEscapeCharacter());
-                    int p3 = this.pos;
+                    int p2 = this.pos;
                     l = this.limit;
-                    start = p3;
-                    c = p3;
+                    start = p2;
+                    c = p2;
                 } else {
-                    if (p2 == 10) {
+                    if (c2 == 10) {
                         this.lineNumber++;
                         this.lineStart = p;
                     }
@@ -759,18 +759,18 @@ public class JsonReader implements Closeable {
             int l = this.limit;
             while (c < l) {
                 int p = c + 1;
-                char p2 = buffer2[c];
-                if (p2 == quote) {
+                char c2 = buffer2[c];
+                if (c2 == quote) {
                     this.pos = p;
                     return;
-                } else if (p2 == '\\') {
+                } else if (c2 == '\\') {
                     this.pos = p;
                     readEscapeCharacter();
-                    int p3 = this.pos;
+                    int p2 = this.pos;
                     l = this.limit;
-                    c = p3;
+                    c = p2;
                 } else {
-                    if (p2 == 10) {
+                    if (c2 == 10) {
                         this.lineNumber++;
                         this.lineStart = p;
                     }

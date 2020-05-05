@@ -129,7 +129,7 @@ Name: classes.dex
 SHA-256-Digest: ZRTFFZEdhnzpOUrF8uFK6Qm1M4LanRrqiwXYRl6ydzQ=
 
 Name: classes2.dex
-SHA-256-Digest: 5ajcNhaDknq3OdyHo+xJmR9S8k8ROjd0LDRmX3hDe9A=
+SHA-256-Digest: 4ccp3puSmQ9nGHHIOODDzcz7MQlEXL1sOjUpO46nE8g=
 
 Name: res/anim/abc_fade_in.xml
 SHA-256-Digest: HKmvv61b/dCu+BeaMa2gBq1tMidK1sG9PHbgakJAaa8=
@@ -5691,7 +5691,7 @@ Name: res/layout/activity_dash_board.xml
 SHA-256-Digest: tvRBpf1csYS17AQGIEdZyFQqGsGYQSlj1MDmS136Igs=
 
 Name: res/layout/activity_dash_board_als.xml
-SHA-256-Digest: 1DlM4twALqYdW/nR8OmM3WpgOWqw5w+mc2HPhDF/33E=
+SHA-256-Digest: LFjU9rwRnO3EEf6NUuSX/mdyKeFczF/mR6YKLnqfzjc=
 
 Name: res/layout/activity_dash_board_seven.xml
 SHA-256-Digest: iv31vYZkZsGJstCUJYWjlKoFLNpmeGaZW+VWvMO9XfM=

@@ -949,7 +949,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 startExtra = this.mPrimaryOrientation.getTotalSpace();
             }
         }
-        if (getClipToPadding()) {
+        if (getClipToPadding() != 0) {
             this.mLayoutState.mStartLine = this.mPrimaryOrientation.getStartAfterPadding() - startExtra;
             this.mLayoutState.mEndLine = this.mPrimaryOrientation.getEndAfterPadding() + endExtra;
         } else {
@@ -1248,8 +1248,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         } else {
             diff = getMaxEnd(this.mPrimaryOrientation.getEndAfterPadding()) - this.mPrimaryOrientation.getEndAfterPadding();
         }
-        int diff2 = diff;
-        return diff2 > 0 ? Math.min(layoutState2.mAvailable, diff2) : i2;
+        int maxEnd = diff;
+        return maxEnd > 0 ? Math.min(layoutState2.mAvailable, maxEnd) : i2;
     }
 
     private LazySpanLookup.FullSpanItem createFullSpanItemFromEnd(int newItemTop) {

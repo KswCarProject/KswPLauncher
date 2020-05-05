@@ -1,6 +1,6 @@
 Signature-Version: 1.0
 Created-By: 1.0 (Android)
-SHA-256-Digest-Manifest: z3qg6WcFgwDP5yZ7TcwhoRRb98lszJFS2mQkk5Os4Ps=
+SHA-256-Digest-Manifest: C+nCXgw2QO+giXKk69ez+GheiF9IlP123VIWFEMhCjs=
 X-Android-APK-Signed: 2
 
 Name: AndroidManifest.xml
@@ -130,7 +130,7 @@ Name: classes.dex
 SHA-256-Digest: UKlyJ8ZoZpYmi+ss/QkDL/tL1KD14SDIfFDLCCKl5fM=
 
 Name: classes2.dex
-SHA-256-Digest: ZNS7Xy2+nrvfug4akoomzcBYjD6r0UUTnidsSqM/ccc=
+SHA-256-Digest: PLFsu3jHR94ANrcdw9hchXBFtlVaL2zp3n3a8IVzoYI=
 
 Name: res/anim/abc_fade_in.xml
 SHA-256-Digest: bHDC7/Wyy/ImRgYsm3Ne9JvZxe8DECbLe5IHXzIzdNQ=
@@ -5692,7 +5692,7 @@ Name: res/layout/activity_dash_board.xml
 SHA-256-Digest: VDOtzuUYF1N+ExixgGlv0tRCbeF3aAupTzBbbVGSOhE=
 
 Name: res/layout/activity_dash_board_als.xml
-SHA-256-Digest: QH1K52mfaKhmLip1OtNlHeKrimmFKl8mrRNkSTHaWEc=
+SHA-256-Digest: wBEUuR9RETZSG4SHKKQrykbK8IWA5yX3s0rrcbDse38=
 
 Name: res/layout/activity_dash_board_seven.xml
 SHA-256-Digest: dEqRisl9KJ5vgDvgt3ImzjSICjC4AGC6I0TFP5s3/E0=

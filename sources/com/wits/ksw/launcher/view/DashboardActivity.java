@@ -17,7 +17,6 @@ import com.wits.ksw.databinding.SevenDasoardBind;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.utils.KeyUtils;
-import com.wits.ksw.launcher.utils.UiThemeUtils;
 
 public class DashboardActivity extends BaseThemeActivity {
     private static final String TAG = "ID7仪表盘";
@@ -70,6 +69,7 @@ public class DashboardActivity extends BaseThemeActivity {
             setFull();
             ((ActivityNtg6DashBoardBinding) DataBindingUtil.setContentView(this, R.layout.activity_ntg6_dash_board)).setViewModel(this.viewMode);
         }
+        this.viewMode.hideOil.set(true);
     }
 
     /* access modifiers changed from: protected */
@@ -111,19 +111,17 @@ public class DashboardActivity extends BaseThemeActivity {
     public void initAudiView() {
         setActivityFull();
         initSevenDasoard();
+        this.viewMode.hideOil.set(false);
     }
 
     /* access modifiers changed from: protected */
     public void initBenzNTG5View() {
         setActivityFull();
-        initSevenDasoard();
+        initBcUiView();
     }
 
     private void initAlsDashboard() {
         final ALSDasoardBind binding = (ALSDasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_als);
-        if (UiThemeUtils.isBenz_NTG6(this)) {
-            binding.oilTextView.setVisibility(8);
-        }
         this.viewMode.setAlsModel(this.viewMode.getAlsModel());
         binding.setViewModel(this.viewMode);
         if (this.viewMode.getAlsModel() == 0) {

@@ -208,7 +208,7 @@ public final class AppViewModel extends LauncherViewModel {
 
     /* access modifiers changed from: private */
     public boolean filterAppDisplay(String packageName) {
-        if (packageName.contains(KswApplication.appContext.getPackageName()) || packageName.contains(GOOGLE_SEARCH_PKG) || packageName.contains(getClass().getPackage().toString()) || packageName.contains(IFLYTEK_PKG) || packageName.contains(DESKCLOCK_PKG)) {
+        if (packageName.contains(KswApplication.appContext.getPackageName()) || packageName.contains(getClass().getPackage().toString()) || packageName.contains(IFLYTEK_PKG) || packageName.contains(DESKCLOCK_PKG)) {
             return true;
         }
         return false;

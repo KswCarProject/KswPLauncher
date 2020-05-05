@@ -974,15 +974,15 @@ public class PathParser {
                     double d = eta12;
                     double eta13 = e2x - (alpha * ep2x);
                     double cosTheta2 = cosTheta;
-                    double q2y = e2y - (alpha * ep2y);
+                    double cosTheta3 = e2y - (alpha * ep2y);
                     p.rLineTo(0.0f, 0.0f);
                     double d2 = q1x;
                     double d3 = q1y;
                     double d4 = eta13;
                     double q1y2 = e2x;
-                    double d5 = q2y;
+                    double d5 = cosTheta3;
                     double e2y2 = e2y;
-                    p.cubicTo((float) q1x, (float) q1y, (float) eta13, (float) q2y, (float) q1y2, (float) e2y2);
+                    p.cubicTo((float) q1x, (float) q1y, (float) eta13, (float) cosTheta3, (float) q1y2, (float) e2y2);
                     e1x2 = q1y2;
                     e1y2 = e2y2;
                     ep1x = ep2x;

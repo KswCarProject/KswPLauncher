@@ -294,38 +294,38 @@ public final class GestureDetectorCompat {
                     int i8 = 0;
                     while (true) {
                         int action6 = i;
-                        int action7 = i8;
-                        if (action7 < count) {
-                            if (action7 == upIndex2) {
+                        int i9 = i8;
+                        if (i9 < count) {
+                            if (i9 == upIndex2) {
                                 pointerUp = pointerUp2;
                                 skipIndex = skipIndex2;
                                 upIndex = upIndex2;
                             } else {
                                 pointerUp = pointerUp2;
-                                int id2 = motionEvent.getPointerId(action7);
+                                int id2 = motionEvent.getPointerId(i9);
                                 skipIndex = skipIndex2;
                                 upIndex = upIndex2;
                                 if ((this.mVelocityTracker.getXVelocity(id2) * x1) + (this.mVelocityTracker.getYVelocity(id2) * y1) < 0.0f) {
-                                    int i9 = id2;
+                                    int i10 = id2;
                                     this.mVelocityTracker.clear();
                                     return false;
                                 }
                             }
-                            i8 = action7 + 1;
+                            i8 = i9 + 1;
                             i = action6;
                             pointerUp2 = pointerUp;
                             skipIndex2 = skipIndex;
                             upIndex2 = upIndex;
                         } else {
-                            int i10 = skipIndex2;
-                            int i11 = upIndex2;
+                            int i11 = skipIndex2;
+                            int i12 = upIndex2;
                             return false;
                         }
                     }
                 default:
-                    int i12 = i;
+                    int i13 = i;
                     boolean z6 = pointerUp2;
-                    int i13 = skipIndex2;
+                    int i14 = skipIndex2;
                     return false;
             }
         }
