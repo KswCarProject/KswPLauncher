@@ -32,6 +32,7 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
     private TextView audi_home_right_widget_textview;
     private int auxsw = 0;
     private int benzpane = 0;
+    private int carManufacturer = 0;
     private int cardoor = 0;
     private int carseep = 0;
     private CheckBox cbox_bencAux;
@@ -91,6 +92,12 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
             this.benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
             this.audiLeftLogoIndex = PowerManagerApp.getSettingsInt(KeyConfig.AUDI_UI_LEFT_ID);
             this.audiRightWidgetIndex = PowerManagerApp.getSettingsInt(KeyConfig.AUDI_UI_RIGHT_ID);
+            this.carManufacturer = PowerManagerApp.getSettingsInt(KeyConfig.CarManufacturer);
+            String str = TAG;
+            Log.d(str, "initData: " + this.carManufacturer);
+            if (this.carManufacturer == 0) {
+                this.carManufacturer = UiThemeUtils.getCarManufacturer(this.m_con);
+            }
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -102,6 +109,7 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
         this.cbox_bencAux = (CheckBox) this.view.findViewById(R.id.cbox_bencAux);
         int i = 0;
         this.cbox_canBus.setChecked(false);
+        boolean isAudi = true;
         this.cbox_dcld.setChecked(this.isOldBmwx == 0);
         this.cbox_dcld.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -288,7 +296,7 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
         boolean isBmw = UiThemeUtils.isBMW_EVO_ID5(this.m_con) || UiThemeUtils.isBMW_EVO_ID6(this.m_con) || UiThemeUtils.isBMW_EVO_ID6_GS(this.m_con) || UiThemeUtils.isBMW_EVO_ID7(this.m_con) || UiThemeUtils.isCommon_UI_GS_UG(this.m_con) || UiThemeUtils.isCommon_UI_GS(this.m_con) || UiThemeUtils.isBenz_MBUX(this.m_con) || UiThemeUtils.isBenz_NTG6(this.m_con) || UiThemeUtils.isBenz_GS(this.m_con);
         this.ccciDTextView.setVisibility(isBmw ? 0 : 8);
         this.rdg_ccciD.setVisibility(isBmw ? 0 : 8);
-        boolean enableAux = UiThemeUtils.isBenz_MBUX(this.m_con) || UiThemeUtils.isBenz_NTG6(this.m_con) || UiThemeUtils.isBenz_GS(this.m_con);
+        boolean enableAux = this.carManufacturer == 2;
         this.cbox_bencAux.setVisibility(enableAux ? 0 : 8);
         this.cbox_bencPank.setVisibility(enableAux ? 0 : 8);
         this.cbox_bencPank_root.setVisibility(enableAux ? 0 : 8);
@@ -332,7 +340,9 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
                 }
             }
         });
-        boolean isAudi = UiThemeUtils.isAudi_MMI_4G(this.m_con);
+        if (this.carManufacturer != 3) {
+            isAudi = false;
+        }
         this.audi_home_left_widget_textview.setVisibility(isAudi ? 0 : 8);
         this.audi_home_right_widget_textview.setVisibility(isAudi ? 0 : 8);
         this.audiHomeLeftRadioGroup.setVisibility(isAudi ? 0 : 8);

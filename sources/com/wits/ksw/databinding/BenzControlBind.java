@@ -16,8 +16,12 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.BcVieModel;
 
 public abstract class BenzControlBind extends ViewDataBinding {
-    @NonNull
+    @Nullable
     public final ImageView brightnessBtn;
+    @Nullable
+    public final ImageView brightnessBtnLeft;
+    @Nullable
+    public final ImageView brightnessBtnRight;
     @NonNull
     public final CheckBox checkBox;
     @NonNull
@@ -39,9 +43,11 @@ public abstract class BenzControlBind extends ViewDataBinding {
 
     public abstract void setMBcVieModel(@Nullable BcVieModel bcVieModel);
 
-    protected BenzControlBind(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtn2, CheckBox checkBox3, CheckBox checkBox22, ImageView controlBtn12, ImageView controlBtn22, ImageView controlBtn32, ImageView imageView2, ConstraintLayout linearLayout2, ImageView netgControlImageview2) {
+    protected BenzControlBind(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtn2, ImageView brightnessBtnLeft2, ImageView brightnessBtnRight2, CheckBox checkBox3, CheckBox checkBox22, ImageView controlBtn12, ImageView controlBtn22, ImageView controlBtn32, ImageView imageView2, ConstraintLayout linearLayout2, ImageView netgControlImageview2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.brightnessBtn = brightnessBtn2;
+        this.brightnessBtnLeft = brightnessBtnLeft2;
+        this.brightnessBtnRight = brightnessBtnRight2;
         this.checkBox = checkBox3;
         this.checkBox2 = checkBox22;
         this.controlBtn1 = controlBtn12;

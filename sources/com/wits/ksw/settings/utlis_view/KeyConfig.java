@@ -23,6 +23,7 @@ public class KeyConfig {
     public static final String CAR_NAVI_VOL = "Car_navi_vol";
     public static final String CAR_PHONE_VOL = "Car_phone_vol";
     public static final String CCC_ID = "CCC_IDrive";
+    public static final String CarManufacturer = "car_manufacturer";
     public static final String DAO_CHE_GJ = "ShowTrack";
     public static final String DAO_CHE_JY = "ReversingMuteSelect";
     public static final String DAO_CHE_LD = "ShowRadar";

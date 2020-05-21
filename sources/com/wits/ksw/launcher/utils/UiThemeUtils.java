@@ -65,6 +65,22 @@ public class UiThemeUtils {
         return TextUtils.equals(getUiName(context), BMW_EVO_ID6_GS);
     }
 
+    public static int getCarManufacturer(Context context) {
+        if (isBMW_EVO_ID5(context) || isBMW_EVO_ID6(context)) {
+            return 1;
+        }
+        if ((isBMW_EVO_ID6_GS(context) && isBMW_EVO_ID7(context)) || isCommon_UI_GS(context) || isCommon_UI_GS_UG(context)) {
+            return 1;
+        }
+        if (isBenz_NTG5(context) || isBenz_GS(context) || isBenz_NTG6(context) || isBenz_MBUX(context)) {
+            return 2;
+        }
+        if (isAudi_MMI_4G(context)) {
+            return 3;
+        }
+        return 0;
+    }
+
     public static String getUiName(Context context) {
         return Settings.System.getString(context.getContentResolver(), "UiName");
     }

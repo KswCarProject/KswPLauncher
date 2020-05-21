@@ -2,6 +2,7 @@ package com.wits.ksw.settings.id7.layout_factory;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.wits.ksw.settings.utlis_view.DialogViews;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class FactoryInput extends FrameLayout implements View.OnClickListener {
+    public static final String TAG = "FactoryInput";
     /* access modifiers changed from: private */
     public DialogViews dialogViews;
     private String factoryVer = "";
@@ -28,6 +30,7 @@ public class FactoryInput extends FrameLayout implements View.OnClickListener {
         this.m_con = context;
         this.dialogViews = new DialogViews(this.m_con);
         this.view = LayoutInflater.from(this.m_con).inflate(R.layout.factory_input, (ViewGroup) null);
+        Log.d(TAG, " view " + this.view);
         this.layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView();
@@ -54,6 +57,7 @@ public class FactoryInput extends FrameLayout implements View.OnClickListener {
             }
         });
         this.restartView = this.view.findViewById(R.id.tv_restart);
+        Log.d(TAG, " restartView " + this.restartView);
         this.restartView.setOnClickListener($$Lambda$FactoryInput$HW8JpZHdzbdm4OHzfpZZLWmuThA.INSTANCE);
     }
 

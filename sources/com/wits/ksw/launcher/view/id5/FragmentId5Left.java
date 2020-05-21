@@ -24,45 +24,45 @@ import com.wits.ksw.launcher.utils.KswUtils;
 
 public class FragmentId5Left extends Fragment implements View.OnKeyListener, View.OnClickListener {
     private static final String TAG = "KSWLauncher";
-    @InjectView(2131231022)
-    CheckBox id5ItemBrowser;
-    @InjectView(2131231023)
-    ImageView id5ItemBrowserCursor;
     @InjectView(2131231024)
-    CheckBox id5ItemBt;
+    CheckBox id5ItemBrowser;
     @InjectView(2131231025)
-    ImageView id5ItemBtCursor;
+    ImageView id5ItemBrowserCursor;
     @InjectView(2131231026)
-    CheckBox id5ItemCar;
+    CheckBox id5ItemBt;
     @InjectView(2131231027)
-    ImageView id5ItemCarCursor;
-    @InjectView(2131231030)
-    CheckBox id5ItemFile;
+    ImageView id5ItemBtCursor;
+    @InjectView(2131231028)
+    CheckBox id5ItemCar;
     @InjectView(2131231029)
+    ImageView id5ItemCarCursor;
+    @InjectView(2131231032)
+    CheckBox id5ItemFile;
+    @InjectView(2131231031)
     ImageView id5ItemFileCursor;
-    @InjectView(2131231033)
-    CheckBox id5ItemMusic;
-    @InjectView(2131231034)
-    ImageView id5ItemMusicCursor;
     @InjectView(2131231035)
-    CheckBox id5ItemNavi;
+    CheckBox id5ItemMusic;
     @InjectView(2131231036)
+    ImageView id5ItemMusicCursor;
+    @InjectView(2131231037)
+    CheckBox id5ItemNavi;
+    @InjectView(2131231038)
     ImageView id5ItemNaviCursor;
-    @InjectView(2131231099)
+    @InjectView(2131231101)
     ImageView imageView7;
     /* access modifiers changed from: private */
     public MainActivity mainActivity;
-    @InjectView(2131231429)
+    @InjectView(2131231431)
     TextView textView10;
-    @InjectView(2131231441)
-    TextView textView5;
-    @InjectView(2131231442)
-    TextView textView6;
     @InjectView(2131231443)
-    TextView textView7;
+    TextView textView5;
     @InjectView(2131231444)
-    TextView textView8;
+    TextView textView6;
     @InjectView(2131231445)
+    TextView textView7;
+    @InjectView(2131231446)
+    TextView textView8;
+    @InjectView(2131231447)
     TextView textView9;
     private LauncherViewModel viewModel;
 

@@ -3,8 +3,10 @@ package com.wits.ksw.launcher.view;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +19,9 @@ import com.wits.ksw.databinding.SevenDasoardBind;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.utils.KeyUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
+import com.wits.ksw.settings.utlis_view.KeyConfig;
+import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class DashboardActivity extends BaseThemeActivity {
     private static final String TAG = "ID7仪表盘";
@@ -26,8 +31,27 @@ public class DashboardActivity extends BaseThemeActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         this.viewMode = (DashboardViewModel) ViewModelProviders.of((FragmentActivity) this).get(DashboardViewModel.class);
         this.viewMode.initData();
+        initCarManufacturer();
         KeyUtils.pressKey(391);
         super.onCreate(savedInstanceState);
+    }
+
+    private void initCarManufacturer() {
+        int carManufacturer = 0;
+        try {
+            carManufacturer = PowerManagerApp.getSettingsInt(KeyConfig.CarManufacturer);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        if (carManufacturer == 0) {
+            carManufacturer = UiThemeUtils.getCarManufacturer(this);
+        }
+        Log.d(TAG, "initCarManufacturer: " + carManufacturer);
+        if (carManufacturer == 2 || carManufacturer == 3) {
+            this.viewMode.hideOil.set(true);
+        } else {
+            this.viewMode.hideOil.set(false);
+        }
     }
 
     /* access modifiers changed from: protected */
@@ -109,9 +133,13 @@ public class DashboardActivity extends BaseThemeActivity {
 
     /* access modifiers changed from: protected */
     public void initAudiView() {
-        setActivityFull();
-        initSevenDasoard();
-        this.viewMode.hideOil.set(false);
+        if (this.viewMode.isSevenModel()) {
+            setActivityFull();
+            initSevenDasoard();
+            return;
+        }
+        setFull();
+        ((DasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board)).setViewModel(this.viewMode);
     }
 
     /* access modifiers changed from: protected */

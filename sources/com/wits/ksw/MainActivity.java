@@ -62,11 +62,11 @@ public class MainActivity extends BaseThemeActivity {
     public com.wits.ksw.databinding.MainActivity bmwBinding;
     private BmwId6ViewPagerAdpater bmwId6ViewPagerAdpater;
     public ID5MaindBind id5MaindBind;
-    @InjectView(2131231065)
+    @InjectView(2131231067)
     ImageView id6LeftBtn;
-    @InjectView(2131231066)
+    @InjectView(2131231068)
     public ViewPager id6MainViewPager;
-    @InjectView(2131231078)
+    @InjectView(2131231080)
     ImageView id6RightBtn;
     public BcNTG5ViewModel mBcNTG5ViewModel;
     public BcVieModel mBcVieModel;

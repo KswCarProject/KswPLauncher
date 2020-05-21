@@ -122,11 +122,11 @@ public class AudiNaviActivity extends AudiSubActivity {
                 com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder r1 = new com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder
                 r1.<init>()
                 r0 = r1
-                r1 = 2131231187(0x7f0801d3, float:1.8078448E38)
+                r1 = 2131231189(0x7f0801d5, float:1.8078452E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.RadioButton r1 = (android.widget.RadioButton) r1
                 r0.radioButton = r1
-                r1 = 2131231186(0x7f0801d2, float:1.8078446E38)
+                r1 = 2131231188(0x7f0801d4, float:1.807845E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.ImageView r1 = (android.widget.ImageView) r1
                 r0.icon = r1

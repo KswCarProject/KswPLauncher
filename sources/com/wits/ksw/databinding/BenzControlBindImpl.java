@@ -30,18 +30,19 @@ public class BenzControlBindImpl extends BenzControlBind {
     private OnClickListenerImpl3 mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
 
     static {
-        sViewsWithIds.put(R.id.netgControlImageview, 8);
+        sViewsWithIds.put(R.id.netgControlImageview, 9);
     }
 
     public BenzControlBindImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 10, sIncludes, sViewsWithIds));
     }
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private BenzControlBindImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 6, bindings[5], bindings[6], bindings[7], bindings[2], bindings[3], bindings[4], bindings[1], bindings[0], bindings[8]);
+        super(bindingComponent, root, 6, (ImageView) null, bindings[5], bindings[6], bindings[7], bindings[8], bindings[2], bindings[3], bindings[4], bindings[1], bindings[0], bindings[9]);
         this.mDirtyFlags = -1;
-        this.brightnessBtn.setTag((Object) null);
+        this.brightnessBtnLeft.setTag((Object) null);
+        this.brightnessBtnRight.setTag((Object) null);
         this.checkBox.setTag((Object) null);
         this.checkBox2.setTag((Object) null);
         this.controlBtn1.setTag((Object) null);
@@ -421,7 +422,8 @@ public class BenzControlBindImpl extends BenzControlBind {
         }
         if ((dirtyFlags & 192) != 0) {
             ObservableBoolean observableBoolean5 = mBcVieModelControlBeanPassairbar;
-            this.brightnessBtn.setOnClickListener(mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener);
+            this.brightnessBtnLeft.setOnClickListener(mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener);
+            this.brightnessBtnRight.setOnClickListener(mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener);
             this.checkBox.setOnCheckedChangeListener(mBcVieModelLeftOnCheckedChangeListener);
             this.checkBox2.setOnCheckedChangeListener(mBcVieModelRightOnCheckedChangeListener);
             this.controlBtn1.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener);

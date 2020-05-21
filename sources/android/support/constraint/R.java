@@ -69,19 +69,19 @@ public final class R {
 
     public static final class id {
         public static final int bottom = 2131230911;
-        public static final int end = 2131230993;
-        public static final int gone = 2131231008;
-        public static final int invisible = 2131231127;
-        public static final int left = 2131231149;
-        public static final int packed = 2131231207;
-        public static final int parent = 2131231208;
-        public static final int percent = 2131231210;
-        public static final int right = 2131231348;
-        public static final int spread = 2131231406;
-        public static final int spread_inside = 2131231407;
-        public static final int start = 2131231412;
-        public static final int top = 2131231453;
-        public static final int wrap = 2131231578;
+        public static final int end = 2131230995;
+        public static final int gone = 2131231010;
+        public static final int invisible = 2131231129;
+        public static final int left = 2131231151;
+        public static final int packed = 2131231209;
+        public static final int parent = 2131231210;
+        public static final int percent = 2131231212;
+        public static final int right = 2131231350;
+        public static final int spread = 2131231408;
+        public static final int spread_inside = 2131231409;
+        public static final int start = 2131231414;
+        public static final int top = 2131231455;
+        public static final int wrap = 2131231580;
 
         private id() {
         }

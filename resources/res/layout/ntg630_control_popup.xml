@@ -8,5 +8,6 @@
         <ImageView android:id="@+id/foldLeftBtn" android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ntg55_ctrlpanel_ntg30_selector"/>
         <ImageView android:id="@+id/foldRightBtn" android:tag="binding_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ntg55_ctrlpanel_ntg30_selector" android:layout_marginStart="15dp"/>
     </LinearLayout>
-    <ImageView android:id="@+id/brightnessBtn" android:tag="binding_7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="-5dp" android:src="@drawable/ntg55_ctrlpanel_knob_selector" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"/>
+    <ImageView android:id="@+id/brightnessBtn_left" android:tag="binding_7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13dp" android:layout_marginBottom="-5dp" android:src="@drawable/ntg55_ctrlpanel_knob_selector" android:layout_alignParentBottom="true"/>
+    <ImageView android:id="@+id/brightnessBtn_right" android:tag="binding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="13dp" android:layout_marginBottom="-5dp" android:src="@drawable/ntg55_ctrlpanel_knob_selector" android:layout_alignParentRight="true" android:layout_alignParentBottom="true"/>
 </RelativeLayout>

@@ -88,25 +88,25 @@ public final class R {
         public static final int actions = 2131230769;
         public static final int async = 2131230790;
         public static final int blocking = 2131230892;
-        public static final int chronometer = 2131230958;
-        public static final int dataBinding = 2131230977;
-        public static final int forever = 2131231004;
-        public static final int icon = 2131231018;
-        public static final int icon_group = 2131231019;
-        public static final int info = 2131231125;
-        public static final int italic = 2131231128;
-        public static final int line1 = 2131231150;
-        public static final int line3 = 2131231151;
-        public static final int normal = 2131231195;
-        public static final int notification_background = 2131231196;
-        public static final int notification_main_column = 2131231197;
-        public static final int notification_main_column_container = 2131231198;
-        public static final int right_icon = 2131231349;
-        public static final int right_side = 2131231350;
-        public static final int text = 2131231424;
-        public static final int text2 = 2131231425;
-        public static final int time = 2131231447;
-        public static final int title = 2131231450;
+        public static final int chronometer = 2131230960;
+        public static final int dataBinding = 2131230979;
+        public static final int forever = 2131231006;
+        public static final int icon = 2131231020;
+        public static final int icon_group = 2131231021;
+        public static final int info = 2131231127;
+        public static final int italic = 2131231130;
+        public static final int line1 = 2131231152;
+        public static final int line3 = 2131231153;
+        public static final int normal = 2131231197;
+        public static final int notification_background = 2131231198;
+        public static final int notification_main_column = 2131231199;
+        public static final int notification_main_column_container = 2131231200;
+        public static final int right_icon = 2131231351;
+        public static final int right_side = 2131231352;
+        public static final int text = 2131231426;
+        public static final int text2 = 2131231427;
+        public static final int time = 2131231449;
+        public static final int title = 2131231452;
 
         private id() {
         }

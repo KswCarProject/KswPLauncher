@@ -30,14 +30,15 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
     private OnClickListenerImpl5 mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
 
     public Ntg630ControlPopupBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 8, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
     }
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private Ntg630ControlPopupBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 3, bindings[7], bindings[2], bindings[3], bindings[4], bindings[5], bindings[6], bindings[1], bindings[0]);
+        super(bindingComponent, root, 3, bindings[7], bindings[8], bindings[2], bindings[3], bindings[4], bindings[5], bindings[6], bindings[1], bindings[0]);
         this.mDirtyFlags = -1;
-        this.brightnessBtn.setTag((Object) null);
+        this.brightnessBtnLeft.setTag((Object) null);
+        this.brightnessBtnRight.setTag((Object) null);
         this.controlBtn1.setTag((Object) null);
         this.controlBtn2.setTag((Object) null);
         this.controlBtn3.setTag((Object) null);
@@ -45,7 +46,6 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
         this.foldRightBtn.setTag((Object) null);
         this.imageView.setTag((Object) null);
         this.linearLayout.setTag((Object) null);
-        View view = root;
         setRootTag(root);
         invalidateAll();
     }
@@ -318,7 +318,8 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
         Drawable mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOnControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOffN2 = drawable3;
         if ((dirtyFlags & 24) != 0) {
             ObservableBoolean observableBoolean2 = mBcVieModelControlBeanPassairbar;
-            this.brightnessBtn.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener2);
+            this.brightnessBtnLeft.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener2);
+            this.brightnessBtnRight.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener2);
             this.controlBtn1.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener);
             this.controlBtn2.setOnClickListener(mBcVieModelOnEspClickAndroidViewViewOnClickListener2);
             this.controlBtn3.setOnClickListener(mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener);

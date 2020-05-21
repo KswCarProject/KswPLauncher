@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import com.wits.ksw.BuildConfig;
 import com.wits.ksw.KswApplication;
+import com.wits.ksw.R;
 import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.KswUtils;
@@ -371,9 +372,19 @@ public class BcVieModel extends LauncherViewModel {
     public void showBrightnessDialog(View view) {
         int benzpane = KswUtils.getBenzpaneVersion();
         if (benzpane == 1) {
-            Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this);
+            if (view.getId() == R.id.brightnessBtn_left) {
+                Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
+            }
+            if (view.getId() == R.id.brightnessBtn_right) {
+                Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
+            }
         } else if (benzpane == 2) {
-            Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this);
+            if (view.getId() == R.id.brightnessBtn_left) {
+                Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
+            }
+            if (view.getId() == R.id.brightnessBtn_right) {
+                Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
+            }
         }
     }
 }

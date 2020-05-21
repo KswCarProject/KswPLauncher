@@ -47,6 +47,7 @@ public class FactoryActivity extends BaseActivity {
     @RequiresApi(api = 26)
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("funtionAc", "====onCreate=====");
         setContentView((int) R.layout.activity_sys_factory);
         initData();
         initLayout();

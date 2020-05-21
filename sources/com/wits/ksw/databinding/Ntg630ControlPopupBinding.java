@@ -16,7 +16,9 @@ import com.wits.ksw.launcher.model.BcVieModel;
 
 public abstract class Ntg630ControlPopupBinding extends ViewDataBinding {
     @NonNull
-    public final ImageView brightnessBtn;
+    public final ImageView brightnessBtnLeft;
+    @NonNull
+    public final ImageView brightnessBtnRight;
     @NonNull
     public final ImageView controlBtn1;
     @NonNull
@@ -36,9 +38,10 @@ public abstract class Ntg630ControlPopupBinding extends ViewDataBinding {
 
     public abstract void setMBcVieModel(@Nullable BcVieModel bcVieModel);
 
-    protected Ntg630ControlPopupBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtn2, ImageView controlBtn12, ImageView controlBtn22, ImageView controlBtn32, ImageView foldLeftBtn2, ImageView foldRightBtn2, ImageView imageView2, RelativeLayout linearLayout2) {
+    protected Ntg630ControlPopupBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtnLeft2, ImageView brightnessBtnRight2, ImageView controlBtn12, ImageView controlBtn22, ImageView controlBtn32, ImageView foldLeftBtn2, ImageView foldRightBtn2, ImageView imageView2, RelativeLayout linearLayout2) {
         super(_bindingComponent, _root, _localFieldCount);
-        this.brightnessBtn = brightnessBtn2;
+        this.brightnessBtnLeft = brightnessBtnLeft2;
+        this.brightnessBtnRight = brightnessBtnRight2;
         this.controlBtn1 = controlBtn12;
         this.controlBtn2 = controlBtn22;
         this.controlBtn3 = controlBtn32;

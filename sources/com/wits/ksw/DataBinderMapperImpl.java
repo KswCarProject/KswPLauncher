@@ -90,6 +90,7 @@ import com.wits.ksw.databinding.NaviSubViewImpl;
 import com.wits.ksw.databinding.NaviSubViewSw600dpLandImpl;
 import com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl;
 import com.wits.ksw.databinding.SevenDasoardBindImpl;
+import com.wits.ksw.databinding.SevenDasoardBindSw600dpLandImpl;
 import com.wits.ksw.databinding.UgHomeFourBindingImpl;
 import com.wits.ksw.databinding.UgHomeOneBindingImpl;
 import com.wits.ksw.databinding.UgHomeThreeBindingImpl;
@@ -262,6 +263,9 @@ public class DataBinderMapperImpl extends DataBinderMapper {
                 }
                 throw new IllegalArgumentException("The tag for activity_dash_board_als is invalid. Received: " + tag);
             case 6:
+                if ("layout-sw600dp-land/activity_dash_board_seven_0".equals(tag)) {
+                    return new SevenDasoardBindSw600dpLandImpl(component, view);
+                }
                 if ("layout/activity_dash_board_seven_0".equals(tag)) {
                     return new SevenDasoardBindImpl(component, view);
                 }
@@ -702,7 +706,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
     }
 
     private static class InnerLayoutIdLookup {
-        static final HashMap<String, Integer> sKeys = new HashMap<>(88);
+        static final HashMap<String, Integer> sKeys = new HashMap<>(89);
 
         private InnerLayoutIdLookup() {
         }
@@ -715,6 +719,7 @@ public class DataBinderMapperImpl extends DataBinderMapper {
             sKeys.put("layout/activity_dash_board_0", Integer.valueOf(R.layout.activity_dash_board));
             sKeys.put("layout/activity_dash_board_als_0", Integer.valueOf(R.layout.activity_dash_board_als));
             sKeys.put("layout-sw600dp-land/activity_dash_board_als_0", Integer.valueOf(R.layout.activity_dash_board_als));
+            sKeys.put("layout-sw600dp-land/activity_dash_board_seven_0", Integer.valueOf(R.layout.activity_dash_board_seven));
             sKeys.put("layout/activity_dash_board_seven_0", Integer.valueOf(R.layout.activity_dash_board_seven));
             sKeys.put("layout-sw600dp-land/activity_id7_apps_0", Integer.valueOf(R.layout.activity_id7_apps));
             sKeys.put("layout/activity_id7_apps_0", Integer.valueOf(R.layout.activity_id7_apps));

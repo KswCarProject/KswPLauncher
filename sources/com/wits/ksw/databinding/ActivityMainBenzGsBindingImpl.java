@@ -25,9 +25,9 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback71;
+    private final View.OnClickListener mCallback78;
     @Nullable
-    private final View.OnClickListener mCallback72;
+    private final View.OnClickListener mCallback79;
     private long mDirtyFlags;
     private OnClickListenerImpl mVmOnControlClickAndroidViewViewOnClickListener;
     @NonNull
@@ -47,8 +47,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         this.mboundView0 = bindings[0];
         this.mboundView0.setTag((Object) null);
         setRootTag(root);
-        this.mCallback71 = new OnClickListener(this, 1);
-        this.mCallback72 = new OnClickListener(this, 2);
+        this.mCallback79 = new OnClickListener(this, 2);
+        this.mCallback78 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -251,8 +251,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         if ((dirtyFlags & 16) != 0) {
             BenzGsViewMoel benzGsViewMoel = vm;
             ObservableInt observableInt = vmPageIndex;
-            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback71);
-            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback72);
+            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback78);
+            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback79);
         } else {
             ObservableInt observableInt2 = vmPageIndex;
         }

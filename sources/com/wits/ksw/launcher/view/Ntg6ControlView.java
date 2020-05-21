@@ -67,7 +67,9 @@ public class Ntg6ControlView {
         return this.popupWindow != null && this.popupWindow.isShowing();
     }
 
-    public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final BcVieModel bcVieModel) {
+    public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final BcVieModel bcVieModel, int light) {
+        String str = TAG;
+        Log.d(str, " showBenzBrightnessDialog light " + light);
         View layout = LayoutInflater.from(context).inflate(R.layout.ntg6_brightness_control_popup, (ViewGroup) null);
         View closeImage = layout.findViewById(R.id.closeImage);
         View addBrImageView = layout.findViewById(R.id.addBrImageView);
@@ -85,14 +87,30 @@ public class Ntg6ControlView {
                 }
             }
         });
-        addBrImageView.setOnClickListener(new View.OnClickListener() {
+        addBrImageView.setOnClickListener(new View.OnClickListener(light, benzData) {
+            private final /* synthetic */ int f$0;
+            private final /* synthetic */ McuStatus.BenzData f$1;
+
+            {
+                this.f$0 = r1;
+                this.f$1 = r2;
+            }
+
             public final void onClick(View view) {
-                Ntg6ControlView.lambda$showBenzBrightnessDailog$0(McuStatus.BenzData.this, view);
+                Ntg6ControlView.lambda$showBenzBrightnessDailog$0(this.f$0, this.f$1, view);
             }
         });
-        subBrImageView.setOnClickListener(new View.OnClickListener() {
+        subBrImageView.setOnClickListener(new View.OnClickListener(light, benzData) {
+            private final /* synthetic */ int f$0;
+            private final /* synthetic */ McuStatus.BenzData f$1;
+
+            {
+                this.f$0 = r1;
+                this.f$1 = r2;
+            }
+
             public final void onClick(View view) {
-                Ntg6ControlView.lambda$showBenzBrightnessDailog$1(McuStatus.BenzData.this, view);
+                Ntg6ControlView.lambda$showBenzBrightnessDailog$1(this.f$0, this.f$1, view);
             }
         });
         closeImage.setOnClickListener(new View.OnClickListener() {
@@ -102,14 +120,22 @@ public class Ntg6ControlView {
         });
     }
 
-    static /* synthetic */ void lambda$showBenzBrightnessDailog$0(McuStatus.BenzData benzData, View v) {
-        benzData.light1 = 1;
+    static /* synthetic */ void lambda$showBenzBrightnessDailog$0(int light, McuStatus.BenzData benzData, View v) {
+        if (light == 1) {
+            benzData.light1 = 1;
+        } else {
+            benzData.light2 = 1;
+        }
         benzData.key3 = 0;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }
 
-    static /* synthetic */ void lambda$showBenzBrightnessDailog$1(McuStatus.BenzData benzData, View v) {
-        benzData.light1 = 255;
+    static /* synthetic */ void lambda$showBenzBrightnessDailog$1(int light, McuStatus.BenzData benzData, View v) {
+        if (light == 1) {
+            benzData.light1 = 255;
+        } else {
+            benzData.light2 = 255;
+        }
         benzData.key3 = 0;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }
