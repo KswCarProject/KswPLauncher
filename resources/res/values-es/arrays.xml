@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="bc_home_netg6_als_6208_item_text_array">
-        <item>Navegacion</item>
-        <item>El video</item>
-        <item>La música</item>
-        <item>Telefono</item>
+        <item>Navegación</item>
+        <item>Vídeo</item>
+        <item>Música</item>
+        <item>Teléfono</item>
         <item>Coche</item>
         <item>Dashboard</item>
         <item>EasyConnected</item>
@@ -13,24 +13,24 @@
         <item>Ajuste</item>
     </array>
     <array name="bc_item_text_array">
-        <item>Navegacion</item>
-        <item>La música</item>
-        <item>Telefono</item>
+        <item>Navegación</item>
+        <item>Música</item>
+        <item>Teléfono</item>
         <item>Coche</item>
         <item>Ajuste</item>
-        <item>El video</item>
+        <item>Vídeo</item>
         <item>Archivos</item>
         <item>EasyConnected</item>
         <item>Dashboard</item>
         <item>DVR</item>
     </array>
     <array name="benz_mbux_home_item_array">
-        <item>Navegacion</item>
-        <item>La música</item>
-        <item>Telefono</item>
+        <item>Navegación</item>
+        <item>Música</item>
+        <item>Teléfono</item>
         <item>Coche</item>
         <item>Ajuste</item>
-        <item>El video</item>
+        <item>Vídeo</item>
         <item>Apps</item>
         <item>EasyConnected</item>
         <item>Dashboard</item>
@@ -71,7 +71,7 @@
         <item>Fábrica</item>
     </array>
     <array name="set_id6_function">
-        <item>Navegacion</item>
+        <item>Navegación</item>
         <item>Sistema</item>
         <item>Volumen</item>
         <item>Ecualizador</item>
