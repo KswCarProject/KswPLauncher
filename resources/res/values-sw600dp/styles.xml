@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="audi_set_checkbox">
+        <item name="android:background">@drawable/audi_set_item_selector</item>
+        <item name="android:paddingLeft">45dp</item>
+        <item name="android:paddingRight">70dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:button">@null</item>
+    </style>
+    <style name="audi_set_default_text">
+        <item name="android:textSize">27sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="audi_set_info_item">
+        <item name="android:gravity">clip_horizontal</item>
+        <item name="android:background">@drawable/audi_set_item_selector</item>
+        <item name="android:paddingLeft">28dp</item>
+    </style>
+    <style name="audi_set_item">
+        <item name="android:textColor">@color/audi_item_text_color</item>
+        <item name="android:gravity">clip_horizontal</item>
+        <item name="android:background">@drawable/audi_set_item_selector</item>
+        <item name="android:paddingLeft">28dp</item>
+        <item name="android:paddingRight">70dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:drawableRight">@drawable/audi_set_item_icon_selector</item>
+    </style>
+</resources>

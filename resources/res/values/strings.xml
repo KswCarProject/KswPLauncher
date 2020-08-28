@@ -184,6 +184,7 @@
     <string name="eq_text9">Treble</string>
     <string name="eq_user">User</string>
     <string name="fac_1">Password:</string>
+    <string name="factory_air_conditioner">Air Conditioner</string>
     <string name="factory_benc">Benz AUX Activate</string>
     <string name="factory_bencPank">Benz Control Panel</string>
     <string name="factory_carseep">Speedometer Selection</string>
@@ -315,8 +316,11 @@
     <string name="ksw_idf7_unkonw_soung">Unknown Song</string>
     <string name="lb_password_error">Password error!</string>
     <string name="mcu_file_corrupted">Upgrade file corrupted!</string>
+    <string name="navigete_slogan">Navigete for you in ...</string>
     <string name="ntg6_dvr_toast">No devices!</string>
     <string name="oil_size">Fuel: %s</string>
+    <string name="open_application">Open More Applications</string>
+    <string name="phone_link_txt">Phone Link</string>
     <string name="raw_car_text1">Full-screen Display</string>
     <string name="raw_car_text2">Current Selection:</string>
     <string name="search_menu_title">Search</string>

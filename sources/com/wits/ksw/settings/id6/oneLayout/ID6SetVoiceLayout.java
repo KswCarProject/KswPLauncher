@@ -1,6 +1,10 @@
 package com.wits.ksw.settings.id6.oneLayout;
 
 import android.content.Context;
+import android.database.ContentObserver;
+import android.os.Handler;
+import android.os.RemoteException;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +23,8 @@ public class ID6SetVoiceLayout extends RelativeLayout implements SeekBar.OnSeekB
     private int htongh = 28;
     private int meiti = 26;
     private SeekBar seek_daohvoicb;
-    private SeekBar seek_mtb;
+    /* access modifiers changed from: private */
+    public SeekBar seek_mtb;
     private SeekBar seek_tonghb;
     private SeekBar seek_yuancthb;
     private TextView tv_daohvoicsize;
@@ -48,6 +53,14 @@ public class ID6SetVoiceLayout extends RelativeLayout implements SeekBar.OnSeekB
         } catch (Exception e) {
             e.getStackTrace();
         }
+        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.ANDROID_MEDIA_VOL), true, new ContentObserver(new Handler()) {
+            public void onChange(boolean selfChange) {
+                try {
+                    ID6SetVoiceLayout.this.seek_mtb.setProgress(PowerManagerApp.getSettingsInt(KeyConfig.ANDROID_MEDIA_VOL));
+                } catch (RemoteException e) {
+                }
+            }
+        });
     }
 
     private void initView(View view) {

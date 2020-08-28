@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:tag="layout/activity_bmw_nbt_0" android:background="@drawable/nbt_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="1dp"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <ImageView android:tag="binding_2" android:layout_width="159dp" android:layout_height="384dp" android:layout_marginLeft="310dp" android:layout_marginTop="44dp"/>
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="224dp" android:layout_marginTop="151dp">
+            <ImageView android:tag="binding_3" android:layout_width="126dp" android:layout_height="126dp" android:layout_centerInParent="true"/>
+            <ImageView android:tag="binding_4" android:layout_width="57dp" android:layout_height="57dp" android:layout_centerInParent="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="722dp" android:layout_height="match_parent" android:layout_marginLeft="387dp">
+        <Button android:id="@+id/app_ll" android:tag="binding_5" android:nextFocusUp="@+id/rl_settings" android:text="@string/gs_application" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+        <Button android:id="@+id/navi_ll" android:tag="binding_6" android:text="@string/gs_navigate" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+        <Button android:id="@+id/music_ll" android:tag="binding_7" android:text="@string/ksw_id7_music" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+        <Button android:id="@+id/video_ll" android:tag="binding_8" android:text="@string/ksw_id7_hd_video" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+        <Button android:id="@+id/phone_ll" android:tag="binding_9" android:text="@string/id6_phone" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+        <Button android:id="@+id/rl_car" android:tag="binding_10" android:text="@string/ksw_id7_car_info" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+        <Button android:id="@+id/dashbroad_ll" android:tag="binding_11" android:text="@string/ksw_id7_dashboard_lable" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+        <Button android:id="@+id/rl_settings" android:tag="binding_12" android:nextFocusDown="@+id/app_ll" android:text="@string/ksw_id7_setting" style="@style/bwm_nbt_style"/>
+        <View android:background="@drawable/nbt_focus_split_line_0" android:layout_width="wrap_content" android:layout_height="2dp"/>
+    </LinearLayout>
+</RelativeLayout>

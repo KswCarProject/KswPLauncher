@@ -11,8 +11,10 @@ import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 public class DashboardViewModel extends LauncherViewModel {
+    private static HashMap<Integer, ObjectAnimator> animatorMaps = new HashMap<>();
     private static final int time = 150;
     public ObservableBoolean hideOil = new ObservableBoolean(false);
     public ObservableBoolean showAls = new ObservableBoolean();
@@ -49,6 +51,12 @@ public class DashboardViewModel extends LauncherViewModel {
         return ClientManager.getInstance().isAls6208Client() && DashboardSelect == 1;
     }
 
+    public boolean isLCModel() {
+        int DashboardSelect = ClientManager.getInstance().getDashboardSelect();
+        Log.i(KswApplication.TAG, "isLCModel client=" + ClientManager.getInstance().getClient() + " DashboardSelect=" + DashboardSelect);
+        return ClientManager.getInstance().isLC3208Client() && DashboardSelect == 3;
+    }
+
     public int getAlsModel() {
         try {
             return PowerManagerApp.getSettingsInt("AlsModel");
@@ -71,22 +79,41 @@ public class DashboardViewModel extends LauncherViewModel {
     public static void setBmwTyTurnSpeedRotation(ImageView imageView, int turnSpeed) {
         float angle = new BigDecimal(turnSpeed).divide(new BigDecimal(100)).multiply(new BigDecimal(3.3d)).floatValue();
         Log.i(KswApplication.TAG, "setTurnSpeed:  转速旋转角度" + angle);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{angle});
-        objectAnimator.setDuration(150);
-        objectAnimator.start();
+        setSpeedRotationBet(imageView, angle);
     }
 
     @BindingAdapter({"setTurnSpeedRotation"})
     public static void setRotation(ImageView imageView, float rota) {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{rota});
-        objectAnimator.setDuration(150);
-        objectAnimator.start();
+        setSpeedRotationBet(imageView, rota);
     }
 
     @BindingAdapter({"setSpeedRotation"})
     public static void setSpeedRotation(ImageView imageView, int rota) {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{(float) rota});
-        objectAnimator.setDuration(150);
+        setSpeedRotationBet(imageView, (float) rota);
+    }
+
+    public static void setSpeedRotationBet(ImageView imageView, float rota) {
+        int delay = McuImpl.getInstance().carInfo.delay.get().intValue();
+        ObjectAnimator objectAnimator = animatorMaps.get(Integer.valueOf(imageView.getId()));
+        if (objectAnimator == null) {
+            objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{rota});
+            animatorMaps.put(Integer.valueOf(imageView.getId()), objectAnimator);
+        }
+        int duration = time;
+        if (delay != 0 && delay <= time) {
+            duration = delay;
+        }
+        Log.i("lkt", "time delay - " + duration);
+        imageView.setRotation(rota);
+        if (duration <= 55) {
+            if (objectAnimator.isStarted()) {
+                objectAnimator.cancel();
+            }
+            imageView.setRotation(rota);
+            return;
+        }
+        objectAnimator.setDuration((long) delay);
+        objectAnimator.setFloatValues(new float[]{rota});
         objectAnimator.start();
     }
 
@@ -96,32 +123,24 @@ public class DashboardViewModel extends LauncherViewModel {
         if (KswUtils.ismph()) {
             float angle = new BigDecimal(((double) speed) * 1.2882447665056362d).floatValue();
             Log.i(KswApplication.TAG, "setSevenSpeedRotation: " + angle);
-            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{angle});
-            objectAnimator.setDuration(150);
-            objectAnimator.start();
+            setSpeedRotationBet(imageView, angle);
             return;
         }
         BigDecimal result = new BigDecimal(((double) speed) * 0.79d);
         float angle2 = result.floatValue();
         Log.i(KswApplication.TAG, "setSevenSpeedRotation: " + result);
-        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{angle2});
-        objectAnimator2.setDuration(150);
-        objectAnimator2.start();
+        setSpeedRotationBet(imageView, angle2);
     }
 
     @BindingAdapter({"setALSSpeedRotation"})
     public static void setALSSpeedRotation(ImageView imageView, int rota) {
         Log.i(KswApplication.TAG, "setALSSpeedRotation: ");
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{(float) (((double) rota) * 0.79d)});
-        objectAnimator.setDuration(150);
-        objectAnimator.start();
+        setSpeedRotationBet(imageView, (float) (((double) rota) * 0.79d));
     }
 
     @BindingAdapter({"setALSTurnSpeedRotation"})
     public static void setALSRotation(ImageView imageView, float rota) {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{-rota});
-        objectAnimator.setDuration(150);
-        objectAnimator.start();
+        setSpeedRotationBet(imageView, -rota);
     }
 
     /* access modifiers changed from: protected */

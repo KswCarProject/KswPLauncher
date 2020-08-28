@@ -17,7 +17,6 @@ import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.MusicStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsStatus;
-import java.util.Random;
 
 public class KswRunService extends Service {
     /* access modifiers changed from: private */
@@ -29,24 +28,24 @@ public class KswRunService extends Service {
 
         public void updateStatusInfo(String mcuMssage) throws RemoteException {
             if (TextUtils.isEmpty(mcuMssage)) {
-                String access$000 = KswRunService.TAG;
-                Log.e(access$000, "updateStatusInfo: mcuMssage:" + mcuMssage);
+                String access$100 = KswRunService.TAG;
+                Log.e(access$100, "updateStatusInfo: mcuMssage:" + mcuMssage);
                 return;
             }
             WitsStatus status1 = WitsStatus.getWitsStatusFormJson(mcuMssage);
             if (status1 == null) {
-                String access$0002 = KswRunService.TAG;
-                Log.e(access$0002, "updateStatusInfo: WitsStatusFormJson:" + status1);
+                String access$1002 = KswRunService.TAG;
+                Log.e(access$1002, "updateStatusInfo: WitsStatusFormJson:" + status1);
                 return;
             }
             int type = status1.getType();
             if (type == 5) {
-                KswRunService.this.handleCarinfo(status1);
+                KswRunService.this.handleCarinfo(McuStatus.getStatusFromJson(status1.jsonArg), 0);
             } else if (type == 21) {
                 MusicStatus musicStatus = MusicStatus.getStatusFromJson(status1.jsonArg);
                 if (musicStatus == null) {
-                    String access$0003 = KswRunService.TAG;
-                    Log.e(access$0003, "updateStatusInfo: MusicStatusFromJson:" + musicStatus);
+                    String access$1003 = KswRunService.TAG;
+                    Log.e(access$1003, "updateStatusInfo: MusicStatusFromJson:" + musicStatus);
                     return;
                 }
                 MediaImpl.getInstance().handleMediaPlaySeekbarAndCurrentime(musicStatus.position);
@@ -57,13 +56,13 @@ public class KswRunService extends Service {
         public void onChange() throws RemoteException {
             try {
                 String path = PowerManagerApp.getManager().getStatusString("path");
-                String access$000 = KswRunService.TAG;
-                Log.i(access$000, "musicContentObserver onChange: " + path);
+                String access$100 = KswRunService.TAG;
+                Log.i(access$100, "musicContentObserver onChange: " + path);
                 MediaImpl.getInstance().handleMediaInfo(path);
             } catch (Exception e) {
                 e.printStackTrace();
-                String access$0002 = KswRunService.TAG;
-                Log.e(access$0002, "musicContentObserver: " + e.getMessage());
+                String access$1002 = KswRunService.TAG;
+                Log.e(access$1002, "musicContentObserver: " + e.getMessage());
             }
         }
     };
@@ -88,6 +87,18 @@ public class KswRunService extends Service {
         registerMusicPlayCurrentTime();
         Log.i(TAG, "onCreate: registerMusicPlayCurrentTime");
         PowerManagerApp.registerICmdListener(this.cmdListener);
+        PowerManagerApp.registerIContentObserver("mcuJson", new IContentObserver.Stub() {
+            long time;
+
+            public void onChange() throws RemoteException {
+                int delay = 0;
+                if (this.time != 0) {
+                    delay = (int) (System.currentTimeMillis() - this.time);
+                }
+                this.time = System.currentTimeMillis();
+                KswRunService.this.handleCarinfo(McuStatus.getStatusFromJson(PowerManagerApp.getStatusString("mcuJson")), delay);
+            }
+        });
         Log.i(TAG, "onCreate: registerICmdListener");
     }
 
@@ -96,9 +107,8 @@ public class KswRunService extends Service {
     }
 
     /* access modifiers changed from: private */
-    public void handleCarinfo(WitsStatus status1) {
+    public void handleCarinfo(McuStatus mcuStatus, int delay) {
         Log.i(TAG, "handleCarinfo: ");
-        McuStatus mcuStatus = McuStatus.getStatusFromJson(status1.jsonArg);
         if (mcuStatus == null) {
             ExceptionPrint.print("handleCarinfo: McuStatus is null");
             return;
@@ -106,14 +116,8 @@ public class KswRunService extends Service {
         McuStatus.CarData carDatam = mcuStatus.carData;
         if (carDatam == null) {
             ExceptionPrint.print("handleCarinfo: McuStatus.CarData is null");
-            return;
-        }
-        new Random();
-        McuImpl.getInstance().setCarData(carDatam);
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } else {
+            McuImpl.getInstance().setCarData(carDatam, delay);
         }
     }
 

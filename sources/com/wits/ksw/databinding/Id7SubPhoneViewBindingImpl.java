@@ -19,7 +19,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback76;
+    private final View.OnClickListener mCallback68;
     private long mDirtyFlags;
 
     static {
@@ -39,7 +39,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
         this.phoneConstraintLayout.setTag((Object) null);
         this.phoneImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback76 = new OnClickListener(this, 1);
+        this.mCallback68 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -177,7 +177,7 @@ public class Id7SubPhoneViewBindingImpl extends Id7SubPhoneViewBinding implement
             TextViewBindingAdapter.setText(this.phoneConnectionTextView, naviViewModelBtStateGet);
         }
         if ((dirtyFlags & 16) != 0) {
-            this.phoneImageView.setOnClickListener(this.mCallback76);
+            this.phoneImageView.setOnClickListener(this.mCallback68);
         }
         if ((dirtyFlags & 24) != 0) {
             this.phoneImageView.setOnFocusChangeListener(naviViewModelPhoneViewFocusChangeListener);

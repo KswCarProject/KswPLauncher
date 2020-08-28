@@ -96,7 +96,7 @@ public class SetSystemInfoLayout extends RelativeLayout implements View.OnClickL
             if (index_platform_M506 > -1) {
                 pingtai = "M506";
             } else if (index_platform_M501 > -1) {
-                pingtai = "M501";
+                pingtai = "8953";
             } else if (index_platform_8953 > -1) {
                 pingtai = "8953";
             } else if (index_platform_8937 > -1) {
@@ -107,11 +107,19 @@ public class SetSystemInfoLayout extends RelativeLayout implements View.OnClickL
             TextView textView = this.tv_infoSysv;
             textView.setText(svformat + "-" + pingtai);
             if (index_NA > -1) {
-                TextView textView2 = this.tv_infoSysv;
-                textView2.setText(svformat + "-" + pingtai + "NA");
+                if (index_platform_M501 > -1) {
+                    TextView textView2 = this.tv_infoSysv;
+                    textView2.setText(svformat + "-" + pingtai + "NA-1");
+                } else {
+                    TextView textView3 = this.tv_infoSysv;
+                    textView3.setText(svformat + "-" + pingtai + "NA");
+                }
+            } else if (index_platform_M501 > -1) {
+                TextView textView4 = this.tv_infoSysv;
+                textView4.setText(svformat + "-" + pingtai + "EA-1");
             } else {
-                TextView textView3 = this.tv_infoSysv;
-                textView3.setText(svformat + "-" + pingtai + "EA");
+                TextView textView5 = this.tv_infoSysv;
+                textView5.setText(svformat + "-" + pingtai + "EA");
             }
         } else {
             this.tv_infoSysv.setText(svformat);

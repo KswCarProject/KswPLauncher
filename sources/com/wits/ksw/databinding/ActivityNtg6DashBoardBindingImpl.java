@@ -68,7 +68,7 @@ public class ActivityNtg6DashBoardBindingImpl extends ActivityNtg6DashBoardBindi
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);

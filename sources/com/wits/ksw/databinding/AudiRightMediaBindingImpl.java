@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import com.wits.ksw.R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.bean.MediaInfo;
@@ -40,7 +42,7 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiRightMediaBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 2, bindings[1], bindings[0], bindings[5], bindings[4], bindings[3], bindings[6], bindings[2]);
+        super(bindingComponent, root, 2, bindings[1], bindings[0], bindings[5], bindings[4], bindings[3], bindings[6], (LinearLayout) null, bindings[2]);
         this.mDirtyFlags = -1;
         this.IvRightMusicIcon.setTag((Object) null);
         this.KSWA4LRightShowMedia.setTag((Object) null);
@@ -73,7 +75,7 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (9 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setVm((AudiViewModel) variable);
@@ -85,7 +87,7 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 
@@ -159,7 +161,7 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
             this.btnMusicPrev.setOnClickListener(this.mCallback51);
         }
         if ((14 & dirtyFlags) != 0) {
-            this.KSWA4LRightShowMedia.setVisibility(vmMediaViewGet);
+            ((RelativeLayout) this.KSWA4LRightShowMedia).setVisibility(vmMediaViewGet);
         }
         if ((9 & dirtyFlags) != 0) {
             TextViewBindingAdapter.setText(this.tvMusicTitleInfor, vmMediaInfoMusicNameGet);

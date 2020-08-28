@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.RelativeLayout;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 
@@ -51,7 +52,7 @@ public class AudiRightLogoBindingImpl extends AudiRightLogoBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (9 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setVm((AudiViewModel) variable);
@@ -63,7 +64,7 @@ public class AudiRightLogoBindingImpl extends AudiRightLogoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 
@@ -105,7 +106,7 @@ public class AudiRightLogoBindingImpl extends AudiRightLogoBinding {
             }
         }
         if ((7 & dirtyFlags) != 0) {
-            this.KSWA4LRightShowLogo.setVisibility(vmLogoViewGet);
+            ((RelativeLayout) this.KSWA4LRightShowLogo).setVisibility(vmLogoViewGet);
         }
     }
 }

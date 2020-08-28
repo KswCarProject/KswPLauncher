@@ -25,7 +25,7 @@ public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding 
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback19;
+    private final View.OnClickListener mCallback27;
     private long mDirtyFlags;
     private OnClickListenerImpl mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
 
@@ -47,7 +47,7 @@ public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding 
         this.linearLayout3.setTag((Object) null);
         this.recyclerView2.setTag((Object) null);
         setRootTag(root);
-        this.mCallback19 = new OnClickListener(this, 1);
+        this.mCallback27 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -220,7 +220,7 @@ public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding 
             }
         }
         if ((16 & dirtyFlags) != 0) {
-            this.appsBtn.setOnClickListener(this.mCallback19);
+            this.appsBtn.setOnClickListener(this.mCallback27);
         }
         if ((dirtyFlags & 26) != 0) {
             this.controlBtn.setVisibility(mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE);

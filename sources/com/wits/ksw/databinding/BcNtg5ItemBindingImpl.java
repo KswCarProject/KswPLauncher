@@ -19,7 +19,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback18;
+    private final View.OnClickListener mCallback26;
     private long mDirtyFlags;
 
     public BcNtg5ItemBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
@@ -33,7 +33,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
         this.appName.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback18 = new OnClickListener(this, 1);
+        this.mCallback26 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -108,7 +108,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
             TextViewBindingAdapter.setText(this.appName, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.appIcon.setOnClickListener(this.mCallback18);
+            this.appIcon.setOnClickListener(this.mCallback26);
         }
     }
 

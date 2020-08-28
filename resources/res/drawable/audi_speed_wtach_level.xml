@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:drawable="@drawable/audi_ty_dashboard_speed_180mph" android:maxLevel="0"/>
+    <item android:drawable="@drawable/audi_ty_dashboard_speed_180mph" android:maxLevel="1"/>
+    <item android:drawable="@drawable/audi_ty_dashboard_speed_300kmh" android:maxLevel="2"/>
+    <item android:drawable="@drawable/audi_ty_dashboard_speed_280kmh" android:maxLevel="3"/>
+</level-list>

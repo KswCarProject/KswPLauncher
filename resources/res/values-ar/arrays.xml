@@ -24,6 +24,18 @@
         <item>لوحة القيادة</item>
         <item>DVR</item>
     </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>ملاحة</item>
+        <item>موسيقى</item>
+        <item>الهاتف</item>
+        <item>NTG</item>
+        <item>الإعدادات</item>
+        <item>الفيديو</item>
+        <item>التطبيقات</item>
+        <item>PhoneLink</item>
+        <item>لوحة القيادة</item>
+        <item>DVR</item>
+    </array>
     <array name="benz_mbux_home_item_array">
         <item>ملاحة</item>
         <item>الموسيقى</item>

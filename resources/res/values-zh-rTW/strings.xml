@@ -73,6 +73,7 @@
     <string name="eq_text9">高音</string>
     <string name="eq_user">用戶</string>
     <string name="fac_1">請輸入密碼：</string>
+    <string name="factory_air_conditioner">空調</string>
     <string name="factory_benc">奔馳AUX激活</string>
     <string name="factory_bencPank">奔馳控制面板</string>
     <string name="factory_carseep">車速錶選項</string>
@@ -201,8 +202,11 @@
     <string name="ksw_idf7_unkonw_soung">未知歌曲</string>
     <string name="lb_password_error">密碼錯誤!</string>
     <string name="mcu_file_corrupted">升級檔已損壞!</string>
+    <string name="navigete_slogan">實时為您導航</string>
     <string name="ntg6_dvr_toast">無設備!</string>
     <string name="oil_size">油量: %s</string>
+    <string name="open_application">打開更多應用</string>
+    <string name="phone_link_txt">手機互聯</string>
     <string name="raw_car_text1">全屏顯示</string>
     <string name="raw_car_text2">當前選擇:</string>
     <string name="search_menu_title">搜尋</string>

@@ -986,15 +986,15 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements I
                 bottom = layoutState2.mOffset + layoutChunkResult.mConsumed;
             }
         } else {
-            int top2 = getPaddingTop();
-            int bottom2 = this.mOrientationHelper.getDecoratedMeasurementInOther(view) + top2;
+            int right3 = getPaddingTop();
+            int bottom2 = this.mOrientationHelper.getDecoratedMeasurementInOther(view) + right3;
             if (layoutState2.mLayoutDirection == -1) {
-                top = top2;
+                top = right3;
                 right = layoutState2.mOffset;
                 bottom = bottom2;
                 left = layoutState2.mOffset - layoutChunkResult.mConsumed;
             } else {
-                top = top2;
+                top = right3;
                 left = layoutState2.mOffset;
                 bottom = bottom2;
                 right = layoutState2.mOffset + layoutChunkResult.mConsumed;

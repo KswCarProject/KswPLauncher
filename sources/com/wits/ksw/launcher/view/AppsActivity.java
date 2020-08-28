@@ -73,6 +73,17 @@ public final class AppsActivity extends BaseThemeActivity {
         initBmwid7UiView();
     }
 
+    /* access modifiers changed from: protected */
+    public void initAlsView() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBwmNbt() {
+        Log.d("zgy", "---initBwmNbt()--AAA--");
+        initBmwid7UiView();
+    }
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.i("AppsActivity", "onKeyDown: " + keyCode);
         if (keyCode == 20 || keyCode == 22) {

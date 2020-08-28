@@ -179,9 +179,9 @@ public class PowerManagerApp {
                 double shouyi12 = shouyi1;
                 double yingzi = realdamge * bl1max * (((zj2 / shouyi1) / 100.0d) + 1.0d);
                 double max2 = max;
-                double juanyun = realdamge * result2 * (((zj2 / shouyi2) / 100.0d) + 1.0d);
+                double max3 = realdamge * result2 * (((zj2 / shouyi2) / 100.0d) + 1.0d);
                 double bl1max2 = bl1max;
-                double step2 = juanyun + yingzi + (((1.0d - bl1max) - result2) * realdamge);
+                double bl1max3 = max3 + yingzi + (((1.0d - bl1max) - result2) * realdamge);
                 if (zj2 % 100.0d == 0.0d || zj2 == 0.0d || qd2 == 0.0d) {
                     PrintStream printStream = System.out;
                     bl2max = result2;
@@ -193,12 +193,12 @@ public class PowerManagerApp {
                     sb.append((realdamge / 15000.0d) * (((zj2 / 8.728d) / 100.0d) + 1.0d));
                     printStream.print(sb.toString());
                     System.out.print("-----专精:" + zj2 + " -强度:" + qd2);
-                    System.out.println("-----卷云:" + ((int) juanyun) + " -影子:" + ((int) yingzi) + "-一共:" + ((int) step2));
+                    System.out.println("-----卷云:" + ((int) max3) + " -影子:" + ((int) yingzi) + "-一共:" + ((int) bl1max3));
                 } else {
                     bl2max = result2;
                     i = i3;
                 }
-                double temp = step2;
+                double temp = bl1max3;
                 if (result3 < temp) {
                     result = temp;
                     gqd = qd2;

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.AudiViewModel;
@@ -20,7 +20,7 @@ public abstract class AudiRightMediaBinding extends ViewDataBinding {
     @NonNull
     public final ImageView IvRightMusicIcon;
     @NonNull
-    public final RelativeLayout KSWA4LRightShowMedia;
+    public final View KSWA4LRightShowMedia;
     @NonNull
     public final Button btnMusicNext;
     @NonNull
@@ -29,6 +29,8 @@ public abstract class AudiRightMediaBinding extends ViewDataBinding {
     public final Button btnMusicPrev;
     @NonNull
     public final ImageView infoBg;
+    @Nullable
+    public final LinearLayout linearLayout7;
     @Bindable
     protected AudiViewModel mVm;
     @NonNull
@@ -36,7 +38,7 @@ public abstract class AudiRightMediaBinding extends ViewDataBinding {
 
     public abstract void setVm(@Nullable AudiViewModel audiViewModel);
 
-    protected AudiRightMediaBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView IvRightMusicIcon2, RelativeLayout KSWA4LRightShowMedia2, Button btnMusicNext2, Button btnMusicPlayPause2, Button btnMusicPrev2, ImageView infoBg2, TextView tvMusicTitleInfor2) {
+    protected AudiRightMediaBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView IvRightMusicIcon2, View KSWA4LRightShowMedia2, Button btnMusicNext2, Button btnMusicPlayPause2, Button btnMusicPrev2, ImageView infoBg2, LinearLayout linearLayout72, TextView tvMusicTitleInfor2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.IvRightMusicIcon = IvRightMusicIcon2;
         this.KSWA4LRightShowMedia = KSWA4LRightShowMedia2;
@@ -44,6 +46,7 @@ public abstract class AudiRightMediaBinding extends ViewDataBinding {
         this.btnMusicPlayPause = btnMusicPlayPause2;
         this.btnMusicPrev = btnMusicPrev2;
         this.infoBg = infoBg2;
+        this.linearLayout7 = linearLayout72;
         this.tvMusicTitleInfor = tvMusicTitleInfor2;
     }
 

@@ -65,13 +65,13 @@ public class RecyclableBufferedInputStream extends FilterInputStream {
 
     private int fillbuf(InputStream localIn, byte[] localBuf) throws IOException {
         if (this.markpos == -1 || this.pos - this.markpos >= this.marklimit) {
-            int result = localIn.read(localBuf);
-            if (result > 0) {
+            int bytesread = localIn.read(localBuf);
+            if (bytesread > 0) {
                 this.markpos = -1;
                 this.pos = 0;
-                this.count = result;
+                this.count = bytesread;
             }
-            return result;
+            return bytesread;
         }
         if (this.markpos == 0 && this.marklimit > localBuf.length && this.count == localBuf.length) {
             int newLength = localBuf.length * 2;
@@ -90,9 +90,9 @@ public class RecyclableBufferedInputStream extends FilterInputStream {
         this.pos -= this.markpos;
         this.markpos = 0;
         this.count = 0;
-        int bytesread = localIn.read(localBuf, this.pos, localBuf.length - this.pos);
-        this.count = bytesread <= 0 ? this.pos : this.pos + bytesread;
-        return bytesread;
+        int bytesread2 = localIn.read(localBuf, this.pos, localBuf.length - this.pos);
+        this.count = bytesread2 <= 0 ? this.pos : this.pos + bytesread2;
+        return bytesread2;
     }
 
     public synchronized void mark(int readlimit) {

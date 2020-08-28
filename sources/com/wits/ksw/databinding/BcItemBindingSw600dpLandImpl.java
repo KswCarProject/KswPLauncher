@@ -21,7 +21,7 @@ public class BcItemBindingSw600dpLandImpl extends BcItemBinding implements OnCli
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback17;
+    private final View.OnClickListener mCallback25;
     private long mDirtyFlags;
     @NonNull
     private final CustomBcImageView mboundView1;
@@ -41,7 +41,7 @@ public class BcItemBindingSw600dpLandImpl extends BcItemBinding implements OnCli
         this.mboundView2.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback17 = new OnClickListener(this, 1);
+        this.mCallback25 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -116,7 +116,7 @@ public class BcItemBindingSw600dpLandImpl extends BcItemBinding implements OnCli
             TextViewBindingAdapter.setText(this.mboundView2, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.mboundView1.setOnClickListener(this.mCallback17);
+            this.mboundView1.setOnClickListener(this.mCallback25);
         }
     }
 

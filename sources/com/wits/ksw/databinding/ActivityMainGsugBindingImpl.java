@@ -18,13 +18,13 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback11;
+    private final View.OnClickListener mCallback21;
     @Nullable
-    private final View.OnClickListener mCallback12;
+    private final View.OnClickListener mCallback22;
     @Nullable
-    private final View.OnClickListener mCallback13;
+    private final View.OnClickListener mCallback23;
     @Nullable
-    private final View.OnClickListener mCallback14;
+    private final View.OnClickListener mCallback24;
     private long mDirtyFlags;
     @NonNull
     private final ConstraintLayout mboundView0;
@@ -50,10 +50,10 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
         this.naviButton.setTag((Object) null);
         this.settingButton.setTag((Object) null);
         setRootTag(root);
-        this.mCallback13 = new OnClickListener(this, 3);
-        this.mCallback14 = new OnClickListener(this, 4);
-        this.mCallback11 = new OnClickListener(this, 1);
-        this.mCallback12 = new OnClickListener(this, 2);
+        this.mCallback23 = new OnClickListener(this, 3);
+        this.mCallback24 = new OnClickListener(this, 4);
+        this.mCallback21 = new OnClickListener(this, 1);
+        this.mCallback22 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -74,7 +74,7 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -86,7 +86,7 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -104,10 +104,10 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.mboundView4.setOnClickListener(this.mCallback14);
-            this.musicButton.setOnClickListener(this.mCallback11);
-            this.naviButton.setOnClickListener(this.mCallback12);
-            this.settingButton.setOnClickListener(this.mCallback13);
+            this.mboundView4.setOnClickListener(this.mCallback24);
+            this.musicButton.setOnClickListener(this.mCallback21);
+            this.naviButton.setOnClickListener(this.mCallback22);
+            this.settingButton.setOnClickListener(this.mCallback23);
         }
     }
 

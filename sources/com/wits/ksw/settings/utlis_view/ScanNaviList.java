@@ -71,7 +71,7 @@ public class ScanNaviList {
                         ScanNaviList.this.isAvilible(context, paca, ScanNaviList.this.tempList, apps);
                     }
                     List unused2 = ScanNaviList.this.mapList = ScanNaviList.this.tempList;
-                    Log.i("naviSCAN", "run: " + ScanNaviList.this.tempList);
+                    Log.i("naviSCAN", "run: map size " + ScanNaviList.this.tempList.size());
                     if (ScanNaviList.this.mapListScanListener != null) {
                         ScanNaviList.this.mapListScanListener.onScanFinish(ScanNaviList.this.tempList);
                     }

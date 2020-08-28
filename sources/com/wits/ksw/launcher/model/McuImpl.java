@@ -12,6 +12,7 @@ import com.wits.ksw.KswApplication;
 import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.utils.ExceptionPrint;
 import com.wits.ksw.launcher.utils.KswUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
@@ -22,13 +23,22 @@ public class McuImpl {
     private static volatile McuImpl singleton;
     /* access modifiers changed from: private */
     public McuStatus.CarData carData;
+    private int carDataPackHz;
     public CarInfo carInfo = new CarInfo();
     public MutableLiveData<CarInfo> carInfoMutableLiveData = new MutableLiveData<>();
+    int tempUnit = 0;
 
     private McuImpl() {
         KswApplication.appContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.TempUnit), false, new ContentObserver(new Handler()) {
             public void onChange(boolean selfChange) {
+                Log.d("KSWLauncher", " tempUnit change");
                 McuImpl.this.setTemperature(McuImpl.this.carData);
+                try {
+                    McuImpl.this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
+                    Log.d("KSWLauncher", " tempUnit " + McuImpl.this.tempUnit);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -54,7 +64,7 @@ public class McuImpl {
             McuStatus mcuStatus = new McuStatus();
             mcuStatus.carData = this.carData;
             mcuStatus.carData.carDoor = carDoor;
-            setCarData(this.carData);
+            setCarData(this.carData, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,7 +79,8 @@ public class McuImpl {
         return this.carInfo;
     }
 
-    public void setCarData(McuStatus.CarData carData2) {
+    public void setCarData(McuStatus.CarData carData2, int delay) {
+        this.carDataPackHz = delay;
         this.carData = carData2;
         setMileage(carData2);
         setSpeed(carData2);
@@ -113,6 +124,7 @@ public class McuImpl {
         } else {
             this.carInfo.speed.set(speed);
         }
+        this.carInfo.delay.set(Integer.valueOf(this.carDataPackHz));
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
 
@@ -201,14 +213,8 @@ public class McuImpl {
         }
         float airTemperature = carDatam.getAirTemperature();
         Log.i("KSWLauncher", "setTemperature:  temperature=" + airTemperature);
-        int tempUnit = 0;
-        try {
-            tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        Log.i("KSWLauncher", "setTemperature: tempUnit=" + tempUnit);
-        if (tempUnit == 1) {
+        Log.i("KSWLauncher", "setTemperature: tempUnit=" + this.tempUnit);
+        if (this.tempUnit == 1) {
             int tempToF = KswUtils.tempToF(airTemperature);
             Log.i("KSWLauncher", "setTemperature: F " + tempToF);
             ObservableField<String> observableField = this.carInfo.tempStr;
@@ -224,6 +230,16 @@ public class McuImpl {
         try {
             int Dashboard_MaxSpeed = PowerManagerApp.getSettingsInt(KeyConfig.DASH_MAX_SPEED);
             int unit = PowerManagerApp.getSettingsInt(KeyConfig.DASHBOARDUNIT);
+            int carManufacturer = 0;
+            try {
+                carManufacturer = PowerManagerApp.getSettingsInt(KeyConfig.CarManufacturer);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            if (carManufacturer == 0 || carManufacturer > 3) {
+                carManufacturer = UiThemeUtils.getCarManufacturer(KswApplication.appContext);
+            }
+            Log.d("KSWLauncher", "initCarManufacturer: " + carManufacturer);
             Log.i("KSWLauncher", "speedWatch: 车速表选项=" + Dashboard_MaxSpeed + " 单位选项=" + unit);
             if (Dashboard_MaxSpeed == 1 && unit == 1) {
                 this.carInfo.speedWatch.set(0);
@@ -237,13 +253,16 @@ public class McuImpl {
             } else if (Dashboard_MaxSpeed == 3 && unit == 0) {
                 this.carInfo.speedWatch.set(3);
                 Log.i("KSWLauncher", "speedWatch: 表盘 260km/h");
+            } else if (Dashboard_MaxSpeed == 2 && unit == 0 && carManufacturer == 3) {
+                this.carInfo.speedWatch.set(2);
+                Log.i("KSWLauncher", "speedWatch: 表盘 300km/h");
             } else {
                 this.carInfo.speedWatch.set(1);
                 Log.i("KSWLauncher", "speedWatch: 组合不存在  默认表盘 260km/h");
             }
             Log.i("KSWLauncher", "speedWatch: Dashboard_MaxSpeed=" + Dashboard_MaxSpeed);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
             this.carInfo.speedWatch.set(1);
             Log.i("KSWLauncher", "speedWatch: Exception 默认表盘 280km/h");
         }

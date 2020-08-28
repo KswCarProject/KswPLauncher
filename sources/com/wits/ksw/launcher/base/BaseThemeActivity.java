@@ -11,6 +11,9 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     private static final String TAG = ("KSWLauncher." + BaseThemeActivity.class.getSimpleName());
 
     /* access modifiers changed from: protected */
+    public abstract void initAlsView();
+
+    /* access modifiers changed from: protected */
     public abstract void initAudiView();
 
     /* access modifiers changed from: protected */
@@ -36,6 +39,9 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
 
     /* access modifiers changed from: protected */
     public abstract void initBmwid7UiView();
+
+    /* access modifiers changed from: protected */
+    public abstract void initBwmNbt();
 
     /* access modifiers changed from: protected */
     public abstract void initCommonUIGSUGView();
@@ -67,6 +73,10 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initAudiView();
         } else if (UiThemeUtils.isBenz_NTG5(this)) {
             initBenzNTG5View();
+        } else if (UiThemeUtils.isALS_ID6(this)) {
+            initAlsView();
+        } else if (UiThemeUtils.isBMW_NBT(this)) {
+            initBwmNbt();
         } else {
             initBmwid7UiView();
         }

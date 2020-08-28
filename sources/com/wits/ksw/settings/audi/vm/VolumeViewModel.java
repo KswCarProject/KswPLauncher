@@ -2,8 +2,12 @@ package com.wits.ksw.settings.audi.vm;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.database.ContentObserver;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableInt;
+import android.os.Handler;
+import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.widget.SeekBar;
 import com.wits.ksw.settings.utlis_view.FileUtils;
@@ -30,6 +34,14 @@ public class VolumeViewModel extends AndroidViewModel {
         } catch (Exception e) {
             e.getStackTrace();
         }
+        application.getApplicationContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.ANDROID_MEDIA_VOL), true, new ContentObserver(new Handler()) {
+            public void onChange(boolean selfChange) {
+                try {
+                    VolumeViewModel.this.hzMediaVolume.set(PowerManagerApp.getSettingsInt(KeyConfig.ANDROID_MEDIA_VOL));
+                } catch (RemoteException e) {
+                }
+            }
+        });
     }
 
     @BindingAdapter({"setHzMediaSeekBarChangeListener"})

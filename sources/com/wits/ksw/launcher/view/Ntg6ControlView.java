@@ -123,7 +123,9 @@ public class Ntg6ControlView {
     static /* synthetic */ void lambda$showBenzBrightnessDailog$0(int light, McuStatus.BenzData benzData, View v) {
         if (light == 1) {
             benzData.light1 = 1;
+            benzData.light2 = 0;
         } else {
+            benzData.light1 = 0;
             benzData.light2 = 1;
         }
         benzData.key3 = 0;
@@ -133,7 +135,9 @@ public class Ntg6ControlView {
     static /* synthetic */ void lambda$showBenzBrightnessDailog$1(int light, McuStatus.BenzData benzData, View v) {
         if (light == 1) {
             benzData.light1 = 255;
+            benzData.light2 = 0;
         } else {
+            benzData.light1 = 0;
             benzData.light2 = 255;
         }
         benzData.key3 = 0;

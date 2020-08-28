@@ -1420,4 +1420,18 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:drawableRight">@drawable/audi_set_item_icon_selector</item>
     </style>
+    <style name="bwm_nbt_style">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/color1</item>
+        <item name="android:gravity">right|center_horizontal|clip_horizontal</item>
+        <item name="android:background">@drawable/bwn_nbt_bg</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">51dp</item>
+        <item name="android:paddingStart">100dp</item>
+    </style>
+    <style name="ids6_style">
+        <item name="android:statusBarColor">@color/ids6_status_color</item>
+    </style>
 </resources>

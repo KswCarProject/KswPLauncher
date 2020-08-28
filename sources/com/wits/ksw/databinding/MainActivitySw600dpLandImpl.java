@@ -17,15 +17,15 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback54;
+    private final View.OnClickListener mCallback100;
     @Nullable
-    private final View.OnClickListener mCallback55;
+    private final View.OnClickListener mCallback96;
     @Nullable
-    private final View.OnClickListener mCallback56;
+    private final View.OnClickListener mCallback97;
     @Nullable
-    private final View.OnClickListener mCallback57;
+    private final View.OnClickListener mCallback98;
     @Nullable
-    private final View.OnClickListener mCallback58;
+    private final View.OnClickListener mCallback99;
     private long mDirtyFlags;
     @NonNull
     private final ConstraintLayout mboundView0;
@@ -55,11 +55,11 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
         this.menuButton4.setTag((Object) null);
         this.menuButton5.setTag((Object) null);
         setRootTag(root);
-        this.mCallback55 = new OnClickListener(this, 2);
-        this.mCallback56 = new OnClickListener(this, 3);
-        this.mCallback54 = new OnClickListener(this, 1);
-        this.mCallback57 = new OnClickListener(this, 4);
-        this.mCallback58 = new OnClickListener(this, 5);
+        this.mCallback100 = new OnClickListener(this, 5);
+        this.mCallback99 = new OnClickListener(this, 4);
+        this.mCallback96 = new OnClickListener(this, 1);
+        this.mCallback98 = new OnClickListener(this, 3);
+        this.mCallback97 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -80,7 +80,7 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (10 != variableId) {
+        if (11 != variableId) {
             return false;
         }
         setLauncherViewModel((LauncherViewModel) variable);
@@ -92,7 +92,7 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(10);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 
@@ -110,11 +110,11 @@ public class MainActivitySw600dpLandImpl extends MainActivity implements OnClick
         }
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.menuButton1.setOnClickListener(this.mCallback56);
-            this.menuButton2.setOnClickListener(this.mCallback55);
-            this.menuButton3.setOnClickListener(this.mCallback54);
-            this.menuButton4.setOnClickListener(this.mCallback57);
-            this.menuButton5.setOnClickListener(this.mCallback58);
+            this.menuButton1.setOnClickListener(this.mCallback98);
+            this.menuButton2.setOnClickListener(this.mCallback97);
+            this.menuButton3.setOnClickListener(this.mCallback96);
+            this.menuButton4.setOnClickListener(this.mCallback99);
+            this.menuButton5.setOnClickListener(this.mCallback100);
         }
     }
 

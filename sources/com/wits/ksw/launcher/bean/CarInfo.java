@@ -11,6 +11,7 @@ public class CarInfo {
     public ObservableField<Boolean> bDoorState = new ObservableField<>();
     public ObservableField<Boolean> brakeValue = new ObservableField<>();
     public ObservableBoolean carImage = new ObservableBoolean();
+    public ObservableField<Integer> delay = new ObservableField<>();
     public ObservableField<Boolean> flDoorState = new ObservableField<>();
     public ObservableField<Boolean> frDoorState = new ObservableField<>();
     public ObservableField<String> mileage = new ObservableField<>();

@@ -69,6 +69,7 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
                         return;
                     case 3:
                         if (ID7SettingsActivity.this.naviTwo != null) {
+                            Log.d("Navi", "updateList: " + ID7SettingsActivity.this.mapList.size());
                             ID7SettingsActivity.this.naviTwo.updateMapList(ID7SettingsActivity.this.mapList);
                             return;
                         }
@@ -432,7 +433,7 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     public void onScanFinish(List<MapBean> mapList2) {
-        Log.d("Navi", "onScanFinish");
+        Log.d("Navi", "onScanFinish " + mapList2.size());
         this.mapList = mapList2;
         this.handler.sendEmptyMessage(3);
     }

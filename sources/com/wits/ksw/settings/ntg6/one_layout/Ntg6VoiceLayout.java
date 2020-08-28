@@ -1,7 +1,10 @@
 package com.wits.ksw.settings.ntg6.one_layout;
 
 import android.content.Context;
+import android.database.ContentObserver;
 import android.os.Handler;
+import android.os.RemoteException;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +27,8 @@ public class Ntg6VoiceLayout extends RelativeLayout implements SeekBar.OnSeekBar
     private ImageView img_TwoBack;
     private int meiti = 26;
     private SeekBar seek_daohvoicb;
-    private SeekBar seek_mtb;
+    /* access modifiers changed from: private */
+    public SeekBar seek_mtb;
     private SeekBar seek_tonghb;
     private SeekBar seek_yuancthb;
     private TextView tv_daohvoicsize;
@@ -54,6 +58,14 @@ public class Ntg6VoiceLayout extends RelativeLayout implements SeekBar.OnSeekBar
         } catch (Exception e) {
             e.getStackTrace();
         }
+        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.ANDROID_MEDIA_VOL), true, new ContentObserver(new Handler()) {
+            public void onChange(boolean selfChange) {
+                try {
+                    Ntg6VoiceLayout.this.seek_mtb.setProgress(PowerManagerApp.getSettingsInt(KeyConfig.ANDROID_MEDIA_VOL));
+                } catch (RemoteException e) {
+                }
+            }
+        });
     }
 
     public void getFocus() {

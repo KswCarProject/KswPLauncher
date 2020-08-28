@@ -177,6 +177,22 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
     }
 
     /* access modifiers changed from: protected */
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.voiceData = intent.getStringExtra("voiceData");
+        Log.d("ntg55startAction", "onNewIntent:" + this.voiceData);
+        if (TextUtils.equals("voic", this.voiceData)) {
+            updateLayout(2);
+            setFistImageView(2);
+            this.relat_ntgTwoList.setVisibility(0);
+            setAnimatorOut(this.relat_ntgTwoList);
+            this.animatorOut.setDuration(300);
+            this.animatorOut.start();
+            this.relat_ntgOneList.setVisibility(8);
+        }
+    }
+
+    /* access modifiers changed from: protected */
     public void onResume() {
         super.onResume();
         this.handler.sendEmptyMessageDelayed(4, 1000);

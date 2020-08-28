@@ -930,7 +930,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         int left = -maxOverScrollX2;
         int right = maxOverScrollX2 + scrollRangeX;
         int i = overScrollMode;
-        int top = -maxOverScrollY2;
+        int overScrollMode2 = -maxOverScrollY2;
         boolean z = canScrollHorizontal;
         int bottom = maxOverScrollY2 + scrollRangeY;
         boolean clampedX = false;
@@ -946,17 +946,19 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
         if (newScrollY > bottom) {
             newScrollY = bottom;
             clampedY = true;
-        } else if (newScrollY < top) {
-            newScrollY = top;
+        } else if (newScrollY < overScrollMode2) {
+            newScrollY = overScrollMode2;
             clampedY = true;
         }
         int newScrollY2 = newScrollY;
         boolean clampedY2 = clampedY;
         if (clampedY2) {
-            int i2 = top;
+            int i2 = overScrollMode2;
             if (!hasNestedScrollingParent(1)) {
                 this.mScroller.springBack(newScrollX, newScrollY2, 0, 0, 0, getScrollRange());
             }
+        } else {
+            int top = overScrollMode2;
         }
         onOverScrolled(newScrollX, newScrollY2, clampedX2, clampedY2);
         return clampedX2 || clampedY2;

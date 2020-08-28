@@ -15,11 +15,11 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback28;
-    @Nullable
     private final View.OnClickListener mCallback29;
     @Nullable
     private final View.OnClickListener mCallback30;
+    @Nullable
+    private final View.OnClickListener mCallback31;
     private long mDirtyFlags;
 
     public UgHomeThreeBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
@@ -34,9 +34,9 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
         this.ugHomeDashboradVaiw.setTag((Object) null);
         this.ugHomeSettingVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback30 = new OnClickListener(this, 3);
-        this.mCallback28 = new OnClickListener(this, 1);
-        this.mCallback29 = new OnClickListener(this, 2);
+        this.mCallback30 = new OnClickListener(this, 2);
+        this.mCallback31 = new OnClickListener(this, 3);
+        this.mCallback29 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -57,7 +57,7 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -69,7 +69,7 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -87,9 +87,9 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeCarVaiw.setOnClickListener(this.mCallback28);
-            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback29);
-            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback30);
+            this.ugHomeCarVaiw.setOnClickListener(this.mCallback29);
+            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback30);
+            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback31);
         }
     }
 

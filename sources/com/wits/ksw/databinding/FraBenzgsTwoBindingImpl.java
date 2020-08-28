@@ -83,7 +83,7 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (9 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setVm((BenzGsViewMoel) variable);
@@ -95,7 +95,7 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 

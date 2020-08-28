@@ -137,7 +137,7 @@ public class AudiSettingViewModel extends AndroidViewModel {
             if (index_platform_M506 > -1) {
                 pingtai = "M506";
             } else if (index_platform_M501 > -1) {
-                pingtai = "M501";
+                pingtai = "8953";
             } else if (index_platform_8953 > -1) {
                 pingtai = "8953";
             } else if (index_platform_8937 > -1) {
@@ -149,17 +149,27 @@ public class AudiSettingViewModel extends AndroidViewModel {
             Context context2 = this.context;
             observableField.set(context2.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai}));
             if (index_NA > -1) {
-                ObservableField<String> observableField2 = this.systemVersion;
-                Context context3 = this.context;
-                observableField2.set(context3.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "NA"}));
-                return;
+                if (index_platform_M501 > -1) {
+                    ObservableField<String> observableField2 = this.systemVersion;
+                    Context context3 = this.context;
+                    observableField2.set(context3.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "NA-1"}));
+                    return;
+                }
+                ObservableField<String> observableField3 = this.systemVersion;
+                Context context4 = this.context;
+                observableField3.set(context4.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "NA"}));
+            } else if (index_platform_M501 > -1) {
+                ObservableField<String> observableField4 = this.systemVersion;
+                Context context5 = this.context;
+                observableField4.set(context5.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "EA-1"}));
+            } else {
+                ObservableField<String> observableField5 = this.systemVersion;
+                Context context6 = this.context;
+                observableField5.set(context6.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "EA"}));
             }
-            ObservableField<String> observableField3 = this.systemVersion;
-            Context context4 = this.context;
-            observableField3.set(context4.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "EA"}));
-            return;
+        } else {
+            this.systemVersion.set(this.context.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE}));
         }
-        this.systemVersion.set(this.context.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE}));
     }
 
     private String getAppVersion() {

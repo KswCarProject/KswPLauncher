@@ -45,8 +45,7 @@ public class NaviTwo extends RelativeLayout {
     }
 
     public void updateMapList(List<MapBean> mapList) {
-        this.mapBanList.clear();
-        this.mapBanList.addAll(mapList);
+        this.mapBanList = mapList;
         Log.d("Navi", "mapBanList size: " + this.mapBanList.size());
         this.naviAdapter.notifyDataSetChanged();
     }

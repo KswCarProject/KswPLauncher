@@ -19,7 +19,7 @@ public class Id7SubPhoneViewBindingSw600dpLandImpl extends Id7SubPhoneViewBindin
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback16;
+    private final View.OnClickListener mCallback73;
     private long mDirtyFlags;
 
     static {
@@ -39,7 +39,7 @@ public class Id7SubPhoneViewBindingSw600dpLandImpl extends Id7SubPhoneViewBindin
         this.phoneConstraintLayout.setTag((Object) null);
         this.phoneImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback16 = new OnClickListener(this, 1);
+        this.mCallback73 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -177,7 +177,7 @@ public class Id7SubPhoneViewBindingSw600dpLandImpl extends Id7SubPhoneViewBindin
             TextViewBindingAdapter.setText(this.phoneConnectionTextView, naviViewModelBtStateGet);
         }
         if ((dirtyFlags & 16) != 0) {
-            this.phoneImageView.setOnClickListener(this.mCallback16);
+            this.phoneImageView.setOnClickListener(this.mCallback73);
         }
         if ((dirtyFlags & 24) != 0) {
             this.phoneImageView.setOnFocusChangeListener(naviViewModelPhoneViewFocusChangeListener);

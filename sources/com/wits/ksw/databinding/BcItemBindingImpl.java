@@ -21,7 +21,7 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback65;
+    private final View.OnClickListener mCallback57;
     private long mDirtyFlags;
     @NonNull
     private final CustomBcImageView mboundView1;
@@ -41,7 +41,7 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
         this.mboundView2.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback65 = new OnClickListener(this, 1);
+        this.mCallback57 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -116,7 +116,7 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
             TextViewBindingAdapter.setText(this.mboundView2, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.mboundView1.setOnClickListener(this.mCallback65);
+            this.mboundView1.setOnClickListener(this.mCallback57);
         }
     }
 

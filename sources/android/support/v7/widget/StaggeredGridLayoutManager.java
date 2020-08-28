@@ -949,7 +949,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 startExtra = this.mPrimaryOrientation.getTotalSpace();
             }
         }
-        if (getClipToPadding() != 0) {
+        if (getClipToPadding()) {
             this.mLayoutState.mStartLine = this.mPrimaryOrientation.getStartAfterPadding() - startExtra;
             this.mLayoutState.mEndLine = this.mPrimaryOrientation.getEndAfterPadding() + endExtra;
         } else {

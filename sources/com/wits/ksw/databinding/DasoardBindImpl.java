@@ -71,7 +71,7 @@ public class DasoardBindImpl extends DasoardBind {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);

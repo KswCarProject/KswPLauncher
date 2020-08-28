@@ -55,7 +55,7 @@ public class ActivityId7AppsBindingSw600dpLandImpl extends ActivityId7AppsBindin
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (12 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setAppViewModel((AppViewModel) variable);
@@ -67,7 +67,7 @@ public class ActivityId7AppsBindingSw600dpLandImpl extends ActivityId7AppsBindin
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 

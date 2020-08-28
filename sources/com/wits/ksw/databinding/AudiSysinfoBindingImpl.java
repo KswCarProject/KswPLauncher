@@ -65,7 +65,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (9 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setVm((AudiSettingViewModel) variable);
@@ -77,7 +77,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 

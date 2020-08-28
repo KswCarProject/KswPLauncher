@@ -104,7 +104,7 @@ public class CarInfoImpl extends CarInfo {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (14 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
@@ -116,7 +116,7 @@ public class CarInfoImpl extends CarInfo {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 

@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.RadioGroup;
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.ALSDasoardBind;
+import com.wits.ksw.databinding.ActivityDashBoardAudiBinding;
+import com.wits.ksw.databinding.ActivityDashBoardLcBinding;
 import com.wits.ksw.databinding.ActivityNtg6DashBoardBinding;
 import com.wits.ksw.databinding.DasoardBind;
 import com.wits.ksw.databinding.SevenDasoardBind;
@@ -25,6 +27,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class DashboardActivity extends BaseThemeActivity {
     private static final String TAG = "ID7仪表盘";
+    private int carManufacturer;
     /* access modifiers changed from: private */
     public DashboardViewModel viewMode;
 
@@ -37,17 +40,17 @@ public class DashboardActivity extends BaseThemeActivity {
     }
 
     private void initCarManufacturer() {
-        int carManufacturer = 0;
+        this.carManufacturer = 0;
         try {
-            carManufacturer = PowerManagerApp.getSettingsInt(KeyConfig.CarManufacturer);
+            this.carManufacturer = PowerManagerApp.getSettingsInt(KeyConfig.CarManufacturer);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        if (carManufacturer == 0) {
-            carManufacturer = UiThemeUtils.getCarManufacturer(this);
+        if (this.carManufacturer == 0 || this.carManufacturer > 3) {
+            this.carManufacturer = UiThemeUtils.getCarManufacturer(this);
         }
-        Log.d(TAG, "initCarManufacturer: " + carManufacturer);
-        if (carManufacturer == 2 || carManufacturer == 3) {
+        Log.d(TAG, "initCarManufacturer: " + this.carManufacturer);
+        if (this.carManufacturer == 2 || this.carManufacturer == 3) {
             this.viewMode.hideOil.set(true);
         } else {
             this.viewMode.hideOil.set(false);
@@ -71,29 +74,12 @@ public class DashboardActivity extends BaseThemeActivity {
 
     /* access modifiers changed from: protected */
     public void initBmwid7UiView() {
-        setActivityFull();
-        if (this.viewMode.isAlsModel()) {
-            initAlsDashboard();
-        } else if (this.viewMode.isSevenModel()) {
-            initSevenDasoard();
-        } else {
-            ((DasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board)).setViewModel(this.viewMode);
-        }
+        initUI();
     }
 
     /* access modifiers changed from: protected */
     public void initBcUiView() {
-        if (this.viewMode.isAlsModel()) {
-            setActivityFull();
-            initAlsDashboard();
-        } else if (this.viewMode.isSevenModel()) {
-            setActivityFull();
-            initSevenDasoard();
-        } else {
-            setFull();
-            ((ActivityNtg6DashBoardBinding) DataBindingUtil.setContentView(this, R.layout.activity_ntg6_dash_board)).setViewModel(this.viewMode);
-        }
-        this.viewMode.hideOil.set(true);
+        initUI();
     }
 
     /* access modifiers changed from: protected */
@@ -101,7 +87,7 @@ public class DashboardActivity extends BaseThemeActivity {
         initBcUiView();
     }
 
-    private void initSevenDasoard() {
+    private void initSevenDashBoard() {
         SevenDasoardBind binding = (SevenDasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_seven);
         DashboardViewModel dashboardViewModel = this.viewMode;
         DashboardViewModel.carInfo.sevenmode.set(this.viewMode.getSevenModel());
@@ -133,19 +119,23 @@ public class DashboardActivity extends BaseThemeActivity {
 
     /* access modifiers changed from: protected */
     public void initAudiView() {
-        if (this.viewMode.isSevenModel()) {
-            setActivityFull();
-            initSevenDasoard();
-            return;
-        }
-        setFull();
-        ((DasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board)).setViewModel(this.viewMode);
+        initUI();
     }
 
     /* access modifiers changed from: protected */
     public void initBenzNTG5View() {
-        setActivityFull();
         initBcUiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initAlsView() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBwmNbt() {
+        Log.d("zgy", "---initBwmNbt()--BBB--");
+        initBmwid7UiView();
     }
 
     private void initAlsDashboard() {
@@ -195,5 +185,55 @@ public class DashboardActivity extends BaseThemeActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void initUI() {
+        if (this.carManufacturer == 1) {
+            initBwmUI();
+        } else if (this.carManufacturer == 2) {
+            initBzUI();
+        } else if (this.carManufacturer == 3) {
+            initAudiUI();
+        } else {
+            initBwmUI();
+        }
+    }
+
+    private void initBwmUI() {
+        setActivityFull();
+        if (this.viewMode.isAlsModel()) {
+            initAlsDashboard();
+        } else if (this.viewMode.isSevenModel()) {
+            initSevenDashBoard();
+        } else {
+            ((DasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board)).setViewModel(this.viewMode);
+        }
+    }
+
+    private void initBzUI() {
+        if (this.viewMode.isAlsModel()) {
+            setActivityFull();
+            initAlsDashboard();
+        } else if (this.viewMode.isSevenModel()) {
+            setActivityFull();
+            initSevenDashBoard();
+        } else {
+            setFull();
+            ((ActivityNtg6DashBoardBinding) DataBindingUtil.setContentView(this, R.layout.activity_ntg6_dash_board)).setViewModel(this.viewMode);
+        }
+        this.viewMode.hideOil.set(true);
+    }
+
+    private void initAudiUI() {
+        if (this.viewMode.isSevenModel()) {
+            setActivityFull();
+            initSevenDashBoard();
+        } else if (this.viewMode.isLCModel()) {
+            setFull();
+            ((ActivityDashBoardLcBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_lc)).setViewModel(this.viewMode);
+        } else {
+            setFull();
+            ((ActivityDashBoardAudiBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_audi)).setViewModel(this.viewMode);
+        }
     }
 }

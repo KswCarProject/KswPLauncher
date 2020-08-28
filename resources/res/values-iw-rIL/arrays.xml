@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>ניווט</item>
+        <item>וידאו</item>
+        <item>מוזיקה</item>
+        <item>טלפון</item>
+        <item>תפריט NTG</item>
+        <item>לוח מחוונים</item>
+        <item>קישור טלפון</item>
+        <item>סייר קבצים</item>
+        <item>DVR</item>
+        <item>הגדרות</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>ניווט</item>
+        <item>מוזיקה</item>
+        <item>טלפון</item>
+        <item>תפריט NTG</item>
+        <item>הגדרות</item>
+        <item>וידאו</item>
+        <item>סייר קבצים</item>
+        <item>קישור טלפון</item>
+        <item>לוח מחוונים</item>
+        <item>DVR</item>
+    </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>ניווט</item>
+        <item>מוזיקה</item>
+        <item>טלפון</item>
+        <item>תפריט NTG</item>
+        <item>הגדרות</item>
+        <item>וידאו</item>
+        <item>יישומים</item>
+        <item>קישור טלפון</item>
+        <item>לוח מחוונים</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>ניווט</item>
+        <item>מוזיקה</item>
+        <item>טלפון</item>
+        <item>תפריט NTG</item>
+        <item>הגדרות</item>
+        <item>וידאו</item>
+        <item>אפליקציות</item>
+        <item>קישור טלפון</item>
+        <item>לוח מחוונים</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>יאן</item>
+        <item>פברואר</item>
+        <item>מרץ</item>
+        <item>אפריל</item>
+        <item>מאי</item>
+        <item>יוני</item>
+        <item>יולי</item>
+        <item>אוגוסט</item>
+        <item>ספטמבר</item>
+        <item>אוקטובר</item>
+        <item>נובמבר</item>
+        <item>דצמבר</item>
+    </array>
+    <array name="set_factory">
+        <item>פונקציה</item>
+        <item>רכב</item>
+        <item>תצוגה לרכב</item>
+        <item>פרוטוקול CAN</item>
+        <item>תצורת ממשק המשתמש</item>
+        <item>ייבוא ​​פרופיל</item>
+        <item>לוגו אתחול</item>
+    </array>
+    <array name="set_function">
+        <item>מערכת</item>
+        <item>ניווט</item>
+        <item>כרך</item>
+        <item>נשמע</item>
+        <item>שפה</item>
+        <item>זמן</item>
+        <item>מידע מערכת</item>
+        <item>אנדרואיד</item>
+        <item>בית חרושת</item>
+    </array>
+    <array name="set_id6_function">
+        <item>ניווט</item>
+        <item>מערכת</item>
+        <item>כרך</item>
+        <item>נשמע</item>
+        <item>שפה</item>
+        <item>זמן</item>
+        <item>מידע מערכת</item>
+        <item>אנדרואיד</item>
+        <item>בית חרושת</item>
+    </array>
+</resources>

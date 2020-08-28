@@ -24,7 +24,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback63;
+    private final View.OnClickListener mCallback55;
     private long mDirtyFlags;
 
     static {
@@ -50,7 +50,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         this.speedTextView.setTag((Object) null);
         this.tempTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback63 = new OnClickListener(this, 1);
+        this.mCallback55 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -71,7 +71,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (14 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
@@ -83,7 +83,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         synchronized (this) {
             this.mDirtyFlags |= 64;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 
@@ -339,7 +339,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         }
         if ((dirtyFlags & 128) != 0) {
             String str4 = carViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake1;
-            this.dashboardImageView.setOnClickListener(this.mCallback63);
+            this.dashboardImageView.setOnClickListener(this.mCallback55);
         }
         if ((dirtyFlags & 132) != 0) {
             TextViewBindingAdapter.setText(this.oilTextView, stringValueOfCarViewModelCarInfoOilValueJavaLangStringL);

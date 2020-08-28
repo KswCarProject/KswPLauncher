@@ -73,6 +73,7 @@
     <string name="eq_text9">Aigu</string>
     <string name="eq_user">Utilisateur</string>
     <string name="fac_1">Code：</string>
+    <string name="factory_air_conditioner">Climatisation</string>
     <string name="factory_benc">Activer l\'AUX de Benz</string>
     <string name="factory_bencPank">Panneau de contrôle de Benz</string>
     <string name="factory_carseep">Option de l\'indicateur de vitesse</string>

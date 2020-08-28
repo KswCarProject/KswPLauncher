@@ -63,7 +63,7 @@ public class ID6FragmentThreeImpl extends ID6FragmentThree {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>ナビゲーション</item>
+        <item>ビデオ</item>
+        <item>音楽</item>
+        <item>テレフォン</item>
+        <item>NTG メニュー</item>
+        <item>ダッシュボード</item>
+        <item>ミラーリング</item>
+        <item>ファイルブラウザ</item>
+        <item>DVR</item>
+        <item>設定</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>ナビゲーション</item>
+        <item>音楽</item>
+        <item>テレフォン</item>
+        <item>NTGメニュー</item>
+        <item>設定</item>
+        <item>ビデオ</item>
+        <item>ファイルブラウザ</item>
+        <item>ミラーリング</item>
+        <item>ダッシュボード</item>
+        <item>DVR</item>
+    </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>ナビゲーション</item>
+        <item>音楽</item>
+        <item>テレフォン</item>
+        <item>NTGメニュー</item>
+        <item>設定</item>
+        <item>ビデオ</item>
+        <item>アプリ</item>
+        <item>ミラーリング</item>
+        <item>ダッシュボード</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>ナビ</item>
+        <item>音楽</item>
+        <item>電話</item>
+        <item>車両情報</item>
+        <item>設定</item>
+        <item>ビデオ</item>
+        <item>アプリ</item>
+        <item>ミラーリング</item>
+        <item>ダッシュボード</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>一月</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>十一月</item>
+        <item>十二月</item>
+    </array>
+    <array name="set_factory">
+        <item>ファンクション</item>
+        <item>車載配置</item>
+        <item>カーディスプレー</item>
+        <item>CANプロトコル</item>
+        <item>UIデザイン</item>
+        <item>プロファイルのインポート</item>
+        <item>ブートロゴ</item>
+    </array>
+    <array name="set_function">
+        <item>システム設定</item>
+        <item>ナビ設定</item>
+        <item>音量設定</item>
+        <item>音場設定</item>
+        <item>言語設定</item>
+        <item>時間設定</item>
+        <item>システム情報</item>
+        <item>Android設定</item>
+        <item>工場設定</item>
+    </array>
+    <array name="set_id6_function">
+        <item>ナビ設定</item>
+        <item>システム設定</item>
+        <item>音量設定</item>
+        <item>音場設定</item>
+        <item>言語設定</item>
+        <item>時間設定</item>
+        <item>システム情報</item>
+        <item>Android設定</item>
+        <item>工場設定</item>
+    </array>
+</resources>

@@ -1,11 +1,13 @@
 package com.wits.ksw.settings.audi;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,17 @@ public class AudiSettingMainActivity extends AudiSubActivity implements View.OnC
             StartUtil.AudiEqActivity(this);
             finish();
         } else if (TextUtils.equals("voic", voiceData)) {
+            StartUtil.AudiSoundActivity(this);
+            finish();
+        }
+    }
+
+    /* access modifiers changed from: protected */
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String voiceData = intent.getStringExtra("voiceData");
+        Log.d("ntg55startAction", "onNewIntent:" + voiceData);
+        if (TextUtils.equals("voic", voiceData)) {
             StartUtil.AudiSoundActivity(this);
             finish();
         }

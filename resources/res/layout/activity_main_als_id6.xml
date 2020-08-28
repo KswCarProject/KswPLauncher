@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:tag="layout/activity_main_als_id6_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:background="@drawable/left_menu_bg" android:layout_width="99dp" android:layout_height="400dp" android:layout_marginTop="15dp" android:layout_marginBottom="10dp">
+        <LinearLayout android:orientation="vertical" android:tag="binding_1" android:background="@drawable/als_id6_phonelink_bg" android:focusable="true" android:clickable="true" android:layout_width="match_parent" android:layout_height="102dp">
+            <TextView android:textSize="16sp" android:textColor="@color/gray" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="65dp" android:text="@string/phone_link_txt"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:tag="binding_2" android:background="@drawable/als_id6_dvr_bg" android:focusable="true" android:clickable="true" android:layout_width="match_parent" android:layout_height="102dp">
+            <TextView android:textSize="16sp" android:textColor="@color/gray" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="65dp" android:text="@string/function_text8"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:tag="binding_3" android:background="@drawable/als_id6_settings_bg" android:focusable="true" android:clickable="true" android:layout_width="match_parent" android:layout_height="102dp">
+            <TextView android:textSize="16sp" android:textColor="@color/gray" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="65dp" android:text="@string/ksw_id7_setting"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:tag="binding_4" android:background="@drawable/als_id6_carinfo_bg" android:focusable="true" android:clickable="true" android:layout_width="match_parent" android:layout_height="102dp">
+            <TextView android:textSize="16sp" android:textColor="@color/gray" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="65dp" android:text="@string/ksw_id7_car"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="169dp" android:layout_marginLeft="15dp" android:layout_marginTop="5dp" android:layout_marginRight="15dp">
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@+id/navi_ll" android:tag="binding_5" android:background="@drawable/als_id6_navigate_bg" android:focusable="true" android:nextFocusUp="@+id/app_ll" android:nextFocusDown="@+id/video_ll" android:clickable="true" android:layout_width="0dp" android:layout_height="169dp" android:layout_weight="1">
+                <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="20dp">
+                    <TextView android:textSize="26sp" android:textColor="@android:color/white" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/gs_navigate"/>
+                    <TextView android:textSize="20sp" android:textColor="@color/gray" android:gravity="center" android:layout_width="230dp" android:layout_height="wrap_content" android:layout_marginLeft="40dp" android:layout_marginTop="5dp" android:text="@string/navigete_slogan"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@+id/video_ll" android:tag="binding_6" android:background="@drawable/als_id6_video_bg" android:nextFocusUp="@+id/navi_ll" android:nextFocusDown="@+id/phone_ll" android:layout_width="0dp" android:layout_height="169dp" android:layout_weight="1" android:layout_marginStart="9dp">
+                <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="20dp">
+                    <TextView android:textSize="26sp" android:textColor="@android:color/white" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ksw_id7_hd_video"/>
+                    <TextView android:textSize="20sp" android:textColor="@color/gray" android:gravity="center" android:layout_width="230dp" android:layout_height="wrap_content" android:layout_marginLeft="40dp" android:layout_marginTop="5dp" android:text="@string/ksw_id7_hd_video_warning"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@+id/phone_ll" android:tag="binding_7" android:background="@drawable/als_id6_phone_bg" android:focusable="true" android:nextFocusUp="@+id/video_ll" android:nextFocusDown="@+id/dashbroad_ll" android:clickable="true" android:layout_width="0dp" android:layout_height="169dp" android:layout_marginLeft="9dp" android:layout_weight="1">
+                <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="20dp">
+                    <TextView android:textSize="26sp" android:textColor="@android:color/white" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/id6_phone"/>
+                    <TextView android:textSize="20sp" android:textColor="@color/gray" android:gravity="center" android:tag="binding_8" android:layout_width="230dp" android:layout_height="wrap_content" android:layout_marginLeft="40dp" android:layout_marginTop="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp" android:layout_marginRight="15dp">
+            <LinearLayout android:orientation="vertical" android:id="@+id/dashbroad_ll" android:tag="binding_9" android:background="@drawable/als_id6_dashboard_bg" android:focusable="true" android:nextFocusUp="@+id/phone_ll" android:nextFocusDown="@+id/music_ll" android:clickable="true" android:layout_width="0dp" android:layout_height="217dp" android:layout_weight="1">
+                <TextView android:textSize="26sp" android:textColor="@android:color/white" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="25dp" android:text="@string/ksw_id7_dashboard_lable"/>
+                <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <LinearLayout android:orientation="horizontal" android:id="@+id/seat_ll" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:layout_marginTop="35dp">
+                        <ImageView android:id="@+id/seat_belt_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/als_id6_seatbelt_bg" android:layout_marginStart="5dp"/>
+                        <TextView android:textSize="20sp" android:textColor="@color/gray" android:layout_gravity="center" android:tag="binding_10" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:maxLines="1" android:singleLine="true" android:layout_toRightOf="@+id/seat_belt_btn"/>
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:layout_marginTop="22dp" android:layout_below="@+id/seat_ll">
+                        <ImageView android:id="@+id/seat_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/als_id6_brake_bg"/>
+                        <TextView android:textSize="20sp" android:textColor="@color/gray" android:layout_gravity="center" android:tag="binding_11" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:maxLines="1" android:layout_toRightOf="@+id/seat_btn"/>
+                    </LinearLayout>
+                    <ImageView android:background="@drawable/als_id6_dashboard_icon" android:layout_width="170dp" android:layout_height="170dp" android:layout_marginRight="10dp" android:layout_alignParentRight="true"/>
+                    <ImageView android:id="@+id/pointerImageView" android:tag="binding_12" android:background="@drawable/als_id6_dashboard_icon_pointer" android:layout_width="170dp" android:layout_height="170dp" android:layout_marginRight="10dp" android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@+id/music_ll" android:tag="binding_13" android:background="@drawable/als_id6_music_bg" android:focusable="true" android:nextFocusUp="@+id/dashbroad_ll" android:nextFocusDown="@+id/app_ll" android:clickable="true" android:layout_width="0dp" android:layout_height="217dp" android:layout_marginLeft="9dp" android:layout_weight="1">
+                <TextView android:textSize="26sp" android:textColor="@android:color/white" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="25dp" android:text="@string/ksw_id7_music"/>
+                <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="35dp">
+                    <TextView android:textSize="20sp" android:textColor="@color/gray" android:tag="binding_14" android:layout_width="100dp" android:layout_height="wrap_content" android:layout_marginLeft="80dp" android:maxLines="1" android:singleLine="true"/>
+                    <TextView android:textSize="20sp" android:textColor="@color/gray" android:tag="binding_15" android:layout_width="100dp" android:layout_height="wrap_content" android:layout_marginLeft="80dp" android:layout_marginTop="50dp" android:maxLines="1"/>
+                    <View android:id="@+id/s_view" android:layout_width="wrap_content" android:layout_height="20dp" android:layout_alignParentBottom="true"/>
+                    <SeekBar android:id="@+id/seekBar" android:tag="binding_16" android:background="@null" android:focusable="false" android:focusableInTouchMode="false" android:layout_width="180dp" android:layout_height="5dp" android:progressDrawable="@drawable/als_id6_seekbar_bg" android:thumb="@null" android:layout_above="@+id/s_view" android:layout_marginStart="8dp"/>
+                    <ImageView android:tag="binding_17" android:layout_width="130dp" android:layout_height="130dp" android:layout_marginRight="15dp" android:layout_marginBottom="15dp" android:scaleType="fitXY" android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@+id/app_ll" android:tag="binding_18" android:background="@drawable/als_id6_applicaton_bg" android:focusable="true" android:nextFocusUp="@+id/music_ll" android:nextFocusDown="@+id/navi_ll" android:clickable="true" android:layout_width="0dp" android:layout_height="217dp" android:layout_marginLeft="9dp" android:layout_weight="1">
+                <LinearLayout android:layout_gravity="center_horizontal" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="20dp">
+                    <TextView android:textSize="26sp" android:textColor="@android:color/white" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/gs_application"/>
+                    <TextView android:textSize="20sp" android:textColor="@color/gray" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="5dp" android:text="@string/open_application"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

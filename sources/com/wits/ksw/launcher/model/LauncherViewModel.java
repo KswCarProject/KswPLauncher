@@ -33,8 +33,10 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class LauncherViewModel extends BaseViewModel {
+    private static HashMap<Integer, ObjectAnimator> animatorMaps = new HashMap<>();
     public static CarInfo carInfo = McuImpl.getInstance().getCarInfo();
     public static MediaInfo mediaInfo = MediaImpl.getInstance().getMediaInfo();
     public ObservableField<String> btState = new ObservableField<>();
@@ -411,15 +413,35 @@ public class LauncherViewModel extends BaseViewModel {
 
     @BindingAdapter({"setTurnSpeedRotation"})
     public static void setRotation(ImageView imageView, int rota) {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{(float) rota});
-        objectAnimator.setDuration(300);
-        objectAnimator.start();
+        setSpeedRotationBet(imageView, (float) rota);
     }
 
     @BindingAdapter({"setSpeedRotation"})
     public static void setSpeedRotation(ImageView imageView, int rota) {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{(float) rota});
-        objectAnimator.setDuration(300);
+        setSpeedRotationBet(imageView, (float) rota);
+    }
+
+    public static void setSpeedRotationBet(ImageView imageView, float rota) {
+        int delay = McuImpl.getInstance().carInfo.delay.get().intValue();
+        ObjectAnimator objectAnimator = animatorMaps.get(Integer.valueOf(imageView.getId()));
+        if (objectAnimator == null) {
+            objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{rota});
+            animatorMaps.put(Integer.valueOf(imageView.getId()), objectAnimator);
+        }
+        int duration = 150;
+        if (delay != 0 && delay <= 150) {
+            duration = delay;
+        }
+        if (objectAnimator.isStarted()) {
+            objectAnimator.cancel();
+        }
+        imageView.setRotation(rota);
+        if (duration <= 55) {
+            imageView.setRotation(rota);
+            return;
+        }
+        objectAnimator.setDuration((long) delay);
+        objectAnimator.setFloatValues(new float[]{rota});
         objectAnimator.start();
     }
 

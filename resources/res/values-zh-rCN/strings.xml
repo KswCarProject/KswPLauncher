@@ -73,6 +73,7 @@
     <string name="eq_text9">高音</string>
     <string name="eq_user">用户</string>
     <string name="fac_1">请输入密码：</string>
+    <string name="factory_air_conditioner">空调</string>
     <string name="factory_benc">奔驰AUX激活</string>
     <string name="factory_bencPank">奔驰控制面板</string>
     <string name="factory_carseep">车速表选项</string>
@@ -202,8 +203,11 @@
     <string name="ksw_idf7_unkonw_soung">未知歌曲</string>
     <string name="lb_password_error">密码错误!</string>
     <string name="mcu_file_corrupted">升级文件已损坏!</string>
+    <string name="navigete_slogan">实时为您导航</string>
     <string name="ntg6_dvr_toast">无设备!   </string>
     <string name="oil_size">油量: %s</string>
+    <string name="open_application">打开更多应用</string>
+    <string name="phone_link_txt">手机互联</string>
     <string name="raw_car_text1">全屏显示</string>
     <string name="raw_car_text2">当前选择:</string>
     <string name="search_menu_title">搜索</string>

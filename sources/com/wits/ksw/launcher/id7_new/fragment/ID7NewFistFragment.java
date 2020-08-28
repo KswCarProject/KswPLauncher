@@ -27,9 +27,11 @@ import com.wits.ksw.launcher.id7_new.SavaUtils;
 import com.wits.ksw.launcher.model.McuImpl;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.WitsCommand;
+import java.util.HashMap;
 
 public class ID7NewFistFragment extends RelativeLayout implements View.OnClickListener {
-    protected ContentResolver contentResolver = this.m_con.getContentResolver();
+    private HashMap<Integer, ObjectAnimator> animatorMaps = new HashMap<>();
+    protected ContentResolver contentResolver;
     private ImageView img_xczhiz;
     private Context m_con;
     private RelativeLayout rel_firtNav;
@@ -45,6 +47,7 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
         super(context);
         this.m_con = context;
         this.view = LayoutInflater.from(context).inflate(R.layout.fragment_id7_new_fist, (ViewGroup) null);
+        this.contentResolver = this.m_con.getContentResolver();
         init();
         this.view.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
         addView(this.view);
@@ -64,7 +67,7 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
         this.rel_firtci.setOnClickListener(this);
         this.rel_firtaps = (RelativeLayout) this.view.findViewById(R.id.rel_firtaps);
         this.rel_firtaps.setOnClickListener(this);
-        setSpeedRotation(this.img_xczhiz, (int) McuImpl.getInstance().carInfo.turnSpeedAnge.get());
+        setSpeedRotation(this.img_xczhiz, (int) McuImpl.getInstance().carInfo.turnSpeedAnge.get(), McuImpl.getInstance().carInfo.delay.get().intValue());
         String string = getResources().getString(R.string.oil_size);
         this.tv_xcInfo.setText(String.format(string, new Object[]{McuImpl.getInstance().carInfo.oilValue.get() + "L"}));
         int page = Settings.System.getInt(getContext().getContentResolver(), SavaUtils.PAGE_INDEX, 0);
@@ -77,15 +80,28 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
     }
 
     public void setOils(CarInfo carInfo) {
-        setSpeedRotation(this.img_xczhiz, (int) carInfo.turnSpeedAnge.get());
+        setSpeedRotation(this.img_xczhiz, (int) carInfo.turnSpeedAnge.get(), carInfo.delay.get().intValue());
         String string = getResources().getString(R.string.oil_size);
         this.tv_xcInfo.setText(String.format(string, new Object[]{carInfo.oilValue.get() + "L"}));
     }
 
     @BindingAdapter({"setSpeedRotation"})
-    public void setSpeedRotation(ImageView imageView, int rota) {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{(float) rota});
-        objectAnimator.setDuration(300);
+    public void setSpeedRotation(ImageView imageView, int rota, int delay) {
+        ObjectAnimator objectAnimator = this.animatorMaps.get(Integer.valueOf(imageView.getId()));
+        if (objectAnimator == null) {
+            objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{(float) rota});
+            this.animatorMaps.put(Integer.valueOf(imageView.getId()), objectAnimator);
+        }
+        if (objectAnimator.isStarted()) {
+            objectAnimator.cancel();
+        }
+        int duration = WitsCommand.SystemCommand.EXPORT_CONFIG;
+        if (delay != 0 && delay <= 300) {
+            duration = delay - 10;
+        }
+        Log.i("lkt", "lkt time delay - " + duration);
+        objectAnimator.setDuration((long) duration);
+        objectAnimator.setFloatValues(new float[]{(float) rota});
         objectAnimator.start();
     }
 

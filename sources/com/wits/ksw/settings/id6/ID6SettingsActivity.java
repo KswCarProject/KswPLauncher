@@ -141,6 +141,20 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
         }
     }
 
+    /* access modifiers changed from: protected */
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.voiceData = intent.getStringExtra("voiceData");
+        Log.d("id6startAction", "onNewIntent:" + this.voiceData);
+        if (TextUtils.equals("voic", this.voiceData)) {
+            funCheckLayout(2);
+            for (FunctionBean fb : this.data) {
+                fb.setIscheck(false);
+            }
+            this.data.get(2).setIscheck(true);
+        }
+    }
+
     private void initData() {
         this.voiceData = getIntent().getStringExtra("voiceData");
         Log.d("id6startAction", "===data====:" + this.voiceData);

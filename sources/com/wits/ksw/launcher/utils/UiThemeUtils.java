@@ -5,11 +5,13 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 public class UiThemeUtils {
+    public static final String ALS_ID6 = "ALS_ID6_UI";
     public static final String Audi_MMI_4G = "Audi_MMI_4G";
     public static final String BMW_EVO_ID5 = "BMW_EVO_ID5";
     public static final String BMW_EVO_ID6 = "BMW_EVO_ID6";
     public static final String BMW_EVO_ID6_GS = "BMW_EVO_ID6_GS";
     public static final String BMW_EVO_ID7 = "BMW_EVO_ID7";
+    public static final String BMW_NBT = "BMW_NBT_UI";
     public static final String Benz_GS = "Benz_GS";
     public static final String Benz_MBUX = "Benz_MBUX";
     public static final String Benz_NTG5 = "Benz_NTG5";
@@ -18,7 +20,7 @@ public class UiThemeUtils {
     public static final String Common_UI_GS_UG = "Common_UI_GS_UG";
 
     public static boolean isId7AndDefaultUi(Context context) {
-        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context) && !isBenz_NTG5(context);
+        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context) && !isBenz_NTG5(context) && !isALS_ID6(context) && !isBMW_NBT(context);
     }
 
     public static boolean isBenz_NTG6(Context context) {
@@ -63,6 +65,14 @@ public class UiThemeUtils {
 
     public static boolean isBMW_EVO_ID6_GS(Context context) {
         return TextUtils.equals(getUiName(context), BMW_EVO_ID6_GS);
+    }
+
+    public static boolean isALS_ID6(Context context) {
+        return TextUtils.equals(getUiName(context), ALS_ID6);
+    }
+
+    public static boolean isBMW_NBT(Context context) {
+        return TextUtils.equals(getUiName(context), BMW_NBT);
     }
 
     public static int getCarManufacturer(Context context) {

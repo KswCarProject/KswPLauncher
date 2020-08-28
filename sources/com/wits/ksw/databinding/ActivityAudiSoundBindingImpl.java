@@ -88,7 +88,7 @@ public class ActivityAudiSoundBindingImpl extends ActivityAudiSoundBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (9 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setVm((VolumeViewModel) variable);
@@ -100,7 +100,7 @@ public class ActivityAudiSoundBindingImpl extends ActivityAudiSoundBinding {
         synchronized (this) {
             this.mDirtyFlags |= 16;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 

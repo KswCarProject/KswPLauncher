@@ -92,9 +92,17 @@ public class Ntg630ControlView {
                 Ntg630ControlView.lambda$showBenzBrightnessDailog$0(this.f$0, this.f$1, view);
             }
         });
-        subBrImageView.setOnClickListener(new View.OnClickListener() {
+        subBrImageView.setOnClickListener(new View.OnClickListener(light, benzData) {
+            private final /* synthetic */ int f$0;
+            private final /* synthetic */ McuStatus.BenzData f$1;
+
+            {
+                this.f$0 = r1;
+                this.f$1 = r2;
+            }
+
             public final void onClick(View view) {
-                Ntg630ControlView.lambda$showBenzBrightnessDailog$1(McuStatus.BenzData.this, view);
+                Ntg630ControlView.lambda$showBenzBrightnessDailog$1(this.f$0, this.f$1, view);
             }
         });
         closeImage.setOnClickListener(new View.OnClickListener() {
@@ -107,15 +115,23 @@ public class Ntg630ControlView {
     static /* synthetic */ void lambda$showBenzBrightnessDailog$0(int light, McuStatus.BenzData benzData, View v) {
         if (light == 1) {
             benzData.light1 = 1;
+            benzData.light2 = 0;
         } else {
+            benzData.light1 = 0;
             benzData.light2 = 1;
         }
         benzData.key3 = 0;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }
 
-    static /* synthetic */ void lambda$showBenzBrightnessDailog$1(McuStatus.BenzData benzData, View v) {
-        benzData.light1 = 255;
+    static /* synthetic */ void lambda$showBenzBrightnessDailog$1(int light, McuStatus.BenzData benzData, View v) {
+        if (light == 1) {
+            benzData.light1 = 255;
+            benzData.light2 = 0;
+        } else {
+            benzData.light1 = 0;
+            benzData.light2 = 255;
+        }
         benzData.key3 = 0;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }

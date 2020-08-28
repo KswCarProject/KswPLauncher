@@ -336,7 +336,7 @@ public class DialogViews extends Dialog {
                     break;
                 }
                 File fs = files[i];
-                if (this.fileName.equals(fs.getName())) {
+                if (this.fileName.equals(fs.getName().toLowerCase())) {
                     this.updateFilePath = fs.getAbsolutePath();
                     break;
                 }
@@ -348,7 +348,7 @@ public class DialogViews extends Dialog {
                             break;
                         }
                         File is = itemFile[i2];
-                        if (this.fileName.equals(is.getName())) {
+                        if (this.fileName.equals(is.getName().toLowerCase())) {
                             this.updateFilePath = is.getAbsolutePath();
                             break;
                         }

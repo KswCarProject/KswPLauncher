@@ -24,6 +24,18 @@
         <item>Painel</item>
         <item>DVR</item>
     </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>Navegação</item>
+        <item>Música</item>
+        <item>Telefone</item>
+        <item>Carro</item>
+        <item>Configurações</item>
+        <item>Vídeo</item>
+        <item>APPs</item>
+        <item>PhoneLink</item>
+        <item>Painel</item>
+        <item>DVR</item>
+    </array>
     <array name="benz_mbux_home_item_array">
         <item>Navegação</item>
         <item>Música</item>

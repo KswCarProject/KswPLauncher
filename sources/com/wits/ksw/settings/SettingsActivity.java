@@ -41,6 +41,10 @@ public class SettingsActivity extends BaseActivity {
             intentSend = new Intent(this, AudiSettingMainActivity.class);
         } else if (UiThemeUtils.isBenz_NTG5(this)) {
             intentSend = new Intent(this, AudiSettingMainActivity.class);
+        } else if (UiThemeUtils.isALS_ID6(this)) {
+            intentSend = new Intent(this, ID6SettingsActivity.class);
+        } else if (UiThemeUtils.isBMW_NBT(this)) {
+            intentSend = new Intent(this, ID6SettingsActivity.class);
         } else {
             intentSend = new Intent(this, ID7SettingsActivity.class);
         }

@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.wits.ksw.databinding.ActivityBmwNbtBinding;
+import com.wits.ksw.databinding.ActivityMainAlsId6Binding;
 import com.wits.ksw.databinding.ActivityMainAudiBinding;
 import com.wits.ksw.databinding.ActivityMainBcBinding;
 import com.wits.ksw.databinding.ActivityMainBenzGsBinding;
@@ -40,6 +42,7 @@ import com.wits.ksw.launcher.id7_new.Id7NewActivity;
 import com.wits.ksw.launcher.model.AudiViewModel;
 import com.wits.ksw.launcher.model.BcNTG5ViewModel;
 import com.wits.ksw.launcher.model.BcVieModel;
+import com.wits.ksw.launcher.model.BwmNbtModel;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KeyUtils;
 import com.wits.ksw.launcher.utils.KswUtils;
@@ -58,18 +61,21 @@ public class MainActivity extends BaseThemeActivity {
     /* access modifiers changed from: private */
     public static final String TAG = ("KSWLauncher." + MainActivity.class.getSimpleName());
     public static MainActivity mainActivity;
+    private ActivityMainAlsId6Binding alsBinding;
     public ActivityMainBcBinding bcMainActivity;
     public com.wits.ksw.databinding.MainActivity bmwBinding;
     private BmwId6ViewPagerAdpater bmwId6ViewPagerAdpater;
     public ID5MaindBind id5MaindBind;
-    @InjectView(2131231067)
+    @InjectView(2131231074)
     ImageView id6LeftBtn;
-    @InjectView(2131231068)
+    @InjectView(2131231075)
     public ViewPager id6MainViewPager;
-    @InjectView(2131231080)
+    @InjectView(2131231087)
     ImageView id6RightBtn;
     public BcNTG5ViewModel mBcNTG5ViewModel;
     public BcVieModel mBcVieModel;
+    private ActivityBmwNbtBinding nbtBinging;
+    private BwmNbtModel nbtModel;
     public ActivityMainBenzNtg5Binding ntg5Binding;
     public MutableLiveData<UgPager> select = new MutableLiveData<>();
     public ActivityMainGsugBindingImpl ugBinding;
@@ -248,6 +254,26 @@ public class MainActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initAlsView() {
+        setTheme(R.style.ids6_style);
+        this.viewModel = (LauncherViewModel) ViewModelProviders.of((FragmentActivity) this).get(LauncherViewModel.class);
+        this.viewModel.setActivity(this);
+        this.alsBinding = (ActivityMainAlsId6Binding) DataBindingUtil.setContentView(this, R.layout.activity_main_als_id6);
+        this.alsBinding.setViewModel(this.viewModel);
+        this.viewModel.initData();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBwmNbt() {
+        this.nbtModel = (BwmNbtModel) ViewModelProviders.of((FragmentActivity) this).get(BwmNbtModel.class);
+        this.nbtModel.setActivity(this);
+        this.nbtBinging = (ActivityBmwNbtBinding) DataBindingUtil.setContentView(this, R.layout.activity_bmw_nbt);
+        this.nbtModel.setMainnbtBinging(this.nbtBinging);
+        this.nbtBinging.setNbtModel(this.nbtModel);
+        this.nbtModel.initData();
+    }
+
+    /* access modifiers changed from: protected */
     public void initBenzGSView() {
         setFull();
         BenzGsViewMoel mBenzGsViewMoel = (BenzGsViewMoel) ViewModelProviders.of((FragmentActivity) this).get(BenzGsViewMoel.class);
@@ -319,7 +345,7 @@ public class MainActivity extends BaseThemeActivity {
         audiViewModel.setActivity(this);
         audiViewModel.initData();
         ActivityMainAudiBinding audiBinding = (ActivityMainAudiBinding) DataBindingUtil.setContentView(this, R.layout.activity_main_audi);
-        audiBinding.MLoopRotarySwitchView.setMultiple(6.0f).setR(((float) getWindowManager().getDefaultDisplay().getWidth()) / 3.2f).setLoopRotationX(-22).setLoopRotationZ(-1);
+        audiBinding.MLoopRotarySwitchView.setMultiple(6.0f).setR(((float) getWindowManager().getDefaultDisplay().getWidth()) / 3.2f).setLoopRotationX(-22).setLoopRotationZ(1);
         audiBinding.setVm(audiViewModel);
     }
 
@@ -415,6 +441,8 @@ public class MainActivity extends BaseThemeActivity {
         initSaveData();
         if (UiThemeUtils.isCommon_UI_GS_UG(this)) {
             showLastViewFocus();
+        } else if (UiThemeUtils.isBMW_NBT(this)) {
+            this.nbtModel.refrshInit();
         } else if (this.viewModel != null) {
             this.viewModel.resumeViewModel();
         }

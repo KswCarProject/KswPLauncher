@@ -2,6 +2,7 @@ package com.wits.ksw.settings.id7.layout_factory;
 
 import android.content.Context;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
     private int carManufacturer = 0;
     private int cardoor = 0;
     private int carseep = 0;
+    private CheckBox cbox_air_con;
     private CheckBox cbox_bencAux;
     private CheckBox cbox_bencPank;
     /* access modifiers changed from: private */
@@ -104,12 +106,14 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
     }
 
     private void initView() {
+        int airCon;
         this.cbox_dcld = (CheckBox) this.view.findViewById(R.id.cbox_dcld);
         this.cbox_canBus = (CheckBox) this.view.findViewById(R.id.cbox_canBus);
         this.cbox_bencAux = (CheckBox) this.view.findViewById(R.id.cbox_bencAux);
+        this.cbox_air_con = (CheckBox) this.view.findViewById(R.id.cbox_air_con);
         int i = 0;
         this.cbox_canBus.setChecked(false);
-        boolean isAudi = true;
+        boolean z = true;
         this.cbox_dcld.setChecked(this.isOldBmwx == 0);
         this.cbox_dcld.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -128,6 +132,17 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
         this.cbox_bencAux.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FileUtils.savaIntData("benz_aux_switch", isChecked);
+            }
+        });
+        if (this.carManufacturer == 1 || this.carManufacturer == 3) {
+            airCon = Settings.System.getInt(this.m_con.getContentResolver(), "air_conditioner", 0);
+        } else {
+            airCon = Settings.System.getInt(this.m_con.getContentResolver(), "air_conditioner", 1);
+        }
+        this.cbox_air_con.setChecked(airCon == 1);
+        this.cbox_air_con.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                FileUtils.savaIntData("air_conditioner", isChecked);
             }
         });
         this.cbox_bencPank = (CheckBox) this.view.findViewById(R.id.cbox_bencPank);
@@ -300,6 +315,7 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
         this.cbox_bencAux.setVisibility(enableAux ? 0 : 8);
         this.cbox_bencPank.setVisibility(enableAux ? 0 : 8);
         this.cbox_bencPank_root.setVisibility(enableAux ? 0 : 8);
+        this.cbox_air_con.setVisibility(enableAux ? 0 : 8);
         this.audi_home_left_widget_textview = (TextView) this.view.findViewById(R.id.audi_home_left_widget_textview);
         this.audi_home_right_widget_textview = (TextView) this.view.findViewById(R.id.audi_home_right_widget_textview);
         this.audiHomeLeftRadioGroup = (RadioGroup) this.view.findViewById(R.id.audiHomeLeftRadioGroup);
@@ -341,8 +357,9 @@ public class CarConfig extends FrameLayout implements RadioGroup.OnCheckedChange
             }
         });
         if (this.carManufacturer != 3) {
-            isAudi = false;
+            z = false;
         }
+        boolean isAudi = z;
         this.audi_home_left_widget_textview.setVisibility(isAudi ? 0 : 8);
         this.audi_home_right_widget_textview.setVisibility(isAudi ? 0 : 8);
         this.audiHomeLeftRadioGroup.setVisibility(isAudi ? 0 : 8);
