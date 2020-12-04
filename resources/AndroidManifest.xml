@@ -44,6 +44,9 @@
         <activity android:theme="@style/AppThemeTran" android:name="com.wits.ksw.settings.ntg6.Ntg6SettingsActivity" android:launchMode="singleInstance"/>
         <activity android:theme="@style/AppThemeTran" android:name="com.wits.ksw.settings.id6.ID6SettingsActivity" android:launchMode="singleInstance"/>
         <activity android:theme="@style/BaseActivityTheme" android:name="com.wits.ksw.launcher.id7_new.Id7NewActivity" android:excludeFromRecents="true" android:launchMode="singleTask"/>
+        <activity android:theme="@style/AppThemeTran" android:name="com.wits.ksw.settings.lexus.LexusSettingsActivity" android:launchMode="singleInstance"/>
+        <activity android:theme="@style/AppThemeTran" android:name="com.wits.ksw.settings.romeo.RomeoSettingsActivity" android:launchMode="singleInstance"/>
+        <activity android:theme="@style/AppThemeTran" android:name="com.wits.ksw.launcher.view.lexus.OEMFMActivity" android:launchMode="singleInstance"/>
         <activity android:name="com.wits.ksw.settings.id7.layout_factory.LogoSelect"/>
         <activity android:theme="@style/AudiAppTheme" android:name="com.wits.ksw.settings.audi.AudiSettingMainActivity" android:screenOrientation="landscape">
             <intent-filter>

@@ -1,6 +1,7 @@
 package com.wits.ksw.settings.id6.showLayout;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -89,7 +90,11 @@ public class ID6ShowLanguageLayout extends RelativeLayout {
         this.layoutManager = new LinearLayoutManager(this.context);
         this.layoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
-        this.adapter = new ID6LanguageAdapter(this.context, this.data.subList(0, 3), 1);
+        if (Build.DISPLAY.contains("8937")) {
+            this.adapter = new ID6LanguageAdapter(this.context, this.data, 1);
+        } else {
+            this.adapter = new ID6LanguageAdapter(this.context, this.data.subList(0, 3), 1);
+        }
         this.recyclerView.setAdapter(this.adapter);
         this.recyclerView.setEnabled(false);
     }

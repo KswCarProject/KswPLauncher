@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/relat_functionItem" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="331dp" android:layout_height="71.3dp">
+    <TextView android:textSize="35sp" android:textColor="@android:color/white" android:gravity="end" android:layout_gravity="center_vertical" android:id="@+id/romeo_main_tv" android:focusable="false" android:layout_width="152dp" android:layout_height="wrap_content" android:text="导航显示" android:lines="1"/>
+    <ImageView android:layout_gravity="center_vertical" android:id="@+id/romeo_main_iv" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="23dp" android:src="@drawable/romeo_main_icon_gps"/>
+</LinearLayout>

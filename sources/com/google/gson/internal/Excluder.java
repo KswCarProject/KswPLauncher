@@ -11,6 +11,7 @@ import com.google.gson.annotations.Until;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.wits.pms.statuscontrol.WitsCommand;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public final class Excluder implements TypeAdapterFactory, Cloneable {
     public static final Excluder DEFAULT = new Excluder();
     private static final double IGNORE_VERSIONS = -1.0d;
     private List<ExclusionStrategy> deserializationStrategies = Collections.emptyList();
-    private int modifiers = 136;
+    private int modifiers = WitsCommand.SystemCommand.LOC_SWITCH;
     private boolean requireExpose;
     private List<ExclusionStrategy> serializationStrategies = Collections.emptyList();
     private boolean serializeInnerClasses = true;

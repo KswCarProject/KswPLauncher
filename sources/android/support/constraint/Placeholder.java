@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
+import com.wits.pms.statuscontrol.WitsCommand;
 
 public class Placeholder extends View {
     private View mContent = null;
@@ -68,7 +69,7 @@ public class Placeholder extends View {
         if (isInEditMode()) {
             canvas.drawRGB(223, 223, 223);
             Paint paint = new Paint();
-            paint.setARGB(255, 210, 210, 210);
+            paint.setARGB(255, WitsCommand.SystemCommand.UPDATE_FK_CONFIG, WitsCommand.SystemCommand.UPDATE_FK_CONFIG, WitsCommand.SystemCommand.UPDATE_FK_CONFIG);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, 0));
             Rect r = new Rect();

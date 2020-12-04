@@ -89,7 +89,7 @@ public class ALSDasoardBindImpl extends ALSDasoardBind {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (12 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);
@@ -101,7 +101,7 @@ public class ALSDasoardBindImpl extends ALSDasoardBind {
         synchronized (this) {
             this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 

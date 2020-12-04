@@ -56,7 +56,7 @@ public class ActivityId7AppsBindingImpl extends ActivityId7AppsBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (14 != variableId) {
             return false;
         }
         setAppViewModel((AppViewModel) variable);
@@ -68,7 +68,7 @@ public class ActivityId7AppsBindingImpl extends ActivityId7AppsBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 

@@ -2233,13 +2233,13 @@ public class MediaSessionCompat {
                                 return;
                             default:
                                 switch (keyCode) {
-                                    case KEYCODE_MEDIA_PLAY /*126*/:
+                                    case 126:
                                         if ((4 & validActions) != 0) {
                                             cb.onPlay();
                                             return;
                                         }
                                         return;
-                                    case KEYCODE_MEDIA_PAUSE /*127*/:
+                                    case 127:
                                         if ((2 & validActions) != 0) {
                                             cb.onPause();
                                             return;

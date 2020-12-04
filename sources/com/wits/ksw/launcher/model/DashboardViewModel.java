@@ -93,7 +93,11 @@ public class DashboardViewModel extends LauncherViewModel {
     }
 
     public static void setSpeedRotationBet(ImageView imageView, float rota) {
-        int delay = McuImpl.getInstance().carInfo.delay.get().intValue();
+        int delay = 0;
+        try {
+            delay = McuImpl.getInstance().carInfo.delay.get().intValue();
+        } catch (Exception e) {
+        }
         ObjectAnimator objectAnimator = animatorMaps.get(Integer.valueOf(imageView.getId()));
         if (objectAnimator == null) {
             objectAnimator = ObjectAnimator.ofFloat(imageView, "rotation", new float[]{rota});

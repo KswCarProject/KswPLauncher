@@ -67,7 +67,7 @@ public class AudiAuxBindingImpl extends AudiAuxBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (10 != variableId) {
+        if (11 != variableId) {
             return false;
         }
         setVm((AudiSystemViewModel) variable);
@@ -79,7 +79,7 @@ public class AudiAuxBindingImpl extends AudiAuxBinding {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(10);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 

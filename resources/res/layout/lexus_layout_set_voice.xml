@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_houzvoc" android:background="@drawable/ksw_lexus_seting_mp_bg" android:layout_width="wrap_content" android:layout_height="77dp" android:text="@string/voic_1" android:drawableBottom="@drawable/lexus_settings_line_left"/>
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_yuancvoc" android:background="@drawable/ksw_lexus_seting_mp_bg" android:layout_width="wrap_content" android:layout_height="77dp" android:text="@string/voic_4" android:drawableBottom="@drawable/lexus_settings_line_left"/>
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_eq" android:background="@drawable/ksw_lexus_seting_mp_bg" android:layout_width="wrap_content" android:layout_height="77dp" android:text="@string/item4" android:drawableBottom="@drawable/lexus_settings_line_left"/>
+    </LinearLayout>
+</ScrollView>

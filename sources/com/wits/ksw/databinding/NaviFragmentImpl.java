@@ -96,7 +96,7 @@ public class NaviFragmentImpl extends NaviFragment {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (4 != variableId) {
+        if (5 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
@@ -108,7 +108,7 @@ public class NaviFragmentImpl extends NaviFragment {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(4);
+        notifyPropertyChanged(5);
         super.requestRebind();
     }
 

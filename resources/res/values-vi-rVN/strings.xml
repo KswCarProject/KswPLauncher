@@ -35,6 +35,7 @@
     <string name="dialog_update8">Vui lòng không tắt hoặc khởi động lại trong quá trình nâng cấp.</string>
     <string name="dialog_update9">Lưu cài đặt giao diện người dùng, vui lòng khởi động lại máy sau 10 giây!</string>
     <string name="dialog_updatein">Nhập tệp ...</string>
+    <string name="driver_seat">Ghế ngồi của tài xế</string>
     <string name="eq_text1">Người dùng</string>
     <string name="eq_text2">POP</string>
     <string name="eq_text3">Khiêu vũ</string>
@@ -179,6 +180,7 @@
     <string name="oil_size">dầu: %s</string>
     <string name="raw_car_text1">hiển thị toàn màn hình</string>
     <string name="raw_car_text2">Lựa chọn hiện tại:</string>
+    <string name="romeo_id7_dashboard_lable">Bảng điều khiển</string>
     <string name="sele_navi_map">Chọn bản đồ điều hướng</string>
     <string name="sele_navi_soft">Chọn phần mềm điều hướng</string>
     <string name="set_caraux">Vị trí AUX</string>
@@ -243,6 +245,7 @@
     <string name="text_logo_one">P1</string>
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
+    <string name="touch_continuous_send">Dữ liệu cảm ứng được gửi liên tục</string>
     <string name="ug_apps_text">Ứng dụng khác</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Điều hướng</string>

@@ -62,6 +62,7 @@
     <string name="dialog_update8">업그레이드중 전원을 끄지 마세요.</string>
     <string name="dialog_update9">UI 설정을 저장하면 10 초 후에 기기를 다시 시작하십시오!</string>
     <string name="dialog_updatein">파일 복사중</string>
+    <string name="driver_seat">운전석</string>
     <string name="eq_text1">표준</string>
     <string name="eq_text2">팝</string>
     <string name="eq_text3">댄스</string>
@@ -206,6 +207,7 @@
     <string name="oil_size">기름: %s</string>
     <string name="raw_car_text1">풀스크린 모드 선택</string>
     <string name="raw_car_text2">현재 선택:</string>
+    <string name="romeo_id7_dashboard_lable">데쉬보드</string>
     <string name="search_menu_title">검색</string>
     <string name="sele_navi_map">탐색 맵 선택</string>
     <string name="sele_navi_soft">탐색 소프트웨어 선택</string>
@@ -272,6 +274,7 @@
     <string name="text_logo_one">P1</string>
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
+    <string name="touch_continuous_send">지속적으로 전송되는 터치 데이터</string>
     <string name="ug_apps_text">더 많은 어플</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">네비게이션</string>

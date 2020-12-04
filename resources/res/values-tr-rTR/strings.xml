@@ -35,6 +35,7 @@
     <string name="dialog_update8">Lütfen yükseltme işlemi sırasında gücü kapatmayın veya yeniden başlatmayın.</string>
     <string name="dialog_update9">UI ayarlarını kaydetme, lütfen 10 saniye sonra makineyi yeniden başlatın!</string>
     <string name="dialog_updatein">Dosya içe aktarılıyor...</string>
+    <string name="driver_seat">Sürücü koltuğu</string>
     <string name="eq_text1">Kullanıcı</string>
     <string name="eq_text2">POP</string>
     <string name="eq_text3">Dans</string>
@@ -179,6 +180,7 @@
     <string name="oil_size">oil: %s</string>
     <string name="raw_car_text1">tam ekran görüntüsü</string>
     <string name="raw_car_text2">Geçerli seçim:</string>
+    <string name="romeo_id7_dashboard_lable">Dash Kurulu</string>
     <string name="sele_navi_map">Gezinme haritası seçin</string>
     <string name="sele_navi_soft">Navigasyon yazılımı seçin</string>
     <string name="set_caraux">UX pozisyonu</string>
@@ -243,6 +245,7 @@
     <string name="text_logo_one">P1</string>
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
+    <string name="touch_continuous_send">Sürekli gönderilen dokunmatik veriler</string>
     <string name="ug_apps_text">Daha Apps</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Navigasyon</string>

@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import com.wits.pms.statuscontrol.WitsCommand;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,7 +183,7 @@ public abstract class ExploreByTouchHelper extends AccessibilityDelegateCompat {
             case 22:
                 return 66;
             default:
-                return 130;
+                return WitsCommand.SystemCommand.INTERCEPT_KEY;
         }
     }
 

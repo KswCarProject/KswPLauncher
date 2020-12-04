@@ -1,6 +1,7 @@
 package com.wits.ksw.launcher.model;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,6 +11,7 @@ import android.databinding.ObservableField;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.wits.ksw.launcher.base.BaseListAdpater;
 import com.wits.ksw.launcher.bean.AppInfo;
 import com.wits.ksw.launcher.dabebase.AppInfoRoomDatabase;
 import com.wits.ksw.launcher.dabebase.AppList;
+import com.wits.ksw.launcher.utils.ClientManager;
+import com.wits.ksw.launcher.utils.IconUtils;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.view.DragGridView;
 import com.wits.pms.statuscontrol.PowerManagerApp;
@@ -38,6 +42,8 @@ public final class AppViewModel extends LauncherViewModel {
     private static final String GAODE_MAP_PKG = "com.autonavi.amapauto";
     private static final String GOOGLE_SEARCH_PKG = "com.google.android.googlequicksearchbox";
     private static final String IFLYTEK_PKG = "com.iflytek.inputmethod.google";
+    private static final String SPEEDPLAY_PKG = "com.suding.speedplay";
+    private static final String ZLINK_PKG = "com.zjinnova.zlink";
     /* access modifiers changed from: private */
     public static Drawable auxIcon = KswApplication.appContext.getDrawable(R.drawable.ic_aux);
     /* access modifiers changed from: private */
@@ -100,7 +106,7 @@ public final class AppViewModel extends LauncherViewModel {
             } else if (TextUtils.equals(appInfo.getApppkg(), "Front_view_camera")) {
                 AppViewModel.this.onSendCommand(1, WitsCommand.SystemCommand.OPEN_F_CAM);
             } else {
-                AppViewModel.this.openApp(AppViewModel.this.context.getPackageManager().getLaunchIntentForPackage(appInfo.getApppkg()));
+                AppViewModel.this.openAppTask(new ComponentName(appInfo.getApppkg(), appInfo.getClassName()));
             }
         }
     };
@@ -152,10 +158,16 @@ public final class AppViewModel extends LauncherViewModel {
                     String packageName = resolveInfo.activityInfo.packageName;
                     if (!AppViewModel.this.filterAppDisplay(packageName)) {
                         AppInfo appInfo = new AppInfo();
-                        appInfo.setAppIcon(resolveInfo.loadIcon(pm));
-                        appInfo.setAppLable(resolveInfo.loadLabel(pm).toString());
+                        Drawable iconDrawable = resolveInfo.loadIcon(pm);
+                        appInfo.setAppIcon(iconDrawable);
+                        String label = resolveInfo.loadLabel(pm).toString();
+                        appInfo.setAppLable(label);
                         appInfo.setApppkg(packageName);
                         appInfo.setClassName(resolveInfo.activityInfo.name);
+                        Log.d("AAAAA", packageName + "  " + label);
+                        if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
+                            AppViewModel.this.loadRoundRectIcon(packageName, appInfo, iconDrawable, label);
+                        }
                         appInfoList.add(appInfo);
                     }
                 }
@@ -202,8 +214,17 @@ public final class AppViewModel extends LauncherViewModel {
                 AppViewModel.this.mListLiveData.add(appInfo);
             }
             AppViewModel.this.SaveAppList();
-            AppViewModel.this.listAdpater.set(new BaseListAdpater(AppViewModel.this.mListLiveData, R.layout.id7_app_item));
+            if (!ClientManager.getInstance().isAls6208Client() || !IconUtils.getInstance().isRoundStyle()) {
+                AppViewModel.this.listAdpater.set(new BaseListAdpater(AppViewModel.this.mListLiveData, R.layout.id7_app_item));
+            } else {
+                AppViewModel.this.listAdpater.set(new BaseListAdpater(AppViewModel.this.mListLiveData, R.layout.round_app_item));
+            }
         }
+    }
+
+    /* access modifiers changed from: private */
+    public void loadRoundRectIcon(String packageName, AppInfo appInfo, Drawable drawable, String label) {
+        appInfo.setAppIcon(IconUtils.getInstance().getIcon(packageName, appInfo, drawable, label));
     }
 
     /* access modifiers changed from: private */
@@ -211,7 +232,14 @@ public final class AppViewModel extends LauncherViewModel {
         if (packageName.contains(KswApplication.appContext.getPackageName()) || packageName.contains(getClass().getPackage().toString()) || packageName.contains(IFLYTEK_PKG) || packageName.contains(DESKCLOCK_PKG)) {
             return true;
         }
-        return false;
+        int speed_play_switch = Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1);
+        if (speed_play_switch != 2 && packageName.contains(SPEEDPLAY_PKG)) {
+            return true;
+        }
+        if (speed_play_switch != 2 || !packageName.contains(ZLINK_PKG)) {
+            return false;
+        }
+        return true;
     }
 
     /* access modifiers changed from: private */

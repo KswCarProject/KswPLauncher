@@ -40,6 +40,7 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
+import com.wits.pms.statuscontrol.WitsCommand;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -601,7 +602,7 @@ public class VerticalViewPager extends ViewGroup {
         ItemInfo oldCurInfo = null;
         int focusDirection = 2;
         if (this.mCurItem != i) {
-            focusDirection = this.mCurItem < i ? 130 : 33;
+            focusDirection = this.mCurItem < i ? WitsCommand.SystemCommand.INTERCEPT_KEY : 33;
             oldCurInfo = infoForPosition(this.mCurItem);
             this.mCurItem = i;
         }

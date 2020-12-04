@@ -10,7 +10,9 @@ import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.audi.AudiSettingMainActivity;
 import com.wits.ksw.settings.id6.ID6SettingsActivity;
 import com.wits.ksw.settings.id7.ID7SettingsActivity;
+import com.wits.ksw.settings.lexus.LexusSettingsActivity;
 import com.wits.ksw.settings.ntg6.Ntg6SettingsActivity;
+import com.wits.ksw.settings.romeo.RomeoSettingsActivity;
 
 public class SettingsActivity extends BaseActivity {
     /* access modifiers changed from: protected */
@@ -45,6 +47,12 @@ public class SettingsActivity extends BaseActivity {
             intentSend = new Intent(this, ID6SettingsActivity.class);
         } else if (UiThemeUtils.isBMW_NBT(this)) {
             intentSend = new Intent(this, ID6SettingsActivity.class);
+        } else if (UiThemeUtils.isLEXUS_UI(this)) {
+            intentSend = new Intent(this, LexusSettingsActivity.class);
+        } else if (UiThemeUtils.isROMEO_UI(this)) {
+            intentSend = new Intent(this, RomeoSettingsActivity.class);
+        } else if (UiThemeUtils.isCommon_UI_GS_UG_1024(this)) {
+            intentSend = new Intent(this, Ntg6SettingsActivity.class);
         } else {
             intentSend = new Intent(this, ID7SettingsActivity.class);
         }

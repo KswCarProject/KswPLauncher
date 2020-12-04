@@ -11,6 +11,7 @@ public class UiThemeUtils {
     public static final String BMW_EVO_ID6 = "BMW_EVO_ID6";
     public static final String BMW_EVO_ID6_GS = "BMW_EVO_ID6_GS";
     public static final String BMW_EVO_ID7 = "BMW_EVO_ID7";
+    public static final String BMW_EVO_ID7_HiCar = "BMW_EVO_ID7_HiCar";
     public static final String BMW_NBT = "BMW_NBT_UI";
     public static final String Benz_GS = "Benz_GS";
     public static final String Benz_MBUX = "Benz_MBUX";
@@ -18,9 +19,12 @@ public class UiThemeUtils {
     public static final String Benz_NTG6 = "Benz_NTG6";
     public static final String Common_UI_GS = "Common_UI_GS";
     public static final String Common_UI_GS_UG = "Common_UI_GS_UG";
+    public static final String Common_UI_GS_UG_1024 = "Common_UI_GS_UG_1024";
+    public static final String LEXUS_UI = "LEXUS_UI";
+    public static final String ROMEO_UI = "Alfa_Romeo";
 
     public static boolean isId7AndDefaultUi(Context context) {
-        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context) && !isBenz_NTG5(context) && !isALS_ID6(context) && !isBMW_NBT(context);
+        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context) && !isBenz_NTG5(context) && !isALS_ID6(context) && !isBMW_EVO_ID7_HiCar(context) && !isLEXUS_UI(context) && !isBMW_NBT(context) && !isROMEO_UI(context);
     }
 
     public static boolean isBenz_NTG6(Context context) {
@@ -71,8 +75,24 @@ public class UiThemeUtils {
         return TextUtils.equals(getUiName(context), ALS_ID6);
     }
 
+    public static boolean isBMW_EVO_ID7_HiCar(Context context) {
+        return TextUtils.equals(getUiName(context), BMW_EVO_ID7_HiCar);
+    }
+
+    public static boolean isLEXUS_UI(Context context) {
+        return TextUtils.equals(getUiName(context), LEXUS_UI);
+    }
+
     public static boolean isBMW_NBT(Context context) {
         return TextUtils.equals(getUiName(context), BMW_NBT);
+    }
+
+    public static boolean isROMEO_UI(Context context) {
+        return TextUtils.equals(getUiName(context), ROMEO_UI);
+    }
+
+    public static boolean isCommon_UI_GS_UG_1024(Context context) {
+        return TextUtils.equals(getUiName(context), Common_UI_GS_UG_1024);
     }
 
     public static int getCarManufacturer(Context context) {

@@ -41,13 +41,25 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initBmwid7UiView();
 
     /* access modifiers changed from: protected */
+    public abstract void initBwmID7Hicar();
+
+    /* access modifiers changed from: protected */
     public abstract void initBwmNbt();
+
+    /* access modifiers changed from: protected */
+    public abstract void initCommonUIGSUG1024View();
 
     /* access modifiers changed from: protected */
     public abstract void initCommonUIGSUGView();
 
     /* access modifiers changed from: protected */
     public abstract void initGSUiView();
+
+    /* access modifiers changed from: protected */
+    public abstract void initLexus();
+
+    /* access modifiers changed from: protected */
+    public abstract void initRomeo();
 
     /* access modifiers changed from: protected */
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +89,12 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initAlsView();
         } else if (UiThemeUtils.isBMW_NBT(this)) {
             initBwmNbt();
+        } else if (UiThemeUtils.isLEXUS_UI(this)) {
+            initLexus();
+        } else if (UiThemeUtils.isROMEO_UI(this)) {
+            initRomeo();
+        } else if (UiThemeUtils.isCommon_UI_GS_UG_1024(this)) {
+            initCommonUIGSUG1024View();
         } else {
             initBmwid7UiView();
         }

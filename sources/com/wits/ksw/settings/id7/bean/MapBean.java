@@ -39,4 +39,18 @@ public class MapBean {
     public void setMapicon(Drawable mapicon2) {
         this.mapicon = mapicon2;
     }
+
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) {
+            return true;
+        }
+        if (otherObject == null || !(otherObject instanceof MapBean)) {
+            return false;
+        }
+        MapBean other = (MapBean) otherObject;
+        if (!this.name.equals(other.name) || this.packageName != other.packageName) {
+            return false;
+        }
+        return true;
+    }
 }

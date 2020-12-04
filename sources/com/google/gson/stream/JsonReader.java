@@ -2,7 +2,6 @@ package com.google.gson.stream;
 
 import com.google.gson.internal.JsonReaderInternalAccess;
 import com.google.gson.internal.bind.JsonTreeReader;
-import com.wits.pms.statuscontrol.WitsCommand;
 import java.io.Closeable;
 import java.io.EOFException;
 import java.io.IOException;
@@ -513,7 +512,7 @@ public class JsonReader implements Closeable {
             case '[':
             case ']':
             case '{':
-            case WitsCommand.MediaSubCommand.MUSIC_LIST_CLOSE /*125*/:
+            case '}':
                 return false;
             case '#':
             case '/':
@@ -717,7 +716,7 @@ public class JsonReader implements Closeable {
                     case '[':
                     case ']':
                     case '{':
-                    case WitsCommand.MediaSubCommand.MUSIC_LIST_CLOSE /*125*/:
+                    case '}':
                         break;
                     case '#':
                     case '/':
@@ -797,7 +796,7 @@ public class JsonReader implements Closeable {
                     case '[':
                     case ']':
                     case '{':
-                    case WitsCommand.MediaSubCommand.MUSIC_LIST_CLOSE /*125*/:
+                    case '}':
                         break;
                     case '#':
                     case '/':

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/img_twoDefaul" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:src="@drawable/romeo_settings_icon3"/>
+    <LinearLayout android:orientation="vertical" android:id="@+id/ll_bv" android:paddingLeft="80dp" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <RelativeLayout android:id="@+id/relate_beigld" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_mtvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="55dp" android:text="@string/voic_2" android:layout_alignLeft="@+id/seek_mtb"/>
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_mtsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="55dp" android:text="0" android:layout_alignRight="@+id/seek_mtb"/>
+            <SeekBar android:id="@+id/seek_mtb" android:background="@null" android:focusable="false" android:layout_width="307dp" android:layout_height="30dp" android:layout_marginLeft="0dp" android:layout_marginTop="95dp" android:progressDrawable="@drawable/lexus_progress_bar" android:thumb="@drawable/lexus_settings_progress_bar_slider2" android:thumbOffset="0dp" android:splitTrack="false"/>
+        </RelativeLayout>
+        <RelativeLayout android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_tonghvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:text="@string/voic_3" android:layout_alignLeft="@+id/seek_tonghb"/>
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_tonghsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:text="0" android:layout_alignRight="@+id/seek_tonghb"/>
+            <SeekBar android:id="@+id/seek_tonghb" android:background="@null" android:focusable="false" android:layout_width="307dp" android:layout_height="30dp" android:layout_marginLeft="0dp" android:layout_marginTop="55dp" android:progressDrawable="@drawable/lexus_progress_bar" android:thumb="@drawable/lexus_settings_progress_bar_slider2" android:thumbOffset="0dp" android:splitTrack="false"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:id="@+id/ll_ov" android:paddingLeft="80dp" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_yuancthvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="55dp" android:text="@string/voic_3" android:layout_alignLeft="@+id/seek_yuancthb"/>
+            <SeekBar android:id="@+id/seek_yuancthb" android:background="@null" android:focusable="false" android:layout_width="307dp" android:layout_height="30dp" android:layout_marginLeft="0dp" android:layout_marginTop="95dp" android:progressDrawable="@drawable/lexus_progress_bar" android:thumb="@drawable/lexus_settings_progress_bar_slider2" android:thumbOffset="0dp" android:splitTrack="false"/>
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_yuancthsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="55dp" android:text="0" android:layout_alignRight="@+id/seek_yuancthb"/>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_daohvoic" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:text="@string/voic_5" android:layout_alignLeft="@+id/seek_daohvoicb"/>
+            <SeekBar android:id="@+id/seek_daohvoicb" android:background="@null" android:focusable="false" android:layout_width="307dp" android:layout_height="30dp" android:layout_marginLeft="0dp" android:layout_marginTop="55dp" android:progressDrawable="@drawable/lexus_progress_bar" android:thumb="@drawable/lexus_settings_progress_bar_slider2" android:thumbOffset="0dp" android:splitTrack="false"/>
+            <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_daohvoicsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15dp" android:text="0" android:layout_alignRight="@+id/seek_daohvoicb"/>
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

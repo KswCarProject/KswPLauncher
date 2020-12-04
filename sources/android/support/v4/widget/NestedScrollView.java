@@ -38,6 +38,7 @@ import android.widget.EdgeEffect;
 import android.widget.FrameLayout;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
+import com.wits.pms.statuscontrol.WitsCommand;
 import java.util.List;
 
 public class NestedScrollView extends FrameLayout implements NestedScrollingParent2, NestedScrollingChild2, ScrollingView {
@@ -366,8 +367,9 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
 
     public boolean executeKeyEvent(@NonNull KeyEvent event) {
         this.mTempRect.setEmpty();
-        int i = 130;
-        if (!canScroll()) {
+        boolean canScroll = canScroll();
+        int i = WitsCommand.SystemCommand.INTERCEPT_KEY;
+        if (!canScroll) {
             if (!isFocused() || event.getKeyCode() == 4) {
                 return false;
             }
@@ -375,8 +377,8 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
             if (currentFocused == this) {
                 currentFocused = null;
             }
-            View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused, 130);
-            if (nextFocused == null || nextFocused == this || !nextFocused.requestFocus(130)) {
+            View nextFocused = FocusFinder.getInstance().findNextFocus(this, currentFocused, WitsCommand.SystemCommand.INTERCEPT_KEY);
+            if (nextFocused == null || nextFocused == this || !nextFocused.requestFocus(WitsCommand.SystemCommand.INTERCEPT_KEY)) {
                 return false;
             }
             return true;
@@ -393,9 +395,9 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
                         return fullScroll(33);
                     case 20:
                         if (!event.isAltPressed()) {
-                            return arrowScroll(130);
+                            return arrowScroll(WitsCommand.SystemCommand.INTERCEPT_KEY);
                         }
-                        return fullScroll(130);
+                        return fullScroll(WitsCommand.SystemCommand.INTERCEPT_KEY);
                     default:
                         return false;
                 }
@@ -1392,7 +1394,7 @@ public class NestedScrollView extends FrameLayout implements NestedScrollingPare
     public boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
         View nextFocus;
         if (direction == 2) {
-            direction = 130;
+            direction = WitsCommand.SystemCommand.INTERCEPT_KEY;
         } else if (direction == 1) {
             direction = 33;
         }

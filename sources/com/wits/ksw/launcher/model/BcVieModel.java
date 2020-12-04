@@ -4,9 +4,11 @@ import android.databinding.BindingMethod;
 import android.databinding.BindingMethods;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -207,8 +209,16 @@ public class BcVieModel extends LauncherViewModel {
                         BcVieModel.this.openApps(view);
                         return;
                     case 7:
-                        BcVieModel.this.openApp(BcVieModel.this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
-                        return;
+                        if (!Build.DISPLAY.contains("8937")) {
+                            BcVieModel.this.openApp(BcVieModel.this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
+                            return;
+                        } else if (Settings.System.getInt(BcVieModel.this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+                            BcVieModel.this.openApp(BcVieModel.this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                            return;
+                        } else {
+                            BcVieModel.this.openApp(BcVieModel.this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                            return;
+                        }
                     case 8:
                         BcVieModel.this.onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.DashboardActivity");
                         return;
@@ -263,8 +273,16 @@ public class BcVieModel extends LauncherViewModel {
                 openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop"));
                 return;
             case 7:
-                openApp(this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
-                return;
+                if (!Build.DISPLAY.contains("8937")) {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
+                    return;
+                } else if (Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
+                    return;
+                } else {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                    return;
+                }
             case 8:
                 onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.DashboardActivity");
                 return;
@@ -298,8 +316,16 @@ public class BcVieModel extends LauncherViewModel {
                 onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.DashboardActivity");
                 return;
             case 6:
-                openApp(this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
-                return;
+                if (!Build.DISPLAY.contains("8937")) {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
+                    return;
+                } else if (Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
+                    return;
+                } else {
+                    openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                    return;
+                }
             case 7:
                 openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.estrongs.android.pop"));
                 return;

@@ -12,6 +12,6 @@ public final /* synthetic */ class $$Lambda$FactoryInput$HW8JpZHdzbdm4OHzfpZZLWm
     }
 
     public final void onClick(View view) {
-        WitsCommand.sendCommand(1, WitsCommand.MediaSubCommand.MUSIC_LIST_CLOSE, (String) null);
+        WitsCommand.sendCommand(1, 125, (String) null);
     }
 }

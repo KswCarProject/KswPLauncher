@@ -8,7 +8,7 @@ public final class GlideTrace {
     }
 
     private static String truncateTag(String tag) {
-        if (tag.length() > MAX_LENGTH) {
+        if (tag.length() > 127) {
             return tag.substring(0, 126);
         }
         return tag;

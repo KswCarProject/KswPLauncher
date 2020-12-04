@@ -63,6 +63,7 @@
     <string name="dialog_update8">アップデート中は、電源を切ったり、再起動したりしないでください。</string>
     <string name="dialog_update9">UI設定を保存しています。10秒後にモニターを再起動してください！</string>
     <string name="dialog_updatein">ファイルをインポートしています...</string>
+    <string name="driver_seat">運転席</string>
     <string name="eq_text1">ユーザー</string>
     <string name="eq_text2">ポップ</string>
     <string name="eq_text3">ダンス</string>
@@ -210,6 +211,7 @@
     <string name="oil_size">油: %s</string>
     <string name="raw_car_text1">全画面表示</string>
     <string name="raw_car_text2">現在の選択：</string>
+    <string name="romeo_id7_dashboard_lable">ダッシュボード</string>
     <string name="search_menu_title">検索</string>
     <string name="sele_navi_map">ナビゲーションの地図を選択する</string>
     <string name="sele_navi_soft">ナビゲーションのソフトウェアを選択する</string>
@@ -276,6 +278,7 @@
     <string name="text_logo_one">Page 1</string>
     <string name="text_logo_two">Page 2</string>
     <string name="text_ram">RAM: %s</string>
+    <string name="touch_continuous_send">継続的に送信されるタッチデータ</string>
     <string name="ug_apps_text">もっと</string>
     <string name="ug_bluetooth">ブルートゥース</string>
     <string name="ug_navigation">ナビゲーション</string>

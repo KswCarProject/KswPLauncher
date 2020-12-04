@@ -44,13 +44,16 @@ public class SystemStatus {
 
     public static final class MODE {
         public static final int AUX = 4;
-        public static final int BROWSER = 5;
-        public static final int BT = 1;
-        public static final int CAN = 6;
-        public static final int FM = 2;
-        public static final int MEDIA = 3;
-        public static final int NAVI = 0;
-        public static final int OTHER = 7;
+        public static final int BT_CALL = 7;
+        public static final int BT_MUSIC = 6;
+        public static final int DVD = 10;
+        public static final int FM = 0;
+        public static final int MUSIC = 1;
+        public static final int NAVI = 5;
+        public static final int PIC = 3;
+        public static final int REVER = 8;
+        public static final int TV = 9;
+        public static final int VIDEO = 2;
     }
 
     public static final class RLIGHT {

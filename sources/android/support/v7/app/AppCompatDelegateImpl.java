@@ -27,7 +27,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.KeyEventDispatcher;
 import android.support.v4.view.LayoutInflaterCompat;
-import android.support.v4.view.PointerIconCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
@@ -1131,7 +1130,7 @@ class AppCompatDelegateImpl extends AppCompatDelegate implements MenuBuilder.Cal
                         width = -1;
                     }
                     panelFeatureState.isHandled = false;
-                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(width, -2, panelFeatureState.x, panelFeatureState.y, PointerIconCompat.TYPE_HAND, 8519680, -3);
+                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(width, -2, panelFeatureState.x, panelFeatureState.y, 1002, 8519680, -3);
                     layoutParams.gravity = panelFeatureState.gravity;
                     layoutParams.windowAnimations = panelFeatureState.windowAnimations;
                     wm.addView(panelFeatureState.decorView, layoutParams);

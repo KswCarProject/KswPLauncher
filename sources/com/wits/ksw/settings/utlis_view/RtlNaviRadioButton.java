@@ -42,15 +42,18 @@ public class RtlNaviRadioButton extends RadioButton {
     /* access modifiers changed from: protected */
     public void init() {
         this.buttonDrawable = getButtonDrawable();
-        if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
+        if (this.buttonDrawable == null) {
+            Log.d(TAG, "getButtonDrawable null");
+        } else if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
             Log.i(TAG, "RtlRadioButton: ");
             setButtonDrawable((Drawable) null);
             setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, this.buttonDrawable, (Drawable) null);
             setGravity(21);
             setCompoundDrawablePadding(10);
-            return;
+        } else {
+            setButtonDrawable(this.buttonDrawable);
+            setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
+            setCompoundDrawablePadding(10);
         }
-        setButtonDrawable(this.buttonDrawable);
-        setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
     }
 }

@@ -7,14 +7,18 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,8 +29,11 @@ import com.wits.ksw.databinding.ActivityMainBcBinding;
 import com.wits.ksw.databinding.ActivityMainBenzGsBinding;
 import com.wits.ksw.databinding.ActivityMainBenzMbuxBindingImpl;
 import com.wits.ksw.databinding.ActivityMainBenzNtg5Binding;
+import com.wits.ksw.databinding.ActivityMainGsug2BindingImpl;
 import com.wits.ksw.databinding.ActivityMainGsugBindingImpl;
 import com.wits.ksw.databinding.ActivityMainId6GsBinding;
+import com.wits.ksw.databinding.ActivityMainLexusBinding;
+import com.wits.ksw.databinding.ActivityRomeoBinding;
 import com.wits.ksw.databinding.ID5MaindBind;
 import com.wits.ksw.launcher.adpater.BMWViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BenzGsHomePagerAdpater;
@@ -36,6 +43,7 @@ import com.wits.ksw.launcher.adpater.BenzNTG6RecyclerViewAdpater;
 import com.wits.ksw.launcher.adpater.BmwId5ViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BmwId6ViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BmwId6gSHomePagerAdpater;
+import com.wits.ksw.launcher.adpater.RomeoMainListAdapter;
 import com.wits.ksw.launcher.adpater.UgHomePagerAdpater;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.id7_new.Id7NewActivity;
@@ -44,6 +52,8 @@ import com.wits.ksw.launcher.model.BcNTG5ViewModel;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.BwmNbtModel;
 import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.model.RomeoViewModel;
+import com.wits.ksw.launcher.utils.FixLinearSnapHelper;
 import com.wits.ksw.launcher.utils.KeyUtils;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
@@ -55,6 +65,7 @@ import com.wits.ksw.launcher.view.ug.WiewFocusUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.ksw.settings.utlis_view.ScanNaviList;
 import com.wits.pms.statuscontrol.PowerManagerApp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseThemeActivity {
@@ -65,18 +76,23 @@ public class MainActivity extends BaseThemeActivity {
     public ActivityMainBcBinding bcMainActivity;
     public com.wits.ksw.databinding.MainActivity bmwBinding;
     private BmwId6ViewPagerAdpater bmwId6ViewPagerAdpater;
+    public ActivityMainGsug2BindingImpl gsug2Binding;
     public ID5MaindBind id5MaindBind;
-    @InjectView(2131231074)
+    @InjectView(2131231093)
     ImageView id6LeftBtn;
-    @InjectView(2131231075)
+    @InjectView(2131231094)
     public ViewPager id6MainViewPager;
-    @InjectView(2131231087)
+    @InjectView(2131231106)
     ImageView id6RightBtn;
+    private ActivityMainLexusBinding lexusBinding;
     public BcNTG5ViewModel mBcNTG5ViewModel;
     public BcVieModel mBcVieModel;
     private ActivityBmwNbtBinding nbtBinging;
     private BwmNbtModel nbtModel;
     public ActivityMainBenzNtg5Binding ntg5Binding;
+    /* access modifiers changed from: private */
+    public ActivityRomeoBinding romeoBinding;
+    private RomeoViewModel romeoViewModel;
     public MutableLiveData<UgPager> select = new MutableLiveData<>();
     public ActivityMainGsugBindingImpl ugBinding;
     private LauncherViewModel viewModel;
@@ -273,6 +289,133 @@ public class MainActivity extends BaseThemeActivity {
         this.nbtModel.initData();
     }
 
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        String str = TAG;
+        Log.i(str, "onKeyUp: action=" + event.getAction() + " keyCode =" + keyCode);
+        if (UiThemeUtils.isLEXUS_UI(this) && (keyCode == 19 || keyCode == 20 || keyCode == 21 || keyCode == 22)) {
+            List<View> viewGroupChildViews = getViewGroupChildViews(this.lexusBinding.lexusMainSv);
+            int foucusIndex = getFoucusIndex(viewGroupChildViews);
+            String str2 = TAG;
+            Log.i(str2, "onKeyUp: viewGroupChildViews=" + viewGroupChildViews.size() + " foucusIndex// =" + foucusIndex);
+            if (foucusIndex == -1) {
+                this.lexusBinding.lexusMainSv.scrollTo(0, 0);
+                View lastViewFocused = viewGroupChildViews.get(0);
+                lastViewFocused.setFocusableInTouchMode(true);
+                lastViewFocused.requestFocus();
+                lastViewFocused.setFocusableInTouchMode(false);
+            }
+            if (foucusIndex == 5 || foucusIndex == 10) {
+                this.lexusBinding.lexusMainSv.scrollTo(1920, 0);
+            }
+            if (foucusIndex == 0 || foucusIndex == 6) {
+                this.lexusBinding.lexusMainSv.scrollTo(0, 0);
+            }
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    /* access modifiers changed from: protected */
+    public void initLexus() {
+        Log.i(TAG, " initLexus: ");
+        this.viewModel = (LauncherViewModel) ViewModelProviders.of((FragmentActivity) this).get(LauncherViewModel.class);
+        this.viewModel.setActivity(this);
+        this.lexusBinding = (ActivityMainLexusBinding) DataBindingUtil.setContentView(this, R.layout.activity_main_lexus);
+        this.lexusBinding.setViewModel(this.viewModel);
+        this.viewModel.initData();
+        if (Settings.System.getInt(getContentResolver(), KeyConfig.AC_CONTROL, 0) == 1) {
+            this.viewModel.acControl.set(true);
+        } else {
+            this.viewModel.acControl.set(false);
+        }
+    }
+
+    private int getFoucusIndex(List<View> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isFocused()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private List<View> getViewGroupChildViews(ViewGroup vp) {
+        List<View> allchildren = new ArrayList<>();
+        for (int i = 0; i < vp.getChildCount(); i++) {
+            View viewchild = vp.getChildAt(i);
+            if (viewchild instanceof ViewGroup) {
+                allchildren.addAll(getViewGroupChildViews((ViewGroup) viewchild));
+            } else {
+                allchildren.add(viewchild);
+            }
+        }
+        String str = TAG;
+        Log.d(str, "getViewGroupChildViews allchildren size=" + allchildren.size());
+        return allchildren;
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBwmID7Hicar() {
+        Log.i(TAG, "initBwmID7Hicar: ");
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initRomeo() {
+        setFull();
+        this.romeoViewModel = (RomeoViewModel) ViewModelProviders.of((FragmentActivity) this).get(RomeoViewModel.class);
+        this.romeoViewModel.setActivity(this);
+        this.romeoBinding = (ActivityRomeoBinding) DataBindingUtil.setContentView(this, R.layout.activity_romeo);
+        this.romeoBinding.setViewModel(this.romeoViewModel);
+        this.romeoViewModel.initData();
+        this.romeoViewModel.setRomeoBinding(this.romeoBinding);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(1);
+        this.romeoBinding.romeoMainRv.setLayoutManager(layoutManager);
+        this.romeoBinding.romeoMainRv.setItemViewCacheSize(0);
+        RomeoMainListAdapter rvAdapter = new RomeoMainListAdapter(this, this.romeoViewModel);
+        rvAdapter.setLayoutManager(layoutManager);
+        rvAdapter.setBinding(this.romeoBinding);
+        new FixLinearSnapHelper().attachToRecyclerView(this.romeoBinding.romeoMainRv);
+        this.romeoBinding.romeoMainRv.setAdapter(rvAdapter);
+        this.romeoBinding.pageIndicator1.getDrawable().setLevel(1);
+        this.romeoBinding.pageIndicator2.getDrawable().setLevel(0);
+        this.romeoBinding.romeoMainRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                String access$000 = MainActivity.TAG;
+                Log.d(access$000, "recyclerView onScrollStateChanged newState=" + newState);
+                if (newState == 0) {
+                    int firstVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                    String access$0002 = MainActivity.TAG;
+                    Log.d(access$0002, "recyclerView onScrollStateChanged firstVisibleItemPosition=" + firstVisibleItemPosition);
+                    if (firstVisibleItemPosition != 0) {
+                        MainActivity.this.romeoBinding.pageIndicator1.getDrawable().setLevel(0);
+                        MainActivity.this.romeoBinding.pageIndicator2.getDrawable().setLevel(1);
+                        return;
+                    }
+                    MainActivity.this.romeoBinding.pageIndicator1.getDrawable().setLevel(1);
+                    MainActivity.this.romeoBinding.pageIndicator2.getDrawable().setLevel(0);
+                }
+            }
+
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                String access$000 = MainActivity.TAG;
+                Log.d(access$000, "recyclerView onScrolled dx=" + dx + " dy=" + dy);
+                MainActivity.this.changeDistance(recyclerView);
+            }
+        });
+    }
+
+    /* access modifiers changed from: private */
+    public void changeDistance(@NonNull RecyclerView recyclerView) {
+        String str = TAG;
+        Log.d(str, "calculateTranslate count=" + recyclerView.getChildCount());
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            recyclerView.getChildAt(i).setPadding(KswUtils.calculateTranslate(recyclerView.getChildAt(i).getTop(), KswUtils.dip2px(this, 428.0f), i, this), 0, 0, 0);
+        }
+    }
+
     /* access modifiers changed from: protected */
     public void initBenzGSView() {
         setFull();
@@ -308,6 +451,24 @@ public class MainActivity extends BaseThemeActivity {
         this.viewModel.initData();
         this.ugBinding.setViewModel(this.viewModel);
         this.ugBinding.ugViewPage.setUgPageChangeListener(new UgViewPager.UgPageChangeListener() {
+            public void onPageSelected(int i, boolean left, boolean right) {
+                String access$000 = MainActivity.TAG;
+                Log.i(access$000, "onPageSelected: i:" + i + " left:" + left + " right:" + right);
+                MainActivity.this.select.setValue(new UgPager(i, left, right));
+            }
+        });
+    }
+
+    /* access modifiers changed from: protected */
+    public void initCommonUIGSUG1024View() {
+        Log.i(TAG, "initCommonUIGSUG1024View: ");
+        this.gsug2Binding = (ActivityMainGsug2BindingImpl) DataBindingUtil.setContentView(this, R.layout.activity_main_gsug2);
+        this.gsug2Binding.ugViewPage.setAdapter(new UgHomePagerAdpater(getSupportFragmentManager()));
+        this.viewModel = (LauncherViewModel) ViewModelProviders.of((FragmentActivity) this).get(LauncherViewModel.class);
+        this.viewModel.setActivity(this);
+        this.viewModel.initData();
+        this.gsug2Binding.setViewModel(this.viewModel);
+        this.gsug2Binding.ugViewPage.setUgPageChangeListener(new UgViewPager.UgPageChangeListener() {
             public void onPageSelected(int i, boolean left, boolean right) {
                 String access$000 = MainActivity.TAG;
                 Log.i(access$000, "onPageSelected: i:" + i + " left:" + left + " right:" + right);
@@ -446,6 +607,19 @@ public class MainActivity extends BaseThemeActivity {
         } else if (this.viewModel != null) {
             this.viewModel.resumeViewModel();
         }
+    }
+
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        if (UiThemeUtils.isLEXUS_UI(this)) {
+            if (keyCode == 20) {
+                return super.dispatchKeyEvent(new KeyEvent(event.getAction(), 22));
+            }
+            if (keyCode == 19) {
+                return super.dispatchKeyEvent(new KeyEvent(event.getAction(), 21));
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -42,6 +42,52 @@ public class KswUtils {
         return singleton;
     }
 
+    public static int calculateTranslate(int top, int h, int i, Context context) {
+        Log.d("calculateTranslate", " top: " + top + " h " + h + " index " + i);
+        int hh = h - dip2px(context, 71.3f);
+        int result = (hh - Math.abs(hh - top)) / 6;
+        if (i == 1) {
+            result = (top * 20) / 107;
+        } else if (i == 2) {
+            result = (((top - 107) * 18) / 107) + 20;
+        } else if (i == 3) {
+            result = (((top - 214) * 14) / 107) + 38;
+        } else if (i == 4) {
+            result = (((top - 321) * 8) / 107) + 52;
+        } else if (i == 5 || i == 6) {
+            result = (((top - 428) * 5) / 107) + 60;
+        }
+        Log.d("calculateTranslate", " result " + result);
+        return result;
+    }
+
+    public static int calculateTranslate2(int top, int h, int i, Context context) {
+        Log.d("calculateTranslate", " top: " + top + " h " + h + " index " + i);
+        int hh = h - dip2px(context, 71.3f);
+        int result = (hh - Math.abs(hh - top)) / 6;
+        if (i != 0) {
+            if (i == 1) {
+                result = (top * 23) / 107;
+            } else if (i == 2) {
+                result = (((top - 107) * 16) / 107) + 23;
+            } else if (i == 3) {
+                result = (((top - 214) * 17) / 107) + 39;
+            } else if (i == 4) {
+                result = (((top - 321) * 11) / 107) + 56;
+            } else if (i == 5) {
+                result = (((top - 428) * 5) / 107) + 67;
+            } else {
+                result = (((top - 428) * 5) / 107) + 67;
+            }
+        }
+        Log.d("calculateTranslate", " result " + result);
+        return result;
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        return (int) ((dpValue * context.getResources().getDisplayMetrics().density) + 0.5f);
+    }
+
     public static boolean isAppInstalled(String uri) {
         try {
             KswApplication.appContext.getPackageManager().getPackageInfo(uri, 1);

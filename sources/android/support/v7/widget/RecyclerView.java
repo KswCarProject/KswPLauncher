@@ -59,6 +59,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Interpolator;
 import android.widget.EdgeEffect;
 import android.widget.OverScroller;
+import com.wits.pms.statuscontrol.WitsCommand;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -1467,7 +1468,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
         } else {
             boolean needsFocusFailureLayout = false;
             if (this.mLayout.canScrollVertically()) {
-                int absDir = direction == 2 ? 130 : 33;
+                int absDir = direction == 2 ? WitsCommand.SystemCommand.INTERCEPT_KEY : 33;
                 needsFocusFailureLayout = ff.findNextFocus(this, focused, absDir) == null;
                 if (FORCE_ABS_FOCUS_SEARCH_DIRECTION) {
                     direction = absDir;
@@ -3230,7 +3231,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                         }
                     }
                 }
-                int vresult2 = vresult;
+                int adapterSize2 = vresult;
                 int overscrollX2 = overscrollX;
                 int overscrollY2 = overscrollY;
                 if (!RecyclerView.this.mItemDecorations.isEmpty()) {
@@ -3239,7 +3240,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                 if (RecyclerView.this.getOverScrollMode() != 2) {
                     RecyclerView.this.considerReleasingGlowsOnScroll(dx, dy);
                 }
-                if (RecyclerView.this.dispatchNestedScroll(hresult, vresult2, overscrollX2, overscrollY2, (int[]) null, 1)) {
+                if (RecyclerView.this.dispatchNestedScroll(hresult, adapterSize2, overscrollX2, overscrollY2, (int[]) null, 1)) {
                 } else if (overscrollX2 == 0 && overscrollY2 == 0) {
                     int[] iArr = scrollConsumed;
                 } else {
@@ -3262,13 +3263,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                         scroller.abortAnimation();
                     }
                 }
-                if (!(hresult == 0 && vresult2 == 0)) {
-                    RecyclerView.this.dispatchOnScrolled(hresult, vresult2);
+                if (!(hresult == 0 && adapterSize2 == 0)) {
+                    RecyclerView.this.dispatchOnScrolled(hresult, adapterSize2);
                 }
                 if (!RecyclerView.this.awakenScrollBars()) {
                     RecyclerView.this.invalidate();
                 }
-                boolean fullyConsumedAny = (dx == 0 && dy == 0) || (dx != 0 && RecyclerView.this.mLayout.canScrollHorizontally() && hresult == dx) || (dy != 0 && RecyclerView.this.mLayout.canScrollVertically() && vresult2 == dy);
+                boolean fullyConsumedAny = (dx == 0 && dy == 0) || (dx != 0 && RecyclerView.this.mLayout.canScrollHorizontally() && hresult == dx) || (dy != 0 && RecyclerView.this.mLayout.canScrollVertically() && adapterSize2 == dy);
                 if (scroller.isFinished() || (!fullyConsumedAny && !RecyclerView.this.hasNestedScrollingParent(1))) {
                     RecyclerView.this.setScrollState(0);
                     if (RecyclerView.ALLOW_THREAD_GAP_WORK) {

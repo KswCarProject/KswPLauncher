@@ -35,16 +35,19 @@ public class RtlRadioButton extends RadioButton {
     /* access modifiers changed from: protected */
     public void init() {
         this.buttonDrawable = getButtonDrawable();
-        String language = getResources().getConfiguration().locale.getLanguage();
-        Log.i(TAG, "RtlRadioButton: " + language);
-        if (language.contains("ar")) {
-            setButtonDrawable((Drawable) null);
-            setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, this.buttonDrawable, (Drawable) null);
-            setGravity(21);
+        if (this.buttonDrawable != null) {
+            String language = getResources().getConfiguration().locale.getLanguage();
+            Log.i(TAG, "RtlRadioButton: " + language);
+            if (language.contains("ar")) {
+                setButtonDrawable((Drawable) null);
+                setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, this.buttonDrawable, (Drawable) null);
+                setGravity(21);
+                setCompoundDrawablePadding(10);
+                return;
+            }
+            setButtonDrawable(this.buttonDrawable);
+            setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
             setCompoundDrawablePadding(10);
-            return;
         }
-        setButtonDrawable(this.buttonDrawable);
-        setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
     }
 }

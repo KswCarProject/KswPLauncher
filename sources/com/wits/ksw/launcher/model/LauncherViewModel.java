@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -28,6 +30,7 @@ import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.utils.NaviInfo;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
@@ -39,6 +42,7 @@ public class LauncherViewModel extends BaseViewModel {
     private static HashMap<Integer, ObjectAnimator> animatorMaps = new HashMap<>();
     public static CarInfo carInfo = McuImpl.getInstance().getCarInfo();
     public static MediaInfo mediaInfo = MediaImpl.getInstance().getMediaInfo();
+    public final ObservableBoolean acControl = new ObservableBoolean();
     public ObservableField<String> btState = new ObservableField<>();
     public View.OnFocusChangeListener carViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
@@ -48,6 +52,7 @@ public class LauncherViewModel extends BaseViewModel {
         }
     };
     public final ObservableField<String> day = new ObservableField<>();
+    public final ObservableField<Boolean> hicar = new ObservableField<>();
     private View lastViewFocused;
     public final ObservableField<String> month = new ObservableField<>();
     public View.OnFocusChangeListener musicViewFocusChangeListener = new View.OnFocusChangeListener() {
@@ -99,6 +104,18 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void resumeViewModel() {
         refreshLastViewFocused();
+        refreshLexus();
+    }
+
+    private void refreshLexus() {
+        if (!UiThemeUtils.isLEXUS_UI(this.context)) {
+            return;
+        }
+        if (Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AC_CONTROL, 0) == 1) {
+            this.acControl.set(true);
+        } else {
+            this.acControl.set(false);
+        }
     }
 
     public void initData() {
@@ -149,12 +166,28 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void openShouJiHuLian(View view) {
         addLastViewFocused(view);
-        openApp(this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
+        if (!Build.DISPLAY.contains("8937")) {
+            openApp(this.context.getPackageManager().getLaunchIntentForPackage("net.easyconn"));
+        } else if (Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
+            openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
+        } else {
+            openApp(this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+        }
+    }
+
+    public void openEq(View view) {
+        addLastViewFocused(view);
+        openApp(new ComponentName("com.wits.csp.eq", "com.wits.csp.eq.view.MainActivity"));
     }
 
     public void openBrowser(View view) {
         addLastViewFocused(view);
         openApp(new ComponentName("com.android.chrome", "com.google.android.apps.chrome.Main"));
+    }
+
+    public void openAirControl(View view) {
+        addLastViewFocused(view);
+        openApp(new ComponentName("com.wits.ksw.airc", "com.wits.ksw.airc.LexusAirControl"));
     }
 
     public void openFileManager(View view) {
@@ -172,8 +205,27 @@ public class LauncherViewModel extends BaseViewModel {
         }
     }
 
+    public void openAllApp(View view) {
+        addLastViewFocused(view);
+        openApp(new ComponentName(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.AppsActivity"));
+        try {
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void openCar(View view) {
         onSendCommand(1, WitsCommand.SystemCommand.CAR_MODE);
+        addLastViewFocused(view);
+    }
+
+    public void openLexusCar(View view) {
+        if (Settings.System.getInt(this.activity.getContentResolver(), KeyConfig.OEM_FM, 0) == 0) {
+            onSendCommand(1, WitsCommand.SystemCommand.CAR_MODE);
+        } else {
+            openApp(new ComponentName(BuildConfig.APPLICATION_ID, "com.wits.ksw.launcher.view.lexus.OEMFMActivity"));
+        }
         addLastViewFocused(view);
     }
 
@@ -252,20 +304,37 @@ public class LauncherViewModel extends BaseViewModel {
         Log.i(KswApplication.TAG, "openBtApp: ");
     }
 
+    public void openHicar(View view) {
+        addLastViewFocused(view);
+        openApp(new ComponentName("com.huawei.hicar.demoapp", "com.huawei.hicar.demoapp.HiCarDemoActivity"));
+    }
+
     public void addLastViewFocused(View view) {
+        if (UiThemeUtils.isLEXUS_UI(this.context)) {
+            setSelected(view);
+        }
         this.lastViewFocused = view;
         KswUtils.saveLastViewId(this.context, view);
     }
 
-    public void refreshLastViewFocused() {
+    private void setSelected(View view) {
         if (this.lastViewFocused != null) {
-            this.lastViewFocused.setFocusableInTouchMode(true);
-            this.lastViewFocused.requestFocus();
-            this.lastViewFocused.setFocusableInTouchMode(false);
-            Log.i(KswApplication.TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
+            this.lastViewFocused.setFocusable(false);
+            this.lastViewFocused.setSelected(false);
+            this.lastViewFocused.setFocusable(true);
+        }
+        view.setSelected(true);
+    }
+
+    public void refreshLastViewFocused() {
+        if (this.lastViewFocused == null || this.lastViewFocused.isSelected()) {
+            Log.i(KswApplication.TAG, "refreshLastViewFocused: lastViewFocused null  ");
             return;
         }
-        Log.i(KswApplication.TAG, "refreshLastViewFocused: lastViewFocused null  ");
+        this.lastViewFocused.setFocusableInTouchMode(true);
+        this.lastViewFocused.requestFocus();
+        this.lastViewFocused.setFocusableInTouchMode(false);
+        Log.i(KswApplication.TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
     }
 
     public void refreshViewFocused(View view) {

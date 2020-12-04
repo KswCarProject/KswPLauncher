@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.CheckBox;
-import com.wits.ksw.R;
 
 @SuppressLint({"AppCompatCustomView"})
 public class RtlCheckBox extends CheckBox {
@@ -34,18 +33,17 @@ public class RtlCheckBox extends CheckBox {
 
     public void init() {
         Drawable drawable = getButtonDrawable();
-        if (drawable == null) {
-            drawable = getResources().getDrawable(R.drawable.checkbox_selector);
+        if (drawable != null) {
+            if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
+                Log.i(TAG, "RtlCheckBox: ");
+                setButtonDrawable((Drawable) null);
+                setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, drawable, (Drawable) null);
+                setGravity(21);
+                return;
+            }
+            setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
+            setButtonDrawable(drawable);
+            setGravity(16);
         }
-        if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
-            Log.i(TAG, "RtlCheckBox: ");
-            setButtonDrawable((Drawable) null);
-            setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, drawable, (Drawable) null);
-            setGravity(21);
-            return;
-        }
-        setCompoundDrawablesWithIntrinsicBounds((Drawable) null, (Drawable) null, (Drawable) null, (Drawable) null);
-        setButtonDrawable(drawable);
-        setGravity(16);
     }
 }

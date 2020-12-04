@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:layout_width="match_parent" android:layout_height="77dp">
+    <com.wits.ksw.settings.utlis_view.RtlRadioButton android:enabled="false" android:textSize="25sp" android:textColor="@android:color/white" android:id="@+id/tv_functionItem" android:background="@null" android:focusable="false" android:layout_width="match_parent" android:layout_height="wrap_content" android:button="@null" android:drawableLeft="@drawable/lexus_rad_btn_sel" android:drawablePadding="10dp" android:layout_centerVertical="true"/>
+    <ImageView android:id="@+id/img_functionItem" android:background="@drawable/ksw_lexus_seting_mp_bg" android:focusable="true" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="fitXY"/>
+</RelativeLayout>

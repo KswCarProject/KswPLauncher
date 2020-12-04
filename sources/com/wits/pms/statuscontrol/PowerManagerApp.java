@@ -13,7 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import com.wits.pms.ICmdListener;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.IPowerManagerAppService;
-import java.io.PrintStream;
+import com.wits.pms.IStatusObserver;
+import com.wits.pms.IStatusService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,18 +24,25 @@ public class PowerManagerApp {
     public static ICmdListener cmdListener;
     private static Context context;
     /* access modifiers changed from: private */
+    public static final Object lock = new Object();
+    /* access modifiers changed from: private */
     public static final HashMap<String, IContentObserver> maps = new HashMap<>();
 
     public static void init(Context context2) {
-        context = context2;
+        context = context2.getApplicationContext();
         context2.getContentResolver().registerContentObserver(Settings.System.getUriFor("bootTimes"), true, new ContentObserver(new Handler(context2.getMainLooper())) {
             public void onChange(boolean selfChange) {
                 super.onChange(selfChange);
                 if (PowerManagerApp.cmdListener != null) {
                     PowerManagerApp.registerICmdListener(PowerManagerApp.cmdListener);
                 }
-                for (String key : PowerManagerApp.maps.keySet()) {
-                    PowerManagerApp.registerIContentObserver(key, (IContentObserver) PowerManagerApp.maps.get(key));
+                synchronized (PowerManagerApp.lock) {
+                    for (String key : PowerManagerApp.maps.keySet()) {
+                        PowerManagerApp.registerIContentObserver(key, (IContentObserver) PowerManagerApp.maps.get(key));
+                    }
+                    for (String key2 : V2.maps.keySet()) {
+                        V2.registerIContentObserver(key2, (IStatusObserver) V2.maps.get(key2));
+                    }
                 }
             }
         });
@@ -56,26 +64,31 @@ public class PowerManagerApp {
 
     public static void registerIContentObserver(String key, IContentObserver contentObserver) {
         Log.i("IPowerManagerService", contentObserver.getClass().getName());
-        try {
-            maps.put(key, contentObserver);
-            if (getManager() != null) {
-                getManager().registerObserver(key, contentObserver);
+        synchronized (lock) {
+            try {
+                maps.put(key, contentObserver);
+                if (getManager() != null) {
+                    getManager().registerObserver(key, contentObserver);
+                }
+            } catch (RemoteException e) {
             }
-        } catch (RemoteException e) {
         }
     }
 
     public static void unRegisterIContentObserver(IContentObserver contentObserver) {
-        try {
-            for (String key : maps.keySet()) {
-                if (maps.get(key) == contentObserver) {
-                    maps.remove(key, contentObserver);
+        synchronized (lock) {
+            try {
+                for (String key : maps.keySet()) {
+                    if (maps.get(key) == contentObserver) {
+                        maps.remove(key, contentObserver);
+                    }
                 }
+                if (getManager() != null) {
+                    getManager().unregisterObserver(contentObserver);
+                }
+            } catch (Exception e) {
+                maps.clear();
             }
-            if (getManager() != null) {
-                getManager().unregisterObserver(contentObserver);
-            }
-        } catch (RemoteException e) {
         }
     }
 
@@ -115,27 +128,48 @@ public class PowerManagerApp {
     }
 
     public static void setBooleanStatus(String key, boolean value) throws RemoteException {
-        getManager().addBooleanStatus(key, value);
+        try {
+            getManager().addBooleanStatus(key, value);
+        } catch (Exception e) {
+        }
     }
 
     public static void setStatusString(String key, String value) throws RemoteException {
-        getManager().addStringStatus(key, value);
+        try {
+            getManager().addStringStatus(key, value);
+        } catch (Exception e) {
+        }
     }
 
     public static void setStatusInt(String key, int value) throws RemoteException {
-        getManager().addIntStatus(key, value);
+        try {
+            getManager().addIntStatus(key, value);
+        } catch (Exception e) {
+        }
     }
 
     public static boolean getStatusBoolean(String key) throws RemoteException {
-        return getManager().getStatusBoolean(key);
+        try {
+            return getManager().getStatusBoolean(key);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static String getStatusString(String key) throws RemoteException {
-        return getManager().getStatusString(key);
+        try {
+            return getManager().getStatusString(key);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static int getStatusInt(String key) throws RemoteException {
-        return getManager().getStatusInt(key);
+        try {
+            return getManager().getStatusInt(key);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public static int getSettingsInt(String key) throws RemoteException {
@@ -147,82 +181,99 @@ public class PowerManagerApp {
     }
 
     public static void setSettingsInt(String key, int value) throws RemoteException {
-        getManager().setSettingsInt(key, value);
+        try {
+            getManager().setSettingsInt(key, value);
+        } catch (Exception e) {
+        }
     }
 
     public static void setSettingsString(String key, String value) throws RemoteException {
-        getManager().setSettingsString(key, value);
+        try {
+            getManager().setSettingsString(key, value);
+        } catch (Exception e) {
+        }
     }
 
-    public static void main(String... arg) {
-        int i;
-        double bl2max;
-        double result;
-        double bl1max = 0.21d;
-        double result2 = 0.3d;
-        double shouyi1 = 14.77d;
-        double zj = 14.0d;
-        double max = 2000.0d;
-        int i2 = 0;
-        double qd = 0.0d;
-        double gzj = 0.0d;
-        double gqd = 0.0d;
-        while (true) {
-            double result3 = qd;
-            double gzj2 = gzj;
-            int i3 = i2;
-            if (((double) i3) <= max) {
-                double qd2 = (double) i3;
-                double shouyi2 = zj;
-                double zj2 = max - ((double) i3);
-                double realdamge = (((qd2 / 17.0d) / 100.0d) + 1.0d) * 15000.0d;
-                double shouyi12 = shouyi1;
-                double yingzi = realdamge * bl1max * (((zj2 / shouyi1) / 100.0d) + 1.0d);
-                double max2 = max;
-                double max3 = realdamge * result2 * (((zj2 / shouyi2) / 100.0d) + 1.0d);
-                double bl1max2 = bl1max;
-                double bl1max3 = max3 + yingzi + (((1.0d - bl1max) - result2) * realdamge);
-                if (zj2 % 100.0d == 0.0d || zj2 == 0.0d || qd2 == 0.0d) {
-                    PrintStream printStream = System.out;
-                    bl2max = result2;
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("影子 卷云:");
-                    i = i3;
-                    sb.append((realdamge / 15000.0d) * (((zj2 / 15.18d) / 100.0d) + 1.0d));
-                    sb.append("-");
-                    sb.append((realdamge / 15000.0d) * (((zj2 / 8.728d) / 100.0d) + 1.0d));
-                    printStream.print(sb.toString());
-                    System.out.print("-----专精:" + zj2 + " -强度:" + qd2);
-                    System.out.println("-----卷云:" + ((int) max3) + " -影子:" + ((int) yingzi) + "-一共:" + ((int) bl1max3));
-                } else {
-                    bl2max = result2;
-                    i = i3;
+    public static class V2 {
+        /* access modifiers changed from: private */
+        public static final HashMap<String, IStatusObserver> maps = new HashMap<>();
+
+        public static IStatusService getManager() {
+            return IStatusService.Stub.asInterface(PowerManagerApp.getService("wits_status"));
+        }
+
+        public static void setBooleanStatus(String key, boolean value) {
+            try {
+                getManager().addBooleanStatus(key, value);
+            } catch (Exception e) {
+            }
+        }
+
+        public static void setStatusString(String key, String value) {
+            try {
+                getManager().addStringStatus(key, value);
+            } catch (Exception e) {
+            }
+        }
+
+        public static void setStatusInt(String key, int value) {
+            try {
+                getManager().addIntStatus(key, value);
+            } catch (Exception e) {
+            }
+        }
+
+        public static boolean getStatusBoolean(String key) {
+            try {
+                return getManager().getStatusBoolean(key);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        public static String getStatusString(String key) {
+            try {
+                return getManager().getStatusString(key);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public static int getStatusInt(String key) {
+            try {
+                return getManager().getStatusInt(key);
+            } catch (Exception e) {
+                return -1;
+            }
+        }
+
+        public static void registerIContentObserver(String key, IStatusObserver statusObserver) {
+            Log.i("IPowerManagerService", statusObserver.getClass().getName());
+            synchronized (PowerManagerApp.lock) {
+                try {
+                    maps.put(key, statusObserver);
+                    if (getManager() != null) {
+                        getManager().registerStatusListener(key, statusObserver);
+                    }
+                } catch (RemoteException e) {
                 }
-                double temp = bl1max3;
-                if (result3 < temp) {
-                    result = temp;
-                    gqd = qd2;
-                    gzj = zj2;
-                } else {
-                    gzj = gzj2;
-                    result = result3;
+            }
+        }
+
+        public static void unRegisterIContentObserver(IStatusObserver statusObserver) {
+            synchronized (PowerManagerApp.lock) {
+                try {
+                    for (String key : maps.keySet()) {
+                        if (maps.get(key) == statusObserver) {
+                            maps.remove(key, statusObserver);
+                        }
+                    }
+                    if (getManager() != null) {
+                        getManager().unregisterStatusListener(statusObserver);
+                    }
+                } catch (Exception e) {
+                    maps.clear();
                 }
-                i2 = i + 1;
-                double d = qd2;
-                qd = result;
-                double d2 = zj2;
-                zj = shouyi2;
-                shouyi1 = shouyi12;
-                max = max2;
-                bl1max = bl1max2;
-                result2 = bl2max;
-            } else {
-                double d3 = result2;
-                double d4 = shouyi1;
-                double d5 = zj;
-                double d6 = max;
-                System.out.println("-----" + result3 + "    专精:" + gzj2 + "强度:" + gqd);
-                return;
             }
         }
     }

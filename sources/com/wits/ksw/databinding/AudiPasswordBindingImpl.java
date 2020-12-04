@@ -103,7 +103,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (10 != variableId) {
+        if (11 != variableId) {
             return false;
         }
         setVm((AudiSettingViewModel) variable);
@@ -115,7 +115,7 @@ public class AudiPasswordBindingImpl extends AudiPasswordBinding implements OnCl
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(10);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 

@@ -24,45 +24,45 @@ import com.wits.ksw.launcher.utils.KswUtils;
 
 public class FragmentId5Left extends Fragment implements View.OnKeyListener, View.OnClickListener {
     private static final String TAG = "KSWLauncher";
-    @InjectView(2131231031)
+    @InjectView(2131231050)
     CheckBox id5ItemBrowser;
-    @InjectView(2131231032)
+    @InjectView(2131231051)
     ImageView id5ItemBrowserCursor;
-    @InjectView(2131231033)
+    @InjectView(2131231052)
     CheckBox id5ItemBt;
-    @InjectView(2131231034)
+    @InjectView(2131231053)
     ImageView id5ItemBtCursor;
-    @InjectView(2131231035)
+    @InjectView(2131231054)
     CheckBox id5ItemCar;
-    @InjectView(2131231036)
+    @InjectView(2131231055)
     ImageView id5ItemCarCursor;
-    @InjectView(2131231039)
+    @InjectView(2131231058)
     CheckBox id5ItemFile;
-    @InjectView(2131231038)
+    @InjectView(2131231057)
     ImageView id5ItemFileCursor;
-    @InjectView(2131231042)
+    @InjectView(2131231061)
     CheckBox id5ItemMusic;
-    @InjectView(2131231043)
+    @InjectView(2131231062)
     ImageView id5ItemMusicCursor;
-    @InjectView(2131231044)
+    @InjectView(2131231063)
     CheckBox id5ItemNavi;
-    @InjectView(2131231045)
+    @InjectView(2131231064)
     ImageView id5ItemNaviCursor;
-    @InjectView(2131231108)
+    @InjectView(2131231128)
     ImageView imageView7;
     /* access modifiers changed from: private */
     public MainActivity mainActivity;
-    @InjectView(2131231446)
+    @InjectView(2131231538)
     TextView textView10;
-    @InjectView(2131231458)
+    @InjectView(2131231550)
     TextView textView5;
-    @InjectView(2131231459)
+    @InjectView(2131231551)
     TextView textView6;
-    @InjectView(2131231460)
+    @InjectView(2131231552)
     TextView textView7;
-    @InjectView(2131231461)
+    @InjectView(2131231553)
     TextView textView8;
-    @InjectView(2131231462)
+    @InjectView(2131231554)
     TextView textView9;
     private LauncherViewModel viewModel;
 

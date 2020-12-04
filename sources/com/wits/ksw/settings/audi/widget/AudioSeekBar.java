@@ -46,10 +46,10 @@ public class AudioSeekBar extends LinearLayout {
                     setMax(a.getInt(attr, 100));
                     break;
                 case 1:
-                    int progress = a.getInt(attr, 0);
-                    setProgress(progress);
-                    setLText(progress);
-                    setRText(progress);
+                    int space2 = a.getInt(attr, 0);
+                    setProgress(space2);
+                    setLText(space2);
+                    setRText(space2);
                     break;
                 case 2:
                     setSpace(a.getInt(attr, 0));

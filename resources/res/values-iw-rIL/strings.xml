@@ -35,6 +35,7 @@
     <string name="dialog_update8">אנא אל תכבה או הפעל מחדש במהלך תהליך השדרוג.</string>
     <string name="dialog_update9">שמירת הגדרות ממשק המשתמש, אנא הפעל מחדש את הצג לאחר 10 שניות!</string>
     <string name="dialog_updatein">ייבוא ​​קבצים ...</string>
+    <string name="driver_seat">מושב הנהג</string>
     <string name="eq_text1">משתמש</string>
     <string name="eq_text2">POP</string>
     <string name="eq_text3">ריקוד</string>
@@ -182,6 +183,7 @@
     <string name="oil_size">דלק:%s</string>
     <string name="raw_car_text1">תצוגה במסך מלא</string>
     <string name="raw_car_text2">בחירה נוכחית:</string>
+    <string name="romeo_id7_dashboard_lable">לוח מחוונים</string>
     <string name="sele_navi_map">בחר במפת ניווט</string>
     <string name="sele_navi_soft">בחר בתוכנת ניווט</string>
     <string name="set_caraux">מיקום AUX</string>
@@ -246,6 +248,7 @@
     <string name="text_logo_one">עמוד 1</string>
     <string name="text_logo_two">עמוד 2</string>
     <string name="text_ram">זיכרון RAM:%s</string>
+    <string name="touch_continuous_send">נתוני מגע נשלחים ברציפות</string>
     <string name="ug_apps_text">עוד אפליקציות</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">ניווט</string>

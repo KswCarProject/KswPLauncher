@@ -70,7 +70,7 @@ public class ID6FragmentOneSw600dpLandImpl extends ID6FragmentOne {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (12 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);

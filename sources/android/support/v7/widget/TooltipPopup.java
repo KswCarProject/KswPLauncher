@@ -6,7 +6,6 @@ import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.support.annotation.RestrictTo;
-import android.support.v4.view.PointerIconCompat;
 import android.support.v7.appcompat.R;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,7 +32,7 @@ class TooltipPopup {
         this.mMessageView = (TextView) this.mContentView.findViewById(R.id.message);
         this.mLayoutParams.setTitle(getClass().getSimpleName());
         this.mLayoutParams.packageName = this.mContext.getPackageName();
-        this.mLayoutParams.type = PointerIconCompat.TYPE_HAND;
+        this.mLayoutParams.type = 1002;
         this.mLayoutParams.width = -2;
         this.mLayoutParams.height = -2;
         this.mLayoutParams.format = -3;

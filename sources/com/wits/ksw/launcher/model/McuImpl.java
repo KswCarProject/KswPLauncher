@@ -29,6 +29,11 @@ public class McuImpl {
     int tempUnit = 0;
 
     private McuImpl() {
+        try {
+            this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         KswApplication.appContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.TempUnit), false, new ContentObserver(new Handler()) {
             public void onChange(boolean selfChange) {
                 Log.d("KSWLauncher", " tempUnit change");
@@ -292,7 +297,14 @@ public class McuImpl {
         } catch (RemoteException e2) {
             e2.printStackTrace();
         }
-        if (jsDoor == 1) {
+        if (doorCount == 2) {
+            this.carInfo.flDoorState.set(false);
+            this.carInfo.frDoorState.set(false);
+            this.carInfo.rlDoorState.set(false);
+            this.carInfo.rrDoorState.set(false);
+            this.carInfo.carImage.set(false);
+            this.carInfo.bDoorState.set(false);
+        } else if (jsDoor == 1) {
             this.carInfo.flDoorState.set(Boolean.valueOf(RIGHT_AHEAD));
             this.carInfo.frDoorState.set(Boolean.valueOf(LEFT_AHEAD));
             this.carInfo.rlDoorState.set(Boolean.valueOf(RIGHT_BACK && doorCount == 0));
@@ -303,13 +315,6 @@ public class McuImpl {
             observableField.set(Boolean.valueOf(z));
             this.carInfo.bDoorState.set(Boolean.valueOf(BACK_COVER));
             this.carInfo.carImage.set(true);
-        } else if (jsDoor == 2) {
-            this.carInfo.flDoorState.set(false);
-            this.carInfo.frDoorState.set(false);
-            this.carInfo.rlDoorState.set(false);
-            this.carInfo.rrDoorState.set(false);
-            this.carInfo.carImage.set(false);
-            this.carInfo.bDoorState.set(false);
         } else {
             this.carInfo.flDoorState.set(Boolean.valueOf(LEFT_AHEAD));
             this.carInfo.frDoorState.set(Boolean.valueOf(RIGHT_AHEAD));

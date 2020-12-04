@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:oneshot="false">
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_1"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_2"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_3"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_4"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_5"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_6"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_7"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_8"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_9"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_10"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_11"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_12"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_13"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_14"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_15"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_16"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_17"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_18"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_19"/>
+    <item android:duration="10" android:drawable="@drawable/lexus_animation_right_20"/>
+</animation-list>

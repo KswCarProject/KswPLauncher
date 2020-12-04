@@ -62,6 +62,7 @@
     <string name="dialog_update8">Por favor, no apague durante el proceso de actualización!</string>
     <string name="dialog_update9">Guardando la configuración de la interfaz de usuario, reinicie la máquina después de 10 segundos.</string>
     <string name="dialog_updatein">Importación de archivos</string>
+    <string name="driver_seat">Asiento del conductor</string>
     <string name="eq_text1">Usuario</string>
     <string name="eq_text2">POP</string>
     <string name="eq_text3">Baile</string>
@@ -206,6 +207,7 @@
     <string name="oil_size">óleo: %s</string>
     <string name="raw_car_text1">Pantalla completa</string>
     <string name="raw_car_text2">Selección actual:</string>
+    <string name="romeo_id7_dashboard_lable">Dashboard</string>
     <string name="search_menu_title">Buscar</string>
     <string name="sele_navi_map">Seleccione el mapa de navegación</string>
     <string name="sele_navi_soft">Seleccione el software de navegación</string>
@@ -272,6 +274,7 @@
     <string name="text_logo_one">P1</string>
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
+    <string name="touch_continuous_send">Datos táctiles enviados continuamente</string>
     <string name="ug_apps_text">Mas aplicaciones</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Navegacion</string>

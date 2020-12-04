@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Environment;
 import android.os.LocaleList;
+import android.os.StatFs;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.Toast;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,18 +26,27 @@ import java.util.zip.ZipFile;
 
 public class FileUtils {
     private static String factoryPath = "/mnt/vendor/persist/mylogo.zip";
+    private static String persistPath = "/mnt/vendor/persist/";
 
-    public static boolean copyFile(String newPath) {
+    public static boolean copyFile(String newPath, Context context) {
         int bytesum = 0;
         boolean isFile = false;
         try {
-            if (new File(newPath).exists()) {
-                InputStream inStream = new FileInputStream(newPath);
+            File oldfile = new File(newPath);
+            if (oldfile.exists()) {
                 File file = new File(factoryPath);
                 if (file.exists()) {
                     file.delete();
                 }
+                long fileLength = oldfile.length();
+                long availableBlocks = getAvailableBlocks(persistPath);
+                Log.d("FileUtils", "copyFile fileLength=" + fileLength + " availableBlocks=" + availableBlocks);
+                if (availableBlocks - fileLength < 3145728) {
+                    Toast.makeText(context, "空间不足,导入失败,请重试", 0).show();
+                    return false;
+                }
                 file.createNewFile();
+                InputStream inStream = new FileInputStream(newPath);
                 FileOutputStream fs = new FileOutputStream(factoryPath);
                 byte[] buffer = new byte[1444];
                 while (true) {
@@ -56,6 +67,14 @@ public class FileUtils {
             e.printStackTrace();
         }
         return isFile;
+    }
+
+    public static long getAvailableBlocks(String path) {
+        StatFs sf = new StatFs(path);
+        long totalBytes = sf.getTotalBytes();
+        long freeBytes = sf.getFreeBytes();
+        Log.d("FileUtils", "getAvailableBlocks totalBytes=" + totalBytes + " freeBytes=" + freeBytes);
+        return freeBytes;
     }
 
     public static void copyFolder(String resource, String target) throws Exception {

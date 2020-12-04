@@ -62,6 +62,16 @@
         <item>Nov</item>
         <item>Dec</item>
     </array>
+    <array name="lexus_set_title">
+        <item>系统设置</item>
+        <item>导航设置</item>
+        <item>音量设置</item>
+        <item>语言设置</item>
+        <item>时间设置</item>
+        <item>系统信息</item>
+        <item>安卓设置</item>
+        <item>工厂设置</item>
+    </array>
     <array name="set_factory">
         <item>Function</item>
         <item>Vehicle</item>

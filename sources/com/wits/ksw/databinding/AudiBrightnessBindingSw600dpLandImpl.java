@@ -72,7 +72,7 @@ public class AudiBrightnessBindingSw600dpLandImpl extends AudiBrightnessBinding 
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (10 != variableId) {
+        if (11 != variableId) {
             return false;
         }
         setVm((AudiSystemViewModel) variable);
@@ -84,7 +84,7 @@ public class AudiBrightnessBindingSw600dpLandImpl extends AudiBrightnessBinding 
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(10);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 

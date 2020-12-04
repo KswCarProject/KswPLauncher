@@ -21,11 +21,11 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback93;
+    private final View.OnClickListener mCallback120;
     @Nullable
-    private final View.OnClickListener mCallback94;
+    private final View.OnClickListener mCallback121;
     @Nullable
-    private final View.OnClickListener mCallback95;
+    private final View.OnClickListener mCallback122;
     private long mDirtyFlags;
     @NonNull
     private final ImageView mboundView3;
@@ -51,9 +51,9 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         this.mboundView4.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback94 = new OnClickListener(this, 2);
-        this.mCallback95 = new OnClickListener(this, 3);
-        this.mCallback93 = new OnClickListener(this, 1);
+        this.mCallback122 = new OnClickListener(this, 3);
+        this.mCallback120 = new OnClickListener(this, 1);
+        this.mCallback121 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -77,7 +77,7 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         if (1 == variableId) {
             setListItem((BenzMbuxBean) variable);
             return true;
-        } else if (8 != variableId) {
+        } else if (9 != variableId) {
             return false;
         } else {
             setVieModel((BcVieModel) variable);
@@ -99,7 +99,7 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(9);
         super.requestRebind();
     }
 
@@ -128,9 +128,9 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
             listItemSubIcon2 = listItem.getSubIcon2();
         }
         if ((4 & dirtyFlags) != 0) {
-            this.benzMbuxImageView.setOnClickListener(this.mCallback93);
-            this.mboundView3.setOnClickListener(this.mCallback94);
-            this.mboundView4.setOnClickListener(this.mCallback95);
+            this.benzMbuxImageView.setOnClickListener(this.mCallback120);
+            this.mboundView3.setOnClickListener(this.mCallback121);
+            this.mboundView4.setOnClickListener(this.mCallback122);
         }
         if ((5 & dirtyFlags) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.benzMbuxImageView, listItemAppIcon);

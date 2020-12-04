@@ -1,6 +1,7 @@
 package com.wits.ksw.settings.utlis_view;
 
 public class KeyConfig {
+    public static final String AC_CONTROL = "AC_Control";
     public static final String AHD_Select = "AHD_cam_Select";
     public static final String AMP_TYPE = "AMP_Type";
     public static final String ANDROID_MEDIA_VOL = "Android_media_vol";
@@ -15,6 +16,7 @@ public class KeyConfig {
     public static final String BENZPANE = "BenzPanelEnable";
     public static final String BT_TYPE = "BT_Type";
     public static final String CAM360 = "cam360_video";
+    public static final String CAN_BUS_TYPE = "canBusType";
     public static final String CAR_AUX_INDEX1 = "CarAuxIndex1";
     public static final String CAR_AUX_INDEX2 = "CarAuxIndex2";
     public static final String CAR_AUX_SW = "CarAux_Operate";
@@ -33,6 +35,7 @@ public class KeyConfig {
     public static final String DEFAULT_POWER_BOOT = "Default_PowerBoot";
     public static final String DEF_DVRAPK = "DVRApk_PackageName";
     public static final String DISH_BOARD = "Support_dashboard";
+    public static final String DRIVE_TRACK = "DirtTravelSelection";
     public static final String DTV_TYPE = "DTV_Type";
     public static final String DVRAPKLIST = "SupportDvrAppList";
     public static final String DVR_TYPE = "DVR_Type";
@@ -52,11 +55,13 @@ public class KeyConfig {
     public static final String NAVI_LIST = "SupportNaviAppList";
     public static final String NAVI_VOICE_MIX = "NaviMix";
     public static final String NBT_AUX_SW = "CarAux_auto_method";
+    public static final String OEM_FM = "OEM_FM";
     public static final String PASSWORD = "password";
     public static final String SUPP_UI_LIST = "SupportUIList";
     public static final String SUPP_UI_TYPE = "UI_type";
     public static final String TIME_FORMAT = "TimeFormat";
     public static final String TIME_SOURCE = "TimeSyncSoucrce";
+    public static final String TOUCH_CONTINUOUS_SEND = "touch_continuous_send";
     public static final String TXZ = "Support_TXZ";
     public static final String TempUnit = "TempUnit";
     public static final String USB_HOST = "USB_HOST";

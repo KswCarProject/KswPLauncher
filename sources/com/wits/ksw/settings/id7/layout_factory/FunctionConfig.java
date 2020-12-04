@@ -44,6 +44,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
     private CheckBox cbox_function7;
     private CheckBox cbox_function_google_off;
     private CheckBox cbox_sysXcjz;
+    private CheckBox cbox_touch_send;
     private int cheVideo = 0;
     private CheckBox chox_function_fcam;
     private int danwei = 0;
@@ -78,6 +79,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
     private RadioGroup rdg_funbt;
     private RadioGroup rdg_fungf;
     private RadioGroup rdg_funxcjl;
+    private int touch_send;
     private TextView tv_seleAPk;
     private TextView tv_selePlayAPk;
     private int usbHost = 0;
@@ -118,6 +120,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
             this.gongfang = PowerManagerApp.getSettingsInt(KeyConfig.AMP_TYPE);
             this.bootMode = PowerManagerApp.getSettingsInt(KeyConfig.DEFAULT_POWER_BOOT);
             this.bt = PowerManagerApp.getSettingsInt(KeyConfig.Android_Bt_Switch);
+            this.touch_send = PowerManagerApp.getSettingsInt(KeyConfig.TOUCH_CONTINUOUS_SEND);
             this.fcamType = PowerManagerApp.getSettingsInt("Front_view_camera");
             this.googleOff = PowerManagerApp.getSettingsInt(KeyConfig.ZLINK_AUTO_START);
             Log.d(TAG, "initData get data==\tUSBHost:" + this.funtion1 + "\tgoogapp:" + this.funtion3 + "\taux:" + this.funtion4 + "\tdtv:" + this.funtion5 + "\tdishboard:" + this.funtion6 + "\ttxz:" + this.funtion7 + "\tbootMode:" + this.bootMode + "\tbt:" + this.bt + "\tfcamType:" + this.fcamType + "\tgoogleOff:" + this.googleOff);
@@ -145,6 +148,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
             }
         });
         this.cbox_bt = (CheckBox) this.view.findViewById(R.id.cbox_bt);
+        this.cbox_touch_send = (CheckBox) this.view.findViewById(R.id.cbox_touch_send);
         this.cbox_function1 = (CheckBox) this.view.findViewById(R.id.cbox_function1);
         boolean z = false;
         this.cbox_function1.setChecked(this.funtion1 != 0);
@@ -269,6 +273,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
                 break;
         }
         this.cbox_bt.setOnCheckedChangeListener(this);
+        this.cbox_touch_send.setOnCheckedChangeListener(this);
         this.cbox_sysXcjz.setOnCheckedChangeListener(this);
         this.cbox_function1.setOnCheckedChangeListener(this);
         this.cbox_function3.setOnCheckedChangeListener(this);
@@ -292,8 +297,9 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
                 FunctionConfig.this.dialogViews.listPlayApk(FunctionConfig.this.playAppList);
             }
         });
-        CheckBox checkBox = this.cbox_bt;
-        if (this.bt == 1) {
+        this.cbox_bt.setChecked(this.bt == 1);
+        CheckBox checkBox = this.cbox_touch_send;
+        if (this.touch_send == 1) {
             z = true;
         }
         checkBox.setChecked(z);
@@ -301,9 +307,7 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int id = buttonView.getId();
-        if (id == R.id.cbox_bt) {
-            FileUtils.savaData(KeyConfig.Android_Bt_Switch, isChecked);
-        } else if (id != R.id.cbox_sysXcjz) {
+        if (id != R.id.cbox_bt) {
             switch (id) {
                 case R.id.cbox_function1:
                     FileUtils.savaData(KeyConfig.USB_HOST, isChecked);
@@ -330,10 +334,19 @@ public class FunctionConfig extends FrameLayout implements CompoundButton.OnChec
                     FileUtils.savaData(KeyConfig.ZLINK_AUTO_START, isChecked);
                     return;
                 default:
-                    return;
+                    switch (id) {
+                        case R.id.cbox_sysXcjz:
+                            FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
+                            return;
+                        case R.id.cbox_touch_send:
+                            FileUtils.savaData(KeyConfig.TOUCH_CONTINUOUS_SEND, isChecked);
+                            return;
+                        default:
+                            return;
+                    }
             }
         } else {
-            FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
+            FileUtils.savaData(KeyConfig.Android_Bt_Switch, isChecked);
         }
     }
 

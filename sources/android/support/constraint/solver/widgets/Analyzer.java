@@ -229,10 +229,10 @@ public class Analyzer {
             depth2 = depth;
         }
         int dimension = (constraintWidget.mListAnchors[startOffset].getMargin() * flow) + getParentBiasOffset(widget, orientation);
-        int downDepth = dimension + depth2;
+        int dimension2 = dimension + depth2;
         int postTemp3 = (i == 0 ? widget.getWidth() : widget.getHeight()) * flow;
         for (Iterator it = constraintWidget.mListAnchors[startOffset].getResolutionNode().dependents.iterator(); it.hasNext(); it = it) {
-            dimensionPre = Math.max(dimensionPre, getMaxDimensionTraversal(((ResolutionAnchor) ((ResolutionNode) it.next())).myAnchor.mOwner, i, z, downDepth));
+            dimensionPre = Math.max(dimensionPre, getMaxDimensionTraversal(((ResolutionAnchor) ((ResolutionNode) it.next())).myAnchor.mOwner, i, z, dimension2));
             dimensionPost2 = dimensionPost2;
         }
         int dimensionPost3 = dimensionPost2;
@@ -242,7 +242,7 @@ public class Analyzer {
             Iterator it3 = it2;
             ResolutionAnchor anchor = (ResolutionAnchor) ((ResolutionNode) it2.next());
             ResolutionAnchor resolutionAnchor = anchor;
-            dimensionPost4 = Math.max(dimensionPost4, getMaxDimensionTraversal(anchor.myAnchor.mOwner, i, z, postTemp3 + downDepth));
+            dimensionPost4 = Math.max(dimensionPost4, getMaxDimensionTraversal(anchor.myAnchor.mOwner, i, z, postTemp3 + dimension2));
             it2 = it3;
             endOffset = endOffset;
         }
@@ -262,10 +262,10 @@ public class Analyzer {
                 int startOffset3 = startOffset;
                 if (flow == 1) {
                     postTemp2 = postTemp3;
-                    dimensionBaseline = Math.max(dimensionBaseline, getMaxDimensionTraversal(anchor2.myAnchor.mOwner, i, z, baselinePreDistance + downDepth));
+                    dimensionBaseline = Math.max(dimensionBaseline, getMaxDimensionTraversal(anchor2.myAnchor.mOwner, i, z, baselinePreDistance + dimension2));
                 } else {
                     postTemp2 = postTemp3;
-                    dimensionBaseline = Math.max(dimensionBaseline, getMaxDimensionTraversal(anchor2.myAnchor.mOwner, i, z, (baselinePostDistance * flow) + downDepth));
+                    dimensionBaseline = Math.max(dimensionBaseline, getMaxDimensionTraversal(anchor2.myAnchor.mOwner, i, z, (baselinePostDistance * flow) + dimension2));
                 }
                 it4 = it5;
                 startOffset = startOffset3;
@@ -285,10 +285,10 @@ public class Analyzer {
             postTemp = postTemp3;
         }
         int distanceBeforeWidget = dimension;
-        int dimension2 = dimension + Math.max(dimensionPre, Math.max(dimensionPost, dimensionBaseline));
+        int dimension3 = dimension + Math.max(dimensionPre, Math.max(dimensionPost, dimensionBaseline));
         int leftTop = depth2 + distanceBeforeWidget;
         int end = leftTop + postTemp;
-        int i2 = downDepth;
+        int i2 = dimension2;
         if (flow == -1) {
             int aux2 = end;
             end = leftTop;
@@ -307,7 +307,7 @@ public class Analyzer {
         if (constraintWidget.mListAnchors[startOffset2].mTarget != null && constraintWidget.mListAnchors[endOffset2].mTarget != null && constraintWidget.mListAnchors[startOffset2].mTarget.mOwner == (parent = widget.getParent()) && constraintWidget.mListAnchors[endOffset2].mTarget.mOwner == parent) {
             constraintWidget.mBelongingGroup.addWidgetsToSet(constraintWidget, i);
         }
-        return dimension2;
+        return dimension3;
     }
 
     private static void setConnection(ConstraintAnchor originAnchor) {

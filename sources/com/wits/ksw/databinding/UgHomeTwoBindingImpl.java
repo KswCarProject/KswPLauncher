@@ -15,11 +15,11 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback101;
+    private final View.OnClickListener mCallback128;
     @Nullable
-    private final View.OnClickListener mCallback102;
+    private final View.OnClickListener mCallback129;
     @Nullable
-    private final View.OnClickListener mCallback103;
+    private final View.OnClickListener mCallback130;
     private long mDirtyFlags;
 
     public UgHomeTwoBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
@@ -34,9 +34,9 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         this.ugHomeEasyVaiw.setTag((Object) null);
         this.ugHomeHdvideoVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback101 = new OnClickListener(this, 1);
-        this.mCallback102 = new OnClickListener(this, 2);
-        this.mCallback103 = new OnClickListener(this, 3);
+        this.mCallback128 = new OnClickListener(this, 1);
+        this.mCallback129 = new OnClickListener(this, 2);
+        this.mCallback130 = new OnClickListener(this, 3);
         invalidateAll();
     }
 
@@ -57,7 +57,7 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (12 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -69,7 +69,7 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 
@@ -87,9 +87,9 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeAppVaiw.setOnClickListener(this.mCallback103);
-            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback102);
-            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback101);
+            this.ugHomeAppVaiw.setOnClickListener(this.mCallback130);
+            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback129);
+            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback128);
         }
     }
 

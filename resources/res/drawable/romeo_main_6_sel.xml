@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:drawable="@drawable/romeo_main_btn_6_n" android:maxLevel="0"/>
+    <item android:drawable="@drawable/romeo_video_btn6_f" android:maxLevel="1"/>
+    <item android:drawable="@drawable/romeo_main_btn_6_d" android:maxLevel="2"/>
+</level-list>

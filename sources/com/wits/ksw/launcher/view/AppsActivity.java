@@ -9,6 +9,8 @@ import com.wits.ksw.R;
 import com.wits.ksw.databinding.ActivityId7AppsBinding;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.model.AppViewModel;
+import com.wits.ksw.launcher.utils.ClientManager;
+import com.wits.ksw.launcher.utils.IconUtils;
 
 public final class AppsActivity extends BaseThemeActivity {
     private ActivityId7AppsBinding binding;
@@ -34,6 +36,13 @@ public final class AppsActivity extends BaseThemeActivity {
         this.viewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
         this.viewModel.setActivity(this);
         this.binding = (ActivityId7AppsBinding) DataBindingUtil.setContentView(this, R.layout.activity_id7_apps);
+        if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
+            if (getResources().getDisplayMetrics().widthPixels == 1024) {
+                this.binding.appGridView.setNumColumns(5);
+            } else {
+                this.binding.appGridView.setNumColumns(6);
+            }
+        }
         this.binding.setAppViewModel(this.viewModel);
         this.viewModel.queryApps();
     }
@@ -81,6 +90,26 @@ public final class AppsActivity extends BaseThemeActivity {
     /* access modifiers changed from: protected */
     public void initBwmNbt() {
         Log.d("zgy", "---initBwmNbt()--AAA--");
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initLexus() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBwmID7Hicar() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initRomeo() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initCommonUIGSUG1024View() {
         initBmwid7UiView();
     }
 

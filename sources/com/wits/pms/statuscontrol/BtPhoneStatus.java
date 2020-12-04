@@ -3,6 +3,8 @@ package com.wits.pms.statuscontrol;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class BtPhoneStatus {
     public static final int CALL_CALLOUT = 4;
@@ -108,5 +110,45 @@ public class BtPhoneStatus {
 
     public static boolean isCalling(int callStatus2) {
         return callStatus2 >= 4 && callStatus2 <= 6;
+    }
+
+    public static class PhoneBookBean {
+        private String name;
+        private String number;
+
+        public PhoneBookBean(String name2, String number2) {
+            this.name = name2;
+            this.number = number2;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public void setName(String name2) {
+            this.name = name2;
+        }
+
+        public String getNumber() {
+            return this.number;
+        }
+
+        public void setNumber(String number2) {
+            this.number = number2;
+        }
+    }
+
+    public static List<PhoneBookBean> getContactsByJson(String json) {
+        try {
+            List<PhoneBookBean> contacts = new ArrayList<>();
+            JSONArray jsonArray = new JSONArray(json);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                contacts.add(new PhoneBookBean(jsonObject.getString("name"), jsonObject.getString("number")));
+            }
+            return contacts;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

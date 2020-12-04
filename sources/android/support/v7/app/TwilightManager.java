@@ -103,19 +103,19 @@ class TwilightManager {
         long todaySunrise = calculator.sunrise;
         long todaySunset = calculator.sunset;
         long yesterdaySunset2 = yesterdaySunset;
-        long todaySunset2 = todaySunset;
-        long todaySunset3 = 86400000 + now;
+        long yesterdaySunset3 = todaySunset;
+        long todaySunset2 = 86400000 + now;
         long todaySunrise2 = todaySunrise;
         boolean isNight2 = isNight;
-        calculator.calculateTwilight(todaySunset3, location.getLatitude(), location.getLongitude());
+        calculator.calculateTwilight(todaySunset2, location.getLatitude(), location.getLongitude());
         long tomorrowSunrise = calculator.sunrise;
-        if (todaySunrise2 == -1 || todaySunset2 == -1) {
+        if (todaySunrise2 == -1 || yesterdaySunset3 == -1) {
             nextUpdate = now + 43200000;
         } else {
-            if (now > todaySunset2) {
+            if (now > yesterdaySunset3) {
                 nextUpdate2 = 0 + tomorrowSunrise;
             } else if (now > todaySunrise2) {
-                nextUpdate2 = 0 + todaySunset2;
+                nextUpdate2 = 0 + yesterdaySunset3;
             } else {
                 nextUpdate2 = 0 + todaySunrise2;
             }
@@ -124,7 +124,7 @@ class TwilightManager {
         state.isNight = isNight2;
         state.yesterdaySunset = yesterdaySunset2;
         state.todaySunrise = todaySunrise2;
-        state.todaySunset = todaySunset2;
+        state.todaySunset = yesterdaySunset3;
         state.tomorrowSunrise = tomorrowSunrise;
         state.nextUpdate = nextUpdate;
     }

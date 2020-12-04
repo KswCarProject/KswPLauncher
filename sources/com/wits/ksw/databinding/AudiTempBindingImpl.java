@@ -57,7 +57,7 @@ public class AudiTempBindingImpl extends AudiTempBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (10 != variableId) {
+        if (11 != variableId) {
             return false;
         }
         setVm((AudiSystemViewModel) variable);
@@ -69,7 +69,7 @@ public class AudiTempBindingImpl extends AudiTempBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(10);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 

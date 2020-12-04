@@ -59,6 +59,20 @@ public abstract class BaseViewModel extends ViewModel {
     }
 
     /* access modifiers changed from: protected */
+    public void openAppTask(ComponentName component) {
+        try {
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            intent.setFlags(268435456);
+            this.activity.startActivity(intent);
+            Log.i("KSWLauncher", "openApp: " + component.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
+        }
+    }
+
+    /* access modifiers changed from: protected */
     public void openApp(Intent intent) {
         try {
             this.activity.startActivity(intent);

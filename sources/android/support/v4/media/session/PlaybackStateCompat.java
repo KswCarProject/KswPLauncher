@@ -128,10 +128,10 @@ public final class PlaybackStateCompat implements Parcelable {
 
     public static int toKeyCode(long action) {
         if (action == 4) {
-            return KEYCODE_MEDIA_PLAY;
+            return 126;
         }
         if (action == 2) {
-            return KEYCODE_MEDIA_PAUSE;
+            return 127;
         }
         if (action == 32) {
             return 87;

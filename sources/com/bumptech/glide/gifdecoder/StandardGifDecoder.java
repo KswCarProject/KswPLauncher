@@ -471,9 +471,9 @@ public class StandardGifDecoder implements GifDecoder {
                 int downsampledIH2 = downsampledIH;
                 byte downsampledIH3 = mainPixels2[sx];
                 int downsampledIY2 = downsampledIY;
-                byte downsampledIY3 = downsampledIH3 & 255;
-                if (downsampledIY3 != transparentColorIndex2) {
-                    int color = act2[downsampledIY3];
+                byte currentColorIndex = downsampledIH3 & 255;
+                if (currentColorIndex != transparentColorIndex2) {
+                    int color = act2[currentColorIndex];
                     if (color != 0) {
                         dest[dx2] = color;
                     } else {

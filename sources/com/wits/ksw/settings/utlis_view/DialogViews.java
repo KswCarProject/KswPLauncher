@@ -259,9 +259,12 @@ public class DialogViews extends Dialog {
     /* access modifiers changed from: private */
     public void updateLogoFile() {
         for (String sp : FileUtils.getExtSdUsbPathList()) {
-            for (File fs : new File(sp).listFiles()) {
-                if (fs.getName().toLowerCase().equals("mylogo.zip")) {
-                    this.logoPath = fs.getAbsolutePath();
+            File[] files = new File(sp).listFiles();
+            if (files != null) {
+                for (File fs : files) {
+                    if (fs.getName().toLowerCase().equals("mylogo.zip")) {
+                        this.logoPath = fs.getAbsolutePath();
+                    }
                 }
             }
         }
@@ -271,8 +274,9 @@ public class DialogViews extends Dialog {
         }
         Log.d("logoUpdate", "====logo path======:" + this.logoPath);
         try {
-            FileUtils.copyFile(this.logoPath);
-            ToastUtils.showToastShort(this.m_con, this.m_con.getResources().getString(R.string.text_logo_input_ok));
+            if (FileUtils.copyFile(this.logoPath, this.m_con)) {
+                ToastUtils.showToastShort(this.m_con, this.m_con.getResources().getString(R.string.text_logo_input_ok));
+            }
             this.dialogHandler.sendEmptyMessageDelayed(4, 1000);
         } catch (Exception e) {
             Log.d("logoUpdate", e.getLocalizedMessage());

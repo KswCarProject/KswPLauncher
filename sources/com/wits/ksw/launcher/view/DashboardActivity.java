@@ -2,6 +2,7 @@ package com.wits.ksw.launcher.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.databinding.ALSDasoardBind;
 import com.wits.ksw.databinding.ActivityDashBoardAudiBinding;
 import com.wits.ksw.databinding.ActivityDashBoardLcBinding;
+import com.wits.ksw.databinding.ActivityDashBoardLexusBinding;
 import com.wits.ksw.databinding.ActivityNtg6DashBoardBinding;
 import com.wits.ksw.databinding.DasoardBind;
 import com.wits.ksw.databinding.SevenDasoardBind;
@@ -136,6 +138,37 @@ public class DashboardActivity extends BaseThemeActivity {
     public void initBwmNbt() {
         Log.d("zgy", "---initBwmNbt()--BBB--");
         initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initLexus() {
+        ActivityDashBoardLexusBinding binding = (ActivityDashBoardLexusBinding) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_lexus);
+        binding.setViewModel(this.viewMode);
+        AnimationDrawable animationDrawableL = (AnimationDrawable) binding.lexusIvLeft.getBackground();
+        AnimationDrawable animationDrawableR = (AnimationDrawable) binding.lexusIvRight.getBackground();
+        if (!animationDrawableL.isRunning()) {
+            animationDrawableL.setOneShot(true);
+            animationDrawableL.start();
+        }
+        if (!animationDrawableR.isRunning()) {
+            animationDrawableR.setOneShot(true);
+            animationDrawableR.start();
+        }
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBwmID7Hicar() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initRomeo() {
+        initSevenDashBoard();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initCommonUIGSUG1024View() {
+        initBcUiView();
     }
 
     private void initAlsDashboard() {

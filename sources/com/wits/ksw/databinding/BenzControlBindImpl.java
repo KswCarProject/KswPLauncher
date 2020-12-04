@@ -39,7 +39,7 @@ public class BenzControlBindImpl extends BenzControlBind {
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private BenzControlBindImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 6, (ImageView) null, bindings[5], bindings[6], bindings[7], bindings[8], bindings[2], bindings[3], bindings[4], bindings[1], bindings[0], bindings[9]);
+        super(bindingComponent, root, 6, (ImageView) null, bindings[6], bindings[5], bindings[7], bindings[8], bindings[2], bindings[3], bindings[4], bindings[1], bindings[0], bindings[9]);
         this.mDirtyFlags = -1;
         this.brightnessBtnLeft.setTag((Object) null);
         this.brightnessBtnRight.setTag((Object) null);

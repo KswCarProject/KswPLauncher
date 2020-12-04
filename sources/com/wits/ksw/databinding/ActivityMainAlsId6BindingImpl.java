@@ -32,25 +32,25 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback32;
-    @Nullable
-    private final View.OnClickListener mCallback33;
-    @Nullable
-    private final View.OnClickListener mCallback34;
-    @Nullable
-    private final View.OnClickListener mCallback35;
-    @Nullable
-    private final View.OnClickListener mCallback36;
-    @Nullable
-    private final View.OnClickListener mCallback37;
-    @Nullable
-    private final View.OnClickListener mCallback38;
-    @Nullable
     private final View.OnClickListener mCallback39;
     @Nullable
     private final View.OnClickListener mCallback40;
     @Nullable
     private final View.OnClickListener mCallback41;
+    @Nullable
+    private final View.OnClickListener mCallback42;
+    @Nullable
+    private final View.OnClickListener mCallback43;
+    @Nullable
+    private final View.OnClickListener mCallback44;
+    @Nullable
+    private final View.OnClickListener mCallback45;
+    @Nullable
+    private final View.OnClickListener mCallback46;
+    @Nullable
+    private final View.OnClickListener mCallback47;
+    @Nullable
+    private final View.OnClickListener mCallback48;
     private long mDirtyFlags;
     @NonNull
     private final LinearLayout mboundView0;
@@ -120,16 +120,16 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         this.seekBar.setTag((Object) null);
         this.videoLl.setTag((Object) null);
         setRootTag(root);
-        this.mCallback39 = new OnClickListener(this, 8);
-        this.mCallback32 = new OnClickListener(this, 1);
-        this.mCallback37 = new OnClickListener(this, 6);
-        this.mCallback40 = new OnClickListener(this, 9);
-        this.mCallback38 = new OnClickListener(this, 7);
-        this.mCallback41 = new OnClickListener(this, 10);
-        this.mCallback35 = new OnClickListener(this, 4);
-        this.mCallback36 = new OnClickListener(this, 5);
-        this.mCallback33 = new OnClickListener(this, 2);
-        this.mCallback34 = new OnClickListener(this, 3);
+        this.mCallback39 = new OnClickListener(this, 1);
+        this.mCallback43 = new OnClickListener(this, 5);
+        this.mCallback42 = new OnClickListener(this, 4);
+        this.mCallback44 = new OnClickListener(this, 6);
+        this.mCallback40 = new OnClickListener(this, 2);
+        this.mCallback41 = new OnClickListener(this, 3);
+        this.mCallback47 = new OnClickListener(this, 9);
+        this.mCallback48 = new OnClickListener(this, 10);
+        this.mCallback45 = new OnClickListener(this, 7);
+        this.mCallback46 = new OnClickListener(this, 8);
         invalidateAll();
     }
 
@@ -150,7 +150,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (12 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -162,7 +162,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         synchronized (this) {
             this.mDirtyFlags |= 512;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 
@@ -546,16 +546,16 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         }
         if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID) != 0) {
             ObservableField<String> observableField8 = viewModelMediaInfoMusicAlbum;
-            this.appLl.setOnClickListener(this.mCallback41);
-            this.dashbroadLl.setOnClickListener(this.mCallback39);
-            this.mboundView1.setOnClickListener(this.mCallback32);
-            this.mboundView2.setOnClickListener(this.mCallback33);
-            this.mboundView3.setOnClickListener(this.mCallback34);
-            this.mboundView4.setOnClickListener(this.mCallback35);
-            this.musicLl.setOnClickListener(this.mCallback40);
-            this.naviLl.setOnClickListener(this.mCallback36);
-            this.phoneLl.setOnClickListener(this.mCallback38);
-            this.videoLl.setOnClickListener(this.mCallback37);
+            this.appLl.setOnClickListener(this.mCallback48);
+            this.dashbroadLl.setOnClickListener(this.mCallback46);
+            this.mboundView1.setOnClickListener(this.mCallback39);
+            this.mboundView2.setOnClickListener(this.mCallback40);
+            this.mboundView3.setOnClickListener(this.mCallback41);
+            this.mboundView4.setOnClickListener(this.mCallback42);
+            this.musicLl.setOnClickListener(this.mCallback47);
+            this.naviLl.setOnClickListener(this.mCallback43);
+            this.phoneLl.setOnClickListener(this.mCallback45);
+            this.videoLl.setOnClickListener(this.mCallback44);
         }
         if ((dirtyFlags & 1032) != 0) {
             TextViewBindingAdapter.setText(this.mboundView10, viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1);

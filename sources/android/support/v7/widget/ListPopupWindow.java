@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
-import android.support.v4.view.PointerIconCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.appcompat.R;
@@ -114,7 +113,7 @@ public class ListPopupWindow implements ShowableListMenu {
     public ListPopupWindow(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         this.mDropDownHeight = -2;
         this.mDropDownWidth = -2;
-        this.mDropDownWindowLayoutType = PointerIconCompat.TYPE_HAND;
+        this.mDropDownWindowLayoutType = 1002;
         this.mIsAnimatedFromAnchor = true;
         this.mDropDownGravity = 0;
         this.mDropDownAlwaysVisible = false;
