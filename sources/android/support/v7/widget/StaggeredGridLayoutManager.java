@@ -1046,7 +1046,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     }
 
     /* JADX WARNING: type inference failed for: r14v0 */
-    /* JADX WARNING: type inference failed for: r14v1, types: [boolean, int] */
+    /* JADX WARNING: type inference failed for: r14v1, types: [int, boolean] */
     /* JADX WARNING: type inference failed for: r14v5 */
     private int fill(RecyclerView.Recycler recycler, LayoutState layoutState, RecyclerView.State state) {
         int targetLine;
@@ -1248,8 +1248,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         } else {
             diff = getMaxEnd(this.mPrimaryOrientation.getEndAfterPadding()) - this.mPrimaryOrientation.getEndAfterPadding();
         }
-        int diff2 = diff;
-        return diff2 > 0 ? Math.min(layoutState2.mAvailable, diff2) : i2;
+        int maxEnd = diff;
+        return maxEnd > 0 ? Math.min(layoutState2.mAvailable, maxEnd) : i2;
     }
 
     private LazySpanLookup.FullSpanItem createFullSpanItemFromEnd(int newItemTop) {

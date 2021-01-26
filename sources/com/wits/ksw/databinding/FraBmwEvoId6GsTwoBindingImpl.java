@@ -72,7 +72,7 @@ public class FraBmwEvoId6GsTwoBindingImpl extends FraBmwEvoId6GsTwoBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (17 != variableId) {
             return false;
         }
         setVm((BmwId6gsViewMode) variable);
@@ -84,7 +84,7 @@ public class FraBmwEvoId6GsTwoBindingImpl extends FraBmwEvoId6GsTwoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(17);
         super.requestRebind();
     }
 

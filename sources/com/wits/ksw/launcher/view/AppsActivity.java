@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import com.wits.ksw.R;
+import com.wits.ksw.databinding.ActivityAlsId7AppsBinding;
 import com.wits.ksw.databinding.ActivityId7AppsBinding;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.model.AppViewModel;
@@ -13,6 +14,7 @@ import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.IconUtils;
 
 public final class AppsActivity extends BaseThemeActivity {
+    private ActivityAlsId7AppsBinding alsBinding;
     private ActivityId7AppsBinding binding;
     private AppViewModel viewModel;
 
@@ -113,16 +115,50 @@ public final class AppsActivity extends BaseThemeActivity {
         initBmwid7UiView();
     }
 
+    /* access modifiers changed from: protected */
+    public void initAlsId7UI() {
+        this.viewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
+        this.viewModel.setActivity(this);
+        this.alsBinding = (ActivityAlsId7AppsBinding) DataBindingUtil.setContentView(this, R.layout.activity_als_id7_apps);
+        if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
+            if (getResources().getDisplayMetrics().widthPixels == 1024) {
+                this.alsBinding.appGridView.setNumColumns(5);
+            } else {
+                this.alsBinding.appGridView.setNumColumns(6);
+            }
+        }
+        this.alsBinding.setAppViewModel(this.viewModel);
+        this.viewModel.queryApps();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initLandRover() {
+        initBmwid7UiView();
+    }
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.i("AppsActivity", "onKeyDown: " + keyCode);
-        if (keyCode == 20 || keyCode == 22) {
-            return this.binding.appGridView.onKeyUp(22, event);
+        if (this.binding != null) {
+            if (keyCode == 20 || keyCode == 22) {
+                return this.binding.appGridView.onKeyUp(22, event);
+            }
+            if (keyCode == 19 || keyCode == 21) {
+                return this.binding.appGridView.onKeyUp(21, event);
+            }
+            if (keyCode == 66) {
+                return this.binding.appGridView.onKeyUp(66, event);
+            }
         }
-        if (keyCode == 19 || keyCode == 21) {
-            return this.binding.appGridView.onKeyUp(21, event);
-        }
-        if (keyCode == 66) {
-            return this.binding.appGridView.onKeyUp(66, event);
+        if (this.alsBinding != null) {
+            if (keyCode == 20 || keyCode == 22) {
+                return this.alsBinding.appGridView.onKeyUp(22, event);
+            }
+            if (keyCode == 19 || keyCode == 21) {
+                return this.alsBinding.appGridView.onKeyUp(21, event);
+            }
+            if (keyCode == 66) {
+                return this.alsBinding.appGridView.onKeyUp(66, event);
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

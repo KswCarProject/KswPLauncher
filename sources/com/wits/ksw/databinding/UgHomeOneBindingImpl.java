@@ -15,11 +15,11 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback113;
+    private final View.OnClickListener mCallback139;
     @Nullable
-    private final View.OnClickListener mCallback114;
+    private final View.OnClickListener mCallback140;
     @Nullable
-    private final View.OnClickListener mCallback115;
+    private final View.OnClickListener mCallback141;
     private long mDirtyFlags;
 
     public UgHomeOneBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
@@ -34,9 +34,9 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         this.ugHomeMusicVaiw.setTag((Object) null);
         this.ugHomeNaviVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback113 = new OnClickListener(this, 1);
-        this.mCallback114 = new OnClickListener(this, 2);
-        this.mCallback115 = new OnClickListener(this, 3);
+        this.mCallback140 = new OnClickListener(this, 2);
+        this.mCallback141 = new OnClickListener(this, 3);
+        this.mCallback139 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -57,7 +57,7 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (19 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -69,7 +69,7 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(19);
         super.requestRebind();
     }
 
@@ -87,9 +87,9 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeBtVaiw.setOnClickListener(this.mCallback114);
-            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback115);
-            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback113);
+            this.ugHomeBtVaiw.setOnClickListener(this.mCallback140);
+            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback141);
+            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback139);
         }
     }
 

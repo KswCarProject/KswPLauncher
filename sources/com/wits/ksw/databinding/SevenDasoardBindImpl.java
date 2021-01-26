@@ -29,19 +29,19 @@ public class SevenDasoardBindImpl extends SevenDasoardBind implements OnClickLis
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback100;
+    private final View.OnClickListener mCallback121;
     @Nullable
-    private final View.OnClickListener mCallback101;
+    private final View.OnClickListener mCallback122;
     @Nullable
-    private final View.OnClickListener mCallback102;
+    private final View.OnClickListener mCallback123;
     @Nullable
-    private final View.OnClickListener mCallback103;
+    private final View.OnClickListener mCallback124;
     @Nullable
-    private final View.OnClickListener mCallback97;
+    private final View.OnClickListener mCallback125;
     @Nullable
-    private final View.OnClickListener mCallback98;
+    private final View.OnClickListener mCallback126;
     @Nullable
-    private final View.OnClickListener mCallback99;
+    private final View.OnClickListener mCallback127;
     private long mDirtyFlags;
     @NonNull
     private final ID7SpeedImageView mboundView1;
@@ -109,13 +109,13 @@ public class SevenDasoardBindImpl extends SevenDasoardBind implements OnClickLis
         this.zspeedPointerImageView.setTag((Object) null);
         this.zspeedPointerTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback100 = new OnClickListener(this, 4);
-        this.mCallback101 = new OnClickListener(this, 5);
-        this.mCallback99 = new OnClickListener(this, 3);
-        this.mCallback102 = new OnClickListener(this, 6);
-        this.mCallback103 = new OnClickListener(this, 7);
-        this.mCallback98 = new OnClickListener(this, 2);
-        this.mCallback97 = new OnClickListener(this, 1);
+        this.mCallback121 = new OnClickListener(this, 1);
+        this.mCallback124 = new OnClickListener(this, 4);
+        this.mCallback125 = new OnClickListener(this, 5);
+        this.mCallback122 = new OnClickListener(this, 2);
+        this.mCallback123 = new OnClickListener(this, 3);
+        this.mCallback126 = new OnClickListener(this, 6);
+        this.mCallback127 = new OnClickListener(this, 7);
         invalidateAll();
     }
 
@@ -136,7 +136,7 @@ public class SevenDasoardBindImpl extends SevenDasoardBind implements OnClickLis
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (19 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);
@@ -148,7 +148,7 @@ public class SevenDasoardBindImpl extends SevenDasoardBind implements OnClickLis
         synchronized (this) {
             this.mDirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(19);
         super.requestRebind();
     }
 
@@ -997,13 +997,13 @@ public class SevenDasoardBindImpl extends SevenDasoardBind implements OnClickLis
         }
         if ((dirtyFlags & PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH) != 0) {
             int i7 = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2;
-            this.mboundView17.setOnClickListener(this.mCallback97);
-            this.mboundView18.setOnClickListener(this.mCallback98);
-            this.mboundView19.setOnClickListener(this.mCallback99);
-            this.mboundView20.setOnClickListener(this.mCallback100);
-            this.mboundView21.setOnClickListener(this.mCallback101);
-            this.mboundView22.setOnClickListener(this.mCallback102);
-            this.mboundView23.setOnClickListener(this.mCallback103);
+            this.mboundView17.setOnClickListener(this.mCallback121);
+            this.mboundView18.setOnClickListener(this.mCallback122);
+            this.mboundView19.setOnClickListener(this.mCallback123);
+            this.mboundView20.setOnClickListener(this.mCallback124);
+            this.mboundView21.setOnClickListener(this.mCallback125);
+            this.mboundView22.setOnClickListener(this.mCallback126);
+            this.mboundView23.setOnClickListener(this.mCallback127);
         }
         if ((dirtyFlags & 73728) != 0) {
             DashboardViewModel.setSevenSpeedRotation(this.mboundView3, viewModelCarInfoSpeedGet);

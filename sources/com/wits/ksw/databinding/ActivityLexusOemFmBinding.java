@@ -38,6 +38,8 @@ public abstract class ActivityLexusOemFmBinding extends ViewDataBinding {
     @NonNull
     public final RelativeLayout cdLayout;
     @NonNull
+    public final TextView discMode;
+    @NonNull
     public final TextView discNum;
     @NonNull
     public final TextView fmBand;
@@ -64,6 +66,20 @@ public abstract class ActivityLexusOemFmBinding extends ViewDataBinding {
     @NonNull
     public final TextView tvRightTemperature;
     @NonNull
+    public final TextView usbAsl;
+    @NonNull
+    public final TextView usbIndex;
+    @NonNull
+    public final RelativeLayout usbLayout;
+    @NonNull
+    public final TextView usbMusicAlbum;
+    @NonNull
+    public final TextView usbMusicArtist;
+    @NonNull
+    public final TextView usbMusicName;
+    @NonNull
+    public final TextView usbMusicTime;
+    @NonNull
     public final ImageView windSpeedLevel;
 
     public abstract void setMUiParams(@Nullable LexusUiParams lexusUiParams);
@@ -71,7 +87,7 @@ public abstract class ActivityLexusOemFmBinding extends ViewDataBinding {
     public abstract void setVm(@Nullable LexusOEMFMViewModel lexusOEMFMViewModel);
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityLexusOemFmBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, RelativeLayout acLayout2, TextView asl2, ImageView blowMode2, ImageView cd12, ImageView cd22, ImageView cd32, ImageView cd42, ImageView cd52, ImageView cd62, RelativeLayout cdLayout2, TextView discNum2, TextView fmBand2, TextView fmCh2, TextView fmFrequency2, RelativeLayout fmLayout2, TextView modeFm2, TextView st2, TextView time2, TextView trackNum2, TextView tvLeftTemperature2, TextView tvRightTemperature2, ImageView windSpeedLevel2) {
+    protected ActivityLexusOemFmBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, RelativeLayout acLayout2, TextView asl2, ImageView blowMode2, ImageView cd12, ImageView cd22, ImageView cd32, ImageView cd42, ImageView cd52, ImageView cd62, RelativeLayout cdLayout2, TextView discMode2, TextView discNum2, TextView fmBand2, TextView fmCh2, TextView fmFrequency2, RelativeLayout fmLayout2, TextView modeFm2, TextView st2, TextView time2, TextView trackNum2, TextView tvLeftTemperature2, TextView tvRightTemperature2, TextView usbAsl2, TextView usbIndex2, RelativeLayout usbLayout2, TextView usbMusicAlbum2, TextView usbMusicArtist2, TextView usbMusicName2, TextView usbMusicTime2, ImageView windSpeedLevel2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.acLayout = acLayout2;
         this.asl = asl2;
@@ -83,6 +99,7 @@ public abstract class ActivityLexusOemFmBinding extends ViewDataBinding {
         this.cd5 = cd52;
         this.cd6 = cd62;
         this.cdLayout = cdLayout2;
+        this.discMode = discMode2;
         this.discNum = discNum2;
         this.fmBand = fmBand2;
         this.fmCh = fmCh2;
@@ -94,6 +111,13 @@ public abstract class ActivityLexusOemFmBinding extends ViewDataBinding {
         this.trackNum = trackNum2;
         this.tvLeftTemperature = tvLeftTemperature2;
         this.tvRightTemperature = tvRightTemperature2;
+        this.usbAsl = usbAsl2;
+        this.usbIndex = usbIndex2;
+        this.usbLayout = usbLayout2;
+        this.usbMusicAlbum = usbMusicAlbum2;
+        this.usbMusicArtist = usbMusicArtist2;
+        this.usbMusicName = usbMusicName2;
+        this.usbMusicTime = usbMusicTime2;
         this.windSpeedLevel = windSpeedLevel2;
     }
 

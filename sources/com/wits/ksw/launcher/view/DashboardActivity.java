@@ -171,6 +171,16 @@ public class DashboardActivity extends BaseThemeActivity {
         initBcUiView();
     }
 
+    /* access modifiers changed from: protected */
+    public void initAlsId7UI() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initLandRover() {
+        initBmwid7UiView();
+    }
+
     private void initAlsDashboard() {
         final ALSDasoardBind binding = (ALSDasoardBind) DataBindingUtil.setContentView(this, R.layout.activity_dash_board_als);
         this.viewMode.setAlsModel(this.viewMode.getAlsModel());

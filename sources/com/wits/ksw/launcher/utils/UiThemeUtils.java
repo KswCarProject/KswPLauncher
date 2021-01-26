@@ -20,11 +20,21 @@ public class UiThemeUtils {
     public static final String Common_UI_GS = "Common_UI_GS";
     public static final String Common_UI_GS_UG = "Common_UI_GS_UG";
     public static final String Common_UI_GS_UG_1024 = "Common_UI_GS_UG_1024";
+    public static final String ID7_ALS = "PEMP_ID7_UI";
+    public static final String LAND_ROVER = "LAND_ROVER";
     public static final String LEXUS_UI = "LEXUS_UI";
     public static final String ROMEO_UI = "Alfa_Romeo";
 
     public static boolean isId7AndDefaultUi(Context context) {
-        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context) && !isBenz_NTG5(context) && !isALS_ID6(context) && !isBMW_EVO_ID7_HiCar(context) && !isLEXUS_UI(context) && !isBMW_NBT(context) && !isROMEO_UI(context);
+        return !isBMW_EVO_ID6(context) && !isBMW_EVO_ID5(context) && !isBenz_NTG6(context) && !isBenz_MBUX(context) && !isCommon_UI_GS(context) && !isCommon_UI_GS_UG(context) && !isAudi_MMI_4G(context) && !isBenz_GS(context) && !isBMW_EVO_ID6_GS(context) && !isBenz_NTG5(context) && !isALS_ID6(context) && !isBMW_EVO_ID7_HiCar(context) && !isLEXUS_UI(context) && !isBMW_NBT(context) && !isROMEO_UI(context) && !isID7_ALS(context) && !isLAND_ROVER(context);
+    }
+
+    public static boolean isLAND_ROVER(Context context) {
+        return TextUtils.equals(getUiName(context), LAND_ROVER);
+    }
+
+    public static boolean isID7_ALS(Context context) {
+        return TextUtils.equals(getUiName(context), ID7_ALS);
     }
 
     public static boolean isBenz_NTG6(Context context) {

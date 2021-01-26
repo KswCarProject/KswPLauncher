@@ -39,6 +39,12 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
+    <string name="als_id7_main_app">Application</string>
+    <string name="als_id7_main_browser">Browser</string>
+    <string name="als_id7_main_settings">Settings</string>
+    <string name="als_id7_music">Music</string>
+    <string name="als_id7_music_player">Music player</string>
+    <string name="als_id7_phone">Phone</string>
     <string name="app_aux">AUX</string>
     <string name="app_cancel">Cancel</string>
     <string name="app_dtv">DTV</string>
@@ -54,8 +60,8 @@
     <string name="audi_dashboard">@string/ksw_id7_dashboard_lable</string>
     <string name="audi_easyconnection">@string/id6_shouj_hulian</string>
     <string name="audi_factory_home_right_option1">Hide</string>
-    <string name="audi_factory_home_right_option2">Display Audi Logo Or AMAP Navigation Information</string>
-    <string name="audi_factory_home_right_option3">Display Audi Logo</string>
+    <string name="audi_factory_home_right_option2">Display Logo Or AMAP Navigation Information</string>
+    <string name="audi_factory_home_right_option3">Display Logo</string>
     <string name="audi_factory_home_right_option4">Display Car Information</string>
     <string name="audi_factory_home_right_option5">Display Music Information</string>
     <string name="audi_home_left_widget">Widget in the left side of the homepage</string>
@@ -188,8 +194,8 @@
     <string name="fac_1">Password:</string>
     <string name="factory_ac_control">AC Control</string>
     <string name="factory_air_conditioner">Air Conditioner</string>
-    <string name="factory_benc">Benz AUX Activate</string>
-    <string name="factory_bencPank">Benz Control Panel</string>
+    <string name="factory_benc">AUX Activate</string>
+    <string name="factory_bencPank">Control Panel</string>
     <string name="factory_carseep">Speedometer Selection</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

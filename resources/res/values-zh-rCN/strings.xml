@@ -35,8 +35,8 @@
     <string name="app_not_update">不允许升级!</string>
     <string name="app_ok">确定</string>
     <string name="audi_factory_home_right_option1">隐藏</string>
-    <string name="audi_factory_home_right_option2">显示Audi Logo和高德导航信息</string>
-    <string name="audi_factory_home_right_option3">仅显示Audi Logo</string>
+    <string name="audi_factory_home_right_option2">显示Logo和高德导航信息</string>
+    <string name="audi_factory_home_right_option3">仅显示Logo</string>
     <string name="audi_factory_home_right_option4">显示行车信息</string>
     <string name="audi_factory_home_right_option5">显示音乐信息</string>
     <string name="audi_home_left_widget">主页左侧的小部件</string>
@@ -77,8 +77,8 @@
     <string name="fac_1">请输入密码：</string>
     <string name="factory_ac_control">空调控制</string>
     <string name="factory_air_conditioner">空调</string>
-    <string name="factory_benc">奔驰AUX激活</string>
-    <string name="factory_bencPank">奔驰控制面板</string>
+    <string name="factory_benc">AUX激活</string>
+    <string name="factory_bencPank">控制面板</string>
     <string name="factory_carseep">车速表选项</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

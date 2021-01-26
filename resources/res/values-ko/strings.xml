@@ -35,8 +35,8 @@
     <string name="app_not_update">업그레이드가 허용되지 않습니다!</string>
     <string name="app_ok">확인</string>
     <string name="audi_factory_home_right_option1">숨기다</string>
-    <string name="audi_factory_home_right_option2">Audi 로고 또는 AMAP 탐색 정보 표시</string>
-    <string name="audi_factory_home_right_option3">Audi 로고 표시</string>
+    <string name="audi_factory_home_right_option2">로고 또는 AMAP 탐색 정보 표시</string>
+    <string name="audi_factory_home_right_option3">로고 표시</string>
     <string name="audi_factory_home_right_option4">자동차 정보 표시</string>
     <string name="audi_factory_home_right_option5">음악 정보 표시</string>
     <string name="audi_home_left_widget">홈페이지 왼쪽의 위젯</string>
@@ -75,8 +75,8 @@
     <string name="eq_user">표준</string>
     <string name="fac_1">비밀번호:</string>
     <string name="factory_air_conditioner">에어컨</string>
-    <string name="factory_benc">Benz AUX 활성화</string>
-    <string name="factory_bencPank">Benz 제어판</string>
+    <string name="factory_benc">AUX 활성화</string>
+    <string name="factory_bencPank">제어판</string>
     <string name="factory_carseep">속도계 선택</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

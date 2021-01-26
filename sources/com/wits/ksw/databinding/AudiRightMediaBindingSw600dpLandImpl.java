@@ -22,13 +22,13 @@ public class AudiRightMediaBindingSw600dpLandImpl extends AudiRightMediaBinding 
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback51;
+    private final View.OnClickListener mCallback64;
     @Nullable
-    private final View.OnClickListener mCallback52;
+    private final View.OnClickListener mCallback65;
     @Nullable
-    private final View.OnClickListener mCallback53;
+    private final View.OnClickListener mCallback66;
     @Nullable
-    private final View.OnClickListener mCallback54;
+    private final View.OnClickListener mCallback67;
     private long mDirtyFlags;
 
     static {
@@ -51,10 +51,10 @@ public class AudiRightMediaBindingSw600dpLandImpl extends AudiRightMediaBinding 
         this.btnMusicPrev.setTag((Object) null);
         this.tvMusicTitleInfor.setTag((Object) null);
         setRootTag(root);
-        this.mCallback52 = new OnClickListener(this, 2);
-        this.mCallback54 = new OnClickListener(this, 4);
-        this.mCallback53 = new OnClickListener(this, 3);
-        this.mCallback51 = new OnClickListener(this, 1);
+        this.mCallback67 = new OnClickListener(this, 4);
+        this.mCallback65 = new OnClickListener(this, 2);
+        this.mCallback64 = new OnClickListener(this, 1);
+        this.mCallback66 = new OnClickListener(this, 3);
         invalidateAll();
     }
 
@@ -75,7 +75,7 @@ public class AudiRightMediaBindingSw600dpLandImpl extends AudiRightMediaBinding 
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (17 != variableId) {
             return false;
         }
         setVm((AudiViewModel) variable);
@@ -87,7 +87,7 @@ public class AudiRightMediaBindingSw600dpLandImpl extends AudiRightMediaBinding 
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(17);
         super.requestRebind();
     }
 
@@ -155,10 +155,10 @@ public class AudiRightMediaBindingSw600dpLandImpl extends AudiRightMediaBinding 
             }
         }
         if ((8 & dirtyFlags) != 0) {
-            this.IvRightMusicIcon.setOnClickListener(this.mCallback51);
-            this.btnMusicNext.setOnClickListener(this.mCallback54);
-            this.btnMusicPlayPause.setOnClickListener(this.mCallback53);
-            this.btnMusicPrev.setOnClickListener(this.mCallback52);
+            this.IvRightMusicIcon.setOnClickListener(this.mCallback64);
+            this.btnMusicNext.setOnClickListener(this.mCallback67);
+            this.btnMusicPlayPause.setOnClickListener(this.mCallback66);
+            this.btnMusicPrev.setOnClickListener(this.mCallback65);
         }
         if ((14 & dirtyFlags) != 0) {
             ((ConstraintLayout) this.KSWA4LRightShowMedia).setVisibility(vmMediaViewGet);

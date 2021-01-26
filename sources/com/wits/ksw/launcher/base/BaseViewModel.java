@@ -17,7 +17,7 @@ import com.wits.ksw.launcher.view.AppsActivity;
 
 @BindingMethods({@BindingMethod(attribute = "setOnClickListener", method = "onClickListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnCheckedChangeListener", method = "onCheckedChangeListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnFocusChangeListener", method = "onFocusChangeListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnItemClickListener", method = "onItemClickListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnItemLongClickListener", method = "onItemLongClickListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnItemChangeListener", method = "onItemChangerListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnSeekBarChangeListener", method = "onSeekBarChangeListener", type = BaseViewModel.class)})
 public abstract class BaseViewModel extends ViewModel {
-    protected static final String TAG = "KSWLauncher";
+    private static final String TAG = BaseViewModel.class.getSimpleName();
     protected Activity activity;
     /* access modifiers changed from: protected */
     public ContentResolver contentResolver;
@@ -29,7 +29,7 @@ public abstract class BaseViewModel extends ViewModel {
     public abstract void resumeViewModel();
 
     public BaseViewModel() {
-        Log.i("KSWLauncher", "BaseViewModel: ");
+        Log.i(TAG, "BaseViewModel: ");
         if (this.unknow == null) {
             this.unknow = this.context.getString(17039374);
         }
@@ -51,7 +51,8 @@ public abstract class BaseViewModel extends ViewModel {
             Intent intent = new Intent();
             intent.setComponent(component);
             this.activity.startActivity(intent);
-            Log.i("KSWLauncher", "openApp: " + component.toString());
+            String str = TAG;
+            Log.i(str, "openApp: " + component.toString());
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
@@ -65,7 +66,8 @@ public abstract class BaseViewModel extends ViewModel {
             intent.setComponent(component);
             intent.setFlags(268435456);
             this.activity.startActivity(intent);
-            Log.i("KSWLauncher", "openApp: " + component.toString());
+            String str = TAG;
+            Log.i(str, "openApp: " + component.toString());
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
@@ -76,7 +78,8 @@ public abstract class BaseViewModel extends ViewModel {
     public void openApp(Intent intent) {
         try {
             this.activity.startActivity(intent);
-            Log.i("KSWLauncher", "openApp: " + intent.toString());
+            String str = TAG;
+            Log.i(str, "openApp: " + intent.toString());
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
@@ -86,6 +89,6 @@ public abstract class BaseViewModel extends ViewModel {
     /* access modifiers changed from: protected */
     public void onCleared() {
         super.onCleared();
-        Log.i("KSWLauncher", "onCleared: ");
+        Log.i(TAG, "onCleared: ");
     }
 }

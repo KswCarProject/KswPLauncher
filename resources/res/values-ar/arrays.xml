@@ -93,4 +93,14 @@
         <item>Android</item>
         <item>متقدم</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>النظام</item>
+        <item>ملاحة</item>
+        <item>مستوى الصوت</item>
+        <item>اللغات</item>
+        <item>التاريخ والوقت</item>
+        <item>الإصدار</item>
+        <item>Android</item>
+        <item>متقدم</item>
+    </array>
 </resources>

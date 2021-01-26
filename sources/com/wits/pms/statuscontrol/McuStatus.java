@@ -354,6 +354,50 @@ public class McuStatus {
         }
     }
 
+    public static class MediaStringInfo {
+        public String album;
+        public String artist;
+        public String folderName;
+        public int min;
+        public String name;
+        public int sec;
+
+        public static MediaStringInfo parseInfoFromJson(String json) {
+            return (MediaStringInfo) new Gson().fromJson(json, MediaStringInfo.class);
+        }
+    }
+
+    public static class MediaPlayStatus {
+        public static final int TYPE_AM = 1;
+        public static final int TYPE_AUX = 20;
+        public static final int TYPE_BT_MUSIC = 21;
+        public static final int TYPE_DISC = 16;
+        public static final int TYPE_FM = 0;
+        public static final int TYPE_MP3 = 18;
+        public static final int TYPE_USB = 17;
+        public boolean ALS;
+        public boolean RAND;
+        public boolean RPT;
+        public boolean SCAN;
+        public boolean ST;
+        public String status;
+        public int type;
+
+        public static MediaPlayStatus parseInfoFromJson(String json) {
+            return (MediaPlayStatus) new Gson().fromJson(json, MediaPlayStatus.class);
+        }
+    }
+
+    public static class DiscStatus {
+        public boolean[] discInsert;
+        public int range;
+        public String status;
+
+        public static DiscStatus parseInfoFromJson(String json) {
+            return (DiscStatus) new Gson().fromJson(json, DiscStatus.class);
+        }
+    }
+
     public static class BenzData {
         public static final int AIR_MATIC_STATUS = 2;
         public static final int AUXILIARY_RADAR = 3;

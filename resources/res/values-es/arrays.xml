@@ -93,4 +93,14 @@
         <item>Android</item>
         <item>Fábrica</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>Sistema</item>
+        <item>Navegacion</item>
+        <item>Volumen</item>
+        <item>Idioma</item>
+        <item>Tiempo</item>
+        <item>Versión</item>
+        <item>Android</item>
+        <item>Fábrica</item>
+    </array>
 </resources>

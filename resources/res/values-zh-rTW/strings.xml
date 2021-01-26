@@ -35,8 +35,8 @@
     <string name="app_not_update">不允許升級!</string>
     <string name="app_ok">確定</string>
     <string name="audi_factory_home_right_option1">隱藏</string>
-    <string name="audi_factory_home_right_option2">顯示Audi Logo和高德導航信息</string>
-    <string name="audi_factory_home_right_option3">顯示Audi Logo</string>
+    <string name="audi_factory_home_right_option2">顯示Logo和高德導航信息</string>
+    <string name="audi_factory_home_right_option3">顯示Logo</string>
     <string name="audi_factory_home_right_option4">顯示行車信息</string>
     <string name="audi_factory_home_right_option5">顯示音樂信息</string>
     <string name="audi_home_left_widget">主頁左側的小部件</string>
@@ -76,8 +76,8 @@
     <string name="fac_1">請輸入密碼：</string>
     <string name="factory_ac_control">空調控制</string>
     <string name="factory_air_conditioner">空調</string>
-    <string name="factory_benc">奔馳AUX激活</string>
-    <string name="factory_bencPank">奔馳控制面板</string>
+    <string name="factory_benc">AUX激活</string>
+    <string name="factory_bencPank">控制面板</string>
     <string name="factory_carseep">車速錶選項</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

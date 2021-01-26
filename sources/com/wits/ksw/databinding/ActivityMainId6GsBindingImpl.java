@@ -18,9 +18,9 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback58;
+    private final View.OnClickListener mCallback71;
     @Nullable
-    private final View.OnClickListener mCallback59;
+    private final View.OnClickListener mCallback72;
     private long mDirtyFlags;
     @NonNull
     private final ConstraintLayout mboundView0;
@@ -38,8 +38,8 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         this.mboundView0 = bindings[0];
         this.mboundView0.setTag((Object) null);
         setRootTag(root);
-        this.mCallback59 = new OnClickListener(this, 2);
-        this.mCallback58 = new OnClickListener(this, 1);
+        this.mCallback71 = new OnClickListener(this, 1);
+        this.mCallback72 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -60,7 +60,7 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (17 != variableId) {
             return false;
         }
         setVm((BmwId6gsViewMode) variable);
@@ -72,7 +72,7 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(17);
         super.requestRebind();
     }
 
@@ -142,8 +142,8 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
             vmPageIndexInt0ViewINVISIBLEViewVISIBLE = i;
         }
         if ((4 & dirtyFlags) != 0) {
-            this.id6GsLeftBtn.setOnClickListener(this.mCallback58);
-            this.id6GsRightBtn.setOnClickListener(this.mCallback59);
+            this.id6GsLeftBtn.setOnClickListener(this.mCallback71);
+            this.id6GsRightBtn.setOnClickListener(this.mCallback72);
         }
         if ((7 & dirtyFlags) != 0) {
             this.id6GsLeftBtn.setVisibility(vmPageIndexInt0ViewINVISIBLEViewVISIBLE);

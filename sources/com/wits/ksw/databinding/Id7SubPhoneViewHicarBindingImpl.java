@@ -19,7 +19,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback49;
+    private final View.OnClickListener mCallback62;
     private long mDirtyFlags;
 
     static {
@@ -37,7 +37,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
         this.carImageView.setTag((Object) null);
         this.phoneConnectionTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback49 = new OnClickListener(this, 1);
+        this.mCallback62 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -58,7 +58,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (5 != variableId) {
+        if (8 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
@@ -70,7 +70,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(5);
+        notifyPropertyChanged(8);
         super.requestRebind();
     }
 
@@ -116,7 +116,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
             }
         }
         if ((4 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback49);
+            this.carImageView.setOnClickListener(this.mCallback62);
         }
         if ((dirtyFlags & 6) != 0) {
             this.carImageView.setOnFocusChangeListener(naviViewModelCarViewFocusChangeListener);

@@ -36,8 +36,8 @@
     <string name="app_not_update">アップデートは許可されていません！</string>
     <string name="app_ok">OK</string>
     <string name="audi_factory_home_right_option1">隠す</string>
-    <string name="audi_factory_home_right_option2">Audi Logoと高德のナビ情報を表示します</string>
-    <string name="audi_factory_home_right_option3">Audiロゴだけを表示する</string>
+    <string name="audi_factory_home_right_option2">Logoと高德のナビ情報を表示します</string>
+    <string name="audi_factory_home_right_option3">ロゴだけを表示する</string>
     <string name="audi_factory_home_right_option4">ルート情報を表示する</string>
     <string name="audi_factory_home_right_option5">音楽の情報を表示する</string>
     <string name="audi_home_left_widget">ホームページ左側のウィジェット</string>
@@ -76,8 +76,8 @@
     <string name="eq_user">ユーザー</string>
     <string name="fac_1">パスワード:</string>
     <string name="factory_air_conditioner">エアコン</string>
-    <string name="factory_benc">Benz AUXアクティブ</string>
-    <string name="factory_bencPank">Benz コントロールパネル</string>
+    <string name="factory_benc">AUXアクティブ</string>
+    <string name="factory_bencPank">コントロールパネル</string>
     <string name="factory_carseep">スピードメーターの選択</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

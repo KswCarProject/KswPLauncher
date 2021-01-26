@@ -93,4 +93,14 @@
         <item>安卓設置</item>
         <item>工廠設置</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>系統設置</item>
+        <item>導航設置</item>
+        <item>音量設置</item>
+        <item>語言設置</item>
+        <item>時間設置</item>
+        <item>系統資訊</item>
+        <item>安卓設置</item>
+        <item>工廠設置</item>
+    </array>
 </resources>

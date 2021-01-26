@@ -9,7 +9,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.BcVieModel;
 
@@ -36,7 +35,8 @@ public class BenzGsViewMoel extends BcVieModel {
 
     public void setIndex(int v) {
         this.index.set(v);
-        Log.i(KswApplication.TAG, "setIndex: " + v);
+        String str = TAG;
+        Log.i(str, "setIndex: " + v);
     }
 
     public void onClick(int index2) {

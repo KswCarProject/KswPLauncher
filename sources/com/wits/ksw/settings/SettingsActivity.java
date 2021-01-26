@@ -6,15 +6,19 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
+import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.audi.AudiSettingMainActivity;
 import com.wits.ksw.settings.id6.ID6SettingsActivity;
 import com.wits.ksw.settings.id7.ID7SettingsActivity;
+import com.wits.ksw.settings.land_rover.LandroverSettingsActivity;
 import com.wits.ksw.settings.lexus.LexusSettingsActivity;
 import com.wits.ksw.settings.ntg6.Ntg6SettingsActivity;
 import com.wits.ksw.settings.romeo.RomeoSettingsActivity;
 
 public class SettingsActivity extends BaseActivity {
+    private boolean alsid7UIshow = true;
+
     /* access modifiers changed from: protected */
     @RequiresApi(api = 23)
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +57,14 @@ public class SettingsActivity extends BaseActivity {
             intentSend = new Intent(this, RomeoSettingsActivity.class);
         } else if (UiThemeUtils.isCommon_UI_GS_UG_1024(this)) {
             intentSend = new Intent(this, Ntg6SettingsActivity.class);
+        } else if (UiThemeUtils.isID7_ALS(this)) {
+            if (ClientManager.getInstance().isAls6208Client()) {
+                intentSend = new Intent(this, LandroverSettingsActivity.class);
+            } else {
+                intentSend = new Intent(this, ID7SettingsActivity.class);
+            }
+        } else if (UiThemeUtils.isLAND_ROVER(this)) {
+            intentSend = new Intent(this, LandroverSettingsActivity.class);
         } else {
             intentSend = new Intent(this, ID7SettingsActivity.class);
         }

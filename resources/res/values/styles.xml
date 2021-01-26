@@ -1434,4 +1434,11 @@
     <style name="ids6_style">
         <item name="android:statusBarColor">@color/ids6_status_color</item>
     </style>
+    <style name="land_rover_settings_sec_item">
+        <item name="android:background">@drawable/ksw_land_rover_seting_mp_bg</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:paddingStart">28dp</item>
+        <item name="android:paddingEnd">34dp</item>
+    </style>
 </resources>

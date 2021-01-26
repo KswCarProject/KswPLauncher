@@ -35,14 +35,19 @@ public class MediaImpl {
     public void initData() {
         try {
             String path = getMusicPathcString();
+            int postion = getMusicPostion();
+            boolean isPlay = getMusicPlayState();
+            boolean isStop = isMusicStop();
+            String str = TAG;
+            Log.d(str, "initDAta isplay =" + isPlay + " isstop =" + isStop);
             if (!TextUtils.equals(path, this.musicPath)) {
-                handleMediaPlaySeekbarAndCurrentime(getMusicPostion());
+                handleMediaPlaySeekbarAndCurrentime(postion);
                 handleMediaInfo(path);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            String str = TAG;
-            Log.e(str, "initData: " + e.getMessage());
+            String str2 = TAG;
+            Log.e(str2, "initData: " + e.getMessage());
             updataNull();
         }
     }
@@ -55,6 +60,23 @@ public class MediaImpl {
         return PowerManagerApp.getManager().getStatusString("path");
     }
 
+    private boolean getMusicPlayState() throws Exception {
+        return PowerManagerApp.getManager().getStatusBoolean("play");
+    }
+
+    private boolean isMusicStop() throws Exception {
+        return PowerManagerApp.getManager().getStatusBoolean("music_stop");
+    }
+
+    public void handleMediaPlayState(boolean play, boolean stop) {
+        MediaInfo mediaInfo2 = getInstance().getMediaInfo();
+        if (stop) {
+            mediaInfo2.setMusicPlay(stop);
+        } else {
+            mediaInfo2.setMusicPlay(play);
+        }
+    }
+
     private void updataNull() {
         this.mediaInfo.setMaxProgress(0);
         this.mediaInfo.setMusicName((String) null);
@@ -63,6 +85,7 @@ public class MediaImpl {
         this.mediaInfo.setPic((BitmapDrawable) null);
         this.mediaInfo.setCurrentTime("0:00");
         this.mediaInfo.setTotalTime("0:00");
+        this.mediaInfo.setMusicPlay(false);
         getInstance().setMediaInfo(this.mediaInfo);
     }
 

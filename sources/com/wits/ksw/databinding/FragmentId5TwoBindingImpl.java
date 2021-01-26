@@ -21,7 +21,7 @@ public class FragmentId5TwoBindingImpl extends FragmentId5TwoBinding implements 
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback107;
+    private final View.OnClickListener mCallback131;
     private long mDirtyFlags;
     @NonNull
     private final CustomBcImageView mboundView1;
@@ -41,7 +41,7 @@ public class FragmentId5TwoBindingImpl extends FragmentId5TwoBinding implements 
         this.mboundView2.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback107 = new OnClickListener(this, 1);
+        this.mCallback131 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -116,7 +116,7 @@ public class FragmentId5TwoBindingImpl extends FragmentId5TwoBinding implements 
             TextViewBindingAdapter.setText(this.mboundView2, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.mboundView1.setOnClickListener(this.mCallback107);
+            this.mboundView1.setOnClickListener(this.mCallback131);
         }
     }
 

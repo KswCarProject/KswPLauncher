@@ -6,7 +6,6 @@ import android.databinding.ObservableBoolean;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.ImageView;
-import com.wits.ksw.KswApplication;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.pms.statuscontrol.PowerManagerApp;
@@ -32,7 +31,8 @@ public class DashboardViewModel extends LauncherViewModel {
 
     public boolean isSevenModel() {
         int DashboardSelect = ClientManager.getInstance().getDashboardSelect();
-        Log.i(KswApplication.TAG, "isSevenModel:  DashboardSelect=" + DashboardSelect);
+        String str = TAG;
+        Log.i(str, "isSevenModel:  DashboardSelect=" + DashboardSelect);
         return DashboardSelect == 2;
     }
 
@@ -47,13 +47,15 @@ public class DashboardViewModel extends LauncherViewModel {
 
     public boolean isAlsModel() {
         int DashboardSelect = ClientManager.getInstance().getDashboardSelect();
-        Log.i(KswApplication.TAG, "initBmwid7UiView: client=" + ClientManager.getInstance().getClient() + " DashboardSelect=" + DashboardSelect);
+        String str = TAG;
+        Log.i(str, "initBmwid7UiView: client=" + ClientManager.getInstance().getClient() + " DashboardSelect=" + DashboardSelect);
         return ClientManager.getInstance().isAls6208Client() && DashboardSelect == 1;
     }
 
     public boolean isLCModel() {
         int DashboardSelect = ClientManager.getInstance().getDashboardSelect();
-        Log.i(KswApplication.TAG, "isLCModel client=" + ClientManager.getInstance().getClient() + " DashboardSelect=" + DashboardSelect);
+        String str = TAG;
+        Log.i(str, "isLCModel client=" + ClientManager.getInstance().getClient() + " DashboardSelect=" + DashboardSelect);
         return ClientManager.getInstance().isLC3208Client() && DashboardSelect == 3;
     }
 
@@ -78,7 +80,8 @@ public class DashboardViewModel extends LauncherViewModel {
     @BindingAdapter({"setBmwTyTurnSpeedRotation"})
     public static void setBmwTyTurnSpeedRotation(ImageView imageView, int turnSpeed) {
         float angle = new BigDecimal(turnSpeed).divide(new BigDecimal(100)).multiply(new BigDecimal(3.3d)).floatValue();
-        Log.i(KswApplication.TAG, "setTurnSpeed:  转速旋转角度" + angle);
+        String str = TAG;
+        Log.i(str, "setTurnSpeed:  转速旋转角度" + angle);
         setSpeedRotationBet(imageView, angle);
     }
 
@@ -123,22 +126,25 @@ public class DashboardViewModel extends LauncherViewModel {
 
     @BindingAdapter({"setSevenSpeedRotation"})
     public static void setSevenSpeedRotation(ImageView imageView, int speed) {
-        Log.i(KswApplication.TAG, "setSevenSpeedRotation: rota=" + speed);
+        String str = TAG;
+        Log.i(str, "setSevenSpeedRotation: rota=" + speed);
         if (KswUtils.ismph()) {
             float angle = new BigDecimal(((double) speed) * 1.2882447665056362d).floatValue();
-            Log.i(KswApplication.TAG, "setSevenSpeedRotation: " + angle);
+            String str2 = TAG;
+            Log.i(str2, "setSevenSpeedRotation: " + angle);
             setSpeedRotationBet(imageView, angle);
             return;
         }
         BigDecimal result = new BigDecimal(((double) speed) * 0.79d);
         float angle2 = result.floatValue();
-        Log.i(KswApplication.TAG, "setSevenSpeedRotation: " + result);
+        String str3 = TAG;
+        Log.i(str3, "setSevenSpeedRotation: " + result);
         setSpeedRotationBet(imageView, angle2);
     }
 
     @BindingAdapter({"setALSSpeedRotation"})
     public static void setALSSpeedRotation(ImageView imageView, int rota) {
-        Log.i(KswApplication.TAG, "setALSSpeedRotation: ");
+        Log.i(TAG, "setALSSpeedRotation: ");
         setSpeedRotationBet(imageView, (float) (((double) rota) * 0.79d));
     }
 
@@ -150,6 +156,6 @@ public class DashboardViewModel extends LauncherViewModel {
     /* access modifiers changed from: protected */
     public void onCleared() {
         super.onCleared();
-        Log.i(KswApplication.TAG, "onCleared: --------DashboardViewModel---------");
+        Log.i(TAG, "onCleared: --------DashboardViewModel---------");
     }
 }

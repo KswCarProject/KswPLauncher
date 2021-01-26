@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:id="@android:id/background">
+        <bitmap android:src="@drawable/landrover_progress_bar_n"/>
+    </item>
+    <item android:id="@android:id/progress">
+        <bitmap android:src="@drawable/landrover_progress_bar_d"/>
+    </item>
+</layer-list>

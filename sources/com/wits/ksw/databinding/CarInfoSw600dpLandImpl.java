@@ -104,7 +104,7 @@ public class CarInfoSw600dpLandImpl extends CarInfo {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (15 != variableId) {
+        if (21 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
@@ -116,7 +116,7 @@ public class CarInfoSw600dpLandImpl extends CarInfo {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(21);
         super.requestRebind();
     }
 

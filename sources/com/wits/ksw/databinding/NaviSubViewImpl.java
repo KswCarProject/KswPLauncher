@@ -55,7 +55,7 @@ public class NaviSubViewImpl extends NaviSubView implements OnClickListener.List
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (5 != variableId) {
+        if (8 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
@@ -67,7 +67,7 @@ public class NaviSubViewImpl extends NaviSubView implements OnClickListener.List
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(5);
+        notifyPropertyChanged(8);
         super.requestRebind();
     }
 

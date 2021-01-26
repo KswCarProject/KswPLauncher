@@ -961,19 +961,19 @@ public class JsonReader implements Closeable {
                 }
             }
             int p3 = p2 + 1;
-            char p4 = buffer2[p2];
-            if (p4 == 10) {
+            char c = buffer2[p2];
+            if (c == 10) {
                 this.lineNumber++;
                 this.lineStart = p3;
-            } else if (!(p4 == ' ' || p4 == 13 || p4 == 9)) {
-                if (p4 == '/') {
+            } else if (!(c == ' ' || c == 13 || c == 9)) {
+                if (c == '/') {
                     this.pos = p3;
                     if (p3 == l) {
                         this.pos--;
                         boolean charsLoaded = fillBuffer(2);
                         this.pos++;
                         if (!charsLoaded) {
-                            return p4;
+                            return c;
                         }
                     }
                     checkLenient();
@@ -987,14 +987,14 @@ public class JsonReader implements Closeable {
                             throw syntaxError("Unterminated comment");
                         }
                     } else if (peek != '/') {
-                        return p4;
+                        return c;
                     } else {
                         this.pos++;
                         skipToEndOfLine();
                         p = this.pos;
                         l = this.limit;
                     }
-                } else if (p4 == '#') {
+                } else if (c == '#') {
                     this.pos = p3;
                     checkLenient();
                     skipToEndOfLine();
@@ -1002,7 +1002,7 @@ public class JsonReader implements Closeable {
                     l = this.limit;
                 } else {
                     this.pos = p3;
-                    return p4;
+                    return c;
                 }
                 p2 = p;
             }

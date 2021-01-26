@@ -8,8 +8,8 @@
     <string name="app_not_update">Không được phép nâng cấp!</string>
     <string name="app_ok">OK</string>
     <string name="audi_factory_home_right_option1">Ẩn giấu</string>
-    <string name="audi_factory_home_right_option2">Hiển thị Logo của Audi Hoặc Thông tin điều hướng AMAP</string>
-    <string name="audi_factory_home_right_option3">Hiển thị Logo của Audi</string>
+    <string name="audi_factory_home_right_option2">Hiển thị Logo của Hoặc Thông tin điều hướng AMAP</string>
+    <string name="audi_factory_home_right_option3">Hiển thị Logo của</string>
     <string name="audi_factory_home_right_option4">Hiển thị thông tin xe</string>
     <string name="audi_factory_home_right_option5">Hiển thị thông tin âm nhạc</string>
     <string name="audi_home_left_widget">Widget ở bên trái trang chủ</string>
@@ -48,8 +48,8 @@
     <string name="eq_user">Người dùng</string>
     <string name="fac_1">khẩu:</string>
     <string name="factory_air_conditioner">Máy lạnh</string>
-    <string name="factory_benc">Kích hoạt AUX của Benz</string>
-    <string name="factory_bencPank">Bảng điều khiển Benz</string>
+    <string name="factory_benc">Kích hoạt AUX của</string>
+    <string name="factory_bencPank">Bảng điều khiển</string>
     <string name="factory_carseep">Lựa chọn đồng hồ tốc độ</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

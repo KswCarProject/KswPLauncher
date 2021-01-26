@@ -97,7 +97,7 @@ public class AudiEqViewBindingSw600dpLandImpl extends AudiEqViewBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (17 != variableId) {
             return false;
         }
         setVm((EQViewModel) variable);
@@ -109,7 +109,7 @@ public class AudiEqViewBindingSw600dpLandImpl extends AudiEqViewBinding {
         synchronized (this) {
             this.mDirtyFlags |= 128;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(17);
         super.requestRebind();
     }
 

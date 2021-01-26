@@ -1964,21 +1964,21 @@ public class LinearLayoutCompat extends ViewGroup {
                     LayoutParams lp2 = lp;
                     View child2 = child;
                     paddingLeft = paddingLeft2;
-                    int i5 = i2;
+                    int paddingLeft3 = i2;
                     setChildFrame(child, childLeft, childTop2 + getLocationOffset(child), childWidth, childHeight);
                     int childTop3 = childTop2 + childHeight + lp2.bottomMargin + getNextLocationOffset(child2);
-                    i2 = i5 + getChildrenSkipCount(child2, i5);
+                    i2 = paddingLeft3 + getChildrenSkipCount(child2, paddingLeft3);
                     childTop = childTop3;
                 } else {
                     majorGravity = majorGravity2;
                     paddingLeft = paddingLeft2;
-                    int paddingLeft3 = i2;
+                    int paddingLeft4 = i2;
                 }
                 i = i2 + 1;
                 majorGravity2 = majorGravity;
                 paddingLeft2 = paddingLeft;
             } else {
-                int i6 = paddingLeft2;
+                int i5 = paddingLeft2;
                 return;
             }
         }

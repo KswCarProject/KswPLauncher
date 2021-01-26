@@ -93,4 +93,14 @@
         <item>안드로이드</item>
         <item>공장</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>시스템</item>
+        <item>네비게이션</item>
+        <item>볼륨</item>
+        <item>언어</item>
+        <item>시간</item>
+        <item>시스템 정보</item>
+        <item>안드로이드</item>
+        <item>공장</item>
+    </array>
 </resources>

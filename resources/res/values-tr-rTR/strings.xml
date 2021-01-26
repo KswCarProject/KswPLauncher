@@ -8,8 +8,8 @@
     <string name="app_not_update">Yükseltmeye izin verilmiyor!</string>
     <string name="app_ok">Tamam</string>
     <string name="audi_factory_home_right_option1">Saklamak</string>
-    <string name="audi_factory_home_right_option2">Audi Logo veya AMAP Navigasyon Bilgilerini Görüntüleyin</string>
-    <string name="audi_factory_home_right_option3">Audi Logosunu Görüntüle</string>
+    <string name="audi_factory_home_right_option2">Logo veya AMAP Navigasyon Bilgilerini Görüntüleyin</string>
+    <string name="audi_factory_home_right_option3">Logosunu Görüntüle</string>
     <string name="audi_factory_home_right_option4">Araba Bilgilerini Görüntüle</string>
     <string name="audi_factory_home_right_option5">Müzik Bilgilerini Göster</string>
     <string name="audi_home_left_widget">Ana sayfanın sol tarafındaki widget</string>
@@ -48,8 +48,8 @@
     <string name="eq_user">Kullanıcı</string>
     <string name="fac_1">Şifre:</string>
     <string name="factory_air_conditioner">Klima</string>
-    <string name="factory_benc">Benz AUX Etkinleştir</string>
-    <string name="factory_bencPank">Benz kontrol paneli</string>
+    <string name="factory_benc">AUX Etkinleştir</string>
+    <string name="factory_bencPank">Kontrol paneli</string>
     <string name="factory_carseep">Hız göstergesi seçimi</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

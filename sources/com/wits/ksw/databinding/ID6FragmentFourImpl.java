@@ -58,7 +58,7 @@ public class ID6FragmentFourImpl extends ID6FragmentFour {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (19 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);

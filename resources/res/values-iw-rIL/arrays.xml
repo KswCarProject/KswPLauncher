@@ -93,4 +93,14 @@
         <item>אנדרואיד</item>
         <item>בית חרושת</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>מערכת</item>
+        <item>ניווט</item>
+        <item>כרך</item>
+        <item>שפה</item>
+        <item>זמן</item>
+        <item>מידע מערכת</item>
+        <item>אנדרואיד</item>
+        <item>בית חרושת</item>
+    </array>
 </resources>

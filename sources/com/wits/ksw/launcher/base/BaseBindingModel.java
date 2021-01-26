@@ -42,6 +42,11 @@ public class BaseBindingModel {
         ((RequestBuilder) ((RequestBuilder) Glide.with(imageView.getContext()).load((Drawable) data).placeholder((int) R.drawable.id7_album_default)).error((int) R.drawable.id7_album_default)).into(imageView);
     }
 
+    @BindingAdapter({"setAlsId7MusicAlbum"})
+    public static void setAlsID7AlbumIcon(ImageView imageView, BitmapDrawable data) {
+        ((RequestBuilder) ((RequestBuilder) Glide.with(imageView.getContext()).load((Drawable) data).placeholder((int) R.color.transparent)).error((int) R.color.transparent)).into(imageView);
+    }
+
     @BindingAdapter({"setOnItemChangerListener"})
     public static void setOnItemChangerListener(DragGridView gridView, DragGridView.onItemChangerListener onItemChangerListener) {
         gridView.setOnItemChangeListener(onItemChangerListener);

@@ -25,9 +25,9 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     @Nullable
-    private final View.OnClickListener mCallback142;
+    private final View.OnClickListener mCallback184;
     @Nullable
-    private final View.OnClickListener mCallback143;
+    private final View.OnClickListener mCallback185;
     private long mDirtyFlags;
     private OnClickListenerImpl mVmOnControlClickAndroidViewViewOnClickListener;
     @NonNull
@@ -47,8 +47,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         this.mboundView0 = bindings[0];
         this.mboundView0.setTag((Object) null);
         setRootTag(root);
-        this.mCallback142 = new OnClickListener(this, 1);
-        this.mCallback143 = new OnClickListener(this, 2);
+        this.mCallback184 = new OnClickListener(this, 1);
+        this.mCallback185 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -69,7 +69,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (17 != variableId) {
             return false;
         }
         setVm((BenzGsViewMoel) variable);
@@ -81,7 +81,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(17);
         super.requestRebind();
     }
 
@@ -251,8 +251,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         if ((dirtyFlags & 16) != 0) {
             BenzGsViewMoel benzGsViewMoel = vm;
             ObservableInt observableInt = vmPageIndex;
-            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback142);
-            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback143);
+            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback184);
+            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback185);
         } else {
             ObservableInt observableInt2 = vmPageIndex;
         }

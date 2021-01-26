@@ -10,9 +10,14 @@ public class MediaInfo {
     public ObservableField<String> musicAlbum = new ObservableField<>();
     public ObservableField<String> musicAtist = new ObservableField<>();
     public ObservableField<String> musicName = new ObservableField<>();
+    public ObservableField<Boolean> musicPlay = new ObservableField<>();
     public ObservableField<BitmapDrawable> pic = new ObservableField<>();
     public ObservableInt progress = new ObservableInt();
     public ObservableField<String> totalTime = new ObservableField<>();
+
+    public void setMusicPlay(boolean value) {
+        this.musicPlay.set(Boolean.valueOf(value));
+    }
 
     public void setCurrentTime(String value) {
         this.currentTime.set(value);

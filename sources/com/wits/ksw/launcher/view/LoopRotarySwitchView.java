@@ -516,11 +516,11 @@ public class LoopRotarySwitchView extends RelativeLayout {
         for (int i = 0; i < this.views.size(); i++) {
             this.views.remove(i);
         }
-        int i2 = getChildCount();
-        this.size = i2;
-        for (int i3 = 0; i3 < i2; i3++) {
-            View view = getChildAt(i3);
-            final int position = i3;
+        int count = getChildCount();
+        this.size = count;
+        for (int i2 = 0; i2 < count; i2++) {
+            View view = getChildAt(i2);
+            final int position = i2;
             this.views.add(view);
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

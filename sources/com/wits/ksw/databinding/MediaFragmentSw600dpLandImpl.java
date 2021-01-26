@@ -104,7 +104,7 @@ public class MediaFragmentSw600dpLandImpl extends MediaFragment {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (16 != variableId) {
+        if (22 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
@@ -116,7 +116,7 @@ public class MediaFragmentSw600dpLandImpl extends MediaFragment {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(22);
         super.requestRebind();
     }
 

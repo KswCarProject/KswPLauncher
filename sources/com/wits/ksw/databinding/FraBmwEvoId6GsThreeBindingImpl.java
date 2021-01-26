@@ -75,7 +75,7 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (17 != variableId) {
             return false;
         }
         setVm((BmwId6gsViewMode) variable);
@@ -87,7 +87,7 @@ public class FraBmwEvoId6GsThreeBindingImpl extends FraBmwEvoId6GsThreeBinding {
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(17);
         super.requestRebind();
     }
 

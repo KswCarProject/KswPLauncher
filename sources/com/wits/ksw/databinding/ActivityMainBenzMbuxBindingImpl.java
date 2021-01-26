@@ -55,7 +55,7 @@ public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (9 != variableId) {
+        if (14 != variableId) {
             return false;
         }
         setVieModel((BcVieModel) variable);
@@ -67,7 +67,7 @@ public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 

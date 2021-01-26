@@ -1300,7 +1300,7 @@ public class VerticalViewPager extends ViewGroup {
                         int toff = (int) (((float) childHeight2) * ii2.offset);
                         int childLeft2 = paddingLeft2;
                         height = height2;
-                        int height3 = paddingTop + toff;
+                        int childTop3 = paddingTop + toff;
                         int i5 = toff;
                         if (lp2.needsMeasure != 0) {
                             lp2.needsMeasure = false;
@@ -1311,7 +1311,7 @@ public class VerticalViewPager extends ViewGroup {
                             childHeight = childHeight2;
                             ItemInfo itemInfo2 = ii2;
                         }
-                        child2.layout(childLeft2, height3, child2.getMeasuredWidth() + childLeft2, child2.getMeasuredHeight() + height3);
+                        child2.layout(childLeft2, childTop3, child2.getMeasuredWidth() + childLeft2, child2.getMeasuredHeight() + childTop3);
                         i4++;
                         count2 = count;
                         height2 = height;

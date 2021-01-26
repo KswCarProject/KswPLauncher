@@ -35,8 +35,8 @@
     <string name="app_not_update">Upgrade niet toegestaan!</string>
     <string name="app_ok">OK</string>
     <string name="audi_factory_home_right_option1">Verbergen</string>
-    <string name="audi_factory_home_right_option2">Toon Audi-logo of AMAP-navigatie-informatie</string>
-    <string name="audi_factory_home_right_option3">Toon Audi-Logo</string>
+    <string name="audi_factory_home_right_option2">Toon logo of AMAP-navigatie-informatie</string>
+    <string name="audi_factory_home_right_option3">Toon Logo</string>
     <string name="audi_factory_home_right_option4">Auto-informatie weergeven</string>
     <string name="audi_factory_home_right_option5">Muziekinformatie weergeven</string>
     <string name="audi_home_left_widget">Widget aan de linkerkant van de startpagina</string>
@@ -75,8 +75,8 @@
     <string name="eq_user">Gebruiker</string>
     <string name="fac_1">Wachtwoord:</string>
     <string name="factory_air_conditioner">Airconditioner</string>
-    <string name="factory_benc">Benz AUX Activate</string>
-    <string name="factory_bencPank">Benz Controlepaneel</string>
+    <string name="factory_benc">AUX Activate</string>
+    <string name="factory_bencPank">Controlepaneel</string>
     <string name="factory_carseep">Snelheidsmeter opties</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

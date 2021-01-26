@@ -19,29 +19,29 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback83;
+    private final View.OnClickListener mCallback104;
     @Nullable
-    private final View.OnClickListener mCallback84;
+    private final View.OnClickListener mCallback105;
     @Nullable
-    private final View.OnClickListener mCallback85;
+    private final View.OnClickListener mCallback106;
     @Nullable
-    private final View.OnClickListener mCallback86;
+    private final View.OnClickListener mCallback107;
     @Nullable
-    private final View.OnClickListener mCallback87;
+    private final View.OnClickListener mCallback108;
     @Nullable
-    private final View.OnClickListener mCallback88;
+    private final View.OnClickListener mCallback109;
     @Nullable
-    private final View.OnClickListener mCallback89;
+    private final View.OnClickListener mCallback110;
     @Nullable
-    private final View.OnClickListener mCallback90;
+    private final View.OnClickListener mCallback111;
     @Nullable
-    private final View.OnClickListener mCallback91;
+    private final View.OnClickListener mCallback112;
     @Nullable
-    private final View.OnClickListener mCallback92;
+    private final View.OnClickListener mCallback113;
     @Nullable
-    private final View.OnClickListener mCallback93;
+    private final View.OnClickListener mCallback114;
     @Nullable
-    private final View.OnClickListener mCallback94;
+    private final View.OnClickListener mCallback115;
     private long mDirtyFlags;
     @NonNull
     private final LinearLayout mboundView0;
@@ -74,18 +74,18 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
         this.mboundView0 = bindings[0];
         this.mboundView0.setTag((Object) null);
         setRootTag(root);
-        this.mCallback94 = new OnClickListener(this, 12);
-        this.mCallback83 = new OnClickListener(this, 1);
-        this.mCallback89 = new OnClickListener(this, 7);
-        this.mCallback92 = new OnClickListener(this, 10);
-        this.mCallback93 = new OnClickListener(this, 11);
-        this.mCallback87 = new OnClickListener(this, 5);
-        this.mCallback86 = new OnClickListener(this, 4);
-        this.mCallback90 = new OnClickListener(this, 8);
-        this.mCallback88 = new OnClickListener(this, 6);
-        this.mCallback91 = new OnClickListener(this, 9);
-        this.mCallback84 = new OnClickListener(this, 2);
-        this.mCallback85 = new OnClickListener(this, 3);
+        this.mCallback112 = new OnClickListener(this, 9);
+        this.mCallback108 = new OnClickListener(this, 5);
+        this.mCallback113 = new OnClickListener(this, 10);
+        this.mCallback109 = new OnClickListener(this, 6);
+        this.mCallback106 = new OnClickListener(this, 3);
+        this.mCallback110 = new OnClickListener(this, 7);
+        this.mCallback107 = new OnClickListener(this, 4);
+        this.mCallback111 = new OnClickListener(this, 8);
+        this.mCallback104 = new OnClickListener(this, 1);
+        this.mCallback105 = new OnClickListener(this, 2);
+        this.mCallback114 = new OnClickListener(this, 11);
+        this.mCallback115 = new OnClickListener(this, 12);
         invalidateAll();
     }
 
@@ -106,7 +106,7 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (19 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -118,7 +118,7 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(19);
         super.requestRebind();
     }
 
@@ -176,18 +176,18 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
             this.lexusAir.setVisibility(viewModelAcControlViewVISIBLEViewGONE);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.lexusAir.setOnClickListener(this.mCallback94);
-            this.lexusBtApp.setOnClickListener(this.mCallback93);
-            this.lexusBtCar.setOnClickListener(this.mCallback92);
-            this.lexusBtDash.setOnClickListener(this.mCallback86);
-            this.lexusBtDvr.setOnClickListener(this.mCallback87);
-            this.lexusBtFile.setOnClickListener(this.mCallback91);
-            this.lexusBtLink.setOnClickListener(this.mCallback88);
-            this.lexusBtMusic.setOnClickListener(this.mCallback85);
-            this.lexusBtNavi.setOnClickListener(this.mCallback83);
-            this.lexusBtPhone.setOnClickListener(this.mCallback84);
-            this.lexusBtSet.setOnClickListener(this.mCallback89);
-            this.lexusBtVedio.setOnClickListener(this.mCallback90);
+            this.lexusAir.setOnClickListener(this.mCallback115);
+            this.lexusBtApp.setOnClickListener(this.mCallback114);
+            this.lexusBtCar.setOnClickListener(this.mCallback113);
+            this.lexusBtDash.setOnClickListener(this.mCallback107);
+            this.lexusBtDvr.setOnClickListener(this.mCallback108);
+            this.lexusBtFile.setOnClickListener(this.mCallback112);
+            this.lexusBtLink.setOnClickListener(this.mCallback109);
+            this.lexusBtMusic.setOnClickListener(this.mCallback106);
+            this.lexusBtNavi.setOnClickListener(this.mCallback104);
+            this.lexusBtPhone.setOnClickListener(this.mCallback105);
+            this.lexusBtSet.setOnClickListener(this.mCallback110);
+            this.lexusBtVedio.setOnClickListener(this.mCallback111);
         }
     }
 

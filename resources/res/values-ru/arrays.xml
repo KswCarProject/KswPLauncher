@@ -93,4 +93,14 @@
         <item>Android</item>
         <item>Расширенные</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>Система</item>
+        <item>Навигация</item>
+        <item>Громкость</item>
+        <item>Язык</item>
+        <item>Время</item>
+        <item>Номер версии</item>
+        <item>Android</item>
+        <item>Расширенные</item>
+    </array>
 </resources>

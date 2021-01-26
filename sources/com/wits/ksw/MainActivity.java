@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.wits.ksw.databinding.ActivityBmwNbtBinding;
 import com.wits.ksw.databinding.ActivityMainAlsId6Binding;
+import com.wits.ksw.databinding.ActivityMainAlsId7Binding;
 import com.wits.ksw.databinding.ActivityMainAudiBinding;
 import com.wits.ksw.databinding.ActivityMainBcBinding;
 import com.wits.ksw.databinding.ActivityMainBenzGsBinding;
@@ -35,6 +36,7 @@ import com.wits.ksw.databinding.ActivityMainId6GsBinding;
 import com.wits.ksw.databinding.ActivityMainLexusBinding;
 import com.wits.ksw.databinding.ActivityRomeoBinding;
 import com.wits.ksw.databinding.ID5MaindBind;
+import com.wits.ksw.databinding.LandroverMainBinding;
 import com.wits.ksw.launcher.adpater.BMWViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BenzGsHomePagerAdpater;
 import com.wits.ksw.launcher.adpater.BenzMbuxRecyclerViewAdpater;
@@ -45,8 +47,11 @@ import com.wits.ksw.launcher.adpater.BmwId6ViewPagerAdpater;
 import com.wits.ksw.launcher.adpater.BmwId6gSHomePagerAdpater;
 import com.wits.ksw.launcher.adpater.RomeoMainListAdapter;
 import com.wits.ksw.launcher.adpater.UgHomePagerAdpater;
+import com.wits.ksw.launcher.als_id7.adapter.BMWId7ViewPagerAdpater;
+import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.id7_new.Id7NewActivity;
+import com.wits.ksw.launcher.land_rover.adapter.LandRoverViewPagerAdpater;
 import com.wits.ksw.launcher.model.AudiViewModel;
 import com.wits.ksw.launcher.model.BcNTG5ViewModel;
 import com.wits.ksw.launcher.model.BcVieModel;
@@ -73,17 +78,22 @@ public class MainActivity extends BaseThemeActivity {
     public static final String TAG = ("KSWLauncher." + MainActivity.class.getSimpleName());
     public static MainActivity mainActivity;
     private ActivityMainAlsId6Binding alsBinding;
+    private AlsID7ViewModel alsID7ViewModel;
+    /* access modifiers changed from: private */
+    public ActivityMainAlsId7Binding alsId7Binding;
     public ActivityMainBcBinding bcMainActivity;
     public com.wits.ksw.databinding.MainActivity bmwBinding;
     private BmwId6ViewPagerAdpater bmwId6ViewPagerAdpater;
     public ActivityMainGsug2BindingImpl gsug2Binding;
     public ID5MaindBind id5MaindBind;
-    @InjectView(2131231093)
+    @InjectView(2131231100)
     ImageView id6LeftBtn;
-    @InjectView(2131231094)
+    @InjectView(2131231101)
     public ViewPager id6MainViewPager;
-    @InjectView(2131231106)
+    @InjectView(2131231113)
     ImageView id6RightBtn;
+    /* access modifiers changed from: private */
+    public LandroverMainBinding landroverBinding;
     private ActivityMainLexusBinding lexusBinding;
     public BcNTG5ViewModel mBcNTG5ViewModel;
     public BcVieModel mBcVieModel;
@@ -478,6 +488,97 @@ public class MainActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initAlsId7UI() {
+        Log.i(TAG, "chen-new ui initAlsId7UI: ");
+        this.alsID7ViewModel = (AlsID7ViewModel) ViewModelProviders.of((FragmentActivity) this).get(AlsID7ViewModel.class);
+        this.alsID7ViewModel.setActivity(this);
+        this.alsId7Binding = (ActivityMainAlsId7Binding) DataBindingUtil.setContentView(this, R.layout.activity_main_als_id7);
+        this.alsId7Binding.viewPage.setAdapter(new BMWId7ViewPagerAdpater(getSupportFragmentManager()));
+        setCurrentItem(0);
+        this.alsId7Binding.viewPage.setOffscreenPageLimit(3);
+        this.alsId7Binding.imageView1.setSelected(false);
+        this.alsId7Binding.imageView3.setSelected(true);
+        this.alsId7Binding.imageView4.setSelected(false);
+        this.alsId7Binding.setLauncherViewModel(this.alsID7ViewModel);
+        this.alsID7ViewModel.initData();
+        this.alsId7Binding.viewPage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            public void onPageSelected(int i) {
+                switch (i) {
+                    case 0:
+                        MainActivity.this.alsId7Binding.imageView1.setSelected(false);
+                        MainActivity.this.alsId7Binding.imageView3.setSelected(true);
+                        MainActivity.this.alsId7Binding.imageView4.setSelected(false);
+                        return;
+                    case 1:
+                        MainActivity.this.alsId7Binding.imageView1.setSelected(true);
+                        MainActivity.this.alsId7Binding.imageView3.setSelected(false);
+                        MainActivity.this.alsId7Binding.imageView4.setSelected(false);
+                        return;
+                    case 2:
+                        MainActivity.this.alsId7Binding.imageView1.setSelected(false);
+                        MainActivity.this.alsId7Binding.imageView3.setSelected(false);
+                        MainActivity.this.alsId7Binding.imageView4.setSelected(true);
+                        return;
+                    default:
+                        return;
+                }
+            }
+
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+    }
+
+    /* access modifiers changed from: protected */
+    public void initLandRover() {
+        this.viewModel = (LauncherViewModel) ViewModelProviders.of((FragmentActivity) this).get(LauncherViewModel.class);
+        this.viewModel.setActivity(this);
+        this.landroverBinding = (LandroverMainBinding) DataBindingUtil.setContentView(this, R.layout.landrover_main);
+        this.landroverBinding.viewPager.setAdapter(new LandRoverViewPagerAdpater(getSupportFragmentManager()));
+        setCurrentItem(0);
+        this.landroverBinding.viewPager.setOffscreenPageLimit(2);
+        this.landroverBinding.indicato1.setSelected(true);
+        this.landroverBinding.indicato2.setSelected(false);
+        this.landroverBinding.setLauncherViewModel(this.viewModel);
+        this.viewModel.initData();
+        this.landroverBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            public void onPageSelected(int i) {
+                switch (i) {
+                    case 0:
+                        MainActivity.this.landroverBinding.indicato2.setSelected(false);
+                        MainActivity.this.landroverBinding.indicato1.setSelected(true);
+                        return;
+                    case 1:
+                        MainActivity.this.landroverBinding.indicato2.setSelected(true);
+                        MainActivity.this.landroverBinding.indicato1.setSelected(false);
+                        return;
+                    default:
+                        return;
+                }
+            }
+
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+        this.landroverBinding.iconLeft.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MainActivity.this.landroverBinding.viewPager.setCurrentItem(0);
+            }
+        });
+        this.landroverBinding.iconRight.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MainActivity.this.landroverBinding.viewPager.setCurrentItem(1);
+            }
+        });
+    }
+
+    /* access modifiers changed from: protected */
     public void initBenzMBUXView() {
         Log.i(TAG, "initBenzMBUXView: ");
         setFull();
@@ -559,12 +660,22 @@ public class MainActivity extends BaseThemeActivity {
         if (this.bmwBinding != null) {
             this.bmwBinding.viewPage.setCurrentItem(index);
         }
+        if (this.alsId7Binding != null) {
+            this.alsId7Binding.viewPage.setCurrentItem(index);
+        }
+        if (this.landroverBinding != null) {
+            this.landroverBinding.viewPager.setCurrentItem(index);
+        }
     }
 
     public void refreshLastViewFocused() {
         if (this.viewModel != null) {
             this.viewModel.addLastViewFocused(this.bmwBinding.menuButton1);
             this.viewModel.refreshLastViewFocused();
+        }
+        if (this.alsID7ViewModel != null) {
+            this.alsID7ViewModel.addLastViewFocused(this.alsId7Binding.menuButton1);
+            this.alsID7ViewModel.refreshLastViewFocused();
         }
     }
 
@@ -607,6 +718,12 @@ public class MainActivity extends BaseThemeActivity {
         } else if (this.viewModel != null) {
             this.viewModel.resumeViewModel();
         }
+        if (this.alsID7ViewModel != null) {
+            this.alsID7ViewModel.resumeViewModel();
+            String str = TAG;
+            Log.d(str, "oresume ismusicplay" + this.alsID7ViewModel.isMusicPlay());
+            this.alsID7ViewModel.setMusicPlayState(this.alsID7ViewModel.isMusicPlay());
+        }
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -646,5 +763,6 @@ public class MainActivity extends BaseThemeActivity {
         super.onDestroy();
         Log.e(TAG, "onDestroy:");
         this.viewModel = null;
+        this.alsID7ViewModel = null;
     }
 }

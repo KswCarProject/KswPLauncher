@@ -35,8 +35,8 @@
     <string name="app_not_update">Обновление запрещено!</string>
     <string name="app_ok">ОК</string>
     <string name="audi_factory_home_right_option1">Спрятать</string>
-    <string name="audi_factory_home_right_option2">Отображать логотип Audi или навигационную информацию AMAP</string>
-    <string name="audi_factory_home_right_option3">Показать логотип Audi</string>
+    <string name="audi_factory_home_right_option2">Отображать логотип или навигационную информацию AMAP</string>
+    <string name="audi_factory_home_right_option3">Показать логотип</string>
     <string name="audi_factory_home_right_option4">Показать информацию об автомобиле</string>
     <string name="audi_factory_home_right_option5">Показать информацию о музыке</string>
     <string name="audi_home_left_widget">Виджет в левой части главной страницы</string>
@@ -75,8 +75,8 @@
     <string name="eq_user">Пользователь</string>
     <string name="fac_1">Пароль:</string>
     <string name="factory_air_conditioner">Кондиционер</string>
-    <string name="factory_benc">Активация Benz AUX</string>
-    <string name="factory_bencPank">Панель управления Benz</string>
+    <string name="factory_benc">Активация AUX</string>
+    <string name="factory_bencPank">Панель управления</string>
     <string name="factory_carseep">Выбор спидометра</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

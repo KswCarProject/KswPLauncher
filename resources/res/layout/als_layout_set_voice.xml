@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:padding="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_houzvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:text="@string/voic_1"/>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:layout_marginTop="10dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_mtvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/voic_2" android:lines="1"/>
+            <SeekBar android:id="@+id/seek_mtb" android:background="@mipmap/als_id7_progress_bar_bk" android:layout_width="297dp" android:layout_height="30dp" android:layout_marginLeft="10dp" android:progressDrawable="@null" android:thumb="@drawable/als_seek_thumb"/>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_mtsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:layout_marginTop="15dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_tonghvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/voic_3" android:lines="1"/>
+            <SeekBar android:id="@+id/seek_tonghb" android:background="@mipmap/als_id7_progress_bar_bk" android:layout_width="297dp" android:layout_height="30dp" android:layout_marginLeft="10dp" android:progressDrawable="@null" android:thumb="@drawable/als_seek_thumb"/>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_gravity="center_vertical" android:id="@+id/tv_tonghsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_yuancvoc" android:padding="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/voic_4"/>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:layout_marginTop="10dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_yuancthvoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/voic_3" android:lines="1"/>
+            <SeekBar android:id="@+id/seek_yuancthb" android:background="@mipmap/als_id7_progress_bar_bk" android:layout_width="297dp" android:layout_height="30dp" android:layout_marginLeft="10dp" android:progressDrawable="@null" android:thumb="@drawable/als_seek_thumb"/>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_yuancthsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:layout_marginTop="15dp">
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_daohvoic" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/voic_5" android:lines="1"/>
+            <SeekBar android:id="@+id/seek_daohvoicb" android:background="@mipmap/als_id7_progress_bar_bk" android:layout_width="297dp" android:layout_height="30dp" android:layout_marginLeft="10dp" android:progressDrawable="@null" android:thumb="@drawable/als_seek_thumb"/>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/tv_daohvoicsize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="0" android:lines="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -101,7 +101,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (19 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);

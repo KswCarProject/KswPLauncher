@@ -93,4 +93,14 @@
         <item>Androida</item>
         <item>Zaawansowany</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>System</item>
+        <item>Nawigacja</item>
+        <item>Głośności</item>
+        <item>Języki</item>
+        <item>Czas</item>
+        <item>Wersja</item>
+        <item>Androida</item>
+        <item>Zaawansowany</item>
+    </array>
 </resources>

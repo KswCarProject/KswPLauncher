@@ -82,15 +82,19 @@ public class LogoSelect extends FrameLayout {
                 UiSelectBean uiSelectBean = new UiSelectBean();
                 uiSelectBean.setUiPath(logos[i].getPath());
                 int length = logos[i].getName().length();
-                String name = logos[i].getName().substring(length - 6, length - 3);
-                for (File fle : files) {
-                    int leng = fle.getName().length();
-                    if (TextUtils.equals(name, fle.getName().substring(leng - 6, leng - 3))) {
-                        uiSelectBean.setFilePath(fle.getPath());
+                try {
+                    String name = logos[i].getName().substring(length - 6, length - 3);
+                    for (File fle : files) {
+                        int leng = fle.getName().length();
+                        if (TextUtils.equals(name, fle.getName().substring(leng - 6, leng - 3))) {
+                            uiSelectBean.setFilePath(fle.getPath());
+                        }
                     }
+                    Log.d(TAG, "TongYong_logo:" + uiSelectBean.getUiPath() + "\nfiles:" + uiSelectBean.getFilePath());
+                    this.data.add(uiSelectBean);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                Log.d(TAG, "TongYong_logo:" + uiSelectBean.getUiPath() + "\nfiles:" + uiSelectBean.getFilePath());
-                this.data.add(uiSelectBean);
             }
         }
     }
@@ -105,15 +109,19 @@ public class LogoSelect extends FrameLayout {
                 UiSelectBean uiSelectBean = new UiSelectBean();
                 uiSelectBean.setUiPath(logos[i].getPath());
                 int length = logos[i].getName().length();
-                String name = logos[i].getName().substring(length - 6, length - 3);
-                for (File fle : files) {
-                    int leng = fle.getName().length();
-                    if (TextUtils.equals(name, fle.getName().substring(leng - 6, leng - 3))) {
-                        uiSelectBean.setFilePath(fle.getPath());
+                try {
+                    String name = logos[i].getName().substring(length - 6, length - 3);
+                    for (File fle : files) {
+                        int leng = fle.getName().length();
+                        if (TextUtils.equals(name, fle.getName().substring(leng - 6, leng - 3))) {
+                            uiSelectBean.setFilePath(fle.getPath());
+                        }
                     }
+                    Log.d(TAG, "zhuanYong_logo:" + uiSelectBean.getUiPath() + "\nfiles:" + uiSelectBean.getFilePath());
+                    this.siRendata.add(uiSelectBean);
+                } catch (StringIndexOutOfBoundsException e) {
+                    e.printStackTrace();
                 }
-                Log.d(TAG, "zhuanYong_logo:" + uiSelectBean.getUiPath() + "\nfiles:" + uiSelectBean.getFilePath());
-                this.siRendata.add(uiSelectBean);
             }
         }
     }

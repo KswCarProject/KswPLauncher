@@ -16,7 +16,7 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
     @Nullable
     private static final SparseIntArray sViewsWithIds = new SparseIntArray();
     @Nullable
-    private final View.OnClickListener mCallback50;
+    private final View.OnClickListener mCallback63;
     private long mDirtyFlags;
 
     static {
@@ -34,7 +34,7 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
         this.naviConstraintLayout.setTag((Object) null);
         this.naviImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback50 = new OnClickListener(this, 1);
+        this.mCallback63 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -55,7 +55,7 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (5 != variableId) {
+        if (8 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
@@ -67,7 +67,7 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(5);
+        notifyPropertyChanged(8);
         super.requestRebind();
     }
 
@@ -85,7 +85,7 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
         }
         LauncherViewModel launcherViewModel = this.mNaviViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.naviImageView.setOnClickListener(this.mCallback50);
+            this.naviImageView.setOnClickListener(this.mCallback63);
         }
     }
 

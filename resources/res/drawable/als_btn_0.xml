@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt">
+    <item android:state_pressed="true" android:drawable="@mipmap/als_id7_keypad_0_d"/>
+    <item android:state_focused="true" android:drawable="@mipmap/als_id7_keypad_0_f"/>
+    <item android:drawable="@mipmap/als_id7_keypad_0_n"/>
+</selector>

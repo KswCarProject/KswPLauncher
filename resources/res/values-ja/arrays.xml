@@ -93,4 +93,14 @@
         <item>Android設定</item>
         <item>工場設定</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>システム設定</item>
+        <item>ナビ設定</item>
+        <item>音量設定</item>
+        <item>言語設定</item>
+        <item>時間設定</item>
+        <item>システム情報</item>
+        <item>Android設定</item>
+        <item>工場設定</item>
+    </array>
 </resources>

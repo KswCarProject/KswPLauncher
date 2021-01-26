@@ -70,7 +70,7 @@ public final class AppViewModel extends LauncherViewModel {
     List<AppInfo> mListLiveData = new ArrayList();
     public DragGridView.onItemChangerListener onItemChangerListener = new DragGridView.onItemChangerListener() {
         public void onChange(GridView gridView, int from, int to) {
-            Log.i(KswApplication.TAG, "onChange: ");
+            Log.i(LauncherViewModel.TAG, "onChange: ");
             AppViewModel.this.mListLiveData.set(from, AppViewModel.this.mListLiveData.get(to));
             AppViewModel.this.mListLiveData.set(to, AppViewModel.this.mListLiveData.get(from));
             AppViewModel.this.updateItem(gridView, to);
@@ -79,18 +79,19 @@ public final class AppViewModel extends LauncherViewModel {
         }
 
         public void onStartMoving() {
-            Log.i(KswApplication.TAG, "onStartMoving: ");
+            Log.i(LauncherViewModel.TAG, "onStartMoving: ");
             try {
                 String topApp = PowerManagerApp.getManager().getStatusString("topApp");
-                Log.i(KswApplication.TAG, "onStartMoving: topApp=" + topApp);
+                String str = LauncherViewModel.TAG;
+                Log.i(str, "onStartMoving: topApp=" + topApp);
                 if (!"com.google.android.packageinstaller".equals(topApp)) {
-                    Log.i(KswApplication.TAG, "onStartMoving: return");
+                    Log.i(LauncherViewModel.TAG, "onStartMoving: return");
                     return;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.w(KswApplication.TAG, "sendKeyDownUpSync: KEYCODE_ESCAPE");
+            Log.w(LauncherViewModel.TAG, "sendKeyDownUpSync: KEYCODE_ESCAPE");
             KswUtils.sendKeyDownUpSync(111);
         }
     };
@@ -272,7 +273,8 @@ public final class AppViewModel extends LauncherViewModel {
             appList.setClassName(appInfo.getClassName());
             newAppList.add(appList);
             if (TextUtils.isEmpty(appInfo.getClassName())) {
-                Log.e(KswApplication.TAG, "SaveAppList: appinfo ClassName isEmpty AppLable = " + appInfo.getAppLable());
+                String str = TAG;
+                Log.e(str, "SaveAppList: appinfo ClassName isEmpty AppLable = " + appInfo.getAppLable());
                 return;
             }
         }

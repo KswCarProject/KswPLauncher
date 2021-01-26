@@ -150,7 +150,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (13 != variableId) {
+        if (19 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -162,7 +162,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         synchronized (this) {
             this.mDirtyFlags |= 512;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(19);
         super.requestRebind();
     }
 

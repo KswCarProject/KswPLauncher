@@ -93,4 +93,14 @@
         <item>Android</item>
         <item>Fabrika</item>
     </array>
+    <array name="set_land_rover_function">
+        <item>Sistem</item>
+        <item>Gezinme</item>
+        <item>Hacim</item>
+        <item>Dil</item>
+        <item>Zaman</item>
+        <item>Sistem Bilgisi</item>
+        <item>Android</item>
+        <item>Fabrika</item>
+    </array>
 </resources>

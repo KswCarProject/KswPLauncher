@@ -68,7 +68,7 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
     }
 
     public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+        if (17 != variableId) {
             return false;
         }
         setVm((BenzGsViewMoel) variable);
@@ -80,7 +80,7 @@ public class FraBenzgsOneBindingImpl extends FraBenzgsOneBinding {
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(17);
         super.requestRebind();
     }
 

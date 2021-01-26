@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
+import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 
 public abstract class BaseThemeActivity extends AppCompatActivity {
     private static final String TAG = ("KSWLauncher." + BaseThemeActivity.class.getSimpleName());
+
+    /* access modifiers changed from: protected */
+    public abstract void initAlsId7UI();
 
     /* access modifiers changed from: protected */
     public abstract void initAlsView();
@@ -56,6 +60,9 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initGSUiView();
 
     /* access modifiers changed from: protected */
+    public abstract void initLandRover();
+
+    /* access modifiers changed from: protected */
     public abstract void initLexus();
 
     /* access modifiers changed from: protected */
@@ -93,8 +100,15 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initLexus();
         } else if (UiThemeUtils.isROMEO_UI(this)) {
             initRomeo();
+        } else if (UiThemeUtils.isLAND_ROVER(this)) {
+            setActivityFull();
+            initLandRover();
         } else if (UiThemeUtils.isCommon_UI_GS_UG_1024(this)) {
             initCommonUIGSUG1024View();
+        } else if (!UiThemeUtils.isID7_ALS(this)) {
+            initBmwid7UiView();
+        } else if (ClientManager.getInstance().isAls6208Client()) {
+            initAlsId7UI();
         } else {
             initBmwid7UiView();
         }

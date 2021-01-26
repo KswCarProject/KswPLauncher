@@ -35,8 +35,8 @@
     <string name="app_not_update">La mise à jour n\'est pas autorisée!</string>
     <string name="app_ok">Confirmer</string>
     <string name="audi_factory_home_right_option1">Cacher</string>
-    <string name="audi_factory_home_right_option2">Afficher le logo Audi ou les informations de navigation AMAP</string>
-    <string name="audi_factory_home_right_option3">Afficher le logo Audi</string>
+    <string name="audi_factory_home_right_option2">Afficher le logo ou les informations de navigation AMAP</string>
+    <string name="audi_factory_home_right_option3">Afficher le logo</string>
     <string name="audi_factory_home_right_option4">Afficher les informations sur la voiture</string>
     <string name="audi_factory_home_right_option5">Afficher les informations sur la musique</string>
     <string name="audi_home_left_widget">Widget dans le côté gauche de la page d\'accueil</string>
@@ -75,8 +75,8 @@
     <string name="eq_user">Utilisateur</string>
     <string name="fac_1">Code：</string>
     <string name="factory_air_conditioner">Climatisation</string>
-    <string name="factory_benc">Activer l\'AUX de Benz</string>
-    <string name="factory_bencPank">Panneau de contrôle de Benz</string>
+    <string name="factory_benc">Activer l\'AUX de</string>
+    <string name="factory_bencPank">Panneau de contrôle</string>
     <string name="factory_carseep">Option de l\'indicateur de vitesse</string>
     <string name="factory_carseep1">240km/h</string>
     <string name="factory_carseep2">260km/h</string>

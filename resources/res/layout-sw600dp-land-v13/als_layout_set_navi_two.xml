@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:scrollbars="none" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <RelativeLayout android:id="@+id/relate_naviv" android:visibility="gone" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <RadioGroup android:id="@+id/rdg_naviv" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:checkedButton="@+id/rdb_naviv1">
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_naviv1" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:nextFocusUp="@+id/rdb_naviv1" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="@string/set_text10"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_naviv2" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="30%"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_naviv3" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="40%"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_naviv4" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="50%"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_naviv5" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="60%"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                <com.wits.ksw.settings.utlis_view.RtlRadioButton android:textSize="25sp" android:textColor="@color/color1" android:gravity="center_vertical" android:id="@+id/rdb_naviv6" android:background="@drawable/ksw_als_id7_seting_rp_bg" android:focusable="true" android:nextFocusDown="@+id/rdb_naviv6" android:layout_width="match_parent" android:layout_height="78dp" android:button="@drawable/als_rad_btn_sel" android:text="70%"/>
+                <ImageView android:background="@mipmap/als_id7_rp_line" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            </RadioGroup>
+        </RelativeLayout>
+        <RelativeLayout android:id="@+id/relate_app" android:descendantFocusability="afterDescendants" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <android.support.v7.widget.RecyclerView android:id="@+id/navi_recycle" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

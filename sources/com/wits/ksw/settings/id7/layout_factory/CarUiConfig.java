@@ -86,8 +86,11 @@ public class CarUiConfig extends FrameLayout {
             for (String ss : this.uls) {
                 Log.d("UiConfig", "====:" + ss);
                 FunctionBean fb = new FunctionBean();
-                fb.setTitle(ss);
-                if (TextUtils.equals(ss, this.uiIndex)) {
+                String[] name = ss.split("&");
+                Log.d("UiConfig", "====: title: " + name[name.length - 1] + " display: " + name[0]);
+                fb.setDisplay(name[name.length - 1]);
+                fb.setTitle(name[0]);
+                if (TextUtils.equals(name[0], this.uiIndex)) {
                     fb.setIscheck(true);
                 }
                 this.data.add(fb);

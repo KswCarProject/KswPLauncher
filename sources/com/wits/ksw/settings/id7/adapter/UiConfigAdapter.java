@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,11 @@ public class UiConfigAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        holder.tv_mgs.setText(this.data.get(position).getTitle());
+        if (!TextUtils.isEmpty(this.data.get(position).getDisplay())) {
+            holder.tv_mgs.setText(this.data.get(position).getDisplay());
+        } else {
+            holder.tv_mgs.setText(this.data.get(position).getTitle());
+        }
         if (this.data.get(position).isIscheck()) {
             holder.tv_mgs.setTextColor(SupportMenu.CATEGORY_MASK);
         } else {
