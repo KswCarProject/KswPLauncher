@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="bc_home_netg6_als_6208_item_text_array">
-        <item>네비게이션</item>
+        <item>내비게이션</item>
         <item>동영상</item>
         <item>음악</item>
         <item>전화</item>
-        <item>자동차</item>
-        <item>데쉬보드</item>
+        <item>순정화면</item>
+        <item>대시보드</item>
         <item>미러링</item>
         <item>파일 탐색기</item>
-        <item>DVR</item>
+        <item>블랙박스</item>
         <item>설정</item>
     </array>
     <array name="bc_item_text_array">
-        <item>네비게이션</item>
+        <item>내비게이션</item>
         <item>음악</item>
         <item>전화</item>
-        <item>자동차</item>
+        <item>순정화면</item>
         <item>설정</item>
         <item>동영상</item>
-        <item>APPs</item>
+        <item>앱</item>
         <item>미러링</item>
-        <item>데쉬보드</item>
-        <item>DVR</item>
+        <item>대시보드</item>
+        <item>블랙박스</item>
     </array>
     <array name="bc_ntg5_item_text_array">
-        <item>네비게이션</item>
+        <item>내비게이션</item>
         <item>음악</item>
         <item>전화</item>
-        <item>자동차</item>
+        <item>순정화면</item>
         <item>설정</item>
         <item>동영상</item>
         <item>파일 탐색기</item>
         <item>미러링</item>
-        <item>데쉬보드</item>
-        <item>DVR</item>
+        <item>대시보드</item>
+        <item>블랙박스</item>
     </array>
     <array name="benz_mbux_home_item_array">
-        <item>네비게이션</item>
+        <item>내비게이션</item>
         <item>음악</item>
         <item>전화</item>
-        <item>자동차</item>
+        <item>순정화면</item>
         <item>설정</item>
         <item>동영상</item>
-        <item>Apps</item>
+        <item>앱</item>
         <item>미러링</item>
-        <item>데쉬보드</item>
-        <item>DVR</item>
+        <item>대시보드</item>
+        <item>블랙박스</item>
     </array>
     <array name="ksw_id7_months">
         <item>1월</item>
@@ -65,15 +65,15 @@
     <array name="set_factory">
         <item>기능</item>
         <item>자동차</item>
-        <item>순정 화면</item>
-        <item>캔 프로토콜</item>
+        <item>순정화면</item>
+        <item>CAN 프로토콜</item>
         <item>UI 설정</item>
         <item>환경설정 도입</item>
-        <item>Boot Logo</item>
+        <item>부팅로고</item>
     </array>
     <array name="set_function">
         <item>시스템</item>
-        <item>네비게이션</item>
+        <item>내비게이션</item>
         <item>볼륨</item>
         <item>사운드</item>
         <item>언어</item>
@@ -91,16 +91,16 @@
         <item>시간</item>
         <item>시스템 정보</item>
         <item>안드로이드</item>
-        <item>공장</item>
+        <item>공장설정</item>
     </array>
     <array name="set_land_rover_function">
         <item>시스템</item>
-        <item>네비게이션</item>
+        <item>내비게이션</item>
         <item>볼륨</item>
         <item>언어</item>
         <item>시간</item>
         <item>시스템 정보</item>
         <item>안드로이드</item>
-        <item>공장</item>
+        <item>공장설정</item>
     </array>
 </resources>
