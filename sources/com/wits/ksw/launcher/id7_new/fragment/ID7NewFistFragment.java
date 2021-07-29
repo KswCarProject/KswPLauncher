@@ -6,7 +6,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
-import android.databinding.BindingAdapter;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
@@ -55,21 +54,25 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
 
     private void init() {
         this.tv_btInfo = (TextView) this.view.findViewById(R.id.tv_btInfo);
-        this.rel_firtNav = (RelativeLayout) this.view.findViewById(R.id.rel_firtNav);
-        this.rel_firtNav.setOnClickListener(this);
+        RelativeLayout relativeLayout = (RelativeLayout) this.view.findViewById(R.id.rel_firtNav);
+        this.rel_firtNav = relativeLayout;
+        relativeLayout.setOnClickListener(this);
         this.tv_xcInfo = (TextView) this.view.findViewById(R.id.tv_xcInfo);
         this.img_xczhiz = (ImageView) this.view.findViewById(R.id.img_xczhiz);
-        this.rel_firtbt = (RelativeLayout) this.view.findViewById(R.id.rel_firtbt);
-        this.rel_firtbt.setOnClickListener(this);
-        this.rel_firtxc = (RelativeLayout) this.view.findViewById(R.id.rel_firtxc);
-        this.rel_firtxc.setOnClickListener(this);
-        this.rel_firtci = (RelativeLayout) this.view.findViewById(R.id.rel_firtci);
-        this.rel_firtci.setOnClickListener(this);
-        this.rel_firtaps = (RelativeLayout) this.view.findViewById(R.id.rel_firtaps);
-        this.rel_firtaps.setOnClickListener(this);
+        RelativeLayout relativeLayout2 = (RelativeLayout) this.view.findViewById(R.id.rel_firtbt);
+        this.rel_firtbt = relativeLayout2;
+        relativeLayout2.setOnClickListener(this);
+        RelativeLayout relativeLayout3 = (RelativeLayout) this.view.findViewById(R.id.rel_firtxc);
+        this.rel_firtxc = relativeLayout3;
+        relativeLayout3.setOnClickListener(this);
+        RelativeLayout relativeLayout4 = (RelativeLayout) this.view.findViewById(R.id.rel_firtci);
+        this.rel_firtci = relativeLayout4;
+        relativeLayout4.setOnClickListener(this);
+        RelativeLayout relativeLayout5 = (RelativeLayout) this.view.findViewById(R.id.rel_firtaps);
+        this.rel_firtaps = relativeLayout5;
+        relativeLayout5.setOnClickListener(this);
         setSpeedRotation(this.img_xczhiz, (int) McuImpl.getInstance().carInfo.turnSpeedAnge.get(), McuImpl.getInstance().carInfo.delay.get().intValue());
-        String string = getResources().getString(R.string.oil_size);
-        this.tv_xcInfo.setText(String.format(string, new Object[]{McuImpl.getInstance().carInfo.oilValue.get() + "L"}));
+        this.tv_xcInfo.setText(String.format(getResources().getString(R.string.oil_size), new Object[]{McuImpl.getInstance().carInfo.oilValue.get()}));
         int page = Settings.System.getInt(getContext().getContentResolver(), SavaUtils.PAGE_INDEX, 0);
         if (page < 5) {
             initFouse(page);
@@ -81,11 +84,9 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
 
     public void setOils(CarInfo carInfo) {
         setSpeedRotation(this.img_xczhiz, (int) carInfo.turnSpeedAnge.get(), carInfo.delay.get().intValue());
-        String string = getResources().getString(R.string.oil_size);
-        this.tv_xcInfo.setText(String.format(string, new Object[]{carInfo.oilValue.get() + "L"}));
+        this.tv_xcInfo.setText(carInfo.oilValue.get());
     }
 
-    @BindingAdapter({"setSpeedRotation"})
     public void setSpeedRotation(ImageView imageView, int rota, int delay) {
         ObjectAnimator objectAnimator = this.animatorMaps.get(Integer.valueOf(imageView.getId()));
         if (objectAnimator == null) {
@@ -95,7 +96,7 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
         if (objectAnimator.isStarted()) {
             objectAnimator.cancel();
         }
-        int duration = WitsCommand.SystemCommand.EXPORT_CONFIG;
+        int duration = 300;
         if (delay != 0 && delay <= 300) {
             duration = delay - 10;
         }
@@ -121,11 +122,16 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
 
     public void setPhoneState(boolean isOpen) {
         if (isOpen) {
-            if (this.m_con != null) {
-                this.tv_btInfo.setText(this.m_con.getString(R.string.gs_phone_unconnected_bt_mess));
+            Context context = this.m_con;
+            if (context != null) {
+                this.tv_btInfo.setText(context.getString(R.string.gs_phone_unconnected_bt_mess));
+                return;
             }
-        } else if (this.m_con != null) {
-            this.tv_btInfo.setText(this.m_con.getString(R.string.gs_phone_connected_bt_mess));
+            return;
+        }
+        Context context2 = this.m_con;
+        if (context2 != null) {
+            this.tv_btInfo.setText(context2.getString(R.string.gs_phone_connected_bt_mess));
         }
     }
 
@@ -224,26 +230,24 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
     }
 
     public void onClick(View v) {
-        int id = v.getId();
-        if (id != R.id.rel_firtxc) {
-            switch (id) {
-                case R.id.rel_firtNav:
-                    oncheckID(2);
-                    return;
-                case R.id.rel_firtaps:
-                    oncheckID(4);
-                    return;
-                case R.id.rel_firtbt:
-                    oncheckID(3);
-                    return;
-                case R.id.rel_firtci:
-                    oncheckID(0);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            oncheckID(1);
+        switch (v.getId()) {
+            case R.id.rel_firtNav:
+                oncheckID(2);
+                return;
+            case R.id.rel_firtaps:
+                oncheckID(4);
+                return;
+            case R.id.rel_firtbt:
+                oncheckID(3);
+                return;
+            case R.id.rel_firtci:
+                oncheckID(0);
+                return;
+            case R.id.rel_firtxc:
+                oncheckID(1);
+                return;
+            default:
+                return;
         }
     }
 

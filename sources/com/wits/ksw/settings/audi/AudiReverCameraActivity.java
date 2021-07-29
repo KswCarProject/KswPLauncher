@@ -2,7 +2,6 @@ package com.wits.ksw.settings.audi;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +15,13 @@ public class AudiReverCameraActivity extends AudiSubActivity implements View.OnK
     private View[] views = new View[3];
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AudiReverCameraBinding binding = (AudiReverCameraBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_rever_camera, (ViewGroup) null, false);
         this.contentLayout.addView(binding.getRoot(), -1, -1);
-        this.viewModel = AudiSettingMainActivity.getInstance.viewModel;
-        binding.setVm(this.viewModel);
+        AudiSystemViewModel audiSystemViewModel = AudiSettingMainActivity.getInstance.viewModel;
+        this.viewModel = audiSystemViewModel;
+        binding.setVm(audiSystemViewModel);
         this.views[0] = binding.RadioButton1;
         this.views[1] = binding.RadioButton2;
         this.views[2] = binding.RadioButton3;

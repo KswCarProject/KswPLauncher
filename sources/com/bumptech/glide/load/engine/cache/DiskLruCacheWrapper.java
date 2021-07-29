@@ -116,17 +116,19 @@ public class DiskLruCacheWrapper implements DiskCache {
     public synchronized void clear() {
         try {
             getDiskCache().delete();
+            resetDiskCache();
         } catch (IOException e) {
             try {
                 if (Log.isLoggable(TAG, 5)) {
                     Log.w(TAG, "Unable to clear disk cache or disk cache cleared externally", e);
                 }
+                resetDiskCache();
             } catch (Throwable th) {
                 resetDiskCache();
                 throw th;
             }
         }
-        resetDiskCache();
+        return;
     }
 
     private synchronized void resetDiskCache() {

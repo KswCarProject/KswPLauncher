@@ -6,11 +6,12 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.AutoSizeableTextView;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.appcompat.R;
+import android.text.method.PasswordTransformationMethod;
+import android.util.AttributeSet;
 import android.widget.TextView;
 import java.lang.ref.WeakReference;
 
@@ -19,7 +20,6 @@ class AppCompatTextHelper {
     private static final int SANS = 1;
     private static final int SERIF = 2;
     private boolean mAsyncFontPending;
-    @NonNull
     private final AppCompatTextViewAutoSizeHelper mAutoSizeTextHelper;
     private TintInfo mDrawableBottomTint;
     private TintInfo mDrawableEndTint;
@@ -33,264 +33,133 @@ class AppCompatTextHelper {
 
     AppCompatTextHelper(TextView view) {
         this.mView = view;
-        this.mAutoSizeTextHelper = new AppCompatTextViewAutoSizeHelper(this.mView);
+        this.mAutoSizeTextHelper = new AppCompatTextViewAutoSizeHelper(view);
     }
 
     /* access modifiers changed from: package-private */
-    /* JADX WARNING: Removed duplicated region for block: B:88:0x0201  */
-    /* JADX WARNING: Removed duplicated region for block: B:90:0x0208  */
-    /* JADX WARNING: Removed duplicated region for block: B:92:0x020f  */
-    /* JADX WARNING: Removed duplicated region for block: B:94:? A[RETURN, SYNTHETIC] */
-    @android.annotation.SuppressLint({"NewApi"})
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void loadFromAttributes(android.util.AttributeSet r19, int r20) {
-        /*
-            r18 = this;
-            r0 = r18
-            r1 = r19
-            r2 = r20
-            android.widget.TextView r3 = r0.mView
-            android.content.Context r3 = r3.getContext()
-            android.support.v7.widget.AppCompatDrawableManager r4 = android.support.v7.widget.AppCompatDrawableManager.get()
-            int[] r5 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper
-            r6 = 0
-            android.support.v7.widget.TintTypedArray r5 = android.support.v7.widget.TintTypedArray.obtainStyledAttributes(r3, r1, r5, r2, r6)
-            int r7 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_textAppearance
-            r8 = -1
-            int r7 = r5.getResourceId(r7, r8)
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableLeft
-            boolean r9 = r5.hasValue(r9)
-            if (r9 == 0) goto L_0x0032
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableLeft
-            int r9 = r5.getResourceId(r9, r6)
-            android.support.v7.widget.TintInfo r9 = createTintInfo(r3, r4, r9)
-            r0.mDrawableLeftTint = r9
-        L_0x0032:
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableTop
-            boolean r9 = r5.hasValue(r9)
-            if (r9 == 0) goto L_0x0046
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableTop
-            int r9 = r5.getResourceId(r9, r6)
-            android.support.v7.widget.TintInfo r9 = createTintInfo(r3, r4, r9)
-            r0.mDrawableTopTint = r9
-        L_0x0046:
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableRight
-            boolean r9 = r5.hasValue(r9)
-            if (r9 == 0) goto L_0x005a
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableRight
-            int r9 = r5.getResourceId(r9, r6)
-            android.support.v7.widget.TintInfo r9 = createTintInfo(r3, r4, r9)
-            r0.mDrawableRightTint = r9
-        L_0x005a:
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableBottom
-            boolean r9 = r5.hasValue(r9)
-            if (r9 == 0) goto L_0x006e
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableBottom
-            int r9 = r5.getResourceId(r9, r6)
-            android.support.v7.widget.TintInfo r9 = createTintInfo(r3, r4, r9)
-            r0.mDrawableBottomTint = r9
-        L_0x006e:
-            int r9 = android.os.Build.VERSION.SDK_INT
-            r10 = 17
-            if (r9 < r10) goto L_0x009c
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableStart
-            boolean r9 = r5.hasValue(r9)
-            if (r9 == 0) goto L_0x0088
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableStart
-            int r9 = r5.getResourceId(r9, r6)
-            android.support.v7.widget.TintInfo r9 = createTintInfo(r3, r4, r9)
-            r0.mDrawableStartTint = r9
-        L_0x0088:
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableEnd
-            boolean r9 = r5.hasValue(r9)
-            if (r9 == 0) goto L_0x009c
-            int r9 = android.support.v7.appcompat.R.styleable.AppCompatTextHelper_android_drawableEnd
-            int r9 = r5.getResourceId(r9, r6)
-            android.support.v7.widget.TintInfo r9 = createTintInfo(r3, r4, r9)
-            r0.mDrawableEndTint = r9
-        L_0x009c:
-            r5.recycle()
-            android.widget.TextView r9 = r0.mView
-            android.text.method.TransformationMethod r9 = r9.getTransformationMethod()
-            boolean r9 = r9 instanceof android.text.method.PasswordTransformationMethod
-            r10 = 0
-            r11 = 0
-            r12 = 0
-            r13 = 0
-            r14 = 0
-            r15 = 23
-            if (r7 == r8) goto L_0x00fd
-            int[] r8 = android.support.v7.appcompat.R.styleable.TextAppearance
-            android.support.v7.widget.TintTypedArray r5 = android.support.v7.widget.TintTypedArray.obtainStyledAttributes((android.content.Context) r3, (int) r7, (int[]) r8)
-            if (r9 != 0) goto L_0x00c8
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_textAllCaps
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x00c8
-            r8 = 1
-            int r11 = android.support.v7.appcompat.R.styleable.TextAppearance_textAllCaps
-            boolean r10 = r5.getBoolean(r11, r6)
-            r11 = r8
-        L_0x00c8:
-            r0.updateTypefaceAndStyle(r3, r5)
-            int r8 = android.os.Build.VERSION.SDK_INT
-            if (r8 >= r15) goto L_0x00fa
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x00dd
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor
-            android.content.res.ColorStateList r12 = r5.getColorStateList(r8)
-        L_0x00dd:
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorHint
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x00eb
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorHint
-            android.content.res.ColorStateList r13 = r5.getColorStateList(r8)
-        L_0x00eb:
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorLink
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x00fa
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorLink
-            android.content.res.ColorStateList r8 = r5.getColorStateList(r8)
-            r14 = r8
-        L_0x00fa:
-            r5.recycle()
-        L_0x00fd:
-            int[] r8 = android.support.v7.appcompat.R.styleable.TextAppearance
-            android.support.v7.widget.TintTypedArray r5 = android.support.v7.widget.TintTypedArray.obtainStyledAttributes(r3, r1, r8, r2, r6)
-            if (r9 != 0) goto L_0x0114
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_textAllCaps
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x0114
-            r11 = 1
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_textAllCaps
-            boolean r10 = r5.getBoolean(r8, r6)
-        L_0x0114:
-            int r8 = android.os.Build.VERSION.SDK_INT
-            if (r8 >= r15) goto L_0x0144
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x0127
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor
-            android.content.res.ColorStateList r8 = r5.getColorStateList(r8)
-            r12 = r8
-        L_0x0127:
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorHint
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x0136
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorHint
-            android.content.res.ColorStateList r8 = r5.getColorStateList(r8)
-            r13 = r8
-        L_0x0136:
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorLink
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x0144
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textColorLink
-            android.content.res.ColorStateList r14 = r5.getColorStateList(r8)
-        L_0x0144:
-            int r8 = android.os.Build.VERSION.SDK_INT
-            r15 = 28
-            if (r8 < r15) goto L_0x0161
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize
-            boolean r8 = r5.hasValue(r8)
-            if (r8 == 0) goto L_0x0161
-            int r8 = android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize
-            r15 = -1
-            int r8 = r5.getDimensionPixelSize(r8, r15)
-            if (r8 != 0) goto L_0x0161
-            android.widget.TextView r8 = r0.mView
-            r15 = 0
-            r8.setTextSize(r6, r15)
-        L_0x0161:
-            r0.updateTypefaceAndStyle(r3, r5)
-            r5.recycle()
-            if (r12 == 0) goto L_0x016e
-            android.widget.TextView r8 = r0.mView
-            r8.setTextColor(r12)
-        L_0x016e:
-            if (r13 == 0) goto L_0x0175
-            android.widget.TextView r8 = r0.mView
-            r8.setHintTextColor(r13)
-        L_0x0175:
-            if (r14 == 0) goto L_0x017c
-            android.widget.TextView r8 = r0.mView
-            r8.setLinkTextColor(r14)
-        L_0x017c:
-            if (r9 != 0) goto L_0x0183
-            if (r11 == 0) goto L_0x0183
-            r0.setAllCaps(r10)
-        L_0x0183:
-            android.graphics.Typeface r8 = r0.mFontTypeface
-            if (r8 == 0) goto L_0x0190
-            android.widget.TextView r8 = r0.mView
-            android.graphics.Typeface r15 = r0.mFontTypeface
-            int r6 = r0.mStyle
-            r8.setTypeface(r15, r6)
-        L_0x0190:
-            android.support.v7.widget.AppCompatTextViewAutoSizeHelper r6 = r0.mAutoSizeTextHelper
-            r6.loadFromAttributes(r1, r2)
-            boolean r6 = android.support.v4.widget.AutoSizeableTextView.PLATFORM_SUPPORTS_AUTOSIZE
-            if (r6 == 0) goto L_0x01df
-            android.support.v7.widget.AppCompatTextViewAutoSizeHelper r6 = r0.mAutoSizeTextHelper
-            int r6 = r6.getAutoSizeTextType()
-            if (r6 == 0) goto L_0x01df
-            android.support.v7.widget.AppCompatTextViewAutoSizeHelper r6 = r0.mAutoSizeTextHelper
-            int[] r6 = r6.getAutoSizeTextAvailableSizes()
-            int r8 = r6.length
-            if (r8 <= 0) goto L_0x01df
-            android.widget.TextView r8 = r0.mView
-            int r8 = r8.getAutoSizeStepGranularity()
-            float r8 = (float) r8
-            r15 = -1082130432(0xffffffffbf800000, float:-1.0)
-            int r8 = (r8 > r15 ? 1 : (r8 == r15 ? 0 : -1))
-            if (r8 == 0) goto L_0x01d4
-            android.widget.TextView r8 = r0.mView
-            android.support.v7.widget.AppCompatTextViewAutoSizeHelper r15 = r0.mAutoSizeTextHelper
-            int r15 = r15.getAutoSizeMinTextSize()
-            android.support.v7.widget.AppCompatTextViewAutoSizeHelper r2 = r0.mAutoSizeTextHelper
-            int r2 = r2.getAutoSizeMaxTextSize()
-            r16 = r4
-            android.support.v7.widget.AppCompatTextViewAutoSizeHelper r4 = r0.mAutoSizeTextHelper
-            int r4 = r4.getAutoSizeStepGranularity()
-            r17 = r5
-            r5 = 0
-            r8.setAutoSizeTextTypeUniformWithConfiguration(r15, r2, r4, r5)
-            goto L_0x01e3
-        L_0x01d4:
-            r16 = r4
-            r17 = r5
-            r5 = 0
-            android.widget.TextView r2 = r0.mView
-            r2.setAutoSizeTextTypeUniformWithPresetSizes(r6, r5)
-            goto L_0x01e3
-        L_0x01df:
-            r16 = r4
-            r17 = r5
-        L_0x01e3:
-            int[] r2 = android.support.v7.appcompat.R.styleable.AppCompatTextView
-            android.support.v7.widget.TintTypedArray r2 = android.support.v7.widget.TintTypedArray.obtainStyledAttributes((android.content.Context) r3, (android.util.AttributeSet) r1, (int[]) r2)
-            int r4 = android.support.v7.appcompat.R.styleable.AppCompatTextView_firstBaselineToTopHeight
-            r5 = -1
-            int r4 = r2.getDimensionPixelSize(r4, r5)
-            int r6 = android.support.v7.appcompat.R.styleable.AppCompatTextView_lastBaselineToBottomHeight
-            int r6 = r2.getDimensionPixelSize(r6, r5)
-            int r8 = android.support.v7.appcompat.R.styleable.AppCompatTextView_lineHeight
-            int r8 = r2.getDimensionPixelSize(r8, r5)
-            r2.recycle()
-            if (r4 == r5) goto L_0x0206
-            android.widget.TextView r15 = r0.mView
-            android.support.v4.widget.TextViewCompat.setFirstBaselineToTopHeight(r15, r4)
-        L_0x0206:
-            if (r6 == r5) goto L_0x020d
-            android.widget.TextView r15 = r0.mView
-            android.support.v4.widget.TextViewCompat.setLastBaselineToBottomHeight(r15, r6)
-        L_0x020d:
-            if (r8 == r5) goto L_0x0214
-            android.widget.TextView r5 = r0.mView
-            android.support.v4.widget.TextViewCompat.setLineHeight(r5, r8)
-        L_0x0214:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.v7.widget.AppCompatTextHelper.loadFromAttributes(android.util.AttributeSet, int):void");
+    public void loadFromAttributes(AttributeSet attrs, int defStyleAttr) {
+        AttributeSet attributeSet = attrs;
+        int i = defStyleAttr;
+        Context context = this.mView.getContext();
+        AppCompatDrawableManager drawableManager = AppCompatDrawableManager.get();
+        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attributeSet, R.styleable.AppCompatTextHelper, i, 0);
+        int ap = a.getResourceId(R.styleable.AppCompatTextHelper_android_textAppearance, -1);
+        if (a.hasValue(R.styleable.AppCompatTextHelper_android_drawableLeft)) {
+            this.mDrawableLeftTint = createTintInfo(context, drawableManager, a.getResourceId(R.styleable.AppCompatTextHelper_android_drawableLeft, 0));
+        }
+        if (a.hasValue(R.styleable.AppCompatTextHelper_android_drawableTop)) {
+            this.mDrawableTopTint = createTintInfo(context, drawableManager, a.getResourceId(R.styleable.AppCompatTextHelper_android_drawableTop, 0));
+        }
+        if (a.hasValue(R.styleable.AppCompatTextHelper_android_drawableRight)) {
+            this.mDrawableRightTint = createTintInfo(context, drawableManager, a.getResourceId(R.styleable.AppCompatTextHelper_android_drawableRight, 0));
+        }
+        if (a.hasValue(R.styleable.AppCompatTextHelper_android_drawableBottom)) {
+            this.mDrawableBottomTint = createTintInfo(context, drawableManager, a.getResourceId(R.styleable.AppCompatTextHelper_android_drawableBottom, 0));
+        }
+        if (Build.VERSION.SDK_INT >= 17) {
+            if (a.hasValue(R.styleable.AppCompatTextHelper_android_drawableStart)) {
+                this.mDrawableStartTint = createTintInfo(context, drawableManager, a.getResourceId(R.styleable.AppCompatTextHelper_android_drawableStart, 0));
+            }
+            if (a.hasValue(R.styleable.AppCompatTextHelper_android_drawableEnd)) {
+                this.mDrawableEndTint = createTintInfo(context, drawableManager, a.getResourceId(R.styleable.AppCompatTextHelper_android_drawableEnd, 0));
+            }
+        }
+        a.recycle();
+        boolean hasPwdTm = this.mView.getTransformationMethod() instanceof PasswordTransformationMethod;
+        boolean allCaps = false;
+        boolean allCapsSet = false;
+        ColorStateList textColor = null;
+        ColorStateList textColorHint = null;
+        ColorStateList textColorLink = null;
+        if (ap != -1) {
+            TintTypedArray a2 = TintTypedArray.obtainStyledAttributes(context, ap, R.styleable.TextAppearance);
+            if (!hasPwdTm && a2.hasValue(R.styleable.TextAppearance_textAllCaps)) {
+                allCaps = a2.getBoolean(R.styleable.TextAppearance_textAllCaps, false);
+                allCapsSet = true;
+            }
+            updateTypefaceAndStyle(context, a2);
+            if (Build.VERSION.SDK_INT < 23) {
+                if (a2.hasValue(R.styleable.TextAppearance_android_textColor)) {
+                    textColor = a2.getColorStateList(R.styleable.TextAppearance_android_textColor);
+                }
+                if (a2.hasValue(R.styleable.TextAppearance_android_textColorHint)) {
+                    textColorHint = a2.getColorStateList(R.styleable.TextAppearance_android_textColorHint);
+                }
+                if (a2.hasValue(R.styleable.TextAppearance_android_textColorLink)) {
+                    textColorLink = a2.getColorStateList(R.styleable.TextAppearance_android_textColorLink);
+                }
+            }
+            a2.recycle();
+        }
+        TintTypedArray a3 = TintTypedArray.obtainStyledAttributes(context, attributeSet, R.styleable.TextAppearance, i, 0);
+        if (!hasPwdTm && a3.hasValue(R.styleable.TextAppearance_textAllCaps)) {
+            allCapsSet = true;
+            allCaps = a3.getBoolean(R.styleable.TextAppearance_textAllCaps, false);
+        }
+        if (Build.VERSION.SDK_INT < 23) {
+            if (a3.hasValue(R.styleable.TextAppearance_android_textColor)) {
+                textColor = a3.getColorStateList(R.styleable.TextAppearance_android_textColor);
+            }
+            if (a3.hasValue(R.styleable.TextAppearance_android_textColorHint)) {
+                textColorHint = a3.getColorStateList(R.styleable.TextAppearance_android_textColorHint);
+            }
+            if (a3.hasValue(R.styleable.TextAppearance_android_textColorLink)) {
+                textColorLink = a3.getColorStateList(R.styleable.TextAppearance_android_textColorLink);
+            }
+        }
+        if (Build.VERSION.SDK_INT >= 28 && a3.hasValue(R.styleable.TextAppearance_android_textSize) && a3.getDimensionPixelSize(R.styleable.TextAppearance_android_textSize, -1) == 0) {
+            this.mView.setTextSize(0, 0.0f);
+        }
+        updateTypefaceAndStyle(context, a3);
+        a3.recycle();
+        if (textColor != null) {
+            this.mView.setTextColor(textColor);
+        }
+        if (textColorHint != null) {
+            this.mView.setHintTextColor(textColorHint);
+        }
+        if (textColorLink != null) {
+            this.mView.setLinkTextColor(textColorLink);
+        }
+        if (!hasPwdTm && allCapsSet) {
+            setAllCaps(allCaps);
+        }
+        Typeface typeface = this.mFontTypeface;
+        if (typeface != null) {
+            this.mView.setTypeface(typeface, this.mStyle);
+        }
+        this.mAutoSizeTextHelper.loadFromAttributes(attributeSet, i);
+        if (!AutoSizeableTextView.PLATFORM_SUPPORTS_AUTOSIZE) {
+            TintTypedArray tintTypedArray = a3;
+        } else if (this.mAutoSizeTextHelper.getAutoSizeTextType() != 0) {
+            int[] autoSizeTextSizesInPx = this.mAutoSizeTextHelper.getAutoSizeTextAvailableSizes();
+            if (autoSizeTextSizesInPx.length <= 0) {
+                TintTypedArray tintTypedArray2 = a3;
+            } else if (((float) this.mView.getAutoSizeStepGranularity()) != -1.0f) {
+                AppCompatDrawableManager appCompatDrawableManager = drawableManager;
+                TintTypedArray tintTypedArray3 = a3;
+                this.mView.setAutoSizeTextTypeUniformWithConfiguration(this.mAutoSizeTextHelper.getAutoSizeMinTextSize(), this.mAutoSizeTextHelper.getAutoSizeMaxTextSize(), this.mAutoSizeTextHelper.getAutoSizeStepGranularity(), 0);
+            } else {
+                TintTypedArray tintTypedArray4 = a3;
+                this.mView.setAutoSizeTextTypeUniformWithPresetSizes(autoSizeTextSizesInPx, 0);
+            }
+        } else {
+            TintTypedArray tintTypedArray5 = a3;
+        }
+        TintTypedArray a4 = TintTypedArray.obtainStyledAttributes(context, attributeSet, R.styleable.AppCompatTextView);
+        int firstBaselineToTopHeight = a4.getDimensionPixelSize(R.styleable.AppCompatTextView_firstBaselineToTopHeight, -1);
+        int lastBaselineToBottomHeight = a4.getDimensionPixelSize(R.styleable.AppCompatTextView_lastBaselineToBottomHeight, -1);
+        int lineHeight = a4.getDimensionPixelSize(R.styleable.AppCompatTextView_lineHeight, -1);
+        a4.recycle();
+        if (firstBaselineToTopHeight != -1) {
+            TextViewCompat.setFirstBaselineToTopHeight(this.mView, firstBaselineToTopHeight);
+        }
+        if (lastBaselineToBottomHeight != -1) {
+            TextViewCompat.setLastBaselineToBottomHeight(this.mView, lastBaselineToBottomHeight);
+        }
+        if (lineHeight != -1) {
+            TextViewCompat.setLineHeight(this.mView, lineHeight);
+        }
     }
 
     private void updateTypefaceAndStyle(Context context, TintTypedArray a) {
@@ -303,15 +172,16 @@ class AppCompatTextHelper {
             if (!context.isRestricted()) {
                 final WeakReference<TextView> textViewWeak = new WeakReference<>(this.mView);
                 try {
-                    this.mFontTypeface = a.getFont(fontFamilyId, this.mStyle, new ResourcesCompat.FontCallback() {
-                        public void onFontRetrieved(@NonNull Typeface typeface) {
+                    Typeface font = a.getFont(fontFamilyId, this.mStyle, new ResourcesCompat.FontCallback() {
+                        public void onFontRetrieved(Typeface typeface) {
                             AppCompatTextHelper.this.onAsyncTypefaceReceived(textViewWeak, typeface);
                         }
 
                         public void onFontRetrievalFailed(int reason) {
                         }
                     });
-                    if (this.mFontTypeface != null) {
+                    this.mFontTypeface = font;
+                    if (font != null) {
                         z = false;
                     }
                     this.mAsyncFontPending = z;
@@ -365,8 +235,9 @@ class AppCompatTextHelper {
         }
         updateTypefaceAndStyle(context, a);
         a.recycle();
-        if (this.mFontTypeface != null) {
-            this.mView.setTypeface(this.mFontTypeface, this.mStyle);
+        Typeface typeface = this.mFontTypeface;
+        if (typeface != null) {
+            this.mView.setTypeface(typeface, this.mStyle);
         }
     }
 
@@ -412,7 +283,6 @@ class AppCompatTextHelper {
     }
 
     /* access modifiers changed from: package-private */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (!AutoSizeableTextView.PLATFORM_SUPPORTS_AUTOSIZE) {
             autoSizeText();
@@ -420,7 +290,6 @@ class AppCompatTextHelper {
     }
 
     /* access modifiers changed from: package-private */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setTextSize(int unit, float size) {
         if (!AutoSizeableTextView.PLATFORM_SUPPORTS_AUTOSIZE && !isAutoSizeEnabled()) {
             setTextSizeInternal(unit, size);
@@ -428,13 +297,11 @@ class AppCompatTextHelper {
     }
 
     /* access modifiers changed from: package-private */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void autoSizeText() {
         this.mAutoSizeTextHelper.autoSizeText();
     }
 
     /* access modifiers changed from: package-private */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public boolean isAutoSizeEnabled() {
         return this.mAutoSizeTextHelper.isAutoSizeEnabled();
     }
@@ -454,7 +321,7 @@ class AppCompatTextHelper {
     }
 
     /* access modifiers changed from: package-private */
-    public void setAutoSizeTextTypeUniformWithPresetSizes(@NonNull int[] presetSizes, int unit) throws IllegalArgumentException {
+    public void setAutoSizeTextTypeUniformWithPresetSizes(int[] presetSizes, int unit) throws IllegalArgumentException {
         this.mAutoSizeTextHelper.setAutoSizeTextTypeUniformWithPresetSizes(presetSizes, unit);
     }
 

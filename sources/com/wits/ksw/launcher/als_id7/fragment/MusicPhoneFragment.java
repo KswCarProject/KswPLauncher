@@ -5,8 +5,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -69,19 +67,19 @@ public class MusicPhoneFragment extends Fragment {
         this.mainActivity = (MainActivity) activity;
     }
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("aa", "onCreate: MediaFragment");
         this.viewModel = (AlsID7ViewModel) ViewModelProviders.of(getActivity()).get(AlsID7ViewModel.class);
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.binding = (com.wits.ksw.databinding.MusicPhoneFragment) DataBindingUtil.inflate(inflater, R.layout.als_id7_fragment_music, (ViewGroup) null, false);
-        return this.binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        com.wits.ksw.databinding.MusicPhoneFragment musicPhoneFragment = (com.wits.ksw.databinding.MusicPhoneFragment) DataBindingUtil.inflate(inflater, R.layout.als_id7_fragment_music, (ViewGroup) null, false);
+        this.binding = musicPhoneFragment;
+        return musicPhoneFragment.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.binding.setMusicPhoneViewModel(this.viewModel);
         PowerManagerApp.registerIContentObserver("topApp", this.topAppContentObserver);

@@ -5,8 +5,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,29 +31,30 @@ public class UgHomeFragmentOne extends Fragment implements View.OnFocusChangeLis
         this.mainActivity = (MainActivity) activity;
     }
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("aa", "onCreate: MediaFragment");
         this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
-            this.binding2 = (UgHomeOne2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_one2, (ViewGroup) null, false);
-            return this.binding2.getRoot();
+            UgHomeOne2BindingImpl ugHomeOne2BindingImpl = (UgHomeOne2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_one2, (ViewGroup) null, false);
+            this.binding2 = ugHomeOne2BindingImpl;
+            return ugHomeOne2BindingImpl.getRoot();
         }
-        this.binding = (UgHomeOneBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_one, (ViewGroup) null, false);
-        return this.binding.getRoot();
+        UgHomeOneBindingImpl ugHomeOneBindingImpl = (UgHomeOneBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_one, (ViewGroup) null, false);
+        this.binding = ugHomeOneBindingImpl;
+        return ugHomeOneBindingImpl.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
             this.binding2.setViewModel(this.viewModel);
             this.binding2.ugHomeMusicVaiw.setOnFocusChangeListener(this);
             this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-                public void onChanged(@Nullable UgPager ugPager) {
+                public void onChanged(UgPager ugPager) {
                     if (ugPager.index == 0) {
                         WiewFocusUtils.setViewRequestFocus(UgHomeFragmentOne.this.binding2.ugHomeMusicVaiw);
                     }
@@ -66,7 +65,7 @@ public class UgHomeFragmentOne extends Fragment implements View.OnFocusChangeLis
         this.binding.setViewModel(this.viewModel);
         this.binding.ugHomeMusicVaiw.setOnFocusChangeListener(this);
         this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-            public void onChanged(@Nullable UgPager ugPager) {
+            public void onChanged(UgPager ugPager) {
                 if (ugPager.index == 0) {
                     WiewFocusUtils.setViewRequestFocus(UgHomeFragmentOne.this.binding.ugHomeMusicVaiw);
                 }

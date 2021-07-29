@@ -3,7 +3,6 @@ package android.support.v7.widget;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -11,7 +10,6 @@ import android.graphics.Region;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
@@ -111,17 +109,19 @@ public class SwitchCompat extends CompoundButton {
         this.mHasTrackTintMode = false;
         this.mVelocityTracker = VelocityTracker.obtain();
         this.mTempRect = new Rect();
-        this.mTextPaint = new TextPaint(1);
-        Resources res = getResources();
-        this.mTextPaint.density = res.getDisplayMetrics().density;
+        TextPaint textPaint = new TextPaint(1);
+        this.mTextPaint = textPaint;
+        textPaint.density = getResources().getDisplayMetrics().density;
         TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs, R.styleable.SwitchCompat, defStyleAttr, 0);
-        this.mThumbDrawable = a.getDrawable(R.styleable.SwitchCompat_android_thumb);
-        if (this.mThumbDrawable != null) {
-            this.mThumbDrawable.setCallback(this);
+        Drawable drawable = a.getDrawable(R.styleable.SwitchCompat_android_thumb);
+        this.mThumbDrawable = drawable;
+        if (drawable != null) {
+            drawable.setCallback(this);
         }
-        this.mTrackDrawable = a.getDrawable(R.styleable.SwitchCompat_track);
-        if (this.mTrackDrawable != null) {
-            this.mTrackDrawable.setCallback(this);
+        Drawable drawable2 = a.getDrawable(R.styleable.SwitchCompat_track);
+        this.mTrackDrawable = drawable2;
+        if (drawable2 != null) {
+            drawable2.setCallback(this);
         }
         this.mTextOn = a.getText(R.styleable.SwitchCompat_android_textOn);
         this.mTextOff = a.getText(R.styleable.SwitchCompat_android_textOff);
@@ -271,8 +271,9 @@ public class SwitchCompat extends CompoundButton {
     }
 
     public void setTrackDrawable(Drawable track) {
-        if (this.mTrackDrawable != null) {
-            this.mTrackDrawable.setCallback((Drawable.Callback) null);
+        Drawable drawable = this.mTrackDrawable;
+        if (drawable != null) {
+            drawable.setCallback((Drawable.Callback) null);
         }
         this.mTrackDrawable = track;
         if (track != null) {
@@ -289,36 +290,36 @@ public class SwitchCompat extends CompoundButton {
         return this.mTrackDrawable;
     }
 
-    public void setTrackTintList(@Nullable ColorStateList tint) {
+    public void setTrackTintList(ColorStateList tint) {
         this.mTrackTintList = tint;
         this.mHasTrackTint = true;
         applyTrackTint();
     }
 
-    @Nullable
     public ColorStateList getTrackTintList() {
         return this.mTrackTintList;
     }
 
-    public void setTrackTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setTrackTintMode(PorterDuff.Mode tintMode) {
         this.mTrackTintMode = tintMode;
         this.mHasTrackTintMode = true;
         applyTrackTint();
     }
 
-    @Nullable
     public PorterDuff.Mode getTrackTintMode() {
         return this.mTrackTintMode;
     }
 
     private void applyTrackTint() {
-        if (this.mTrackDrawable == null) {
+        Drawable drawable = this.mTrackDrawable;
+        if (drawable == null) {
             return;
         }
         if (this.mHasTrackTint || this.mHasTrackTintMode) {
-            this.mTrackDrawable = this.mTrackDrawable.mutate();
+            Drawable mutate = drawable.mutate();
+            this.mTrackDrawable = mutate;
             if (this.mHasTrackTint) {
-                DrawableCompat.setTintList(this.mTrackDrawable, this.mTrackTintList);
+                DrawableCompat.setTintList(mutate, this.mTrackTintList);
             }
             if (this.mHasTrackTintMode) {
                 DrawableCompat.setTintMode(this.mTrackDrawable, this.mTrackTintMode);
@@ -330,8 +331,9 @@ public class SwitchCompat extends CompoundButton {
     }
 
     public void setThumbDrawable(Drawable thumb) {
-        if (this.mThumbDrawable != null) {
-            this.mThumbDrawable.setCallback((Drawable.Callback) null);
+        Drawable drawable = this.mThumbDrawable;
+        if (drawable != null) {
+            drawable.setCallback((Drawable.Callback) null);
         }
         this.mThumbDrawable = thumb;
         if (thumb != null) {
@@ -348,36 +350,36 @@ public class SwitchCompat extends CompoundButton {
         return this.mThumbDrawable;
     }
 
-    public void setThumbTintList(@Nullable ColorStateList tint) {
+    public void setThumbTintList(ColorStateList tint) {
         this.mThumbTintList = tint;
         this.mHasThumbTint = true;
         applyThumbTint();
     }
 
-    @Nullable
     public ColorStateList getThumbTintList() {
         return this.mThumbTintList;
     }
 
-    public void setThumbTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setThumbTintMode(PorterDuff.Mode tintMode) {
         this.mThumbTintMode = tintMode;
         this.mHasThumbTintMode = true;
         applyThumbTint();
     }
 
-    @Nullable
     public PorterDuff.Mode getThumbTintMode() {
         return this.mThumbTintMode;
     }
 
     private void applyThumbTint() {
-        if (this.mThumbDrawable == null) {
+        Drawable drawable = this.mThumbDrawable;
+        if (drawable == null) {
             return;
         }
         if (this.mHasThumbTint || this.mHasThumbTintMode) {
-            this.mThumbDrawable = this.mThumbDrawable.mutate();
+            Drawable mutate = drawable.mutate();
+            this.mThumbDrawable = mutate;
             if (this.mHasThumbTint) {
-                DrawableCompat.setTintList(this.mThumbDrawable, this.mThumbTintList);
+                DrawableCompat.setTintList(mutate, this.mThumbTintList);
             }
             if (this.mHasThumbTintMode) {
                 DrawableCompat.setTintMode(this.mThumbDrawable, this.mThumbTintMode);
@@ -430,6 +432,7 @@ public class SwitchCompat extends CompoundButton {
         int thumbHeight;
         int thumbWidth;
         int maxTextWidth;
+        int trackHeight;
         if (this.mShowText) {
             if (this.mOnLayout == null) {
                 this.mOnLayout = makeLayout(this.mTextOn);
@@ -439,9 +442,9 @@ public class SwitchCompat extends CompoundButton {
             }
         }
         Rect padding = this.mTempRect;
-        int trackHeight = 0;
-        if (this.mThumbDrawable != null) {
-            this.mThumbDrawable.getPadding(padding);
+        Drawable drawable = this.mThumbDrawable;
+        if (drawable != null) {
+            drawable.getPadding(padding);
             thumbWidth = (this.mThumbDrawable.getIntrinsicWidth() - padding.left) - padding.right;
             thumbHeight = this.mThumbDrawable.getIntrinsicHeight();
         } else {
@@ -454,16 +457,19 @@ public class SwitchCompat extends CompoundButton {
             maxTextWidth = 0;
         }
         this.mThumbWidth = Math.max(maxTextWidth, thumbWidth);
-        if (this.mTrackDrawable != null) {
-            this.mTrackDrawable.getPadding(padding);
+        Drawable drawable2 = this.mTrackDrawable;
+        if (drawable2 != null) {
+            drawable2.getPadding(padding);
             trackHeight = this.mTrackDrawable.getIntrinsicHeight();
         } else {
             padding.setEmpty();
+            trackHeight = 0;
         }
         int paddingLeft = padding.left;
         int paddingRight = padding.right;
-        if (this.mThumbDrawable != null) {
-            Rect inset = DrawableUtils.getOpticalBounds(this.mThumbDrawable);
+        Drawable drawable3 = this.mThumbDrawable;
+        if (drawable3 != null) {
+            Rect inset = DrawableUtils.getOpticalBounds(drawable3);
             paddingLeft = Math.max(paddingLeft, inset.left);
             paddingRight = Math.max(paddingRight, inset.right);
         }
@@ -486,8 +492,10 @@ public class SwitchCompat extends CompoundButton {
     }
 
     private Layout makeLayout(CharSequence text) {
-        CharSequence transformed = this.mSwitchTransformationMethod != null ? this.mSwitchTransformationMethod.getTransformation(text, this) : text;
-        return new StaticLayout(transformed, this.mTextPaint, transformed != null ? (int) Math.ceil((double) Layout.getDesiredWidth(transformed, this.mTextPaint)) : 0, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, true);
+        TransformationMethod transformationMethod = this.mSwitchTransformationMethod;
+        CharSequence transformed = transformationMethod != null ? transformationMethod.getTransformation(text, this) : text;
+        TextPaint textPaint = this.mTextPaint;
+        return new StaticLayout(transformed, textPaint, transformed != null ? (int) Math.ceil((double) Layout.getDesiredWidth(transformed, textPaint)) : 0, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, true);
     }
 
     private boolean hitThumb(float x, float y) {
@@ -496,10 +504,14 @@ public class SwitchCompat extends CompoundButton {
         }
         int thumbOffset = getThumbOffset();
         this.mThumbDrawable.getPadding(this.mTempRect);
-        int thumbTop = this.mSwitchTop - this.mTouchSlop;
-        int thumbLeft = (this.mSwitchLeft + thumbOffset) - this.mTouchSlop;
-        int thumbRight = this.mThumbWidth + thumbLeft + this.mTempRect.left + this.mTempRect.right + this.mTouchSlop;
-        int thumbBottom = this.mSwitchBottom + this.mTouchSlop;
+        int i = this.mSwitchTop;
+        int i2 = this.mTouchSlop;
+        int thumbTop = i - i2;
+        int thumbLeft = (this.mSwitchLeft + thumbOffset) - i2;
+        int i3 = this.mThumbWidth + thumbLeft + this.mTempRect.left + this.mTempRect.right;
+        int i4 = this.mTouchSlop;
+        int thumbRight = i3 + i4;
+        int thumbBottom = this.mSwitchBottom + i4;
         if (x <= ((float) thumbLeft) || x >= ((float) thumbRight) || y <= ((float) thumbTop) || y >= ((float) thumbBottom)) {
             return false;
         }
@@ -597,8 +609,9 @@ public class SwitchCompat extends CompoundButton {
     }
 
     private void animateThumbToCheckedState(boolean newCheckedState) {
-        this.mPositionAnimator = ObjectAnimator.ofFloat(this, THUMB_POS, new float[]{newCheckedState ? 1.0f : 0.0f});
-        this.mPositionAnimator.setDuration(250);
+        ObjectAnimator ofFloat = ObjectAnimator.ofFloat(this, THUMB_POS, new float[]{newCheckedState ? 1.0f : 0.0f});
+        this.mPositionAnimator = ofFloat;
+        ofFloat.setDuration(250);
         if (Build.VERSION.SDK_INT >= 18) {
             this.mPositionAnimator.setAutoCancel(true);
         }
@@ -606,8 +619,9 @@ public class SwitchCompat extends CompoundButton {
     }
 
     private void cancelPositionAnimator() {
-        if (this.mPositionAnimator != null) {
-            this.mPositionAnimator.cancel();
+        ObjectAnimator objectAnimator = this.mPositionAnimator;
+        if (objectAnimator != null) {
+            objectAnimator.cancel();
         }
     }
 
@@ -647,8 +661,9 @@ public class SwitchCompat extends CompoundButton {
         int opticalInsetRight = 0;
         if (this.mThumbDrawable != null) {
             Rect trackPadding = this.mTempRect;
-            if (this.mTrackDrawable != null) {
-                this.mTrackDrawable.getPadding(trackPadding);
+            Drawable drawable = this.mTrackDrawable;
+            if (drawable != null) {
+                drawable.getPadding(trackPadding);
             } else {
                 trackPadding.setEmpty();
             }
@@ -663,16 +678,20 @@ public class SwitchCompat extends CompoundButton {
             switchRight = (getWidth() - getPaddingRight()) - opticalInsetRight;
             switchLeft = (switchRight - this.mSwitchWidth) + opticalInsetLeft + opticalInsetRight;
         }
-        int gravity = getGravity() & 112;
-        if (gravity == 16) {
-            switchTop = (((getPaddingTop() + getHeight()) - getPaddingBottom()) / 2) - (this.mSwitchHeight / 2);
-            switchBottom = this.mSwitchHeight + switchTop;
-        } else if (gravity != 80) {
-            switchTop = getPaddingTop();
-            switchBottom = this.mSwitchHeight + switchTop;
-        } else {
-            switchBottom = getHeight() - getPaddingBottom();
-            switchTop = switchBottom - this.mSwitchHeight;
+        switch (getGravity() & 112) {
+            case 16:
+                int i = this.mSwitchHeight;
+                switchTop = (((getPaddingTop() + getHeight()) - getPaddingBottom()) / 2) - (i / 2);
+                switchBottom = switchTop + i;
+                break;
+            case 80:
+                switchBottom = getHeight() - getPaddingBottom();
+                switchTop = switchBottom - this.mSwitchHeight;
+                break;
+            default:
+                switchTop = getPaddingTop();
+                switchBottom = switchTop + this.mSwitchHeight;
+                break;
         }
         this.mSwitchLeft = switchLeft;
         this.mSwitchTop = switchTop;
@@ -688,13 +707,15 @@ public class SwitchCompat extends CompoundButton {
         int switchRight = this.mSwitchRight;
         int switchBottom = this.mSwitchBottom;
         int thumbInitialLeft = getThumbOffset() + switchLeft;
-        if (this.mThumbDrawable != null) {
-            thumbInsets = DrawableUtils.getOpticalBounds(this.mThumbDrawable);
+        Drawable drawable = this.mThumbDrawable;
+        if (drawable != null) {
+            thumbInsets = DrawableUtils.getOpticalBounds(drawable);
         } else {
             thumbInsets = DrawableUtils.INSETS_NONE;
         }
-        if (this.mTrackDrawable != null) {
-            this.mTrackDrawable.getPadding(padding);
+        Drawable drawable2 = this.mTrackDrawable;
+        if (drawable2 != null) {
+            drawable2.getPadding(padding);
             thumbInitialLeft += padding.left;
             int trackLeft = switchLeft;
             int trackTop = switchTop;
@@ -716,8 +737,9 @@ public class SwitchCompat extends CompoundButton {
             }
             this.mTrackDrawable.setBounds(trackLeft, trackTop, trackRight, trackBottom);
         }
-        if (this.mThumbDrawable != null) {
-            this.mThumbDrawable.getPadding(padding);
+        Drawable drawable3 = this.mThumbDrawable;
+        if (drawable3 != null) {
+            drawable3.getPadding(padding);
             int thumbLeft = thumbInitialLeft - padding.left;
             int thumbRight = this.mThumbWidth + thumbInitialLeft + padding.right;
             this.mThumbDrawable.setBounds(thumbLeft, switchTop, thumbRight, switchBottom);
@@ -767,8 +789,9 @@ public class SwitchCompat extends CompoundButton {
         Layout switchText = getTargetCheckedState() ? this.mOnLayout : this.mOffLayout;
         if (switchText != null) {
             int[] drawableState = getDrawableState();
-            if (this.mTextColors != null) {
-                this.mTextPaint.setColor(this.mTextColors.getColorForState(drawableState, 0));
+            ColorStateList colorStateList = this.mTextColors;
+            if (colorStateList != null) {
+                this.mTextPaint.setColor(colorStateList.getColorForState(drawableState, 0));
             }
             this.mTextPaint.drawableState = drawableState;
             if (thumbDrawable != null) {
@@ -817,13 +840,15 @@ public class SwitchCompat extends CompoundButton {
 
     private int getThumbScrollRange() {
         Rect insets;
-        if (this.mTrackDrawable == null) {
+        Drawable drawable = this.mTrackDrawable;
+        if (drawable == null) {
             return 0;
         }
         Rect padding = this.mTempRect;
-        this.mTrackDrawable.getPadding(padding);
-        if (this.mThumbDrawable != null) {
-            insets = DrawableUtils.getOpticalBounds(this.mThumbDrawable);
+        drawable.getPadding(padding);
+        Drawable drawable2 = this.mThumbDrawable;
+        if (drawable2 != null) {
+            insets = DrawableUtils.getOpticalBounds(drawable2);
         } else {
             insets = DrawableUtils.INSETS_NONE;
         }
@@ -861,11 +886,13 @@ public class SwitchCompat extends CompoundButton {
         if (Build.VERSION.SDK_INT >= 21) {
             super.drawableHotspotChanged(x, y);
         }
-        if (this.mThumbDrawable != null) {
-            DrawableCompat.setHotspot(this.mThumbDrawable, x, y);
+        Drawable drawable = this.mThumbDrawable;
+        if (drawable != null) {
+            DrawableCompat.setHotspot(drawable, x, y);
         }
-        if (this.mTrackDrawable != null) {
-            DrawableCompat.setHotspot(this.mTrackDrawable, x, y);
+        Drawable drawable2 = this.mTrackDrawable;
+        if (drawable2 != null) {
+            DrawableCompat.setHotspot(drawable2, x, y);
         }
     }
 
@@ -876,13 +903,16 @@ public class SwitchCompat extends CompoundButton {
 
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
-        if (this.mThumbDrawable != null) {
-            this.mThumbDrawable.jumpToCurrentState();
+        Drawable drawable = this.mThumbDrawable;
+        if (drawable != null) {
+            drawable.jumpToCurrentState();
         }
-        if (this.mTrackDrawable != null) {
-            this.mTrackDrawable.jumpToCurrentState();
+        Drawable drawable2 = this.mTrackDrawable;
+        if (drawable2 != null) {
+            drawable2.jumpToCurrentState();
         }
-        if (this.mPositionAnimator != null && this.mPositionAnimator.isStarted()) {
+        ObjectAnimator objectAnimator = this.mPositionAnimator;
+        if (objectAnimator != null && objectAnimator.isStarted()) {
             this.mPositionAnimator.end();
             this.mPositionAnimator = null;
         }
@@ -904,9 +934,7 @@ public class SwitchCompat extends CompoundButton {
                 return;
             }
             StringBuilder newText = new StringBuilder();
-            newText.append(oldText);
-            newText.append(' ');
-            newText.append(switchText);
+            newText.append(oldText).append(' ').append(switchText);
             info.setText(newText);
         }
     }

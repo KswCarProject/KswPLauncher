@@ -9,8 +9,6 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
 import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -20,23 +18,21 @@ import com.wits.ksw.R;
 import com.wits.ksw.settings.audi.vm.AudiSystemViewModel;
 
 public class AudiBrightnessBindingImpl extends AudiBrightnessBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final SeekBar mboundView3;
-    @NonNull
     private final TextView mboundView4;
 
     static {
-        sViewsWithIds.put(R.id.hzMediaLinearLayout, 6);
-        sViewsWithIds.put(R.id.audio_seekbar_title, 7);
-        sViewsWithIds.put(R.id.hzCallLinearLayout, 8);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.hzMediaLinearLayout, 6);
+        sparseIntArray.put(R.id.audio_seekbar_title, 7);
+        sparseIntArray.put(R.id.hzCallLinearLayout, 8);
     }
 
-    public AudiBrightnessBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public AudiBrightnessBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
     }
 
@@ -47,10 +43,12 @@ public class AudiBrightnessBindingImpl extends AudiBrightnessBinding {
         this.audioSeekbar.setTag((Object) null);
         this.audioSeekbarRightText.setTag((Object) null);
         this.linearLayout4.setTag((Object) null);
-        this.mboundView3 = bindings[3];
-        this.mboundView3.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
+        SeekBar seekBar = bindings[3];
+        this.mboundView3 = seekBar;
+        seekBar.setTag((Object) null);
+        TextView textView = bindings[4];
+        this.mboundView4 = textView;
+        textView.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -71,7 +69,7 @@ public class AudiBrightnessBindingImpl extends AudiBrightnessBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -79,7 +77,7 @@ public class AudiBrightnessBindingImpl extends AudiBrightnessBinding {
         return true;
     }
 
-    public void setVm(@Nullable AudiSystemViewModel Vm) {
+    public void setVm(AudiSystemViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 8;
@@ -139,13 +137,13 @@ public class AudiBrightnessBindingImpl extends AudiBrightnessBinding {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        AudiSystemViewModel vm = this.mVm;
         ObservableField<String> vmDayBrightnessStr = null;
         String vmDayBrightnessStrGet = null;
-        int vmDayBrightnessGet = 0;
         boolean vmAutoBrightnessGet = false;
         ObservableInt vmDayBrightness = null;
         ObservableBoolean vmAutoBrightness = null;
+        AudiSystemViewModel vm = this.mVm;
+        int vmDayBrightnessGet = 0;
         SeekBar.OnSeekBarChangeListener vmDayBrightnessChangeListener = null;
         CompoundButton.OnCheckedChangeListener vmOnAudoBrightnessChangeListener = null;
         if ((31 & dirtyFlags) != 0) {

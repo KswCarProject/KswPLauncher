@@ -1,7 +1,5 @@
 package android.support.v7.util;
 
-import android.support.annotation.NonNull;
-
 public class BatchingListUpdateCallback implements ListUpdateCallback {
     private static final int TYPE_ADD = 1;
     private static final int TYPE_CHANGE = 3;
@@ -13,13 +11,14 @@ public class BatchingListUpdateCallback implements ListUpdateCallback {
     int mLastEventType = 0;
     final ListUpdateCallback mWrapped;
 
-    public BatchingListUpdateCallback(@NonNull ListUpdateCallback callback) {
+    public BatchingListUpdateCallback(ListUpdateCallback callback) {
         this.mWrapped = callback;
     }
 
     public void dispatchLastEvent() {
-        if (this.mLastEventType != 0) {
-            switch (this.mLastEventType) {
+        int i = this.mLastEventType;
+        if (i != 0) {
+            switch (i) {
                 case 1:
                     this.mWrapped.onInserted(this.mLastEventPosition, this.mLastEventCount);
                     break;
@@ -36,19 +35,24 @@ public class BatchingListUpdateCallback implements ListUpdateCallback {
     }
 
     public void onInserted(int position, int count) {
-        if (this.mLastEventType != 1 || position < this.mLastEventPosition || position > this.mLastEventPosition + this.mLastEventCount) {
-            dispatchLastEvent();
-            this.mLastEventPosition = position;
-            this.mLastEventCount = count;
-            this.mLastEventType = 1;
-            return;
+        int i;
+        if (this.mLastEventType == 1 && position >= (i = this.mLastEventPosition)) {
+            int i2 = this.mLastEventCount;
+            if (position <= i + i2) {
+                this.mLastEventCount = i2 + count;
+                this.mLastEventPosition = Math.min(position, i);
+                return;
+            }
         }
-        this.mLastEventCount += count;
-        this.mLastEventPosition = Math.min(position, this.mLastEventPosition);
+        dispatchLastEvent();
+        this.mLastEventPosition = position;
+        this.mLastEventCount = count;
+        this.mLastEventType = 1;
     }
 
     public void onRemoved(int position, int count) {
-        if (this.mLastEventType != 2 || this.mLastEventPosition < position || this.mLastEventPosition > position + count) {
+        int i;
+        if (this.mLastEventType != 2 || (i = this.mLastEventPosition) < position || i > position + count) {
             dispatchLastEvent();
             this.mLastEventPosition = position;
             this.mLastEventCount = count;
@@ -65,16 +69,19 @@ public class BatchingListUpdateCallback implements ListUpdateCallback {
     }
 
     public void onChanged(int position, int count, Object payload) {
-        if (this.mLastEventType != 3 || position > this.mLastEventPosition + this.mLastEventCount || position + count < this.mLastEventPosition || this.mLastEventPayload != payload) {
-            dispatchLastEvent();
-            this.mLastEventPosition = position;
-            this.mLastEventCount = count;
-            this.mLastEventPayload = payload;
-            this.mLastEventType = 3;
-            return;
+        if (this.mLastEventType == 3) {
+            int i = this.mLastEventPosition;
+            int i2 = this.mLastEventCount;
+            if (position <= i + i2 && position + count >= i && this.mLastEventPayload == payload) {
+                this.mLastEventPosition = Math.min(position, i);
+                this.mLastEventCount = Math.max(i2 + i, position + count) - this.mLastEventPosition;
+                return;
+            }
         }
-        int previousEnd = this.mLastEventPosition + this.mLastEventCount;
-        this.mLastEventPosition = Math.min(position, this.mLastEventPosition);
-        this.mLastEventCount = Math.max(previousEnd, position + count) - this.mLastEventPosition;
+        dispatchLastEvent();
+        this.mLastEventPosition = position;
+        this.mLastEventCount = count;
+        this.mLastEventPayload = payload;
+        this.mLastEventType = 3;
     }
 }

@@ -8,8 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import com.bumptech.glide.util.Preconditions;
 
 public class FixedSizeDrawable extends Drawable {
@@ -39,7 +37,7 @@ public class FixedSizeDrawable extends Drawable {
         updateMatrix();
     }
 
-    public void setBounds(@NonNull Rect bounds2) {
+    public void setBounds(Rect bounds2) {
         super.setBounds(bounds2);
         this.bounds.set(bounds2);
         updateMatrix();
@@ -70,12 +68,11 @@ public class FixedSizeDrawable extends Drawable {
         return this.wrapped.getCallback();
     }
 
-    @RequiresApi(19)
     public int getAlpha() {
         return this.wrapped.getAlpha();
     }
 
-    public void setColorFilter(int color, @NonNull PorterDuff.Mode mode) {
+    public void setColorFilter(int color, PorterDuff.Mode mode) {
         this.wrapped.setColorFilter(color, mode);
     }
 
@@ -83,7 +80,6 @@ public class FixedSizeDrawable extends Drawable {
         this.wrapped.clearColorFilter();
     }
 
-    @NonNull
     public Drawable getCurrent() {
         return this.wrapped.getCurrent();
     }
@@ -108,7 +104,7 @@ public class FixedSizeDrawable extends Drawable {
         return this.wrapped.getMinimumHeight();
     }
 
-    public boolean getPadding(@NonNull Rect padding) {
+    public boolean getPadding(Rect padding) {
         return this.wrapped.getPadding(padding);
     }
 
@@ -117,17 +113,17 @@ public class FixedSizeDrawable extends Drawable {
         this.wrapped.invalidateSelf();
     }
 
-    public void unscheduleSelf(@NonNull Runnable what) {
+    public void unscheduleSelf(Runnable what) {
         super.unscheduleSelf(what);
         this.wrapped.unscheduleSelf(what);
     }
 
-    public void scheduleSelf(@NonNull Runnable what, long when) {
+    public void scheduleSelf(Runnable what, long when) {
         super.scheduleSelf(what, when);
         this.wrapped.scheduleSelf(what, when);
     }
 
-    public void draw(@NonNull Canvas canvas) {
+    public void draw(Canvas canvas) {
         canvas.save();
         canvas.concat(this.matrix);
         this.wrapped.draw(canvas);
@@ -146,7 +142,6 @@ public class FixedSizeDrawable extends Drawable {
         return this.wrapped.getOpacity();
     }
 
-    @NonNull
     public Drawable mutate() {
         if (!this.mutated && super.mutate() == this) {
             this.wrapped = this.wrapped.mutate();
@@ -175,12 +170,10 @@ public class FixedSizeDrawable extends Drawable {
             this.height = height2;
         }
 
-        @NonNull
         public Drawable newDrawable() {
             return new FixedSizeDrawable(this, this.wrapped.newDrawable());
         }
 
-        @NonNull
         public Drawable newDrawable(Resources res) {
             return new FixedSizeDrawable(this, this.wrapped.newDrawable(res));
         }

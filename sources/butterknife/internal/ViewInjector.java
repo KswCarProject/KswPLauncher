@@ -1,5 +1,6 @@
 package butterknife.internal;
 
+import butterknife.internal.CollectionBinding;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -66,14 +67,10 @@ final class ViewInjector {
     public String brewJava() {
         StringBuilder builder = new StringBuilder();
         builder.append("// Generated code from Butter Knife. Do not modify!\n");
-        builder.append("package ");
-        builder.append(this.classPackage);
-        builder.append(";\n\n");
+        builder.append("package ").append(this.classPackage).append(";\n\n");
         builder.append("import android.view.View;\n");
         builder.append("import butterknife.ButterKnife.Finder;\n\n");
-        builder.append("public class ");
-        builder.append(this.className);
-        builder.append(" {\n");
+        builder.append("public class ").append(this.className).append(" {\n");
         emitInject(builder);
         builder.append(10);
         emitReset(builder);
@@ -82,13 +79,9 @@ final class ViewInjector {
     }
 
     private void emitInject(StringBuilder builder) {
-        builder.append("  public static void inject(Finder finder, final ");
-        builder.append(this.targetClass);
-        builder.append(" target, Object source) {\n");
+        builder.append("  public static void inject(Finder finder, final ").append(this.targetClass).append(" target, Object source) {\n");
         if (this.parentInjector != null) {
-            builder.append("    ");
-            builder.append(this.parentInjector);
-            builder.append(".inject(finder, target, source);\n\n");
+            builder.append("    ").append(this.parentInjector).append(".inject(finder, target, source);\n\n");
         }
         builder.append("    View view;\n");
         for (ViewInjection injection : this.viewIdMap.values()) {
@@ -101,14 +94,12 @@ final class ViewInjector {
     }
 
     private void emitCollectionBinding(StringBuilder builder, CollectionBinding binding, int[] ids) {
-        builder.append("    target.");
-        builder.append(binding.getName());
-        builder.append(" = ");
-        switch (binding.getKind()) {
-            case ARRAY:
+        builder.append("    target.").append(binding.getName()).append(" = ");
+        switch (AnonymousClass1.$SwitchMap$butterknife$internal$CollectionBinding$Kind[binding.getKind().ordinal()]) {
+            case 1:
                 builder.append("Finder.arrayOf(");
                 break;
-            case LIST:
+            case 2:
                 builder.append("Finder.listOf(");
                 break;
             default:
@@ -121,31 +112,39 @@ final class ViewInjector {
             builder.append("\n        ");
             emitCastIfNeeded(builder, binding.getType());
             if (binding.isRequired()) {
-                builder.append("finder.findRequiredView(source, ");
-                builder.append(ids[i]);
-                builder.append(", \"");
-                builder.append(binding.getName());
-                builder.append("\")");
+                builder.append("finder.findRequiredView(source, ").append(ids[i]).append(", \"").append(binding.getName()).append("\")");
             } else {
-                builder.append("finder.findOptionalView(source, ");
-                builder.append(ids[i]);
-                builder.append(")");
+                builder.append("finder.findOptionalView(source, ").append(ids[i]).append(")");
             }
         }
         builder.append("\n    );");
+    }
+
+    /* renamed from: butterknife.internal.ViewInjector$1  reason: invalid class name */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$butterknife$internal$CollectionBinding$Kind;
+
+        static {
+            int[] iArr = new int[CollectionBinding.Kind.values().length];
+            $SwitchMap$butterknife$internal$CollectionBinding$Kind = iArr;
+            try {
+                iArr[CollectionBinding.Kind.ARRAY.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
+            try {
+                $SwitchMap$butterknife$internal$CollectionBinding$Kind[CollectionBinding.Kind.LIST.ordinal()] = 2;
+            } catch (NoSuchFieldError e2) {
+            }
+        }
     }
 
     private void emitViewInjection(StringBuilder builder, ViewInjection injection) {
         builder.append("    view = ");
         List<Binding> requiredBindings = injection.getRequiredBindings();
         if (requiredBindings.isEmpty()) {
-            builder.append("finder.findOptionalView(source, ");
-            builder.append(injection.getId());
-            builder.append(");\n");
+            builder.append("finder.findOptionalView(source, ").append(injection.getId()).append(");\n");
         } else {
-            builder.append("finder.findRequiredView(source, ");
-            builder.append(injection.getId());
-            builder.append(", \"");
+            builder.append("finder.findRequiredView(source, ").append(injection.getId()).append(", \"");
             emitHumanDescription(builder, requiredBindings);
             builder.append("\");\n");
         }
@@ -157,9 +156,7 @@ final class ViewInjector {
         Collection<ViewBinding> viewBindings = injection.getViewBindings();
         if (!viewBindings.isEmpty()) {
             for (ViewBinding viewBinding : viewBindings) {
-                builder.append("    target.");
-                builder.append(viewBinding.getName());
-                builder.append(" = ");
+                builder.append("    target.").append(viewBinding.getName()).append(" = ");
                 emitCastIfNeeded(builder, viewBinding.getType());
                 builder.append("view;\n");
             }
@@ -167,10 +164,11 @@ final class ViewInjector {
     }
 
     private void emitListenerBindings(StringBuilder builder, ViewInjection injection) {
+        Map<ListenerClass, Map<ListenerMethod, ListenerBinding>> bindings;
+        boolean needsCast;
+        Map<ListenerMethod, ListenerBinding> methodBindings;
         ListenerClass listener;
         Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>> e;
-        Iterator<Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>>> it;
-        Map<ListenerClass, Map<ListenerMethod, ListenerBinding>> bindings;
         StringBuilder sb = builder;
         Map<ListenerClass, Map<ListenerMethod, ListenerBinding>> bindings2 = injection.getListenerBindings();
         if (!bindings2.isEmpty()) {
@@ -180,17 +178,15 @@ final class ViewInjector {
                 sb.append("    if (view != null) {\n");
                 extraIndent = "  ";
             }
-            Iterator<Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>>> it2 = bindings2.entrySet().iterator();
-            while (it2.hasNext()) {
-                Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>> e2 = it2.next();
+            Iterator<Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>>> it = bindings2.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>> e2 = it.next();
                 ListenerClass listener2 = e2.getKey();
-                Map<ListenerMethod, ListenerBinding> methodBindings = e2.getValue();
-                boolean needsCast = !"android.view.View".equals(listener2.targetType());
-                sb.append(extraIndent);
-                sb.append("    ");
-                if (needsCast) {
-                    sb.append("((");
-                    sb.append(listener2.targetType());
+                Map<ListenerMethod, ListenerBinding> methodBindings2 = e2.getValue();
+                boolean needsCast2 = !"android.view.View".equals(listener2.targetType());
+                sb.append(extraIndent).append("    ");
+                if (needsCast2) {
+                    sb.append("((").append(listener2.targetType());
                     if (listener2.genericArguments() > 0) {
                         sb.append('<');
                         for (int i = 0; i < listener2.genericArguments(); i++) {
@@ -204,105 +200,92 @@ final class ViewInjector {
                     sb.append(") ");
                 }
                 sb.append("view");
-                if (needsCast) {
+                if (needsCast2) {
                     sb.append(')');
                 }
-                sb.append('.');
-                sb.append(listener2.setter());
-                sb.append("(\n");
-                sb.append(extraIndent);
-                sb.append("      new ");
-                sb.append(listener2.type());
-                sb.append("() {\n");
+                sb.append('.').append(listener2.setter()).append("(\n");
+                sb.append(extraIndent).append("      new ").append(listener2.type()).append("() {\n");
                 for (ListenerMethod method : getListenerMethods(listener2)) {
-                    sb.append(extraIndent);
-                    sb.append("        @Override public ");
-                    sb.append(method.returnType());
-                    sb.append(' ');
-                    sb.append(method.name());
-                    sb.append("(\n");
+                    sb.append(extraIndent).append("        @Override public ").append(method.returnType()).append(' ').append(method.name()).append("(\n");
                     String[] parameterTypes = method.parameters();
+                    int i2 = 0;
                     int count = parameterTypes.length;
-                    for (int i2 = 0; i2 < count; i2++) {
-                        sb.append(extraIndent);
-                        sb.append("          ");
-                        sb.append(parameterTypes[i2]);
-                        sb.append(" p");
-                        sb.append(i2);
+                    while (true) {
+                        bindings = bindings2;
+                        if (i2 >= count) {
+                            break;
+                        }
+                        Iterator<Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>>> it2 = it;
+                        sb.append(extraIndent).append("          ").append(parameterTypes[i2]).append(" p").append(i2);
                         if (i2 < count - 1) {
                             sb.append(',');
                         }
                         sb.append(10);
+                        i2++;
+                        bindings2 = bindings;
+                        it = it2;
                     }
-                    sb.append(extraIndent);
-                    sb.append("        ) {\n");
-                    sb.append(extraIndent);
-                    sb.append("          ");
+                    Iterator<Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>>> it3 = it;
+                    sb.append(extraIndent).append("        ) {\n");
+                    sb.append(extraIndent).append("          ");
                     boolean hasReturnType = !"void".equals(method.returnType());
                     if (hasReturnType) {
                         sb.append("return ");
                     }
-                    if (methodBindings.containsKey(method)) {
-                        ListenerBinding binding = methodBindings.get(method);
-                        sb.append("target.");
-                        sb.append(binding.getName());
-                        sb.append('(');
+                    if (methodBindings2.containsKey(method)) {
+                        ListenerBinding binding = methodBindings2.get(method);
+                        sb.append("target.").append(binding.getName()).append('(');
                         List<Parameter> parameters = binding.getParameters();
                         String[] listenerParameters = method.parameters();
+                        ListenerBinding listenerBinding = binding;
                         int count2 = parameters.size();
+                        e = e2;
                         int i3 = 0;
-                        while (true) {
-                            bindings = bindings2;
-                            int count3 = count2;
-                            if (i3 >= count3) {
-                                break;
-                            }
+                        while (i3 < count2) {
                             Parameter parameter = parameters.get(i3);
-                            Iterator<Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>>> it3 = it2;
-                            int listenerPosition = parameter.getListenerPosition();
-                            Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>> e3 = e2;
                             ListenerClass listener3 = listener2;
+                            int listenerPosition = parameter.getListenerPosition();
+                            Map<ListenerMethod, ListenerBinding> methodBindings3 = methodBindings2;
+                            boolean needsCast3 = needsCast2;
                             emitCastIfNeeded(sb, listenerParameters[listenerPosition], parameter.getType());
-                            sb.append('p');
-                            sb.append(listenerPosition);
-                            if (i3 < count3 - 1) {
+                            sb.append('p').append(listenerPosition);
+                            if (i3 < count2 - 1) {
                                 sb.append(", ");
                             }
                             i3++;
-                            count2 = count3;
-                            bindings2 = bindings;
-                            it2 = it3;
-                            e2 = e3;
                             listener2 = listener3;
+                            methodBindings2 = methodBindings3;
+                            needsCast2 = needsCast3;
                         }
-                        it = it2;
-                        e = e2;
                         listener = listener2;
+                        methodBindings = methodBindings2;
+                        needsCast = needsCast2;
                         sb.append(");");
                     } else {
-                        bindings = bindings2;
-                        it = it2;
                         e = e2;
                         listener = listener2;
+                        methodBindings = methodBindings2;
+                        needsCast = needsCast2;
                         if (hasReturnType) {
-                            sb.append(method.defaultReturn());
-                            sb.append(';');
+                            sb.append(method.defaultReturn()).append(';');
                         }
                     }
                     sb.append(10);
-                    sb.append(extraIndent);
-                    sb.append("        }\n");
+                    sb.append(extraIndent).append("        }\n");
                     bindings2 = bindings;
-                    it2 = it;
+                    it = it3;
                     e2 = e;
                     listener2 = listener;
+                    methodBindings2 = methodBindings;
+                    needsCast2 = needsCast;
                 }
-                Iterator<Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>>> it4 = it2;
                 Map.Entry<ListenerClass, Map<ListenerMethod, ListenerBinding>> entry = e2;
                 ListenerClass listenerClass = listener2;
-                sb.append(extraIndent);
-                sb.append("      });\n");
+                Map<ListenerMethod, ListenerBinding> map = methodBindings2;
+                boolean z = needsCast2;
+                sb.append(extraIndent).append("      });\n");
                 bindings2 = bindings2;
+                it = it;
             }
             if (needsNullChecked) {
                 sb.append("    }\n");
@@ -337,25 +320,17 @@ final class ViewInjector {
     }
 
     private void emitReset(StringBuilder builder) {
-        builder.append("  public static void reset(");
-        builder.append(this.targetClass);
-        builder.append(" target) {\n");
+        builder.append("  public static void reset(").append(this.targetClass).append(" target) {\n");
         if (this.parentInjector != null) {
-            builder.append("    ");
-            builder.append(this.parentInjector);
-            builder.append(".reset(target);\n\n");
+            builder.append("    ").append(this.parentInjector).append(".reset(target);\n\n");
         }
         for (ViewInjection injection : this.viewIdMap.values()) {
             for (ViewBinding viewBinding : injection.getViewBindings()) {
-                builder.append("    target.");
-                builder.append(viewBinding.getName());
-                builder.append(" = null;\n");
+                builder.append("    target.").append(viewBinding.getName()).append(" = null;\n");
             }
         }
         for (CollectionBinding collectionBinding : this.collectionBindings.keySet()) {
-            builder.append("    target.");
-            builder.append(collectionBinding.getName());
-            builder.append(" = null;\n");
+            builder.append("    target.").append(collectionBinding.getName()).append(" = null;\n");
         }
         builder.append("  }\n");
     }
@@ -366,9 +341,7 @@ final class ViewInjector {
 
     static void emitCastIfNeeded(StringBuilder builder, String sourceType, String destinationType) {
         if (!sourceType.equals(destinationType)) {
-            builder.append('(');
-            builder.append(destinationType);
-            builder.append(") ");
+            builder.append('(').append(destinationType).append(") ");
         }
     }
 
@@ -378,9 +351,7 @@ final class ViewInjector {
                 builder.append(bindings.get(0).getDescription());
                 return;
             case 2:
-                builder.append(bindings.get(0).getDescription());
-                builder.append(" and ");
-                builder.append(bindings.get(1).getDescription());
+                builder.append(bindings.get(0).getDescription()).append(" and ").append(bindings.get(1).getDescription());
                 return;
             default:
                 int count = bindings.size();

@@ -5,9 +5,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.ResourceDecoder;
 import com.bumptech.glide.load.engine.Resource;
@@ -27,17 +24,15 @@ public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
         this.context = context2.getApplicationContext();
     }
 
-    public boolean handles(@NonNull Uri source, @NonNull Options options) {
+    public boolean handles(Uri source, Options options) {
         return source.getScheme().equals("android.resource");
     }
 
-    @Nullable
-    public Resource<Drawable> decode(@NonNull Uri source, int width, int height, @NonNull Options options) {
+    public Resource<Drawable> decode(Uri source, int width, int height, Options options) {
         Context targetContext = findContextForPackage(source, source.getAuthority());
         return NonOwnedDrawableResource.newInstance(DrawableDecoderCompat.getDrawable(this.context, targetContext, findResourceIdFromUri(targetContext, source)));
     }
 
-    @NonNull
     private Context findContextForPackage(Uri source, String packageName) {
         if (packageName.equals(this.context.getPackageName())) {
             return this.context;
@@ -52,7 +47,6 @@ public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
         }
     }
 
-    @DrawableRes
     private int findResourceIdFromUri(Context context2, Uri source) {
         List<String> segments = source.getPathSegments();
         if (segments.size() == 2) {
@@ -64,7 +58,6 @@ public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
         throw new IllegalArgumentException("Unrecognized Uri format: " + source);
     }
 
-    @DrawableRes
     private int findResourceIdFromTypeAndNameResourceUri(Context context2, Uri source) {
         List<String> segments = source.getPathSegments();
         String packageName = source.getAuthority();
@@ -80,7 +73,6 @@ public class ResourceDrawableDecoder implements ResourceDecoder<Uri, Drawable> {
         throw new IllegalArgumentException("Failed to find resource id for: " + source);
     }
 
-    @DrawableRes
     private int findResourceIdFromResourceIdUri(Uri source) {
         try {
             return Integer.parseInt(source.getPathSegments().get(0));

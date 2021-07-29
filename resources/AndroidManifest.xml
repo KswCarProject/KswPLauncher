@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:sharedUserId="android.uid.system" android:versionCode="2" android:versionName="1.0" android:compileSdkVersion="28" android:compileSdkVersionCodename="9" coreApp="true" package="com.wits.ksw" platformBuildVersionCode="2" platformBuildVersionName="1">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:sharedUserId="android.uid.system" android:versionCode="11" android:versionName="1.1" android:compileSdkVersion="28" android:compileSdkVersionCodename="9" coreApp="true" package="com.wits.ksw" platformBuildVersionCode="28" platformBuildVersionName="9">
     <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="28"/>
     <uses-permission android:name="android.permission.DELETE_PACKAGES"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
@@ -7,11 +7,14 @@
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <application android:theme="@style/AppTheme" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:name="com.wits.ksw.KswApplication" android:debuggable="true" android:allowBackup="true" android:supportsRtl="false" android:resizeableActivity="false" android:roundIcon="@mipmap/ic_launcher_round" android:appComponentFactory="android.support.v4.app.CoreComponentFactory">
-        <activity android:name="com.wits.ksw.MainActivity" android:clearTaskOnLaunch="true" android:stateNotNeeded="true" android:excludeFromRecents="true" android:launchMode="singleTask" android:screenOrientation="landscape" android:windowSoftInputMode="adjustPan">
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <application android:theme="@style/AppTheme" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:name="com.wits.ksw.KswApplication" android:debuggable="true" android:allowBackup="true" android:supportsRtl="false" android:extractNativeLibs="false" android:resizeableActivity="false" android:roundIcon="@mipmap/ic_launcher_round" android:appComponentFactory="android.support.v4.app.CoreComponentFactory">
+        <activity android:name="com.wits.ksw.MainActivity" android:clearTaskOnLaunch="true" android:stateNotNeeded="true" android:excludeFromRecents="true" android:launchMode="singleTask" android:screenOrientation="landscape" android:configChanges="mcc|mnc|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|smallestScreenSize" android:windowSoftInputMode="adjustPan" android:resumeWhilePausing="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.MONKEY"/>
@@ -68,6 +71,30 @@
         <activity android:name="com.wits.ksw.settings.audi.AudiAuxActivity"/>
         <activity android:name="com.wits.ksw.settings.audi.AudiTempActivity"/>
         <activity android:name="com.wits.ksw.settings.audi.AudiPasswordActivity"/>
+        <activity android:theme="@style/AudiAppTheme" android:name="com.wits.ksw.settings.audi_mib3.AudiMib3SettingMainActivity" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="com.wits.ksw.AUDI_SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3LanguageActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3TimeActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3SoundActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3SoundAndroidActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3SoundOemActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3SystemActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3NaviActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3SystemInfoActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3EqActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3EqCustomActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3SpeedUnitActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3ReverCameraActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3BrightnessActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3AuxActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3TempActivity"/>
+        <activity android:name="com.wits.ksw.settings.audi_mib3.AudiMib3PasswordActivity"/>
+        <activity android:theme="@style/dialog_style" android:name="com.wits.ksw.launcher.view.benzmbux2021.Benz2021DialogThemeActivity"/>
+        <activity android:theme="@style/dialog_style" android:name="com.wits.ksw.launcher.view.benzntg6fy.BenzNtg6FyThemeActivity"/>
         <service android:name="com.wits.ksw.KswRunService"/>
         <provider android:name="android.arch.lifecycle.ProcessLifecycleOwnerInitializer" android:exported="false" android:multiprocess="true" android:authorities="com.wits.ksw.lifecycle-trojan"/>
     </application>

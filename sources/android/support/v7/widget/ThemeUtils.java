@@ -32,8 +32,9 @@ class ThemeUtils {
     }
 
     public static int getThemeAttrColor(Context context, int attr) {
-        TEMP_ARRAY[0] = attr;
-        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, (AttributeSet) null, TEMP_ARRAY);
+        int[] iArr = TEMP_ARRAY;
+        iArr[0] = attr;
+        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, (AttributeSet) null, iArr);
         try {
             return a.getColor(0, 0);
         } finally {
@@ -42,8 +43,9 @@ class ThemeUtils {
     }
 
     public static ColorStateList getThemeAttrColorStateList(Context context, int attr) {
-        TEMP_ARRAY[0] = attr;
-        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, (AttributeSet) null, TEMP_ARRAY);
+        int[] iArr = TEMP_ARRAY;
+        iArr[0] = attr;
+        TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, (AttributeSet) null, iArr);
         try {
             return a.getColorStateList(0);
         } finally {
@@ -62,12 +64,13 @@ class ThemeUtils {
     }
 
     private static TypedValue getTypedValue() {
-        TypedValue typedValue = TL_TYPED_VALUE.get();
+        ThreadLocal<TypedValue> threadLocal = TL_TYPED_VALUE;
+        TypedValue typedValue = threadLocal.get();
         if (typedValue != null) {
             return typedValue;
         }
         TypedValue typedValue2 = new TypedValue();
-        TL_TYPED_VALUE.set(typedValue2);
+        threadLocal.set(typedValue2);
         return typedValue2;
     }
 

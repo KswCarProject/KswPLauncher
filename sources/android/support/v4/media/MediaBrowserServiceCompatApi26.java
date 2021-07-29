@@ -5,7 +5,6 @@ import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.service.media.MediaBrowserService;
-import android.support.annotation.RequiresApi;
 import android.support.v4.media.MediaBrowserServiceCompatApi23;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
@@ -13,7 +12,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(26)
 class MediaBrowserServiceCompatApi26 {
     private static final String TAG = "MBSCompatApi26";
     static Field sResultFlags;
@@ -24,8 +22,9 @@ class MediaBrowserServiceCompatApi26 {
 
     static {
         try {
-            sResultFlags = MediaBrowserService.Result.class.getDeclaredField("mFlags");
-            sResultFlags.setAccessible(true);
+            Field declaredField = MediaBrowserService.Result.class.getDeclaredField("mFlags");
+            sResultFlags = declaredField;
+            declaredField.setAccessible(true);
         } catch (NoSuchFieldException e) {
             Log.w(TAG, e);
         }

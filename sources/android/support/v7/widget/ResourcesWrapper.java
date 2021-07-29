@@ -9,7 +9,6 @@ import android.content.res.XmlResourceParser;
 import android.graphics.Movie;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -89,17 +88,14 @@ class ResourcesWrapper extends Resources {
         return this.mResources.getDrawable(id);
     }
 
-    @RequiresApi(21)
     public Drawable getDrawable(int id, Resources.Theme theme) throws Resources.NotFoundException {
         return this.mResources.getDrawable(id, theme);
     }
 
-    @RequiresApi(15)
     public Drawable getDrawableForDensity(int id, int density) throws Resources.NotFoundException {
         return this.mResources.getDrawableForDensity(id, density);
     }
 
-    @RequiresApi(21)
     public Drawable getDrawableForDensity(int id, int density, Resources.Theme theme) {
         return this.mResources.getDrawableForDensity(id, density, theme);
     }
@@ -152,7 +148,6 @@ class ResourcesWrapper extends Resources {
         this.mResources.getValue(id, outValue, resolveRefs);
     }
 
-    @RequiresApi(15)
     public void getValueForDensity(int id, int density, TypedValue outValue, boolean resolveRefs) throws Resources.NotFoundException {
         this.mResources.getValueForDensity(id, density, outValue, resolveRefs);
     }
@@ -167,8 +162,9 @@ class ResourcesWrapper extends Resources {
 
     public void updateConfiguration(Configuration config, DisplayMetrics metrics) {
         super.updateConfiguration(config, metrics);
-        if (this.mResources != null) {
-            this.mResources.updateConfiguration(config, metrics);
+        Resources resources = this.mResources;
+        if (resources != null) {
+            resources.updateConfiguration(config, metrics);
         }
     }
 

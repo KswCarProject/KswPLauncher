@@ -1,7 +1,6 @@
 package android.support.constraint.solver;
 
 import android.support.constraint.solver.SolverVariable;
-import java.io.PrintStream;
 import java.util.Arrays;
 
 public class ArrayLinkedVariables {
@@ -11,9 +10,9 @@ public class ArrayLinkedVariables {
     private int ROW_SIZE = 8;
     private SolverVariable candidate = null;
     int currentSize = 0;
-    private int[] mArrayIndices = new int[this.ROW_SIZE];
-    private int[] mArrayNextIndices = new int[this.ROW_SIZE];
-    private float[] mArrayValues = new float[this.ROW_SIZE];
+    private int[] mArrayIndices = new int[8];
+    private int[] mArrayNextIndices = new int[8];
+    private float[] mArrayValues = new float[8];
     private final Cache mCache;
     private boolean mDidFillOnce = false;
     private int mHead = -1;
@@ -30,22 +29,24 @@ public class ArrayLinkedVariables {
             remove(variable, true);
         } else if (this.mHead == -1) {
             this.mHead = 0;
-            this.mArrayValues[this.mHead] = value;
-            this.mArrayIndices[this.mHead] = variable.id;
+            this.mArrayValues[0] = value;
+            this.mArrayIndices[0] = variable.id;
             this.mArrayNextIndices[this.mHead] = -1;
             variable.usageInRowCount++;
             variable.addToRow(this.mRow);
             this.currentSize++;
             if (!this.mDidFillOnce) {
-                this.mLast++;
-                if (this.mLast >= this.mArrayIndices.length) {
+                int i = this.mLast + 1;
+                this.mLast = i;
+                int[] iArr = this.mArrayIndices;
+                if (i >= iArr.length) {
                     this.mDidFillOnce = true;
-                    this.mLast = this.mArrayIndices.length - 1;
+                    this.mLast = iArr.length - 1;
                 }
             }
         } else {
-            int previous = -1;
             int current = this.mHead;
+            int previous = -1;
             int counter = 0;
             while (current != -1 && counter < this.currentSize) {
                 if (this.mArrayIndices[current] == variable.id) {
@@ -58,57 +59,66 @@ public class ArrayLinkedVariables {
                 current = this.mArrayNextIndices[current];
                 counter++;
             }
-            int availableIndice = this.mLast + 1;
+            int i2 = this.mLast;
+            int availableIndice = i2 + 1;
             if (this.mDidFillOnce) {
-                if (this.mArrayIndices[this.mLast] == -1) {
+                int[] iArr2 = this.mArrayIndices;
+                if (iArr2[i2] == -1) {
                     availableIndice = this.mLast;
                 } else {
-                    availableIndice = this.mArrayIndices.length;
+                    availableIndice = iArr2.length;
                 }
             }
-            if (availableIndice >= this.mArrayIndices.length && this.currentSize < this.mArrayIndices.length) {
-                int i = 0;
+            int[] iArr3 = this.mArrayIndices;
+            if (availableIndice >= iArr3.length && this.currentSize < iArr3.length) {
+                int i3 = 0;
                 while (true) {
-                    if (i >= this.mArrayIndices.length) {
+                    int[] iArr4 = this.mArrayIndices;
+                    if (i3 >= iArr4.length) {
                         break;
-                    } else if (this.mArrayIndices[i] == -1) {
-                        availableIndice = i;
+                    } else if (iArr4[i3] == -1) {
+                        availableIndice = i3;
                         break;
                     } else {
-                        i++;
+                        i3++;
                     }
                 }
             }
-            if (availableIndice >= this.mArrayIndices.length) {
-                availableIndice = this.mArrayIndices.length;
-                this.ROW_SIZE *= 2;
+            int[] iArr5 = this.mArrayIndices;
+            if (availableIndice >= iArr5.length) {
+                availableIndice = iArr5.length;
+                int i4 = this.ROW_SIZE * 2;
+                this.ROW_SIZE = i4;
                 this.mDidFillOnce = false;
                 this.mLast = availableIndice - 1;
-                this.mArrayValues = Arrays.copyOf(this.mArrayValues, this.ROW_SIZE);
+                this.mArrayValues = Arrays.copyOf(this.mArrayValues, i4);
                 this.mArrayIndices = Arrays.copyOf(this.mArrayIndices, this.ROW_SIZE);
                 this.mArrayNextIndices = Arrays.copyOf(this.mArrayNextIndices, this.ROW_SIZE);
             }
             this.mArrayIndices[availableIndice] = variable.id;
             this.mArrayValues[availableIndice] = value;
             if (previous != -1) {
-                this.mArrayNextIndices[availableIndice] = this.mArrayNextIndices[previous];
-                this.mArrayNextIndices[previous] = availableIndice;
+                int[] iArr6 = this.mArrayNextIndices;
+                iArr6[availableIndice] = iArr6[previous];
+                iArr6[previous] = availableIndice;
             } else {
                 this.mArrayNextIndices[availableIndice] = this.mHead;
                 this.mHead = availableIndice;
             }
             variable.usageInRowCount++;
             variable.addToRow(this.mRow);
-            this.currentSize++;
+            int i5 = this.currentSize + 1;
+            this.currentSize = i5;
             if (!this.mDidFillOnce) {
                 this.mLast++;
             }
-            if (this.currentSize >= this.mArrayIndices.length) {
+            int[] iArr7 = this.mArrayIndices;
+            if (i5 >= iArr7.length) {
                 this.mDidFillOnce = true;
             }
-            if (this.mLast >= this.mArrayIndices.length) {
+            if (this.mLast >= iArr7.length) {
                 this.mDidFillOnce = true;
-                this.mLast = this.mArrayIndices.length - 1;
+                this.mLast = iArr7.length - 1;
             }
         }
     }
@@ -118,35 +128,38 @@ public class ArrayLinkedVariables {
         if (value != 0.0f) {
             if (this.mHead == -1) {
                 this.mHead = 0;
-                this.mArrayValues[this.mHead] = value;
-                this.mArrayIndices[this.mHead] = variable.id;
+                this.mArrayValues[0] = value;
+                this.mArrayIndices[0] = variable.id;
                 this.mArrayNextIndices[this.mHead] = -1;
                 variable.usageInRowCount++;
                 variable.addToRow(this.mRow);
                 this.currentSize++;
                 if (!this.mDidFillOnce) {
-                    this.mLast++;
-                    if (this.mLast >= this.mArrayIndices.length) {
+                    int i = this.mLast + 1;
+                    this.mLast = i;
+                    int[] iArr = this.mArrayIndices;
+                    if (i >= iArr.length) {
                         this.mDidFillOnce = true;
-                        this.mLast = this.mArrayIndices.length - 1;
+                        this.mLast = iArr.length - 1;
                         return;
                     }
                     return;
                 }
                 return;
             }
-            int previous = -1;
             int current = this.mHead;
+            int previous = -1;
             int counter = 0;
             while (current != -1 && counter < this.currentSize) {
                 if (this.mArrayIndices[current] == variable.id) {
                     float[] fArr = this.mArrayValues;
                     fArr[current] = fArr[current] + value;
-                    if (this.mArrayValues[current] == 0.0f) {
+                    if (fArr[current] == 0.0f) {
                         if (current == this.mHead) {
                             this.mHead = this.mArrayNextIndices[current];
                         } else {
-                            this.mArrayNextIndices[previous] = this.mArrayNextIndices[current];
+                            int[] iArr2 = this.mArrayNextIndices;
+                            iArr2[previous] = iArr2[current];
                         }
                         if (removeFromDefinition) {
                             variable.removeFromRow(this.mRow);
@@ -166,41 +179,48 @@ public class ArrayLinkedVariables {
                 current = this.mArrayNextIndices[current];
                 counter++;
             }
-            int availableIndice = this.mLast + 1;
+            int i2 = this.mLast;
+            int availableIndice = i2 + 1;
             if (this.mDidFillOnce) {
-                if (this.mArrayIndices[this.mLast] == -1) {
+                int[] iArr3 = this.mArrayIndices;
+                if (iArr3[i2] == -1) {
                     availableIndice = this.mLast;
                 } else {
-                    availableIndice = this.mArrayIndices.length;
+                    availableIndice = iArr3.length;
                 }
             }
-            if (availableIndice >= this.mArrayIndices.length && this.currentSize < this.mArrayIndices.length) {
-                int i = 0;
+            int[] iArr4 = this.mArrayIndices;
+            if (availableIndice >= iArr4.length && this.currentSize < iArr4.length) {
+                int i3 = 0;
                 while (true) {
-                    if (i >= this.mArrayIndices.length) {
+                    int[] iArr5 = this.mArrayIndices;
+                    if (i3 >= iArr5.length) {
                         break;
-                    } else if (this.mArrayIndices[i] == -1) {
-                        availableIndice = i;
+                    } else if (iArr5[i3] == -1) {
+                        availableIndice = i3;
                         break;
                     } else {
-                        i++;
+                        i3++;
                     }
                 }
             }
-            if (availableIndice >= this.mArrayIndices.length) {
-                availableIndice = this.mArrayIndices.length;
-                this.ROW_SIZE *= 2;
+            int[] iArr6 = this.mArrayIndices;
+            if (availableIndice >= iArr6.length) {
+                availableIndice = iArr6.length;
+                int i4 = this.ROW_SIZE * 2;
+                this.ROW_SIZE = i4;
                 this.mDidFillOnce = false;
                 this.mLast = availableIndice - 1;
-                this.mArrayValues = Arrays.copyOf(this.mArrayValues, this.ROW_SIZE);
+                this.mArrayValues = Arrays.copyOf(this.mArrayValues, i4);
                 this.mArrayIndices = Arrays.copyOf(this.mArrayIndices, this.ROW_SIZE);
                 this.mArrayNextIndices = Arrays.copyOf(this.mArrayNextIndices, this.ROW_SIZE);
             }
             this.mArrayIndices[availableIndice] = variable.id;
             this.mArrayValues[availableIndice] = value;
             if (previous != -1) {
-                this.mArrayNextIndices[availableIndice] = this.mArrayNextIndices[previous];
-                this.mArrayNextIndices[previous] = availableIndice;
+                int[] iArr7 = this.mArrayNextIndices;
+                iArr7[availableIndice] = iArr7[previous];
+                iArr7[previous] = availableIndice;
             } else {
                 this.mArrayNextIndices[availableIndice] = this.mHead;
                 this.mHead = availableIndice;
@@ -211,9 +231,11 @@ public class ArrayLinkedVariables {
             if (!this.mDidFillOnce) {
                 this.mLast++;
             }
-            if (this.mLast >= this.mArrayIndices.length) {
+            int i5 = this.mLast;
+            int[] iArr8 = this.mArrayIndices;
+            if (i5 >= iArr8.length) {
                 this.mDidFillOnce = true;
-                this.mLast = this.mArrayIndices.length - 1;
+                this.mLast = iArr8.length - 1;
             }
         }
     }
@@ -233,7 +255,8 @@ public class ArrayLinkedVariables {
                 if (current == this.mHead) {
                     this.mHead = this.mArrayNextIndices[current];
                 } else {
-                    this.mArrayNextIndices[previous] = this.mArrayNextIndices[current];
+                    int[] iArr = this.mArrayNextIndices;
+                    iArr[previous] = iArr[current];
                 }
                 if (removeFromDefinition) {
                     variable.removeFromRow(this.mRow);
@@ -332,30 +355,29 @@ public class ArrayLinkedVariables {
     /* access modifiers changed from: package-private */
     public SolverVariable chooseSubject(LinearSystem system) {
         LinearSystem linearSystem = system;
+        SolverVariable restrictedCandidate = null;
         SolverVariable unrestrictedCandidate = null;
+        float unrestrictedCandidateAmount = 0.0f;
+        float restrictedCandidateAmount = 0.0f;
+        boolean unrestrictedCandidateIsNew = false;
+        boolean restrictedCandidateIsNew = false;
         int current = this.mHead;
         int counter = 0;
-        float f = 0.0f;
-        boolean restrictedCandidateIsNew = false;
-        boolean unrestrictedCandidateIsNew = false;
-        float restrictedCandidateAmount = 0.0f;
-        float unrestrictedCandidateAmount = 0.0f;
-        SolverVariable restrictedCandidate = null;
         while (current != -1 && counter < this.currentSize) {
             float amount = this.mArrayValues[current];
             SolverVariable variable = this.mCache.mIndexedVariables[this.mArrayIndices[current]];
-            if (amount < f) {
+            if (amount < 0.0f) {
                 if (amount > (-0.001f)) {
-                    this.mArrayValues[current] = f;
+                    this.mArrayValues[current] = 0.0f;
                     amount = 0.0f;
                     variable.removeFromRow(this.mRow);
                 }
             } else if (amount < 0.001f) {
-                this.mArrayValues[current] = f;
+                this.mArrayValues[current] = 0.0f;
                 amount = 0.0f;
                 variable.removeFromRow(this.mRow);
             }
-            if (amount != f) {
+            if (amount != 0.0f) {
                 if (variable.mType == SolverVariable.Type.UNRESTRICTED) {
                     if (unrestrictedCandidate == null) {
                         unrestrictedCandidate = variable;
@@ -370,25 +392,21 @@ public class ArrayLinkedVariables {
                         unrestrictedCandidateAmount = amount;
                         unrestrictedCandidateIsNew = true;
                     }
-                } else if (unrestrictedCandidate == null) {
-                    f = 0.0f;
-                    if (amount < 0.0f) {
-                        if (restrictedCandidate == null) {
-                            restrictedCandidate = variable;
-                            restrictedCandidateAmount = amount;
-                            restrictedCandidateIsNew = isNew(variable, linearSystem);
-                        } else if (restrictedCandidateAmount > amount) {
-                            restrictedCandidate = variable;
-                            restrictedCandidateAmount = amount;
-                            restrictedCandidateIsNew = isNew(variable, linearSystem);
-                        } else if (!restrictedCandidateIsNew && isNew(variable, linearSystem)) {
-                            restrictedCandidate = variable;
-                            restrictedCandidateAmount = amount;
-                            restrictedCandidateIsNew = true;
-                        }
+                } else if (unrestrictedCandidate == null && amount < 0.0f) {
+                    if (restrictedCandidate == null) {
+                        restrictedCandidate = variable;
+                        restrictedCandidateAmount = amount;
+                        restrictedCandidateIsNew = isNew(variable, linearSystem);
+                    } else if (restrictedCandidateAmount > amount) {
+                        restrictedCandidate = variable;
+                        restrictedCandidateAmount = amount;
+                        restrictedCandidateIsNew = isNew(variable, linearSystem);
+                    } else if (!restrictedCandidateIsNew && isNew(variable, linearSystem)) {
+                        restrictedCandidate = variable;
+                        restrictedCandidateAmount = amount;
+                        restrictedCandidateIsNew = true;
                     }
                 }
-                f = 0.0f;
             }
             current = this.mArrayNextIndices[current];
             counter++;
@@ -430,7 +448,6 @@ public class ArrayLinkedVariables {
 
     /* access modifiers changed from: package-private */
     public void updateFromSystem(ArrayRow self, ArrayRow[] rows) {
-        ArrayRow arrayRow = self;
         int current = this.mHead;
         int counter = 0;
         while (current != -1 && counter < this.currentSize) {
@@ -449,8 +466,8 @@ public class ArrayLinkedVariables {
                         definitionCounter++;
                     }
                 }
-                arrayRow.constantValue += definition.constantValue * value;
-                definition.variable.removeFromRow(arrayRow);
+                self.constantValue += definition.constantValue * value;
+                definition.variable.removeFromRow(self);
                 current = this.mHead;
                 counter = 0;
             } else {
@@ -462,8 +479,9 @@ public class ArrayLinkedVariables {
 
     /* access modifiers changed from: package-private */
     public SolverVariable getPivotCandidate() {
-        if (this.candidate != null) {
-            return this.candidate;
+        SolverVariable solverVariable = this.candidate;
+        if (solverVariable != null) {
+            return solverVariable;
         }
         int current = this.mHead;
         int counter = 0;
@@ -483,9 +501,9 @@ public class ArrayLinkedVariables {
 
     /* access modifiers changed from: package-private */
     public SolverVariable getPivotCandidate(boolean[] avoid, SolverVariable exclude) {
-        SolverVariable pivot = null;
-        int counter = 0;
         int current = this.mHead;
+        int counter = 0;
+        SolverVariable pivot = null;
         float value = 0.0f;
         while (current != -1 && counter < this.currentSize) {
             if (this.mArrayValues[current] < 0.0f) {
@@ -556,8 +574,7 @@ public class ArrayLinkedVariables {
         for (int i = 0; i < count; i++) {
             SolverVariable v = getVariable(i);
             if (v != null) {
-                PrintStream printStream = System.out;
-                printStream.print(v + " = " + getVariableValue(i) + " ");
+                System.out.print(v + " = " + getVariableValue(i) + " ");
             }
         }
         System.out.println(" }");

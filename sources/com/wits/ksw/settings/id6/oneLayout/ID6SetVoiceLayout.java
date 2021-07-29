@@ -68,26 +68,22 @@ public class ID6SetVoiceLayout extends RelativeLayout implements SeekBar.OnSeekB
         this.tv_mtsize = (TextView) view.findViewById(R.id.tv_mtsize);
         this.seek_mtb.setMax(40);
         this.seek_mtb.setProgress(this.meiti);
-        TextView textView = this.tv_mtsize;
-        textView.setText(this.meiti + "");
+        this.tv_mtsize.setText(this.meiti + "");
         this.seek_tonghb = (SeekBar) view.findViewById(R.id.seek_tonghb);
         this.tv_tonghsize = (TextView) view.findViewById(R.id.tv_tonghsize);
         this.seek_tonghb.setMax(40);
         this.seek_tonghb.setProgress(this.htongh);
-        TextView textView2 = this.tv_tonghsize;
-        textView2.setText(this.htongh + "");
+        this.tv_tonghsize.setText(this.htongh + "");
         this.seek_yuancthb = (SeekBar) view.findViewById(R.id.seek_yuancthb);
         this.tv_yuancthsize = (TextView) view.findViewById(R.id.tv_yuancthsize);
         this.seek_yuancthb.setMax(40);
         this.seek_yuancthb.setProgress(this.ytongh);
-        TextView textView3 = this.tv_yuancthsize;
-        textView3.setText(this.ytongh + "");
+        this.tv_yuancthsize.setText(this.ytongh + "");
         this.seek_daohvoicb = (SeekBar) view.findViewById(R.id.seek_daohvoicb);
         this.tv_daohvoicsize = (TextView) view.findViewById(R.id.tv_daohvoicsize);
         this.seek_daohvoicb.setMax(40);
         this.seek_daohvoicb.setProgress(this.daohan);
-        TextView textView4 = this.tv_daohvoicsize;
-        textView4.setText(this.daohan + "");
+        this.tv_daohvoicsize.setText(this.daohan + "");
         this.seek_mtb.setOnSeekBarChangeListener(this);
         this.seek_tonghb.setOnSeekBarChangeListener(this);
         this.seek_yuancthb.setOnSeekBarChangeListener(this);
@@ -97,23 +93,19 @@ public class ID6SetVoiceLayout extends RelativeLayout implements SeekBar.OnSeekB
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
             case R.id.seek_daohvoicb:
-                TextView textView = this.tv_daohvoicsize;
-                textView.setText(progress + "");
+                this.tv_daohvoicsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_NAVI_VOL, progress);
                 return;
             case R.id.seek_mtb:
-                TextView textView2 = this.tv_mtsize;
-                textView2.setText(progress + "");
+                this.tv_mtsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.ANDROID_MEDIA_VOL, progress);
                 return;
             case R.id.seek_tonghb:
-                TextView textView3 = this.tv_tonghsize;
-                textView3.setText(progress + "");
+                this.tv_tonghsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.ANDROID_PHONE_VOL, progress);
                 return;
             case R.id.seek_yuancthb:
-                TextView textView4 = this.tv_yuancthsize;
-                textView4.setText(progress + "");
+                this.tv_yuancthsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_PHONE_VOL, progress);
                 return;
             default:

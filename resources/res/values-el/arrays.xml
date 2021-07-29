@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Πλοήγηση</item>
+        <item>Βίντεο</item>
+        <item>Μουσική</item>
+        <item>Τηλέφωνο</item>
+        <item>Μενού NTG</item>
+        <item>ΠΠίνακας Οργάνων</item>
+        <item>PhoneLink</item>
+        <item>Αρχεία</item>
+        <item>DVR</item>
+        <item>Ρυθμίσεις</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Πλοήγηση</item>
+        <item>Μουσική</item>
+        <item>Τηλέφωνο</item>
+        <item>Μενού NTG</item>
+        <item>Ρυθμίσεις</item>
+        <item>Βίντεο</item>
+        <item>Αρχεία</item>
+        <item>PhoneLink</item>
+        <item>Πίνακας Οργάνων</item>
+        <item>DVR</item>
+    </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>Πλοήγηση</item>
+        <item>Μουσική</item>
+        <item>Τηλέφωνο</item>
+        <item>Μενού NTG</item>
+        <item>Ρυθμίσεις</item>
+        <item>Βίντεο</item>
+        <item>ΕΦΑΡΜΟΓΕΣ</item>
+        <item>PhoneLink</item>
+        <item>Πίνακας Οργάνων</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Πλοήγηση</item>
+        <item>Μουσική</item>
+        <item>Τηλέφωνο</item>
+        <item>Μενού NTG</item>
+        <item>Ρυθμίσεις</item>
+        <item>Βίντεο</item>
+        <item>Εφαρμογές</item>
+        <item>PhoneLink</item>
+        <item>Πίνακας Οργάνων</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>Ιαν</item>
+        <item>Φεβ</item>
+        <item>Μαρ</item>
+        <item>Απρ</item>
+        <item>Μάιος</item>
+        <item>Ιούνιος</item>
+        <item>Ιούλιος</item>
+        <item>Αύγουστος</item>
+        <item>Σεπτέμβριος</item>
+        <item>Οκτ</item>
+        <item>Νοεμβρίου</item>
+        <item>Δεκ</item>
+    </array>
+    <array name="set_factory">
+        <item>Λειτουργία</item>
+        <item>Όχημα</item>
+        <item>Οθόνη αυτοκινήτου</item>
+        <item>CAN Πρωτόκολλο</item>
+        <item>UI</item>
+        <item>Εισαγωγή προφίλ</item>
+        <item>Λογότυπο εκκίνησης</item>
+    </array>
+    <array name="set_function">
+        <item>Σύστημα</item>
+        <item>Πλοήγηση</item>
+        <item>Ένταση</item>
+        <item>Ήχος</item>
+        <item>Γλώσσα</item>
+        <item>Ώρα</item>
+        <item>Αριθμός έκδοσης</item>
+        <item>Android</item>
+        <item>Εργοστάσιο</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Πλοήγηση</item>
+        <item>Σύστημα</item>
+        <item>Ένταση</item>
+        <item>Ήχος</item>
+        <item>Γλώσσα</item>
+        <item>Ώρα</item>
+        <item>Αριθμός έκδοσης</item>
+        <item>Android</item>
+        <item>Εργοστάσιο</item>
+    </array>
+    <array name="set_land_rover_function">
+        <item>Σύστημα</item>
+        <item>Πλοήγηση</item>
+        <item>Ένταση</item>
+        <item>Γλώσσα</item>
+        <item>Ώρα</item>
+        <item>Αριθμός έκδοσης</item>
+        <item>Android</item>
+        <item>Εργοστάσιο</item>
+    </array>
+</resources>

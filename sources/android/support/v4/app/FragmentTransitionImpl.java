@@ -1,7 +1,6 @@
 package android.support.v4.app;
 
 import android.graphics.Rect;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewGroupCompat;
 import android.view.View;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public abstract class FragmentTransitionImpl {
     public abstract void addTarget(Object obj, View view);
 

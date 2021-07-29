@@ -1,6 +1,5 @@
 package com.wits.ksw.settings.romeo.layout_two;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -76,7 +75,6 @@ public class SetSystemTwo extends RelativeLayout {
     /* access modifiers changed from: private */
     public TextView tv_cauxSize2;
 
-    @SuppressLint({"NewApi"})
     public SetSystemTwo(Context context2) {
         super(context2);
         this.context = context2;
@@ -88,8 +86,9 @@ public class SetSystemTwo extends RelativeLayout {
         view.setLayoutParams(layoutParams);
         addView(view);
         this.mBackgroundHandler = new Handler(Looper.getMainLooper());
-        this.mBrightnessObserver = new BrightnessObserver(new Handler());
-        this.mBrightnessObserver.startObserving();
+        BrightnessObserver brightnessObserver = new BrightnessObserver(new Handler());
+        this.mBrightnessObserver = brightnessObserver;
+        brightnessObserver.startObserving();
     }
 
     private void initData() {
@@ -98,8 +97,7 @@ public class SetSystemTwo extends RelativeLayout {
             this.aux_index1 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX1);
             this.aux_index2 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX2);
             this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-            String str = TAG;
-            Log.i(str, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
+            Log.i(TAG, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -122,8 +120,7 @@ public class SetSystemTwo extends RelativeLayout {
         this.tv_cauxSize.setText(this.aux_index1 + "");
         this.seekbar_caux.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$000 = SetSystemTwo.this.tv_cauxSize;
-                access$000.setText(progress + "");
+                SetSystemTwo.this.tv_cauxSize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX1, progress);
             }
 
@@ -140,8 +137,7 @@ public class SetSystemTwo extends RelativeLayout {
         this.tv_cauxSize2.setText(this.aux_index2 + "");
         this.seekbar_caux2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$100 = SetSystemTwo.this.tv_cauxSize2;
-                access$100.setText(progress + "");
+                SetSystemTwo.this.tv_cauxSize2.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX2, progress);
             }
 
@@ -154,8 +150,9 @@ public class SetSystemTwo extends RelativeLayout {
         this.relate_beigld = (RelativeLayout) view.findViewById(R.id.relate_beigld);
         this.tv_beigSize = (TextView) view.findViewById(R.id.tv_beigSize);
         Log.i("SetSystemTwo", "initView: beiguangValue=" + this.beiguangValue);
-        this.seekbar_brightness = (SeekBar) view.findViewById(R.id.seekbar_brightness);
-        this.seekbar_brightness.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_brightness);
+        this.seekbar_brightness = seekBar;
+        seekBar.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
         setProgress(this.beiguangValue);
         setProgressText(this.beiguangValue);
         this.seekbar_brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -163,7 +160,8 @@ public class SetSystemTwo extends RelativeLayout {
                 if (fromUser) {
                     int val = BrightnessUtils.convertGammaToLinear(progress, SetSystemTwo.this.mMinBrightness, SetSystemTwo.this.mMaxBrightness);
                     Log.e("SetSystemTwo", "onProgressChanged: fromUser=" + fromUser + " : progress=" + progress + " : val=" + val);
-                    SetSystemTwo.this.setBrightnessValueBg(SetSystemTwo.this.context, val);
+                    SetSystemTwo setSystemTwo = SetSystemTwo.this;
+                    setSystemTwo.setBrightnessValueBg(setSystemTwo.context, val);
                     SetSystemTwo.this.setSystemBrightness(val);
                 }
             }
@@ -174,16 +172,17 @@ public class SetSystemTwo extends RelativeLayout {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        this.rdg_shext = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        this.rdg_shext = radioGroup;
         switch (this.groupValue) {
             case 0:
-                this.rdg_shext.check(R.id.rdb_shext1);
+                radioGroup.check(R.id.rdb_shext1);
                 break;
             case 1:
-                this.rdg_shext.check(R.id.rdb_shext2);
+                radioGroup.check(R.id.rdb_shext2);
                 break;
             case 2:
-                this.rdg_shext.check(R.id.rdb_shext3);
+                radioGroup.check(R.id.rdb_shext3);
                 break;
         }
         this.rdg_shext.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -208,19 +207,21 @@ public class SetSystemTwo extends RelativeLayout {
             this.rdg_shext.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (motionEvent.getAction() == 0) {
-                        if (finalI == 0) {
+                        int i = finalI;
+                        if (i == 0) {
                             SetSystemTwo.this.romeo_list_r1.setVisibility(0);
-                        } else if (finalI == 1) {
+                        } else if (i == 1) {
                             SetSystemTwo.this.romeo_list_r2.setVisibility(0);
-                        } else if (finalI == 2) {
+                        } else if (i == 2) {
                             SetSystemTwo.this.romeo_list_r3.setVisibility(0);
                         }
                     } else if (motionEvent.getAction() == 1 || motionEvent.getAction() == 3) {
-                        if (finalI == 0) {
+                        int i2 = finalI;
+                        if (i2 == 0) {
                             SetSystemTwo.this.romeo_list_r1.setVisibility(4);
-                        } else if (finalI == 1) {
+                        } else if (i2 == 1) {
                             SetSystemTwo.this.romeo_list_r2.setVisibility(4);
-                        } else if (finalI == 2) {
+                        } else if (i2 == 2) {
                             SetSystemTwo.this.romeo_list_r3.setVisibility(4);
                         }
                     }
@@ -229,25 +230,26 @@ public class SetSystemTwo extends RelativeLayout {
             });
             this.rdg_shext.getChildAt(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 public void onFocusChange(View view, boolean b) {
-                    int i = 4;
-                    if (finalI == 0) {
+                    int i = finalI;
+                    int i2 = 0;
+                    if (i == 0) {
                         ImageView access$600 = SetSystemTwo.this.romeo_list_r1;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$600.setVisibility(i);
-                    } else if (finalI == 1) {
+                        access$600.setVisibility(i2);
+                    } else if (i == 1) {
                         ImageView access$700 = SetSystemTwo.this.romeo_list_r2;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$700.setVisibility(i);
-                    } else if (finalI == 2) {
+                        access$700.setVisibility(i2);
+                    } else if (i == 2) {
                         ImageView access$800 = SetSystemTwo.this.romeo_list_r3;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$800.setVisibility(i);
+                        access$800.setVisibility(i2);
                     }
                 }
             });
@@ -255,21 +257,24 @@ public class SetSystemTwo extends RelativeLayout {
         this.tempRadioGroup = (RadioGroup) view.findViewById(R.id.rdg_temp_group);
         for (int i2 = 0; i2 < this.tempRadioGroup.getChildCount(); i2++) {
             if (i2 == this.tempUnit) {
-                this.tempRadioGroup.check(this.tempRadioGroup.getChildAt(i2).getId());
+                RadioGroup radioGroup2 = this.tempRadioGroup;
+                radioGroup2.check(radioGroup2.getChildAt(i2).getId());
             }
             final int finalI2 = i2;
             this.tempRadioGroup.getChildAt(i2).setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (motionEvent.getAction() == 0) {
-                        if (finalI2 == 0) {
+                        int i = finalI2;
+                        if (i == 0) {
                             SetSystemTwo.this.romeo_list_r1.setVisibility(0);
-                        } else if (finalI2 == 1) {
+                        } else if (i == 1) {
                             SetSystemTwo.this.romeo_list_r2.setVisibility(0);
                         }
                     } else if (motionEvent.getAction() == 1 || motionEvent.getAction() == 3) {
-                        if (finalI2 == 0) {
+                        int i2 = finalI2;
+                        if (i2 == 0) {
                             SetSystemTwo.this.romeo_list_r1.setVisibility(4);
-                        } else if (finalI2 == 1) {
+                        } else if (i2 == 1) {
                             SetSystemTwo.this.romeo_list_r2.setVisibility(4);
                         }
                     }
@@ -278,19 +283,20 @@ public class SetSystemTwo extends RelativeLayout {
             });
             this.tempRadioGroup.getChildAt(i2).setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 public void onFocusChange(View view, boolean b) {
-                    int i = 4;
-                    if (finalI2 == 0) {
+                    int i = finalI2;
+                    int i2 = 0;
+                    if (i == 0) {
                         ImageView access$600 = SetSystemTwo.this.romeo_list_r1;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$600.setVisibility(i);
-                    } else if (finalI2 == 1) {
+                        access$600.setVisibility(i2);
+                    } else if (i == 1) {
                         ImageView access$700 = SetSystemTwo.this.romeo_list_r2;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$700.setVisibility(i);
+                        access$700.setVisibility(i2);
                     }
                 }
             });
@@ -319,24 +325,18 @@ public class SetSystemTwo extends RelativeLayout {
     public void setProgressText(int progress) {
         int value = BrightnessUtils.convertLinearToGamma(progress, this.mMinBrightness, this.mMaxBrightness);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
-        int progress2 = (int) Math.round(100.0d * b);
-        TextView textView = this.tv_beigSize;
-        StringBuilder sb = new StringBuilder();
-        sb.append("");
-        sb.append(progress2);
-        textView.setText(sb.toString());
+        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        this.tv_beigSize.setText("" + ((int) Math.round(100.0d * b)));
     }
 
     /* access modifiers changed from: private */
     public void setProgress(int brightness) {
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
-        this.mMaxBrightness = getMaximumScreenBrightnessSetting();
-        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, this.mMaxBrightness);
+        int maximumScreenBrightnessSetting = getMaximumScreenBrightnessSetting();
+        this.mMaxBrightness = maximumScreenBrightnessSetting;
+        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, maximumScreenBrightnessSetting);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
+        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
         this.seekbar_brightness.setProgress(value);
     }
 

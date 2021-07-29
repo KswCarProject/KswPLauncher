@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.load.Key;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ final class Jobs {
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public Map<Key, EngineJob<?>> getAll() {
         return Collections.unmodifiableMap(this.jobs);
     }

@@ -1,6 +1,5 @@
 package android.support.v7.view;
 
-import android.support.annotation.RestrictTo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -64,7 +63,6 @@ public abstract class ActionMode {
         return false;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public boolean isUiFocusable() {
         return true;
     }

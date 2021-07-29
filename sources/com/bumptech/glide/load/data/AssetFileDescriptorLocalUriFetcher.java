@@ -3,7 +3,6 @@ package com.bumptech.glide.load.data;
 import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -26,7 +25,6 @@ public final class AssetFileDescriptorLocalUriFetcher extends LocalUriFetcher<As
         data.close();
     }
 
-    @NonNull
     public Class<AssetFileDescriptor> getDataClass() {
         return AssetFileDescriptor.class;
     }

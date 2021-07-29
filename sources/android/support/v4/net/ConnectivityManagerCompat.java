@@ -4,10 +4,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
-import android.support.annotation.RestrictTo;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -16,13 +12,11 @@ public final class ConnectivityManagerCompat {
     public static final int RESTRICT_BACKGROUND_STATUS_ENABLED = 3;
     public static final int RESTRICT_BACKGROUND_STATUS_WHITELISTED = 2;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface RestrictBackgroundStatus {
     }
 
-    @RequiresPermission("android.permission.ACCESS_NETWORK_STATE")
-    public static boolean isActiveNetworkMetered(@NonNull ConnectivityManager cm) {
+    public static boolean isActiveNetworkMetered(ConnectivityManager cm) {
         if (Build.VERSION.SDK_INT >= 16) {
             return cm.isActiveNetworkMetered();
         }
@@ -47,9 +41,7 @@ public final class ConnectivityManagerCompat {
         }
     }
 
-    @Nullable
-    @RequiresPermission("android.permission.ACCESS_NETWORK_STATE")
-    public static NetworkInfo getNetworkInfoFromBroadcast(@NonNull ConnectivityManager cm, @NonNull Intent intent) {
+    public static NetworkInfo getNetworkInfoFromBroadcast(ConnectivityManager cm, Intent intent) {
         NetworkInfo info = (NetworkInfo) intent.getParcelableExtra("networkInfo");
         if (info != null) {
             return cm.getNetworkInfo(info.getType());
@@ -57,7 +49,7 @@ public final class ConnectivityManagerCompat {
         return null;
     }
 
-    public static int getRestrictBackgroundStatus(@NonNull ConnectivityManager cm) {
+    public static int getRestrictBackgroundStatus(ConnectivityManager cm) {
         if (Build.VERSION.SDK_INT >= 24) {
             return cm.getRestrictBackgroundStatus();
         }

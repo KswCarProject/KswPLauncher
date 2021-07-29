@@ -4,8 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.util.Preconditions;
@@ -49,14 +47,15 @@ public class AppWidgetTarget extends SimpleTarget<Bitmap> {
 
     private void update() {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this.context);
-        if (this.componentName != null) {
-            appWidgetManager.updateAppWidget(this.componentName, this.remoteViews);
+        ComponentName componentName2 = this.componentName;
+        if (componentName2 != null) {
+            appWidgetManager.updateAppWidget(componentName2, this.remoteViews);
         } else {
             appWidgetManager.updateAppWidget(this.widgetIds, this.remoteViews);
         }
     }
 
-    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
         this.remoteViews.setImageViewBitmap(this.viewId, resource);
         update();
     }

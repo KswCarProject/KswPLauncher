@@ -17,9 +17,14 @@ public abstract class LoopRotarySwitchViewHandler extends Handler {
 
     public void handleMessage(Message msg2) {
         msg2.what = 1000;
-        if (this.loop) {
-            doScroll();
-            sendMsg();
+        switch (1000) {
+            case 1000:
+                if (this.loop) {
+                    doScroll();
+                    sendMsg();
+                    break;
+                }
+                break;
         }
         super.handleMessage(msg2);
     }
@@ -41,8 +46,9 @@ public abstract class LoopRotarySwitchViewHandler extends Handler {
             removeMessages(1000);
         } catch (Exception e) {
         }
-        this.msg = createMsg();
-        sendMessageDelayed(this.msg, this.loopTime);
+        Message createMsg = createMsg();
+        this.msg = createMsg;
+        sendMessageDelayed(createMsg, this.loopTime);
     }
 
     public Message createMsg() {

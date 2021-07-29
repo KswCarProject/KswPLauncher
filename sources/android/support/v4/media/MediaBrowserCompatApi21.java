@@ -4,11 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.media.browse.MediaBrowser;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import java.util.List;
 
-@RequiresApi(21)
 class MediaBrowserCompatApi21 {
     static final String NULL_MEDIA_ITEM_ID = "android.support.v4.media.MediaBrowserCompat.NULL_MEDIA_ITEM";
 
@@ -21,9 +18,9 @@ class MediaBrowserCompatApi21 {
     }
 
     interface SubscriptionCallback {
-        void onChildrenLoaded(@NonNull String str, List<?> list);
+        void onChildrenLoaded(String str, List<?> list);
 
-        void onError(@NonNull String str);
+        void onError(String str);
     }
 
     public static Object createConnectionCallback(ConnectionCallback callback) {
@@ -101,11 +98,11 @@ class MediaBrowserCompatApi21 {
             this.mSubscriptionCallback = callback;
         }
 
-        public void onChildrenLoaded(@NonNull String parentId, List<MediaBrowser.MediaItem> children) {
+        public void onChildrenLoaded(String parentId, List<MediaBrowser.MediaItem> children) {
             this.mSubscriptionCallback.onChildrenLoaded(parentId, children);
         }
 
-        public void onError(@NonNull String parentId) {
+        public void onError(String parentId) {
             this.mSubscriptionCallback.onError(parentId);
         }
     }

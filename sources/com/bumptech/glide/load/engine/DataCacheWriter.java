@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Encoder;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.engine.cache.DiskCache;
@@ -17,7 +16,7 @@ class DataCacheWriter<DataType> implements DiskCache.Writer {
         this.options = options2;
     }
 
-    public boolean write(@NonNull File file) {
+    public boolean write(File file) {
         return this.encoder.encode(this.data, file, this.options);
     }
 }

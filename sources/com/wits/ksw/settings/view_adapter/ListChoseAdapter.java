@@ -2,7 +2,6 @@ package com.wits.ksw.settings.view_adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,12 +36,11 @@ public class ListChoseAdapter extends RecyclerView.Adapter<MyViewHolder> {
         this.rbtCheckListener = listener;
     }
 
-    @NonNull
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(this.context).inflate(R.layout.navi_ntg6_adpter_layout, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         Drawable drawable;
         if (this.mapBanList.get(position).getAppicon() == null) {
             drawable = this.context.getDrawable(R.mipmap.ic_launcher);
@@ -71,16 +69,17 @@ public class ListChoseAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.mapBanList == null) {
+        List<DevBean> list = this.mapBanList;
+        if (list == null) {
             return 0;
         }
-        return this.mapBanList.size();
+        return list.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         RadioButton rbt_navi;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
             this.rbt_navi = (RadioButton) itemView.findViewById(R.id.rbt_navi);
         }

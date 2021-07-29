@@ -73,200 +73,110 @@ public interface IMediaControllerCallback extends IInterface {
             return this;
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v0, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v1, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v5, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v8, resolved type: android.support.v4.media.session.PlaybackStateCompat} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v8, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v13, resolved type: android.support.v4.media.MediaMetadataCompat} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v11, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v14, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v28, resolved type: java.lang.Object} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v15, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v17, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v31, resolved type: android.support.v4.media.session.ParcelableVolumeInfo} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v24, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v25, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v26, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v27, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v28, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r2v29, resolved type: android.os.Bundle} */
-        /* JADX WARNING: type inference failed for: r2v7, types: [android.support.v4.media.session.PlaybackStateCompat] */
-        /* JADX WARNING: type inference failed for: r2v10, types: [android.support.v4.media.MediaMetadataCompat] */
-        /* JADX WARNING: type inference failed for: r0v21, types: [java.lang.CharSequence] */
-        /* JADX WARNING: type inference failed for: r2v13, types: [java.lang.CharSequence] */
-        /* JADX WARNING: type inference failed for: r2v19, types: [android.support.v4.media.session.ParcelableVolumeInfo] */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public boolean onTransact(int r5, android.os.Parcel r6, android.os.Parcel r7, int r8) throws android.os.RemoteException {
-            /*
-                r4 = this;
-                r0 = 1598968902(0x5f4e5446, float:1.4867585E19)
-                r1 = 1
-                if (r5 == r0) goto L_0x0111
-                r0 = 0
-                r2 = 0
-                switch(r5) {
-                    case 1: goto L_0x00f4;
-                    case 2: goto L_0x00eb;
-                    case 3: goto L_0x00d0;
-                    case 4: goto L_0x00b5;
-                    case 5: goto L_0x00a6;
-                    case 6: goto L_0x008b;
-                    case 7: goto L_0x0070;
-                    case 8: goto L_0x0055;
-                    case 9: goto L_0x0048;
-                    case 10: goto L_0x0037;
-                    case 11: goto L_0x0026;
-                    case 12: goto L_0x0019;
-                    case 13: goto L_0x0010;
-                    default: goto L_0x000b;
-                }
-            L_0x000b:
-                boolean r0 = super.onTransact(r5, r6, r7, r8)
-                return r0
-            L_0x0010:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                r4.onSessionReady()
-                return r1
-            L_0x0019:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                int r0 = r6.readInt()
-                r4.onShuffleModeChanged(r0)
-                return r1
-            L_0x0026:
-                java.lang.String r2 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r2)
-                int r2 = r6.readInt()
-                if (r2 == 0) goto L_0x0033
-                r0 = r1
-            L_0x0033:
-                r4.onCaptioningEnabledChanged(r0)
-                return r1
-            L_0x0037:
-                java.lang.String r2 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r2)
-                int r2 = r6.readInt()
-                if (r2 == 0) goto L_0x0044
-                r0 = r1
-            L_0x0044:
-                r4.onShuffleModeChangedRemoved(r0)
-                return r1
-            L_0x0048:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                int r0 = r6.readInt()
-                r4.onRepeatModeChanged(r0)
-                return r1
-            L_0x0055:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                int r0 = r6.readInt()
-                if (r0 == 0) goto L_0x006a
-                android.os.Parcelable$Creator<android.support.v4.media.session.ParcelableVolumeInfo> r0 = android.support.v4.media.session.ParcelableVolumeInfo.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r6)
-                r2 = r0
-                android.support.v4.media.session.ParcelableVolumeInfo r2 = (android.support.v4.media.session.ParcelableVolumeInfo) r2
-                goto L_0x006b
-            L_0x006a:
-            L_0x006b:
-                r0 = r2
-                r4.onVolumeInfoChanged(r0)
-                return r1
-            L_0x0070:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                int r0 = r6.readInt()
-                if (r0 == 0) goto L_0x0085
-                android.os.Parcelable$Creator r0 = android.os.Bundle.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r6)
-                r2 = r0
-                android.os.Bundle r2 = (android.os.Bundle) r2
-                goto L_0x0086
-            L_0x0085:
-            L_0x0086:
-                r0 = r2
-                r4.onExtrasChanged(r0)
-                return r1
-            L_0x008b:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                int r0 = r6.readInt()
-                if (r0 == 0) goto L_0x00a0
-                android.os.Parcelable$Creator r0 = android.text.TextUtils.CHAR_SEQUENCE_CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r6)
-                r2 = r0
-                java.lang.CharSequence r2 = (java.lang.CharSequence) r2
-                goto L_0x00a1
-            L_0x00a0:
-            L_0x00a1:
-                r0 = r2
-                r4.onQueueTitleChanged(r0)
-                return r1
-            L_0x00a6:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                android.os.Parcelable$Creator<android.support.v4.media.session.MediaSessionCompat$QueueItem> r0 = android.support.v4.media.session.MediaSessionCompat.QueueItem.CREATOR
-                java.util.ArrayList r0 = r6.createTypedArrayList(r0)
-                r4.onQueueChanged(r0)
-                return r1
-            L_0x00b5:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                int r0 = r6.readInt()
-                if (r0 == 0) goto L_0x00ca
-                android.os.Parcelable$Creator<android.support.v4.media.MediaMetadataCompat> r0 = android.support.v4.media.MediaMetadataCompat.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r6)
-                r2 = r0
-                android.support.v4.media.MediaMetadataCompat r2 = (android.support.v4.media.MediaMetadataCompat) r2
-                goto L_0x00cb
-            L_0x00ca:
-            L_0x00cb:
-                r0 = r2
-                r4.onMetadataChanged(r0)
-                return r1
-            L_0x00d0:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                int r0 = r6.readInt()
-                if (r0 == 0) goto L_0x00e5
-                android.os.Parcelable$Creator<android.support.v4.media.session.PlaybackStateCompat> r0 = android.support.v4.media.session.PlaybackStateCompat.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r6)
-                r2 = r0
-                android.support.v4.media.session.PlaybackStateCompat r2 = (android.support.v4.media.session.PlaybackStateCompat) r2
-                goto L_0x00e6
-            L_0x00e5:
-            L_0x00e6:
-                r0 = r2
-                r4.onPlaybackStateChanged(r0)
-                return r1
-            L_0x00eb:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                r4.onSessionDestroyed()
-                return r1
-            L_0x00f4:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r6.enforceInterface(r0)
-                java.lang.String r0 = r6.readString()
-                int r3 = r6.readInt()
-                if (r3 == 0) goto L_0x010c
-                android.os.Parcelable$Creator r2 = android.os.Bundle.CREATOR
-                java.lang.Object r2 = r2.createFromParcel(r6)
-                android.os.Bundle r2 = (android.os.Bundle) r2
-                goto L_0x010d
-            L_0x010c:
-            L_0x010d:
-                r4.onEvent(r0, r2)
-                return r1
-            L_0x0111:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaControllerCallback"
-                r7.writeString(r0)
-                return r1
-            */
-            throw new UnsupportedOperationException("Method not decompiled: android.support.v4.media.session.IMediaControllerCallback.Stub.onTransact(int, android.os.Parcel, android.os.Parcel, int):boolean");
+        public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
+            Bundle _arg1;
+            PlaybackStateCompat _arg0;
+            MediaMetadataCompat _arg02;
+            CharSequence _arg03;
+            Bundle _arg04;
+            ParcelableVolumeInfo _arg05;
+            boolean _arg06 = false;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg07 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg1 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg1 = null;
+                    }
+                    onEvent(_arg07, _arg1);
+                    return true;
+                case 2:
+                    data.enforceInterface(DESCRIPTOR);
+                    onSessionDestroyed();
+                    return true;
+                case 3:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg0 = PlaybackStateCompat.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg0 = null;
+                    }
+                    onPlaybackStateChanged(_arg0);
+                    return true;
+                case 4:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg02 = MediaMetadataCompat.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg02 = null;
+                    }
+                    onMetadataChanged(_arg02);
+                    return true;
+                case 5:
+                    data.enforceInterface(DESCRIPTOR);
+                    onQueueChanged(data.createTypedArrayList(MediaSessionCompat.QueueItem.CREATOR));
+                    return true;
+                case 6:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg03 = (CharSequence) TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(data);
+                    } else {
+                        _arg03 = null;
+                    }
+                    onQueueTitleChanged(_arg03);
+                    return true;
+                case 7:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg04 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg04 = null;
+                    }
+                    onExtrasChanged(_arg04);
+                    return true;
+                case 8:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg05 = ParcelableVolumeInfo.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg05 = null;
+                    }
+                    onVolumeInfoChanged(_arg05);
+                    return true;
+                case 9:
+                    data.enforceInterface(DESCRIPTOR);
+                    onRepeatModeChanged(data.readInt());
+                    return true;
+                case 10:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg06 = true;
+                    }
+                    onShuffleModeChangedRemoved(_arg06);
+                    return true;
+                case 11:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg06 = true;
+                    }
+                    onCaptioningEnabledChanged(_arg06);
+                    return true;
+                case 12:
+                    data.enforceInterface(DESCRIPTOR);
+                    onShuffleModeChanged(data.readInt());
+                    return true;
+                case 13:
+                    data.enforceInterface(DESCRIPTOR);
+                    onSessionReady();
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
+            }
         }
 
         private static class Proxy implements IMediaControllerCallback {
@@ -417,7 +327,7 @@ public interface IMediaControllerCallback extends IInterface {
                 Parcel _data = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(enabled);
+                    _data.writeInt(enabled ? 1 : 0);
                     this.mRemote.transact(10, _data, (Parcel) null, 1);
                 } finally {
                     _data.recycle();
@@ -428,7 +338,7 @@ public interface IMediaControllerCallback extends IInterface {
                 Parcel _data = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(enabled);
+                    _data.writeInt(enabled ? 1 : 0);
                     this.mRemote.transact(11, _data, (Parcel) null, 1);
                 } finally {
                     _data.recycle();

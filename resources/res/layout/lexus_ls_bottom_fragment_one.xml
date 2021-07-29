@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:id="@+id/lexus_ls_ll_bottom_frag_one" android:tag="layout/lexus_ls_bottom_fragment_one_0" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="40dp" android:layout_marginRight="40dp">
+    <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_navi" android:nextFocusUp="@+id/iv_lexus_ls_navi" android:nextFocusDown="@+id/iv_lexus_ls_music" android:src="@drawable/lexus_ls_bottom_sel_navi" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ksw_id7_navi" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_music" android:nextFocusUp="@+id/iv_lexus_ls_navi" android:nextFocusDown="@+id/iv_lexus_ls_bt" android:src="@drawable/lexus_ls_bottom_sel_music" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ksw_id7_music" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_bt" android:nextFocusUp="@+id/iv_lexus_ls_music" android:nextFocusDown="@+id/iv_lexus_ls_app" android:src="@drawable/lexus_ls_bottom_sel_bt" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/id6_phone" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_app" android:nextFocusUp="@+id/iv_lexus_ls_bt" android:nextFocusDown="@+id/iv_lexus_ls_video" android:src="@drawable/lexus_ls_bottom_sel_app" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/gs_application" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_video" android:nextFocusUp="@+id/iv_lexus_ls_app" android:nextFocusDown="@+id/iv_lexus_ls_car" android:src="@drawable/lexus_ls_bottom_sel_video" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/video" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_car" android:nextFocusUp="@+id/iv_lexus_ls_video" android:nextFocusDown="@+id/iv_lexus_ls_set" android:src="@drawable/lexus_ls_bottom_sel_car" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ksw_id7_car" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+    <RelativeLayout android:orientation="vertical" style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_set" android:nextFocusUp="@+id/iv_lexus_ls_car" android:nextFocusDown="@+id/iv_lexus_ls_air" android:src="@drawable/lexus_ls_bottom_sel_set" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/ksw_id7_setting" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+    <RelativeLayout style="@style/lexusLsBottomIvStyle">
+        <ImageView android:id="@+id/iv_lexus_ls_air" android:nextFocusUp="@+id/iv_lexus_ls_air" android:nextFocusDown="@+id/iv_lexus_ls_dvr" android:src="@drawable/lexus_ls_bottom_sel_air" style="@style/lexusLsBottomIvStyle"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/lexus_ac" style="@style/lexusLsBottomTxStyle"/>
+    </RelativeLayout>
+</LinearLayout>

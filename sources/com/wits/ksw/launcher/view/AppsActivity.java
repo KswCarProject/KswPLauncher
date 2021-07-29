@@ -2,9 +2,12 @@ package com.wits.ksw.launcher.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.ActivityAlsId7AppsBinding;
 import com.wits.ksw.databinding.ActivityId7AppsBinding;
@@ -12,10 +15,25 @@ import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.model.AppViewModel;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.IconUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 
 public final class AppsActivity extends BaseThemeActivity {
     private ActivityAlsId7AppsBinding alsBinding;
     private ActivityId7AppsBinding binding;
+    String screenFile = "";
+    private Handler screenHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 666:
+                    AppsActivity appsActivity = AppsActivity.this;
+                    appsActivity.screenFile = MainActivity.screenShotByShell(appsActivity);
+                    Log.d("liuhao", AppsActivity.this.screenFile);
+                    return;
+                default:
+                    return;
+            }
+        }
+    };
     private AppViewModel viewModel;
 
     /* access modifiers changed from: protected */
@@ -29,14 +47,20 @@ public final class AppsActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initBmwid6CuspUiView() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
     public void initBmwEvoId6GS() {
         initBmwid7UiView();
     }
 
     /* access modifiers changed from: protected */
     public void initBmwid7UiView() {
-        this.viewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
-        this.viewModel.setActivity(this);
+        AppViewModel appViewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
+        this.viewModel = appViewModel;
+        appViewModel.setActivity(this);
         this.binding = (ActivityId7AppsBinding) DataBindingUtil.setContentView(this, R.layout.activity_id7_apps);
         if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
             if (getResources().getDisplayMetrics().widthPixels == 1024) {
@@ -75,8 +99,28 @@ public final class AppsActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initBenz_MBUX_2021_View() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBenz_MBUX_2021_View2() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBenz_NTG6_FY_View() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
     public void initAudiView() {
         initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initAudiMbi3View() {
+        initAudiView();
     }
 
     /* access modifiers changed from: protected */
@@ -101,6 +145,40 @@ public final class AppsActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initLexusLs() {
+        AppViewModel appViewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
+        this.viewModel = appViewModel;
+        appViewModel.setActivity(this);
+        this.binding = (ActivityId7AppsBinding) DataBindingUtil.setContentView(this, R.layout.activity_id7_apps);
+        if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
+            if (getResources().getDisplayMetrics().widthPixels == 1024) {
+                this.binding.appGridView.setNumColumns(5);
+            } else {
+                this.binding.appGridView.setNumColumns(6);
+            }
+        }
+        this.binding.setAppViewModel(this.viewModel);
+        this.viewModel.queryApps();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initLexusLsDrag() {
+        AppViewModel appViewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
+        this.viewModel = appViewModel;
+        appViewModel.setActivity(this);
+        this.binding = (ActivityId7AppsBinding) DataBindingUtil.setContentView(this, R.layout.activity_id7_apps);
+        if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
+            if (getResources().getDisplayMetrics().widthPixels == 1024) {
+                this.binding.appGridView.setNumColumns(5);
+            } else {
+                this.binding.appGridView.setNumColumns(6);
+            }
+        }
+        this.binding.setAppViewModel(this.viewModel);
+        this.viewModel.queryApps();
+    }
+
+    /* access modifiers changed from: protected */
     public void initBwmID7Hicar() {
         initBmwid7UiView();
     }
@@ -117,8 +195,9 @@ public final class AppsActivity extends BaseThemeActivity {
 
     /* access modifiers changed from: protected */
     public void initAlsId7UI() {
-        this.viewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
-        this.viewModel.setActivity(this);
+        AppViewModel appViewModel = (AppViewModel) ViewModelProviders.of((FragmentActivity) this).get(AppViewModel.class);
+        this.viewModel = appViewModel;
+        appViewModel.setActivity(this);
         this.alsBinding = (ActivityAlsId7AppsBinding) DataBindingUtil.setContentView(this, R.layout.activity_als_id7_apps);
         if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
             if (getResources().getDisplayMetrics().widthPixels == 1024) {
@@ -136,28 +215,51 @@ public final class AppsActivity extends BaseThemeActivity {
         initBmwid7UiView();
     }
 
+    /* access modifiers changed from: protected */
+    public void onResume() {
+        super.onResume();
+        Log.w("AppsActivity", "onresume");
+        if (UiThemeUtils.isLAND_ROVER(this)) {
+            Log.w("AppsActivity", "onresume isLAND_ROVER");
+            setFullActivity(false);
+        }
+        if (UiThemeUtils.isLEXUS_LS_UI(this)) {
+            this.screenHandler.sendEmptyMessageDelayed(666, 1800);
+        }
+    }
+
+    /* access modifiers changed from: protected */
+    public void onPause() {
+        super.onPause();
+        if (UiThemeUtils.isLEXUS_LS_UI(this)) {
+            this.screenHandler.removeMessages(666);
+        }
+    }
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.i("AppsActivity", "onKeyDown: " + keyCode);
-        if (this.binding != null) {
+        ActivityId7AppsBinding activityId7AppsBinding = this.binding;
+        if (activityId7AppsBinding != null) {
             if (keyCode == 20 || keyCode == 22) {
-                return this.binding.appGridView.onKeyUp(22, event);
+                return activityId7AppsBinding.appGridView.onKeyUp(22, event);
             }
             if (keyCode == 19 || keyCode == 21) {
-                return this.binding.appGridView.onKeyUp(21, event);
+                return activityId7AppsBinding.appGridView.onKeyUp(21, event);
             }
             if (keyCode == 66) {
-                return this.binding.appGridView.onKeyUp(66, event);
+                return activityId7AppsBinding.appGridView.onKeyUp(66, event);
             }
         }
-        if (this.alsBinding != null) {
+        ActivityAlsId7AppsBinding activityAlsId7AppsBinding = this.alsBinding;
+        if (activityAlsId7AppsBinding != null) {
             if (keyCode == 20 || keyCode == 22) {
-                return this.alsBinding.appGridView.onKeyUp(22, event);
+                return activityAlsId7AppsBinding.appGridView.onKeyUp(22, event);
             }
             if (keyCode == 19 || keyCode == 21) {
-                return this.alsBinding.appGridView.onKeyUp(21, event);
+                return activityAlsId7AppsBinding.appGridView.onKeyUp(21, event);
             }
             if (keyCode == 66) {
-                return this.alsBinding.appGridView.onKeyUp(66, event);
+                return activityAlsId7AppsBinding.appGridView.onKeyUp(66, event);
             }
         }
         return super.onKeyDown(keyCode, event);

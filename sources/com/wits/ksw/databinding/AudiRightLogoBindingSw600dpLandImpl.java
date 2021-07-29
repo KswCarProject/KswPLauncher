@@ -4,8 +4,6 @@ import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -13,17 +11,17 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 
 public class AudiRightLogoBindingSw600dpLandImpl extends AudiRightLogoBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.KSW_you_audi, 1);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.KSW_you_audi, 1);
     }
 
-    public AudiRightLogoBindingSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public AudiRightLogoBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 2, sIncludes, sViewsWithIds));
     }
 
@@ -51,7 +49,7 @@ public class AudiRightLogoBindingSw600dpLandImpl extends AudiRightLogoBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -59,7 +57,7 @@ public class AudiRightLogoBindingSw600dpLandImpl extends AudiRightLogoBinding {
         return true;
     }
 
-    public void setVm(@Nullable AudiViewModel Vm) {
+    public void setVm(AudiViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 2;
@@ -70,10 +68,12 @@ public class AudiRightLogoBindingSw600dpLandImpl extends AudiRightLogoBinding {
 
     /* access modifiers changed from: protected */
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-        if (localFieldId != 0) {
-            return false;
+        switch (localFieldId) {
+            case 0:
+                return onChangeVmLogoView((ObservableInt) object, fieldId);
+            default:
+                return false;
         }
-        return onChangeVmLogoView((ObservableInt) object, fieldId);
     }
 
     private boolean onChangeVmLogoView(ObservableInt VmLogoView, int fieldId) {

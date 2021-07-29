@@ -55,7 +55,8 @@ public class Barrier extends Helper {
                     return;
             }
             node.setType(5);
-            if (this.mBarrierType == 0 || this.mBarrierType == 1) {
+            int i = this.mBarrierType;
+            if (i == 0 || i == 1) {
                 this.mTop.getResolutionNode().resolve((ResolutionAnchor) null, 0.0f);
                 this.mBottom.getResolutionNode().resolve((ResolutionAnchor) null, 0.0f);
             } else {
@@ -63,8 +64,8 @@ public class Barrier extends Helper {
                 this.mRight.getResolutionNode().resolve((ResolutionAnchor) null, 0.0f);
             }
             this.mNodes.clear();
-            for (int i = 0; i < this.mWidgetsCount; i++) {
-                ConstraintWidget widget = this.mWidgets[i];
+            for (int i2 = 0; i2 < this.mWidgetsCount; i2++) {
+                ConstraintWidget widget = this.mWidgets[i2];
                 if (this.mAllowsGoneWidget || widget.allowedInBarrier()) {
                     ResolutionAnchor depends = null;
                     switch (this.mBarrierType) {
@@ -117,7 +118,8 @@ public class Barrier extends Helper {
         while (i < count) {
             ResolutionAnchor n = this.mNodes.get(i);
             if (n.state == 1) {
-                if (this.mBarrierType == 0 || this.mBarrierType == 2) {
+                int i2 = this.mBarrierType;
+                if (i2 == 0 || i2 == 2) {
                     if (n.resolvedOffset < value) {
                         value = n.resolvedOffset;
                         resolvedTarget = n.resolvedTarget;
@@ -163,18 +165,21 @@ public class Barrier extends Helper {
         for (int i = 0; i < this.mListAnchors.length; i++) {
             this.mListAnchors[i].mSolverVariable = system.createObjectVariable(this.mListAnchors[i]);
         }
-        if (this.mBarrierType >= 0 && this.mBarrierType < 4) {
+        int i2 = this.mBarrierType;
+        if (i2 >= 0 && i2 < 4) {
             ConstraintAnchor position = this.mListAnchors[this.mBarrierType];
             boolean hasMatchConstraintWidgets = false;
-            int i2 = 0;
+            int i3 = 0;
             while (true) {
-                if (i2 >= this.mWidgetsCount) {
+                if (i3 >= this.mWidgetsCount) {
                     break;
                 }
-                ConstraintWidget widget = this.mWidgets[i2];
+                ConstraintWidget widget = this.mWidgets[i3];
                 if (this.mAllowsGoneWidget || widget.allowedInBarrier()) {
-                    if ((this.mBarrierType != 0 && this.mBarrierType != 1) || widget.getHorizontalDimensionBehaviour() != ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT) {
-                        if ((this.mBarrierType == 2 || this.mBarrierType == 3) && widget.getVerticalDimensionBehaviour() == ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT) {
+                    int i4 = this.mBarrierType;
+                    if ((i4 != 0 && i4 != 1) || widget.getHorizontalDimensionBehaviour() != ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT) {
+                        int i5 = this.mBarrierType;
+                        if ((i5 == 2 || i5 == 3) && widget.getVerticalDimensionBehaviour() == ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT) {
                             hasMatchConstraintWidgets = true;
                             break;
                         }
@@ -183,43 +188,46 @@ public class Barrier extends Helper {
                         break;
                     }
                 }
-                i2++;
+                i3++;
             }
-            if (this.mBarrierType == 0 || this.mBarrierType == 1) {
+            int i6 = this.mBarrierType;
+            if (i6 == 0 || i6 == 1) {
                 if (getParent().getHorizontalDimensionBehaviour() == ConstraintWidget.DimensionBehaviour.WRAP_CONTENT) {
                     hasMatchConstraintWidgets = false;
                 }
             } else if (getParent().getVerticalDimensionBehaviour() == ConstraintWidget.DimensionBehaviour.WRAP_CONTENT) {
                 hasMatchConstraintWidgets = false;
             }
-            for (int i3 = 0; i3 < this.mWidgetsCount; i3++) {
-                ConstraintWidget widget2 = this.mWidgets[i3];
+            for (int i7 = 0; i7 < this.mWidgetsCount; i7++) {
+                ConstraintWidget widget2 = this.mWidgets[i7];
                 if (this.mAllowsGoneWidget || widget2.allowedInBarrier()) {
                     SolverVariable target = system.createObjectVariable(widget2.mListAnchors[this.mBarrierType]);
                     widget2.mListAnchors[this.mBarrierType].mSolverVariable = target;
-                    if (this.mBarrierType == 0 || this.mBarrierType == 2) {
+                    int i8 = this.mBarrierType;
+                    if (i8 == 0 || i8 == 2) {
                         system.addLowerBarrier(position.mSolverVariable, target, hasMatchConstraintWidgets);
                     } else {
                         system.addGreaterBarrier(position.mSolverVariable, target, hasMatchConstraintWidgets);
                     }
                 }
             }
-            if (this.mBarrierType == 0) {
+            int i9 = this.mBarrierType;
+            if (i9 == 0) {
                 system.addEquality(this.mRight.mSolverVariable, this.mLeft.mSolverVariable, 0, 6);
                 if (!hasMatchConstraintWidgets) {
                     system.addEquality(this.mLeft.mSolverVariable, this.mParent.mRight.mSolverVariable, 0, 5);
                 }
-            } else if (this.mBarrierType == 1) {
+            } else if (i9 == 1) {
                 system.addEquality(this.mLeft.mSolverVariable, this.mRight.mSolverVariable, 0, 6);
                 if (!hasMatchConstraintWidgets) {
                     system.addEquality(this.mLeft.mSolverVariable, this.mParent.mLeft.mSolverVariable, 0, 5);
                 }
-            } else if (this.mBarrierType == 2) {
+            } else if (i9 == 2) {
                 system.addEquality(this.mBottom.mSolverVariable, this.mTop.mSolverVariable, 0, 6);
                 if (!hasMatchConstraintWidgets) {
                     system.addEquality(this.mTop.mSolverVariable, this.mParent.mBottom.mSolverVariable, 0, 5);
                 }
-            } else if (this.mBarrierType == 3) {
+            } else if (i9 == 3) {
                 system.addEquality(this.mTop.mSolverVariable, this.mBottom.mSolverVariable, 0, 6);
                 if (!hasMatchConstraintWidgets) {
                     system.addEquality(this.mTop.mSolverVariable, this.mParent.mTop.mSolverVariable, 0, 5);

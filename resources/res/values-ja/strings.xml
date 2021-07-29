@@ -45,6 +45,12 @@
     <string name="audi_set_temp_unit">温度の単位</string>
     <string name="bc_apps_btn_text">Androidアプリ</string>
     <string name="benz_gs_home_navi">ナビゲーション</string>
+    <string name="benz_mbux_2021_bg_sel_tip">はいけー</string>
+    <string name="benz_mbux_2021_img_sel_tip">アイコンスタイル </string>
+    <string name="benz_mbux_2021_style_classical_tip">クラシック</string>
+    <string name="benz_mbux_2021_style_modern_tip">モダン</string>
+    <string name="benz_mbux_2021_theme_settings">テーマ </string>
+    <string name="benz_ntg6_fy_theme_settings">テーマ </string>
     <string name="boot_record_mode">レジューム</string>
     <string name="boot_record_mode_radio1">できる</string>
     <string name="boot_record_mode_radio2">OEMシステム</string>
@@ -120,6 +126,7 @@
     <string name="factory_yuyinkey2">短押しで無効となり、長押しでナビ機能となります</string>
     <string name="factory_yuyinkey3">短押しで通話機能となり、長押しでナビ機能となります</string>
     <string name="factory_yuyinkey4">短押しでナビ機能となり、長押しで無効となります</string>
+    <string name="fuel_unit">燃料ユニット</string>
     <string name="function_bt">BT</string>
     <string name="function_fcam">フロントカメラ</string>
     <string name="function_google_off">Zlink</string>
@@ -165,12 +172,13 @@
     <string name="id6_phone">スマホン</string>
     <string name="id6_phone_mess">電話をかける</string>
     <string name="id6_setting_mess">システム機能設定</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">ミラーリング</string>
     <string name="id6_xingchejily_mess">運転中の映像を記録する</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">システム</string>
     <string name="item2">ナビゲーション</string>
     <string name="item3">音量</string>
@@ -205,8 +213,13 @@
     <string name="ksw_idf7_unknow_artis">未知のアーティスト</string>
     <string name="ksw_idf7_unkonw_album">未知のアルバム</string>
     <string name="ksw_idf7_unkonw_soung">未知の音楽</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">パスワードが違います！</string>
     <string name="mcu_file_corrupted">アップデートファイルが壊れています！</string>
+    <string name="music_app_sel">音楽アプリを選択してください</string>
     <string name="ntg6_dvr_toast">デバイスなし！!</string>
     <string name="oil_size">油: %s</string>
     <string name="raw_car_text1">全画面表示</string>
@@ -288,6 +301,7 @@
     <string name="update_mcu_file">MCUをアップデートしますか？</string>
     <string name="update_reset_all">工場出荷時の設定に戻しますか？</string>
     <string name="video">ビデオ</string>
+    <string name="video_app_sel">ビデオアプリを選択してください</string>
     <string name="voic_1">Android音量</string>
     <string name="voic_2">メディア</string>
     <string name="voic_3">通話</string>

@@ -1,8 +1,5 @@
 package com.bumptech.glide.manager;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.util.Util;
@@ -18,7 +15,7 @@ public class RequestTracker {
     private final List<Request> pendingRequests = new ArrayList();
     private final Set<Request> requests = Collections.newSetFromMap(new WeakHashMap());
 
-    public void runRequest(@NonNull Request request) {
+    public void runRequest(Request request) {
         this.requests.add(request);
         if (!this.isPaused) {
             request.begin();
@@ -32,16 +29,15 @@ public class RequestTracker {
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public void addRequest(Request request) {
         this.requests.add(request);
     }
 
-    public boolean clearRemoveAndRecycle(@Nullable Request request) {
+    public boolean clearRemoveAndRecycle(Request request) {
         return clearRemoveAndMaybeRecycle(request, true);
     }
 
-    private boolean clearRemoveAndMaybeRecycle(@Nullable Request request, boolean isSafeToRecycle) {
+    private boolean clearRemoveAndMaybeRecycle(Request request, boolean isSafeToRecycle) {
         boolean isOwnedByUs = true;
         if (request == null) {
             return true;

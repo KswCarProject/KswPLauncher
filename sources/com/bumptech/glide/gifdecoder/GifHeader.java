@@ -1,19 +1,16 @@
 package com.bumptech.glide.gifdecoder;
 
-import android.support.annotation.ColorInt;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GifHeader {
     public static final int NETSCAPE_LOOP_COUNT_DOES_NOT_EXIST = -1;
     public static final int NETSCAPE_LOOP_COUNT_FOREVER = 0;
-    @ColorInt
     int bgColor;
     int bgIndex;
     GifFrame currentFrame;
     int frameCount = 0;
     final List<GifFrame> frames = new ArrayList();
-    @ColorInt
     int[] gct = null;
     boolean gctFlag;
     int gctSize;

@@ -1,7 +1,6 @@
 package android.support.v7.view;
 
 import android.content.Context;
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPopupHelper;
@@ -13,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import java.lang.ref.WeakReference;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class StandaloneActionMode extends ActionMode implements MenuBuilder.Callback {
     private ActionMode.Callback mCallback;
     private Context mContext;
@@ -27,8 +25,9 @@ public class StandaloneActionMode extends ActionMode implements MenuBuilder.Call
         this.mContext = context;
         this.mContextView = view;
         this.mCallback = callback;
-        this.mMenu = new MenuBuilder(view.getContext()).setDefaultShowAsAction(1);
-        this.mMenu.setCallback(this);
+        MenuBuilder defaultShowAsAction = new MenuBuilder(view.getContext()).setDefaultShowAsAction(1);
+        this.mMenu = defaultShowAsAction;
+        defaultShowAsAction.setCallback(this);
         this.mFocusable = isFocusable;
     }
 
@@ -87,8 +86,9 @@ public class StandaloneActionMode extends ActionMode implements MenuBuilder.Call
     }
 
     public View getCustomView() {
-        if (this.mCustomView != null) {
-            return (View) this.mCustomView.get();
+        WeakReference<View> weakReference = this.mCustomView;
+        if (weakReference != null) {
+            return (View) weakReference.get();
         }
         return null;
     }

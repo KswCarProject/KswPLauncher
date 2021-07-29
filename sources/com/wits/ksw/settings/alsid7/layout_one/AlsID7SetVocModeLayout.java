@@ -43,25 +43,26 @@ public class AlsID7SetVocModeLayout extends RelativeLayout {
     }
 
     private void initView(View view) {
-        this.rdg_vocmd = (RadioGroup) view.findViewById(R.id.rdg_vocmd);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_vocmd);
+        this.rdg_vocmd = radioGroup;
         switch (this.eqModel) {
             case 0:
-                this.rdg_vocmd.check(R.id.rdb_vocmd1);
+                radioGroup.check(R.id.rdb_vocmd1);
                 break;
             case 1:
-                this.rdg_vocmd.check(R.id.rdb_vocmd2);
+                radioGroup.check(R.id.rdb_vocmd2);
                 break;
             case 2:
-                this.rdg_vocmd.check(R.id.rdb_vocmd3);
+                radioGroup.check(R.id.rdb_vocmd3);
                 break;
             case 3:
-                this.rdg_vocmd.check(R.id.rdb_vocmd4);
+                radioGroup.check(R.id.rdb_vocmd4);
                 break;
             case 4:
-                this.rdg_vocmd.check(R.id.rdb_vocmd5);
+                radioGroup.check(R.id.rdb_vocmd5);
                 break;
             case 5:
-                this.rdg_vocmd.check(R.id.rdb_vocmd6);
+                radioGroup.check(R.id.rdb_vocmd6);
                 break;
         }
         this.rdg_vocmd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

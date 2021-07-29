@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.view.benzgs;
 
-import android.content.res.Resources;
 import android.database.ContentObserver;
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableInt;
 import android.os.Handler;
 import android.provider.Settings;
@@ -16,7 +14,8 @@ public class BenzGsViewMoel extends BcVieModel {
     private ContentObserver contentObserver = new ContentObserver(new Handler()) {
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            BenzGsViewMoel.this.setIndex(BenzConfig.getIndex(BenzGsViewMoel.this.context));
+            BenzGsViewMoel benzGsViewMoel = BenzGsViewMoel.this;
+            benzGsViewMoel.setIndex(BenzConfig.getIndex(benzGsViewMoel.context));
         }
     };
     public ObservableInt index = new ObservableInt(-1);
@@ -35,8 +34,7 @@ public class BenzGsViewMoel extends BcVieModel {
 
     public void setIndex(int v) {
         this.index.set(v);
-        String str = TAG;
-        Log.i(str, "setIndex: " + v);
+        Log.i(TAG, "setIndex: " + v);
     }
 
     public void onClick(int index2) {
@@ -69,12 +67,7 @@ public class BenzGsViewMoel extends BcVieModel {
         this.pageIndex.set(page);
     }
 
-    @BindingAdapter({"oliText"})
-    public static void setOliText(TextView textView, int value) {
-        StringBuilder sb = new StringBuilder();
-        Resources resources = textView.getResources();
-        sb.append(resources.getString(R.string.oil_size, new Object[]{"" + value}));
-        sb.append("L");
-        textView.setText(sb.toString());
+    public static void setOliText(TextView textView, String value) {
+        textView.setText(textView.getResources().getString(R.string.oil_size, new Object[]{"" + value}));
     }
 }

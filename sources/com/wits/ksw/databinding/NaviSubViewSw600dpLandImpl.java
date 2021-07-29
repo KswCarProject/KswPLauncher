@@ -2,8 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
@@ -11,20 +9,19 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback63;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback179;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.textView2, 2);
-        sViewsWithIds.put(R.id.textView3, 3);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.textView2, 2);
+        sparseIntArray.put(R.id.textView3, 3);
     }
 
-    public NaviSubViewSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public NaviSubViewSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -34,7 +31,7 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
         this.naviConstraintLayout.setTag((Object) null);
         this.naviImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback63 = new OnClickListener(this, 1);
+        this.mCallback179 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -54,20 +51,20 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (8 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (9 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setNaviViewModel(@Nullable LauncherViewModel NaviViewModel) {
+    public void setNaviViewModel(LauncherViewModel NaviViewModel) {
         this.mNaviViewModel = NaviViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(9);
         super.requestRebind();
     }
 
@@ -85,7 +82,7 @@ public class NaviSubViewSw600dpLandImpl extends NaviSubView implements OnClickLi
         }
         LauncherViewModel launcherViewModel = this.mNaviViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.naviImageView.setOnClickListener(this.mCallback63);
+            this.naviImageView.setOnClickListener(this.mCallback179);
         }
     }
 

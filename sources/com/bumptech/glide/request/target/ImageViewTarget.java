@@ -2,17 +2,14 @@ package com.bumptech.glide.request.target;
 
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
 import com.bumptech.glide.request.transition.Transition;
 
 public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implements Transition.ViewAdapter {
-    @Nullable
     private Animatable animatable;
 
     /* access modifiers changed from: protected */
-    public abstract void setResource(@Nullable Z z);
+    public abstract void setResource(Z z);
 
     public ImageViewTarget(ImageView view) {
         super(view);
@@ -23,7 +20,6 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implem
         super(view, waitForLayout);
     }
 
-    @Nullable
     public Drawable getCurrentDrawable() {
         return ((ImageView) this.view).getDrawable();
     }
@@ -32,28 +28,29 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implem
         ((ImageView) this.view).setImageDrawable(drawable);
     }
 
-    public void onLoadStarted(@Nullable Drawable placeholder) {
+    public void onLoadStarted(Drawable placeholder) {
         super.onLoadStarted(placeholder);
         setResourceInternal((Object) null);
         setDrawable(placeholder);
     }
 
-    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+    public void onLoadFailed(Drawable errorDrawable) {
         super.onLoadFailed(errorDrawable);
         setResourceInternal((Object) null);
         setDrawable(errorDrawable);
     }
 
-    public void onLoadCleared(@Nullable Drawable placeholder) {
+    public void onLoadCleared(Drawable placeholder) {
         super.onLoadCleared(placeholder);
-        if (this.animatable != null) {
-            this.animatable.stop();
+        Animatable animatable2 = this.animatable;
+        if (animatable2 != null) {
+            animatable2.stop();
         }
         setResourceInternal((Object) null);
         setDrawable(placeholder);
     }
 
-    public void onResourceReady(@NonNull Z resource, @Nullable Transition<? super Z> transition) {
+    public void onResourceReady(Z resource, Transition<? super Z> transition) {
         if (transition == null || !transition.transition(resource, this)) {
             setResourceInternal(resource);
         } else {
@@ -62,26 +59,29 @@ public abstract class ImageViewTarget<Z> extends ViewTarget<ImageView, Z> implem
     }
 
     public void onStart() {
-        if (this.animatable != null) {
-            this.animatable.start();
+        Animatable animatable2 = this.animatable;
+        if (animatable2 != null) {
+            animatable2.start();
         }
     }
 
     public void onStop() {
-        if (this.animatable != null) {
-            this.animatable.stop();
+        Animatable animatable2 = this.animatable;
+        if (animatable2 != null) {
+            animatable2.stop();
         }
     }
 
-    private void setResourceInternal(@Nullable Z resource) {
+    private void setResourceInternal(Z resource) {
         setResource(resource);
         maybeUpdateAnimatable(resource);
     }
 
-    private void maybeUpdateAnimatable(@Nullable Z resource) {
+    private void maybeUpdateAnimatable(Z resource) {
         if (resource instanceof Animatable) {
-            this.animatable = (Animatable) resource;
-            this.animatable.start();
+            Animatable animatable2 = (Animatable) resource;
+            this.animatable = animatable2;
+            animatable2.start();
             return;
         }
         this.animatable = null;

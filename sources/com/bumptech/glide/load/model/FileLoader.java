@@ -1,7 +1,6 @@
 package com.bumptech.glide.load.model;
 
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -31,11 +30,11 @@ public class FileLoader<Data> implements ModelLoader<File, Data> {
         this.fileOpener = fileOpener2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull File model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(File model, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(model), new FileFetcher(model, this.fileOpener));
     }
 
-    public boolean handles(@NonNull File model) {
+    public boolean handles(File model) {
         return true;
     }
 
@@ -49,10 +48,11 @@ public class FileLoader<Data> implements ModelLoader<File, Data> {
             this.opener = opener2;
         }
 
-        public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super Data> callback) {
+        public void loadData(Priority priority, DataFetcher.DataCallback<? super Data> callback) {
             try {
-                this.data = this.opener.open(this.file);
-                callback.onDataReady(this.data);
+                Data open = this.opener.open(this.file);
+                this.data = open;
+                callback.onDataReady(open);
             } catch (FileNotFoundException e) {
                 if (Log.isLoggable(FileLoader.TAG, 3)) {
                     Log.d(FileLoader.TAG, "Failed to open file", e);
@@ -62,9 +62,10 @@ public class FileLoader<Data> implements ModelLoader<File, Data> {
         }
 
         public void cleanup() {
-            if (this.data != null) {
+            Data data2 = this.data;
+            if (data2 != null) {
                 try {
-                    this.opener.close(this.data);
+                    this.opener.close(data2);
                 } catch (IOException e) {
                 }
             }
@@ -73,12 +74,10 @@ public class FileLoader<Data> implements ModelLoader<File, Data> {
         public void cancel() {
         }
 
-        @NonNull
         public Class<Data> getDataClass() {
             return this.opener.getDataClass();
         }
 
-        @NonNull
         public DataSource getDataSource() {
             return DataSource.LOCAL;
         }
@@ -91,8 +90,7 @@ public class FileLoader<Data> implements ModelLoader<File, Data> {
             this.opener = opener2;
         }
 
-        @NonNull
-        public final ModelLoader<File, Data> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public final ModelLoader<File, Data> build(MultiModelLoaderFactory multiFactory) {
             return new FileLoader(this.opener);
         }
 

@@ -5,8 +5,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,29 +30,30 @@ public class UgHomeFragmentThree extends Fragment implements View.OnFocusChangeL
         this.mainActivity = (MainActivity) activity;
     }
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
-            this.binding2 = (UgHomeThree2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_three2, (ViewGroup) null, false);
-            return this.binding2.getRoot();
+            UgHomeThree2BindingImpl ugHomeThree2BindingImpl = (UgHomeThree2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_three2, (ViewGroup) null, false);
+            this.binding2 = ugHomeThree2BindingImpl;
+            return ugHomeThree2BindingImpl.getRoot();
         }
-        this.binding = (UgHomeThreeBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_three, (ViewGroup) null, false);
-        return this.binding.getRoot();
+        UgHomeThreeBindingImpl ugHomeThreeBindingImpl = (UgHomeThreeBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_three, (ViewGroup) null, false);
+        this.binding = ugHomeThreeBindingImpl;
+        return ugHomeThreeBindingImpl.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
             this.binding2.setViewModel(this.viewModel);
             this.binding2.ugHomeCarVaiw.setOnFocusChangeListener(this);
             this.binding2.ugHomeSettingVaiw.setOnFocusChangeListener(this);
             this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-                public void onChanged(@Nullable UgPager ugPager) {
+                public void onChanged(UgPager ugPager) {
                     if (ugPager.index != 2) {
                         return;
                     }
@@ -71,7 +70,7 @@ public class UgHomeFragmentThree extends Fragment implements View.OnFocusChangeL
         this.binding.ugHomeCarVaiw.setOnFocusChangeListener(this);
         this.binding.ugHomeSettingVaiw.setOnFocusChangeListener(this);
         this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-            public void onChanged(@Nullable UgPager ugPager) {
+            public void onChanged(UgPager ugPager) {
                 if (ugPager.index != 2) {
                     return;
                 }

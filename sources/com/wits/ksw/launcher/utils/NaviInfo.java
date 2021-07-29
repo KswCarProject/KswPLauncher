@@ -54,11 +54,10 @@ public class NaviInfo {
     }
 
     public static String formatDistance(int m) {
-        if (m >= 1000) {
-            DecimalFormat decimalFormat = new DecimalFormat("0.0");
-            return decimalFormat.format(((double) m) / 1000.0d) + " KM";
+        if (m < 1000) {
+            return m + " M";
         }
-        return m + " M";
+        return new DecimalFormat("0.0").format(((double) m) / 1000.0d) + " KM";
     }
 
     public static String formatTime(int time) {
@@ -70,9 +69,13 @@ public class NaviInfo {
 
     public static int formatIcon(int iconIndex) {
         int index = iconIndex - 1;
-        if (index < 0 || index >= iconId.length) {
+        if (index < 0) {
             return 0;
         }
-        return iconId[index];
+        int[] iArr = iconId;
+        if (index < iArr.length) {
+            return iArr[index];
+        }
+        return 0;
     }
 }

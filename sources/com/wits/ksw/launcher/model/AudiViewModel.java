@@ -95,16 +95,21 @@ public class AudiViewModel extends LauncherViewModel {
     }
 
     public void initLeftUi() {
-        this.leftUiId = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_LEFT_ID, this.defaultLeftId);
-        if (this.leftUiId >= 0 && this.leftUiId < this.carPic.length) {
-            this.carPicId.set(this.carPic[this.leftUiId]);
+        int i = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_LEFT_ID, this.defaultLeftId);
+        this.leftUiId = i;
+        if (i >= 0) {
+            int[] iArr = this.carPic;
+            if (i < iArr.length) {
+                this.carPicId.set(iArr[i]);
+            }
         }
     }
 
     /* access modifiers changed from: private */
     public void initRightUi() {
-        this.rightUiId = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_RIGHT_ID, this.defaultRightId);
-        setRightUi(this.rightUiId);
+        int i = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_RIGHT_ID, this.defaultRightId);
+        this.rightUiId = i;
+        setRightUi(i);
     }
 
     public void onClick(View view) {

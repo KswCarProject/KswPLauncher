@@ -1,10 +1,8 @@
 package com.wits.ksw.launcher.view;
 
-import android.annotation.SuppressLint;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,7 +14,6 @@ import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.utils.KswUtils;
 
-@SuppressLint({"AppCompatCustomView"})
 public class CustomBcImageView extends ImageView implements View.OnFocusChangeListener {
     private static final String TAG = "KSWLauncher";
     private int itemHalfWidth;
@@ -28,7 +25,7 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
         this(context, (AttributeSet) null);
     }
 
-    public CustomBcImageView(Context context, @Nullable AttributeSet attrs) {
+    public CustomBcImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.leftX = 0;
         this.itemHalfWidth = 0;
@@ -87,8 +84,7 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
         if (hasFocus) {
             scaleBig(view);
             int X = getItemLocationOnScreenX(view);
-            int Y = getItemLocationOnScreenY(view);
-            Log.i("KSWLauncher", "onFocusChange: view[" + X + "," + Y + "]");
+            Log.i("KSWLauncher", "onFocusChange: view[" + X + "," + getItemLocationOnScreenY(view) + "]");
             translationX(view);
             return;
         }
@@ -114,8 +110,9 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
             itemCenterPointX = itemCenterPoint(itemLocationOnScreenX);
         }
         try {
-            this.moveItemViewHalfWidth = MainActivity.mainActivity.bcMainActivity.CustomBcItemBgImageView.getWidth() / 2;
-            MainActivity.mainActivity.bcMainActivity.CustomBcItemBgImageView.translationX(itemCenterPointX - this.moveItemViewHalfWidth);
+            int width = MainActivity.mainActivity.bcMainActivity.CustomBcItemBgImageView.getWidth() / 2;
+            this.moveItemViewHalfWidth = width;
+            MainActivity.mainActivity.bcMainActivity.CustomBcItemBgImageView.translationX(itemCenterPointX - width);
         } catch (Exception e) {
             e.printStackTrace();
         }

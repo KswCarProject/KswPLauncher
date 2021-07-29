@@ -1,22 +1,16 @@
 package android.support.v7.widget;
 
 import android.graphics.PointF;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.ActivityChooserView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
 
 public class PagerSnapHelper extends SnapHelper {
     private static final int MAX_SCROLL_ON_FLING_DURATION = 100;
-    @Nullable
     private OrientationHelper mHorizontalHelper;
-    @Nullable
     private OrientationHelper mVerticalHelper;
 
-    @Nullable
-    public int[] calculateDistanceToFinalSnap(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView) {
+    public int[] calculateDistanceToFinalSnap(RecyclerView.LayoutManager layoutManager, View targetView) {
         int[] out = new int[2];
         if (layoutManager.canScrollHorizontally()) {
             out[0] = distanceToCenter(layoutManager, targetView, getHorizontalHelper(layoutManager));
@@ -31,7 +25,6 @@ public class PagerSnapHelper extends SnapHelper {
         return out;
     }
 
-    @Nullable
     public View findSnapView(RecyclerView.LayoutManager layoutManager) {
         if (layoutManager.canScrollVertically()) {
             return findCenterView(layoutManager, getVerticalHelper(layoutManager));
@@ -90,7 +83,8 @@ public class PagerSnapHelper extends SnapHelper {
         return new LinearSmoothScroller(this.mRecyclerView.getContext()) {
             /* access modifiers changed from: protected */
             public void onTargetFound(View targetView, RecyclerView.State state, RecyclerView.SmoothScroller.Action action) {
-                int[] snapDistances = PagerSnapHelper.this.calculateDistanceToFinalSnap(PagerSnapHelper.this.mRecyclerView.getLayoutManager(), targetView);
+                PagerSnapHelper pagerSnapHelper = PagerSnapHelper.this;
+                int[] snapDistances = pagerSnapHelper.calculateDistanceToFinalSnap(pagerSnapHelper.mRecyclerView.getLayoutManager(), targetView);
                 int dx = snapDistances[0];
                 int dy = snapDistances[1];
                 int time = calculateTimeForDeceleration(Math.max(Math.abs(dx), Math.abs(dy)));
@@ -111,7 +105,7 @@ public class PagerSnapHelper extends SnapHelper {
         };
     }
 
-    private int distanceToCenter(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView, OrientationHelper helper) {
+    private int distanceToCenter(RecyclerView.LayoutManager layoutManager, View targetView, OrientationHelper helper) {
         int containerCenter;
         int childCenter = helper.getDecoratedStart(targetView) + (helper.getDecoratedMeasurement(targetView) / 2);
         if (layoutManager.getClipToPadding()) {
@@ -122,7 +116,6 @@ public class PagerSnapHelper extends SnapHelper {
         return childCenter - containerCenter;
     }
 
-    @Nullable
     private View findCenterView(RecyclerView.LayoutManager layoutManager, OrientationHelper helper) {
         int center;
         int childCount = layoutManager.getChildCount();
@@ -135,7 +128,7 @@ public class PagerSnapHelper extends SnapHelper {
         } else {
             center = helper.getEnd() / 2;
         }
-        int absClosest = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
+        int absClosest = Integer.MAX_VALUE;
         for (int i = 0; i < childCount; i++) {
             View child = layoutManager.getChildAt(i);
             int absDistance = Math.abs((helper.getDecoratedStart(child) + (helper.getDecoratedMeasurement(child) / 2)) - center);
@@ -147,14 +140,13 @@ public class PagerSnapHelper extends SnapHelper {
         return closestChild;
     }
 
-    @Nullable
     private View findStartView(RecyclerView.LayoutManager layoutManager, OrientationHelper helper) {
         int childCount = layoutManager.getChildCount();
         if (childCount == 0) {
             return null;
         }
         View closestChild = null;
-        int startest = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
+        int startest = Integer.MAX_VALUE;
         for (int i = 0; i < childCount; i++) {
             View child = layoutManager.getChildAt(i);
             int childStart = helper.getDecoratedStart(child);
@@ -166,17 +158,17 @@ public class PagerSnapHelper extends SnapHelper {
         return closestChild;
     }
 
-    @NonNull
-    private OrientationHelper getVerticalHelper(@NonNull RecyclerView.LayoutManager layoutManager) {
-        if (this.mVerticalHelper == null || this.mVerticalHelper.mLayoutManager != layoutManager) {
+    private OrientationHelper getVerticalHelper(RecyclerView.LayoutManager layoutManager) {
+        OrientationHelper orientationHelper = this.mVerticalHelper;
+        if (orientationHelper == null || orientationHelper.mLayoutManager != layoutManager) {
             this.mVerticalHelper = OrientationHelper.createVerticalHelper(layoutManager);
         }
         return this.mVerticalHelper;
     }
 
-    @NonNull
-    private OrientationHelper getHorizontalHelper(@NonNull RecyclerView.LayoutManager layoutManager) {
-        if (this.mHorizontalHelper == null || this.mHorizontalHelper.mLayoutManager != layoutManager) {
+    private OrientationHelper getHorizontalHelper(RecyclerView.LayoutManager layoutManager) {
+        OrientationHelper orientationHelper = this.mHorizontalHelper;
+        if (orientationHelper == null || orientationHelper.mLayoutManager != layoutManager) {
             this.mHorizontalHelper = OrientationHelper.createHorizontalHelper(layoutManager);
         }
         return this.mHorizontalHelper;

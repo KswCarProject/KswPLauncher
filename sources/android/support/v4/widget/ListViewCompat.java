@@ -1,12 +1,11 @@
 package android.support.v4.widget;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ListView;
 
 public final class ListViewCompat {
-    public static void scrollListBy(@NonNull ListView listView, int y) {
+    public static void scrollListBy(ListView listView, int y) {
         View firstView;
         if (Build.VERSION.SDK_INT >= 19) {
             listView.scrollListBy(y);
@@ -18,7 +17,7 @@ public final class ListViewCompat {
         }
     }
 
-    public static boolean canScrollList(@NonNull ListView listView, int direction) {
+    public static boolean canScrollList(ListView listView, int direction) {
         if (Build.VERSION.SDK_INT >= 19) {
             return listView.canScrollList(direction);
         }

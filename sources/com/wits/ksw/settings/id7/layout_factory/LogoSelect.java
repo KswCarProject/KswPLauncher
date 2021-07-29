@@ -1,7 +1,7 @@
 package com.wits.ksw.settings.id7.layout_factory;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.os.Build;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +17,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.settings.id7.adapter.UiSelectAdapter;
 import com.wits.ksw.settings.id7.bean.UiSelectBean;
 import com.wits.ksw.settings.utlis_view.DialogViews;
+import com.wits.ksw.settings.utlis_view.ToastUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +51,10 @@ public class LogoSelect extends FrameLayout {
     private TextView tv_Input;
     private View view;
 
-    public LogoSelect(@NonNull Context context) {
+    public LogoSelect(Context context) {
         super(context);
         this.m_con = context;
-        this.view = LayoutInflater.from(this.m_con).inflate(R.layout.factory_logo_select, (ViewGroup) null);
+        this.view = LayoutInflater.from(context).inflate(R.layout.factory_logo_select, (ViewGroup) null);
         this.layoutParams = new FrameLayout.LayoutParams(-1, -1);
         initData();
         initView();
@@ -66,8 +67,7 @@ public class LogoSelect extends FrameLayout {
         this.siRendata = new ArrayList();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
-        int screenHeight = dm.heightPixels;
-        this.imgFileName = screenWidth + "_" + screenHeight;
+        this.imgFileName = screenWidth + "_" + dm.heightPixels;
         initTongyong();
         initZhuanYong();
     }
@@ -83,15 +83,18 @@ public class LogoSelect extends FrameLayout {
                 uiSelectBean.setUiPath(logos[i].getPath());
                 int length = logos[i].getName().length();
                 try {
-                    String name = logos[i].getName().substring(length - 6, length - 3);
+                    String name = logos[i].getName().substring(length - 7, length - 4);
                     for (File fle : files) {
                         int leng = fle.getName().length();
-                        if (TextUtils.equals(name, fle.getName().substring(leng - 6, leng - 3))) {
+                        String fn = fle.getName().substring(leng - 7, leng - 4);
+                        Log.d(TAG, "TongYong_logo: name " + fn);
+                        if (TextUtils.equals(name, fn)) {
                             uiSelectBean.setFilePath(fle.getPath());
                         }
                     }
                     Log.d(TAG, "TongYong_logo:" + uiSelectBean.getUiPath() + "\nfiles:" + uiSelectBean.getFilePath());
                     this.data.add(uiSelectBean);
+                    Log.d(TAG, "TongYong_logo size: " + this.data.size());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -110,15 +113,18 @@ public class LogoSelect extends FrameLayout {
                 uiSelectBean.setUiPath(logos[i].getPath());
                 int length = logos[i].getName().length();
                 try {
-                    String name = logos[i].getName().substring(length - 6, length - 3);
+                    String name = logos[i].getName().substring(length - 7, length - 4);
                     for (File fle : files) {
                         int leng = fle.getName().length();
-                        if (TextUtils.equals(name, fle.getName().substring(leng - 6, leng - 3))) {
+                        String fn = fle.getName().substring(leng - 7, leng - 4);
+                        Log.d(TAG, "zhuanYong_logo: name " + fn);
+                        if (TextUtils.equals(name, fn) && !fle.getPath().endsWith("bmp")) {
                             uiSelectBean.setFilePath(fle.getPath());
                         }
                     }
                     Log.d(TAG, "zhuanYong_logo:" + uiSelectBean.getUiPath() + "\nfiles:" + uiSelectBean.getFilePath());
                     this.siRendata.add(uiSelectBean);
+                    Log.d(TAG, "zhuanYong_logo size: " + this.siRendata.size());
                 } catch (StringIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -130,28 +136,45 @@ public class LogoSelect extends FrameLayout {
         this.dialogViews = new DialogViews(this.m_con);
         this.recyclerView = (RecyclerView) this.view.findViewById(R.id.recyclerView);
         this.siRen_recyclerView = (RecyclerView) this.view.findViewById(R.id.siRen_recyclerView);
-        this.gridLayoutManager = new GridLayoutManager(this.m_con, 3);
-        this.recyclerView.setLayoutManager(this.gridLayoutManager);
-        this.adapter = new UiSelectAdapter(this.m_con, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        GridLayoutManager gridLayoutManager2 = new GridLayoutManager(this.m_con, 3);
+        this.gridLayoutManager = gridLayoutManager2;
+        this.recyclerView.setLayoutManager(gridLayoutManager2);
+        UiSelectAdapter uiSelectAdapter = new UiSelectAdapter(this.m_con, this.data);
+        this.adapter = uiSelectAdapter;
+        this.recyclerView.setAdapter(uiSelectAdapter);
         this.adapter.registOnFunctionClickListener(new UiSelectAdapter.OnFunctionClickListener() {
             public void functonClick(int pos) {
-                LogoSelect.this.dialogViews.isUpdateLogo(LogoSelect.this.getResources().getString(R.string.string_is_this_logo), ((UiSelectBean) LogoSelect.this.data.get(pos)).getFilePath());
-                Log.d(LogoSelect.TAG, "img Path:" + ((UiSelectBean) LogoSelect.this.data.get(pos)).getFilePath());
+                if (Build.VERSION.RELEASE.equals("11") && ((UiSelectBean) LogoSelect.this.data.get(pos)).getFilePath().contains("splash")) {
+                    ToastUtils.showToastShort(LogoSelect.this.m_con, "This logo file nonsupport Android 11");
+                } else if (!Build.VERSION.RELEASE.equals("10") || !((UiSelectBean) LogoSelect.this.data.get(pos)).getFilePath().contains("elf")) {
+                    LogoSelect.this.dialogViews.isUpdateLogo(LogoSelect.this.getResources().getString(R.string.string_is_this_logo), ((UiSelectBean) LogoSelect.this.data.get(pos)).getFilePath());
+                    Log.d(LogoSelect.TAG, "img Path:" + ((UiSelectBean) LogoSelect.this.data.get(pos)).getFilePath());
+                } else {
+                    ToastUtils.showToastShort(LogoSelect.this.m_con, "This logo file nonsupport Android 10");
+                }
             }
         });
-        this.siRengridLayoutManager = new GridLayoutManager(this.m_con, 3);
-        this.siRen_recyclerView.setLayoutManager(this.siRengridLayoutManager);
-        this.siRenAdapter = new UiSelectAdapter(this.m_con, this.siRendata);
-        this.siRen_recyclerView.setAdapter(this.siRenAdapter);
+        GridLayoutManager gridLayoutManager3 = new GridLayoutManager(this.m_con, 3);
+        this.siRengridLayoutManager = gridLayoutManager3;
+        this.siRen_recyclerView.setLayoutManager(gridLayoutManager3);
+        UiSelectAdapter uiSelectAdapter2 = new UiSelectAdapter(this.m_con, this.siRendata);
+        this.siRenAdapter = uiSelectAdapter2;
+        this.siRen_recyclerView.setAdapter(uiSelectAdapter2);
         this.siRenAdapter.registOnFunctionClickListener(new UiSelectAdapter.OnFunctionClickListener() {
             public void functonClick(int pos) {
-                LogoSelect.this.dialogViews.isUpdateLogo(LogoSelect.this.getResources().getString(R.string.string_is_this_logo), ((UiSelectBean) LogoSelect.this.siRendata.get(pos)).getFilePath());
-                Log.d(LogoSelect.TAG, "img Path:" + ((UiSelectBean) LogoSelect.this.siRendata.get(pos)).getFilePath());
+                if (Build.VERSION.RELEASE.equals("11") && ((UiSelectBean) LogoSelect.this.siRendata.get(pos)).getFilePath().contains("splash")) {
+                    ToastUtils.showToastShort(LogoSelect.this.m_con, "This logo file nonsupport Android 11");
+                } else if (!Build.VERSION.RELEASE.equals("10") || !((UiSelectBean) LogoSelect.this.siRendata.get(pos)).getFilePath().contains("elf")) {
+                    LogoSelect.this.dialogViews.isUpdateLogo(LogoSelect.this.getResources().getString(R.string.string_is_this_logo), ((UiSelectBean) LogoSelect.this.siRendata.get(pos)).getFilePath());
+                    Log.d(LogoSelect.TAG, "img Path:" + ((UiSelectBean) LogoSelect.this.siRendata.get(pos)).getFilePath());
+                } else {
+                    ToastUtils.showToastShort(LogoSelect.this.m_con, "This logo file nonsupport Android 10");
+                }
             }
         });
-        this.tvOne = (TextView) this.view.findViewById(R.id.tvOne);
-        this.tvOne.setOnClickListener(new View.OnClickListener() {
+        TextView textView = (TextView) this.view.findViewById(R.id.tvOne);
+        this.tvOne = textView;
+        textView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 LogoSelect.this.recyclerView.setVisibility(0);
                 LogoSelect.this.siRen_recyclerView.setVisibility(8);
@@ -159,8 +182,9 @@ public class LogoSelect extends FrameLayout {
                 LogoSelect.this.tvTwo.setTextColor(-1);
             }
         });
-        this.tvTwo = (TextView) this.view.findViewById(R.id.tvTwo);
-        this.tvTwo.setOnClickListener(new View.OnClickListener() {
+        TextView textView2 = (TextView) this.view.findViewById(R.id.tvTwo);
+        this.tvTwo = textView2;
+        textView2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 LogoSelect.this.recyclerView.setVisibility(8);
                 LogoSelect.this.siRen_recyclerView.setVisibility(0);
@@ -168,8 +192,9 @@ public class LogoSelect extends FrameLayout {
                 LogoSelect.this.tvTwo.setTextColor(SupportMenu.CATEGORY_MASK);
             }
         });
-        this.tv_Input = (TextView) this.view.findViewById(R.id.tv_Input);
-        this.tv_Input.setOnClickListener(new View.OnClickListener() {
+        TextView textView3 = (TextView) this.view.findViewById(R.id.tv_Input);
+        this.tv_Input = textView3;
+        textView3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 LogoSelect.this.dialogViews.inputLogoFile(LogoSelect.this.m_con.getResources().getString(R.string.text_logo_input_msg));
             }

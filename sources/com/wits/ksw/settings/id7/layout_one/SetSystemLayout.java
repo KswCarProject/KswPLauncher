@@ -28,6 +28,7 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
     private int dcgj = 0;
     private int dcjy = 0;
     private int dcld = 0;
+    private TextView fuelUnitView;
     private int housi = 0;
     private int nbauxsw = 0;
     private TextView tempUnitView;
@@ -66,6 +67,7 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
 
     private void initView(View view) {
         this.tempUnitView = (TextView) view.findViewById(R.id.tv_sysTempUnit);
+        this.fuelUnitView = (TextView) view.findViewById(R.id.tv_sysFuelUnit);
         this.tv_sysDcsxt = (TextView) view.findViewById(R.id.tv_sysDcsxt);
         this.tv_sysBgld = (TextView) view.findViewById(R.id.tv_sysBgld);
         this.cbox_sysHjs = (CheckBox) view.findViewById(R.id.cbox_sysHjs);
@@ -88,6 +90,7 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         this.tv_sysBgld.setOnClickListener(this);
         this.tv_sysCaux.setOnClickListener(this);
         this.tempUnitView.setOnClickListener(this);
+        this.fuelUnitView.setOnClickListener(this);
         this.cbox_sysHjs.setOnCheckedChangeListener(this);
         this.cbox_sysXcjz.setOnCheckedChangeListener(this);
         this.cbox_sysDcgj.setOnCheckedChangeListener(this);
@@ -104,8 +107,10 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         this.tv_sysDcsxt.setTextColor(-1);
         this.tv_sysBgld.setTextColor(-1);
         this.tempUnitView.setTextColor(-1);
-        if (this.updateTwoLayout != null) {
-            this.updateTwoLayout.updateTwoLayout(1, 0);
+        this.fuelUnitView.setTextColor(-1);
+        IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+        if (iUpdateTwoLayout != null) {
+            iUpdateTwoLayout.updateTwoLayout(1, 0);
         }
     }
 
@@ -126,6 +131,10 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
             case R.id.tv_sysDcsxt:
                 this.tv_sysDcsxt.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.updateTwoLayout.updateTwoLayout(1, 1);
+                return;
+            case R.id.tv_sysFuelUnit:
+                this.fuelUnitView.setTextColor(SupportMenu.CATEGORY_MASK);
+                this.updateTwoLayout.updateTwoLayout(1, 5);
                 return;
             case R.id.tv_sysTempUnit:
                 this.tempUnitView.setTextColor(SupportMenu.CATEGORY_MASK);

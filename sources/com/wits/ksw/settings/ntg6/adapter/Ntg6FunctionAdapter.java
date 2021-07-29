@@ -2,7 +2,6 @@ package com.wits.ksw.settings.ntg6.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -36,12 +35,11 @@ public class Ntg6FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.data = appInfoList;
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.list_settings_ntg6_function, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         if (position == 0) {
             holder.relat_functionItem.setNextFocusUpId(R.id.relat_ntg6functionItem);
         }
@@ -80,17 +78,18 @@ public class Ntg6FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.data == null) {
+        List<FunctionBean> list = this.data;
+        if (list == null) {
             return 0;
         }
-        return this.data.size();
+        return list.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout relat_functionItem;
         TextView tv_functionItem;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             this.tv_functionItem = (TextView) itemView.findViewById(R.id.tv_functionItem);
             this.relat_functionItem = (RelativeLayout) itemView.findViewById(R.id.relat_ntg6functionItem);

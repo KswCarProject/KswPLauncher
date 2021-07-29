@@ -4,8 +4,6 @@ import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,45 +12,32 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback104;
-    @Nullable
-    private final View.OnClickListener mCallback105;
-    @Nullable
-    private final View.OnClickListener mCallback106;
-    @Nullable
-    private final View.OnClickListener mCallback107;
-    @Nullable
-    private final View.OnClickListener mCallback108;
-    @Nullable
-    private final View.OnClickListener mCallback109;
-    @Nullable
-    private final View.OnClickListener mCallback110;
-    @Nullable
-    private final View.OnClickListener mCallback111;
-    @Nullable
-    private final View.OnClickListener mCallback112;
-    @Nullable
+    private static final SparseIntArray sViewsWithIds;
     private final View.OnClickListener mCallback113;
-    @Nullable
     private final View.OnClickListener mCallback114;
-    @Nullable
     private final View.OnClickListener mCallback115;
+    private final View.OnClickListener mCallback116;
+    private final View.OnClickListener mCallback117;
+    private final View.OnClickListener mCallback118;
+    private final View.OnClickListener mCallback119;
+    private final View.OnClickListener mCallback120;
+    private final View.OnClickListener mCallback121;
+    private final View.OnClickListener mCallback122;
+    private final View.OnClickListener mCallback123;
+    private final View.OnClickListener mCallback124;
     private long mDirtyFlags;
-    @NonNull
     private final LinearLayout mboundView0;
 
     static {
-        sViewsWithIds.put(R.id.lexus_main_sv, 13);
-        sViewsWithIds.put(R.id.id_gallery, 14);
-        sViewsWithIds.put(R.id.main_menu, 15);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.lexus_main_sv, 13);
+        sparseIntArray.put(R.id.id_gallery, 14);
+        sparseIntArray.put(R.id.main_menu, 15);
     }
 
-    public ActivityMainLexusBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainLexusBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 16, sIncludes, sViewsWithIds));
     }
 
@@ -71,21 +56,22 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
         this.lexusBtPhone.setTag((Object) null);
         this.lexusBtSet.setTag((Object) null);
         this.lexusBtVedio.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        LinearLayout linearLayout = bindings[0];
+        this.mboundView0 = linearLayout;
+        linearLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback112 = new OnClickListener(this, 9);
-        this.mCallback108 = new OnClickListener(this, 5);
-        this.mCallback113 = new OnClickListener(this, 10);
-        this.mCallback109 = new OnClickListener(this, 6);
-        this.mCallback106 = new OnClickListener(this, 3);
-        this.mCallback110 = new OnClickListener(this, 7);
-        this.mCallback107 = new OnClickListener(this, 4);
-        this.mCallback111 = new OnClickListener(this, 8);
-        this.mCallback104 = new OnClickListener(this, 1);
-        this.mCallback105 = new OnClickListener(this, 2);
-        this.mCallback114 = new OnClickListener(this, 11);
-        this.mCallback115 = new OnClickListener(this, 12);
+        this.mCallback118 = new OnClickListener(this, 6);
+        this.mCallback116 = new OnClickListener(this, 4);
+        this.mCallback124 = new OnClickListener(this, 12);
+        this.mCallback114 = new OnClickListener(this, 2);
+        this.mCallback122 = new OnClickListener(this, 10);
+        this.mCallback120 = new OnClickListener(this, 8);
+        this.mCallback117 = new OnClickListener(this, 5);
+        this.mCallback115 = new OnClickListener(this, 3);
+        this.mCallback113 = new OnClickListener(this, 1);
+        this.mCallback123 = new OnClickListener(this, 11);
+        this.mCallback121 = new OnClickListener(this, 9);
+        this.mCallback119 = new OnClickListener(this, 7);
         invalidateAll();
     }
 
@@ -105,29 +91,31 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(19);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
     /* access modifiers changed from: protected */
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-        if (localFieldId != 0) {
-            return false;
+        switch (localFieldId) {
+            case 0:
+                return onChangeViewModelAcControl((ObservableBoolean) object, fieldId);
+            default:
+                return false;
         }
-        return onChangeViewModelAcControl((ObservableBoolean) object, fieldId);
     }
 
     private boolean onChangeViewModelAcControl(ObservableBoolean ViewModelAcControl, int fieldId) {
@@ -176,28 +164,28 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
             this.lexusAir.setVisibility(viewModelAcControlViewVISIBLEViewGONE);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.lexusAir.setOnClickListener(this.mCallback115);
-            this.lexusBtApp.setOnClickListener(this.mCallback114);
-            this.lexusBtCar.setOnClickListener(this.mCallback113);
-            this.lexusBtDash.setOnClickListener(this.mCallback107);
-            this.lexusBtDvr.setOnClickListener(this.mCallback108);
-            this.lexusBtFile.setOnClickListener(this.mCallback112);
-            this.lexusBtLink.setOnClickListener(this.mCallback109);
-            this.lexusBtMusic.setOnClickListener(this.mCallback106);
-            this.lexusBtNavi.setOnClickListener(this.mCallback104);
-            this.lexusBtPhone.setOnClickListener(this.mCallback105);
-            this.lexusBtSet.setOnClickListener(this.mCallback110);
-            this.lexusBtVedio.setOnClickListener(this.mCallback111);
+            this.lexusAir.setOnClickListener(this.mCallback124);
+            this.lexusBtApp.setOnClickListener(this.mCallback123);
+            this.lexusBtCar.setOnClickListener(this.mCallback122);
+            this.lexusBtDash.setOnClickListener(this.mCallback116);
+            this.lexusBtDvr.setOnClickListener(this.mCallback117);
+            this.lexusBtFile.setOnClickListener(this.mCallback121);
+            this.lexusBtLink.setOnClickListener(this.mCallback118);
+            this.lexusBtMusic.setOnClickListener(this.mCallback115);
+            this.lexusBtNavi.setOnClickListener(this.mCallback113);
+            this.lexusBtPhone.setOnClickListener(this.mCallback114);
+            this.lexusBtSet.setOnClickListener(this.mCallback119);
+            this.lexusBtVedio.setOnClickListener(this.mCallback120);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = false;
+        boolean viewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openNaviApp(callbackArg_0);
@@ -206,8 +194,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 2:
                 LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel2 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openBtApp(callbackArg_0);
@@ -216,8 +204,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 3:
                 LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel3 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openMusic(callbackArg_0);
@@ -226,8 +214,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 4:
                 LauncherViewModel viewModel4 = this.mViewModel;
-                if (viewModel4 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel4 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel4.openDashboard(callbackArg_0);
@@ -236,8 +224,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 5:
                 LauncherViewModel viewModel5 = this.mViewModel;
-                if (viewModel5 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel5 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel5.openDvr(callbackArg_0);
@@ -246,8 +234,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 6:
                 LauncherViewModel viewModel6 = this.mViewModel;
-                if (viewModel6 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel6 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel6.openShouJiHuLian(callbackArg_0);
@@ -256,8 +244,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 7:
                 LauncherViewModel viewModel7 = this.mViewModel;
-                if (viewModel7 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel7 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel7.openSettings(callbackArg_0);
@@ -266,8 +254,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 8:
                 LauncherViewModel viewModel8 = this.mViewModel;
-                if (viewModel8 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel8 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel8.openVideo(callbackArg_0);
@@ -276,8 +264,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 9:
                 LauncherViewModel viewModel9 = this.mViewModel;
-                if (viewModel9 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel9 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel9.openFileManager(callbackArg_0);
@@ -286,8 +274,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 10:
                 LauncherViewModel viewModel10 = this.mViewModel;
-                if (viewModel10 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel10 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel10.openLexusCar(callbackArg_0);
@@ -296,8 +284,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 11:
                 LauncherViewModel viewModel11 = this.mViewModel;
-                if (viewModel11 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel11 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel11.openApps(callbackArg_0);
@@ -306,8 +294,8 @@ public class ActivityMainLexusBindingImpl extends ActivityMainLexusBinding imple
                 return;
             case 12:
                 LauncherViewModel viewModel12 = this.mViewModel;
-                if (viewModel12 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel12 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel12.openAirControl(callbackArg_0);

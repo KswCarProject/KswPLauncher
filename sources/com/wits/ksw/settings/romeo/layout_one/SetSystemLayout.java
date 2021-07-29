@@ -46,8 +46,7 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
     public Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            String access$000 = SetSystemLayout.this.TAG;
-            Log.d(access$000, "handleMessage downY=" + SetSystemLayout.this.downY);
+            Log.d(SetSystemLayout.this.TAG, "handleMessage downY=" + SetSystemLayout.this.downY);
             int count = SetSystemLayout.this.downY / 107;
             if (SetSystemLayout.this.downY % 107 > 53) {
                 count++;
@@ -86,26 +85,28 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         view.setLayoutParams(layoutParams);
         addView(view);
         this.set_system_scroll = (ScrollView) view.findViewById(R.id.set_system_scroll);
-        this.set_system_ll = (LinearLayout) view.findViewById(R.id.set_system_ll);
-        changeItemBg(this.set_system_ll, getContext());
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.set_system_ll);
+        this.set_system_ll = linearLayout;
+        changeItemBg(linearLayout, getContext());
         this.set_system_scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
                 if (SetSystemLayout.this.set_system_ll != null) {
                     Log.d(SetSystemLayout.this.TAG, "onGlobalLayout///");
-                    SetSystemLayout.this.changeDistance(SetSystemLayout.this.set_system_ll, SetSystemLayout.this.getContext());
+                    SetSystemLayout setSystemLayout = SetSystemLayout.this;
+                    setSystemLayout.changeDistance(setSystemLayout.set_system_ll, SetSystemLayout.this.getContext());
                 }
             }
         });
         this.set_system_scroll.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                String access$000 = SetSystemLayout.this.TAG;
-                Log.d(access$000, "onScrollChange///" + i1);
+                Log.d(SetSystemLayout.this.TAG, "onScrollChange///" + i1);
                 for (int n = 0; n < SetSystemLayout.this.set_system_ll.getChildCount(); n++) {
                     float y = SetSystemLayout.this.set_system_ll.getChildAt(n).getY();
                     float top = (float) SetSystemLayout.this.set_system_ll.getChildAt(n).getTop();
                     SetSystemLayout.this.set_system_ll.getChildAt(n).getLocationInWindow(new int[2]);
                     SetSystemLayout.this.set_system_ll.getChildAt(n).getLocationOnScreen(new int[2]);
-                    SetSystemLayout.this.changeDistance(SetSystemLayout.this.set_system_ll, SetSystemLayout.this.getContext());
+                    SetSystemLayout setSystemLayout = SetSystemLayout.this;
+                    setSystemLayout.changeDistance(setSystemLayout.set_system_ll, SetSystemLayout.this.getContext());
                     if (SetSystemLayout.this.mHandler.hasMessages(0)) {
                         SetSystemLayout.this.mHandler.removeMessages(0);
                     }
@@ -122,12 +123,10 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
             final int finalI = i;
             viewGroup.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    String access$000 = SetSystemLayout.this.TAG;
-                    Log.d(access$000, "changeItemBg onTouch i=" + finalI + " action=" + motionEvent.getAction());
+                    Log.d(SetSystemLayout.this.TAG, "changeItemBg onTouch i=" + finalI + " action=" + motionEvent.getAction());
                     int[] locW = new int[2];
                     viewGroup.getChildAt(finalI).getLocationInWindow(locW);
-                    String access$0002 = SetSystemLayout.this.TAG;
-                    Log.d(access$0002, "use updateListBg=" + SetSystemLayout.this.updateListBg);
+                    Log.d(SetSystemLayout.this.TAG, "use updateListBg=" + SetSystemLayout.this.updateListBg);
                     if (motionEvent.getAction() == 0) {
                         int unused = SetSystemLayout.this.downY = (int) motionEvent.getY();
                         SetSystemLayout.this.updateListBg.updateListBg(locW[1] - 78, 2);
@@ -142,11 +141,10 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
             viewGroup.getChildAt(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 public void onFocusChange(View view, boolean b) {
                     if (b) {
-                        String access$000 = SetSystemLayout.this.TAG;
-                        Log.d(access$000, "changeItemBg onFocusChange i=" + finalI + " downY=" + SetSystemLayout.this.downY);
+                        Log.d(SetSystemLayout.this.TAG, "changeItemBg onFocusChange i=" + finalI + " downY=" + SetSystemLayout.this.downY);
                         int[] locW = new int[2];
                         viewGroup.getChildAt(finalI).getLocationInWindow(locW);
-                        SetSystemLayout.this.updateListBg.updateListBg(locW[1] + -78, 1);
+                        SetSystemLayout.this.updateListBg.updateListBg(locW[1] - 78, 1);
                         return;
                     }
                     SetSystemLayout.this.updateListBg.updateListBg(0, 0);
@@ -163,14 +161,7 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
             viewGroup.getChildAt(i).getLocationInWindow(locW);
             int pad = KswUtils.calculateTranslate2(locW[1] - 78, KswUtils.dip2px(context2, 428.0f), i, context2);
             viewGroup.getChildAt(i).setPadding(pad, 0, pad, 0);
-            StringBuilder sb = new StringBuilder();
-            sb.append("calculateTranslate i=");
-            sb.append(i);
-            sb.append(" pad=");
-            sb.append(pad);
-            sb.append(" locW[1]=");
-            sb.append(locW[1] - 78);
-            Log.d("SetSystemLayout", sb.toString());
+            Log.d("SetSystemLayout", "calculateTranslate i=" + i + " pad=" + pad + " locW[1]=" + (locW[1] - 78));
         }
     }
 
@@ -227,8 +218,9 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         this.tv_sysDcsxt.setTextColor(-1);
         this.tv_sysBgld.setTextColor(-1);
         this.tempUnitView.setTextColor(-1);
-        if (this.updateTwoLayout != null) {
-            this.updateTwoLayout.updateTwoLayout(1, 0);
+        IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+        if (iUpdateTwoLayout != null) {
+            iUpdateTwoLayout.updateTwoLayout(1, 0);
         }
     }
 

@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
@@ -23,7 +21,6 @@ final class BitmapPreFillRunner implements Runnable {
     static final long INITIAL_BACKOFF_MS = 40;
     static final long MAX_BACKOFF_MS = TimeUnit.SECONDS.toMillis(1);
     static final long MAX_DURATION_MS = 32;
-    @VisibleForTesting
     static final String TAG = "PreFillRunner";
     private final BitmapPool bitmapPool;
     private final Clock clock;
@@ -38,7 +35,6 @@ final class BitmapPreFillRunner implements Runnable {
         this(bitmapPool2, memoryCache2, allocationOrder, DEFAULT_CLOCK, new Handler(Looper.getMainLooper()));
     }
 
-    @VisibleForTesting
     BitmapPreFillRunner(BitmapPool bitmapPool2, MemoryCache memoryCache2, PreFillQueue allocationOrder, Clock clock2, Handler handler2) {
         this.seenTypes = new HashSet();
         this.currentDelay = INITIAL_BACKOFF_MS;
@@ -54,7 +50,6 @@ final class BitmapPreFillRunner implements Runnable {
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public boolean allocate() {
         Bitmap bitmap;
         long start = this.clock.now();
@@ -103,12 +98,11 @@ final class BitmapPreFillRunner implements Runnable {
         UniqueKey() {
         }
 
-        public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        public void updateDiskCacheKey(MessageDigest messageDigest) {
             throw new UnsupportedOperationException();
         }
     }
 
-    @VisibleForTesting
     static class Clock {
         Clock() {
         }

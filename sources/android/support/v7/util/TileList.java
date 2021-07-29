@@ -13,7 +13,8 @@ class TileList<T> {
     }
 
     public T getItemAt(int pos) {
-        if (this.mLastAccessedTile == null || !this.mLastAccessedTile.containsPosition(pos)) {
+        Tile<T> tile = this.mLastAccessedTile;
+        if (tile == null || !tile.containsPosition(pos)) {
             int index = this.mTiles.indexOfKey(pos - (pos % this.mTileSize));
             if (index < 0) {
                 return null;
@@ -70,7 +71,8 @@ class TileList<T> {
 
         /* access modifiers changed from: package-private */
         public boolean containsPosition(int pos) {
-            return this.mStartPosition <= pos && pos < this.mStartPosition + this.mItemCount;
+            int i = this.mStartPosition;
+            return i <= pos && pos < i + this.mItemCount;
         }
 
         /* access modifiers changed from: package-private */

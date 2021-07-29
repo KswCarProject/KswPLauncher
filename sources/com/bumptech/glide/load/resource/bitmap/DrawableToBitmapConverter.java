@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
@@ -22,7 +21,6 @@ final class DrawableToBitmapConverter {
     private DrawableToBitmapConverter() {
     }
 
-    @Nullable
     static Resource<Bitmap> convert(BitmapPool bitmapPool, Drawable drawable, int width, int height) {
         Drawable drawable2 = drawable.getCurrent();
         Bitmap result = null;
@@ -36,7 +34,6 @@ final class DrawableToBitmapConverter {
         return BitmapResource.obtain(result, isRecycleable ? bitmapPool : NO_RECYCLE_BITMAP_POOL);
     }
 
-    @Nullable
     private static Bitmap drawToBitmap(BitmapPool bitmapPool, Drawable drawable, int width, int height) {
         if (width == Integer.MIN_VALUE && drawable.getIntrinsicWidth() <= 0) {
             if (Log.isLoggable(TAG, 5)) {

@@ -1,8 +1,6 @@
 package com.wits.ksw.settings.romeo.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,12 +40,11 @@ public class LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
         Log.d("LanguageAdapter", "setIUpdateListBg// updateListBg=" + this.updateListBg);
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.romeo_list_settings_language, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint({"RecyclerView"}) final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.tv_functionItem.setEnabled(true);
         holder.tv_functionItem.setText(this.data.get(position).getTitle());
         if (this.data.get(position).isIscheck()) {
@@ -95,17 +92,18 @@ public class LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.data == null) {
+        List<FunctionBean> list = this.data;
+        if (list == null) {
             return 0;
         }
-        return this.data.size();
+        return list.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_functionItem;
         RadioButton tv_functionItem;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             this.tv_functionItem = (RadioButton) itemView.findViewById(R.id.tv_functionItem);
             this.img_functionItem = (ImageView) itemView.findViewById(R.id.img_functionItem);

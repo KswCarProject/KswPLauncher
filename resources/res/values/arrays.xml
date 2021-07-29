@@ -36,6 +36,28 @@
         <item>Dashboard</item>
         <item>DVR</item>
     </array>
+    <array name="benz_mbux_2021_home_item_array">
+        <item>Telephone</item>
+        <item>Navigation</item>
+        <item>NTG Menu</item>
+        <item>Video</item>
+        <item>Music</item>
+        <item>Settings</item>
+        <item>PhoneLink</item>
+        <item>Apps</item>
+        <item>Dashboard</item>
+    </array>
+    <array name="benz_mbux_2021_item_tip_array">
+        <item>No Connection</item>
+        <item>Real-time Navigation</item>
+        <item>Car UI</item>
+        <item>Video Player</item>
+        <item>Music</item>
+        <item>System Settings</item>
+        <item>Support USB or WiFi</item>
+        <item>More Apps</item>
+        <item>Fuel Consumption</item>
+    </array>
     <array name="benz_mbux_home_item_array">
         <item>Navigation</item>
         <item>Music</item>
@@ -47,6 +69,9 @@
         <item>PhoneLink</item>
         <item>Dashboard</item>
         <item>DVR</item>
+    </array>
+    <array name="exclude_class_list">
+        <item>com.wits.screencast</item>
     </array>
     <array name="ksw_id7_months">
         <item>Jan</item>

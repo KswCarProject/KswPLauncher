@@ -1,11 +1,9 @@
 package android.support.v4.graphics;
 
 import android.graphics.Path;
-import android.support.annotation.RestrictTo;
 import android.util.Log;
 import java.util.ArrayList;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class PathParser {
     private static final String LOGTAG = "PathParser";
 
@@ -143,73 +141,48 @@ public class PathParser {
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:20:0x003b A[LOOP:0: B:1:0x0007->B:20:0x003b, LOOP_END] */
-    /* JADX WARNING: Removed duplicated region for block: B:24:0x003e A[SYNTHETIC] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static void extract(java.lang.String r7, int r8, android.support.v4.graphics.PathParser.ExtractFloatResult r9) {
-        /*
-            r0 = r8
-            r1 = 0
-            r2 = 0
-            r9.mEndWithNegOrDot = r2
-            r3 = 0
-        L_0x0007:
-            int r4 = r7.length()
-            if (r0 >= r4) goto L_0x003e
-            r4 = r2
-            r2 = 0
-            char r5 = r7.charAt(r0)
-            r6 = 32
-            if (r5 == r6) goto L_0x0036
-            r6 = 69
-            if (r5 == r6) goto L_0x0034
-            r6 = 101(0x65, float:1.42E-43)
-            if (r5 == r6) goto L_0x0034
-            r6 = 1
-            switch(r5) {
-                case 44: goto L_0x0036;
-                case 45: goto L_0x002c;
-                case 46: goto L_0x0024;
-                default: goto L_0x0023;
+    private static void extract(String s, int start, ExtractFloatResult result) {
+        boolean foundSeparator = false;
+        result.mEndWithNegOrDot = false;
+        boolean secondDot = false;
+        boolean isExponential = false;
+        for (int currentIndex = start; currentIndex < s.length(); currentIndex++) {
+            boolean isPrevExponential = isExponential;
+            isExponential = false;
+            switch (s.charAt(currentIndex)) {
+                case ' ':
+                case ',':
+                    foundSeparator = true;
+                    break;
+                case '-':
+                    if (currentIndex != start && !isPrevExponential) {
+                        foundSeparator = true;
+                        result.mEndWithNegOrDot = true;
+                        break;
+                    }
+                case '.':
+                    if (secondDot) {
+                        foundSeparator = true;
+                        result.mEndWithNegOrDot = true;
+                        break;
+                    } else {
+                        secondDot = true;
+                        break;
+                    }
+                case 'E':
+                case 'e':
+                    isExponential = true;
+                    break;
             }
-        L_0x0023:
-            goto L_0x0038
-        L_0x0024:
-            if (r3 != 0) goto L_0x0028
-            r3 = 1
-            goto L_0x0038
-        L_0x0028:
-            r1 = 1
-            r9.mEndWithNegOrDot = r6
-            goto L_0x0038
-        L_0x002c:
-            if (r0 == r8) goto L_0x0038
-            if (r4 != 0) goto L_0x0038
-            r1 = 1
-            r9.mEndWithNegOrDot = r6
-            goto L_0x0038
-        L_0x0034:
-            r2 = 1
-            goto L_0x0038
-        L_0x0036:
-            r1 = 1
-        L_0x0038:
-            if (r1 == 0) goto L_0x003b
-            goto L_0x003e
-        L_0x003b:
-            int r0 = r0 + 1
-            goto L_0x0007
-        L_0x003e:
-            r9.mEndPosition = r0
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.v4.graphics.PathParser.extract(java.lang.String, int, android.support.v4.graphics.PathParser$ExtractFloatResult):void");
+            if (foundSeparator) {
+                result.mEndPosition = currentIndex;
+            }
+        }
+        result.mEndPosition = currentIndex;
     }
 
     public static class PathDataNode {
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public float[] mParams;
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public char mType;
 
         PathDataNode(char type, float[] params) {
@@ -219,7 +192,8 @@ public class PathParser {
 
         PathDataNode(PathDataNode n) {
             this.mType = n.mType;
-            this.mParams = PathParser.copyOfRange(n.mParams, 0, n.mParams.length);
+            float[] fArr = n.mParams;
+            this.mParams = PathParser.copyOfRange(fArr, 0, fArr.length);
         }
 
         public static void nodesToPath(PathDataNode[] node, Path path) {
@@ -232,646 +206,328 @@ public class PathParser {
         }
 
         public void interpolatePathDataNode(PathDataNode nodeFrom, PathDataNode nodeTo, float fraction) {
-            for (int i = 0; i < nodeFrom.mParams.length; i++) {
-                this.mParams[i] = (nodeFrom.mParams[i] * (1.0f - fraction)) + (nodeTo.mParams[i] * fraction);
+            int i = 0;
+            while (true) {
+                float[] fArr = nodeFrom.mParams;
+                if (i < fArr.length) {
+                    this.mParams[i] = (fArr[i] * (1.0f - fraction)) + (nodeTo.mParams[i] * fraction);
+                    i++;
+                } else {
+                    return;
+                }
             }
         }
 
-        /* JADX WARNING: Code restructure failed: missing block: B:16:0x006d, code lost:
-            r27 = r6;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:42:0x019e, code lost:
-            r21 = r0;
-            r22 = r1;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:43:0x01a2, code lost:
-            r14 = r7;
-         */
-        /* JADX WARNING: Code restructure failed: missing block: B:79:0x0343, code lost:
-            r21 = r0;
-            r22 = r1;
-         */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        private static void addCommand(android.graphics.Path r28, float[] r29, char r30, char r31, float[] r32) {
-            /*
-                r10 = r28
-                r13 = r32
-                r0 = 2
-                r14 = 0
-                r1 = r29[r14]
-                r15 = 1
-                r2 = r29[r15]
-                r16 = 2
-                r3 = r29[r16]
-                r17 = 3
-                r4 = r29[r17]
-                r18 = 4
-                r5 = r29[r18]
-                r19 = 5
-                r6 = r29[r19]
-                switch(r31) {
-                    case 65: goto L_0x0034;
-                    case 67: goto L_0x0032;
-                    case 72: goto L_0x0030;
-                    case 76: goto L_0x002e;
-                    case 77: goto L_0x002e;
-                    case 81: goto L_0x002c;
-                    case 83: goto L_0x002c;
-                    case 84: goto L_0x002e;
-                    case 86: goto L_0x0030;
-                    case 90: goto L_0x0021;
-                    case 97: goto L_0x0034;
-                    case 99: goto L_0x0032;
-                    case 104: goto L_0x0030;
-                    case 108: goto L_0x002e;
-                    case 109: goto L_0x002e;
-                    case 113: goto L_0x002c;
-                    case 115: goto L_0x002c;
-                    case 116: goto L_0x002e;
-                    case 118: goto L_0x0030;
-                    case 122: goto L_0x0021;
-                    default: goto L_0x001e;
+        private static void addCommand(Path path, float[] current, char previousCmd, char cmd, float[] val) {
+            int incr;
+            int k;
+            float reflectiveCtrlPointY;
+            float reflectiveCtrlPointX;
+            float reflectiveCtrlPointY2;
+            float reflectiveCtrlPointX2;
+            Path path2 = path;
+            float[] fArr = val;
+            float currentX = current[0];
+            float currentY = current[1];
+            float ctrlPointX = current[2];
+            float ctrlPointY = current[3];
+            float currentSegmentStartX = current[4];
+            float currentSegmentStartY = current[5];
+            switch (cmd) {
+                case 'A':
+                case 'a':
+                    incr = 7;
+                    break;
+                case 'C':
+                case 'c':
+                    incr = 6;
+                    break;
+                case 'H':
+                case 'V':
+                case 'h':
+                case 'v':
+                    incr = 1;
+                    break;
+                case 'L':
+                case 'M':
+                case 'T':
+                case 'l':
+                case 'm':
+                case 't':
+                    incr = 2;
+                    break;
+                case 'Q':
+                case 'S':
+                case 'q':
+                case 's':
+                    incr = 4;
+                    break;
+                case 'Z':
+                case 'z':
+                    path.close();
+                    currentX = currentSegmentStartX;
+                    currentY = currentSegmentStartY;
+                    ctrlPointX = currentSegmentStartX;
+                    ctrlPointY = currentSegmentStartY;
+                    path2.moveTo(currentX, currentY);
+                    incr = 2;
+                    break;
+                default:
+                    incr = 2;
+                    break;
+            }
+            char previousCmd2 = previousCmd;
+            int k2 = 0;
+            float currentX2 = currentX;
+            float ctrlPointX2 = ctrlPointX;
+            float ctrlPointY2 = ctrlPointY;
+            float currentSegmentStartX2 = currentSegmentStartX;
+            float currentSegmentStartY2 = currentSegmentStartY;
+            float currentY2 = currentY;
+            while (k2 < fArr.length) {
+                switch (cmd) {
+                    case 'A':
+                        k = k2;
+                        char c = previousCmd2;
+                        float currentX3 = currentX2;
+                        float f = currentX3;
+                        drawArc(path, currentX3, currentY2, fArr[k + 5], fArr[k + 6], fArr[k + 0], fArr[k + 1], fArr[k + 2], fArr[k + 3] != 0.0f, fArr[k + 4] != 0.0f);
+                        float currentX4 = fArr[k + 5];
+                        float currentY3 = fArr[k + 6];
+                        currentX2 = currentX4;
+                        currentY2 = currentY3;
+                        ctrlPointX2 = currentX4;
+                        ctrlPointY2 = currentY3;
+                        break;
+                    case 'C':
+                        k = k2;
+                        char c2 = previousCmd2;
+                        float f2 = currentX2;
+                        path.cubicTo(fArr[k + 0], fArr[k + 1], fArr[k + 2], fArr[k + 3], fArr[k + 4], fArr[k + 5]);
+                        currentX2 = fArr[k + 4];
+                        currentY2 = fArr[k + 5];
+                        ctrlPointX2 = fArr[k + 2];
+                        ctrlPointY2 = fArr[k + 3];
+                        break;
+                    case 'H':
+                        k = k2;
+                        char c3 = previousCmd2;
+                        float f3 = currentX2;
+                        path2.lineTo(fArr[k + 0], currentY2);
+                        currentX2 = fArr[k + 0];
+                        break;
+                    case 'L':
+                        float f4 = currentY2;
+                        k = k2;
+                        char c4 = previousCmd2;
+                        float f5 = currentX2;
+                        path2.lineTo(fArr[k + 0], fArr[k + 1]);
+                        currentX2 = fArr[k + 0];
+                        currentY2 = fArr[k + 1];
+                        break;
+                    case 'M':
+                        float f6 = currentY2;
+                        k = k2;
+                        char c5 = previousCmd2;
+                        float f7 = currentX2;
+                        float currentX5 = fArr[k + 0];
+                        float currentY4 = fArr[k + 1];
+                        if (k <= 0) {
+                            path2.moveTo(fArr[k + 0], fArr[k + 1]);
+                            currentX2 = currentX5;
+                            currentY2 = currentY4;
+                            currentSegmentStartX2 = currentX5;
+                            currentSegmentStartY2 = currentY4;
+                            break;
+                        } else {
+                            path2.lineTo(fArr[k + 0], fArr[k + 1]);
+                            currentX2 = currentX5;
+                            currentY2 = currentY4;
+                            break;
+                        }
+                    case 'Q':
+                        float f8 = currentY2;
+                        k = k2;
+                        char c6 = previousCmd2;
+                        float f9 = currentX2;
+                        path2.quadTo(fArr[k + 0], fArr[k + 1], fArr[k + 2], fArr[k + 3]);
+                        ctrlPointX2 = fArr[k + 0];
+                        ctrlPointY2 = fArr[k + 1];
+                        currentX2 = fArr[k + 2];
+                        currentY2 = fArr[k + 3];
+                        break;
+                    case 'S':
+                        float currentY5 = currentY2;
+                        k = k2;
+                        char previousCmd3 = previousCmd2;
+                        float currentX6 = currentX2;
+                        float reflectiveCtrlPointX3 = currentX6;
+                        float reflectiveCtrlPointY3 = currentY5;
+                        if (previousCmd3 == 'c' || previousCmd3 == 's' || previousCmd3 == 'C' || previousCmd3 == 'S') {
+                            reflectiveCtrlPointX = (currentX6 * 2.0f) - ctrlPointX2;
+                            reflectiveCtrlPointY = (currentY5 * 2.0f) - ctrlPointY2;
+                        } else {
+                            reflectiveCtrlPointX = reflectiveCtrlPointX3;
+                            reflectiveCtrlPointY = reflectiveCtrlPointY3;
+                        }
+                        path.cubicTo(reflectiveCtrlPointX, reflectiveCtrlPointY, fArr[k + 0], fArr[k + 1], fArr[k + 2], fArr[k + 3]);
+                        ctrlPointX2 = fArr[k + 0];
+                        ctrlPointY2 = fArr[k + 1];
+                        currentX2 = fArr[k + 2];
+                        currentY2 = fArr[k + 3];
+                        break;
+                    case 'T':
+                        float currentY6 = currentY2;
+                        k = k2;
+                        char previousCmd4 = previousCmd2;
+                        float currentX7 = currentX2;
+                        float reflectiveCtrlPointX4 = currentX7;
+                        float reflectiveCtrlPointY4 = currentY6;
+                        if (previousCmd4 == 'q' || previousCmd4 == 't' || previousCmd4 == 'Q' || previousCmd4 == 'T') {
+                            reflectiveCtrlPointX4 = (currentX7 * 2.0f) - ctrlPointX2;
+                            reflectiveCtrlPointY4 = (currentY6 * 2.0f) - ctrlPointY2;
+                        }
+                        path2.quadTo(reflectiveCtrlPointX4, reflectiveCtrlPointY4, fArr[k + 0], fArr[k + 1]);
+                        ctrlPointX2 = reflectiveCtrlPointX4;
+                        ctrlPointY2 = reflectiveCtrlPointY4;
+                        currentX2 = fArr[k + 0];
+                        currentY2 = fArr[k + 1];
+                        char c7 = previousCmd4;
+                        break;
+                    case 'V':
+                        float f10 = currentY2;
+                        k = k2;
+                        char previousCmd5 = previousCmd2;
+                        float currentX8 = currentX2;
+                        path2 = path;
+                        path2.lineTo(currentX8, fArr[k + 0]);
+                        currentY2 = fArr[k + 0];
+                        currentX2 = currentX8;
+                        char c8 = previousCmd5;
+                        break;
+                    case 'a':
+                        float currentY7 = currentY2;
+                        k = k2;
+                        drawArc(path, currentX2, currentY7, fArr[k2 + 5] + currentX2, fArr[k2 + 6] + currentY7, fArr[k2 + 0], fArr[k2 + 1], fArr[k2 + 2], fArr[k2 + 3] != 0.0f, fArr[k2 + 4] != 0.0f);
+                        currentX2 += fArr[k + 5];
+                        currentY2 = currentY7 + fArr[k + 6];
+                        path2 = path;
+                        ctrlPointX2 = currentX2;
+                        ctrlPointY2 = currentY2;
+                        char c9 = previousCmd2;
+                        break;
+                    case 'c':
+                        float currentY8 = currentY2;
+                        path.rCubicTo(fArr[k2 + 0], fArr[k2 + 1], fArr[k2 + 2], fArr[k2 + 3], fArr[k2 + 4], fArr[k2 + 5]);
+                        float ctrlPointX3 = fArr[k2 + 2] + currentX2;
+                        float ctrlPointY3 = currentY8 + fArr[k2 + 3];
+                        currentX2 += fArr[k2 + 4];
+                        ctrlPointX2 = ctrlPointX3;
+                        ctrlPointY2 = ctrlPointY3;
+                        k = k2;
+                        char c10 = previousCmd2;
+                        currentY2 = fArr[k2 + 5] + currentY8;
+                        break;
+                    case 'h':
+                        float f11 = currentY2;
+                        path2.rLineTo(fArr[k2 + 0], 0.0f);
+                        currentX2 += fArr[k2 + 0];
+                        k = k2;
+                        char c11 = previousCmd2;
+                        break;
+                    case 'l':
+                        path2.rLineTo(fArr[k2 + 0], fArr[k2 + 1]);
+                        currentX2 += fArr[k2 + 0];
+                        currentY2 += fArr[k2 + 1];
+                        k = k2;
+                        char c12 = previousCmd2;
+                        break;
+                    case 'm':
+                        currentX2 += fArr[k2 + 0];
+                        currentY2 += fArr[k2 + 1];
+                        if (k2 <= 0) {
+                            path2.rMoveTo(fArr[k2 + 0], fArr[k2 + 1]);
+                            currentSegmentStartX2 = currentX2;
+                            currentSegmentStartY2 = currentY2;
+                            k = k2;
+                            char c13 = previousCmd2;
+                            break;
+                        } else {
+                            path2.rLineTo(fArr[k2 + 0], fArr[k2 + 1]);
+                            k = k2;
+                            char c14 = previousCmd2;
+                            break;
+                        }
+                    case 'q':
+                        float currentY9 = currentY2;
+                        path2.rQuadTo(fArr[k2 + 0], fArr[k2 + 1], fArr[k2 + 2], fArr[k2 + 3]);
+                        float ctrlPointX4 = fArr[k2 + 0] + currentX2;
+                        float ctrlPointY4 = currentY9 + fArr[k2 + 1];
+                        currentX2 += fArr[k2 + 2];
+                        ctrlPointX2 = ctrlPointX4;
+                        ctrlPointY2 = ctrlPointY4;
+                        k = k2;
+                        char c15 = previousCmd2;
+                        currentY2 = fArr[k2 + 3] + currentY9;
+                        break;
+                    case 's':
+                        if (previousCmd2 == 'c' || previousCmd2 == 's' || previousCmd2 == 'C' || previousCmd2 == 'S') {
+                            reflectiveCtrlPointX2 = currentX2 - ctrlPointX2;
+                            reflectiveCtrlPointY2 = currentY2 - ctrlPointY2;
+                        } else {
+                            reflectiveCtrlPointX2 = 0.0f;
+                            reflectiveCtrlPointY2 = 0.0f;
+                        }
+                        float currentY10 = currentY2;
+                        path.rCubicTo(reflectiveCtrlPointX2, reflectiveCtrlPointY2, fArr[k2 + 0], fArr[k2 + 1], fArr[k2 + 2], fArr[k2 + 3]);
+                        float ctrlPointX5 = fArr[k2 + 0] + currentX2;
+                        float ctrlPointY5 = currentY10 + fArr[k2 + 1];
+                        currentX2 += fArr[k2 + 2];
+                        ctrlPointX2 = ctrlPointX5;
+                        ctrlPointY2 = ctrlPointY5;
+                        k = k2;
+                        char c16 = previousCmd2;
+                        currentY2 = fArr[k2 + 3] + currentY10;
+                        break;
+                    case 't':
+                        float reflectiveCtrlPointX5 = 0.0f;
+                        float reflectiveCtrlPointY5 = 0.0f;
+                        if (previousCmd2 == 'q' || previousCmd2 == 't' || previousCmd2 == 'Q' || previousCmd2 == 'T') {
+                            reflectiveCtrlPointX5 = currentX2 - ctrlPointX2;
+                            reflectiveCtrlPointY5 = currentY2 - ctrlPointY2;
+                        }
+                        path2.rQuadTo(reflectiveCtrlPointX5, reflectiveCtrlPointY5, fArr[k2 + 0], fArr[k2 + 1]);
+                        float ctrlPointX6 = currentX2 + reflectiveCtrlPointX5;
+                        float ctrlPointY6 = currentY2 + reflectiveCtrlPointY5;
+                        currentX2 += fArr[k2 + 0];
+                        currentY2 += fArr[k2 + 1];
+                        ctrlPointX2 = ctrlPointX6;
+                        ctrlPointY2 = ctrlPointY6;
+                        k = k2;
+                        char c17 = previousCmd2;
+                        break;
+                    case 'v':
+                        path2.rLineTo(0.0f, fArr[k2 + 0]);
+                        currentY2 += fArr[k2 + 0];
+                        k = k2;
+                        char c18 = previousCmd2;
+                        break;
+                    default:
+                        float f12 = currentY2;
+                        float f13 = currentX2;
+                        k = k2;
+                        char c19 = previousCmd2;
+                        break;
                 }
-            L_0x001e:
-                r20 = r0
-                goto L_0x0036
-            L_0x0021:
-                r28.close()
-                r1 = r5
-                r2 = r6
-                r3 = r5
-                r4 = r6
-                r10.moveTo(r1, r2)
-                goto L_0x001e
-            L_0x002c:
-                r0 = 4
-                goto L_0x001e
-            L_0x002e:
-                r0 = 2
-                goto L_0x001e
-            L_0x0030:
-                r0 = 1
-                goto L_0x001e
-            L_0x0032:
-                r0 = 6
-                goto L_0x001e
-            L_0x0034:
-                r0 = 7
-                goto L_0x001e
-            L_0x0036:
-                r7 = r30
-                r9 = r1
-                r8 = r2
-                r21 = r3
-                r22 = r4
-                r23 = r5
-                r24 = r6
-                r0 = r14
-            L_0x0043:
-                r6 = r0
-                int r0 = r13.length
-                if (r6 >= r0) goto L_0x0391
-                r0 = 81
-                r1 = 67
-                r2 = 116(0x74, float:1.63E-43)
-                r3 = 115(0x73, float:1.61E-43)
-                r4 = 113(0x71, float:1.58E-43)
-                r5 = 99
-                r25 = 1073741824(0x40000000, float:2.0)
-                r15 = 0
-                switch(r31) {
-                    case 65: goto L_0x0348;
-                    case 67: goto L_0x0310;
-                    case 72: goto L_0x02fe;
-                    case 76: goto L_0x02e4;
-                    case 77: goto L_0x02b4;
-                    case 81: goto L_0x028a;
-                    case 83: goto L_0x023d;
-                    case 84: goto L_0x0208;
-                    case 86: goto L_0x01f6;
-                    case 97: goto L_0x01a5;
-                    case 99: goto L_0x016a;
-                    case 104: goto L_0x015b;
-                    case 108: goto L_0x0143;
-                    case 109: goto L_0x0115;
-                    case 113: goto L_0x00ea;
-                    case 115: goto L_0x00a0;
-                    case 116: goto L_0x0071;
-                    case 118: goto L_0x0060;
-                    default: goto L_0x0059;
-                }
-            L_0x0059:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                goto L_0x0389
-            L_0x0060:
-                int r0 = r6 + 0
-                r0 = r13[r0]
-                r10.rLineTo(r15, r0)
-                int r0 = r6 + 0
-                r0 = r13[r0]
-                float r8 = r8 + r0
-            L_0x006d:
-                r27 = r6
-                goto L_0x01a2
-            L_0x0071:
-                r1 = 0
-                r3 = 0
-                if (r7 == r4) goto L_0x007d
-                if (r7 == r2) goto L_0x007d
-                if (r7 == r0) goto L_0x007d
-                r0 = 84
-                if (r7 != r0) goto L_0x0081
-            L_0x007d:
-                float r1 = r9 - r21
-                float r3 = r8 - r22
-            L_0x0081:
-                int r0 = r6 + 0
-                r0 = r13[r0]
-                int r2 = r6 + 1
-                r2 = r13[r2]
-                r10.rQuadTo(r1, r3, r0, r2)
-                float r0 = r9 + r1
-                float r2 = r8 + r3
-                int r4 = r6 + 0
-                r4 = r13[r4]
-                float r9 = r9 + r4
-                int r4 = r6 + 1
-                r4 = r13[r4]
-                float r8 = r8 + r4
-                r21 = r0
-                r22 = r2
-                goto L_0x006d
-            L_0x00a0:
-                r0 = 0
-                r2 = 0
-                if (r7 == r5) goto L_0x00b1
-                if (r7 == r3) goto L_0x00b1
-                if (r7 == r1) goto L_0x00b1
-                r1 = 83
-                if (r7 != r1) goto L_0x00ad
-                goto L_0x00b1
-            L_0x00ad:
-                r15 = r0
-                r25 = r2
-                goto L_0x00b8
-            L_0x00b1:
-                float r0 = r9 - r21
-                float r1 = r8 - r22
-                r15 = r0
-                r25 = r1
-            L_0x00b8:
-                int r0 = r6 + 0
-                r3 = r13[r0]
-                int r0 = r6 + 1
-                r4 = r13[r0]
-                int r0 = r6 + 2
-                r5 = r13[r0]
-                int r0 = r6 + 3
-                r26 = r13[r0]
-                r0 = r28
-                r1 = r15
-                r2 = r25
-                r27 = r6
-                r6 = r26
-                r0.rCubicTo(r1, r2, r3, r4, r5, r6)
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                float r0 = r0 + r9
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                float r1 = r1 + r8
-                int r6 = r27 + 2
-                r2 = r13[r6]
-                float r9 = r9 + r2
-                int r6 = r27 + 3
-                r2 = r13[r6]
-                float r8 = r8 + r2
-                goto L_0x019e
-            L_0x00ea:
-                r27 = r6
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                int r6 = r27 + 2
-                r2 = r13[r6]
-                int r6 = r27 + 3
-                r3 = r13[r6]
-                r10.rQuadTo(r0, r1, r2, r3)
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                float r0 = r0 + r9
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                float r1 = r1 + r8
-                int r6 = r27 + 2
-                r2 = r13[r6]
-                float r9 = r9 + r2
-                int r6 = r27 + 3
-                r2 = r13[r6]
-                float r8 = r8 + r2
-                goto L_0x019e
-            L_0x0115:
-                r27 = r6
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                float r9 = r9 + r0
-                int r6 = r27 + 1
-                r0 = r13[r6]
-                float r8 = r8 + r0
-                if (r27 <= 0) goto L_0x0130
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                r10.rLineTo(r0, r1)
-                goto L_0x01a2
-            L_0x0130:
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                r10.rMoveTo(r0, r1)
-                r0 = r9
-                r1 = r8
-                r23 = r0
-                r24 = r1
-                goto L_0x01a2
-            L_0x0143:
-                r27 = r6
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                r10.rLineTo(r0, r1)
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                float r9 = r9 + r0
-                int r6 = r27 + 1
-                r0 = r13[r6]
-                float r8 = r8 + r0
-                goto L_0x01a2
-            L_0x015b:
-                r27 = r6
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                r10.rLineTo(r0, r15)
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                float r9 = r9 + r0
-                goto L_0x01a2
-            L_0x016a:
-                r27 = r6
-                int r6 = r27 + 0
-                r1 = r13[r6]
-                int r6 = r27 + 1
-                r2 = r13[r6]
-                int r6 = r27 + 2
-                r3 = r13[r6]
-                int r6 = r27 + 3
-                r4 = r13[r6]
-                int r6 = r27 + 4
-                r5 = r13[r6]
-                int r6 = r27 + 5
-                r6 = r13[r6]
-                r0 = r28
-                r0.rCubicTo(r1, r2, r3, r4, r5, r6)
-                int r6 = r27 + 2
-                r0 = r13[r6]
-                float r0 = r0 + r9
-                int r6 = r27 + 3
-                r1 = r13[r6]
-                float r1 = r1 + r8
-                int r6 = r27 + 4
-                r2 = r13[r6]
-                float r9 = r9 + r2
-                int r6 = r27 + 5
-                r2 = r13[r6]
-                float r8 = r8 + r2
-            L_0x019e:
-                r21 = r0
-                r22 = r1
-            L_0x01a2:
-                r14 = r7
-                goto L_0x0389
-            L_0x01a5:
-                r27 = r6
-                int r6 = r27 + 5
-                r0 = r13[r6]
-                float r3 = r0 + r9
-                int r6 = r27 + 6
-                r0 = r13[r6]
-                float r4 = r0 + r8
-                int r6 = r27 + 0
-                r5 = r13[r6]
-                int r6 = r27 + 1
-                r6 = r13[r6]
-                int r0 = r27 + 2
-                r25 = r13[r0]
-                int r0 = r27 + 3
-                r0 = r13[r0]
-                int r0 = (r0 > r15 ? 1 : (r0 == r15 ? 0 : -1))
-                if (r0 == 0) goto L_0x01ca
-                r26 = 1
-                goto L_0x01cc
-            L_0x01ca:
-                r26 = r14
-            L_0x01cc:
-                int r0 = r27 + 4
-                r0 = r13[r0]
-                int r0 = (r0 > r15 ? 1 : (r0 == r15 ? 0 : -1))
-                if (r0 == 0) goto L_0x01d6
-                r15 = 1
-                goto L_0x01d7
-            L_0x01d6:
-                r15 = r14
-            L_0x01d7:
-                r0 = r28
-                r1 = r9
-                r2 = r8
-                r14 = r7
-                r7 = r25
-                r12 = r8
-                r8 = r26
-                r11 = r9
-                r9 = r15
-                drawArc(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
-                int r6 = r27 + 5
-                r0 = r13[r6]
-                float r9 = r11 + r0
-                int r6 = r27 + 6
-                r0 = r13[r6]
-                float r8 = r12 + r0
-                r0 = r9
-                r1 = r8
-                goto L_0x0343
-            L_0x01f6:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                r10.lineTo(r11, r0)
-                int r6 = r27 + 0
-                r8 = r13[r6]
-                goto L_0x0389
-            L_0x0208:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                r1 = r11
-                r3 = r12
-                if (r14 == r4) goto L_0x0219
-                if (r14 == r2) goto L_0x0219
-                if (r14 == r0) goto L_0x0219
-                r0 = 84
-                if (r14 != r0) goto L_0x0221
-            L_0x0219:
-                float r9 = r11 * r25
-                float r1 = r9 - r21
-                float r8 = r12 * r25
-                float r3 = r8 - r22
-            L_0x0221:
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r2 = r13[r6]
-                r10.quadTo(r1, r3, r0, r2)
-                r0 = r1
-                r2 = r3
-                int r6 = r27 + 0
-                r9 = r13[r6]
-                int r6 = r27 + 1
-                r8 = r13[r6]
-                r21 = r0
-                r22 = r2
-                goto L_0x0389
-            L_0x023d:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                r0 = r11
-                r2 = r12
-                if (r14 == r5) goto L_0x0252
-                if (r14 == r3) goto L_0x0252
-                if (r14 == r1) goto L_0x0252
-                r1 = 83
-                if (r14 != r1) goto L_0x024f
-                goto L_0x0252
-            L_0x024f:
-                r9 = r0
-                r8 = r2
-                goto L_0x025a
-            L_0x0252:
-                float r9 = r11 * r25
-                float r9 = r9 - r21
-                float r8 = r12 * r25
-                float r8 = r8 - r22
-            L_0x025a:
-                int r6 = r27 + 0
-                r3 = r13[r6]
-                int r6 = r27 + 1
-                r4 = r13[r6]
-                int r6 = r27 + 2
-                r5 = r13[r6]
-                int r6 = r27 + 3
-                r6 = r13[r6]
-                r0 = r28
-                r1 = r9
-                r2 = r8
-                r0.cubicTo(r1, r2, r3, r4, r5, r6)
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                int r6 = r27 + 2
-                r2 = r13[r6]
-                int r6 = r27 + 3
-                r3 = r13[r6]
-                r21 = r0
-                r22 = r1
-                r9 = r2
-                r8 = r3
-                goto L_0x0389
-            L_0x028a:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                int r6 = r27 + 2
-                r2 = r13[r6]
-                int r6 = r27 + 3
-                r3 = r13[r6]
-                r10.quadTo(r0, r1, r2, r3)
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                int r6 = r27 + 2
-                r9 = r13[r6]
-                int r6 = r27 + 3
-                r8 = r13[r6]
-                goto L_0x0343
-            L_0x02b4:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                int r6 = r27 + 0
-                r9 = r13[r6]
-                int r6 = r27 + 1
-                r8 = r13[r6]
-                if (r27 <= 0) goto L_0x02d0
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                r10.lineTo(r0, r1)
-                goto L_0x0389
-            L_0x02d0:
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                r10.moveTo(r0, r1)
-                r0 = r9
-                r1 = r8
-                r23 = r0
-                r24 = r1
-                goto L_0x0389
-            L_0x02e4:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                int r6 = r27 + 1
-                r1 = r13[r6]
-                r10.lineTo(r0, r1)
-                int r6 = r27 + 0
-                r9 = r13[r6]
-                int r6 = r27 + 1
-                r8 = r13[r6]
-                goto L_0x0389
-            L_0x02fe:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                int r6 = r27 + 0
-                r0 = r13[r6]
-                r10.lineTo(r0, r12)
-                int r6 = r27 + 0
-                r9 = r13[r6]
-                goto L_0x0389
-            L_0x0310:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                int r6 = r27 + 0
-                r1 = r13[r6]
-                int r6 = r27 + 1
-                r2 = r13[r6]
-                int r6 = r27 + 2
-                r3 = r13[r6]
-                int r6 = r27 + 3
-                r4 = r13[r6]
-                int r6 = r27 + 4
-                r5 = r13[r6]
-                int r6 = r27 + 5
-                r6 = r13[r6]
-                r0 = r28
-                r0.cubicTo(r1, r2, r3, r4, r5, r6)
-                int r6 = r27 + 4
-                r9 = r13[r6]
-                int r6 = r27 + 5
-                r8 = r13[r6]
-                int r6 = r27 + 2
-                r0 = r13[r6]
-                int r6 = r27 + 3
-                r1 = r13[r6]
-            L_0x0343:
-                r21 = r0
-                r22 = r1
-                goto L_0x0389
-            L_0x0348:
-                r27 = r6
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                int r6 = r27 + 5
-                r3 = r13[r6]
-                int r6 = r27 + 6
-                r4 = r13[r6]
-                int r6 = r27 + 0
-                r5 = r13[r6]
-                int r6 = r27 + 1
-                r6 = r13[r6]
-                int r0 = r27 + 2
-                r7 = r13[r0]
-                int r0 = r27 + 3
-                r0 = r13[r0]
-                int r0 = (r0 > r15 ? 1 : (r0 == r15 ? 0 : -1))
-                if (r0 == 0) goto L_0x036b
-                r8 = 1
-                goto L_0x036c
-            L_0x036b:
-                r8 = 0
-            L_0x036c:
-                int r0 = r27 + 4
-                r0 = r13[r0]
-                int r0 = (r0 > r15 ? 1 : (r0 == r15 ? 0 : -1))
-                if (r0 == 0) goto L_0x0376
-                r9 = 1
-                goto L_0x0377
-            L_0x0376:
-                r9 = 0
-            L_0x0377:
-                r0 = r28
-                r1 = r11
-                r2 = r12
-                drawArc(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9)
-                int r6 = r27 + 5
-                r9 = r13[r6]
-                int r6 = r27 + 6
-                r8 = r13[r6]
-                r0 = r9
-                r1 = r8
-                goto L_0x0343
-            L_0x0389:
-                r7 = r31
-                int r0 = r27 + r20
-                r14 = 0
-                r15 = 1
-                goto L_0x0043
-            L_0x0391:
-                r14 = r7
-                r12 = r8
-                r11 = r9
-                r1 = r11
-                r2 = 0
-                r29[r2] = r1
-                r2 = 1
-                r29[r2] = r12
-                r29[r16] = r21
-                r29[r17] = r22
-                r29[r18] = r23
-                r29[r19] = r24
-                return
-            */
-            throw new UnsupportedOperationException("Method not decompiled: android.support.v4.graphics.PathParser.PathDataNode.addCommand(android.graphics.Path, float[], char, char, float[]):void");
+                previousCmd2 = cmd;
+                k2 = k + incr;
+            }
+            current[0] = currentX2;
+            current[1] = currentY2;
+            current[2] = ctrlPointX2;
+            current[3] = ctrlPointY2;
+            current[4] = currentSegmentStartX2;
+            current[5] = currentSegmentStartY2;
         }
 
         private static void drawArc(Path p, float x0, float y0, float x1, float y1, float a, float b, float theta, boolean isMoreThanHalf, boolean isPositiveArc) {
@@ -942,66 +598,57 @@ public class PathParser {
         }
 
         private static void arcToBezier(Path p, double cx, double cy, double a, double b, double e1x, double e1y, double theta, double start, double sweep) {
-            double eta1 = a;
+            double d = a;
             int numSegments = (int) Math.ceil(Math.abs((sweep * 4.0d) / 3.141592653589793d));
-            double eta12 = start;
+            double eta1 = start;
             double cosTheta = Math.cos(theta);
             double sinTheta = Math.sin(theta);
-            double cosEta1 = Math.cos(eta12);
-            double sinEta1 = Math.sin(eta12);
+            double cosEta1 = Math.cos(eta1);
+            double sinEta1 = Math.sin(eta1);
+            double ep1y = ((-d) * sinTheta * sinEta1) + (b * cosTheta * cosEta1);
             double anglePerSegment = sweep / ((double) numSegments);
+            double eta12 = eta1;
             int i = 0;
-            double ep1y = ((-eta1) * sinTheta * sinEta1) + (b * cosTheta * cosEta1);
+            double eta13 = e1x;
+            double ep1x = (((-d) * cosTheta) * sinEta1) - ((b * sinTheta) * cosEta1);
             double e1y2 = e1y;
-            double ep1x = (((-eta1) * cosTheta) * sinEta1) - ((b * sinTheta) * cosEta1);
-            double e1x2 = e1x;
-            while (true) {
-                int i2 = i;
-                if (i2 < numSegments) {
-                    double eta2 = eta12 + anglePerSegment;
-                    double sinEta2 = Math.sin(eta2);
-                    double cosEta2 = Math.cos(eta2);
-                    double anglePerSegment2 = anglePerSegment;
-                    double e2y = cy + (eta1 * sinTheta * cosEta2) + (b * cosTheta * sinEta2);
-                    double ep2x = (((-eta1) * cosTheta) * sinEta2) - ((b * sinTheta) * cosEta2);
-                    int i3 = i2;
-                    double e2x = (cx + ((eta1 * cosTheta) * cosEta2)) - ((b * sinTheta) * sinEta2);
-                    double ep2y = ((-eta1) * sinTheta * sinEta2) + (b * cosTheta * cosEta2);
-                    double tanDiff2 = Math.tan((eta2 - eta12) / 2.0d);
-                    double alpha = (Math.sin(eta2 - eta12) * (Math.sqrt(((tanDiff2 * 3.0d) * tanDiff2) + 4.0d) - 1.0d)) / 3.0d;
-                    double q1x = e1x2 + (alpha * ep1x);
-                    double q1y = e1y2 + (alpha * ep1y);
-                    double d = eta12;
-                    double eta13 = e2x - (alpha * ep2x);
-                    double cosTheta2 = cosTheta;
-                    double q2y = e2y - (alpha * ep2y);
-                    p.rLineTo(0.0f, 0.0f);
-                    double d2 = q1x;
-                    double d3 = q1y;
-                    double d4 = eta13;
-                    double q1y2 = e2x;
-                    double d5 = q2y;
-                    double e2y2 = e2y;
-                    p.cubicTo((float) q1x, (float) q1y, (float) eta13, (float) q2y, (float) q1y2, (float) e2y2);
-                    e1x2 = q1y2;
-                    e1y2 = e2y2;
-                    ep1x = ep2x;
-                    ep1y = ep2y;
-                    i = i3 + 1;
-                    eta12 = eta2;
-                    anglePerSegment = anglePerSegment2;
-                    numSegments = numSegments;
-                    cosTheta = cosTheta2;
-                    sinTheta = sinTheta;
-                    eta1 = a;
-                } else {
-                    int i4 = numSegments;
-                    double d6 = eta12;
-                    double d7 = cosTheta;
-                    double d8 = sinTheta;
-                    Path path = p;
-                    return;
-                }
+            while (i < numSegments) {
+                double eta2 = eta12 + anglePerSegment;
+                double sinEta2 = Math.sin(eta2);
+                double cosEta2 = Math.cos(eta2);
+                double anglePerSegment2 = anglePerSegment;
+                double e2x = (cx + ((d * cosTheta) * cosEta2)) - ((b * sinTheta) * sinEta2);
+                double cosEta12 = cosEta1;
+                double sinEta12 = sinEta1;
+                double ep2x = (((-d) * cosTheta) * sinEta2) - ((b * sinTheta) * cosEta2);
+                double e2y = cy + (d * sinTheta * cosEta2) + (b * cosTheta * sinEta2);
+                double ep2y = ((-d) * sinTheta * sinEta2) + (b * cosTheta * cosEta2);
+                double tanDiff2 = Math.tan((eta2 - eta12) / 2.0d);
+                double alpha = (Math.sin(eta2 - eta12) * (Math.sqrt(((tanDiff2 * 3.0d) * tanDiff2) + 4.0d) - 1.0d)) / 3.0d;
+                double q1x = eta13 + (alpha * ep1x);
+                int numSegments2 = numSegments;
+                double d2 = eta13;
+                double q1y = e1y2 + (alpha * ep1y);
+                double q2x = e2x - (alpha * ep2x);
+                double e2y2 = e2y;
+                p.rLineTo(0.0f, 0.0f);
+                double d3 = q1x;
+                double d4 = q1y;
+                double d5 = q2x;
+                p.cubicTo((float) q1x, (float) q1y, (float) q2x, (float) (e2y2 - (alpha * ep2y)), (float) e2x, (float) e2y2);
+                eta12 = eta2;
+                eta13 = e2x;
+                e1y2 = e2y2;
+                ep1x = ep2x;
+                ep1y = ep2y;
+                i++;
+                numSegments = numSegments2;
+                sinEta1 = sinEta12;
+                anglePerSegment = anglePerSegment2;
+                cosEta1 = cosEta12;
+                cosTheta = cosTheta;
+                sinTheta = sinTheta;
+                d = a;
             }
         }
     }

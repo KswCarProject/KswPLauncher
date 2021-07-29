@@ -43,10 +43,12 @@ public class KeyConfig {
     public static final String EQ_MIDDLE = "Middle_value";
     public static final String EQ_MODE = "EQ_mode";
     public static final String EQ_TREBLE = "Treble_value";
+    public static final String FUEL_UNIT = "FuelUnit";
     public static final String F_CAM_Type = "Front_view_camera";
     public static final String GOOGLE_APP = "GoogleAPP";
     public static final String HAND_SET_AUTOMATIC = "HandsetAutomaticSelect";
     public static final String HOU_SHI_SX = "RearCamMirror";
+    public static final String HiCar = "zlink_hicar";
     public static final String LANGUAGE_DEFUAL = "Language";
     public static final String LANGUAGE_LIST = "SupportLanguageList";
     public static final String MAP_KEY = "Map_key";
@@ -57,6 +59,7 @@ public class KeyConfig {
     public static final String NBT_AUX_SW = "CarAux_auto_method";
     public static final String OEM_FM = "OEM_FM";
     public static final String PASSWORD = "password";
+    public static final String SCAREEN_CAST = "Screen_cast";
     public static final String SUPP_UI_LIST = "SupportUIList";
     public static final String SUPP_UI_TYPE = "UI_type";
     public static final String TIME_FORMAT = "TimeFormat";

@@ -44,6 +44,12 @@
     <string name="audi_set_temp_unit">Einheit der Temperatur</string>
     <string name="bc_apps_btn_text">Android Apps</string>
     <string name="benz_gs_home_navi">Navigate</string>
+    <string name="benz_mbux_2021_bg_sel_tip">Hintergrund.</string>
+    <string name="benz_mbux_2021_img_sel_tip">Icon-stil.</string>
+    <string name="benz_mbux_2021_style_classical_tip">Ein klassiker.</string>
+    <string name="benz_mbux_2021_style_modern_tip">Modern</string>
+    <string name="benz_mbux_2021_theme_settings">Ein Thema</string>
+    <string name="benz_ntg6_fy_theme_settings">Ein Thema</string>
     <string name="boot_record_mode">Erinnere dich an den letzten Modus</string>
     <string name="boot_record_mode_radio1">Aktivieren</string>
     <string name="boot_record_mode_radio2">Zum OEM-System</string>
@@ -119,6 +125,7 @@
     <string name="factory_yuyinkey2">Kurzes Drücken ohne Funktion, Langes Drücken NAVI</string>
     <string name="factory_yuyinkey3">Kurzes Drücken VOICE, Langes Drücken NAVI</string>
     <string name="factory_yuyinkey4">Kurzes Drücken NAVI, langes Drücken ohne Funktion</string>
+    <string name="fuel_unit">Kraftstoffeinheit</string>
     <string name="function_text1">USB-HOST-Modus</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>
@@ -161,12 +168,13 @@
     <string name="id6_phone">Telefon</string>
     <string name="id6_phone_mess">Einen Anruf tätigen</string>
     <string name="id6_setting_mess">Systemfunktionseinstellungen</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">Telefon-Mirroring</string>
     <string name="id6_xingchejily_mess">Fahrvideo aufnehmen</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">KOMFORT</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">System</string>
     <string name="item2">Navigation</string>
     <string name="item3">Lautstärke</string>
@@ -201,8 +209,13 @@
     <string name="ksw_idf7_unknow_artis">Unbekannter Kuenstler</string>
     <string name="ksw_idf7_unkonw_album">Unbekanntes Album</string>
     <string name="ksw_idf7_unkonw_soung">Unbekanntes Lied</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Falsches Passwort!</string>
     <string name="mcu_file_corrupted">Datei wird beschädigt!</string>
+    <string name="music_app_sel">Musik-App</string>
     <string name="ntg6_dvr_toast">Keine Geräte!</string>
     <string name="oil_size">Öl: %s</string>
     <string name="raw_car_text1">Vollbildanzeige</string>
@@ -284,6 +297,7 @@
     <string name="update_mcu_file">Möchten Sie MCU aktualisieren?</string>
     <string name="update_reset_all">Möchten Sie die Werkseinstellungen wiederherstellen?</string>
     <string name="video">Video</string>
+    <string name="video_app_sel">Video-App</string>
     <string name="voic_1">Android System</string>
     <string name="voic_2">Medien</string>
     <string name="voic_3">Anrufe</string>

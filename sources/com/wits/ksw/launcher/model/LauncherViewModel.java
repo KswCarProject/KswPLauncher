@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
@@ -22,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import com.ibm.icu.text.ArabicShaping;
 import com.wits.ksw.BuildConfig;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
@@ -39,7 +39,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class LauncherViewModel extends BaseViewModel {
-    protected static final String TAG = LauncherViewModel.class.getSimpleName();
+    /* access modifiers changed from: protected */
+    public static final String TAG = LauncherViewModel.class.getSimpleName();
     private static HashMap<Integer, ObjectAnimator> animatorMaps = new HashMap<>();
     public static CarInfo carInfo = McuImpl.getInstance().getCarInfo();
     public static MediaInfo mediaInfo = MediaImpl.getInstance().getMediaInfo();
@@ -122,8 +123,7 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void initData() {
         int bluetooth = Settings.System.getInt(this.contentResolver, "ksw_bluetooth", 0);
-        String str = TAG;
-        Log.i(str, "initData: bluetooth:" + bluetooth);
+        Log.i(TAG, "initData: bluetooth:" + bluetooth);
         setPhoneConState(bluetooth);
         setBtState();
         setMonthDay(new Date());
@@ -141,8 +141,7 @@ public class LauncherViewModel extends BaseViewModel {
 
     public void onItemClick(String pkg, String cls) {
         openApp(new ComponentName(pkg, cls));
-        String str = TAG;
-        Log.i(str, "onItemClick: " + pkg + "/" + cls);
+        Log.i(TAG, "onItemClick: " + pkg + "/" + cls);
     }
 
     public void onItemClick(View view, String action) {
@@ -161,8 +160,7 @@ public class LauncherViewModel extends BaseViewModel {
             Log.i(TAG, "openDvr: onSendCommand:609");
         } else if (KswUtils.getDvrType() == 2) {
             String usbPkg = KswUtils.getUsbDvrPkg();
-            String str = TAG;
-            Log.i(str, "openDvr: usbPkg:" + usbPkg);
+            Log.i(TAG, "openDvr: usbPkg:" + usbPkg);
             if (!TextUtils.isEmpty(usbPkg)) {
                 openApp(this.context.getPackageManager().getLaunchIntentForPackage(usbPkg));
             }
@@ -242,8 +240,7 @@ public class LauncherViewModel extends BaseViewModel {
     public void openChoseMusic(View view) {
         addLastViewFocused(view);
         String pkg = Settings.System.getString(this.contentResolver, "defPlayApp");
-        String str = TAG;
-        Log.i(str, "openMusic: pkg=" + pkg);
+        Log.i(TAG, "openMusic: pkg=" + pkg);
         if (TextUtils.isEmpty(pkg)) {
             pkg = "com.wits.media.MUSIC";
         }
@@ -280,14 +277,12 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void onSendCommand(int command, int subCommand) {
-        String str = TAG;
-        Log.i(str, "onSendCommand: command:" + command + " subCommand:" + subCommand);
+        Log.i(TAG, "onSendCommand: command:" + command + " subCommand:" + subCommand);
         try {
             WitsCommand.sendCommand(command, subCommand, (String) null);
         } catch (Exception e) {
             e.printStackTrace();
-            String str2 = TAG;
-            Log.e(str2, "onSendCommand: " + e.getMessage());
+            Log.e(TAG, "onSendCommand: " + e.getMessage());
         }
     }
 
@@ -299,8 +294,7 @@ public class LauncherViewModel extends BaseViewModel {
     public void openNaviApp() {
         String naiPackge = Settings.System.getString(this.contentResolver, KeyConfig.NAVI_DEFUAL);
         openApp(this.context.getPackageManager().getLaunchIntentForPackage(naiPackge));
-        String str = TAG;
-        Log.i(str, "openNaviApp: " + naiPackge);
+        Log.i(TAG, "openNaviApp: " + naiPackge);
     }
 
     public void openBtApp(View view) {
@@ -327,14 +321,14 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     private void setSelected(View view) {
-        if (this.lastViewFocused != null) {
-            this.lastViewFocused.setSelected(false);
+        View view2 = this.lastViewFocused;
+        if (view2 != null) {
+            view2.setSelected(false);
         }
-        String str = TAG;
-        Log.d(str, "setSelected " + view.isPressed());
+        Log.d(TAG, "setSelected " + view.isPressed());
         LinearLayout linearLayout = (LinearLayout) view.getParent().getParent();
         view.setSelected(true);
-        linearLayout.setDescendantFocusability(393216);
+        linearLayout.setDescendantFocusability(ArabicShaping.TASHKEEL_END);
         linearLayout.setFocusable(true);
         linearLayout.requestFocus();
         linearLayout.setFocusable(false);
@@ -342,15 +336,15 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void refreshLastViewFocused() {
-        if (this.lastViewFocused == null || this.lastViewFocused.isSelected()) {
+        View view = this.lastViewFocused;
+        if (view == null || view.isSelected()) {
             Log.i(TAG, "refreshLastViewFocused: lastViewFocused null  ");
             return;
         }
         this.lastViewFocused.setFocusableInTouchMode(true);
         this.lastViewFocused.requestFocus();
         this.lastViewFocused.setFocusableInTouchMode(false);
-        String str = TAG;
-        Log.i(str, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
+        Log.i(TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
     }
 
     public void refreshViewFocused(View view) {
@@ -358,8 +352,7 @@ public class LauncherViewModel extends BaseViewModel {
             view.setFocusableInTouchMode(true);
             view.requestFocus();
             view.setFocusableInTouchMode(false);
-            String str = TAG;
-            Log.i(str, "refreshLastViewFocused: lastViewFocused=" + view.getId());
+            Log.i(TAG, "refreshLastViewFocused: lastViewFocused=" + view.getId());
             return;
         }
         Log.i(TAG, "refreshLastViewFocused: lastViewFocused null  ");
@@ -408,8 +401,7 @@ public class LauncherViewModel extends BaseViewModel {
             return;
         }
         int state = Settings.System.getInt(this.contentResolver, "ksw_bluetooth", 0);
-        String str2 = TAG;
-        Log.d(str2, "setBtState:ksw_bluetooth===" + state);
+        Log.d(str, "setBtState:ksw_bluetooth===" + state);
         if (state == 1) {
             this.btState.set(this.context.getString(R.string.ksw_id7_connected_phone));
         } else {
@@ -422,9 +414,7 @@ public class LauncherViewModel extends BaseViewModel {
         String day2 = KswUtils.formatDay(date);
         this.month.set(month2);
         this.day.set(day2);
-        String times = new SimpleDateFormat(KswUtils.is24Hour() ? "yyyy/MM/dd hh:mm:ss" : "yyyy/M/d h:m:s").format(date);
-        String str = TAG;
-        Log.i(str, "setMonthDay: times:-------------->>>" + times);
+        Log.i(TAG, "setMonthDay: times:-------------->>>" + new SimpleDateFormat(KswUtils.is24Hour() ? "yyyy/MM/dd hh:mm:ss" : "yyyy/M/d h:m:s").format(date));
     }
 
     public void refreshNaviInfo(Intent intent) {
@@ -436,38 +426,22 @@ public class LauncherViewModel extends BaseViewModel {
         if (iKey_type == 10001) {
             if (bundle != null) {
                 int type = bundle.getInt(NaviInfo.TYPE);
-                String str2 = TAG;
-                Log.i(str2, "refreshNaviInfo: type=" + type);
+                Log.i(str, "refreshNaviInfo: type=" + type);
                 if (type == 1 || type == 0) {
                     this.naviInfo.next_road_name.set(bundle.getString(NaviInfo.NEXT_ROAD_NAME));
-                    ObservableField<Integer> observableField = this.naviInfo.icon;
-                    NaviInfo naviInfo2 = this.naviInfo;
-                    observableField.set(Integer.valueOf(NaviInfo.formatIcon(bundle.getInt(NaviInfo.ICON))));
-                    ObservableField<String> observableField2 = this.naviInfo.route_remain_dis;
-                    NaviInfo naviInfo3 = this.naviInfo;
-                    observableField2.set(NaviInfo.formatDistance(bundle.getInt(NaviInfo.ROUTE_REMAIN_DIS)));
-                    ObservableField<String> observableField3 = this.naviInfo.route_remain_time;
-                    NaviInfo naviInfo4 = this.naviInfo;
-                    observableField3.set(NaviInfo.formatTime(bundle.getInt(NaviInfo.ROUTE_REMAIN_TIME)));
-                    ObservableField<String> observableField4 = this.naviInfo.seg_remain_dis;
-                    NaviInfo naviInfo5 = this.naviInfo;
-                    observableField4.set(NaviInfo.formatDistance(bundle.getInt(NaviInfo.SEG_REMAIN_DIS)));
+                    this.naviInfo.icon.set(Integer.valueOf(NaviInfo.formatIcon(bundle.getInt(NaviInfo.ICON))));
+                    this.naviInfo.route_remain_dis.set(NaviInfo.formatDistance(bundle.getInt(NaviInfo.ROUTE_REMAIN_DIS)));
+                    this.naviInfo.route_remain_time.set(NaviInfo.formatTime(bundle.getInt(NaviInfo.ROUTE_REMAIN_TIME)));
+                    this.naviInfo.seg_remain_dis.set(NaviInfo.formatDistance(bundle.getInt(NaviInfo.SEG_REMAIN_DIS)));
                     this.naviInfo.camera_speed.set(Integer.valueOf(bundle.getInt(NaviInfo.CAMERA_SPEED)));
                     this.naviInfo.camera_type.set(Integer.valueOf(bundle.getInt(NaviInfo.CAMERA_TYPE)));
-                    String str3 = TAG;
-                    Log.i(str3, "refreshNaviInfo: next_road_name=" + this.naviInfo.next_road_name.get());
-                    String str4 = TAG;
-                    Log.i(str4, "refreshNaviInfo: icon=" + bundle.getInt(NaviInfo.ICON));
-                    String str5 = TAG;
-                    Log.i(str5, "refreshNaviInfo: route_remain_dis=" + this.naviInfo.route_remain_dis.get());
-                    String str6 = TAG;
-                    Log.i(str6, "refreshNaviInfo: route_remain_time=" + this.naviInfo.route_remain_time.get());
-                    String str7 = TAG;
-                    Log.i(str7, "refreshNaviInfo: seg_remain_dis=" + this.naviInfo.seg_remain_dis.get());
-                    String str8 = TAG;
-                    Log.i(str8, "refreshNaviInfo: camera_speed=" + this.naviInfo.camera_speed.get());
-                    String str9 = TAG;
-                    Log.i(str9, "refreshNaviInfo: camera_type=" + this.naviInfo.camera_type.get());
+                    Log.i(str, "refreshNaviInfo: next_road_name=" + this.naviInfo.next_road_name.get());
+                    Log.i(str, "refreshNaviInfo: icon=" + bundle.getInt(NaviInfo.ICON));
+                    Log.i(str, "refreshNaviInfo: route_remain_dis=" + this.naviInfo.route_remain_dis.get());
+                    Log.i(str, "refreshNaviInfo: route_remain_time=" + this.naviInfo.route_remain_time.get());
+                    Log.i(str, "refreshNaviInfo: seg_remain_dis=" + this.naviInfo.seg_remain_dis.get());
+                    Log.i(str, "refreshNaviInfo: camera_speed=" + this.naviInfo.camera_speed.get());
+                    Log.i(str, "refreshNaviInfo: camera_type=" + this.naviInfo.camera_type.get());
                 }
                 this.naviInfo.showGuideView.set(0);
             }
@@ -509,12 +483,10 @@ public class LauncherViewModel extends BaseViewModel {
         }
     }
 
-    @BindingAdapter({"setTurnSpeedRotation"})
     public static void setRotation(ImageView imageView, int rota) {
         setSpeedRotationBet(imageView, (float) rota);
     }
 
-    @BindingAdapter({"setSpeedRotation"})
     public static void setSpeedRotation(ImageView imageView, int rota) {
         setSpeedRotationBet(imageView, (float) rota);
     }

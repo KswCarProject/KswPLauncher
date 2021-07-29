@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.bumptech.glide.load.Encoder;
 import com.bumptech.glide.load.Options;
@@ -19,7 +18,7 @@ public class StreamEncoder implements Encoder<InputStream> {
         this.byteArrayPool = byteArrayPool2;
     }
 
-    public boolean encode(@NonNull InputStream data, @NonNull File file, @NonNull Options options) {
+    public boolean encode(InputStream data, File file, Options options) {
         byte[] buffer = (byte[]) this.byteArrayPool.get(65536, byte[].class);
         boolean success = false;
         OutputStream os = null;

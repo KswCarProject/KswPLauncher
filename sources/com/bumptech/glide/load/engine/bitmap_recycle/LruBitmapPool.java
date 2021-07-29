@@ -1,11 +1,7 @@
 package com.bumptech.glide.load.engine.bitmap_recycle;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,30 +54,36 @@ public class LruBitmapPool implements BitmapPool {
     }
 
     public synchronized void put(Bitmap bitmap) {
-        if (bitmap == null) {
-            throw new NullPointerException("Bitmap must not be null");
-        } else if (!bitmap.isRecycled()) {
-            if (bitmap.isMutable() && ((long) this.strategy.getSize(bitmap)) <= this.maxSize) {
-                if (this.allowedConfigs.contains(bitmap.getConfig())) {
-                    int size = this.strategy.getSize(bitmap);
-                    this.strategy.put(bitmap);
-                    this.tracker.add(bitmap);
-                    this.puts++;
-                    this.currentSize += (long) size;
-                    if (Log.isLoggable(TAG, 2)) {
-                        Log.v(TAG, "Put bitmap in pool=" + this.strategy.logBitmap(bitmap));
+        if (bitmap != null) {
+            try {
+                if (!bitmap.isRecycled()) {
+                    if (bitmap.isMutable() && ((long) this.strategy.getSize(bitmap)) <= this.maxSize) {
+                        if (this.allowedConfigs.contains(bitmap.getConfig())) {
+                            int size = this.strategy.getSize(bitmap);
+                            this.strategy.put(bitmap);
+                            this.tracker.add(bitmap);
+                            this.puts++;
+                            this.currentSize += (long) size;
+                            if (Log.isLoggable(TAG, 2)) {
+                                Log.v(TAG, "Put bitmap in pool=" + this.strategy.logBitmap(bitmap));
+                            }
+                            dump();
+                            evict();
+                            return;
+                        }
                     }
-                    dump();
-                    evict();
+                    if (Log.isLoggable(TAG, 2)) {
+                        Log.v(TAG, "Reject bitmap from pool, bitmap: " + this.strategy.logBitmap(bitmap) + ", is mutable: " + bitmap.isMutable() + ", is allowed config: " + this.allowedConfigs.contains(bitmap.getConfig()));
+                    }
+                    bitmap.recycle();
                     return;
                 }
+                throw new IllegalStateException("Cannot pool recycled bitmap");
+            } catch (Throwable th) {
+                throw th;
             }
-            if (Log.isLoggable(TAG, 2)) {
-                Log.v(TAG, "Reject bitmap from pool, bitmap: " + this.strategy.logBitmap(bitmap) + ", is mutable: " + bitmap.isMutable() + ", is allowed config: " + this.allowedConfigs.contains(bitmap.getConfig()));
-            }
-            bitmap.recycle();
         } else {
-            throw new IllegalStateException("Cannot pool recycled bitmap");
+            throw new NullPointerException("Bitmap must not be null");
         }
     }
 
@@ -89,7 +91,6 @@ public class LruBitmapPool implements BitmapPool {
         trimToSize(this.maxSize);
     }
 
-    @NonNull
     public Bitmap get(int width, int height, Bitmap.Config config) {
         Bitmap result = getDirtyOrNull(width, height, config);
         if (result == null) {
@@ -99,7 +100,6 @@ public class LruBitmapPool implements BitmapPool {
         return result;
     }
 
-    @NonNull
     public Bitmap getDirty(int width, int height, Bitmap.Config config) {
         Bitmap result = getDirtyOrNull(width, height, config);
         if (result == null) {
@@ -108,20 +108,17 @@ public class LruBitmapPool implements BitmapPool {
         return result;
     }
 
-    @NonNull
-    private static Bitmap createBitmap(int width, int height, @Nullable Bitmap.Config config) {
+    private static Bitmap createBitmap(int width, int height, Bitmap.Config config) {
         return Bitmap.createBitmap(width, height, config != null ? config : DEFAULT_CONFIG);
     }
 
-    @TargetApi(26)
     private static void assertNotHardwareConfig(Bitmap.Config config) {
         if (Build.VERSION.SDK_INT >= 26 && config == Bitmap.Config.HARDWARE) {
             throw new IllegalArgumentException("Cannot create a mutable Bitmap with config: " + config + ". Consider setting Downsampler#ALLOW_HARDWARE_CONFIG to false in your RequestOptions and/or in GlideBuilder.setDefaultRequestOptions");
         }
     }
 
-    @Nullable
-    private synchronized Bitmap getDirtyOrNull(int width, int height, @Nullable Bitmap.Config config) {
+    private synchronized Bitmap getDirtyOrNull(int width, int height, Bitmap.Config config) {
         Bitmap result;
         assertNotHardwareConfig(config);
         result = this.strategy.get(width, height, config != null ? config : DEFAULT_CONFIG);
@@ -148,7 +145,6 @@ public class LruBitmapPool implements BitmapPool {
         maybeSetPreMultiplied(bitmap);
     }
 
-    @TargetApi(19)
     private static void maybeSetPreMultiplied(Bitmap bitmap) {
         if (Build.VERSION.SDK_INT >= 19) {
             bitmap.setPremultiplied(true);
@@ -162,7 +158,6 @@ public class LruBitmapPool implements BitmapPool {
         trimToSize(0);
     }
 
-    @SuppressLint({"InlinedApi"})
     public void trimMemory(int level) {
         if (Log.isLoggable(TAG, 3)) {
             Log.d(TAG, "trimMemory, level=" + level);
@@ -213,7 +208,6 @@ public class LruBitmapPool implements BitmapPool {
         return new AttributeStrategy();
     }
 
-    @TargetApi(26)
     private static Set<Bitmap.Config> getDefaultAllowedConfigs() {
         Set<Bitmap.Config> configs = new HashSet<>(Arrays.asList(Bitmap.Config.values()));
         if (Build.VERSION.SDK_INT >= 19) {

@@ -36,10 +36,12 @@ public class Ntg630ControlView {
     }
 
     public void showBenzControl(Context context, final BcVieModel bcVieModel, View view) {
-        this.binding = (Ntg630ControlPopupBinding) DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.ntg630_control_popup, (ViewGroup) null, false);
-        this.binding.setMBcVieModel(bcVieModel);
-        this.popupWindow = new PopupWindow(this.binding.getRoot(), UtilsInfo.dip2px(context, 175.0f), UtilsInfo.dip2px(context, 378.0f), true);
-        this.popupWindow.showAsDropDown(view, -view.getLeft(), -view.getTop());
+        Ntg630ControlPopupBinding ntg630ControlPopupBinding = (Ntg630ControlPopupBinding) DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.ntg630_control_popup, (ViewGroup) null, false);
+        this.binding = ntg630ControlPopupBinding;
+        ntg630ControlPopupBinding.setMBcVieModel(bcVieModel);
+        PopupWindow popupWindow2 = new PopupWindow(this.binding.getRoot(), UtilsInfo.dip2px(context, 175.0f), UtilsInfo.dip2px(context, 378.0f), true);
+        this.popupWindow = popupWindow2;
+        popupWindow2.showAsDropDown(view, -view.getLeft(), -view.getTop());
         this.popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
                 bcVieModel.controlBean.benzControlPanelState.set(false);
@@ -49,25 +51,27 @@ public class Ntg630ControlView {
     }
 
     public void dismiss() {
-        if (this.popupWindow != null) {
-            this.popupWindow.dismiss();
+        PopupWindow popupWindow2 = this.popupWindow;
+        if (popupWindow2 != null) {
+            popupWindow2.dismiss();
             this.popupWindow = null;
         }
     }
 
     public boolean isShowing() {
-        return this.popupWindow != null && this.popupWindow.isShowing();
+        PopupWindow popupWindow2 = this.popupWindow;
+        return popupWindow2 != null && popupWindow2.isShowing();
     }
 
     public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final BcVieModel bcVieModel, int light) {
-        String str = TAG;
-        Log.d(str, " showBenzBrightnessDailog light " + light);
+        Log.d(TAG, " showBenzBrightnessDailog light " + light);
         View layout = LayoutInflater.from(context).inflate(R.layout.ntg6_brightness_control_popup, (ViewGroup) null);
         View closeImage = layout.findViewById(R.id.closeImage);
         View addBrImageView = layout.findViewById(R.id.addBrImageView);
         View subBrImageView = layout.findViewById(R.id.subBrImageView);
-        this.brightnessPopupWindow = new PopupWindow(layout, UtilsInfo.dip2px(context, 321.0f), UtilsInfo.dip2px(context, 225.0f), true);
-        this.brightnessPopupWindow.setOutsideTouchable(false);
+        PopupWindow popupWindow2 = new PopupWindow(layout, UtilsInfo.dip2px(context, 321.0f), UtilsInfo.dip2px(context, 225.0f), true);
+        this.brightnessPopupWindow = popupWindow2;
+        popupWindow2.setOutsideTouchable(false);
         this.brightnessPopupWindow.showAsDropDown(this.binding.controlBtn1, (this.binding.controlBtn1.getRight() / 2) + 20, this.binding.controlBtn1.getTop() - 20);
         this.brightnessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
@@ -80,8 +84,8 @@ public class Ntg630ControlView {
             }
         });
         addBrImageView.setOnClickListener(new View.OnClickListener(light, benzData) {
-            private final /* synthetic */ int f$0;
-            private final /* synthetic */ McuStatus.BenzData f$1;
+            public final /* synthetic */ int f$0;
+            public final /* synthetic */ McuStatus.BenzData f$1;
 
             {
                 this.f$0 = r1;
@@ -93,8 +97,8 @@ public class Ntg630ControlView {
             }
         });
         subBrImageView.setOnClickListener(new View.OnClickListener(light, benzData) {
-            private final /* synthetic */ int f$0;
-            private final /* synthetic */ McuStatus.BenzData f$1;
+            public final /* synthetic */ int f$0;
+            public final /* synthetic */ McuStatus.BenzData f$1;
 
             {
                 this.f$0 = r1;
@@ -107,7 +111,7 @@ public class Ntg630ControlView {
         });
         closeImage.setOnClickListener(new View.OnClickListener() {
             public final void onClick(View view) {
-                Ntg630ControlView.lambda$showBenzBrightnessDailog$2(Ntg630ControlView.this, view);
+                Ntg630ControlView.this.lambda$showBenzBrightnessDailog$2$Ntg630ControlView(view);
             }
         });
     }
@@ -136,8 +140,8 @@ public class Ntg630ControlView {
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }
 
-    public static /* synthetic */ void lambda$showBenzBrightnessDailog$2(Ntg630ControlView ntg630ControlView, View v) {
-        ntg630ControlView.brightnessPopupWindow.dismiss();
-        ntg630ControlView.brightnessPopupWindow = null;
+    public /* synthetic */ void lambda$showBenzBrightnessDailog$2$Ntg630ControlView(View v) {
+        this.brightnessPopupWindow.dismiss();
+        this.brightnessPopupWindow = null;
     }
 }

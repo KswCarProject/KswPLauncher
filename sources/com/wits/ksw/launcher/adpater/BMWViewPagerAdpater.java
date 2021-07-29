@@ -23,16 +23,18 @@ public class BMWViewPagerAdpater extends FragmentPagerAdapter {
     }
 
     public Fragment getItem(int position) {
-        if (this.fragmentList == null) {
+        List<Fragment> list = this.fragmentList;
+        if (list == null) {
             return null;
         }
-        return this.fragmentList.get(position);
+        return list.get(position);
     }
 
     public int getCount() {
-        if (this.fragmentList == null) {
+        List<Fragment> list = this.fragmentList;
+        if (list == null) {
             return 0;
         }
-        return this.fragmentList.size();
+        return list.size();
     }
 }

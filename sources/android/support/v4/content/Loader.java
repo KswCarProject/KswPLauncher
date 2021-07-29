@@ -3,9 +3,6 @@ package android.support.v4.content;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.DebugUtils;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -22,11 +19,11 @@ public class Loader<D> {
     boolean mStarted = false;
 
     public interface OnLoadCanceledListener<D> {
-        void onLoadCanceled(@NonNull Loader<D> loader);
+        void onLoadCanceled(Loader<D> loader);
     }
 
     public interface OnLoadCompleteListener<D> {
-        void onLoadComplete(@NonNull Loader<D> loader, @Nullable D d);
+        void onLoadComplete(Loader<D> loader, D d);
     }
 
     public final class ForceLoadContentObserver extends ContentObserver {
@@ -43,25 +40,24 @@ public class Loader<D> {
         }
     }
 
-    public Loader(@NonNull Context context) {
+    public Loader(Context context) {
         this.mContext = context.getApplicationContext();
     }
 
-    @MainThread
-    public void deliverResult(@Nullable D data) {
-        if (this.mListener != null) {
-            this.mListener.onLoadComplete(this, data);
+    public void deliverResult(D data) {
+        OnLoadCompleteListener<D> onLoadCompleteListener = this.mListener;
+        if (onLoadCompleteListener != null) {
+            onLoadCompleteListener.onLoadComplete(this, data);
         }
     }
 
-    @MainThread
     public void deliverCancellation() {
-        if (this.mOnLoadCanceledListener != null) {
-            this.mOnLoadCanceledListener.onLoadCanceled(this);
+        OnLoadCanceledListener<D> onLoadCanceledListener = this.mOnLoadCanceledListener;
+        if (onLoadCanceledListener != null) {
+            onLoadCanceledListener.onLoadCanceled(this);
         }
     }
 
-    @NonNull
     public Context getContext() {
         return this.mContext;
     }
@@ -70,8 +66,7 @@ public class Loader<D> {
         return this.mId;
     }
 
-    @MainThread
-    public void registerListener(int id, @NonNull OnLoadCompleteListener<D> listener) {
+    public void registerListener(int id, OnLoadCompleteListener<D> listener) {
         if (this.mListener == null) {
             this.mListener = listener;
             this.mId = id;
@@ -80,19 +75,18 @@ public class Loader<D> {
         throw new IllegalStateException("There is already a listener registered");
     }
 
-    @MainThread
-    public void unregisterListener(@NonNull OnLoadCompleteListener<D> listener) {
-        if (this.mListener == null) {
+    public void unregisterListener(OnLoadCompleteListener<D> listener) {
+        OnLoadCompleteListener<D> onLoadCompleteListener = this.mListener;
+        if (onLoadCompleteListener == null) {
             throw new IllegalStateException("No listener register");
-        } else if (this.mListener == listener) {
+        } else if (onLoadCompleteListener == listener) {
             this.mListener = null;
         } else {
             throw new IllegalArgumentException("Attempting to unregister the wrong listener");
         }
     }
 
-    @MainThread
-    public void registerOnLoadCanceledListener(@NonNull OnLoadCanceledListener<D> listener) {
+    public void registerOnLoadCanceledListener(OnLoadCanceledListener<D> listener) {
         if (this.mOnLoadCanceledListener == null) {
             this.mOnLoadCanceledListener = listener;
             return;
@@ -100,11 +94,11 @@ public class Loader<D> {
         throw new IllegalStateException("There is already a listener registered");
     }
 
-    @MainThread
-    public void unregisterOnLoadCanceledListener(@NonNull OnLoadCanceledListener<D> listener) {
-        if (this.mOnLoadCanceledListener == null) {
+    public void unregisterOnLoadCanceledListener(OnLoadCanceledListener<D> listener) {
+        OnLoadCanceledListener<D> onLoadCanceledListener = this.mOnLoadCanceledListener;
+        if (onLoadCanceledListener == null) {
             throw new IllegalStateException("No listener register");
-        } else if (this.mOnLoadCanceledListener == listener) {
+        } else if (onLoadCanceledListener == listener) {
             this.mOnLoadCanceledListener = null;
         } else {
             throw new IllegalArgumentException("Attempting to unregister the wrong listener");
@@ -123,7 +117,6 @@ public class Loader<D> {
         return this.mReset;
     }
 
-    @MainThread
     public final void startLoading() {
         this.mStarted = true;
         this.mReset = false;
@@ -132,54 +125,44 @@ public class Loader<D> {
     }
 
     /* access modifiers changed from: protected */
-    @MainThread
     public void onStartLoading() {
     }
 
-    @MainThread
     public boolean cancelLoad() {
         return onCancelLoad();
     }
 
     /* access modifiers changed from: protected */
-    @MainThread
     public boolean onCancelLoad() {
         return false;
     }
 
-    @MainThread
     public void forceLoad() {
         onForceLoad();
     }
 
     /* access modifiers changed from: protected */
-    @MainThread
     public void onForceLoad() {
     }
 
-    @MainThread
     public void stopLoading() {
         this.mStarted = false;
         onStopLoading();
     }
 
     /* access modifiers changed from: protected */
-    @MainThread
     public void onStopLoading() {
     }
 
-    @MainThread
     public void abandon() {
         this.mAbandoned = true;
         onAbandon();
     }
 
     /* access modifiers changed from: protected */
-    @MainThread
     public void onAbandon() {
     }
 
-    @MainThread
     public void reset() {
         onReset();
         this.mReset = true;
@@ -190,7 +173,6 @@ public class Loader<D> {
     }
 
     /* access modifiers changed from: protected */
-    @MainThread
     public void onReset() {
     }
 
@@ -211,7 +193,6 @@ public class Loader<D> {
         }
     }
 
-    @MainThread
     public void onContentChanged() {
         if (this.mStarted) {
             forceLoad();
@@ -220,8 +201,7 @@ public class Loader<D> {
         }
     }
 
-    @NonNull
-    public String dataToString(@Nullable D data) {
+    public String dataToString(D data) {
         StringBuilder sb = new StringBuilder(64);
         DebugUtils.buildShortClassTag(data, sb);
         sb.append("}");

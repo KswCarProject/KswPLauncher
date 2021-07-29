@@ -50,8 +50,9 @@ abstract class AbsActionBarView extends ViewGroup {
         TypedArray a = getContext().obtainStyledAttributes((AttributeSet) null, R.styleable.ActionBar, R.attr.actionBarStyle, 0);
         setContentHeight(a.getLayoutDimension(R.styleable.ActionBar_height, 0));
         a.recycle();
-        if (this.mActionMenuPresenter != null) {
-            this.mActionMenuPresenter.onConfigurationChanged(newConfig);
+        ActionMenuPresenter actionMenuPresenter = this.mActionMenuPresenter;
+        if (actionMenuPresenter != null) {
+            actionMenuPresenter.onConfigurationChanged(newConfig);
         }
     }
 
@@ -106,8 +107,9 @@ abstract class AbsActionBarView extends ViewGroup {
     }
 
     public ViewPropertyAnimatorCompat setupAnimatorToVisibility(int visibility, long duration) {
-        if (this.mVisibilityAnim != null) {
-            this.mVisibilityAnim.cancel();
+        ViewPropertyAnimatorCompat viewPropertyAnimatorCompat = this.mVisibilityAnim;
+        if (viewPropertyAnimatorCompat != null) {
+            viewPropertyAnimatorCompat.cancel();
         }
         if (visibility == 0) {
             if (getVisibility() != 0) {
@@ -130,16 +132,18 @@ abstract class AbsActionBarView extends ViewGroup {
 
     public void setVisibility(int visibility) {
         if (visibility != getVisibility()) {
-            if (this.mVisibilityAnim != null) {
-                this.mVisibilityAnim.cancel();
+            ViewPropertyAnimatorCompat viewPropertyAnimatorCompat = this.mVisibilityAnim;
+            if (viewPropertyAnimatorCompat != null) {
+                viewPropertyAnimatorCompat.cancel();
             }
             super.setVisibility(visibility);
         }
     }
 
     public boolean showOverflowMenu() {
-        if (this.mActionMenuPresenter != null) {
-            return this.mActionMenuPresenter.showOverflowMenu();
+        ActionMenuPresenter actionMenuPresenter = this.mActionMenuPresenter;
+        if (actionMenuPresenter != null) {
+            return actionMenuPresenter.showOverflowMenu();
         }
         return false;
     }
@@ -153,28 +157,32 @@ abstract class AbsActionBarView extends ViewGroup {
     }
 
     public boolean hideOverflowMenu() {
-        if (this.mActionMenuPresenter != null) {
-            return this.mActionMenuPresenter.hideOverflowMenu();
+        ActionMenuPresenter actionMenuPresenter = this.mActionMenuPresenter;
+        if (actionMenuPresenter != null) {
+            return actionMenuPresenter.hideOverflowMenu();
         }
         return false;
     }
 
     public boolean isOverflowMenuShowing() {
-        if (this.mActionMenuPresenter != null) {
-            return this.mActionMenuPresenter.isOverflowMenuShowing();
+        ActionMenuPresenter actionMenuPresenter = this.mActionMenuPresenter;
+        if (actionMenuPresenter != null) {
+            return actionMenuPresenter.isOverflowMenuShowing();
         }
         return false;
     }
 
     public boolean isOverflowMenuShowPending() {
-        if (this.mActionMenuPresenter != null) {
-            return this.mActionMenuPresenter.isOverflowMenuShowPending();
+        ActionMenuPresenter actionMenuPresenter = this.mActionMenuPresenter;
+        if (actionMenuPresenter != null) {
+            return actionMenuPresenter.isOverflowMenuShowPending();
         }
         return false;
     }
 
     public boolean isOverflowReserved() {
-        return this.mActionMenuPresenter != null && this.mActionMenuPresenter.isOverflowReserved();
+        ActionMenuPresenter actionMenuPresenter = this.mActionMenuPresenter;
+        return actionMenuPresenter != null && actionMenuPresenter.isOverflowReserved();
     }
 
     public boolean canShowOverflowMenu() {
@@ -182,8 +190,9 @@ abstract class AbsActionBarView extends ViewGroup {
     }
 
     public void dismissPopupMenus() {
-        if (this.mActionMenuPresenter != null) {
-            this.mActionMenuPresenter.dismissPopupMenus();
+        ActionMenuPresenter actionMenuPresenter = this.mActionMenuPresenter;
+        if (actionMenuPresenter != null) {
+            actionMenuPresenter.dismissPopupMenus();
         }
     }
 

@@ -40,14 +40,15 @@ public class Ntg6ControlView {
     }
 
     public void showBenzControl(Context context, final BcVieModel bcVieModel, View view) {
-        this.benzControlBind = (BenzControlBind) DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.ntg6_control_popup, (ViewGroup) null, false);
-        this.benzControlBind.setMBcVieModel(bcVieModel);
+        BenzControlBind benzControlBind2 = (BenzControlBind) DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.ntg6_control_popup, (ViewGroup) null, false);
+        this.benzControlBind = benzControlBind2;
+        benzControlBind2.setMBcVieModel(bcVieModel);
         int width = UtilsInfo.dip2px(context, 175.0f);
         int height = UtilsInfo.dip2px(context, 378.0f);
-        String str = TAG;
-        Log.i(str, "showBenzControl: width:" + width + "\theight:" + height);
-        this.popupWindow = new PopupWindow(this.benzControlBind.getRoot(), width, height, true);
-        this.popupWindow.showAsDropDown(view, -view.getLeft(), -view.getTop());
+        Log.i(TAG, "showBenzControl: width:" + width + "\theight:" + height);
+        PopupWindow popupWindow2 = new PopupWindow(this.benzControlBind.getRoot(), width, height, true);
+        this.popupWindow = popupWindow2;
+        popupWindow2.showAsDropDown(view, -view.getLeft(), -view.getTop());
         this.popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
                 bcVieModel.controlBean.benzControlPanelState.set(false);
@@ -57,25 +58,27 @@ public class Ntg6ControlView {
     }
 
     public void dismiss() {
-        if (this.popupWindow != null) {
-            this.popupWindow.dismiss();
+        PopupWindow popupWindow2 = this.popupWindow;
+        if (popupWindow2 != null) {
+            popupWindow2.dismiss();
             this.popupWindow = null;
         }
     }
 
     public boolean isShowing() {
-        return this.popupWindow != null && this.popupWindow.isShowing();
+        PopupWindow popupWindow2 = this.popupWindow;
+        return popupWindow2 != null && popupWindow2.isShowing();
     }
 
     public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final BcVieModel bcVieModel, int light) {
-        String str = TAG;
-        Log.d(str, " showBenzBrightnessDialog light " + light);
+        Log.d(TAG, " showBenzBrightnessDialog light " + light);
         View layout = LayoutInflater.from(context).inflate(R.layout.ntg6_brightness_control_popup, (ViewGroup) null);
         View closeImage = layout.findViewById(R.id.closeImage);
         View addBrImageView = layout.findViewById(R.id.addBrImageView);
         View subBrImageView = layout.findViewById(R.id.subBrImageView);
-        this.brightnessPopupWindow = new PopupWindow(layout, UtilsInfo.dip2px(context, 321.0f), UtilsInfo.dip2px(context, 225.0f), true);
-        this.brightnessPopupWindow.setOutsideTouchable(false);
+        PopupWindow popupWindow2 = new PopupWindow(layout, UtilsInfo.dip2px(context, 321.0f), UtilsInfo.dip2px(context, 225.0f), true);
+        this.brightnessPopupWindow = popupWindow2;
+        popupWindow2.setOutsideTouchable(false);
         this.brightnessPopupWindow.showAsDropDown(this.benzControlBind.controlBtn1, (this.benzControlBind.controlBtn1.getRight() / 2) + 20, this.benzControlBind.controlBtn1.getTop() - 20);
         this.brightnessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
@@ -88,8 +91,8 @@ public class Ntg6ControlView {
             }
         });
         addBrImageView.setOnClickListener(new View.OnClickListener(light, benzData) {
-            private final /* synthetic */ int f$0;
-            private final /* synthetic */ McuStatus.BenzData f$1;
+            public final /* synthetic */ int f$0;
+            public final /* synthetic */ McuStatus.BenzData f$1;
 
             {
                 this.f$0 = r1;
@@ -101,8 +104,8 @@ public class Ntg6ControlView {
             }
         });
         subBrImageView.setOnClickListener(new View.OnClickListener(light, benzData) {
-            private final /* synthetic */ int f$0;
-            private final /* synthetic */ McuStatus.BenzData f$1;
+            public final /* synthetic */ int f$0;
+            public final /* synthetic */ McuStatus.BenzData f$1;
 
             {
                 this.f$0 = r1;
@@ -115,7 +118,7 @@ public class Ntg6ControlView {
         });
         closeImage.setOnClickListener(new View.OnClickListener() {
             public final void onClick(View view) {
-                Ntg6ControlView.lambda$showBenzBrightnessDailog$2(Ntg6ControlView.this, view);
+                Ntg6ControlView.this.lambda$showBenzBrightnessDailog$2$Ntg6ControlView(view);
             }
         });
     }
@@ -144,9 +147,9 @@ public class Ntg6ControlView {
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
     }
 
-    public static /* synthetic */ void lambda$showBenzBrightnessDailog$2(Ntg6ControlView ntg6ControlView, View v) {
-        ntg6ControlView.brightnessPopupWindow.dismiss();
-        ntg6ControlView.brightnessPopupWindow = null;
+    public /* synthetic */ void lambda$showBenzBrightnessDailog$2$Ntg6ControlView(View v) {
+        this.brightnessPopupWindow.dismiss();
+        this.brightnessPopupWindow = null;
     }
 
     public void showBenzBrightnessControl(Context context, final McuStatus.BenzData benzData, final BcVieModel bcVieModel) {
@@ -174,8 +177,9 @@ public class Ntg6ControlView {
             w = 321;
             xoff = 180;
         }
-        this.brightnessPopupWindow = new PopupWindow(layout, w, h, true);
-        this.brightnessPopupWindow.setOutsideTouchable(false);
+        PopupWindow popupWindow2 = new PopupWindow(layout, w, h, true);
+        this.brightnessPopupWindow = popupWindow2;
+        popupWindow2.setOutsideTouchable(false);
         this.brightnessPopupWindow.showAsDropDown(this.benzControlBind.controlBtn1, xoff, 0, 48);
         this.brightnessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
@@ -191,8 +195,7 @@ public class Ntg6ControlView {
             public void onProgressChanged(ColorArcProgressBar seekArc, int progress, boolean fromUser) {
                 Log.i(KswApplication.TAG, "onProgressChanged: progress= " + progress);
                 bcVieModel.controlBean.brightness.set(progress);
-                TextView textView = brightnessTextView;
-                textView.setText("" + progress);
+                brightnessTextView.setText("" + progress);
             }
 
             public void onStartTrackingTouch(ColorArcProgressBar seekArc) {
@@ -209,19 +212,18 @@ public class Ntg6ControlView {
                     WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
                     Log.i(KswApplication.TAG, "onStopTrackingTouch: 写右仪表亮度值=" + progress);
                 }
-                TextView textView = brightnessTextView;
-                textView.setText("" + progress);
+                brightnessTextView.setText("" + progress);
             }
         });
         closeControl.setOnClickListener(new View.OnClickListener() {
             public final void onClick(View view) {
-                Ntg6ControlView.lambda$showBenzBrightnessControl$3(Ntg6ControlView.this, view);
+                Ntg6ControlView.this.lambda$showBenzBrightnessControl$3$Ntg6ControlView(view);
             }
         });
     }
 
-    public static /* synthetic */ void lambda$showBenzBrightnessControl$3(Ntg6ControlView ntg6ControlView, View v) {
-        ntg6ControlView.brightnessPopupWindow.dismiss();
-        ntg6ControlView.brightnessPopupWindow = null;
+    public /* synthetic */ void lambda$showBenzBrightnessControl$3$Ntg6ControlView(View v) {
+        this.brightnessPopupWindow.dismiss();
+        this.brightnessPopupWindow = null;
     }
 }

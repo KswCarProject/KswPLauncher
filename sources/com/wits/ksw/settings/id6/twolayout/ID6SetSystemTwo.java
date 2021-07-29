@@ -1,6 +1,5 @@
 package com.wits.ksw.settings.id6.twolayout;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.util.Log;
@@ -26,8 +25,10 @@ public class ID6SetSystemTwo extends RelativeLayout {
     private int aux_index2;
     private ContentResolver contentResolver;
     private Context context;
+    private int fuelUnit;
     private int groupValue;
     private ImageView img_twoDefaul;
+    private RadioGroup rdgFuelUnitRadioGroup;
     private RadioGroup rdgTempUnitRadioGroup;
     private RadioGroup rdg_shext;
     private LinearLayout relate_auxweiz;
@@ -40,7 +41,6 @@ public class ID6SetSystemTwo extends RelativeLayout {
     /* access modifiers changed from: private */
     public TextView tv_cauxSize2;
 
-    @SuppressLint({"NewApi"})
     public ID6SetSystemTwo(Context context2) {
         super(context2);
         this.context = context2;
@@ -59,8 +59,7 @@ public class ID6SetSystemTwo extends RelativeLayout {
             this.aux_index1 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX1);
             this.aux_index2 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX2);
             this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-            String str = TAG;
-            Log.i(str, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
+            Log.i(TAG, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -71,15 +70,14 @@ public class ID6SetSystemTwo extends RelativeLayout {
         this.relate_shext = (RelativeLayout) view.findViewById(R.id.relate_shext);
         this.relate_auxweiz = (LinearLayout) view.findViewById(R.id.relate_auxweiz);
         this.tv_cauxSize = (TextView) view.findViewById(R.id.tv_cauxSize);
-        this.seekbar_caux = (SeekBar) view.findViewById(R.id.seekbar_caux);
-        this.seekbar_caux.setMax(12);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_caux);
+        this.seekbar_caux = seekBar;
+        seekBar.setMax(12);
         this.seekbar_caux.setProgress(this.aux_index1);
-        TextView textView = this.tv_cauxSize;
-        textView.setText(this.aux_index1 + "");
+        this.tv_cauxSize.setText(this.aux_index1 + "");
         this.seekbar_caux.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$000 = ID6SetSystemTwo.this.tv_cauxSize;
-                access$000.setText(progress + "");
+                ID6SetSystemTwo.this.tv_cauxSize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX1, progress);
             }
 
@@ -90,15 +88,14 @@ public class ID6SetSystemTwo extends RelativeLayout {
             }
         });
         this.tv_cauxSize2 = (TextView) view.findViewById(R.id.tv_cauxSize2);
-        this.seekbar_caux2 = (SeekBar) view.findViewById(R.id.seekbar_caux2);
-        this.seekbar_caux2.setMax(12);
+        SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekbar_caux2);
+        this.seekbar_caux2 = seekBar2;
+        seekBar2.setMax(12);
         this.seekbar_caux2.setProgress(this.aux_index2);
-        TextView textView2 = this.tv_cauxSize2;
-        textView2.setText(this.aux_index2 + "");
+        this.tv_cauxSize2.setText(this.aux_index2 + "");
         this.seekbar_caux2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$100 = ID6SetSystemTwo.this.tv_cauxSize2;
-                access$100.setText(progress + "");
+                ID6SetSystemTwo.this.tv_cauxSize2.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX2, progress);
             }
 
@@ -108,28 +105,29 @@ public class ID6SetSystemTwo extends RelativeLayout {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        this.rdg_shext = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        this.rdg_shext = radioGroup;
         switch (this.groupValue) {
             case 0:
-                this.rdg_shext.check(R.id.rdb_shext1);
+                radioGroup.check(R.id.rdb_shext1);
                 break;
             case 1:
-                this.rdg_shext.check(R.id.rdb_shext2);
+                radioGroup.check(R.id.rdb_shext2);
                 break;
             case 2:
-                this.rdg_shext.check(R.id.rdb_shext3);
+                radioGroup.check(R.id.rdb_shext3);
                 break;
         }
         this.rdg_shext.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_shext1:
+                    case R.id.rdb_shext1 /*2131297087*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 0);
                         return;
-                    case R.id.rdb_shext2:
+                    case R.id.rdb_shext2 /*2131297088*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 1);
                         return;
-                    case R.id.rdb_shext3:
+                    case R.id.rdb_shext3 /*2131297089*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 2);
                         return;
                     default:
@@ -140,7 +138,8 @@ public class ID6SetSystemTwo extends RelativeLayout {
         this.rdgTempUnitRadioGroup = (RadioGroup) view.findViewById(R.id.rdg_tempUnit_radioGroup);
         for (int i = 0; i < this.rdgTempUnitRadioGroup.getChildCount(); i++) {
             if (this.tempUnit == i) {
-                this.rdgTempUnitRadioGroup.check(this.rdgTempUnitRadioGroup.getChildAt(i).getId());
+                RadioGroup radioGroup2 = this.rdgTempUnitRadioGroup;
+                radioGroup2.check(radioGroup2.getChildAt(i).getId());
             }
         }
         this.rdgTempUnitRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -155,22 +154,50 @@ public class ID6SetSystemTwo extends RelativeLayout {
                 }
             }
         });
+        this.rdgFuelUnitRadioGroup = (RadioGroup) view.findViewById(R.id.rdg_fuelUnit_radioGroup);
+        for (int i2 = 0; i2 < this.rdgFuelUnitRadioGroup.getChildCount(); i2++) {
+            if (this.fuelUnit == i2) {
+                RadioGroup radioGroup3 = this.rdgFuelUnitRadioGroup;
+                radioGroup3.check(radioGroup3.getChildAt(i2).getId());
+            }
+        }
+        this.rdgFuelUnitRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int count = group.getChildCount();
+                for (int i = 0; i < count; i++) {
+                    if (checkedId == group.getChildAt(i).getId()) {
+                        FileUtils.savaIntData(KeyConfig.FUEL_UNIT, i);
+                        Log.i(ID6SetSystemTwo.TAG, "save fuelUnit  : " + i);
+                    }
+                    group.getChildAt(i).setSelected(checkedId == group.getChildAt(i).getId());
+                }
+            }
+        });
     }
 
     public void showLayout(int index) {
         switch (index) {
             case 1:
+                this.rdgFuelUnitRadioGroup.setVisibility(8);
                 this.rdgTempUnitRadioGroup.setVisibility(8);
                 this.relate_shext.setVisibility(0);
                 this.relate_auxweiz.setVisibility(8);
                 return;
             case 2:
+                this.rdgFuelUnitRadioGroup.setVisibility(8);
                 this.rdgTempUnitRadioGroup.setVisibility(8);
                 this.relate_shext.setVisibility(8);
                 this.relate_auxweiz.setVisibility(0);
                 return;
             case 3:
+                this.rdgFuelUnitRadioGroup.setVisibility(8);
                 this.rdgTempUnitRadioGroup.setVisibility(0);
+                this.relate_shext.setVisibility(8);
+                this.relate_auxweiz.setVisibility(8);
+                return;
+            case 4:
+                this.rdgFuelUnitRadioGroup.setVisibility(0);
+                this.rdgTempUnitRadioGroup.setVisibility(8);
                 this.relate_shext.setVisibility(8);
                 this.relate_auxweiz.setVisibility(8);
                 return;

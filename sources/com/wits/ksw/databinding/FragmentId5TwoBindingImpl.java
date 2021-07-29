@@ -5,8 +5,6 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.TextView;
@@ -16,32 +14,29 @@ import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.CustomBcImageView;
 
 public class FragmentId5TwoBindingImpl extends FragmentId5TwoBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback131;
+    private final View.OnClickListener mCallback35;
     private long mDirtyFlags;
-    @NonNull
     private final CustomBcImageView mboundView1;
-    @NonNull
     private final TextView mboundView2;
 
-    public FragmentId5TwoBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public FragmentId5TwoBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private FragmentId5TwoBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0, bindings[0]);
         this.mDirtyFlags = -1;
-        this.mboundView1 = bindings[1];
-        this.mboundView1.setTag((Object) null);
-        this.mboundView2 = bindings[2];
-        this.mboundView2.setTag((Object) null);
+        CustomBcImageView customBcImageView = bindings[1];
+        this.mboundView1 = customBcImageView;
+        customBcImageView.setTag((Object) null);
+        TextView textView = bindings[2];
+        this.mboundView2 = textView;
+        textView.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback131 = new OnClickListener(this, 1);
+        this.mCallback35 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -61,11 +56,11 @@ public class FragmentId5TwoBindingImpl extends FragmentId5TwoBinding implements 
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (1 == variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (11 == variableId) {
             setListItem((BcItem) variable);
             return true;
-        } else if (2 != variableId) {
+        } else if (12 != variableId) {
             return false;
         } else {
             setMBcVieModel((BcVieModel) variable);
@@ -73,21 +68,21 @@ public class FragmentId5TwoBindingImpl extends FragmentId5TwoBinding implements 
         }
     }
 
-    public void setListItem(@Nullable BcItem ListItem) {
+    public void setListItem(BcItem ListItem) {
         this.mListItem = ListItem;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(1);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 
-    public void setMBcVieModel(@Nullable BcVieModel MBcVieModel) {
+    public void setMBcVieModel(BcVieModel MBcVieModel) {
         this.mMBcVieModel = MBcVieModel;
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(2);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -116,7 +111,7 @@ public class FragmentId5TwoBindingImpl extends FragmentId5TwoBinding implements 
             TextViewBindingAdapter.setText(this.mboundView2, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.mboundView1.setOnClickListener(this.mCallback131);
+            this.mboundView1.setOnClickListener(this.mCallback35);
         }
     }
 

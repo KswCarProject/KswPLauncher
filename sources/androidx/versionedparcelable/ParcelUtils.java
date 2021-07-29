@@ -1,11 +1,9 @@
 package androidx.versionedparcelable;
 
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ParcelUtils {
     private ParcelUtils() {
     }

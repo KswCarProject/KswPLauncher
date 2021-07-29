@@ -1,7 +1,5 @@
 package com.bumptech.glide.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class LruCache<T, Y> {
     }
 
     /* access modifiers changed from: protected */
-    public int getSize(@Nullable Y y) {
+    public int getSize(Y y) {
         return 1;
     }
 
@@ -37,7 +35,7 @@ public class LruCache<T, Y> {
     }
 
     /* access modifiers changed from: protected */
-    public void onItemEvicted(@NonNull T t, @Nullable Y y) {
+    public void onItemEvicted(T t, Y y) {
     }
 
     public synchronized long getMaxSize() {
@@ -48,17 +46,15 @@ public class LruCache<T, Y> {
         return this.currentSize;
     }
 
-    public synchronized boolean contains(@NonNull T key) {
+    public synchronized boolean contains(T key) {
         return this.cache.containsKey(key);
     }
 
-    @Nullable
-    public synchronized Y get(@NonNull T key) {
+    public synchronized Y get(T key) {
         return this.cache.get(key);
     }
 
-    @Nullable
-    public synchronized Y put(@NonNull T key, @Nullable Y item) {
+    public synchronized Y put(T key, Y item) {
         int itemSize = getSize(item);
         if (((long) itemSize) >= this.maxSize) {
             onItemEvicted(key, item);
@@ -78,8 +74,7 @@ public class LruCache<T, Y> {
         return old;
     }
 
-    @Nullable
-    public synchronized Y remove(@NonNull T key) {
+    public synchronized Y remove(T key) {
         Y value;
         value = this.cache.remove(key);
         if (value != null) {

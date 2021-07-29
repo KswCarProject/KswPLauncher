@@ -11,9 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.GuardedBy;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 import java.io.File;
@@ -36,7 +33,6 @@ public class FileProvider extends ContentProvider {
     private static final String TAG_EXTERNAL_MEDIA = "external-media-path";
     private static final String TAG_FILES_PATH = "files-path";
     private static final String TAG_ROOT_PATH = "root-path";
-    @GuardedBy("sCache")
     private static HashMap<String, PathStrategy> sCache = new HashMap<>();
     private PathStrategy mStrategy;
 
@@ -50,7 +46,7 @@ public class FileProvider extends ContentProvider {
         return true;
     }
 
-    public void attachInfo(@NonNull Context context, @NonNull ProviderInfo info) {
+    public void attachInfo(Context context, ProviderInfo info) {
         super.attachInfo(context, info);
         if (info.exported) {
             throw new SecurityException("Provider must not be exported");
@@ -61,39 +57,37 @@ public class FileProvider extends ContentProvider {
         }
     }
 
-    public static Uri getUriForFile(@NonNull Context context, @NonNull String authority, @NonNull File file) {
+    public static Uri getUriForFile(Context context, String authority, File file) {
         return getPathStrategy(context, authority).getUriForFile(file);
     }
 
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        int i;
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         File file = this.mStrategy.getFileForUri(uri);
         if (projection == null) {
             projection = COLUMNS;
         }
         String[] cols = new String[projection.length];
         Object[] values = new Object[projection.length];
-        int i2 = 0;
+        int i = 0;
         for (String col : projection) {
             if ("_display_name".equals(col)) {
-                cols[i2] = "_display_name";
-                i = i2 + 1;
-                values[i2] = file.getName();
+                cols[i] = "_display_name";
+                values[i] = file.getName();
+                i++;
             } else if ("_size".equals(col)) {
-                cols[i2] = "_size";
-                i = i2 + 1;
-                values[i2] = Long.valueOf(file.length());
+                cols[i] = "_size";
+                values[i] = Long.valueOf(file.length());
+                i++;
             }
-            i2 = i;
         }
-        String[] cols2 = copyOf(cols, i2);
-        Object[] values2 = copyOf(values, i2);
+        String[] cols2 = copyOf(cols, i);
+        Object[] values2 = copyOf(values, i);
         MatrixCursor cursor = new MatrixCursor(cols2, 1);
         cursor.addRow(values2);
         return cursor;
     }
 
-    public String getType(@NonNull Uri uri) {
+    public String getType(Uri uri) {
         String mime;
         File file = this.mStrategy.getFileForUri(uri);
         int lastDot = file.getName().lastIndexOf(46);
@@ -103,38 +97,66 @@ public class FileProvider extends ContentProvider {
         return mime;
     }
 
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
+    public Uri insert(Uri uri, ContentValues values) {
         throw new UnsupportedOperationException("No external inserts");
     }
 
-    public int update(@NonNull Uri uri, ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         throw new UnsupportedOperationException("No external updates");
     }
 
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
         return this.mStrategy.getFileForUri(uri).delete() ? 1 : 0;
     }
 
-    public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
+    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         return ParcelFileDescriptor.open(this.mStrategy.getFileForUri(uri), modeToMode(mode));
     }
 
-    private static PathStrategy getPathStrategy(Context context, String authority) {
-        PathStrategy strat;
-        synchronized (sCache) {
-            strat = sCache.get(authority);
-            if (strat == null) {
-                try {
-                    strat = parsePathStrategy(context, authority);
-                    sCache.put(authority, strat);
-                } catch (IOException e) {
-                    throw new IllegalArgumentException("Failed to parse android.support.FILE_PROVIDER_PATHS meta-data", e);
-                } catch (XmlPullParserException e2) {
-                    throw new IllegalArgumentException("Failed to parse android.support.FILE_PROVIDER_PATHS meta-data", e2);
-                }
-            }
-        }
-        return strat;
+    /* JADX WARNING: Code restructure failed: missing block: B:19:0x002e, code lost:
+        return r1;
+     */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
+    private static android.support.v4.content.FileProvider.PathStrategy getPathStrategy(android.content.Context r5, java.lang.String r6) {
+        /*
+            java.util.HashMap<java.lang.String, android.support.v4.content.FileProvider$PathStrategy> r0 = sCache
+            monitor-enter(r0)
+            r1 = 0
+            java.util.HashMap<java.lang.String, android.support.v4.content.FileProvider$PathStrategy> r2 = sCache     // Catch:{ all -> 0x002f }
+            java.lang.Object r2 = r2.get(r6)     // Catch:{ all -> 0x002f }
+            android.support.v4.content.FileProvider$PathStrategy r2 = (android.support.v4.content.FileProvider.PathStrategy) r2     // Catch:{ all -> 0x002f }
+            r1 = r2
+            if (r1 != 0) goto L_0x002d
+            android.support.v4.content.FileProvider$PathStrategy r2 = parsePathStrategy(r5, r6)     // Catch:{ IOException -> 0x0024, XmlPullParserException -> 0x001b }
+            r1 = r2
+            java.util.HashMap<java.lang.String, android.support.v4.content.FileProvider$PathStrategy> r2 = sCache     // Catch:{ all -> 0x0032 }
+            r2.put(r6, r1)     // Catch:{ all -> 0x0032 }
+            goto L_0x002d
+        L_0x001b:
+            r2 = move-exception
+            java.lang.IllegalArgumentException r3 = new java.lang.IllegalArgumentException     // Catch:{ all -> 0x0032 }
+            java.lang.String r4 = "Failed to parse android.support.FILE_PROVIDER_PATHS meta-data"
+            r3.<init>(r4, r2)     // Catch:{ all -> 0x0032 }
+            throw r3     // Catch:{ all -> 0x0032 }
+        L_0x0024:
+            r2 = move-exception
+            java.lang.IllegalArgumentException r3 = new java.lang.IllegalArgumentException     // Catch:{ all -> 0x0032 }
+            java.lang.String r4 = "Failed to parse android.support.FILE_PROVIDER_PATHS meta-data"
+            r3.<init>(r4, r2)     // Catch:{ all -> 0x0032 }
+            throw r3     // Catch:{ all -> 0x0032 }
+        L_0x002d:
+            monitor-exit(r0)     // Catch:{ all -> 0x0032 }
+            return r1
+        L_0x002f:
+            r2 = move-exception
+        L_0x0030:
+            monitor-exit(r0)     // Catch:{ all -> 0x0032 }
+            throw r2
+        L_0x0032:
+            r2 = move-exception
+            goto L_0x0030
+        */
+        throw new UnsupportedOperationException("Method not decompiled: android.support.v4.content.FileProvider.getPathStrategy(android.content.Context, java.lang.String):android.support.v4.content.FileProvider$PathStrategy");
     }
 
     private static PathStrategy parsePathStrategy(Context context, String authority) throws IOException, XmlPullParserException {

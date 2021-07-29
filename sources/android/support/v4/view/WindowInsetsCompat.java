@@ -2,7 +2,6 @@ package android.support.v4.view;
 
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.view.WindowInsets;
 
 public class WindowInsetsCompat {
@@ -140,7 +139,6 @@ public class WindowInsetsCompat {
         return null;
     }
 
-    @Nullable
     public DisplayCutoutCompat getDisplayCutout() {
         if (Build.VERSION.SDK_INT >= 28) {
             return DisplayCutoutCompat.wrap(((WindowInsets) this.mInsets).getDisplayCutout());
@@ -163,8 +161,9 @@ public class WindowInsetsCompat {
             return false;
         }
         WindowInsetsCompat other = (WindowInsetsCompat) o;
-        if (this.mInsets != null) {
-            return this.mInsets.equals(other.mInsets);
+        Object obj = this.mInsets;
+        if (obj != null) {
+            return obj.equals(other.mInsets);
         }
         if (other.mInsets == null) {
             return true;
@@ -173,10 +172,11 @@ public class WindowInsetsCompat {
     }
 
     public int hashCode() {
-        if (this.mInsets == null) {
+        Object obj = this.mInsets;
+        if (obj == null) {
             return 0;
         }
-        return this.mInsets.hashCode();
+        return obj.hashCode();
     }
 
     static WindowInsetsCompat wrap(Object insets) {

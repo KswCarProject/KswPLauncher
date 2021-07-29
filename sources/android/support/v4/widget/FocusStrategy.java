@@ -1,8 +1,6 @@
 package android.support.v4.widget;
 
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,7 +17,7 @@ class FocusStrategy {
         int size(T t);
     }
 
-    public static <L, T> T findNextFocusInRelativeDirection(@NonNull L focusables, @NonNull CollectionAdapter<L, T> collectionAdapter, @NonNull BoundsAdapter<T> adapter, @Nullable T focused, int direction, boolean isLayoutRtl, boolean wrap) {
+    public static <L, T> T findNextFocusInRelativeDirection(L focusables, CollectionAdapter<L, T> collectionAdapter, BoundsAdapter<T> adapter, T focused, int direction, boolean isLayoutRtl, boolean wrap) {
         int count = collectionAdapter.size(focusables);
         ArrayList<T> sortedFocusables = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
@@ -115,18 +113,23 @@ class FocusStrategy {
         }
     }
 
-    public static <L, T> T findNextFocusInAbsoluteDirection(@NonNull L focusables, @NonNull CollectionAdapter<L, T> collectionAdapter, @NonNull BoundsAdapter<T> adapter, @Nullable T focused, @NonNull Rect focusedRect, int direction) {
+    public static <L, T> T findNextFocusInAbsoluteDirection(L focusables, CollectionAdapter<L, T> collectionAdapter, BoundsAdapter<T> adapter, T focused, Rect focusedRect, int direction) {
         Rect bestCandidateRect = new Rect(focusedRect);
-        if (direction == 17) {
-            bestCandidateRect.offset(focusedRect.width() + 1, 0);
-        } else if (direction == 33) {
-            bestCandidateRect.offset(0, focusedRect.height() + 1);
-        } else if (direction == 66) {
-            bestCandidateRect.offset(-(focusedRect.width() + 1), 0);
-        } else if (direction == 130) {
-            bestCandidateRect.offset(0, -(focusedRect.height() + 1));
-        } else {
-            throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
+        switch (direction) {
+            case 17:
+                bestCandidateRect.offset(focusedRect.width() + 1, 0);
+                break;
+            case 33:
+                bestCandidateRect.offset(0, focusedRect.height() + 1);
+                break;
+            case 66:
+                bestCandidateRect.offset(-(focusedRect.width() + 1), 0);
+                break;
+            case 130:
+                bestCandidateRect.offset(0, -(focusedRect.height() + 1));
+                break;
+            default:
+                throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
         }
         T closest = null;
         int count = collectionAdapter.size(focusables);
@@ -144,7 +147,7 @@ class FocusStrategy {
         return closest;
     }
 
-    private static boolean isBetterCandidate(int direction, @NonNull Rect source, @NonNull Rect candidate, @NonNull Rect currentBest) {
+    private static boolean isBetterCandidate(int direction, Rect source, Rect candidate, Rect currentBest) {
         if (!isCandidate(source, candidate, direction)) {
             return false;
         }
@@ -157,7 +160,7 @@ class FocusStrategy {
         return false;
     }
 
-    private static boolean beamBeats(int direction, @NonNull Rect source, @NonNull Rect rect1, @NonNull Rect rect2) {
+    private static boolean beamBeats(int direction, Rect source, Rect rect1, Rect rect2) {
         boolean rect1InSrcBeam = beamsOverlap(direction, source, rect1);
         if (beamsOverlap(direction, source, rect2) || !rect1InSrcBeam) {
             return false;
@@ -175,131 +178,128 @@ class FocusStrategy {
         return (majorAxisDistance * 13 * majorAxisDistance) + (minorAxisDistance * minorAxisDistance);
     }
 
-    private static boolean isCandidate(@NonNull Rect srcRect, @NonNull Rect destRect, int direction) {
-        if (direction != 17) {
-            if (direction != 33) {
-                if (direction != 66) {
-                    if (direction == 130) {
-                        return (srcRect.top < destRect.top || srcRect.bottom <= destRect.top) && srcRect.bottom < destRect.bottom;
-                    }
-                    throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
-                } else if ((srcRect.left < destRect.left || srcRect.right <= destRect.left) && srcRect.right < destRect.right) {
+    private static boolean isCandidate(Rect srcRect, Rect destRect, int direction) {
+        switch (direction) {
+            case 17:
+                if ((srcRect.right > destRect.right || srcRect.left >= destRect.right) && srcRect.left > destRect.left) {
                     return true;
-                } else {
+                }
+                return false;
+            case 33:
+                if ((srcRect.bottom > destRect.bottom || srcRect.top >= destRect.bottom) && srcRect.top > destRect.top) {
+                    return true;
+                }
+                return false;
+            case 66:
+                if ((srcRect.left < destRect.left || srcRect.right <= destRect.left) && srcRect.right < destRect.right) {
+                    return true;
+                }
+                return false;
+            case 130:
+                if ((srcRect.top < destRect.top || srcRect.bottom <= destRect.top) && srcRect.bottom < destRect.bottom) {
+                    return true;
+                }
+                return false;
+            default:
+                throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
+        }
+    }
+
+    private static boolean beamsOverlap(int direction, Rect rect1, Rect rect2) {
+        switch (direction) {
+            case 17:
+            case 66:
+                if (rect2.bottom < rect1.top || rect2.top > rect1.bottom) {
                     return false;
                 }
-            } else if ((srcRect.bottom > destRect.bottom || srcRect.top >= destRect.bottom) && srcRect.top > destRect.top) {
                 return true;
-            } else {
-                return false;
-            }
-        } else if ((srcRect.right > destRect.right || srcRect.left >= destRect.right) && srcRect.left > destRect.left) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private static boolean beamsOverlap(int direction, @NonNull Rect rect1, @NonNull Rect rect2) {
-        if (direction != 17) {
-            if (direction != 33) {
-                if (direction != 66) {
-                    if (direction != 130) {
-                        throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
-                    }
-                }
-            }
-            if (rect2.right < rect1.left || rect2.left > rect1.right) {
-                return false;
-            }
-            return true;
-        }
-        if (rect2.bottom < rect1.top || rect2.top > rect1.bottom) {
-            return false;
-        }
-        return true;
-    }
-
-    private static boolean isToDirectionOf(int direction, @NonNull Rect src, @NonNull Rect dest) {
-        if (direction != 17) {
-            if (direction != 33) {
-                if (direction != 66) {
-                    if (direction != 130) {
-                        throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
-                    } else if (src.bottom <= dest.top) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else if (src.right <= dest.left) {
-                    return true;
-                } else {
+            case 33:
+            case 130:
+                if (rect2.right < rect1.left || rect2.left > rect1.right) {
                     return false;
                 }
-            } else if (src.top >= dest.bottom) {
                 return true;
-            } else {
-                return false;
-            }
-        } else if (src.left >= dest.right) {
-            return true;
-        } else {
-            return false;
+            default:
+                throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
         }
     }
 
-    private static int majorAxisDistance(int direction, @NonNull Rect source, @NonNull Rect dest) {
+    private static boolean isToDirectionOf(int direction, Rect src, Rect dest) {
+        switch (direction) {
+            case 17:
+                if (src.left >= dest.right) {
+                    return true;
+                }
+                return false;
+            case 33:
+                if (src.top >= dest.bottom) {
+                    return true;
+                }
+                return false;
+            case 66:
+                if (src.right <= dest.left) {
+                    return true;
+                }
+                return false;
+            case 130:
+                if (src.bottom <= dest.top) {
+                    return true;
+                }
+                return false;
+            default:
+                throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
+        }
+    }
+
+    private static int majorAxisDistance(int direction, Rect source, Rect dest) {
         return Math.max(0, majorAxisDistanceRaw(direction, source, dest));
     }
 
-    private static int majorAxisDistanceRaw(int direction, @NonNull Rect source, @NonNull Rect dest) {
-        if (direction == 17) {
-            return source.left - dest.right;
+    private static int majorAxisDistanceRaw(int direction, Rect source, Rect dest) {
+        switch (direction) {
+            case 17:
+                return source.left - dest.right;
+            case 33:
+                return source.top - dest.bottom;
+            case 66:
+                return dest.left - source.right;
+            case 130:
+                return dest.top - source.bottom;
+            default:
+                throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
         }
-        if (direction == 33) {
-            return source.top - dest.bottom;
-        }
-        if (direction == 66) {
-            return dest.left - source.right;
-        }
-        if (direction == 130) {
-            return dest.top - source.bottom;
-        }
-        throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
     }
 
-    private static int majorAxisDistanceToFarEdge(int direction, @NonNull Rect source, @NonNull Rect dest) {
+    private static int majorAxisDistanceToFarEdge(int direction, Rect source, Rect dest) {
         return Math.max(1, majorAxisDistanceToFarEdgeRaw(direction, source, dest));
     }
 
-    private static int majorAxisDistanceToFarEdgeRaw(int direction, @NonNull Rect source, @NonNull Rect dest) {
-        if (direction == 17) {
-            return source.left - dest.left;
+    private static int majorAxisDistanceToFarEdgeRaw(int direction, Rect source, Rect dest) {
+        switch (direction) {
+            case 17:
+                return source.left - dest.left;
+            case 33:
+                return source.top - dest.top;
+            case 66:
+                return dest.right - source.right;
+            case 130:
+                return dest.bottom - source.bottom;
+            default:
+                throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
         }
-        if (direction == 33) {
-            return source.top - dest.top;
-        }
-        if (direction == 66) {
-            return dest.right - source.right;
-        }
-        if (direction == 130) {
-            return dest.bottom - source.bottom;
-        }
-        throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
     }
 
-    private static int minorAxisDistance(int direction, @NonNull Rect source, @NonNull Rect dest) {
-        if (direction != 17) {
-            if (direction != 33) {
-                if (direction != 66) {
-                    if (direction != 130) {
-                        throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
-                    }
-                }
-            }
-            return Math.abs((source.left + (source.width() / 2)) - (dest.left + (dest.width() / 2)));
+    private static int minorAxisDistance(int direction, Rect source, Rect dest) {
+        switch (direction) {
+            case 17:
+            case 66:
+                return Math.abs((source.top + (source.height() / 2)) - (dest.top + (dest.height() / 2)));
+            case 33:
+            case 130:
+                return Math.abs((source.left + (source.width() / 2)) - (dest.left + (dest.width() / 2)));
+            default:
+                throw new IllegalArgumentException("direction must be one of {FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, FOCUS_RIGHT}.");
         }
-        return Math.abs((source.top + (source.height() / 2)) - (dest.top + (dest.height() / 2)));
     }
 
     private FocusStrategy() {

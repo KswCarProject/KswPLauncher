@@ -5,11 +5,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
-import android.support.v7.widget.ActivityChooserView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -42,7 +38,6 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     private boolean mLaidOutInvalidFullSpan = false;
     private boolean mLastLayoutFromEnd;
     private boolean mLastLayoutRTL;
-    @NonNull
     private final LayoutState mLayoutState;
     LazySpanLookup mLazySpanLookup = new LazySpanLookup();
     private int mOrientation;
@@ -50,11 +45,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     int mPendingScrollPosition = -1;
     int mPendingScrollPositionOffset = Integer.MIN_VALUE;
     private int[] mPrefetchDistances;
-    @NonNull
     OrientationHelper mPrimaryOrientation;
     private BitSet mRemainingSpans;
     boolean mReverseLayout = false;
-    @NonNull
     OrientationHelper mSecondaryOrientation;
     boolean mShouldReverseLayout = false;
     private int mSizePerSpan;
@@ -249,7 +242,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
     public void setReverseLayout(boolean reverseLayout) {
         assertNotInLayoutOrScroll((String) null);
-        if (!(this.mPendingSavedState == null || this.mPendingSavedState.mReverseLayout == reverseLayout)) {
+        SavedState savedState = this.mPendingSavedState;
+        if (!(savedState == null || savedState.mReverseLayout == reverseLayout)) {
             this.mPendingSavedState.mReverseLayout = reverseLayout;
         }
         this.mReverseLayout = reverseLayout;
@@ -305,19 +299,18 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     }
 
     public void setMeasuredDimension(Rect childrenBounds, int wSpec, int hSpec) {
-        int height;
         int width;
+        int usedHeight;
         int horizontalPadding = getPaddingLeft() + getPaddingRight();
         int verticalPadding = getPaddingTop() + getPaddingBottom();
         if (this.mOrientation == 1) {
-            int chooseSize = chooseSize(hSpec, childrenBounds.height() + verticalPadding, getMinimumHeight());
-            height = chooseSize(wSpec, (this.mSizePerSpan * this.mSpanCount) + horizontalPadding, getMinimumWidth());
-            width = chooseSize;
+            width = chooseSize(hSpec, childrenBounds.height() + verticalPadding, getMinimumHeight());
+            usedHeight = chooseSize(wSpec, (this.mSizePerSpan * this.mSpanCount) + horizontalPadding, getMinimumWidth());
         } else {
-            height = chooseSize(wSpec, childrenBounds.width() + horizontalPadding, getMinimumWidth());
+            usedHeight = chooseSize(wSpec, childrenBounds.width() + horizontalPadding, getMinimumWidth());
             width = chooseSize(hSpec, (this.mSizePerSpan * this.mSpanCount) + verticalPadding, getMinimumHeight());
         }
-        setMeasuredDimension(height, width);
+        setMeasuredDimension(usedHeight, width);
     }
 
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
@@ -325,6 +318,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     }
 
     private void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state, boolean shouldCheckForGaps) {
+        SavedState savedState;
         AnchorInfo anchorInfo = this.mAnchorInfo;
         if (!(this.mPendingSavedState == null && this.mPendingScrollPosition == -1) && state.getItemCount() == 0) {
             removeAndRecycleAllViews(recycler);
@@ -348,7 +342,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
             this.mLazySpanLookup.clear();
             anchorInfo.mInvalidateOffsets = true;
         }
-        if (getChildCount() > 0 && (this.mPendingSavedState == null || this.mPendingSavedState.mSpanOffsetsSize < 1)) {
+        if (getChildCount() > 0 && ((savedState = this.mPendingSavedState) == null || savedState.mSpanOffsetsSize < 1)) {
             if (anchorInfo.mInvalidateOffsets) {
                 for (int i = 0; i < this.mSpanCount; i++) {
                     this.mSpans[i].clear();
@@ -430,8 +424,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
     private void repositionToWrapContentIfNecessary() {
         if (this.mSecondaryOrientation.getMode() != 1073741824) {
-            int childCount = getChildCount();
             float maxSize = 0.0f;
+            int childCount = getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View child = getChildAt(i);
                 float size = (float) this.mSecondaryOrientation.getDecoratedMeasurement(child);
@@ -487,7 +481,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 }
             } else {
                 this.mPendingSavedState.invalidateSpanInfo();
-                this.mPendingSavedState.mAnchorPosition = this.mPendingSavedState.mVisibleAnchorPosition;
+                SavedState savedState = this.mPendingSavedState;
+                savedState.mAnchorPosition = savedState.mVisibleAnchorPosition;
             }
         }
         this.mLastLayoutRTL = this.mPendingSavedState.mLastLayoutRTL;
@@ -529,24 +524,26 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     public boolean updateAnchorFromPendingData(RecyclerView.State state, AnchorInfo anchorInfo) {
         int i;
         int i2;
+        int i3;
         boolean z = false;
-        if (state.isPreLayout() || this.mPendingScrollPosition == -1) {
+        if (state.isPreLayout() || (i = this.mPendingScrollPosition) == -1) {
             return false;
         }
-        if (this.mPendingScrollPosition < 0 || this.mPendingScrollPosition >= state.getItemCount()) {
+        if (i < 0 || i >= state.getItemCount()) {
             this.mPendingScrollPosition = -1;
             this.mPendingScrollPositionOffset = Integer.MIN_VALUE;
             return false;
         }
-        if (this.mPendingSavedState == null || this.mPendingSavedState.mAnchorPosition == -1 || this.mPendingSavedState.mSpanOffsetsSize < 1) {
+        SavedState savedState = this.mPendingSavedState;
+        if (savedState == null || savedState.mAnchorPosition == -1 || this.mPendingSavedState.mSpanOffsetsSize < 1) {
             View child = findViewByPosition(this.mPendingScrollPosition);
             if (child != null) {
                 if (this.mShouldReverseLayout) {
-                    i = getLastChildPosition();
+                    i2 = getLastChildPosition();
                 } else {
-                    i = getFirstChildPosition();
+                    i2 = getFirstChildPosition();
                 }
-                anchorInfo.mPosition = i;
+                anchorInfo.mPosition = i2;
                 if (this.mPendingScrollPositionOffset != Integer.MIN_VALUE) {
                     if (anchorInfo.mLayoutFromEnd) {
                         anchorInfo.mOffset = (this.mPrimaryOrientation.getEndAfterPadding() - this.mPendingScrollPositionOffset) - this.mPrimaryOrientation.getDecoratedEnd(child);
@@ -556,11 +553,11 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                     return true;
                 } else if (this.mPrimaryOrientation.getDecoratedMeasurement(child) > this.mPrimaryOrientation.getTotalSpace()) {
                     if (anchorInfo.mLayoutFromEnd) {
-                        i2 = this.mPrimaryOrientation.getEndAfterPadding();
+                        i3 = this.mPrimaryOrientation.getEndAfterPadding();
                     } else {
-                        i2 = this.mPrimaryOrientation.getStartAfterPadding();
+                        i3 = this.mPrimaryOrientation.getStartAfterPadding();
                     }
-                    anchorInfo.mOffset = i2;
+                    anchorInfo.mOffset = i3;
                     return true;
                 } else {
                     int startGap = this.mPrimaryOrientation.getDecoratedStart(child) - this.mPrimaryOrientation.getStartAfterPadding();
@@ -577,14 +574,15 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 }
             } else {
                 anchorInfo.mPosition = this.mPendingScrollPosition;
-                if (this.mPendingScrollPositionOffset == Integer.MIN_VALUE) {
+                int i4 = this.mPendingScrollPositionOffset;
+                if (i4 == Integer.MIN_VALUE) {
                     if (calculateScrollDirectionForPosition(anchorInfo.mPosition) == 1) {
                         z = true;
                     }
                     anchorInfo.mLayoutFromEnd = z;
                     anchorInfo.assignCoordinateFromPadding();
                 } else {
-                    anchorInfo.assignCoordinateFromPadding(this.mPendingScrollPositionOffset);
+                    anchorInfo.assignCoordinateFromPadding(i4);
                 }
                 anchorInfo.mInvalidateOffsets = true;
             }
@@ -756,8 +754,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         state.mReverseLayout = this.mReverseLayout;
         state.mAnchorLayoutFromEnd = this.mLastLayoutFromEnd;
         state.mLastLayoutRTL = this.mLastLayoutRTL;
-        int line2 = 0;
-        if (this.mLazySpanLookup == null || this.mLazySpanLookup.mData == null) {
+        LazySpanLookup lazySpanLookup = this.mLazySpanLookup;
+        if (lazySpanLookup == null || lazySpanLookup.mData == null) {
             state.mSpanLookupSize = 0;
         } else {
             state.mSpanLookup = this.mLazySpanLookup.mData;
@@ -774,11 +772,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
             state.mVisibleAnchorPosition = findFirstVisibleItemPositionInt();
             state.mSpanOffsetsSize = this.mSpanCount;
             state.mSpanOffsets = new int[this.mSpanCount];
-            while (true) {
-                int i2 = line2;
-                if (i2 >= this.mSpanCount) {
-                    break;
-                }
+            for (int i2 = 0; i2 < this.mSpanCount; i2++) {
                 if (this.mLastLayoutFromEnd) {
                     line = this.mSpans[i2].getEndLine(Integer.MIN_VALUE);
                     if (line != Integer.MIN_VALUE) {
@@ -791,7 +785,6 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                     }
                 }
                 state.mSpanOffsets[i2] = line;
-                line2 = i2 + 1;
             }
         } else {
             state.mAnchorPosition = -1;
@@ -926,7 +919,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
     private void fixStartGap(RecyclerView.Recycler recycler, RecyclerView.State state, boolean canOffsetChildren) {
         int gap;
-        int minStartLine = getMinStart(ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED);
+        int minStartLine = getMinStart(Integer.MAX_VALUE);
         if (minStartLine != Integer.MAX_VALUE && (gap = minStartLine - this.mPrimaryOrientation.getStartAfterPadding()) > 0) {
             int gap2 = gap - scrollBy(gap, recycler, state);
             if (canOffsetChildren && gap2 > 0) {
@@ -1025,18 +1018,17 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
             affectedRangeStart = itemCountOrToPosition;
         }
         this.mLazySpanLookup.invalidateAfter(affectedRangeStart);
-        if (cmd != 8) {
-            switch (cmd) {
-                case 1:
-                    this.mLazySpanLookup.offsetForAddition(positionStart, itemCountOrToPosition);
-                    break;
-                case 2:
-                    this.mLazySpanLookup.offsetForRemoval(positionStart, itemCountOrToPosition);
-                    break;
-            }
-        } else {
-            this.mLazySpanLookup.offsetForRemoval(positionStart, 1);
-            this.mLazySpanLookup.offsetForAddition(itemCountOrToPosition, 1);
+        switch (cmd) {
+            case 1:
+                this.mLazySpanLookup.offsetForAddition(positionStart, itemCountOrToPosition);
+                break;
+            case 2:
+                this.mLazySpanLookup.offsetForRemoval(positionStart, itemCountOrToPosition);
+                break;
+            case 8:
+                this.mLazySpanLookup.offsetForRemoval(positionStart, 1);
+                this.mLazySpanLookup.offsetForAddition(itemCountOrToPosition, 1);
+                break;
         }
         if (affectedRangeEnd > minPosition) {
             if (affectedRangeStart <= (this.mShouldReverseLayout ? getFirstChildPosition() : getLastChildPosition())) {
@@ -1045,13 +1037,12 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         }
     }
 
-    /* JADX WARNING: type inference failed for: r14v0 */
-    /* JADX WARNING: type inference failed for: r14v1, types: [int, boolean] */
-    /* JADX WARNING: type inference failed for: r14v5 */
+    /* JADX WARNING: type inference failed for: r9v0 */
+    /* JADX WARNING: type inference failed for: r9v1, types: [int, boolean] */
+    /* JADX WARNING: type inference failed for: r9v5 */
     private int fill(RecyclerView.Recycler recycler, LayoutState layoutState, RecyclerView.State state) {
         int targetLine;
         int i;
-        int added;
         int i2;
         int diff;
         Span currentSpan;
@@ -1060,24 +1051,19 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         int otherStart;
         int otherEnd;
         Span currentSpan2;
-        int defaultNewViewLine;
-        View view;
-        LayoutParams lp;
-        int targetLine2;
         boolean z;
-        int otherStart2;
+        int i3;
         int otherEnd2;
         boolean hasInvalidGap;
-        int end2;
-        int start2;
+        int i4;
         RecyclerView.Recycler recycler2 = recycler;
         LayoutState layoutState2 = layoutState;
-        ? r14 = 0;
+        ? r9 = 0;
         boolean z2 = true;
         this.mRemainingSpans.set(0, this.mSpanCount, true);
         if (this.mLayoutState.mInfinite) {
             if (layoutState2.mLayoutDirection == 1) {
-                targetLine = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
+                targetLine = Integer.MAX_VALUE;
             } else {
                 targetLine = Integer.MIN_VALUE;
             }
@@ -1086,75 +1072,70 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         } else {
             targetLine = layoutState2.mStartLine - layoutState2.mAvailable;
         }
-        int targetLine3 = targetLine;
-        updateAllRemainingSpans(layoutState2.mLayoutDirection, targetLine3);
+        updateAllRemainingSpans(layoutState2.mLayoutDirection, targetLine);
         if (this.mShouldReverseLayout) {
             i = this.mPrimaryOrientation.getEndAfterPadding();
         } else {
             i = this.mPrimaryOrientation.getStartAfterPadding();
         }
-        int defaultNewViewLine2 = i;
-        int targetLine4 = 0;
+        int defaultNewViewLine = i;
+        boolean added = false;
         while (true) {
-            added = targetLine4;
             if (layoutState.hasMore(state)) {
                 if (!this.mLayoutState.mInfinite && this.mRemainingSpans.isEmpty()) {
-                    int i3 = defaultNewViewLine2;
-                    int i4 = targetLine3;
-                    i2 = r14;
+                    i2 = r9;
                     break;
                 }
-                View view2 = layoutState2.next(recycler2);
-                LayoutParams lp2 = (LayoutParams) view2.getLayoutParams();
-                int position = lp2.getViewLayoutPosition();
+                View view = layoutState2.next(recycler2);
+                LayoutParams lp = (LayoutParams) view.getLayoutParams();
+                int position = lp.getViewLayoutPosition();
                 int spanIndex = this.mLazySpanLookup.getSpan(position);
-                boolean assignSpan = spanIndex == -1 ? z2 : r14;
+                boolean assignSpan = spanIndex == -1 ? z2 : r9;
                 if (assignSpan) {
-                    currentSpan = lp2.mFullSpan ? this.mSpans[r14] : getNextSpan(layoutState2);
-                    this.mLazySpanLookup.setSpan(position, currentSpan);
+                    Span currentSpan3 = lp.mFullSpan ? this.mSpans[r9] : getNextSpan(layoutState2);
+                    this.mLazySpanLookup.setSpan(position, currentSpan3);
+                    currentSpan = currentSpan3;
                 } else {
                     currentSpan = this.mSpans[spanIndex];
                 }
-                Span currentSpan3 = currentSpan;
-                lp2.mSpan = currentSpan3;
+                lp.mSpan = currentSpan;
                 if (layoutState2.mLayoutDirection == z2) {
-                    addView(view2);
+                    addView(view);
                 } else {
-                    addView(view2, r14);
+                    addView(view, r9);
                 }
-                measureChildWithDecorationsAndMargin(view2, lp2, r14);
+                measureChildWithDecorationsAndMargin(view, lp, r9);
                 if (layoutState2.mLayoutDirection == z2) {
-                    if (lp2.mFullSpan) {
-                        start2 = getMaxEnd(defaultNewViewLine2);
+                    if (lp.mFullSpan) {
+                        start = getMaxEnd(defaultNewViewLine);
                     } else {
-                        start2 = currentSpan3.getEndLine(defaultNewViewLine2);
+                        start = currentSpan.getEndLine(defaultNewViewLine);
                     }
-                    int end3 = this.mPrimaryOrientation.getDecoratedMeasurement(view2) + start2;
-                    if (assignSpan && lp2.mFullSpan) {
-                        LazySpanLookup.FullSpanItem fullSpanItem = createFullSpanItemFromEnd(start2);
+                    end = this.mPrimaryOrientation.getDecoratedMeasurement(view) + start;
+                    if (assignSpan && lp.mFullSpan) {
+                        LazySpanLookup.FullSpanItem fullSpanItem = createFullSpanItemFromEnd(start);
                         fullSpanItem.mGapDir = -1;
                         fullSpanItem.mPosition = position;
                         this.mLazySpanLookup.addFullSpanItem(fullSpanItem);
                     }
-                    start = start2;
-                    end = end3;
                 } else {
-                    if (lp2.mFullSpan != 0) {
-                        end2 = getMinStart(defaultNewViewLine2);
+                    if (lp.mFullSpan != 0) {
+                        i4 = getMinStart(defaultNewViewLine);
                     } else {
-                        end2 = currentSpan3.getStartLine(defaultNewViewLine2);
+                        i4 = currentSpan.getStartLine(defaultNewViewLine);
                     }
-                    int start3 = end2 - this.mPrimaryOrientation.getDecoratedMeasurement(view2);
-                    if (assignSpan && lp2.mFullSpan) {
-                        LazySpanLookup.FullSpanItem fullSpanItem2 = createFullSpanItemFromStart(end2);
+                    end = i4;
+                    start = end - this.mPrimaryOrientation.getDecoratedMeasurement(view);
+                    if (assignSpan && lp.mFullSpan) {
+                        LazySpanLookup.FullSpanItem fullSpanItem2 = createFullSpanItemFromStart(end);
                         fullSpanItem2.mGapDir = z2;
                         fullSpanItem2.mPosition = position;
                         this.mLazySpanLookup.addFullSpanItem(fullSpanItem2);
                     }
-                    end = end2;
-                    start = start3;
                 }
-                if (lp2.mFullSpan != 0 && layoutState2.mItemDirection == -1) {
+                int start2 = start;
+                int end2 = end;
+                if (lp.mFullSpan != 0 && layoutState2.mItemDirection == -1) {
                     if (assignSpan) {
                         this.mLaidOutInvalidFullSpan = z2;
                     } else {
@@ -1172,75 +1153,60 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                         }
                     }
                 }
-                attachViewToSpans(view2, lp2, layoutState2);
+                attachViewToSpans(view, lp, layoutState2);
                 if (!isLayoutRTL() || this.mOrientation != z2) {
-                    if (lp2.mFullSpan != 0) {
-                        otherStart2 = this.mSecondaryOrientation.getStartAfterPadding();
+                    if (lp.mFullSpan != 0) {
+                        i3 = this.mSecondaryOrientation.getStartAfterPadding();
                     } else {
-                        otherStart2 = (currentSpan3.mIndex * this.mSizePerSpan) + this.mSecondaryOrientation.getStartAfterPadding();
+                        i3 = (currentSpan.mIndex * this.mSizePerSpan) + this.mSecondaryOrientation.getStartAfterPadding();
                     }
+                    int otherStart2 = i3;
+                    otherEnd = this.mSecondaryOrientation.getDecoratedMeasurement(view) + otherStart2;
                     otherStart = otherStart2;
-                    otherEnd = this.mSecondaryOrientation.getDecoratedMeasurement(view2) + otherStart2;
                 } else {
-                    if (lp2.mFullSpan) {
+                    if (lp.mFullSpan) {
                         otherEnd2 = this.mSecondaryOrientation.getEndAfterPadding();
                     } else {
-                        otherEnd2 = this.mSecondaryOrientation.getEndAfterPadding() - (((this.mSpanCount - (z2 ? 1 : 0)) - currentSpan3.mIndex) * this.mSizePerSpan);
+                        otherEnd2 = this.mSecondaryOrientation.getEndAfterPadding() - (((this.mSpanCount - (z2 ? 1 : 0)) - currentSpan.mIndex) * this.mSizePerSpan);
                     }
                     otherEnd = otherEnd2;
-                    otherStart = otherEnd2 - this.mSecondaryOrientation.getDecoratedMeasurement(view2);
+                    otherStart = otherEnd2 - this.mSecondaryOrientation.getDecoratedMeasurement(view);
                 }
                 if (this.mOrientation == z2) {
-                    currentSpan2 = currentSpan3;
+                    currentSpan2 = currentSpan;
                     int i5 = spanIndex;
-                    layoutDecoratedWithMargins(view2, otherStart, start, otherEnd, end);
                     int i6 = position;
-                    lp = lp2;
-                    view = view2;
-                    defaultNewViewLine = defaultNewViewLine2;
-                    targetLine2 = targetLine3;
+                    layoutDecoratedWithMargins(view, otherStart, start2, otherEnd, end2);
                 } else {
-                    currentSpan2 = currentSpan3;
+                    currentSpan2 = currentSpan;
                     int i7 = spanIndex;
-                    lp = lp2;
-                    view = view2;
-                    defaultNewViewLine = defaultNewViewLine2;
                     int i8 = position;
-                    targetLine2 = targetLine3;
-                    layoutDecoratedWithMargins(view2, start, otherStart, end, otherEnd);
+                    layoutDecoratedWithMargins(view, start2, otherStart, end2, otherEnd);
                 }
                 if (lp.mFullSpan) {
-                    updateAllRemainingSpans(this.mLayoutState.mLayoutDirection, targetLine2);
+                    updateAllRemainingSpans(this.mLayoutState.mLayoutDirection, targetLine);
                 } else {
-                    updateRemainingSpans(currentSpan2, this.mLayoutState.mLayoutDirection, targetLine2);
+                    updateRemainingSpans(currentSpan2, this.mLayoutState.mLayoutDirection, targetLine);
                 }
                 recycle(recycler2, this.mLayoutState);
-                if (this.mLayoutState.mStopInFocusable && view.hasFocusable()) {
-                    if (lp.mFullSpan) {
-                        this.mRemainingSpans.clear();
-                    } else {
-                        z = false;
-                        this.mRemainingSpans.set(currentSpan2.mIndex, false);
-                        targetLine3 = targetLine2;
-                        targetLine4 = 1;
-                        defaultNewViewLine2 = defaultNewViewLine;
-                        r14 = z;
-                        z2 = true;
-                    }
+                if (!this.mLayoutState.mStopInFocusable || !view.hasFocusable()) {
+                    z = false;
+                } else if (lp.mFullSpan) {
+                    this.mRemainingSpans.clear();
+                    z = false;
+                } else {
+                    z = false;
+                    this.mRemainingSpans.set(currentSpan2.mIndex, false);
                 }
-                z = false;
-                targetLine3 = targetLine2;
-                targetLine4 = 1;
-                defaultNewViewLine2 = defaultNewViewLine;
-                r14 = z;
+                added = true;
+                r9 = z;
                 z2 = true;
             } else {
-                int i9 = targetLine3;
-                i2 = r14;
+                i2 = r9;
                 break;
             }
         }
-        if (added == 0) {
+        if (!added) {
             recycle(recycler2, this.mLayoutState);
         }
         if (this.mLayoutState.mLayoutDirection == -1) {
@@ -1248,8 +1214,7 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         } else {
             diff = getMaxEnd(this.mPrimaryOrientation.getEndAfterPadding()) - this.mPrimaryOrientation.getEndAfterPadding();
         }
-        int maxEnd = diff;
-        return maxEnd > 0 ? Math.min(layoutState2.mAvailable, maxEnd) : i2;
+        return diff > 0 ? Math.min(layoutState2.mAvailable, diff) : i2;
     }
 
     private LazySpanLookup.FullSpanItem createFullSpanItemFromEnd(int newItemTop) {
@@ -1498,9 +1463,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
             diff = 1;
         }
         if (layoutState.mLayoutDirection == 1) {
-            int minLine = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
-            int defaultLine = this.mPrimaryOrientation.getStartAfterPadding();
             Span min = null;
+            int minLine = Integer.MAX_VALUE;
+            int defaultLine = this.mPrimaryOrientation.getStartAfterPadding();
             for (int i = startIndex; i != endIndex; i += diff) {
                 Span other = this.mSpans[i];
                 int otherLine = other.getEndLine(defaultLine);
@@ -1511,9 +1476,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
             }
             return min;
         }
+        Span max = null;
         int maxLine = Integer.MIN_VALUE;
         int defaultLine2 = this.mPrimaryOrientation.getEndAfterPadding();
-        Span max = null;
         for (int i2 = startIndex; i2 != endIndex; i2 += diff) {
             Span other2 = this.mSpans[i2];
             int otherLine2 = other2.getStartLine(defaultLine2);
@@ -1577,7 +1542,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     }
 
     public void scrollToPosition(int position) {
-        if (!(this.mPendingSavedState == null || this.mPendingSavedState.mAnchorPosition == position)) {
+        SavedState savedState = this.mPendingSavedState;
+        if (!(savedState == null || savedState.mAnchorPosition == position)) {
             this.mPendingSavedState.invalidateAnchorPositionInfo();
         }
         this.mPendingScrollPosition = position;
@@ -1586,30 +1552,30 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
     }
 
     public void scrollToPositionWithOffset(int position, int offset) {
-        if (this.mPendingSavedState != null) {
-            this.mPendingSavedState.invalidateAnchorPositionInfo();
+        SavedState savedState = this.mPendingSavedState;
+        if (savedState != null) {
+            savedState.invalidateAnchorPositionInfo();
         }
         this.mPendingScrollPosition = position;
         this.mPendingScrollPositionOffset = offset;
         requestLayout();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public void collectAdjacentPrefetchPositions(int dx, int dy, RecyclerView.State state, RecyclerView.LayoutManager.LayoutPrefetchRegistry layoutPrefetchRegistry) {
         int distance;
         int delta = this.mOrientation == 0 ? dx : dy;
         if (getChildCount() != 0 && delta != 0) {
             prepareLayoutStateForDelta(delta, state);
-            if (this.mPrefetchDistances == null || this.mPrefetchDistances.length < this.mSpanCount) {
+            int[] iArr = this.mPrefetchDistances;
+            if (iArr == null || iArr.length < this.mSpanCount) {
                 this.mPrefetchDistances = new int[this.mSpanCount];
             }
-            int i = 0;
             int itemPrefetchCount = 0;
-            for (int i2 = 0; i2 < this.mSpanCount; i2++) {
+            for (int i = 0; i < this.mSpanCount; i++) {
                 if (this.mLayoutState.mItemDirection == -1) {
-                    distance = this.mLayoutState.mStartLine - this.mSpans[i2].getStartLine(this.mLayoutState.mStartLine);
+                    distance = this.mLayoutState.mStartLine - this.mSpans[i].getStartLine(this.mLayoutState.mStartLine);
                 } else {
-                    distance = this.mSpans[i2].getEndLine(this.mLayoutState.mEndLine) - this.mLayoutState.mEndLine;
+                    distance = this.mSpans[i].getEndLine(this.mLayoutState.mEndLine) - this.mLayoutState.mEndLine;
                 }
                 if (distance >= 0) {
                     this.mPrefetchDistances[itemPrefetchCount] = distance;
@@ -1617,15 +1583,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 }
             }
             Arrays.sort(this.mPrefetchDistances, 0, itemPrefetchCount);
-            while (true) {
-                int i3 = i;
-                if (i3 < itemPrefetchCount && this.mLayoutState.hasMore(state)) {
-                    layoutPrefetchRegistry.addPosition(this.mLayoutState.mCurrentPosition, this.mPrefetchDistances[i3]);
-                    this.mLayoutState.mCurrentPosition += this.mLayoutState.mItemDirection;
-                    i = i3 + 1;
-                } else {
-                    return;
-                }
+            for (int i2 = 0; i2 < itemPrefetchCount && this.mLayoutState.hasMore(state); i2++) {
+                layoutPrefetchRegistry.addPosition(this.mLayoutState.mCurrentPosition, this.mPrefetchDistances[i2]);
+                this.mLayoutState.mCurrentPosition += this.mLayoutState.mItemDirection;
             }
         }
     }
@@ -1644,7 +1604,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         this.mLayoutState.mRecycle = true;
         updateLayoutState(referenceChildPosition, state);
         setLayoutStateDirection(layoutDir);
-        this.mLayoutState.mCurrentPosition = this.mLayoutState.mItemDirection + referenceChildPosition;
+        LayoutState layoutState = this.mLayoutState;
+        layoutState.mCurrentPosition = layoutState.mItemDirection + referenceChildPosition;
         this.mLayoutState.mAvailable = Math.abs(delta);
     }
 
@@ -1734,7 +1695,6 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         return this.mOrientation;
     }
 
-    @Nullable
     public View onFocusSearchFailed(View focused, int direction, RecyclerView.Recycler recycler, RecyclerView.State state) {
         View directChild;
         int referenceChildPosition;
@@ -1742,7 +1702,6 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         int i2;
         int i3;
         View view;
-        RecyclerView.State state2 = state;
         if (getChildCount() == 0 || (directChild = findContainingItemView(focused)) == null) {
             return null;
         }
@@ -1759,34 +1718,38 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         } else {
             referenceChildPosition = getFirstChildPosition();
         }
-        updateLayoutState(referenceChildPosition, state2);
+        updateLayoutState(referenceChildPosition, state);
         setLayoutStateDirection(layoutDir);
-        this.mLayoutState.mCurrentPosition = this.mLayoutState.mItemDirection + referenceChildPosition;
+        LayoutState layoutState = this.mLayoutState;
+        layoutState.mCurrentPosition = layoutState.mItemDirection + referenceChildPosition;
         this.mLayoutState.mAvailable = (int) (((float) this.mPrimaryOrientation.getTotalSpace()) * MAX_SCROLL_FACTOR);
         this.mLayoutState.mStopInFocusable = true;
-        int i4 = 0;
+        boolean z = false;
         this.mLayoutState.mRecycle = false;
-        fill(recycler, this.mLayoutState, state2);
+        fill(recycler, this.mLayoutState, state);
         this.mLastLayoutFromEnd = this.mShouldReverseLayout;
         if (!prevFocusFullSpan && (view = prevFocusSpan.getFocusableViewAfter(referenceChildPosition, layoutDir)) != null && view != directChild) {
             return view;
         }
         if (preferLastSpan(layoutDir)) {
-            for (int i5 = this.mSpanCount - 1; i5 >= 0; i5--) {
-                View view2 = this.mSpans[i5].getFocusableViewAfter(referenceChildPosition, layoutDir);
+            for (int i4 = this.mSpanCount - 1; i4 >= 0; i4--) {
+                View view2 = this.mSpans[i4].getFocusableViewAfter(referenceChildPosition, layoutDir);
                 if (view2 != null && view2 != directChild) {
                     return view2;
                 }
             }
         } else {
-            for (int i6 = 0; i6 < this.mSpanCount; i6++) {
-                View view3 = this.mSpans[i6].getFocusableViewAfter(referenceChildPosition, layoutDir);
+            for (int i5 = 0; i5 < this.mSpanCount; i5++) {
+                View view3 = this.mSpans[i5].getFocusableViewAfter(referenceChildPosition, layoutDir);
                 if (view3 != null && view3 != directChild) {
                     return view3;
                 }
             }
         }
-        boolean shouldSearchFromStart = (this.mReverseLayout ^ 1) == (layoutDir == -1 ? 1 : 0);
+        if ((this.mReverseLayout ^ 1) == (layoutDir == -1 ? 1 : 0)) {
+            z = true;
+        }
+        boolean shouldSearchFromStart = z;
         if (!prevFocusFullSpan) {
             if (shouldSearchFromStart) {
                 i3 = prevFocusSpan.findFirstPartiallyVisibleItemPosition();
@@ -1798,80 +1761,71 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 return unfocusableCandidate;
             }
         }
-        if (!preferLastSpan(layoutDir)) {
-            while (true) {
-                int i7 = i4;
-                if (i7 >= this.mSpanCount) {
-                    break;
+        if (preferLastSpan(layoutDir)) {
+            for (int i6 = this.mSpanCount - 1; i6 >= 0; i6--) {
+                if (i6 != prevFocusSpan.mIndex) {
+                    if (shouldSearchFromStart) {
+                        i2 = this.mSpans[i6].findFirstPartiallyVisibleItemPosition();
+                    } else {
+                        i2 = this.mSpans[i6].findLastPartiallyVisibleItemPosition();
+                    }
+                    View unfocusableCandidate2 = findViewByPosition(i2);
+                    if (unfocusableCandidate2 != null && unfocusableCandidate2 != directChild) {
+                        return unfocusableCandidate2;
+                    }
+                    View view4 = unfocusableCandidate2;
                 }
+            }
+        } else {
+            for (int i7 = 0; i7 < this.mSpanCount; i7++) {
                 if (shouldSearchFromStart) {
                     i = this.mSpans[i7].findFirstPartiallyVisibleItemPosition();
                 } else {
                     i = this.mSpans[i7].findLastPartiallyVisibleItemPosition();
                 }
-                View unfocusableCandidate2 = findViewByPosition(i);
-                if (unfocusableCandidate2 != null && unfocusableCandidate2 != directChild) {
-                    return unfocusableCandidate2;
+                View unfocusableCandidate3 = findViewByPosition(i);
+                if (unfocusableCandidate3 != null && unfocusableCandidate3 != directChild) {
+                    return unfocusableCandidate3;
                 }
-                i4 = i7 + 1;
-            }
-        } else {
-            int i8 = this.mSpanCount - 1;
-            while (true) {
-                int i9 = i8;
-                if (i9 < 0) {
-                    break;
-                }
-                if (i9 != prevFocusSpan.mIndex) {
-                    if (shouldSearchFromStart) {
-                        i2 = this.mSpans[i9].findFirstPartiallyVisibleItemPosition();
-                    } else {
-                        i2 = this.mSpans[i9].findLastPartiallyVisibleItemPosition();
-                    }
-                    View unfocusableCandidate3 = findViewByPosition(i2);
-                    if (unfocusableCandidate3 != null && unfocusableCandidate3 != directChild) {
-                        return unfocusableCandidate3;
-                    }
-                    View view4 = unfocusableCandidate3;
-                }
-                i8 = i9 - 1;
             }
         }
         return null;
     }
 
     private int convertFocusDirectionToLayoutDirection(int focusDirection) {
-        if (focusDirection != 17) {
-            if (focusDirection != 33) {
-                if (focusDirection != 66) {
-                    if (focusDirection != 130) {
-                        switch (focusDirection) {
-                            case 1:
-                                return (this.mOrientation != 1 && isLayoutRTL()) ? 1 : -1;
-                            case 2:
-                                return (this.mOrientation != 1 && isLayoutRTL()) ? -1 : 1;
-                            default:
-                                return Integer.MIN_VALUE;
-                        }
-                    } else if (this.mOrientation == 1) {
-                        return 1;
-                    } else {
-                        return Integer.MIN_VALUE;
-                    }
-                } else if (this.mOrientation == 0) {
+        switch (focusDirection) {
+            case 1:
+                if (this.mOrientation != 1 && isLayoutRTL()) {
                     return 1;
-                } else {
-                    return Integer.MIN_VALUE;
                 }
-            } else if (this.mOrientation == 1) {
                 return -1;
-            } else {
+            case 2:
+                if (this.mOrientation != 1 && isLayoutRTL()) {
+                    return -1;
+                }
+                return 1;
+            case 17:
+                if (this.mOrientation == 0) {
+                    return -1;
+                }
                 return Integer.MIN_VALUE;
-            }
-        } else if (this.mOrientation == 0) {
-            return -1;
-        } else {
-            return Integer.MIN_VALUE;
+            case 33:
+                if (this.mOrientation == 1) {
+                    return -1;
+                }
+                return Integer.MIN_VALUE;
+            case 66:
+                if (this.mOrientation == 0) {
+                    return 1;
+                }
+                return Integer.MIN_VALUE;
+            case 130:
+                if (this.mOrientation == 1) {
+                    return 1;
+                }
+                return Integer.MIN_VALUE;
+            default:
+                return Integer.MIN_VALUE;
         }
     }
 
@@ -1909,10 +1863,11 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         }
 
         public final int getSpanIndex() {
-            if (this.mSpan == null) {
+            Span span = this.mSpan;
+            if (span == null) {
                 return -1;
             }
-            return this.mSpan.mIndex;
+            return span.mIndex;
         }
     }
 
@@ -1930,8 +1885,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public int getStartLine(int def) {
-            if (this.mCachedStart != Integer.MIN_VALUE) {
-                return this.mCachedStart;
+            int i = this.mCachedStart;
+            if (i != Integer.MIN_VALUE) {
+                return i;
             }
             if (this.mViews.size() == 0) {
                 return def;
@@ -1953,8 +1909,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public int getStartLine() {
-            if (this.mCachedStart != Integer.MIN_VALUE) {
-                return this.mCachedStart;
+            int i = this.mCachedStart;
+            if (i != Integer.MIN_VALUE) {
+                return i;
             }
             calculateCachedStart();
             return this.mCachedStart;
@@ -1962,8 +1919,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public int getEndLine(int def) {
-            if (this.mCachedEnd != Integer.MIN_VALUE) {
-                return this.mCachedEnd;
+            int i = this.mCachedEnd;
+            if (i != Integer.MIN_VALUE) {
+                return i;
             }
             if (this.mViews.size() == 0) {
                 return def;
@@ -1975,7 +1933,8 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         /* access modifiers changed from: package-private */
         public void calculateCachedEnd() {
             LazySpanLookup.FullSpanItem fsi;
-            View endView = this.mViews.get(this.mViews.size() - 1);
+            ArrayList<View> arrayList = this.mViews;
+            View endView = arrayList.get(arrayList.size() - 1);
             LayoutParams lp = getLayoutParams(endView);
             this.mCachedEnd = StaggeredGridLayoutManager.this.mPrimaryOrientation.getDecoratedEnd(endView);
             if (lp.mFullSpan && (fsi = StaggeredGridLayoutManager.this.mLazySpanLookup.getFullSpanItem(lp.getViewLayoutPosition())) != null && fsi.mGapDir == 1) {
@@ -1985,8 +1944,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public int getEndLine() {
-            if (this.mCachedEnd != Integer.MIN_VALUE) {
-                return this.mCachedEnd;
+            int i = this.mCachedEnd;
+            if (i != Integer.MIN_VALUE) {
+                return i;
             }
             calculateCachedEnd();
             return this.mCachedEnd;
@@ -2102,11 +2062,13 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public void onOffset(int dt) {
-            if (this.mCachedStart != Integer.MIN_VALUE) {
-                this.mCachedStart += dt;
+            int i = this.mCachedStart;
+            if (i != Integer.MIN_VALUE) {
+                this.mCachedStart = i + dt;
             }
-            if (this.mCachedEnd != Integer.MIN_VALUE) {
-                this.mCachedEnd += dt;
+            int i2 = this.mCachedEnd;
+            if (i2 != Integer.MIN_VALUE) {
+                this.mCachedEnd = i2 + dt;
             }
         }
 
@@ -2157,10 +2119,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
             int i = toIndex;
             int start = StaggeredGridLayoutManager.this.mPrimaryOrientation.getStartAfterPadding();
             int end = StaggeredGridLayoutManager.this.mPrimaryOrientation.getEndAfterPadding();
-            int i2 = fromIndex;
-            int next = i > i2 ? 1 : -1;
-            for (int i3 = i2; i3 != i; i3 += next) {
-                View child = this.mViews.get(i3);
+            int next = i > fromIndex ? 1 : -1;
+            for (int i2 = fromIndex; i2 != i; i2 += next) {
+                View child = this.mViews.get(i2);
                 int childStart = StaggeredGridLayoutManager.this.mPrimaryOrientation.getDecoratedStart(child);
                 int childEnd = StaggeredGridLayoutManager.this.mPrimaryOrientation.getDecoratedEnd(child);
                 boolean childEndInclusion = false;
@@ -2228,8 +2189,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public int forceInvalidateAfter(int position) {
-            if (this.mFullSpanItems != null) {
-                for (int i = this.mFullSpanItems.size() - 1; i >= 0; i--) {
+            List<FullSpanItem> list = this.mFullSpanItems;
+            if (list != null) {
+                for (int i = list.size() - 1; i >= 0; i--) {
                     if (this.mFullSpanItems.get(i).mPosition >= position) {
                         this.mFullSpanItems.remove(i);
                     }
@@ -2240,12 +2202,14 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public int invalidateAfter(int position) {
-            if (this.mData == null || position >= this.mData.length) {
+            int[] iArr = this.mData;
+            if (iArr == null || position >= iArr.length) {
                 return -1;
             }
             int endPosition = invalidateFullSpansAfter(position);
             if (endPosition == -1) {
-                Arrays.fill(this.mData, position, this.mData.length, -1);
+                int[] iArr2 = this.mData;
+                Arrays.fill(iArr2, position, iArr2.length, -1);
                 return this.mData.length;
             }
             Arrays.fill(this.mData, position, endPosition + 1, -1);
@@ -2254,10 +2218,11 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public int getSpan(int position) {
-            if (this.mData == null || position >= this.mData.length) {
+            int[] iArr = this.mData;
+            if (iArr == null || position >= iArr.length) {
                 return -1;
             }
-            return this.mData[position];
+            return iArr[position];
         }
 
         /* access modifiers changed from: package-private */
@@ -2277,39 +2242,48 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public void ensureSize(int position) {
-            if (this.mData == null) {
-                this.mData = new int[(Math.max(position, 10) + 1)];
-                Arrays.fill(this.mData, -1);
-            } else if (position >= this.mData.length) {
+            int[] iArr = this.mData;
+            if (iArr == null) {
+                int[] iArr2 = new int[(Math.max(position, 10) + 1)];
+                this.mData = iArr2;
+                Arrays.fill(iArr2, -1);
+            } else if (position >= iArr.length) {
                 int[] old = this.mData;
-                this.mData = new int[sizeForPosition(position)];
-                System.arraycopy(old, 0, this.mData, 0, old.length);
-                Arrays.fill(this.mData, old.length, this.mData.length, -1);
+                int[] iArr3 = new int[sizeForPosition(position)];
+                this.mData = iArr3;
+                System.arraycopy(old, 0, iArr3, 0, old.length);
+                int[] iArr4 = this.mData;
+                Arrays.fill(iArr4, old.length, iArr4.length, -1);
             }
         }
 
         /* access modifiers changed from: package-private */
         public void clear() {
-            if (this.mData != null) {
-                Arrays.fill(this.mData, -1);
+            int[] iArr = this.mData;
+            if (iArr != null) {
+                Arrays.fill(iArr, -1);
             }
             this.mFullSpanItems = null;
         }
 
         /* access modifiers changed from: package-private */
         public void offsetForRemoval(int positionStart, int itemCount) {
-            if (this.mData != null && positionStart < this.mData.length) {
+            int[] iArr = this.mData;
+            if (iArr != null && positionStart < iArr.length) {
                 ensureSize(positionStart + itemCount);
-                System.arraycopy(this.mData, positionStart + itemCount, this.mData, positionStart, (this.mData.length - positionStart) - itemCount);
-                Arrays.fill(this.mData, this.mData.length - itemCount, this.mData.length, -1);
+                int[] iArr2 = this.mData;
+                System.arraycopy(iArr2, positionStart + itemCount, iArr2, positionStart, (iArr2.length - positionStart) - itemCount);
+                int[] iArr3 = this.mData;
+                Arrays.fill(iArr3, iArr3.length - itemCount, iArr3.length, -1);
                 offsetFullSpansForRemoval(positionStart, itemCount);
             }
         }
 
         private void offsetFullSpansForRemoval(int positionStart, int itemCount) {
-            if (this.mFullSpanItems != null) {
+            List<FullSpanItem> list = this.mFullSpanItems;
+            if (list != null) {
                 int end = positionStart + itemCount;
-                for (int i = this.mFullSpanItems.size() - 1; i >= 0; i--) {
+                for (int i = list.size() - 1; i >= 0; i--) {
                     FullSpanItem fsi = this.mFullSpanItems.get(i);
                     if (fsi.mPosition >= positionStart) {
                         if (fsi.mPosition < end) {
@@ -2324,17 +2298,20 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
         /* access modifiers changed from: package-private */
         public void offsetForAddition(int positionStart, int itemCount) {
-            if (this.mData != null && positionStart < this.mData.length) {
+            int[] iArr = this.mData;
+            if (iArr != null && positionStart < iArr.length) {
                 ensureSize(positionStart + itemCount);
-                System.arraycopy(this.mData, positionStart, this.mData, positionStart + itemCount, (this.mData.length - positionStart) - itemCount);
+                int[] iArr2 = this.mData;
+                System.arraycopy(iArr2, positionStart, iArr2, positionStart + itemCount, (iArr2.length - positionStart) - itemCount);
                 Arrays.fill(this.mData, positionStart, positionStart + itemCount, -1);
                 offsetFullSpansForAddition(positionStart, itemCount);
             }
         }
 
         private void offsetFullSpansForAddition(int positionStart, int itemCount) {
-            if (this.mFullSpanItems != null) {
-                for (int i = this.mFullSpanItems.size() - 1; i >= 0; i--) {
+            List<FullSpanItem> list = this.mFullSpanItems;
+            if (list != null) {
+                for (int i = list.size() - 1; i >= 0; i--) {
                     FullSpanItem fsi = this.mFullSpanItems.get(i);
                     if (fsi.mPosition >= positionStart) {
                         fsi.mPosition += itemCount;
@@ -2390,10 +2367,11 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         }
 
         public FullSpanItem getFullSpanItem(int position) {
-            if (this.mFullSpanItems == null) {
+            List<FullSpanItem> list = this.mFullSpanItems;
+            if (list == null) {
                 return null;
             }
-            for (int i = this.mFullSpanItems.size() - 1; i >= 0; i--) {
+            for (int i = list.size() - 1; i >= 0; i--) {
                 FullSpanItem fsi = this.mFullSpanItems.get(i);
                 if (fsi.mPosition == position) {
                     return fsi;
@@ -2403,10 +2381,11 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         }
 
         public FullSpanItem getFirstFullSpanItemInRange(int minPos, int maxPos, int gapDir, boolean hasUnwantedGapAfter) {
-            if (this.mFullSpanItems == null) {
+            List<FullSpanItem> list = this.mFullSpanItems;
+            if (list == null) {
                 return null;
             }
-            int limit = this.mFullSpanItems.size();
+            int limit = list.size();
             for (int i = 0; i < limit; i++) {
                 FullSpanItem fsi = this.mFullSpanItems.get(i);
                 if (fsi.mPosition >= maxPos) {
@@ -2440,8 +2419,9 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 this.mHasUnwantedGapAfter = in.readInt() != 1 ? false : true;
                 int spanCount = in.readInt();
                 if (spanCount > 0) {
-                    this.mGapPerSpan = new int[spanCount];
-                    in.readIntArray(this.mGapPerSpan);
+                    int[] iArr = new int[spanCount];
+                    this.mGapPerSpan = iArr;
+                    in.readIntArray(iArr);
                 }
             }
 
@@ -2450,10 +2430,11 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
 
             /* access modifiers changed from: package-private */
             public int getGapForSpan(int spanIndex) {
-                if (this.mGapPerSpan == null) {
+                int[] iArr = this.mGapPerSpan;
+                if (iArr == null) {
                     return 0;
                 }
-                return this.mGapPerSpan[spanIndex];
+                return iArr[spanIndex];
             }
 
             public int describeContents() {
@@ -2464,11 +2445,12 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
                 dest.writeInt(this.mPosition);
                 dest.writeInt(this.mGapDir);
                 dest.writeInt(this.mHasUnwantedGapAfter ? 1 : 0);
-                if (this.mGapPerSpan == null || this.mGapPerSpan.length <= 0) {
+                int[] iArr = this.mGapPerSpan;
+                if (iArr == null || iArr.length <= 0) {
                     dest.writeInt(0);
                     return;
                 }
-                dest.writeInt(this.mGapPerSpan.length);
+                dest.writeInt(iArr.length);
                 dest.writeIntArray(this.mGapPerSpan);
             }
 
@@ -2478,7 +2460,6 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static class SavedState implements Parcelable {
         public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
@@ -2506,15 +2487,19 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
         SavedState(Parcel in) {
             this.mAnchorPosition = in.readInt();
             this.mVisibleAnchorPosition = in.readInt();
-            this.mSpanOffsetsSize = in.readInt();
-            if (this.mSpanOffsetsSize > 0) {
-                this.mSpanOffsets = new int[this.mSpanOffsetsSize];
-                in.readIntArray(this.mSpanOffsets);
+            int readInt = in.readInt();
+            this.mSpanOffsetsSize = readInt;
+            if (readInt > 0) {
+                int[] iArr = new int[readInt];
+                this.mSpanOffsets = iArr;
+                in.readIntArray(iArr);
             }
-            this.mSpanLookupSize = in.readInt();
-            if (this.mSpanLookupSize > 0) {
-                this.mSpanLookup = new int[this.mSpanLookupSize];
-                in.readIntArray(this.mSpanLookup);
+            int readInt2 = in.readInt();
+            this.mSpanLookupSize = readInt2;
+            if (readInt2 > 0) {
+                int[] iArr2 = new int[readInt2];
+                this.mSpanLookup = iArr2;
+                in.readIntArray(iArr2);
             }
             boolean z = false;
             this.mReverseLayout = in.readInt() == 1;
@@ -2594,15 +2579,17 @@ public class StaggeredGridLayoutManager extends RecyclerView.LayoutManager imple
             this.mLayoutFromEnd = false;
             this.mInvalidateOffsets = false;
             this.mValid = false;
-            if (this.mSpanReferenceLines != null) {
-                Arrays.fill(this.mSpanReferenceLines, -1);
+            int[] iArr = this.mSpanReferenceLines;
+            if (iArr != null) {
+                Arrays.fill(iArr, -1);
             }
         }
 
         /* access modifiers changed from: package-private */
         public void saveSpanReferenceLines(Span[] spans) {
             int spanCount = spans.length;
-            if (this.mSpanReferenceLines == null || this.mSpanReferenceLines.length < spanCount) {
+            int[] iArr = this.mSpanReferenceLines;
+            if (iArr == null || iArr.length < spanCount) {
                 this.mSpanReferenceLines = new int[StaggeredGridLayoutManager.this.mSpans.length];
             }
             for (int i = 0; i < spanCount; i++) {

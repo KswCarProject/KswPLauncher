@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.data;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.data.DataRewinder;
 import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import com.bumptech.glide.load.resource.bitmap.RecyclableBufferedInputStream;
@@ -12,11 +11,11 @@ public final class InputStreamRewinder implements DataRewinder<InputStream> {
     private final RecyclableBufferedInputStream bufferedStream;
 
     InputStreamRewinder(InputStream is, ArrayPool byteArrayPool) {
-        this.bufferedStream = new RecyclableBufferedInputStream(is, byteArrayPool);
-        this.bufferedStream.mark(MARK_LIMIT);
+        RecyclableBufferedInputStream recyclableBufferedInputStream = new RecyclableBufferedInputStream(is, byteArrayPool);
+        this.bufferedStream = recyclableBufferedInputStream;
+        recyclableBufferedInputStream.mark(MARK_LIMIT);
     }
 
-    @NonNull
     public InputStream rewindAndGet() throws IOException {
         this.bufferedStream.reset();
         return this.bufferedStream;
@@ -33,12 +32,10 @@ public final class InputStreamRewinder implements DataRewinder<InputStream> {
             this.byteArrayPool = byteArrayPool2;
         }
 
-        @NonNull
         public DataRewinder<InputStream> build(InputStream data) {
             return new InputStreamRewinder(data, this.byteArrayPool);
         }
 
-        @NonNull
         public Class<InputStream> getDataClass() {
             return InputStream.class;
         }

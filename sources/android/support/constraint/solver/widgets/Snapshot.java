@@ -26,9 +26,10 @@ public class Snapshot {
         }
 
         public void updateFrom(ConstraintWidget widget) {
-            this.mAnchor = widget.getAnchor(this.mAnchor.getType());
-            if (this.mAnchor != null) {
-                this.mTarget = this.mAnchor.getTarget();
+            ConstraintAnchor anchor = widget.getAnchor(this.mAnchor.getType());
+            this.mAnchor = anchor;
+            if (anchor != null) {
+                this.mTarget = anchor.getTarget();
                 this.mMargin = this.mAnchor.getMargin();
                 this.mStrengh = this.mAnchor.getStrength();
                 this.mCreator = this.mAnchor.getConnectionCreator();

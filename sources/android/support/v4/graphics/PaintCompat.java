@@ -3,7 +3,6 @@ package android.support.v4.graphics;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
 public final class PaintCompat {
@@ -11,7 +10,7 @@ public final class PaintCompat {
     private static final String TOFU_STRING = "󟿽";
     private static final ThreadLocal<Pair<Rect, Rect>> sRectThreadLocal = new ThreadLocal<>();
 
-    public static boolean hasGlyph(@NonNull Paint paint, @NonNull String string) {
+    public static boolean hasGlyph(Paint paint, String string) {
         if (Build.VERSION.SDK_INT >= 23) {
             return paint.hasGlyph(string);
         }
@@ -20,7 +19,7 @@ public final class PaintCompat {
             return true;
         }
         float missingGlyphWidth = paint.measureText(TOFU_STRING);
-        float emGlyphWidth = paint.measureText(EM_STRING);
+        float emGlyphWidth = paint.measureText("m");
         float width = paint.measureText(string);
         if (width == 0.0f) {
             return false;
@@ -50,10 +49,11 @@ public final class PaintCompat {
     }
 
     private static Pair<Rect, Rect> obtainEmptyRects() {
-        Pair<Rect, Rect> rects = sRectThreadLocal.get();
+        ThreadLocal<Pair<Rect, Rect>> threadLocal = sRectThreadLocal;
+        Pair<Rect, Rect> rects = threadLocal.get();
         if (rects == null) {
             Pair<Rect, Rect> rects2 = new Pair<>(new Rect(), new Rect());
-            sRectThreadLocal.set(rects2);
+            threadLocal.set(rects2);
             return rects2;
         }
         ((Rect) rects.first).setEmpty();

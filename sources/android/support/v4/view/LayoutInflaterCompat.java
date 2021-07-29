@@ -2,7 +2,6 @@ package android.support.v4.view;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,16 +36,18 @@ public final class LayoutInflaterCompat {
     private static void forceSetFactory2(LayoutInflater inflater, LayoutInflater.Factory2 factory) {
         if (!sCheckedField) {
             try {
-                sLayoutInflaterFactory2Field = LayoutInflater.class.getDeclaredField("mFactory2");
-                sLayoutInflaterFactory2Field.setAccessible(true);
+                Field declaredField = LayoutInflater.class.getDeclaredField("mFactory2");
+                sLayoutInflaterFactory2Field = declaredField;
+                declaredField.setAccessible(true);
             } catch (NoSuchFieldException e) {
                 Log.e(TAG, "forceSetFactory2 Could not find field 'mFactory2' on class " + LayoutInflater.class.getName() + "; inflation may have unexpected results.", e);
             }
             sCheckedField = true;
         }
-        if (sLayoutInflaterFactory2Field != null) {
+        Field field = sLayoutInflaterFactory2Field;
+        if (field != null) {
             try {
-                sLayoutInflaterFactory2Field.set(inflater, factory);
+                field.set(inflater, factory);
             } catch (IllegalAccessException e2) {
                 Log.e(TAG, "forceSetFactory2 could not set the Factory2 on LayoutInflater " + inflater + "; inflation may have unexpected results.", e2);
             }
@@ -57,7 +58,7 @@ public final class LayoutInflaterCompat {
     }
 
     @Deprecated
-    public static void setFactory(@NonNull LayoutInflater inflater, @NonNull LayoutInflaterFactory factory) {
+    public static void setFactory(LayoutInflater inflater, LayoutInflaterFactory factory) {
         Factory2Wrapper factory2Wrapper = null;
         if (Build.VERSION.SDK_INT >= 21) {
             if (factory != null) {
@@ -79,7 +80,7 @@ public final class LayoutInflaterCompat {
         }
     }
 
-    public static void setFactory2(@NonNull LayoutInflater inflater, @NonNull LayoutInflater.Factory2 factory) {
+    public static void setFactory2(LayoutInflater inflater, LayoutInflater.Factory2 factory) {
         inflater.setFactory2(factory);
         if (Build.VERSION.SDK_INT < 21) {
             LayoutInflater.Factory f = inflater.getFactory();

@@ -1,11 +1,12 @@
 package com.wits.ksw.settings.land_rover;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -15,6 +16,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.wits.ksw.R;
+import com.wits.ksw.databinding.ActivityLandRoverSettingsBinding;
+import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 import com.wits.ksw.settings.BaseActivity;
 import com.wits.ksw.settings.id7.FactoryActivity;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
@@ -53,36 +56,35 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
     private FrameLayout frame_OneLayout;
     private FrameLayout frame_TwoLayout;
     Handler handler = new Handler() {
-        @RequiresApi(api = 24)
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            int i = msg.what;
-            if (i != 0) {
-                switch (i) {
-                    case 2:
-                        if (TextUtils.equals(LandroverSettingsActivity.this.defPwd, (String) msg.obj)) {
-                            LandroverSettingsActivity.this.startActivity(new Intent(LandroverSettingsActivity.this, FactoryActivity.class));
-                            LandroverSettingsActivity.this.finish();
-                            return;
-                        }
-                        LandroverSettingsActivity.this.setFactoryLayout.SetTextEEro();
+            switch (msg.what) {
+                case 0:
+                    LandroverSettingsActivity.this.initOneLayout();
+                    LandroverSettingsActivity.this.initTwoLayout();
+                    return;
+                case 2:
+                    if (TextUtils.equals(LandroverSettingsActivity.this.defPwd, (String) msg.obj)) {
+                        LandroverSettingsActivity.this.startActivity(new Intent(LandroverSettingsActivity.this, FactoryActivity.class));
+                        LandroverSettingsActivity.this.finish();
                         return;
-                    case 3:
-                        if (LandroverSettingsActivity.this.naviTwo != null) {
-                            Log.d("Navi", "updateList: " + LandroverSettingsActivity.this.mapList.size());
-                            LandroverSettingsActivity.this.naviTwo.updateMapList(LandroverSettingsActivity.this.mapList);
-                            return;
-                        }
+                    }
+                    LandroverSettingsActivity.this.setFactoryLayout.SetTextEEro();
+                    return;
+                case 3:
+                    if (LandroverSettingsActivity.this.naviTwo != null) {
+                        Log.d("Navi", "updateList: " + LandroverSettingsActivity.this.mapList.size());
+                        LandroverSettingsActivity.this.naviTwo.updateMapList(LandroverSettingsActivity.this.mapList);
                         return;
-                    default:
-                        return;
-                }
-            } else {
-                LandroverSettingsActivity.this.initOneLayout();
-                LandroverSettingsActivity.this.initTwoLayout();
+                    }
+                    return;
+                default:
+                    return;
             }
         }
     };
+    private ActivityLandRoverSettingsBinding landroverBinding;
+    private LandroverViewModel landroverViewModel;
     private LinearLayoutManager layoutManager;
     private WindowManager.LayoutParams lp;
     /* access modifiers changed from: private */
@@ -107,17 +109,22 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
     private String voiceData;
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_land_rover_settings);
+        LandroverViewModel landroverViewModel2 = (LandroverViewModel) ViewModelProviders.of((FragmentActivity) this).get(LandroverViewModel.class);
+        this.landroverViewModel = landroverViewModel2;
+        landroverViewModel2.setActivity(this);
+        ActivityLandRoverSettingsBinding activityLandRoverSettingsBinding = (ActivityLandRoverSettingsBinding) DataBindingUtil.setContentView(this, R.layout.activity_land_rover_settings);
+        this.landroverBinding = activityLandRoverSettingsBinding;
+        activityLandRoverSettingsBinding.setLauncherViewModel(this.landroverViewModel);
         initData();
         initView();
     }
 
     private void setFullWidown() {
-        this.lp = getWindow().getAttributes();
-        if (!((this.lp.flags & 1024) == 1024)) {
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        this.lp = attributes;
+        if (!((attributes.flags & 1024) == 1024)) {
             WindowManager.LayoutParams layoutParams = this.lp;
             layoutParams.flags = 1024 | layoutParams.flags;
             getWindow().setAttributes(this.lp);
@@ -125,7 +132,6 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
         }
     }
 
-    @RequiresApi(api = 24)
     public void skipItem() {
         if (TextUtils.equals("voic", this.voiceData)) {
             initOneLayout();
@@ -135,8 +141,9 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
                 fb.setIscheck(false);
             }
             this.data.get(2).setIscheck(true);
-            if (this.adapter != null) {
-                this.adapter.notifyDataSetChanged();
+            LandroverFunctionAdapter landroverFunctionAdapter = this.adapter;
+            if (landroverFunctionAdapter != null) {
+                landroverFunctionAdapter.notifyDataSetChanged();
             }
         } else if (TextUtils.equals("voicFun", this.voiceData)) {
             initOneLayout();
@@ -146,8 +153,9 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
                 fb2.setIscheck(false);
             }
             this.data.get(3).setIscheck(true);
-            if (this.adapter != null) {
-                this.adapter.notifyDataSetChanged();
+            LandroverFunctionAdapter landroverFunctionAdapter2 = this.adapter;
+            if (landroverFunctionAdapter2 != null) {
+                landroverFunctionAdapter2.notifyDataSetChanged();
             }
         }
     }
@@ -166,7 +174,6 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
     }
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
     public void onResume() {
         super.onResume();
         setFullWidown();
@@ -174,12 +181,19 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
         this.handler.sendEmptyMessageDelayed(0, 1000);
         initSaveData();
         skipItem();
-        if (this.frame_TwoLayout != null) {
-            this.frame_TwoLayout.removeAllViews();
+        FrameLayout frameLayout = this.frame_TwoLayout;
+        if (frameLayout != null) {
+            frameLayout.removeAllViews();
         }
-        if (this.frame_OneLayout != null) {
-            this.frame_OneLayout.setVisibility(0);
+        FrameLayout frameLayout2 = this.frame_OneLayout;
+        if (frameLayout2 != null) {
+            frameLayout2.setVisibility(0);
         }
+    }
+
+    /* access modifiers changed from: protected */
+    public void onPause() {
+        super.onPause();
     }
 
     /* access modifiers changed from: protected */
@@ -189,22 +203,24 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void initOneLayout() {
         if (this.setSystemInfoLayout == null) {
-            this.setSystemLayout = new LandroverSetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
+            LandroverSetSystemLayout landroverSetSystemLayout = new LandroverSetSystemLayout(this);
+            this.setSystemLayout = landroverSetSystemLayout;
+            landroverSetSystemLayout.registIUpdateTwoLayout(this);
         }
         if (this.setNaviLayout == null) {
-            this.setNaviLayout = new LandroverSetNaviLayout(this);
-            this.setNaviLayout.registIUpdateTwoLayout(this);
+            LandroverSetNaviLayout landroverSetNaviLayout = new LandroverSetNaviLayout(this);
+            this.setNaviLayout = landroverSetNaviLayout;
+            landroverSetNaviLayout.registIUpdateTwoLayout(this);
         }
         if (this.setVoiceLayout == null) {
             this.setVoiceLayout = new LandroverSetVoiceLayout(this);
         }
         if (this.setVocModeLayout == null) {
-            this.setVocModeLayout = new LandroverSetVocModeLayout(this);
-            this.setVocModeLayout.registIUpdateTwoLayout(this);
+            LandroverSetVocModeLayout landroverSetVocModeLayout = new LandroverSetVocModeLayout(this);
+            this.setVocModeLayout = landroverSetVocModeLayout;
+            landroverSetVocModeLayout.registIUpdateTwoLayout(this);
         }
         if (this.setLanguageLayout == null) {
             this.setLanguageLayout = new LandroverSetLanguageLayout(this);
@@ -213,8 +229,9 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
             this.setToAndSysLayout = new SetToAndSysLayout(this);
         }
         if (this.setTimeLayout == null) {
-            this.setTimeLayout = new LandroverSetTimeLayout(this);
-            this.setTimeLayout.registIUpdateTwoLayout(this);
+            LandroverSetTimeLayout landroverSetTimeLayout = new LandroverSetTimeLayout(this);
+            this.setTimeLayout = landroverSetTimeLayout;
+            landroverSetTimeLayout.registIUpdateTwoLayout(this);
         }
         if (this.setSystemInfoLayout == null) {
             this.setSystemInfoLayout = new LandroverSetSystemInfoLayout(this);
@@ -274,13 +291,14 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
 
     private void initView() {
         this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        this.layoutManager = new LinearLayoutManager(this);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
-        this.adapter = new LandroverFunctionAdapter(this, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        LandroverFunctionAdapter landroverFunctionAdapter = new LandroverFunctionAdapter(this, this.data);
+        this.adapter = landroverFunctionAdapter;
+        this.recyclerView.setAdapter(landroverFunctionAdapter);
         this.adapter.registOnFunctionClickListener(new LandroverFunctionAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 LandroverSettingsActivity.this.setOneLayout(pos);
                 for (FunctionBean fb : LandroverSettingsActivity.this.data) {
@@ -293,15 +311,17 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
         this.frame_OneLayout = (FrameLayout) findViewById(R.id.frame_OneLayout);
         this.frame_TwoLayout = (FrameLayout) findViewById(R.id.frame_TwoLayout);
         if (this.setSystemLayout == null) {
-            this.setSystemLayout = new LandroverSetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
+            LandroverSetSystemLayout landroverSetSystemLayout = new LandroverSetSystemLayout(this);
+            this.setSystemLayout = landroverSetSystemLayout;
+            landroverSetSystemLayout.registIUpdateTwoLayout(this);
         }
         this.frame_OneLayout.addView(this.setSystemLayout);
         if (this.setSystemTwo == null) {
             this.setSystemTwo = new LandroverSetSystemTwo(this);
         }
-        this.Img_SetBack = (ImageView) findViewById(R.id.Img_SetBack);
-        this.Img_SetBack.setOnClickListener(new View.OnClickListener() {
+        ImageView imageView = (ImageView) findViewById(R.id.Img_SetBack);
+        this.Img_SetBack = imageView;
+        imageView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 LandroverSettingsActivity.this.onBackPressed();
             }
@@ -309,7 +329,6 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void setOneLayout(int type) {
         this.frame_OneLayout.removeAllViews();
         this.frame_TwoLayout.removeAllViews();
@@ -317,8 +336,9 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
         switch (type) {
             case 0:
                 if (this.setSystemLayout == null) {
-                    this.setSystemLayout = new LandroverSetSystemLayout(this);
-                    this.setSystemLayout.registIUpdateTwoLayout(this);
+                    LandroverSetSystemLayout landroverSetSystemLayout = new LandroverSetSystemLayout(this);
+                    this.setSystemLayout = landroverSetSystemLayout;
+                    landroverSetSystemLayout.registIUpdateTwoLayout(this);
                 }
                 if (this.setSystemTwo == null) {
                     this.setSystemTwo = new LandroverSetSystemTwo(this);
@@ -328,8 +348,9 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
                 break;
             case 1:
                 if (this.setNaviLayout == null) {
-                    this.setNaviLayout = new LandroverSetNaviLayout(this);
-                    this.setNaviLayout.registIUpdateTwoLayout(this);
+                    LandroverSetNaviLayout landroverSetNaviLayout = new LandroverSetNaviLayout(this);
+                    this.setNaviLayout = landroverSetNaviLayout;
+                    landroverSetNaviLayout.registIUpdateTwoLayout(this);
                 }
                 if (this.naviTwo == null) {
                     this.naviTwo = new LandroverNaviTwo(this);
@@ -351,8 +372,9 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
                 break;
             case 4:
                 if (this.setTimeLayout == null) {
-                    this.setTimeLayout = new LandroverSetTimeLayout(this);
-                    this.setTimeLayout.registIUpdateTwoLayout(this);
+                    LandroverSetTimeLayout landroverSetTimeLayout = new LandroverSetTimeLayout(this);
+                    this.setTimeLayout = landroverSetTimeLayout;
+                    landroverSetTimeLayout.registIUpdateTwoLayout(this);
                 }
                 if (this.timeSetTwo == null) {
                     this.timeSetTwo = new LandroverTimeSetTwo(this);
@@ -418,7 +440,8 @@ public class LandroverSettingsActivity extends BaseActivity implements IUpdateTw
 
     public void onBackPressed() {
         Log.d("onBackPressed", "onBackPressed frame_TwoLayout child =" + this.frame_TwoLayout.getChildCount());
-        if (this.frame_TwoLayout == null || this.frame_TwoLayout.getChildCount() <= 0) {
+        FrameLayout frameLayout = this.frame_TwoLayout;
+        if (frameLayout == null || frameLayout.getChildCount() <= 0) {
             super.onBackPressed();
             return;
         }

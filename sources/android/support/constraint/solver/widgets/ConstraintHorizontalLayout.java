@@ -29,6 +29,7 @@ public class ConstraintHorizontalLayout extends ConstraintWidgetContainer {
     }
 
     public void addToSolver(LinearSystem system) {
+        ConstraintAnchor.Strength strength;
         if (this.mChildren.size() != 0) {
             ConstraintHorizontalLayout constraintHorizontalLayout = this;
             int mChildrenSize = this.mChildren.size();
@@ -38,12 +39,13 @@ public class ConstraintHorizontalLayout extends ConstraintWidgetContainer {
                     widget.connect(ConstraintAnchor.Type.LEFT, (ConstraintWidget) constraintHorizontalLayout, ConstraintAnchor.Type.RIGHT);
                     constraintHorizontalLayout.connect(ConstraintAnchor.Type.RIGHT, widget, ConstraintAnchor.Type.LEFT);
                 } else {
-                    ConstraintAnchor.Strength strength = ConstraintAnchor.Strength.STRONG;
+                    ConstraintAnchor.Strength strength2 = ConstraintAnchor.Strength.STRONG;
                     if (this.mAlignment == ContentAlignment.END) {
                         strength = ConstraintAnchor.Strength.WEAK;
+                    } else {
+                        strength = strength2;
                     }
-                    ConstraintAnchor.Strength strength2 = strength;
-                    widget.connect(ConstraintAnchor.Type.LEFT, (ConstraintWidget) constraintHorizontalLayout, ConstraintAnchor.Type.LEFT, 0, strength2);
+                    widget.connect(ConstraintAnchor.Type.LEFT, (ConstraintWidget) constraintHorizontalLayout, ConstraintAnchor.Type.LEFT, 0, strength);
                 }
                 widget.connect(ConstraintAnchor.Type.TOP, (ConstraintWidget) this, ConstraintAnchor.Type.TOP);
                 widget.connect(ConstraintAnchor.Type.BOTTOM, (ConstraintWidget) this, ConstraintAnchor.Type.BOTTOM);

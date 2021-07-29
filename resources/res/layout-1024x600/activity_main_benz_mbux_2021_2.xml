@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="vertical" android:tag="layout-1024x600/activity_main_benz_mbux_2021_2_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView android:id="@+id/layout_main_2021" android:tag="binding_1" android:layout_width="match_parent" android:layout_height="match_parent"/>
+        <LinearLayout android:orientation="vertical" android:id="@+id/layout_main_2021_2" android:layout_width="match_parent" android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager android:id="@+id/benzMbux2021Viewpager" android:focusable="true" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginTop="130dp" android:layout_weight="1" android:overScrollMode="never" android:defaultFocusHighlightEnabled="false"/>
+            <ImageView android:id="@+id/controlBtn" android:tag="binding_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2dp" android:layout_marginStart="51dp" app:layout_constraintBottom_toBottomOf="0" app:layout_constraintStart_toStartOf="0"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/indicator_benz_mbux_2021" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@+id/layout_coat_benz_mbux_2021" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_marginBottom="10dp">
+                <ImageView android:id="@+id/iv_coat_2021" android:layout_width="39dp" android:layout_height="37dp" android:src="@drawable/benz_mbux_2021_coat_selector"/>
+                <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_coat_2021_tip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/benz_mbux_2021_theme_settings" android:singleLine="true"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

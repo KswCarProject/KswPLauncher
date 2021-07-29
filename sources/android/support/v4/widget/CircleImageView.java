@@ -63,15 +63,17 @@ class CircleImageView extends ImageView {
 
     public void onAnimationStart() {
         super.onAnimationStart();
-        if (this.mListener != null) {
-            this.mListener.onAnimationStart(getAnimation());
+        Animation.AnimationListener animationListener = this.mListener;
+        if (animationListener != null) {
+            animationListener.onAnimationStart(getAnimation());
         }
     }
 
     public void onAnimationEnd() {
         super.onAnimationEnd();
-        if (this.mListener != null) {
-            this.mListener.onAnimationEnd(getAnimation());
+        Animation.AnimationListener animationListener = this.mListener;
+        if (animationListener != null) {
+            animationListener.onAnimationEnd(getAnimation());
         }
     }
 
@@ -108,8 +110,9 @@ class CircleImageView extends ImageView {
         }
 
         private void updateRadialGradient(int diameter) {
-            this.mRadialGradient = new RadialGradient((float) (diameter / 2), (float) (diameter / 2), (float) CircleImageView.this.mShadowRadius, new int[]{CircleImageView.FILL_SHADOW_COLOR, 0}, (float[]) null, Shader.TileMode.CLAMP);
-            this.mShadowPaint.setShader(this.mRadialGradient);
+            RadialGradient radialGradient = new RadialGradient((float) (diameter / 2), (float) (diameter / 2), (float) CircleImageView.this.mShadowRadius, new int[]{CircleImageView.FILL_SHADOW_COLOR, 0}, (float[]) null, Shader.TileMode.CLAMP);
+            this.mRadialGradient = radialGradient;
+            this.mShadowPaint.setShader(radialGradient);
         }
     }
 }

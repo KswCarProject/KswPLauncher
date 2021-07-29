@@ -1,7 +1,5 @@
 package com.bumptech.glide.gifdecoder;
 
-import android.support.annotation.ColorInt;
-
 class GifFrame {
     static final int DISPOSAL_BACKGROUND = 2;
     static final int DISPOSAL_NONE = 1;
@@ -15,7 +13,6 @@ class GifFrame {
     int iw;
     int ix;
     int iy;
-    @ColorInt
     int[] lct;
     int transIndex;
     boolean transparency;

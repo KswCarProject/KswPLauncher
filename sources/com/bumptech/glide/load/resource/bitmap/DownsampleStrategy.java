@@ -6,11 +6,11 @@ public abstract class DownsampleStrategy {
     public static final DownsampleStrategy AT_LEAST = new AtLeast();
     public static final DownsampleStrategy AT_MOST = new AtMost();
     public static final DownsampleStrategy CENTER_INSIDE = new CenterInside();
-    public static final DownsampleStrategy CENTER_OUTSIDE = new CenterOutside();
-    public static final DownsampleStrategy DEFAULT = CENTER_OUTSIDE;
+    public static final DownsampleStrategy CENTER_OUTSIDE;
+    public static final DownsampleStrategy DEFAULT;
     public static final DownsampleStrategy FIT_CENTER = new FitCenter();
     public static final DownsampleStrategy NONE = new None();
-    public static final Option<DownsampleStrategy> OPTION = Option.memory("com.bumptech.glide.load.resource.bitmap.Downsampler.DownsampleStrategy", DEFAULT);
+    public static final Option<DownsampleStrategy> OPTION;
 
     public enum SampleSizeRounding {
         MEMORY,
@@ -20,6 +20,13 @@ public abstract class DownsampleStrategy {
     public abstract SampleSizeRounding getSampleSizeRounding(int i, int i2, int i3, int i4);
 
     public abstract float getScaleFactor(int i, int i2, int i3, int i4);
+
+    static {
+        CenterOutside centerOutside = new CenterOutside();
+        CENTER_OUTSIDE = centerOutside;
+        DEFAULT = centerOutside;
+        OPTION = Option.memory("com.bumptech.glide.load.resource.bitmap.Downsampler.DownsampleStrategy", centerOutside);
+    }
 
     private static class FitCenter extends DownsampleStrategy {
         FitCenter() {

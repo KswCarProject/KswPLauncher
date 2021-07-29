@@ -103,8 +103,9 @@ public class SetVoiceLayout extends RelativeLayout implements View.OnClickListen
         this.tv_houzvoc.setTextColor(Color.argb(255, 172, 216, 255));
         this.tv_yuancvoc.setTextColor(-1);
         this.tv_eq.setTextColor(-1);
-        if (this.updateTwoLayout != null) {
-            this.updateTwoLayout.updateTwoLayout(5, 0);
+        IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+        if (iUpdateTwoLayout != null) {
+            iUpdateTwoLayout.updateTwoLayout(5, 0);
         }
     }
 
@@ -114,25 +115,30 @@ public class SetVoiceLayout extends RelativeLayout implements View.OnClickListen
             return;
         }
         resetTextColor();
-        int id = v.getId();
-        if (id == R.id.tv_eq) {
-            this.tv_houzvoc.setTextColor(-1);
-            this.tv_yuancvoc.setTextColor(-1);
-            this.tv_eq.setTextColor(Color.argb(255, 172, 216, 255));
-            this.updateTwoLayout.updateTwoLayout(5, 2);
-            Intent intent = new Intent();
-            intent.setClassName("com.wits.csp.eq", "com.wits.csp.eq.view.MainActivity");
-            this.context.startActivity(intent);
-        } else if (id == R.id.tv_houzvoc) {
-            this.tv_yuancvoc.setTextColor(-1);
-            this.tv_eq.setTextColor(-1);
-            this.tv_houzvoc.setTextColor(Color.argb(255, 172, 216, 255));
-            this.updateTwoLayout.updateTwoLayout(5, 0);
-        } else if (id == R.id.tv_yuancvoc) {
-            this.tv_houzvoc.setTextColor(-1);
-            this.tv_eq.setTextColor(-1);
-            this.tv_yuancvoc.setTextColor(Color.argb(255, 172, 216, 255));
-            this.updateTwoLayout.updateTwoLayout(5, 1);
+        switch (v.getId()) {
+            case R.id.tv_eq:
+                this.tv_houzvoc.setTextColor(-1);
+                this.tv_yuancvoc.setTextColor(-1);
+                this.tv_eq.setTextColor(Color.argb(255, 172, 216, 255));
+                this.updateTwoLayout.updateTwoLayout(5, 2);
+                Intent intent = new Intent();
+                intent.setClassName("com.wits.csp.eq", "com.wits.csp.eq.view.MainActivity");
+                this.context.startActivity(intent);
+                return;
+            case R.id.tv_houzvoc:
+                this.tv_yuancvoc.setTextColor(-1);
+                this.tv_eq.setTextColor(-1);
+                this.tv_houzvoc.setTextColor(Color.argb(255, 172, 216, 255));
+                this.updateTwoLayout.updateTwoLayout(5, 0);
+                return;
+            case R.id.tv_yuancvoc:
+                this.tv_houzvoc.setTextColor(-1);
+                this.tv_eq.setTextColor(-1);
+                this.tv_yuancvoc.setTextColor(Color.argb(255, 172, 216, 255));
+                this.updateTwoLayout.updateTwoLayout(5, 1);
+                return;
+            default:
+                return;
         }
     }
 }

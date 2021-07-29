@@ -71,8 +71,7 @@ public final class C$Gson$Types {
             if (type instanceof WildcardType) {
                 return getRawType(((WildcardType) type).getUpperBounds()[0]);
             }
-            String className = type == null ? "null" : type.getClass().getName();
-            throw new IllegalArgumentException("Expected a Class, ParameterizedType, or GenericArrayType, but <" + type + "> is of type " + className);
+            throw new IllegalArgumentException("Expected a Class, ParameterizedType, or GenericArrayType, but <" + type + "> is of type " + (type == null ? "null" : type.getClass().getName()));
         }
     }
 
@@ -290,7 +289,7 @@ public final class C$Gson$Types {
             return r5
         L_0x008b:
             boolean r0 = r11 instanceof java.lang.reflect.WildcardType
-            if (r0 == 0) goto L_0x00c0
+            if (r0 == 0) goto L_0x00c1
             r0 = r11
             java.lang.reflect.WildcardType r0 = (java.lang.reflect.WildcardType) r0
             java.lang.reflect.Type[] r3 = r0.getLowerBounds()
@@ -311,12 +310,13 @@ public final class C$Gson$Types {
             r1 = r4[r2]
             java.lang.reflect.Type r1 = resolve(r9, r10, r1)
             r2 = r4[r2]
-            if (r1 == r2) goto L_0x00bf
+            if (r1 == r2) goto L_0x00c0
             java.lang.reflect.WildcardType r2 = subtypeOf(r1)
             return r2
         L_0x00bf:
-            return r0
         L_0x00c0:
+            return r0
+        L_0x00c1:
             return r11
         */
         throw new UnsupportedOperationException("Method not decompiled: com.google.gson.internal.C$Gson$Types.resolve(java.lang.reflect.Type, java.lang.Class, java.lang.reflect.Type):java.lang.reflect.Type");
@@ -365,26 +365,24 @@ public final class C$Gson$Types {
         private final Type[] typeArguments;
 
         public ParameterizedTypeImpl(Type ownerType2, Type rawType2, Type... typeArguments2) {
-            int t = 0;
             if (rawType2 instanceof Class) {
                 Class<?> rawTypeAsClass = (Class) rawType2;
-                boolean z = true;
+                boolean z = false;
                 C$Gson$Preconditions.checkArgument(ownerType2 != null || rawTypeAsClass.getEnclosingClass() == null);
-                if (ownerType2 != null && rawTypeAsClass.getEnclosingClass() == null) {
-                    z = false;
-                }
-                C$Gson$Preconditions.checkArgument(z);
+                C$Gson$Preconditions.checkArgument((ownerType2 == null || rawTypeAsClass.getEnclosingClass() != null) ? true : z);
             }
             this.ownerType = ownerType2 == null ? null : C$Gson$Types.canonicalize(ownerType2);
             this.rawType = C$Gson$Types.canonicalize(rawType2);
             this.typeArguments = (Type[]) typeArguments2.clone();
+            int t = 0;
             while (true) {
-                int t2 = t;
-                if (t2 < this.typeArguments.length) {
-                    C$Gson$Preconditions.checkNotNull(this.typeArguments[t2]);
-                    C$Gson$Types.checkNotPrimitive(this.typeArguments[t2]);
-                    this.typeArguments[t2] = C$Gson$Types.canonicalize(this.typeArguments[t2]);
-                    t = t2 + 1;
+                Type[] typeArr = this.typeArguments;
+                if (t < typeArr.length) {
+                    C$Gson$Preconditions.checkNotNull(typeArr[t]);
+                    C$Gson$Types.checkNotPrimitive(this.typeArguments[t]);
+                    Type[] typeArr2 = this.typeArguments;
+                    typeArr2[t] = C$Gson$Types.canonicalize(typeArr2[t]);
+                    t++;
                 } else {
                     return;
                 }
@@ -412,25 +410,16 @@ public final class C$Gson$Types {
         }
 
         public String toString() {
-            int i = 1;
             StringBuilder stringBuilder = new StringBuilder((this.typeArguments.length + 1) * 30);
             stringBuilder.append(C$Gson$Types.typeToString(this.rawType));
             if (this.typeArguments.length == 0) {
                 return stringBuilder.toString();
             }
-            stringBuilder.append("<");
-            stringBuilder.append(C$Gson$Types.typeToString(this.typeArguments[0]));
-            while (true) {
-                int i2 = i;
-                if (i2 < this.typeArguments.length) {
-                    stringBuilder.append(", ");
-                    stringBuilder.append(C$Gson$Types.typeToString(this.typeArguments[i2]));
-                    i = i2 + 1;
-                } else {
-                    stringBuilder.append(">");
-                    return stringBuilder.toString();
-                }
+            stringBuilder.append("<").append(C$Gson$Types.typeToString(this.typeArguments[0]));
+            for (int i = 1; i < this.typeArguments.length; i++) {
+                stringBuilder.append(", ").append(C$Gson$Types.typeToString(this.typeArguments[i]));
             }
+            return stringBuilder.append(">").toString();
         }
     }
 
@@ -491,10 +480,11 @@ public final class C$Gson$Types {
         }
 
         public Type[] getLowerBounds() {
-            if (this.lowerBound == null) {
+            Type type = this.lowerBound;
+            if (type == null) {
                 return C$Gson$Types.EMPTY_TYPE_ARRAY;
             }
-            return new Type[]{this.lowerBound};
+            return new Type[]{type};
         }
 
         public boolean equals(Object other) {
@@ -502,17 +492,18 @@ public final class C$Gson$Types {
         }
 
         public int hashCode() {
-            return (this.lowerBound != null ? this.lowerBound.hashCode() + 31 : 1) ^ (this.upperBound.hashCode() + 31);
+            Type type = this.lowerBound;
+            return (type != null ? type.hashCode() + 31 : 1) ^ (this.upperBound.hashCode() + 31);
         }
 
         public String toString() {
             if (this.lowerBound != null) {
                 return "? super " + C$Gson$Types.typeToString(this.lowerBound);
-            } else if (this.upperBound == Object.class) {
-                return "?";
-            } else {
-                return "? extends " + C$Gson$Types.typeToString(this.upperBound);
             }
+            if (this.upperBound == Object.class) {
+                return "?";
+            }
+            return "? extends " + C$Gson$Types.typeToString(this.upperBound);
         }
     }
 }

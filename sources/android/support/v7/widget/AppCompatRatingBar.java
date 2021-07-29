@@ -20,8 +20,9 @@ public class AppCompatRatingBar extends RatingBar {
 
     public AppCompatRatingBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.mAppCompatProgressBarHelper = new AppCompatProgressBarHelper(this);
-        this.mAppCompatProgressBarHelper.loadFromAttributes(attrs, defStyleAttr);
+        AppCompatProgressBarHelper appCompatProgressBarHelper = new AppCompatProgressBarHelper(this);
+        this.mAppCompatProgressBarHelper = appCompatProgressBarHelper;
+        appCompatProgressBarHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
     /* access modifiers changed from: protected */

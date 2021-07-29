@@ -59,10 +59,11 @@ public class ConstraintAnchor {
     }
 
     public void resetSolverVariable(Cache cache) {
-        if (this.mSolverVariable == null) {
+        SolverVariable solverVariable = this.mSolverVariable;
+        if (solverVariable == null) {
             this.mSolverVariable = new SolverVariable(SolverVariable.Type.UNRESTRICTED, (String) null);
         } else {
-            this.mSolverVariable.reset();
+            solverVariable.reset();
         }
     }
 
@@ -75,10 +76,11 @@ public class ConstraintAnchor {
     }
 
     public int getMargin() {
+        ConstraintAnchor constraintAnchor;
         if (this.mOwner.getVisibility() == 8) {
             return 0;
         }
-        if (this.mGoneMargin <= -1 || this.mTarget == null || this.mTarget.mOwner.getVisibility() != 8) {
+        if (this.mGoneMargin <= -1 || (constraintAnchor = this.mTarget) == null || constraintAnchor.mOwner.getVisibility() != 8) {
             return this.mMargin;
         }
         return this.mGoneMargin;
@@ -164,15 +166,16 @@ public class ConstraintAnchor {
             return false;
         }
         Type target = anchor.getType();
-        if (target != this.mType) {
-            switch (this.mType) {
-                case CENTER:
+        Type type = this.mType;
+        if (target != type) {
+            switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+                case 1:
                     if (target == Type.BASELINE || target == Type.CENTER_X || target == Type.CENTER_Y) {
                         return false;
                     }
                     return true;
-                case LEFT:
-                case RIGHT:
+                case 2:
+                case 3:
                     boolean isCompatible2 = target == Type.LEFT || target == Type.RIGHT;
                     if (!(anchor.getOwner() instanceof Guideline)) {
                         return isCompatible2;
@@ -181,8 +184,8 @@ public class ConstraintAnchor {
                         isCompatible = true;
                     }
                     return isCompatible;
-                case TOP:
-                case BOTTOM:
+                case 4:
+                case 5:
                     boolean isCompatible3 = target == Type.TOP || target == Type.BOTTOM;
                     if (!(anchor.getOwner() instanceof Guideline)) {
                         return isCompatible3;
@@ -191,15 +194,15 @@ public class ConstraintAnchor {
                         isCompatible = true;
                     }
                     return isCompatible;
-                case BASELINE:
-                case CENTER_X:
-                case CENTER_Y:
-                case NONE:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
                     return false;
                 default:
                     throw new AssertionError(this.mType.name());
             }
-        } else if (this.mType != Type.BASELINE || (anchor.getOwner().hasBaseline() && getOwner().hasBaseline())) {
+        } else if (type != Type.BASELINE || (anchor.getOwner().hasBaseline() && getOwner().hasBaseline())) {
             return true;
         } else {
             return false;
@@ -207,17 +210,17 @@ public class ConstraintAnchor {
     }
 
     public boolean isSideAnchor() {
-        switch (this.mType) {
-            case CENTER:
-            case BASELINE:
-            case CENTER_X:
-            case CENTER_Y:
-            case NONE:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+            case 1:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
                 return false;
-            case LEFT:
-            case RIGHT:
-            case TOP:
-            case BOTTOM:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
                 return true;
             default:
                 throw new AssertionError(this.mType.name());
@@ -229,28 +232,28 @@ public class ConstraintAnchor {
         if (target == this.mType) {
             return true;
         }
-        switch (this.mType) {
-            case CENTER:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+            case 1:
                 if (target != Type.BASELINE) {
                     return true;
                 }
                 return false;
-            case LEFT:
-            case RIGHT:
-            case CENTER_X:
+            case 2:
+            case 3:
+            case 7:
                 if (target == Type.LEFT || target == Type.RIGHT || target == Type.CENTER_X) {
                     return true;
                 }
                 return false;
-            case TOP:
-            case BOTTOM:
-            case BASELINE:
-            case CENTER_Y:
+            case 4:
+            case 5:
+            case 6:
+            case 8:
                 if (target == Type.TOP || target == Type.BOTTOM || target == Type.CENTER_Y || target == Type.BASELINE) {
                     return true;
                 }
                 return false;
-            case NONE:
+            case 9:
                 return false;
             default:
                 throw new AssertionError(this.mType.name());
@@ -276,17 +279,17 @@ public class ConstraintAnchor {
     }
 
     public boolean isVerticalAnchor() {
-        switch (this.mType) {
-            case CENTER:
-            case LEFT:
-            case RIGHT:
-            case CENTER_X:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+            case 1:
+            case 2:
+            case 3:
+            case 7:
                 return false;
-            case TOP:
-            case BOTTOM:
-            case BASELINE:
-            case CENTER_Y:
-            case NONE:
+            case 4:
+            case 5:
+            case 6:
+            case 8:
+            case 9:
                 return true;
             default:
                 throw new AssertionError(this.mType.name());
@@ -298,24 +301,24 @@ public class ConstraintAnchor {
     }
 
     public int getSnapPriorityLevel() {
-        switch (this.mType) {
-            case CENTER:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+            case 1:
                 return 3;
-            case LEFT:
+            case 2:
                 return 1;
-            case RIGHT:
+            case 3:
                 return 1;
-            case TOP:
+            case 4:
                 return 0;
-            case BOTTOM:
+            case 5:
                 return 0;
-            case BASELINE:
+            case 6:
                 return 2;
-            case CENTER_X:
+            case 7:
                 return 0;
-            case CENTER_Y:
+            case 8:
                 return 1;
-            case NONE:
+            case 9:
                 return 0;
             default:
                 throw new AssertionError(this.mType.name());
@@ -323,24 +326,24 @@ public class ConstraintAnchor {
     }
 
     public int getPriorityLevel() {
-        switch (this.mType) {
-            case CENTER:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+            case 1:
                 return 2;
-            case LEFT:
+            case 2:
                 return 2;
-            case RIGHT:
+            case 3:
                 return 2;
-            case TOP:
+            case 4:
                 return 2;
-            case BOTTOM:
+            case 5:
                 return 2;
-            case BASELINE:
+            case 6:
                 return 1;
-            case CENTER_X:
+            case 7:
                 return 0;
-            case CENTER_Y:
+            case 8:
                 return 0;
-            case NONE:
+            case 9:
                 return 0;
             default:
                 throw new AssertionError(this.mType.name());
@@ -354,36 +357,48 @@ public class ConstraintAnchor {
         if (this.mType == anchor.getType()) {
             return true;
         }
-        switch (this.mType) {
-            case CENTER:
-            case BASELINE:
-            case NONE:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+            case 1:
+            case 6:
+            case 9:
                 return false;
-            case LEFT:
-                int i = AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[anchor.getType().ordinal()];
-                if (i == 3 || i == 7) {
-                    return true;
+            case 2:
+                switch (anchor.getType()) {
+                    case RIGHT:
+                        return true;
+                    case CENTER_X:
+                        return true;
+                    default:
+                        return false;
                 }
-                return false;
-            case RIGHT:
-                int i2 = AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[anchor.getType().ordinal()];
-                if (i2 == 2 || i2 == 7) {
-                    return true;
+            case 3:
+                switch (anchor.getType()) {
+                    case LEFT:
+                        return true;
+                    case CENTER_X:
+                        return true;
+                    default:
+                        return false;
                 }
-                return false;
-            case TOP:
-                int i3 = AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[anchor.getType().ordinal()];
-                if (i3 == 5 || i3 == 8) {
-                    return true;
+            case 4:
+                switch (anchor.getType()) {
+                    case BOTTOM:
+                        return true;
+                    case CENTER_Y:
+                        return true;
+                    default:
+                        return false;
                 }
-                return false;
-            case BOTTOM:
-                int i4 = AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[anchor.getType().ordinal()];
-                if (i4 == 4 || i4 == 8) {
-                    return true;
+            case 5:
+                switch (anchor.getType()) {
+                    case TOP:
+                        return true;
+                    case CENTER_Y:
+                        return true;
+                    default:
+                        return false;
                 }
-                return false;
-            case CENTER_X:
+            case 7:
                 switch (anchor.getType()) {
                     case LEFT:
                         return true;
@@ -392,7 +407,7 @@ public class ConstraintAnchor {
                     default:
                         return false;
                 }
-            case CENTER_Y:
+            case 8:
                 switch (anchor.getType()) {
                     case TOP:
                         return true;
@@ -441,20 +456,20 @@ public class ConstraintAnchor {
     }
 
     public final ConstraintAnchor getOpposite() {
-        switch (this.mType) {
-            case CENTER:
-            case BASELINE:
-            case CENTER_X:
-            case CENTER_Y:
-            case NONE:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[this.mType.ordinal()]) {
+            case 1:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
                 return null;
-            case LEFT:
+            case 2:
                 return this.mOwner.mRight;
-            case RIGHT:
+            case 3:
                 return this.mOwner.mLeft;
-            case TOP:
+            case 4:
                 return this.mOwner.mBottom;
-            case BOTTOM:
+            case 5:
                 return this.mOwner.mTop;
             default:
                 throw new AssertionError(this.mType.name());

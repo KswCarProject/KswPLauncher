@@ -5,8 +5,6 @@ import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RadioButton;
@@ -15,31 +13,29 @@ import com.wits.ksw.settings.audi.vm.AudiSystemViewModel;
 import com.wits.ksw.settings.audi.widget.AudiConstraintLayout;
 
 public class AudiSpeedUnitBindingImpl extends AudiSpeedUnitBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @NonNull
     private final AudiConstraintLayout mboundView0;
-    @NonNull
     private final RadioButton mboundView2;
-    @NonNull
     private final RadioButton mboundView3;
 
-    public AudiSpeedUnitBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public AudiSpeedUnitBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
     private AudiSpeedUnitBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 1, bindings[1]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView2 = bindings[2];
-        this.mboundView2.setTag((Object) null);
-        this.mboundView3 = bindings[3];
-        this.mboundView3.setTag((Object) null);
+        AudiConstraintLayout audiConstraintLayout = bindings[0];
+        this.mboundView0 = audiConstraintLayout;
+        audiConstraintLayout.setTag((Object) null);
+        RadioButton radioButton = bindings[2];
+        this.mboundView2 = radioButton;
+        radioButton.setTag((Object) null);
+        RadioButton radioButton2 = bindings[3];
+        this.mboundView3 = radioButton2;
+        radioButton2.setTag((Object) null);
         this.timeRadioGroup.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
@@ -61,7 +57,7 @@ public class AudiSpeedUnitBindingImpl extends AudiSpeedUnitBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -69,7 +65,7 @@ public class AudiSpeedUnitBindingImpl extends AudiSpeedUnitBinding {
         return true;
     }
 
-    public void setVm(@Nullable AudiSystemViewModel Vm) {
+    public void setVm(AudiSystemViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 2;
@@ -80,10 +76,12 @@ public class AudiSpeedUnitBindingImpl extends AudiSpeedUnitBinding {
 
     /* access modifiers changed from: protected */
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-        if (localFieldId != 0) {
-            return false;
+        switch (localFieldId) {
+            case 0:
+                return onChangeVmSpeedUnit((ObservableInt) object, fieldId);
+            default:
+                return false;
         }
-        return onChangeVmSpeedUnit((ObservableInt) object, fieldId);
     }
 
     private boolean onChangeVmSpeedUnit(ObservableInt VmSpeedUnit, int fieldId) {
@@ -104,10 +102,10 @@ public class AudiSpeedUnitBindingImpl extends AudiSpeedUnitBinding {
             this.mDirtyFlags = 0;
         }
         AudiSystemViewModel vm = this.mVm;
-        boolean vmSpeedUnitInt1 = false;
-        boolean vmSpeedUnitInt0 = false;
         int vmSpeedUnitGet = 0;
         RadioGroup.OnCheckedChangeListener vmOnSpedUnitChangeListener = null;
+        boolean vmSpeedUnitInt0 = false;
+        boolean vmSpeedUnitInt1 = false;
         ObservableInt vmSpeedUnit = null;
         if ((dirtyFlags & 7) != 0) {
             if (!((dirtyFlags & 6) == 0 || vm == null)) {
@@ -120,8 +118,12 @@ public class AudiSpeedUnitBindingImpl extends AudiSpeedUnitBinding {
             if (vmSpeedUnit != null) {
                 vmSpeedUnitGet = vmSpeedUnit.get();
             }
-            vmSpeedUnitInt1 = vmSpeedUnitGet == 1;
+            boolean z = true;
             vmSpeedUnitInt0 = vmSpeedUnitGet == 0;
+            if (vmSpeedUnitGet != 1) {
+                z = false;
+            }
+            vmSpeedUnitInt1 = z;
         }
         if ((7 & dirtyFlags) != 0) {
             CompoundButtonBindingAdapter.setChecked(this.mboundView2, vmSpeedUnitInt0);

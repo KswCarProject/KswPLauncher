@@ -40,6 +40,7 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
     private int dcjy = 0;
     private int dcld = 0;
     private int housi = 0;
+    private TextView id6SysFuelUnit;
     private TextView id6SysTempUnit;
     /* access modifiers changed from: private */
     public Handler mBackgroundHandler;
@@ -77,8 +78,9 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
         view.setLayoutParams(layoutParams);
         addView(view);
         this.mBackgroundHandler = new Handler(Looper.getMainLooper());
-        this.mBrightnessObserver = new BrightnessObserver(new Handler());
-        this.mBrightnessObserver.startObserving();
+        BrightnessObserver brightnessObserver = new BrightnessObserver(new Handler());
+        this.mBrightnessObserver = brightnessObserver;
+        brightnessObserver.startObserving();
     }
 
     private void initData() {
@@ -99,6 +101,7 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
 
     private void initView(View view) {
         this.id6SysTempUnit = (TextView) view.findViewById(R.id.id6_sysTempUnit);
+        this.id6SysFuelUnit = (TextView) view.findViewById(R.id.id6_sysFuelUnit);
         this.tv_sysDcsxt = (TextView) view.findViewById(R.id.tv_sysDcsxt);
         this.cbox_sysHjs = (CheckBox) view.findViewById(R.id.cbox_sysHjs);
         this.cbox_sysXcjz = (CheckBox) view.findViewById(R.id.cbox_sysXcjz);
@@ -119,6 +122,7 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
         this.tv_sysDcsxt.setOnClickListener(this);
         this.tv_sysCaux.setOnClickListener(this);
         this.id6SysTempUnit.setOnClickListener(this);
+        this.id6SysFuelUnit.setOnClickListener(this);
         this.cbox_sysHjs.setOnCheckedChangeListener(this);
         this.cbox_sysXcjz.setOnCheckedChangeListener(this);
         this.cbox_sysDcgj.setOnCheckedChangeListener(this);
@@ -130,8 +134,9 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
             this.tv_sysCaux.setVisibility(8);
         }
         this.tv_beigSize = (TextView) view.findViewById(R.id.tv_beigSize);
-        this.seekbar_brightness = (SeekBar) view.findViewById(R.id.seekbar_brightness);
-        this.seekbar_brightness.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_brightness);
+        this.seekbar_brightness = seekBar;
+        seekBar.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
         setProgress(this.beiguangValue);
         setProgressText(this.beiguangValue);
         this.seekbar_brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -139,7 +144,8 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
                 if (fromUser) {
                     int val = BrightnessUtils.convertGammaToLinear(progress, ID6SetSystemLayout.this.mMinBrightness, ID6SetSystemLayout.this.mMaxBrightness);
                     Log.e("SetSystemTwo", "onProgressChanged: fromUser=" + fromUser + " : progress=" + progress + " : val=" + val);
-                    ID6SetSystemLayout.this.setBrightnessValueBg(ID6SetSystemLayout.this.context, val);
+                    ID6SetSystemLayout iD6SetSystemLayout = ID6SetSystemLayout.this;
+                    iD6SetSystemLayout.setBrightnessValueBg(iD6SetSystemLayout.context, val);
                     ID6SetSystemLayout.this.setSystemBrightness(val);
                 }
             }
@@ -162,24 +168,18 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
     public void setProgressText(int progress) {
         int value = BrightnessUtils.convertLinearToGamma(progress, this.mMinBrightness, this.mMaxBrightness);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
-        int progress2 = (int) Math.round(100.0d * b);
-        TextView textView = this.tv_beigSize;
-        StringBuilder sb = new StringBuilder();
-        sb.append("");
-        sb.append(progress2);
-        textView.setText(sb.toString());
+        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        this.tv_beigSize.setText("" + ((int) Math.round(100.0d * b)));
     }
 
     /* access modifiers changed from: private */
     public void setProgress(int brightness) {
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
-        this.mMaxBrightness = getMaximumScreenBrightnessSetting();
-        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, this.mMaxBrightness);
+        int maximumScreenBrightnessSetting = getMaximumScreenBrightnessSetting();
+        this.mMaxBrightness = maximumScreenBrightnessSetting;
+        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, maximumScreenBrightnessSetting);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
+        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
         this.seekbar_brightness.setProgress(value);
     }
 
@@ -188,20 +188,21 @@ public class ID6SetSystemLayout extends RelativeLayout implements View.OnClickLi
             ExceptionPrint.print("updateTwoLayout is null");
             return;
         }
-        int id = v.getId();
-        if (id != R.id.id6_sysTempUnit) {
-            switch (id) {
-                case R.id.tv_sysCaux:
-                    this.updateTwoLayout.updateTwoLayout(1, 2);
-                    return;
-                case R.id.tv_sysDcsxt:
-                    this.updateTwoLayout.updateTwoLayout(1, 1);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            this.updateTwoLayout.updateTwoLayout(1, 3);
+        switch (v.getId()) {
+            case R.id.id6_sysFuelUnit:
+                this.updateTwoLayout.updateTwoLayout(1, 4);
+                return;
+            case R.id.id6_sysTempUnit:
+                this.updateTwoLayout.updateTwoLayout(1, 3);
+                return;
+            case R.id.tv_sysCaux:
+                this.updateTwoLayout.updateTwoLayout(1, 2);
+                return;
+            case R.id.tv_sysDcsxt:
+                this.updateTwoLayout.updateTwoLayout(1, 1);
+                return;
+            default:
+                return;
         }
     }
 

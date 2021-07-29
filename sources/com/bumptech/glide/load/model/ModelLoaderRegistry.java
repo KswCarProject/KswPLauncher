@@ -1,7 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.Pools;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,43 +11,42 @@ public class ModelLoaderRegistry {
     private final ModelLoaderCache cache;
     private final MultiModelLoaderFactory multiModelLoaderFactory;
 
-    public ModelLoaderRegistry(@NonNull Pools.Pool<List<Throwable>> throwableListPool) {
+    public ModelLoaderRegistry(Pools.Pool<List<Throwable>> throwableListPool) {
         this(new MultiModelLoaderFactory(throwableListPool));
     }
 
-    private ModelLoaderRegistry(@NonNull MultiModelLoaderFactory multiModelLoaderFactory2) {
+    private ModelLoaderRegistry(MultiModelLoaderFactory multiModelLoaderFactory2) {
         this.cache = new ModelLoaderCache();
         this.multiModelLoaderFactory = multiModelLoaderFactory2;
     }
 
-    public synchronized <Model, Data> void append(@NonNull Class<Model> modelClass, @NonNull Class<Data> dataClass, @NonNull ModelLoaderFactory<? extends Model, ? extends Data> factory) {
+    public synchronized <Model, Data> void append(Class<Model> modelClass, Class<Data> dataClass, ModelLoaderFactory<? extends Model, ? extends Data> factory) {
         this.multiModelLoaderFactory.append(modelClass, dataClass, factory);
         this.cache.clear();
     }
 
-    public synchronized <Model, Data> void prepend(@NonNull Class<Model> modelClass, @NonNull Class<Data> dataClass, @NonNull ModelLoaderFactory<? extends Model, ? extends Data> factory) {
+    public synchronized <Model, Data> void prepend(Class<Model> modelClass, Class<Data> dataClass, ModelLoaderFactory<? extends Model, ? extends Data> factory) {
         this.multiModelLoaderFactory.prepend(modelClass, dataClass, factory);
         this.cache.clear();
     }
 
-    public synchronized <Model, Data> void remove(@NonNull Class<Model> modelClass, @NonNull Class<Data> dataClass) {
+    public synchronized <Model, Data> void remove(Class<Model> modelClass, Class<Data> dataClass) {
         tearDown(this.multiModelLoaderFactory.remove(modelClass, dataClass));
         this.cache.clear();
     }
 
-    public synchronized <Model, Data> void replace(@NonNull Class<Model> modelClass, @NonNull Class<Data> dataClass, @NonNull ModelLoaderFactory<? extends Model, ? extends Data> factory) {
+    public synchronized <Model, Data> void replace(Class<Model> modelClass, Class<Data> dataClass, ModelLoaderFactory<? extends Model, ? extends Data> factory) {
         tearDown(this.multiModelLoaderFactory.replace(modelClass, dataClass, factory));
         this.cache.clear();
     }
 
-    private <Model, Data> void tearDown(@NonNull List<ModelLoaderFactory<? extends Model, ? extends Data>> factories) {
+    private <Model, Data> void tearDown(List<ModelLoaderFactory<? extends Model, ? extends Data>> factories) {
         for (ModelLoaderFactory<? extends Model, ? extends Data> factory : factories) {
             factory.teardown();
         }
     }
 
-    @NonNull
-    public <A> List<ModelLoader<A, ?>> getModelLoaders(@NonNull A model) {
+    public <A> List<ModelLoader<A, ?>> getModelLoaders(A model) {
         List<ModelLoader<A, ?>> modelLoaders = getModelLoadersForClass(getClass(model));
         int size = modelLoaders.size();
         boolean isEmpty = true;
@@ -67,17 +64,15 @@ public class ModelLoaderRegistry {
         return filteredLoaders;
     }
 
-    public synchronized <Model, Data> ModelLoader<Model, Data> build(@NonNull Class<Model> modelClass, @NonNull Class<Data> dataClass) {
+    public synchronized <Model, Data> ModelLoader<Model, Data> build(Class<Model> modelClass, Class<Data> dataClass) {
         return this.multiModelLoaderFactory.build(modelClass, dataClass);
     }
 
-    @NonNull
-    public synchronized List<Class<?>> getDataClasses(@NonNull Class<?> modelClass) {
+    public synchronized List<Class<?>> getDataClasses(Class<?> modelClass) {
         return this.multiModelLoaderFactory.getDataClasses(modelClass);
     }
 
-    @NonNull
-    private synchronized <A> List<ModelLoader<A, ?>> getModelLoadersForClass(@NonNull Class<A> modelClass) {
+    private synchronized <A> List<ModelLoader<A, ?>> getModelLoadersForClass(Class<A> modelClass) {
         List<ModelLoader<A, ?>> loaders;
         loaders = this.cache.get(modelClass);
         if (loaders == null) {
@@ -87,8 +82,7 @@ public class ModelLoaderRegistry {
         return loaders;
     }
 
-    @NonNull
-    private static <A> Class<A> getClass(@NonNull A model) {
+    private static <A> Class<A> getClass(A model) {
         return model.getClass();
     }
 
@@ -108,7 +102,6 @@ public class ModelLoaderRegistry {
             }
         }
 
-        @Nullable
         public <Model> List<ModelLoader<Model, ?>> get(Class<Model> modelClass) {
             Entry<Model> entry = this.cachedModelLoaders.get(modelClass);
             if (entry == null) {

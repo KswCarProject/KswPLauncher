@@ -44,6 +44,12 @@
     <string name="audi_set_temp_unit">Unità di temperatura</string>
     <string name="bc_apps_btn_text">Più app</string>
     <string name="benz_gs_home_navi">Navigazione</string>
+    <string name="benz_mbux_2021_bg_sel_tip">Colori di fondo</string>
+    <string name="benz_mbux_2021_img_sel_tip">Stile delle icone</string>
+    <string name="benz_mbux_2021_style_classical_tip">Un classico</string>
+    <string name="benz_mbux_2021_style_modern_tip">Moderno</string>
+    <string name="benz_mbux_2021_theme_settings">Impostazione tematica</string>
+    <string name="benz_ntg6_fy_theme_settings">oggetto</string>
     <string name="boot_record_mode">Ricorda l\'ultima modalità</string>
     <string name="boot_record_mode_radio1">Abilitare</string>
     <string name="boot_record_mode_radio2">Al sistema OEM</string>
@@ -119,6 +125,7 @@
     <string name="factory_yuyinkey2">Breve pressione inutile, pressione lunga significa NAVI</string>
     <string name="factory_yuyinkey3">Pressione breve significa VOCE, Pressione lunga significa NAVI</string>
     <string name="factory_yuyinkey4">Breve pressione significa NAVI, premere a lungo inutile</string>
+    <string name="fuel_unit">Unité de carburant</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">DVR CVBS</string>
     <string name="function_text11">USB DVR</string>
@@ -161,12 +168,13 @@
     <string name="id6_phone">Telefono</string>
     <string name="id6_phone_mess">Fai una telefonata</string>
     <string name="id6_setting_mess">Impostazioni della funzione di sistema</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">Supporto telefonico</string>
     <string name="id6_xingchejily_mess">Registra video di guida</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">Sistema</string>
     <string name="item2">Navigazione</string>
     <string name="item3">Volume</string>
@@ -201,8 +209,13 @@
     <string name="ksw_idf7_unknow_artis">Artista sconosciuto</string>
     <string name="ksw_idf7_unkonw_album">Album sconosciuto</string>
     <string name="ksw_idf7_unkonw_soung">Canzone sconosciuta</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Password errata!</string>
     <string name="mcu_file_corrupted">Aggiornamento file danneggiato!</string>
+    <string name="music_app_sel">App musicale</string>
     <string name="ntg6_dvr_toast">Nessun dispositivo!</string>
     <string name="oil_size">Olio: %s</string>
     <string name="raw_car_text1">Display a schermo intero</string>
@@ -284,6 +297,7 @@
     <string name="update_mcu_file">Se aggiornare MCU</string>
     <string name="update_reset_all">Vuoi ripristinare le impostazioni di fabbrica?</string>
     <string name="video">Video</string>
+    <string name="video_app_sel">Applicazione video</string>
     <string name="voic_1">Volume post-caricamento</string>
     <string name="voic_2">Multimediale</string>
     <string name="voic_3">Chiamata</string>

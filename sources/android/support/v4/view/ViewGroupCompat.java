@@ -1,7 +1,6 @@
 package android.support.v4.view;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.compat.R;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,20 +23,20 @@ public final class ViewGroupCompat {
         group.setMotionEventSplittingEnabled(split);
     }
 
-    public static int getLayoutMode(@NonNull ViewGroup group) {
+    public static int getLayoutMode(ViewGroup group) {
         if (Build.VERSION.SDK_INT >= 18) {
             return group.getLayoutMode();
         }
         return 0;
     }
 
-    public static void setLayoutMode(@NonNull ViewGroup group, int mode) {
+    public static void setLayoutMode(ViewGroup group, int mode) {
         if (Build.VERSION.SDK_INT >= 18) {
             group.setLayoutMode(mode);
         }
     }
 
-    public static void setTransitionGroup(@NonNull ViewGroup group, boolean isTransitionGroup) {
+    public static void setTransitionGroup(ViewGroup group, boolean isTransitionGroup) {
         if (Build.VERSION.SDK_INT >= 21) {
             group.setTransitionGroup(isTransitionGroup);
         } else {
@@ -45,7 +44,7 @@ public final class ViewGroupCompat {
         }
     }
 
-    public static boolean isTransitionGroup(@NonNull ViewGroup group) {
+    public static boolean isTransitionGroup(ViewGroup group) {
         if (Build.VERSION.SDK_INT >= 21) {
             return group.isTransitionGroup();
         }
@@ -53,7 +52,7 @@ public final class ViewGroupCompat {
         return ((explicit == null || !explicit.booleanValue()) && group.getBackground() == null && ViewCompat.getTransitionName(group) == null) ? false : true;
     }
 
-    public static int getNestedScrollAxes(@NonNull ViewGroup group) {
+    public static int getNestedScrollAxes(ViewGroup group) {
         if (Build.VERSION.SDK_INT >= 21) {
             return group.getNestedScrollAxes();
         }

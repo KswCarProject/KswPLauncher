@@ -1,13 +1,8 @@
 package com.bumptech.glide.manager;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -20,42 +15,34 @@ public class RequestManagerFragment extends Fragment {
     private static final String TAG = "RMFragment";
     private final Set<RequestManagerFragment> childRequestManagerFragments;
     private final ActivityFragmentLifecycle lifecycle;
-    @Nullable
     private Fragment parentFragmentHint;
-    @Nullable
     private RequestManager requestManager;
     private final RequestManagerTreeNode requestManagerTreeNode;
-    @Nullable
     private RequestManagerFragment rootRequestManagerFragment;
 
     public RequestManagerFragment() {
         this(new ActivityFragmentLifecycle());
     }
 
-    @VisibleForTesting
-    @SuppressLint({"ValidFragment"})
-    RequestManagerFragment(@NonNull ActivityFragmentLifecycle lifecycle2) {
+    RequestManagerFragment(ActivityFragmentLifecycle lifecycle2) {
         this.requestManagerTreeNode = new FragmentRequestManagerTreeNode();
         this.childRequestManagerFragments = new HashSet();
         this.lifecycle = lifecycle2;
     }
 
-    public void setRequestManager(@Nullable RequestManager requestManager2) {
+    public void setRequestManager(RequestManager requestManager2) {
         this.requestManager = requestManager2;
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public ActivityFragmentLifecycle getGlideLifecycle() {
         return this.lifecycle;
     }
 
-    @Nullable
     public RequestManager getRequestManager() {
         return this.requestManager;
     }
 
-    @NonNull
     public RequestManagerTreeNode getRequestManagerTreeNode() {
         return this.requestManagerTreeNode;
     }
@@ -69,8 +56,6 @@ public class RequestManagerFragment extends Fragment {
     }
 
     /* access modifiers changed from: package-private */
-    @TargetApi(17)
-    @NonNull
     public Set<RequestManagerFragment> getDescendantRequestManagerFragments() {
         if (equals(this.rootRequestManagerFragment)) {
             return Collections.unmodifiableSet(this.childRequestManagerFragments);
@@ -88,15 +73,13 @@ public class RequestManagerFragment extends Fragment {
     }
 
     /* access modifiers changed from: package-private */
-    public void setParentFragmentHint(@Nullable Fragment parentFragmentHint2) {
+    public void setParentFragmentHint(Fragment parentFragmentHint2) {
         this.parentFragmentHint = parentFragmentHint2;
         if (parentFragmentHint2 != null && parentFragmentHint2.getActivity() != null) {
             registerFragmentWithRoot(parentFragmentHint2.getActivity());
         }
     }
 
-    @Nullable
-    @TargetApi(17)
     private Fragment getParentFragmentUsingHint() {
         Fragment fragment;
         if (Build.VERSION.SDK_INT >= 17) {
@@ -107,8 +90,7 @@ public class RequestManagerFragment extends Fragment {
         return fragment != null ? fragment : this.parentFragmentHint;
     }
 
-    @TargetApi(17)
-    private boolean isDescendant(@NonNull Fragment fragment) {
+    private boolean isDescendant(Fragment fragment) {
         Fragment root = getParentFragment();
         while (true) {
             Fragment parentFragment = fragment.getParentFragment();
@@ -123,17 +105,19 @@ public class RequestManagerFragment extends Fragment {
         }
     }
 
-    private void registerFragmentWithRoot(@NonNull Activity activity) {
+    private void registerFragmentWithRoot(Activity activity) {
         unregisterFragmentWithRoot();
-        this.rootRequestManagerFragment = Glide.get(activity).getRequestManagerRetriever().getRequestManagerFragment(activity);
-        if (!equals(this.rootRequestManagerFragment)) {
+        RequestManagerFragment requestManagerFragment = Glide.get(activity).getRequestManagerRetriever().getRequestManagerFragment(activity);
+        this.rootRequestManagerFragment = requestManagerFragment;
+        if (!equals(requestManagerFragment)) {
             this.rootRequestManagerFragment.addChildRequestManagerFragment(this);
         }
     }
 
     private void unregisterFragmentWithRoot() {
-        if (this.rootRequestManagerFragment != null) {
-            this.rootRequestManagerFragment.removeChildRequestManagerFragment(this);
+        RequestManagerFragment requestManagerFragment = this.rootRequestManagerFragment;
+        if (requestManagerFragment != null) {
+            requestManagerFragment.removeChildRequestManagerFragment(this);
             this.rootRequestManagerFragment = null;
         }
     }
@@ -178,7 +162,6 @@ public class RequestManagerFragment extends Fragment {
         FragmentRequestManagerTreeNode() {
         }
 
-        @NonNull
         public Set<RequestManager> getDescendants() {
             Set<RequestManagerFragment> descendantFragments = RequestManagerFragment.this.getDescendantRequestManagerFragments();
             Set<RequestManager> descendants = new HashSet<>(descendantFragments.size());

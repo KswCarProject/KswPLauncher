@@ -49,28 +49,27 @@ public class RomeoViewModel extends LauncherViewModel implements View.OnFocusCha
     }
 
     public void onFocusChange(View v, boolean hasFocus) {
-        int id = v.getId();
-        if (id == R.id.romeo_app) {
-            changeIndicatorFocus(5);
-        } else if (id != R.id.romeo_video) {
-            switch (id) {
-                case R.id.romeo_music:
-                    changeIndicatorFocus(2);
-                    return;
-                case R.id.romeo_navi:
-                    changeIndicatorFocus(1);
-                    return;
-                case R.id.romeo_phone:
-                    changeIndicatorFocus(4);
-                    return;
-                case R.id.romeo_setting:
-                    changeIndicatorFocus(6);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            changeIndicatorFocus(3);
+        switch (v.getId()) {
+            case R.id.romeo_app:
+                changeIndicatorFocus(5);
+                return;
+            case R.id.romeo_music:
+                changeIndicatorFocus(2);
+                return;
+            case R.id.romeo_navi:
+                changeIndicatorFocus(1);
+                return;
+            case R.id.romeo_phone:
+                changeIndicatorFocus(4);
+                return;
+            case R.id.romeo_setting:
+                changeIndicatorFocus(6);
+                return;
+            case R.id.romeo_video:
+                changeIndicatorFocus(3);
+                return;
+            default:
+                return;
         }
     }
 }

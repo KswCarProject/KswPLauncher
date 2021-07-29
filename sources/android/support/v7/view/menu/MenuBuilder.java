@@ -9,8 +9,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v4.view.ActionProvider;
@@ -29,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class MenuBuilder implements SupportMenu {
     private static final String ACTION_VIEW_STATES_KEY = "android:menu:actionviewstates";
     private static final String EXPANDED_ACTION_VIEW_ID = "android:menu:expandedactionview";
@@ -64,14 +61,12 @@ public class MenuBuilder implements SupportMenu {
     private ArrayList<MenuItemImpl> mTempShortcutItemList = new ArrayList<>();
     private ArrayList<MenuItemImpl> mVisibleItems;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public interface Callback {
         boolean onMenuItemSelected(MenuBuilder menuBuilder, MenuItem menuItem);
 
         void onMenuModeChange(MenuBuilder menuBuilder);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public interface ItemInvoker {
         boolean invokeItem(MenuItemImpl menuItemImpl);
     }
@@ -260,10 +255,12 @@ public class MenuBuilder implements SupportMenu {
     public MenuItem addInternal(int group, int id, int categoryOrder, CharSequence title) {
         int ordering = getOrdering(categoryOrder);
         MenuItemImpl item = createNewMenuItem(group, id, categoryOrder, ordering, title, this.mDefaultShowAsAction);
-        if (this.mCurrentMenuInfo != null) {
-            item.setMenuInfo(this.mCurrentMenuInfo);
+        ContextMenu.ContextMenuInfo contextMenuInfo = this.mCurrentMenuInfo;
+        if (contextMenuInfo != null) {
+            item.setMenuInfo(contextMenuInfo);
         }
-        this.mItems.add(findInsertIndex(this.mItems, ordering), item);
+        ArrayList<MenuItemImpl> arrayList = this.mItems;
+        arrayList.add(findInsertIndex(arrayList, ordering), item);
         onItemsChanged(true);
         return item;
     }
@@ -318,27 +315,27 @@ public class MenuBuilder implements SupportMenu {
     public int addIntentOptions(int group, int id, int categoryOrder, ComponentName caller, Intent[] specifics, Intent intent, int flags, MenuItem[] outSpecificItems) {
         Intent[] intentArr = specifics;
         PackageManager pm = this.mContext.getPackageManager();
-        int i = 0;
+        int N = 0;
         Intent intent2 = intent;
         List<ResolveInfo> lri = pm.queryIntentActivityOptions(caller, intentArr, intent2, 0);
-        int N = lri != null ? lri.size() : 0;
+        if (lri != null) {
+            N = lri.size();
+        }
         if ((flags & 1) == 0) {
             removeGroup(group);
         }
-        while (i < N) {
+        for (int i = 0; i < N; i++) {
             ResolveInfo ri = lri.get(i);
             Intent rintent = new Intent(ri.specificIndex < 0 ? intent2 : intentArr[ri.specificIndex]);
             rintent.setComponent(new ComponentName(ri.activityInfo.applicationInfo.packageName, ri.activityInfo.name));
-            int i2 = group;
             MenuItem item = add(group, id, categoryOrder, ri.loadLabel(pm)).setIcon(ri.loadIcon(pm)).setIntent(rintent);
             if (outSpecificItems != null && ri.specificIndex >= 0) {
                 outSpecificItems[ri.specificIndex] = item;
             }
-            i++;
         }
-        int i3 = group;
-        int i4 = id;
-        int i5 = categoryOrder;
+        int i2 = group;
+        int i3 = id;
+        int i4 = categoryOrder;
         return N;
     }
 
@@ -389,8 +386,9 @@ public class MenuBuilder implements SupportMenu {
     }
 
     public void clear() {
-        if (this.mExpandedItem != null) {
-            collapseItemActionView(this.mExpandedItem);
+        MenuItemImpl menuItemImpl = this.mExpandedItem;
+        if (menuItemImpl != null) {
+            collapseItemActionView(menuItemImpl);
         }
         this.mItems.clear();
         onItemsChanged(true);
@@ -519,8 +517,11 @@ public class MenuBuilder implements SupportMenu {
 
     private static int getOrdering(int categoryOrder) {
         int index = (-65536 & categoryOrder) >> 16;
-        if (index >= 0 && index < sCategoryToOrder.length) {
-            return (sCategoryToOrder[index] << 16) | (65535 & categoryOrder);
+        if (index >= 0) {
+            int[] iArr = sCategoryToOrder;
+            if (index < iArr.length) {
+                return (iArr[index] << 16) | (65535 & categoryOrder);
+            }
         }
         throw new IllegalArgumentException("order does not contain a valid category.");
     }
@@ -560,12 +561,14 @@ public class MenuBuilder implements SupportMenu {
 
     /* access modifiers changed from: package-private */
     public boolean dispatchMenuItemSelected(MenuBuilder menu, MenuItem item) {
-        return this.mCallback != null && this.mCallback.onMenuItemSelected(menu, item);
+        Callback callback = this.mCallback;
+        return callback != null && callback.onMenuItemSelected(menu, item);
     }
 
     public void changeMenuMode() {
-        if (this.mCallback != null) {
-            this.mCallback.onMenuModeChange(this);
+        Callback callback = this.mCallback;
+        if (callback != null) {
+            callback.onMenuModeChange(this);
         }
     }
 
@@ -592,7 +595,6 @@ public class MenuBuilder implements SupportMenu {
 
     /* access modifiers changed from: package-private */
     public void findItemsWithShortcutForKey(List<MenuItemImpl> items, int keyCode, KeyEvent event) {
-        char c;
         List<MenuItemImpl> list = items;
         int i = keyCode;
         KeyEvent keyEvent = event;
@@ -601,32 +603,15 @@ public class MenuBuilder implements SupportMenu {
         KeyCharacterMap.KeyData possibleChars = new KeyCharacterMap.KeyData();
         if (keyEvent.getKeyData(possibleChars) || i == 67) {
             int N = this.mItems.size();
-            int i2 = 0;
-            while (i2 < N) {
+            for (int i2 = 0; i2 < N; i2++) {
                 MenuItemImpl item = this.mItems.get(i2);
                 if (item.hasSubMenu()) {
                     ((MenuBuilder) item.getSubMenu()).findItemsWithShortcutForKey(list, i, keyEvent);
                 }
                 char shortcutChar = qwerty ? item.getAlphabeticShortcut() : item.getNumericShortcut();
-                if (((modifierState & SupportMenu.SUPPORTED_MODIFIERS_MASK) == (69647 & (qwerty ? item.getAlphabeticModifiers() : item.getNumericModifiers()))) && shortcutChar != 0) {
-                    if (shortcutChar == possibleChars.meta[0] || shortcutChar == possibleChars.meta[2]) {
-                        c = 'C';
-                    } else if (qwerty && shortcutChar == 8) {
-                        c = 'C';
-                        if (i != 67) {
-                            i2++;
-                            char c2 = c;
-                        }
-                    }
-                    if (item.isEnabled()) {
-                        list.add(item);
-                    }
-                    i2++;
-                    char c22 = c;
+                if (((modifierState & SupportMenu.SUPPORTED_MODIFIERS_MASK) == (69647 & (qwerty ? item.getAlphabeticModifiers() : item.getNumericModifiers()))) && shortcutChar != 0 && ((shortcutChar == possibleChars.meta[0] || shortcutChar == possibleChars.meta[2] || (qwerty && shortcutChar == 8 && i == 67)) && item.isEnabled())) {
+                    list.add(item);
                 }
-                c = 'C';
-                i2++;
-                char c222 = c;
             }
         }
     }
@@ -768,7 +753,6 @@ public class MenuBuilder implements SupportMenu {
         onItemsChanged(true);
     }
 
-    @NonNull
     public ArrayList<MenuItemImpl> getVisibleItems() {
         if (!this.mIsVisibleItemsStale) {
             return this.mVisibleItems;

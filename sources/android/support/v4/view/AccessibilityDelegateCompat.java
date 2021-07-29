@@ -2,7 +2,6 @@ package android.support.v4.view;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeProviderCompat;
 import android.view.View;
@@ -50,7 +49,6 @@ public class AccessibilityDelegateCompat {
             this.mCompat.sendAccessibilityEventUnchecked(host, event);
         }
 
-        @RequiresApi(16)
         public AccessibilityNodeProvider getAccessibilityNodeProvider(View host) {
             AccessibilityNodeProviderCompat provider = this.mCompat.getAccessibilityNodeProvider(host);
             if (provider != null) {

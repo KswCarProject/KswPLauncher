@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelStore;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.AttributeSet;
 import android.view.Menu;
@@ -35,7 +34,6 @@ public class FragmentController {
         throw new UnsupportedOperationException("Loaders are managed separately from FragmentController, use LoaderManager.getInstance() to obtain a LoaderManager.");
     }
 
-    @Nullable
     public Fragment findFragmentByWho(String who) {
         return this.mHost.mFragmentManager.findFragmentByWho(who);
     }
@@ -49,7 +47,9 @@ public class FragmentController {
     }
 
     public void attachHost(Fragment parent) {
-        this.mHost.mFragmentManager.attachController(this.mHost, this.mHost, parent);
+        FragmentManagerImpl fragmentManagerImpl = this.mHost.mFragmentManager;
+        FragmentHostCallback<?> fragmentHostCallback = this.mHost;
+        fragmentManagerImpl.attachController(fragmentHostCallback, fragmentHostCallback, parent);
     }
 
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {

@@ -1,8 +1,6 @@
 package com.wits.ksw.settings.romeo.layout_one;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +35,6 @@ public class SetLanguageLayout extends RelativeLayout {
     private RecyclerView recyclerView;
     private IUpdateListBg updateListBg;
 
-    @RequiresApi(api = 24)
     public SetLanguageLayout(Context context2) {
         super(context2);
         this.context = context2;
@@ -55,7 +52,6 @@ public class SetLanguageLayout extends RelativeLayout {
         this.adapter.setIUpdateListBg(updateListBg2);
     }
 
-    @RequiresApi(api = 24)
     private void initData() {
         try {
             this.defLanguage = PowerManagerApp.getSettingsInt(KeyConfig.LANGUAGE_DEFUAL);
@@ -69,9 +65,9 @@ public class SetLanguageLayout extends RelativeLayout {
             }
             this.data.get(this.defLanguage).setIscheck(true);
             Locale sysLanguage = Locale.getDefault();
-            Log.d("SystemLa", "21 la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
-            int checkInex = -1;
             boolean ishave = false;
+            int checkInex = -1;
+            Log.d("SystemLa", "21 la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
             for (int i = 0; i < languags.size(); i++) {
                 Log.d("SystemLa", "language:" + this.locales.get(i).getLanguage() + "country:" + this.locales.get(i).getCountry());
                 Log.d("SystemLa", "22 la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
@@ -100,21 +96,23 @@ public class SetLanguageLayout extends RelativeLayout {
 
     private void initView(View view) {
         this.recyclerView = (RecyclerView) view.findViewById(R.id.language_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
         this.recyclerView.setItemViewCacheSize(0);
         new FixLinearSnapHelper().attachToRecyclerView(this.recyclerView);
-        this.adapter = new LanguageAdapter(this.context, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        LanguageAdapter languageAdapter = new LanguageAdapter(this.context, this.data);
+        this.adapter = languageAdapter;
+        this.recyclerView.setAdapter(languageAdapter);
         this.adapter.setIUpdateListBg(this.updateListBg);
         new DividerItemDecoration(this.context, 1).setDrawable(ContextCompat.getDrawable(this.context, R.drawable.lexus_settings_line_left));
         this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 for (int i = 0; i < recyclerView.getChildCount(); i++) {
                     int pad = KswUtils.calculateTranslate(recyclerView.getChildAt(i).getTop(), KswUtils.dip2px(SetLanguageLayout.this.getContext(), 428.0f), i, SetLanguageLayout.this.getContext());
@@ -123,7 +121,6 @@ public class SetLanguageLayout extends RelativeLayout {
             }
         });
         this.adapter.registOnFunctionClickListener(new LanguageAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 for (FunctionBean fb : SetLanguageLayout.this.data) {
                     fb.setIscheck(false);
@@ -139,8 +136,9 @@ public class SetLanguageLayout extends RelativeLayout {
     }
 
     private void LocaleList() {
-        this.locales = new ArrayList();
-        this.locales.add(new Locale("zh", "CN"));
+        ArrayList arrayList = new ArrayList();
+        this.locales = arrayList;
+        arrayList.add(new Locale("zh", "CN"));
         this.locales.add(new Locale("zh", "TW"));
         this.locales.add(new Locale("en"));
         this.locales.add(new Locale("de"));

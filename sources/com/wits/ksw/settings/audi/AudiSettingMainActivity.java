@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,11 +22,12 @@ public class AudiSettingMainActivity extends AudiSubActivity implements View.OnC
     public AudiSystemViewModel viewModel;
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getInstance = this;
-        this.binding = (ActivityAudiBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_audi, (ViewGroup) null, false);
-        this.contentLayout.addView(this.binding.getRoot(), -1, -1);
+        ActivityAudiBinding activityAudiBinding = (ActivityAudiBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_audi, (ViewGroup) null, false);
+        this.binding = activityAudiBinding;
+        this.contentLayout.addView(activityAudiBinding.getRoot(), -1, -1);
         this.viewModel = (AudiSystemViewModel) ViewModelProviders.of((FragmentActivity) this).get(AudiSystemViewModel.class);
         int count = this.binding.audiHomeParentPanel.getChildCount();
         for (int i = 0; i < count; i++) {

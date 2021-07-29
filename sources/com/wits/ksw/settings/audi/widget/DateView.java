@@ -1,6 +1,5 @@
 package com.wits.ksw.settings.audi.widget;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import com.wits.ksw.R;
+import com.wits.ksw.settings.audi.widget.DateView;
 import java.util.Date;
 import java.util.Locale;
 
@@ -28,16 +28,24 @@ public class DateView extends AppCompatTextView {
                 if ("android.intent.action.LOCALE_CHANGED".equals(action) || "android.intent.action.TIMEZONE_CHANGED".equals(action)) {
                     DateView.this.getHandler().post(new Runnable() {
                         public final void run() {
-                            DateFormat unused = DateView.this.mDateFormat = null;
+                            DateView.AnonymousClass1.this.lambda$onReceive$0$DateView$1();
                         }
                     });
                 }
                 DateView.this.getHandler().post(new Runnable() {
                     public final void run() {
-                        DateView.this.updateClock();
+                        DateView.AnonymousClass1.this.lambda$onReceive$1$DateView$1();
                     }
                 });
             }
+        }
+
+        public /* synthetic */ void lambda$onReceive$0$DateView$1() {
+            DateFormat unused = DateView.this.mDateFormat = null;
+        }
+
+        public /* synthetic */ void lambda$onReceive$1$DateView$1() {
+            DateView.this.updateClock();
         }
     };
     private String mLastText;
@@ -78,7 +86,6 @@ public class DateView extends AppCompatTextView {
     }
 
     /* access modifiers changed from: protected */
-    @SuppressLint({"NewApi"})
     public void updateClock() {
         if (this.mDateFormat == null) {
             DateFormat format = DateFormat.getInstanceForSkeleton(this.mDatePattern, Locale.getDefault());

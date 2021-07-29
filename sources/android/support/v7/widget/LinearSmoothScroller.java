@@ -49,8 +49,9 @@ public class LinearSmoothScroller extends RecyclerView.SmoothScroller {
             return;
         }
         this.mInterimTargetDx = clampApplyScroll(this.mInterimTargetDx, dx);
-        this.mInterimTargetDy = clampApplyScroll(this.mInterimTargetDy, dy);
-        if (this.mInterimTargetDx == 0 && this.mInterimTargetDy == 0) {
+        int clampApplyScroll = clampApplyScroll(this.mInterimTargetDy, dy);
+        this.mInterimTargetDy = clampApplyScroll;
+        if (this.mInterimTargetDx == 0 && clampApplyScroll == 0) {
             updateActionForInterimTarget(action);
         }
     }
@@ -79,7 +80,8 @@ public class LinearSmoothScroller extends RecyclerView.SmoothScroller {
 
     /* access modifiers changed from: protected */
     public int getHorizontalSnapPreference() {
-        if (this.mTargetVector == null || this.mTargetVector.x == 0.0f) {
+        PointF pointF = this.mTargetVector;
+        if (pointF == null || pointF.x == 0.0f) {
             return 0;
         }
         return this.mTargetVector.x > 0.0f ? 1 : -1;
@@ -87,7 +89,8 @@ public class LinearSmoothScroller extends RecyclerView.SmoothScroller {
 
     /* access modifiers changed from: protected */
     public int getVerticalSnapPreference() {
-        if (this.mTargetVector == null || this.mTargetVector.y == 0.0f) {
+        PointF pointF = this.mTargetVector;
+        if (pointF == null || pointF.y == 0.0f) {
             return 0;
         }
         return this.mTargetVector.y > 0.0f ? 1 : -1;

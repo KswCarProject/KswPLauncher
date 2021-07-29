@@ -1,8 +1,5 @@
 package android.support.v4.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 public class SparseArrayCompat<E> implements Cloneable {
     private static final Object DELETED = new Object();
     private boolean mGarbage;
@@ -38,25 +35,43 @@ public class SparseArrayCompat<E> implements Cloneable {
         }
     }
 
-    @Nullable
     public E get(int key) {
         return get(key, (Object) null);
     }
 
     public E get(int key, E valueIfKeyNotFound) {
         int i = ContainerHelpers.binarySearch(this.mKeys, this.mSize, key);
-        if (i < 0 || this.mValues[i] == DELETED) {
-            return valueIfKeyNotFound;
+        if (i >= 0) {
+            E[] eArr = this.mValues;
+            if (eArr[i] != DELETED) {
+                return eArr[i];
+            }
         }
-        return this.mValues[i];
+        return valueIfKeyNotFound;
     }
 
-    public void delete(int key) {
-        int i = ContainerHelpers.binarySearch(this.mKeys, this.mSize, key);
-        if (i >= 0 && this.mValues[i] != DELETED) {
-            this.mValues[i] = DELETED;
-            this.mGarbage = true;
-        }
+    /* JADX WARNING: Code restructure failed: missing block: B:2:0x000a, code lost:
+        r1 = r4.mValues;
+     */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
+    public void delete(int r5) {
+        /*
+            r4 = this;
+            int[] r0 = r4.mKeys
+            int r1 = r4.mSize
+            int r0 = android.support.v4.util.ContainerHelpers.binarySearch((int[]) r0, (int) r1, (int) r5)
+            if (r0 < 0) goto L_0x0017
+            java.lang.Object[] r1 = r4.mValues
+            r2 = r1[r0]
+            java.lang.Object r3 = DELETED
+            if (r2 == r3) goto L_0x0017
+            r1[r0] = r3
+            r1 = 1
+            r4.mGarbage = r1
+        L_0x0017:
+            return
+        */
+        throw new UnsupportedOperationException("Method not decompiled: android.support.v4.util.SparseArrayCompat.delete(int):void");
     }
 
     public void remove(int key) {
@@ -64,8 +79,11 @@ public class SparseArrayCompat<E> implements Cloneable {
     }
 
     public void removeAt(int index) {
-        if (this.mValues[index] != DELETED) {
-            this.mValues[index] = DELETED;
+        Object[] objArr = this.mValues;
+        Object obj = objArr[index];
+        Object obj2 = DELETED;
+        if (obj != obj2) {
+            objArr[index] = obj2;
             this.mGarbage = true;
         }
     }
@@ -79,9 +97,9 @@ public class SparseArrayCompat<E> implements Cloneable {
 
     private void gc() {
         int n = this.mSize;
+        int o = 0;
         int[] keys = this.mKeys;
         Object[] values = this.mValues;
-        int o = 0;
         for (int i = 0; i < n; i++) {
             Object val = values[i];
             if (val != DELETED) {
@@ -104,34 +122,44 @@ public class SparseArrayCompat<E> implements Cloneable {
             return;
         }
         int i2 = ~i;
-        if (i2 >= this.mSize || this.mValues[i2] != DELETED) {
-            if (this.mGarbage && this.mSize >= this.mKeys.length) {
-                gc();
-                i2 = ~ContainerHelpers.binarySearch(this.mKeys, this.mSize, key);
+        int i3 = this.mSize;
+        if (i2 < i3) {
+            Object[] objArr = this.mValues;
+            if (objArr[i2] == DELETED) {
+                this.mKeys[i2] = key;
+                objArr[i2] = value;
+                return;
             }
-            if (this.mSize >= this.mKeys.length) {
-                int n = ContainerHelpers.idealIntArraySize(this.mSize + 1);
-                int[] nkeys = new int[n];
-                Object[] nvalues = new Object[n];
-                System.arraycopy(this.mKeys, 0, nkeys, 0, this.mKeys.length);
-                System.arraycopy(this.mValues, 0, nvalues, 0, this.mValues.length);
-                this.mKeys = nkeys;
-                this.mValues = nvalues;
-            }
-            if (this.mSize - i2 != 0) {
-                System.arraycopy(this.mKeys, i2, this.mKeys, i2 + 1, this.mSize - i2);
-                System.arraycopy(this.mValues, i2, this.mValues, i2 + 1, this.mSize - i2);
-            }
-            this.mKeys[i2] = key;
-            this.mValues[i2] = value;
-            this.mSize++;
-            return;
+        }
+        if (this.mGarbage && i3 >= this.mKeys.length) {
+            gc();
+            i2 = ~ContainerHelpers.binarySearch(this.mKeys, this.mSize, key);
+        }
+        int i4 = this.mSize;
+        if (i4 >= this.mKeys.length) {
+            int n = ContainerHelpers.idealIntArraySize(i4 + 1);
+            int[] nkeys = new int[n];
+            Object[] nvalues = new Object[n];
+            int[] iArr = this.mKeys;
+            System.arraycopy(iArr, 0, nkeys, 0, iArr.length);
+            Object[] objArr2 = this.mValues;
+            System.arraycopy(objArr2, 0, nvalues, 0, objArr2.length);
+            this.mKeys = nkeys;
+            this.mValues = nvalues;
+        }
+        int n2 = this.mSize;
+        if (n2 - i2 != 0) {
+            int[] iArr2 = this.mKeys;
+            System.arraycopy(iArr2, i2, iArr2, i2 + 1, n2 - i2);
+            Object[] objArr3 = this.mValues;
+            System.arraycopy(objArr3, i2, objArr3, i2 + 1, this.mSize - i2);
         }
         this.mKeys[i2] = key;
         this.mValues[i2] = value;
+        this.mSize++;
     }
 
-    public void putAll(@NonNull SparseArrayCompat<? extends E> other) {
+    public void putAll(SparseArrayCompat<? extends E> other) {
         int size = other.size();
         for (int i = 0; i < size; i++) {
             put(other.keyAt(i), other.valueAt(i));
@@ -208,8 +236,9 @@ public class SparseArrayCompat<E> implements Cloneable {
     }
 
     public void append(int key, E value) {
-        if (this.mSize == 0 || key > this.mKeys[this.mSize - 1]) {
-            if (this.mGarbage && this.mSize >= this.mKeys.length) {
+        int i = this.mSize;
+        if (i == 0 || key > this.mKeys[i - 1]) {
+            if (this.mGarbage && i >= this.mKeys.length) {
                 gc();
             }
             int pos = this.mSize;
@@ -217,8 +246,10 @@ public class SparseArrayCompat<E> implements Cloneable {
                 int n = ContainerHelpers.idealIntArraySize(pos + 1);
                 int[] nkeys = new int[n];
                 Object[] nvalues = new Object[n];
-                System.arraycopy(this.mKeys, 0, nkeys, 0, this.mKeys.length);
-                System.arraycopy(this.mValues, 0, nvalues, 0, this.mValues.length);
+                int[] iArr = this.mKeys;
+                System.arraycopy(iArr, 0, nkeys, 0, iArr.length);
+                Object[] objArr = this.mValues;
+                System.arraycopy(objArr, 0, nvalues, 0, objArr.length);
                 this.mKeys = nkeys;
                 this.mValues = nvalues;
             }

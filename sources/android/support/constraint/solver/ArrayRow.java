@@ -18,7 +18,8 @@ public class ArrayRow implements LinearSystem.Row {
 
     /* access modifiers changed from: package-private */
     public boolean hasKeyVariable() {
-        return this.variable != null && (this.variable.mType == SolverVariable.Type.UNRESTRICTED || this.constantValue >= 0.0f);
+        SolverVariable solverVariable = this.variable;
+        return solverVariable != null && (solverVariable.mType == SolverVariable.Type.UNRESTRICTED || this.constantValue >= 0.0f);
     }
 
     public String toString() {
@@ -67,10 +68,10 @@ public class ArrayRow implements LinearSystem.Row {
                 }
             }
         }
-        if (addedVariable) {
-            return s2;
+        if (!addedVariable) {
+            return s2 + "0.0";
         }
-        return s2 + "0.0";
+        return s2;
     }
 
     public void reset() {
@@ -307,8 +308,9 @@ public class ArrayRow implements LinearSystem.Row {
 
     /* access modifiers changed from: package-private */
     public void ensurePositiveConstant() {
-        if (this.constantValue < 0.0f) {
-            this.constantValue *= -1.0f;
+        float f = this.constantValue;
+        if (f < 0.0f) {
+            this.constantValue = f * -1.0f;
             this.variables.invert();
         }
     }
@@ -335,8 +337,9 @@ public class ArrayRow implements LinearSystem.Row {
 
     /* access modifiers changed from: package-private */
     public void pivot(SolverVariable v) {
-        if (this.variable != null) {
-            this.variables.put(this.variable, -1.0f);
+        SolverVariable solverVariable = this.variable;
+        if (solverVariable != null) {
+            this.variables.put(solverVariable, -1.0f);
             this.variable = null;
         }
         float amount = this.variables.remove(v, true) * -1.0f;

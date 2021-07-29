@@ -31,6 +31,7 @@ import com.wits.ksw.launcher.view.DragGridView;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class AppViewModel extends LauncherViewModel {
@@ -82,8 +83,7 @@ public final class AppViewModel extends LauncherViewModel {
             Log.i(LauncherViewModel.TAG, "onStartMoving: ");
             try {
                 String topApp = PowerManagerApp.getManager().getStatusString("topApp");
-                String str = LauncherViewModel.TAG;
-                Log.i(str, "onStartMoving: topApp=" + topApp);
+                Log.i(LauncherViewModel.TAG, "onStartMoving: topApp=" + topApp);
                 if (!"com.google.android.packageinstaller".equals(topApp)) {
                     Log.i(LauncherViewModel.TAG, "onStartMoving: return");
                     return;
@@ -237,9 +237,13 @@ public final class AppViewModel extends LauncherViewModel {
         if (speed_play_switch != 2 && packageName.contains(SPEEDPLAY_PKG)) {
             return true;
         }
-        if (speed_play_switch != 2 || !packageName.contains(ZLINK_PKG)) {
+        if (speed_play_switch == 2 && packageName.contains(ZLINK_PKG)) {
+            return true;
+        }
+        if (!Arrays.asList(this.context.getResources().getStringArray(R.array.exclude_class_list)).contains(packageName)) {
             return false;
         }
+        Log.d(TAG, "filterAppDisplay: excludeClassArray packagename =" + packageName);
         return true;
     }
 
@@ -273,8 +277,7 @@ public final class AppViewModel extends LauncherViewModel {
             appList.setClassName(appInfo.getClassName());
             newAppList.add(appList);
             if (TextUtils.isEmpty(appInfo.getClassName())) {
-                String str = TAG;
-                Log.e(str, "SaveAppList: appinfo ClassName isEmpty AppLable = " + appInfo.getAppLable());
+                Log.e(TAG, "SaveAppList: appinfo ClassName isEmpty AppLable = " + appInfo.getAppLable());
                 return;
             }
         }

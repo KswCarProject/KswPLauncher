@@ -189,13 +189,13 @@ public class ConstraintTableLayout extends ConstraintWidgetContainer {
                 int num = this.mVerticalGuidelines.size();
                 int i = 0;
                 while (true) {
-                    boolean z = true;
+                    boolean z = false;
                     if (i >= num) {
                         break;
                     }
                     Guideline guideline = this.mVerticalGuidelines.get(i);
-                    if (getHorizontalDimensionBehaviour() != ConstraintWidget.DimensionBehaviour.WRAP_CONTENT) {
-                        z = false;
+                    if (getHorizontalDimensionBehaviour() == ConstraintWidget.DimensionBehaviour.WRAP_CONTENT) {
+                        z = true;
                     }
                     guideline.setPositionRelaxed(z);
                     guideline.addToSolver(system2);
@@ -225,8 +225,9 @@ public class ConstraintTableLayout extends ConstraintWidgetContainer {
             if (this.mNumCols == 0) {
                 setNumCols(1);
             }
-            int rows = count2 / this.mNumCols;
-            if (this.mNumCols * rows < count2) {
+            int i2 = this.mNumCols;
+            int rows = count2 / i2;
+            if (i2 * rows < count2) {
                 rows++;
             }
             if (this.mNumRows != rows || this.mVerticalGuidelines.size() != this.mNumCols - 1) {
@@ -239,8 +240,9 @@ public class ConstraintTableLayout extends ConstraintWidgetContainer {
             if (this.mNumRows == 0) {
                 setNumRows(1);
             }
-            int cols = count2 / this.mNumRows;
-            if (this.mNumRows * cols < count2) {
+            int i3 = this.mNumRows;
+            int cols = count2 / i3;
+            if (i3 * cols < count2) {
                 cols++;
             }
             if (this.mNumCols != cols || this.mHorizontalGuidelines.size() != this.mNumRows - 1) {
@@ -300,8 +302,8 @@ public class ConstraintTableLayout extends ConstraintWidgetContainer {
     private void setHorizontalSlices() {
         this.mHorizontalSlices.clear();
         float increment = 100.0f / ((float) this.mNumRows);
-        ConstraintWidget previous = this;
         float percent = increment;
+        ConstraintWidget previous = this;
         for (int i = 0; i < this.mNumRows; i++) {
             HorizontalSlice slice = new HorizontalSlice();
             slice.top = previous;
@@ -328,8 +330,9 @@ public class ConstraintTableLayout extends ConstraintWidgetContainer {
         for (int i = 0; i < count; i++) {
             ConstraintWidget target = (ConstraintWidget) this.mChildren.get(i);
             int index2 = index + target.getContainerItemSkip();
-            HorizontalSlice horizontalSlice = this.mHorizontalSlices.get(index2 / this.mNumCols);
-            VerticalSlice verticalSlice = this.mVerticalSlices.get(index2 % this.mNumCols);
+            int i2 = this.mNumCols;
+            HorizontalSlice horizontalSlice = this.mHorizontalSlices.get(index2 / i2);
+            VerticalSlice verticalSlice = this.mVerticalSlices.get(index2 % i2);
             ConstraintWidget targetLeft = verticalSlice.left;
             ConstraintWidget targetRight = verticalSlice.right;
             ConstraintWidget targetTop = horizontalSlice.top;

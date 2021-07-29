@@ -29,13 +29,14 @@ public class ID6ShowText extends RelativeLayout {
 
     private void initView(View view2) {
         this.tv_id6ShowTitle = (TextView) view2.findViewById(R.id.tv_id6ShowTitle);
-        this.tv_id6ShowMsg = (TextView) view2.findViewById(R.id.tv_id6ShowMsg);
+        TextView textView = (TextView) view2.findViewById(R.id.tv_id6ShowMsg);
+        this.tv_id6ShowMsg = textView;
         if (this.type == 0) {
-            this.tv_id6ShowMsg.setText(this.context.getString(R.string.show_msg_one));
+            textView.setText(this.context.getString(R.string.show_msg_one));
             this.tv_id6ShowTitle.setText(this.context.getString(R.string.item8));
             return;
         }
-        this.tv_id6ShowMsg.setText(this.context.getString(R.string.show_msg_two));
+        textView.setText(this.context.getString(R.string.show_msg_two));
         this.tv_id6ShowTitle.setText(this.context.getString(R.string.item9));
     }
 }

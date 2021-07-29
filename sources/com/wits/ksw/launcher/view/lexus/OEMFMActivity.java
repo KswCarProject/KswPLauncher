@@ -2,13 +2,14 @@ package com.wits.ksw.launcher.view.lexus;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableField;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.ActivityLexusOemFmBinding;
@@ -16,21 +17,31 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
-import java.text.SimpleDateFormat;
+import com.wits.pms.statuscontrol.WitsCommand;
 
 public class OEMFMActivity extends AppCompatActivity {
+    public static final int DISMISS_EQ = 120;
+    public static final int DISMISS_VOLUME = 110;
     public static final String TAG = OEMFMActivity.class.getSimpleName();
     private IContentObserver.Stub acObserver = new IContentObserver.Stub() {
         public void onChange() throws RemoteException {
             try {
                 McuStatus.ACData acData = McuStatus.ACData.getStatusFromJson(PowerManagerApp.getStatusString("acData"));
-                String str = OEMFMActivity.TAG;
-                Log.i(str, "onChange: acData=" + acData.getJson());
+                Log.i(OEMFMActivity.TAG, "onChange: acData=" + acData.getJson());
                 OEMFMActivity.this.update(acData);
             } catch (Exception e) {
                 e.printStackTrace();
-                String str2 = OEMFMActivity.TAG;
-                Log.e(str2, "onChange: Exception " + e.getMessage());
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
+            }
+        }
+    };
+    private IContentObserver.Stub btObserver = new IContentObserver.Stub() {
+        public void onChange() throws RemoteException {
+            try {
+                Log.d(OEMFMActivity.TAG, "btObserver onChange ");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
             }
         }
     };
@@ -40,8 +51,18 @@ public class OEMFMActivity extends AppCompatActivity {
                 OEMFMActivity.this.setDisc();
             } catch (Exception e) {
                 e.printStackTrace();
-                String str = OEMFMActivity.TAG;
-                Log.e(str, "onChange: Exception " + e.getMessage());
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
+            }
+        }
+    };
+    private IContentObserver.Stub eqObserver = new IContentObserver.Stub() {
+        public void onChange() throws RemoteException {
+            try {
+                Log.d(OEMFMActivity.TAG, "eqObserver onChange ");
+                OEMFMActivity.this.setEq();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
             }
         }
     };
@@ -49,13 +70,21 @@ public class OEMFMActivity extends AppCompatActivity {
         public void onChange() throws RemoteException {
             try {
                 McuStatus.MediaData mediaData = McuStatus.MediaData.parseDataFromJson(PowerManagerApp.getStatusString("mcuMediaJson"));
-                String str = OEMFMActivity.TAG;
-                Log.i(str, "onChange: acData=" + mediaData);
+                Log.i(OEMFMActivity.TAG, "onChange: acData=" + mediaData);
                 OEMFMActivity.this.updateMedia(mediaData);
             } catch (Exception e) {
                 e.printStackTrace();
-                String str2 = OEMFMActivity.TAG;
-                Log.e(str2, "onChange: Exception " + e.getMessage());
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
+            }
+        }
+    };
+    private IContentObserver.Stub muteObserver = new IContentObserver.Stub() {
+        public void onChange() throws RemoteException {
+            try {
+                OEMFMActivity.this.displayVolumeProgress();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
             }
         }
     };
@@ -68,8 +97,7 @@ public class OEMFMActivity extends AppCompatActivity {
                 OEMFMActivity.this.updateUsbInfo();
             } catch (Exception e) {
                 e.printStackTrace();
-                String str = OEMFMActivity.TAG;
-                Log.e(str, "onChange: Exception " + e.getMessage());
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
             }
         }
     };
@@ -79,19 +107,47 @@ public class OEMFMActivity extends AppCompatActivity {
                 OEMFMActivity.this.updateUsbInfo();
             } catch (Exception e) {
                 e.printStackTrace();
-                String str = OEMFMActivity.TAG;
-                Log.e(str, "onChange: Exception " + e.getMessage());
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
             }
         }
     };
-    private LexusOEMFMViewModel viewModel;
+    /* access modifiers changed from: private */
+    public LexusOEMFMViewModel viewModel;
+    private Handler volumeHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 110:
+                    OEMFMActivity.this.dismissVolumeProgress();
+                    return;
+                case 120:
+                    OEMFMActivity.this.viewModel.eq.set(false);
+                    return;
+                default:
+                    return;
+            }
+        }
+    };
+    private IContentObserver.Stub volumeObserver = new IContentObserver.Stub() {
+        public void onChange() throws RemoteException {
+            try {
+                OEMFMActivity.this.displayVolumeProgress();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(OEMFMActivity.TAG, "onChange: Exception " + e.getMessage());
+            }
+        }
+    };
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.oemFmBinding = (ActivityLexusOemFmBinding) DataBindingUtil.setContentView(this, R.layout.activity_lexus_oem_fm);
-        this.oemFmBinding.setMUiParams(this.uiParams);
-        this.viewModel = (LexusOEMFMViewModel) ViewModelProviders.of((FragmentActivity) this).get(LexusOEMFMViewModel.class);
+        ActivityLexusOemFmBinding activityLexusOemFmBinding = (ActivityLexusOemFmBinding) DataBindingUtil.setContentView(this, R.layout.activity_lexus_oem_fm);
+        this.oemFmBinding = activityLexusOemFmBinding;
+        activityLexusOemFmBinding.setMUiParams(this.uiParams);
+        LexusOEMFMViewModel lexusOEMFMViewModel = (LexusOEMFMViewModel) ViewModelProviders.of((FragmentActivity) this).get(LexusOEMFMViewModel.class);
+        this.viewModel = lexusOEMFMViewModel;
+        lexusOEMFMViewModel.setActivity(this);
         this.oemFmBinding.setVm(this.viewModel);
         setFull();
         registerIContentObserver();
@@ -105,6 +161,10 @@ public class OEMFMActivity extends AppCompatActivity {
         PowerManagerApp.unRegisterIContentObserver(this.usbStatusObserver);
         PowerManagerApp.unRegisterIContentObserver(this.usbInfoObserver);
         PowerManagerApp.unRegisterIContentObserver(this.discObserver);
+        PowerManagerApp.unRegisterIContentObserver(this.muteObserver);
+        PowerManagerApp.unRegisterIContentObserver(this.volumeObserver);
+        PowerManagerApp.unRegisterIContentObserver(this.eqObserver);
+        PowerManagerApp.unRegisterIContentObserver(this.btObserver);
     }
 
     public void setFull() {
@@ -115,16 +175,21 @@ public class OEMFMActivity extends AppCompatActivity {
     }
 
     public String getFormatMMSS(int min, int sec) {
-        return new SimpleDateFormat("mm:ss").format(Long.valueOf((long) ((min * 60 * 1000) + (sec * 1000))));
+        Log.d(TAG, "time: " + min + " " + sec);
+        return min + ":" + sec;
     }
 
     private void registerIContentObserver() {
         Log.i(TAG, "onCreate: registerIContentObserver");
+        PowerManagerApp.registerIContentObserver("mcuEqData", this.eqObserver);
         PowerManagerApp.registerIContentObserver("acData", this.acObserver);
         PowerManagerApp.registerIContentObserver("mcuMediaStringInfo", this.usbInfoObserver);
         PowerManagerApp.registerIContentObserver("mcuMediaPlayStatus", this.usbStatusObserver);
         PowerManagerApp.registerIContentObserver("mcuMediaJson", this.mediaObserver);
         PowerManagerApp.registerIContentObserver("mcuDiscStatus", this.discObserver);
+        PowerManagerApp.registerIContentObserver("mcu_volume_level", this.volumeObserver);
+        PowerManagerApp.registerIContentObserver("mcu_volume_mute", this.muteObserver);
+        PowerManagerApp.registerIContentObserver("mcuBluetoothStatus", this.btObserver);
         try {
             update(McuStatus.ACData.getStatusFromJson(PowerManagerApp.getStatusString("acData")));
         } catch (RemoteException e) {
@@ -134,15 +199,19 @@ public class OEMFMActivity extends AppCompatActivity {
 
     /* access modifiers changed from: private */
     public void updateMedia(McuStatus.MediaData mediaData) {
+        McuStatus.MediaData mediaData2 = mediaData;
         String str = TAG;
-        Log.d(str, "update media " + mediaData.type + " mode " + mediaData.mode);
-        if (mediaData.type == 1) {
+        Log.d(str, "update media 14 " + mediaData2.type + " mode " + mediaData2.mode);
+        if (mediaData2.type == 1) {
             this.viewModel.fm.set(true);
             this.viewModel.cd.set(false);
             this.viewModel.usb.set(false);
-            this.viewModel.fmBand.set(mediaData.fm.name);
-            this.viewModel.fmFrequency.set(mediaData.fm.freq);
-            switch (mediaData.fm.preFreq) {
+            this.viewModel.mp3.set(false);
+            this.viewModel.bt.set(false);
+            this.viewModel.aux.set(false);
+            this.viewModel.fmBand.set(mediaData2.fm.name);
+            this.viewModel.fmFrequency.set(mediaData2.fm.freq);
+            switch (mediaData2.fm.preFreq) {
                 case 0:
                     this.viewModel.ch.set("");
                     break;
@@ -166,25 +235,119 @@ public class OEMFMActivity extends AppCompatActivity {
                     break;
             }
         }
-        if (mediaData.type == 16) {
+        if (mediaData2.type == 16) {
             this.viewModel.fm.set(false);
             this.viewModel.cd.set(true);
             this.viewModel.usb.set(false);
-            ObservableField<String> observableField = this.viewModel.disc;
-            observableField.set(mediaData.disc.number + "");
-            ObservableField<String> observableField2 = this.viewModel.track;
-            observableField2.set(mediaData.disc.track + "");
-            this.viewModel.time.set(getFormatMMSS(mediaData.disc.min, mediaData.disc.sec));
+            this.viewModel.mp3.set(false);
+            this.viewModel.bt.set(false);
+            this.viewModel.aux.set(false);
+            if (mediaData2.disc.number < 0) {
+                this.viewModel.disc.set("-");
+            } else {
+                this.viewModel.disc.set(mediaData2.disc.number + "");
+            }
+            if (mediaData2.disc.track < 0) {
+                this.viewModel.track.set("-");
+            } else {
+                this.viewModel.track.set(mediaData2.disc.track + "");
+            }
+            if (mediaData2.disc.min < 0 || mediaData2.disc.sec < 0) {
+                this.viewModel.time.set("--:--");
+            } else {
+                this.viewModel.time.set(getFormatMMSS(mediaData2.disc.min, mediaData2.disc.sec));
+            }
         }
-        if (mediaData.mode != null) {
-            this.viewModel.asl.set(Boolean.valueOf(mediaData.mode.ASL));
-            this.viewModel.rand.set(Boolean.valueOf(mediaData.mode.RAND));
-            this.viewModel.pause.set(Boolean.valueOf(mediaData.mode.PAUSE));
-            this.viewModel.scan.set(Boolean.valueOf(mediaData.mode.SCAN));
-            this.viewModel.st.set(Boolean.valueOf(mediaData.mode.ST));
-            this.viewModel.rpt.set(Boolean.valueOf(mediaData.mode.RPT));
-            String str2 = TAG;
-            Log.d(str2, " ASL " + mediaData.mode.ASL + " ST " + mediaData.mode.ST + " Rand " + mediaData.mode.RAND + " Scan " + mediaData.mode.SCAN + " Rpt " + mediaData.mode.RPT + " Pause " + mediaData.mode.PAUSE + " status " + this.viewModel.usbStatus.get());
+        if (mediaData2.type == 17) {
+            this.viewModel.fm.set(false);
+            this.viewModel.cd.set(false);
+            this.viewModel.usb.set(true);
+            this.viewModel.mp3.set(false);
+            this.viewModel.bt.set(false);
+            this.viewModel.aux.set(false);
+            Log.d(str, "update usb min " + mediaData2.usb.min + " sec " + mediaData2.usb.sec);
+            Log.d(str, "update usb name " + mediaData2.usb.name + " artist " + mediaData2.usb.artist + " album " + mediaData2.usb.album);
+            if (mediaData2.usb.min < 0 || mediaData2.usb.sec < 0) {
+                this.viewModel.usbMusicTime.set("--:--");
+            } else {
+                this.viewModel.usbMusicTime.set(getFormatMMSS(mediaData2.usb.min, mediaData2.usb.sec));
+            }
+            if (TextUtils.isEmpty(mediaData2.usb.name) || mediaData2.usb.name.equals("null")) {
+                this.viewModel.musicName.set(getString(R.string.ksw_idf7_unkonw_soung));
+            } else {
+                this.viewModel.musicName.set(mediaData2.usb.name);
+            }
+            this.oemFmBinding.usbMusicName.requestFocus();
+            if (TextUtils.isEmpty(mediaData2.usb.artist) || mediaData2.usb.artist.equals("null")) {
+                this.viewModel.artist.set(getString(R.string.ksw_idf7_unknow_artis));
+            } else {
+                this.viewModel.artist.set(mediaData2.usb.artist);
+            }
+            if (TextUtils.isEmpty(mediaData2.usb.album) || mediaData2.usb.album.equals("null")) {
+                this.viewModel.album.set(getString(R.string.ksw_idf7_unkonw_album));
+            } else {
+                this.viewModel.album.set(mediaData2.usb.album);
+            }
+            Log.d(str, "update usb folderName " + mediaData2.usb.folderName + " fileNumber " + mediaData2.usb.fileNumber + " folderNumber " + mediaData2.usb.folderNumber);
+            if (mediaData2.usb.fileNumber < 0 || mediaData2.usb.folderNumber < 0) {
+                this.viewModel.index.set(mediaData2.usb.folderName);
+            } else {
+                this.viewModel.index.set(mediaData2.usb.folderName + "  " + mediaData2.usb.folderNumber + " / " + mediaData2.usb.fileNumber);
+            }
+        }
+        if (mediaData2.type == 18) {
+            this.viewModel.fm.set(false);
+            this.viewModel.cd.set(false);
+            this.viewModel.usb.set(false);
+            this.viewModel.mp3.set(true);
+            this.viewModel.bt.set(false);
+            this.viewModel.aux.set(false);
+            Log.d(str, "update mp3 min " + mediaData2.mp3.min + " sec " + mediaData2.mp3.sec);
+            if (mediaData2.mp3.min < 0 || mediaData2.mp3.sec < 0) {
+                this.viewModel.usbMusicTime.set("--:--");
+            } else {
+                this.viewModel.usbMusicTime.set(getFormatMMSS(mediaData2.mp3.min, mediaData2.mp3.sec));
+            }
+            Log.d(str, "update mp3 name " + mediaData2.mp3.name + " artist " + mediaData2.mp3.artist + " album " + mediaData2.mp3.album);
+            Log.d(str, "update mp3 folderName " + mediaData2.mp3.folderName + " fileNumber " + mediaData2.mp3.fileNumber + " folderNumber " + mediaData2.mp3.folderNumber);
+            if (TextUtils.isEmpty(mediaData2.mp3.name) || mediaData2.mp3.name.equals("null")) {
+                this.viewModel.musicName.set(getString(R.string.unkonw));
+            } else {
+                this.viewModel.musicName.set(mediaData2.mp3.name);
+            }
+            this.oemFmBinding.mp3MusicName.requestFocus();
+            if (TextUtils.isEmpty(mediaData2.mp3.artist) || mediaData2.mp3.artist.equals("null")) {
+                this.viewModel.artist.set(getString(R.string.unkonw));
+            } else {
+                this.viewModel.artist.set(mediaData2.mp3.artist);
+            }
+            if (TextUtils.isEmpty(mediaData2.mp3.album) || mediaData2.mp3.album.equals("null")) {
+                this.viewModel.album.set(getString(R.string.unkonw));
+            } else {
+                this.viewModel.album.set(mediaData2.mp3.album);
+            }
+            if (mediaData2.mp3.fileNumber < 0 || mediaData2.mp3.folderNumber < 0) {
+                this.viewModel.index.set(mediaData2.mp3.folderName);
+            } else {
+                this.viewModel.index.set(mediaData2.mp3.folderName + "  " + mediaData2.mp3.folderNumber + " / " + mediaData2.mp3.fileNumber);
+            }
+        }
+        if (mediaData2.type == 21) {
+            this.viewModel.fm.set(false);
+            this.viewModel.cd.set(false);
+            this.viewModel.usb.set(false);
+            this.viewModel.mp3.set(false);
+            this.viewModel.bt.set(true);
+            this.viewModel.aux.set(false);
+            setBt();
+        }
+        if (mediaData2.type == 20) {
+            this.viewModel.fm.set(false);
+            this.viewModel.cd.set(false);
+            this.viewModel.usb.set(false);
+            this.viewModel.mp3.set(false);
+            this.viewModel.bt.set(false);
+            this.viewModel.aux.set(true);
         }
         try {
             McuStatus.MediaPlayStatus mcuMediaPlayStatus = McuStatus.MediaPlayStatus.parseInfoFromJson(PowerManagerApp.getStatusString("mcuMediaPlayStatus"));
@@ -194,9 +357,12 @@ public class OEMFMActivity extends AppCompatActivity {
                 this.viewModel.rand.set(Boolean.valueOf(mcuMediaPlayStatus.RAND));
                 this.viewModel.scan.set(Boolean.valueOf(mcuMediaPlayStatus.SCAN));
                 this.viewModel.rpt.set(Boolean.valueOf(mcuMediaPlayStatus.RPT));
-                this.viewModel.usbStatus.set(mcuMediaPlayStatus.status);
-                String str3 = TAG;
-                Log.d(str3, "mcuMediaPlayStatus ASL " + mcuMediaPlayStatus.ALS + " ST " + mcuMediaPlayStatus.ST + " Rand " + mcuMediaPlayStatus.RAND + " Scan " + mcuMediaPlayStatus.SCAN + " Rpt " + mcuMediaPlayStatus.RPT + " status " + this.viewModel.usbStatus.get());
+                if (mcuMediaPlayStatus.status.equals("PLAY")) {
+                    this.viewModel.usbStatus.set("");
+                } else {
+                    this.viewModel.usbStatus.set(mcuMediaPlayStatus.status);
+                }
+                Log.d(str, "mcuMediaPlayStatus ASL " + mcuMediaPlayStatus.ALS + " ST " + mcuMediaPlayStatus.ST + " Rand " + mcuMediaPlayStatus.RAND + " Scan " + mcuMediaPlayStatus.SCAN + " Rpt " + mcuMediaPlayStatus.RPT + " status " + this.viewModel.usbStatus.get());
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -207,41 +373,65 @@ public class OEMFMActivity extends AppCompatActivity {
     /* access modifiers changed from: private */
     public void updateUsbInfo() {
         try {
-            McuStatus.MediaStringInfo mcuMediaStringInfo = McuStatus.MediaStringInfo.parseInfoFromJson(PowerManagerApp.getStatusString("mcuMediaStringInfo"));
+            McuStatus.MediaData mediaData = McuStatus.MediaData.parseDataFromJson(PowerManagerApp.getStatusString("mcuMediaJson"));
             McuStatus.MediaPlayStatus mcuMediaPlayStatus = McuStatus.MediaPlayStatus.parseInfoFromJson(PowerManagerApp.getStatusString("mcuMediaPlayStatus"));
             if (mcuMediaPlayStatus != null) {
                 String str = TAG;
                 Log.d(str, "PlayStatus type: " + mcuMediaPlayStatus.type);
-                if (mcuMediaPlayStatus.type == 17) {
+                if (mediaData.type == 17) {
                     this.viewModel.fm.set(false);
                     this.viewModel.cd.set(false);
                     this.viewModel.usb.set(true);
-                } else if (mcuMediaPlayStatus.type == 16) {
+                    this.viewModel.mp3.set(false);
+                    this.viewModel.bt.set(false);
+                    this.viewModel.aux.set(false);
+                } else if (mediaData.type == 16) {
                     this.viewModel.fm.set(false);
                     this.viewModel.cd.set(true);
                     this.viewModel.usb.set(false);
-                } else if (mcuMediaPlayStatus.type == 1) {
+                    this.viewModel.mp3.set(false);
+                    this.viewModel.bt.set(false);
+                    this.viewModel.aux.set(false);
+                } else if (mediaData.type == 1) {
                     this.viewModel.fm.set(true);
                     this.viewModel.cd.set(false);
                     this.viewModel.usb.set(false);
+                    this.viewModel.mp3.set(false);
+                    this.viewModel.bt.set(false);
+                    this.viewModel.aux.set(false);
+                } else if (mediaData.type == 18) {
+                    this.viewModel.fm.set(false);
+                    this.viewModel.cd.set(false);
+                    this.viewModel.usb.set(false);
+                    this.viewModel.mp3.set(true);
+                    this.viewModel.bt.set(false);
+                    this.viewModel.aux.set(false);
+                } else if (mediaData.type == 21) {
+                    this.viewModel.fm.set(false);
+                    this.viewModel.cd.set(false);
+                    this.viewModel.usb.set(false);
+                    this.viewModel.mp3.set(false);
+                    this.viewModel.bt.set(true);
+                    this.viewModel.aux.set(false);
+                } else if (mediaData.type == 20) {
+                    this.viewModel.fm.set(false);
+                    this.viewModel.cd.set(false);
+                    this.viewModel.usb.set(false);
+                    this.viewModel.mp3.set(false);
+                    this.viewModel.bt.set(false);
+                    this.viewModel.aux.set(true);
                 }
                 this.viewModel.asl.set(Boolean.valueOf(mcuMediaPlayStatus.ALS));
                 this.viewModel.st.set(Boolean.valueOf(mcuMediaPlayStatus.ST));
                 this.viewModel.scan.set(Boolean.valueOf(mcuMediaPlayStatus.SCAN));
                 this.viewModel.rand.set(Boolean.valueOf(mcuMediaPlayStatus.RAND));
                 this.viewModel.rpt.set(Boolean.valueOf(mcuMediaPlayStatus.RPT));
-                this.viewModel.usbStatus.set(mcuMediaPlayStatus.status);
-                String str2 = TAG;
-                Log.d(str2, "PlayStatus ASL " + mcuMediaPlayStatus.ALS + " ST " + mcuMediaPlayStatus.ST + " Rand " + mcuMediaPlayStatus.RAND + " Scan " + mcuMediaPlayStatus.SCAN + " Rpt " + mcuMediaPlayStatus.RPT + " Pause " + mcuMediaPlayStatus.status);
-            }
-            if (mcuMediaStringInfo != null) {
-                String str3 = TAG;
-                Log.d(str3, " name " + mcuMediaStringInfo.name);
-                this.viewModel.usbMusicTime.set(getFormatMMSS(mcuMediaStringInfo.min, mcuMediaStringInfo.sec));
-                this.viewModel.musicName.set(mcuMediaStringInfo.name);
-                this.viewModel.artist.set(mcuMediaStringInfo.artist);
-                this.viewModel.album.set(mcuMediaStringInfo.album);
-                this.viewModel.index.set(mcuMediaStringInfo.folderName);
+                if (mcuMediaPlayStatus.status.equals("PLAY")) {
+                    this.viewModel.usbStatus.set("");
+                } else {
+                    this.viewModel.usbStatus.set(mcuMediaPlayStatus.status);
+                }
+                Log.d(str, "PlayStatus ASL " + mcuMediaPlayStatus.ALS + " ST " + mcuMediaPlayStatus.ST + " Rand " + mcuMediaPlayStatus.RAND + " Scan " + mcuMediaPlayStatus.SCAN + " Rpt " + mcuMediaPlayStatus.RPT + " Pause " + mcuMediaPlayStatus.status);
             }
             updateAudioOff();
         } catch (RemoteException e) {
@@ -249,18 +439,35 @@ public class OEMFMActivity extends AppCompatActivity {
         }
     }
 
+    /* access modifiers changed from: protected */
+    public void onResume() {
+        super.onResume();
+        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIR_DATA_REQ);
+        WitsCommand.sendMcuCommand(new McuStatus.KswMcuMsg(103, 14));
+    }
+
+    /* access modifiers changed from: protected */
+    public void onPause() {
+        super.onPause();
+        WitsCommand.sendMcuCommand(new McuStatus.KswMcuMsg(103, 0));
+    }
+
     private void updateAudioOff() {
         try {
             McuStatus.MediaPlayStatus mcuMediaPlayStatus = McuStatus.MediaPlayStatus.parseInfoFromJson(PowerManagerApp.getStatusString("mcuMediaPlayStatus"));
-            String str = TAG;
-            Log.d(str, "updateAudioOff " + mcuMediaPlayStatus.status);
             if (mcuMediaPlayStatus == null || !mcuMediaPlayStatus.status.equals("AUDIO OFF")) {
                 this.viewModel.audioOff.set(false);
                 return;
             }
+            Log.d(TAG, "updateAudioOff " + mcuMediaPlayStatus.status);
             this.viewModel.fm.set(false);
             this.viewModel.cd.set(false);
             this.viewModel.usb.set(false);
+            this.viewModel.mp3.set(false);
+            this.viewModel.bt.set(false);
+            this.viewModel.aux.set(false);
+            this.viewModel.eq.set(false);
+            this.viewModel.showVolume.set(false);
             this.viewModel.audioOff.set(true);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -280,8 +487,7 @@ public class OEMFMActivity extends AppCompatActivity {
                 this.viewModel.cd4.set(Boolean.valueOf(disc.discInsert[3]));
                 this.viewModel.cd5.set(Boolean.valueOf(disc.discInsert[4]));
                 this.viewModel.cd6.set(Boolean.valueOf(disc.discInsert[5]));
-                String str2 = TAG;
-                Log.d(str2, "setDisc cd1 " + disc.discInsert[0] + " cd2 " + disc.discInsert[1] + " cd3 " + disc.discInsert[2] + " cd4 " + disc.discInsert[3] + " cd5 " + disc.discInsert[4] + " cd6 " + disc.discInsert[5]);
+                Log.d(str, "setDisc cd1 " + disc.discInsert[0] + " cd2 " + disc.discInsert[1] + " cd3 " + disc.discInsert[2] + " cd4 " + disc.discInsert[3] + " cd5 " + disc.discInsert[4] + " cd6 " + disc.discInsert[5]);
                 this.viewModel.cdMode.set(disc.status);
                 this.oemFmBinding.cd1.setSelected(false);
                 this.oemFmBinding.cd2.setSelected(false);
@@ -350,24 +556,18 @@ public class OEMFMActivity extends AppCompatActivity {
         } else if (acData.leftTmp == -1.0f) {
             this.uiParams.setLeftTempStr("HI");
         } else if (this.tempUnit == 1) {
-            int tempToF = tempToF(acData.leftTmp);
-            LexusUiParams lexusUiParams = this.uiParams;
-            lexusUiParams.setLeftTempStr(String.valueOf(tempToF) + "°F");
+            this.uiParams.setLeftTempStr(String.valueOf(tempToF(acData.leftTmp)) + "°F");
         } else {
-            LexusUiParams lexusUiParams2 = this.uiParams;
-            lexusUiParams2.setLeftTempStr(String.valueOf(acData.leftTmp) + "℃");
+            this.uiParams.setLeftTempStr(String.valueOf(acData.leftTmp) + "℃");
         }
         if (acData.rightTmp == 0.0f) {
             this.uiParams.setRightTempStr("LO");
         } else if (acData.rightTmp == -1.0f) {
             this.uiParams.setRightTempStr("HI");
         } else if (this.tempUnit == 1) {
-            int tempToF2 = tempToF(acData.rightTmp);
-            LexusUiParams lexusUiParams3 = this.uiParams;
-            lexusUiParams3.setRightTempStr(String.valueOf(tempToF2) + "°F");
+            this.uiParams.setRightTempStr(String.valueOf(tempToF(acData.rightTmp)) + "°F");
         } else {
-            LexusUiParams lexusUiParams4 = this.uiParams;
-            lexusUiParams4.setRightTempStr(String.valueOf(acData.rightTmp) + "℃");
+            this.uiParams.setRightTempStr(String.valueOf(acData.rightTmp) + "℃");
         }
         this.uiParams.setLoopMode(acData.loop);
         boolean above = acData.isOpen(8);
@@ -375,17 +575,79 @@ public class OEMFMActivity extends AppCompatActivity {
         boolean below = acData.isOpen(2);
         if (!above && !front && !below) {
             this.uiParams.setBlowingMode(0);
-        } else if (above && !front && !below) {
+        } else if (!above && front && !below) {
             this.uiParams.setBlowingMode(1);
         } else if (!above && !front && below) {
             this.uiParams.setBlowingMode(2);
-        } else if (!above && front && below) {
-            this.uiParams.setBlowingMode(3);
         } else if (above && !front && below) {
+            this.uiParams.setBlowingMode(3);
+        } else if (!above && front && below) {
             this.uiParams.setBlowingMode(4);
         }
-        String str = TAG;
-        Log.d(str, "blowing mode right_above " + above + " right_front " + front + " right_below " + below);
+        Log.d(TAG, "blowing mode right_above " + above + " right_front " + front + " right_below " + below);
+    }
+
+    /* access modifiers changed from: private */
+    public void setEq() {
+        try {
+            McuStatus.EqData eqData = McuStatus.EqData.parseDataFromJson(PowerManagerApp.getStatusString("mcuEqData"));
+            if (eqData != null) {
+                Log.d(TAG, "setEq " + eqData.toString());
+                this.volumeHandler.removeMessages(120);
+                this.volumeHandler.sendEmptyMessageDelayed(120, 3500);
+                if (eqData.changeVol.startsWith("ASL")) {
+                    this.viewModel.eqMode.set(eqData.changeVol);
+                } else {
+                    this.viewModel.eqMode.set(eqData.changeVol + ":" + eqData.volume);
+                }
+                this.viewModel.eq.set(true);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setBt() {
+        try {
+            McuStatus.CarBluetoothStatus carBluetoothStatus = McuStatus.CarBluetoothStatus.parseInfoFromJson(PowerManagerApp.getStatusString("mcuBluetoothStatus"));
+            if (carBluetoothStatus != null) {
+                Log.d(TAG, " connect " + carBluetoothStatus.isCalling + " name " + carBluetoothStatus.name + " setUp " + carBluetoothStatus.settingsInfo + " signal " + carBluetoothStatus.callSignal + " play " + carBluetoothStatus.playingMusic + " min " + carBluetoothStatus.min + " sec " + carBluetoothStatus.sec);
+                if (carBluetoothStatus.isCalling) {
+                    this.viewModel.btConnectInfo.set(carBluetoothStatus.name + getString(R.string.gs_phone_connected_bt_mess));
+                } else {
+                    this.viewModel.btConnectInfo.set(getString(R.string.gs_phone_unconnected_bt_mess));
+                }
+                this.viewModel.btSetUp.set(carBluetoothStatus.settingsInfo);
+                this.viewModel.btSignal.set(carBluetoothStatus.callSignal);
+                this.viewModel.btConnect.set(Boolean.valueOf(carBluetoothStatus.isCalling));
+                this.viewModel.btPlay.set(Boolean.valueOf(carBluetoothStatus.playingMusic));
+                this.viewModel.btTime.set(getFormatMMSS(carBluetoothStatus.min, carBluetoothStatus.sec));
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* access modifiers changed from: private */
+    public void displayVolumeProgress() {
+        this.volumeHandler.removeMessages(110);
+        this.volumeHandler.sendEmptyMessageDelayed(110, 3000);
+        try {
+            int level = PowerManagerApp.getStatusInt("mcu_volume_level");
+            boolean mute = PowerManagerApp.getStatusBoolean("mcu_volume_mute");
+            Log.d(TAG, "mute: " + mute);
+            this.viewModel.mute.set(mute);
+            this.oemFmBinding.volumeBar.setProgress(level);
+            this.viewModel.mediaVolume.set(level + "");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        this.viewModel.showVolume.set(true);
+    }
+
+    /* access modifiers changed from: private */
+    public void dismissVolumeProgress() {
+        this.viewModel.showVolume.set(false);
     }
 
     public static int tempToF(float tmep) {

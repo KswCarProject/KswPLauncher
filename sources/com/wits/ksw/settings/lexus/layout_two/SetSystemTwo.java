@@ -1,6 +1,5 @@
 package com.wits.ksw.settings.lexus.layout_two;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -69,7 +68,6 @@ public class SetSystemTwo extends RelativeLayout {
     /* access modifiers changed from: private */
     public TextView tv_cauxSize2;
 
-    @SuppressLint({"NewApi"})
     public SetSystemTwo(Context context2) {
         super(context2);
         this.context = context2;
@@ -81,8 +79,9 @@ public class SetSystemTwo extends RelativeLayout {
         view.setLayoutParams(layoutParams);
         addView(view);
         this.mBackgroundHandler = new Handler(Looper.getMainLooper());
-        this.mBrightnessObserver = new BrightnessObserver(new Handler());
-        this.mBrightnessObserver.startObserving();
+        BrightnessObserver brightnessObserver = new BrightnessObserver(new Handler());
+        this.mBrightnessObserver = brightnessObserver;
+        brightnessObserver.startObserving();
     }
 
     private void initData() {
@@ -91,8 +90,7 @@ public class SetSystemTwo extends RelativeLayout {
             this.aux_index1 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX1);
             this.aux_index2 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX2);
             this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-            String str = TAG;
-            Log.i(str, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
+            Log.i(TAG, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -106,15 +104,14 @@ public class SetSystemTwo extends RelativeLayout {
         this.relate_shext = (RelativeLayout) view.findViewById(R.id.relate_shext);
         this.relate_auxweiz = (LinearLayout) view.findViewById(R.id.relate_auxweiz);
         this.tv_cauxSize = (TextView) view.findViewById(R.id.tv_cauxSize);
-        this.seekbar_caux = (SeekBar) view.findViewById(R.id.seekbar_caux);
-        this.seekbar_caux.setMax(12);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_caux);
+        this.seekbar_caux = seekBar;
+        seekBar.setMax(12);
         this.seekbar_caux.setProgress(this.aux_index1);
-        TextView textView = this.tv_cauxSize;
-        textView.setText(this.aux_index1 + "");
+        this.tv_cauxSize.setText(this.aux_index1 + "");
         this.seekbar_caux.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$000 = SetSystemTwo.this.tv_cauxSize;
-                access$000.setText(progress + "");
+                SetSystemTwo.this.tv_cauxSize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX1, progress);
             }
 
@@ -128,12 +125,10 @@ public class SetSystemTwo extends RelativeLayout {
         this.tv_cauxSize2 = (TextView) view.findViewById(R.id.tv_cauxSize2);
         this.seekbar_caux2.setMax(12);
         this.seekbar_caux2.setProgress(this.aux_index2);
-        TextView textView2 = this.tv_cauxSize2;
-        textView2.setText(this.aux_index2 + "");
+        this.tv_cauxSize2.setText(this.aux_index2 + "");
         this.seekbar_caux2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$100 = SetSystemTwo.this.tv_cauxSize2;
-                access$100.setText(progress + "");
+                SetSystemTwo.this.tv_cauxSize2.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX2, progress);
             }
 
@@ -146,8 +141,9 @@ public class SetSystemTwo extends RelativeLayout {
         this.relate_beigld = (RelativeLayout) view.findViewById(R.id.relate_beigld);
         this.tv_beigSize = (TextView) view.findViewById(R.id.tv_beigSize);
         Log.i("SetSystemTwo", "initView: beiguangValue=" + this.beiguangValue);
-        this.seekbar_brightness = (SeekBar) view.findViewById(R.id.seekbar_brightness);
-        this.seekbar_brightness.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
+        SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekbar_brightness);
+        this.seekbar_brightness = seekBar2;
+        seekBar2.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
         setProgress(this.beiguangValue);
         setProgressText(this.beiguangValue);
         this.seekbar_brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -155,7 +151,8 @@ public class SetSystemTwo extends RelativeLayout {
                 if (fromUser) {
                     int val = BrightnessUtils.convertGammaToLinear(progress, SetSystemTwo.this.mMinBrightness, SetSystemTwo.this.mMaxBrightness);
                     Log.e("SetSystemTwo", "onProgressChanged: fromUser=" + fromUser + " : progress=" + progress + " : val=" + val);
-                    SetSystemTwo.this.setBrightnessValueBg(SetSystemTwo.this.context, val);
+                    SetSystemTwo setSystemTwo = SetSystemTwo.this;
+                    setSystemTwo.setBrightnessValueBg(setSystemTwo.context, val);
                     SetSystemTwo.this.setSystemBrightness(val);
                 }
             }
@@ -166,16 +163,17 @@ public class SetSystemTwo extends RelativeLayout {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        this.rdg_shext = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        this.rdg_shext = radioGroup;
         switch (this.groupValue) {
             case 0:
-                this.rdg_shext.check(R.id.rdb_shext1);
+                radioGroup.check(R.id.rdb_shext1);
                 break;
             case 1:
-                this.rdg_shext.check(R.id.rdb_shext2);
+                radioGroup.check(R.id.rdb_shext2);
                 break;
             case 2:
-                this.rdg_shext.check(R.id.rdb_shext3);
+                radioGroup.check(R.id.rdb_shext3);
                 break;
         }
         this.rdg_shext.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -198,7 +196,8 @@ public class SetSystemTwo extends RelativeLayout {
         this.tempRadioGroup = (RadioGroup) view.findViewById(R.id.rdg_temp_group);
         for (int i = 0; i < this.tempRadioGroup.getChildCount(); i++) {
             if (i == this.tempUnit) {
-                this.tempRadioGroup.check(this.tempRadioGroup.getChildAt(i).getId());
+                RadioGroup radioGroup2 = this.tempRadioGroup;
+                radioGroup2.check(radioGroup2.getChildAt(i).getId());
             }
         }
         this.tempRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -225,24 +224,18 @@ public class SetSystemTwo extends RelativeLayout {
     public void setProgressText(int progress) {
         int value = BrightnessUtils.convertLinearToGamma(progress, this.mMinBrightness, this.mMaxBrightness);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
-        int progress2 = (int) Math.round(100.0d * b);
-        TextView textView = this.tv_beigSize;
-        StringBuilder sb = new StringBuilder();
-        sb.append("");
-        sb.append(progress2);
-        textView.setText(sb.toString());
+        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        this.tv_beigSize.setText("" + ((int) Math.round(100.0d * b)));
     }
 
     /* access modifiers changed from: private */
     public void setProgress(int brightness) {
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
-        this.mMaxBrightness = getMaximumScreenBrightnessSetting();
-        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, this.mMaxBrightness);
+        int maximumScreenBrightnessSetting = getMaximumScreenBrightnessSetting();
+        this.mMaxBrightness = maximumScreenBrightnessSetting;
+        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, maximumScreenBrightnessSetting);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
+        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
         this.seekbar_brightness.setProgress(value);
     }
 

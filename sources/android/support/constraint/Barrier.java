@@ -38,22 +38,29 @@ public class Barrier extends ConstraintHelper {
     public void setType(int type) {
         this.mIndicatedType = type;
         this.mResolvedType = type;
-        if (Build.VERSION.SDK_INT >= 17) {
-            if (1 == getResources().getConfiguration().getLayoutDirection()) {
-                if (this.mIndicatedType == 5) {
-                    this.mResolvedType = 1;
-                } else if (this.mIndicatedType == 6) {
-                    this.mResolvedType = 0;
-                }
-            } else if (this.mIndicatedType == 5) {
+        if (Build.VERSION.SDK_INT < 17) {
+            int i = this.mIndicatedType;
+            if (i == 5) {
                 this.mResolvedType = 0;
-            } else if (this.mIndicatedType == 6) {
+            } else if (i == 6) {
                 this.mResolvedType = 1;
             }
-        } else if (this.mIndicatedType == 5) {
-            this.mResolvedType = 0;
-        } else if (this.mIndicatedType == 6) {
-            this.mResolvedType = 1;
+        } else {
+            if (1 == getResources().getConfiguration().getLayoutDirection()) {
+                int i2 = this.mIndicatedType;
+                if (i2 == 5) {
+                    this.mResolvedType = 1;
+                } else if (i2 == 6) {
+                    this.mResolvedType = 0;
+                }
+            } else {
+                int i3 = this.mIndicatedType;
+                if (i3 == 5) {
+                    this.mResolvedType = 0;
+                } else if (i3 == 6) {
+                    this.mResolvedType = 1;
+                }
+            }
         }
         this.mBarrier.setBarrierType(this.mResolvedType);
     }

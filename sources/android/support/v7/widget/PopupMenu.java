@@ -1,12 +1,6 @@
 package android.support.v7.widget;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.MenuRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
 import android.support.v7.appcompat.R;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -36,19 +30,20 @@ public class PopupMenu {
         boolean onMenuItemClick(MenuItem menuItem);
     }
 
-    public PopupMenu(@NonNull Context context, @NonNull View anchor) {
+    public PopupMenu(Context context, View anchor) {
         this(context, anchor, 0);
     }
 
-    public PopupMenu(@NonNull Context context, @NonNull View anchor, int gravity) {
+    public PopupMenu(Context context, View anchor, int gravity) {
         this(context, anchor, gravity, R.attr.popupMenuStyle, 0);
     }
 
-    public PopupMenu(@NonNull Context context, @NonNull View anchor, int gravity, @AttrRes int popupStyleAttr, @StyleRes int popupStyleRes) {
+    public PopupMenu(Context context, View anchor, int gravity, int popupStyleAttr, int popupStyleRes) {
         this.mContext = context;
         this.mAnchor = anchor;
-        this.mMenu = new MenuBuilder(context);
-        this.mMenu.setCallback(new MenuBuilder.Callback() {
+        MenuBuilder menuBuilder = new MenuBuilder(context);
+        this.mMenu = menuBuilder;
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
                 if (PopupMenu.this.mMenuItemClickListener != null) {
                     return PopupMenu.this.mMenuItemClickListener.onMenuItemClick(item);
@@ -59,9 +54,10 @@ public class PopupMenu {
             public void onMenuModeChange(MenuBuilder menu) {
             }
         });
-        this.mPopup = new MenuPopupHelper(context, this.mMenu, anchor, false, popupStyleAttr, popupStyleRes);
-        this.mPopup.setGravity(gravity);
-        this.mPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        MenuPopupHelper menuPopupHelper = new MenuPopupHelper(context, menuBuilder, anchor, false, popupStyleAttr, popupStyleRes);
+        this.mPopup = menuPopupHelper;
+        menuPopupHelper.setGravity(gravity);
+        menuPopupHelper.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
                 if (PopupMenu.this.mOnDismissListener != null) {
                     PopupMenu.this.mOnDismissListener.onDismiss(PopupMenu.this);
@@ -78,7 +74,6 @@ public class PopupMenu {
         return this.mPopup.getGravity();
     }
 
-    @NonNull
     public View.OnTouchListener getDragToOpenListener() {
         if (this.mDragListener == null) {
             this.mDragListener = new ForwardingListener(this.mAnchor) {
@@ -102,17 +97,15 @@ public class PopupMenu {
         return this.mDragListener;
     }
 
-    @NonNull
     public Menu getMenu() {
         return this.mMenu;
     }
 
-    @NonNull
     public MenuInflater getMenuInflater() {
         return new SupportMenuInflater(this.mContext);
     }
 
-    public void inflate(@MenuRes int menuRes) {
+    public void inflate(int menuRes) {
         getMenuInflater().inflate(menuRes, this.mMenu);
     }
 
@@ -124,16 +117,15 @@ public class PopupMenu {
         this.mPopup.dismiss();
     }
 
-    public void setOnMenuItemClickListener(@Nullable OnMenuItemClickListener listener) {
+    public void setOnMenuItemClickListener(OnMenuItemClickListener listener) {
         this.mMenuItemClickListener = listener;
     }
 
-    public void setOnDismissListener(@Nullable OnDismissListener listener) {
+    public void setOnDismissListener(OnDismissListener listener) {
         this.mOnDismissListener = listener;
     }
 
     /* access modifiers changed from: package-private */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public ListView getMenuListView() {
         if (!this.mPopup.isShowing()) {
             return null;

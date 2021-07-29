@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -16,17 +15,16 @@ import java.nio.ByteBuffer;
 public class ByteBufferFileLoader implements ModelLoader<File, ByteBuffer> {
     private static final String TAG = "ByteBufferFileLoader";
 
-    public ModelLoader.LoadData<ByteBuffer> buildLoadData(@NonNull File file, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<ByteBuffer> buildLoadData(File file, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(file), new ByteBufferFetcher(file));
     }
 
-    public boolean handles(@NonNull File file) {
+    public boolean handles(File file) {
         return true;
     }
 
     public static class Factory implements ModelLoaderFactory<File, ByteBuffer> {
-        @NonNull
-        public ModelLoader<File, ByteBuffer> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<File, ByteBuffer> build(MultiModelLoaderFactory multiFactory) {
             return new ByteBufferFileLoader();
         }
 
@@ -41,7 +39,7 @@ public class ByteBufferFileLoader implements ModelLoader<File, ByteBuffer> {
             this.file = file2;
         }
 
-        public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super ByteBuffer> callback) {
+        public void loadData(Priority priority, DataFetcher.DataCallback<? super ByteBuffer> callback) {
             try {
                 callback.onDataReady(ByteBufferUtil.fromFile(this.file));
             } catch (IOException e) {
@@ -58,12 +56,10 @@ public class ByteBufferFileLoader implements ModelLoader<File, ByteBuffer> {
         public void cancel() {
         }
 
-        @NonNull
         public Class<ByteBuffer> getDataClass() {
             return ByteBuffer.class;
         }
 
-        @NonNull
         public DataSource getDataSource() {
             return DataSource.LOCAL;
         }

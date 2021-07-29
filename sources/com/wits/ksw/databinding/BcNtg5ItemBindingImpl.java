@@ -5,8 +5,6 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.generated.callback.OnClickListener;
@@ -14,15 +12,12 @@ import com.wits.ksw.launcher.bean.BcItem;
 import com.wits.ksw.launcher.model.BcNTG5ViewModel;
 
 public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback29;
+    private final View.OnClickListener mCallback88;
     private long mDirtyFlags;
 
-    public BcNtg5ItemBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public BcNtg5ItemBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
@@ -33,7 +28,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
         this.appName.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback29 = new OnClickListener(this, 1);
+        this.mCallback88 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -53,11 +48,11 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (1 == variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (11 == variableId) {
             setListItem((BcItem) variable);
             return true;
-        } else if (2 != variableId) {
+        } else if (12 != variableId) {
             return false;
         } else {
             setMBcVieModel((BcNTG5ViewModel) variable);
@@ -65,21 +60,21 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
         }
     }
 
-    public void setListItem(@Nullable BcItem ListItem) {
+    public void setListItem(BcItem ListItem) {
         this.mListItem = ListItem;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(1);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 
-    public void setMBcVieModel(@Nullable BcNTG5ViewModel MBcVieModel) {
+    public void setMBcVieModel(BcNTG5ViewModel MBcVieModel) {
         this.mMBcVieModel = MBcVieModel;
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(2);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -108,7 +103,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
             TextViewBindingAdapter.setText(this.appName, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.appIcon.setOnClickListener(this.mCallback29);
+            this.appIcon.setOnClickListener(this.mCallback88);
         }
     }
 

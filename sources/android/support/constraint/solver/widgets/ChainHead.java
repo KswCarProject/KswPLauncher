@@ -33,15 +33,18 @@ public class ChainHead {
     }
 
     private void defineChainProperties() {
+        boolean z;
         ConstraintWidget next;
         int offset = this.mOrientation * 2;
         ConstraintWidget lastVisited = this.mFirst;
         ConstraintWidget widget = this.mFirst;
-        boolean z = false;
         ConstraintWidget constraintWidget = this.mFirst;
-        ConstraintWidget lastVisited2 = lastVisited;
         boolean done = false;
-        while (!done) {
+        while (true) {
+            z = true;
+            if (done) {
+                break;
+            }
             this.mWidgetsCount++;
             widget.mNextChainWidget[this.mOrientation] = null;
             widget.mListNextMatchConstraintsWidget[this.mOrientation] = null;
@@ -70,16 +73,17 @@ public class ChainHead {
                     if (this.mFirstMatchConstraintWidget == null) {
                         this.mFirstMatchConstraintWidget = widget;
                     }
-                    if (this.mLastMatchConstraintWidget != null) {
-                        this.mLastMatchConstraintWidget.mListNextMatchConstraintsWidget[this.mOrientation] = widget;
+                    ConstraintWidget constraintWidget2 = this.mLastMatchConstraintWidget;
+                    if (constraintWidget2 != null) {
+                        constraintWidget2.mListNextMatchConstraintsWidget[this.mOrientation] = widget;
                     }
                     this.mLastMatchConstraintWidget = widget;
                 }
             }
-            if (lastVisited2 != widget) {
-                lastVisited2.mNextChainWidget[this.mOrientation] = widget;
+            if (lastVisited != widget) {
+                lastVisited.mNextChainWidget[this.mOrientation] = widget;
             }
-            lastVisited2 = widget;
+            lastVisited = widget;
             ConstraintAnchor nextAnchor = widget.mListAnchors[offset + 1].mTarget;
             if (nextAnchor != null) {
                 next = nextAnchor.mOwner;
@@ -99,10 +103,10 @@ public class ChainHead {
         if (this.mOrientation != 0 || !this.mIsRtl) {
             this.mHead = this.mFirst;
         } else {
-            this.mHead = this.mLast;
+            this.mHead = widget;
         }
-        if (this.mHasDefinedWeights && this.mHasUndefinedWeights) {
-            z = true;
+        if (!this.mHasDefinedWeights || !this.mHasUndefinedWeights) {
+            z = false;
         }
         this.mHasComplexMatchWeights = z;
     }

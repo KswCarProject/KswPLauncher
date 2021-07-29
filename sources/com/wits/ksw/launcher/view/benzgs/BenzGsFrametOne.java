@@ -3,8 +3,6 @@ package com.wits.ksw.launcher.view.benzgs;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,18 +21,19 @@ public class BenzGsFrametOne extends Fragment {
     /* access modifiers changed from: private */
     public BenzGsViewMoel viewModel;
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.binding = (FraBenzgsOneBinding) DataBindingUtil.inflate(inflater, R.layout.fra_benzgs_one, (ViewGroup) null, false);
-        View view = this.binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FraBenzgsOneBinding fraBenzgsOneBinding = (FraBenzgsOneBinding) DataBindingUtil.inflate(inflater, R.layout.fra_benzgs_one, (ViewGroup) null, false);
+        this.binding = fraBenzgsOneBinding;
+        View view = fraBenzgsOneBinding.getRoot();
         this.childViews = getAllChildViews(view);
         return view;
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.viewModel = (BenzGsViewMoel) ViewModelProviders.of(getActivity()).get(BenzGsViewMoel.class);
-        this.binding.setVm(this.viewModel);
+        BenzGsViewMoel benzGsViewMoel = (BenzGsViewMoel) ViewModelProviders.of(getActivity()).get(BenzGsViewMoel.class);
+        this.viewModel = benzGsViewMoel;
+        this.binding.setVm(benzGsViewMoel);
         for (int i = 0; i < this.childViews.size(); i++) {
             final int finalI = i;
             this.childViews.get(i).setOnClickListener(new View.OnClickListener() {

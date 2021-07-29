@@ -16,11 +16,12 @@ public class ListenerUtil {
             view.setTag(listenerResourceId, listener);
             return oldValue2;
         }
-        synchronized (sListeners) {
-            WeakHashMap<View, WeakReference<?>> listeners = sListeners.get(listenerResourceId);
+        T oldValue3 = sListeners;
+        synchronized (oldValue3) {
+            WeakHashMap<View, WeakReference<?>> listeners = oldValue3.get(listenerResourceId);
             if (listeners == null) {
                 listeners = new WeakHashMap<>();
-                sListeners.put(listenerResourceId, listeners);
+                oldValue3.put(listenerResourceId, listeners);
             }
             if (listener == null) {
                 oldValue = listeners.remove(view);
@@ -39,8 +40,9 @@ public class ListenerUtil {
         if (Build.VERSION.SDK_INT >= 14) {
             return view.getTag(listenerResourceId);
         }
-        synchronized (sListeners) {
-            WeakHashMap<View, WeakReference<?>> listeners = sListeners.get(listenerResourceId);
+        SparseArray<WeakHashMap<View, WeakReference<?>>> sparseArray = sListeners;
+        synchronized (sparseArray) {
+            WeakHashMap<View, WeakReference<?>> listeners = sparseArray.get(listenerResourceId);
             if (listeners == null) {
                 return null;
             }

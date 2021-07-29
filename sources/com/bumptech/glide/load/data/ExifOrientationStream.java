@@ -1,17 +1,24 @@
 package com.bumptech.glide.load.data;
 
-import android.support.annotation.NonNull;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public final class ExifOrientationStream extends FilterInputStream {
-    private static final byte[] EXIF_SEGMENT = {-1, -31, 0, 28, 69, 120, 105, 102, 0, 0, 77, 77, 0, 0, 0, 0, 0, 8, 0, 1, 1, 18, 0, 2, 0, 0, 0, 1, 0};
-    private static final int ORIENTATION_POSITION = (SEGMENT_LENGTH + 2);
-    private static final int SEGMENT_LENGTH = EXIF_SEGMENT.length;
+    private static final byte[] EXIF_SEGMENT;
+    private static final int ORIENTATION_POSITION;
+    private static final int SEGMENT_LENGTH;
     private static final int SEGMENT_START_POSITION = 2;
     private final byte orientation;
     private int position;
+
+    static {
+        byte[] bArr = {-1, -31, 0, 28, 69, 120, 105, 102, 0, 0, 77, 77, 0, 0, 0, 0, 0, 8, 0, 1, 1, 18, 0, 2, 0, 0, 0, 1, 0};
+        EXIF_SEGMENT = bArr;
+        int length = bArr.length;
+        SEGMENT_LENGTH = length;
+        ORIENTATION_POSITION = length + 2;
+    }
 
     public ExifOrientationStream(InputStream in, int orientation2) {
         super(in);
@@ -31,12 +38,14 @@ public final class ExifOrientationStream extends FilterInputStream {
 
     public int read() throws IOException {
         int result;
-        if (this.position < 2 || this.position > ORIENTATION_POSITION) {
+        int i;
+        int i2 = this.position;
+        if (i2 < 2 || i2 > (i = ORIENTATION_POSITION)) {
             result = super.read();
-        } else if (this.position == ORIENTATION_POSITION) {
+        } else if (i2 == i) {
             result = this.orientation;
         } else {
-            result = EXIF_SEGMENT[this.position - 2] & 255;
+            result = EXIF_SEGMENT[i2 - 2] & 255;
         }
         if (result != -1) {
             this.position++;
@@ -44,17 +53,19 @@ public final class ExifOrientationStream extends FilterInputStream {
         return result;
     }
 
-    public int read(@NonNull byte[] buffer, int byteOffset, int byteCount) throws IOException {
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         int read;
-        if (this.position > ORIENTATION_POSITION) {
+        int read2 = this.position;
+        int i = ORIENTATION_POSITION;
+        if (read2 > i) {
             read = super.read(buffer, byteOffset, byteCount);
-        } else if (this.position == ORIENTATION_POSITION) {
+        } else if (read2 == i) {
             buffer[byteOffset] = this.orientation;
             read = 1;
-        } else if (this.position < 2) {
-            read = super.read(buffer, byteOffset, 2 - this.position);
+        } else if (read2 < 2) {
+            read = super.read(buffer, byteOffset, 2 - read2);
         } else {
-            read = Math.min(ORIENTATION_POSITION - this.position, byteCount);
+            read = Math.min(i - read2, byteCount);
             System.arraycopy(EXIF_SEGMENT, this.position - 2, buffer, byteOffset, read);
         }
         if (read > 0) {

@@ -3,7 +3,6 @@ package android.support.v4.net;
 import android.net.TrafficStats;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -44,7 +43,7 @@ public final class TrafficStatsCompat {
         TrafficStats.untagSocket(socket);
     }
 
-    public static void tagDatagramSocket(@NonNull DatagramSocket socket) throws SocketException {
+    public static void tagDatagramSocket(DatagramSocket socket) throws SocketException {
         if (Build.VERSION.SDK_INT >= 24) {
             TrafficStats.tagDatagramSocket(socket);
             return;
@@ -54,7 +53,7 @@ public final class TrafficStatsCompat {
         pfd.detachFd();
     }
 
-    public static void untagDatagramSocket(@NonNull DatagramSocket socket) throws SocketException {
+    public static void untagDatagramSocket(DatagramSocket socket) throws SocketException {
         if (Build.VERSION.SDK_INT >= 24) {
             TrafficStats.untagDatagramSocket(socket);
             return;

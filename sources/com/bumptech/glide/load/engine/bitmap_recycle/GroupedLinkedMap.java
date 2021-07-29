@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine.bitmap_recycle;
 
-import android.support.annotation.Nullable;
 import com.bumptech.glide.load.engine.bitmap_recycle.Poolable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +25,6 @@ class GroupedLinkedMap<K extends Poolable, V> {
         entry.add(value);
     }
 
-    @Nullable
     public V get(K key) {
         LinkedEntry<K, V> entry = this.keyToEntry.get(key);
         if (entry == null) {
@@ -39,7 +37,6 @@ class GroupedLinkedMap<K extends Poolable, V> {
         return entry.removeLast();
     }
 
-    @Nullable
     public V removeLast() {
         for (LinkedEntry<K, V> last = this.head.prev; !last.equals(this.head); last = last.prev) {
             V removed = last.removeLast();
@@ -58,17 +55,12 @@ class GroupedLinkedMap<K extends Poolable, V> {
         boolean hadAtLeastOneItem = false;
         for (LinkedEntry<K, V> current = this.head.next; !current.equals(this.head); current = current.next) {
             hadAtLeastOneItem = true;
-            sb.append('{');
-            sb.append(current.key);
-            sb.append(':');
-            sb.append(current.size());
-            sb.append("}, ");
+            sb.append('{').append(current.key).append(':').append(current.size()).append("}, ");
         }
         if (hadAtLeastOneItem) {
             sb.delete(sb.length() - 2, sb.length());
         }
-        sb.append(" )");
-        return sb.toString();
+        return sb.append(" )").toString();
     }
 
     private void makeHead(LinkedEntry<K, V> entry) {
@@ -111,7 +103,6 @@ class GroupedLinkedMap<K extends Poolable, V> {
             this.key = key2;
         }
 
-        @Nullable
         public V removeLast() {
             int valueSize = size();
             if (valueSize > 0) {
@@ -121,8 +112,9 @@ class GroupedLinkedMap<K extends Poolable, V> {
         }
 
         public int size() {
-            if (this.values != null) {
-                return this.values.size();
+            List<V> list = this.values;
+            if (list != null) {
+                return list.size();
             }
             return 0;
         }

@@ -54,6 +54,8 @@ public final class Gson {
     }
 
     Gson(Excluder excluder, FieldNamingStrategy fieldNamingPolicy, Map<Type, InstanceCreator<?>> instanceCreators, boolean serializeNulls2, boolean complexMapKeySerialization, boolean generateNonExecutableGson, boolean htmlSafe2, boolean prettyPrinting2, boolean serializeSpecialFloatingPointValues, LongSerializationPolicy longSerializationPolicy, List<TypeAdapterFactory> typeAdapterFactories) {
+        Excluder excluder2 = excluder;
+        boolean z = serializeSpecialFloatingPointValues;
         this.calls = new ThreadLocal<>();
         this.typeTokenCache = Collections.synchronizedMap(new HashMap());
         this.deserializationContext = new JsonDeserializationContext() {
@@ -70,7 +72,8 @@ public final class Gson {
                 return Gson.this.toJsonTree(src, typeOfSrc);
             }
         };
-        this.constructorConstructor = new ConstructorConstructor(instanceCreators);
+        ConstructorConstructor constructorConstructor2 = new ConstructorConstructor(instanceCreators);
+        this.constructorConstructor = constructorConstructor2;
         this.serializeNulls = serializeNulls2;
         this.generateNonExecutableJson = generateNonExecutableGson;
         this.htmlSafe = htmlSafe2;
@@ -78,7 +81,7 @@ public final class Gson {
         List<TypeAdapterFactory> factories2 = new ArrayList<>();
         factories2.add(TypeAdapters.JSON_ELEMENT_FACTORY);
         factories2.add(ObjectTypeAdapter.FACTORY);
-        factories2.add(excluder);
+        factories2.add(excluder2);
         factories2.addAll(typeAdapterFactories);
         factories2.add(TypeAdapters.STRING_FACTORY);
         factories2.add(TypeAdapters.INTEGER_FACTORY);
@@ -86,8 +89,8 @@ public final class Gson {
         factories2.add(TypeAdapters.BYTE_FACTORY);
         factories2.add(TypeAdapters.SHORT_FACTORY);
         factories2.add(TypeAdapters.newFactory(Long.TYPE, Long.class, longAdapter(longSerializationPolicy)));
-        factories2.add(TypeAdapters.newFactory(Double.TYPE, Double.class, doubleAdapter(serializeSpecialFloatingPointValues)));
-        factories2.add(TypeAdapters.newFactory(Float.TYPE, Float.class, floatAdapter(serializeSpecialFloatingPointValues)));
+        factories2.add(TypeAdapters.newFactory(Double.TYPE, Double.class, doubleAdapter(z)));
+        factories2.add(TypeAdapters.newFactory(Float.TYPE, Float.class, floatAdapter(z)));
         factories2.add(TypeAdapters.NUMBER_FACTORY);
         factories2.add(TypeAdapters.CHARACTER_FACTORY);
         factories2.add(TypeAdapters.STRING_BUILDER_FACTORY);
@@ -108,9 +111,9 @@ public final class Gson {
         factories2.add(ArrayTypeAdapter.FACTORY);
         factories2.add(TypeAdapters.ENUM_FACTORY);
         factories2.add(TypeAdapters.CLASS_FACTORY);
-        factories2.add(new CollectionTypeAdapterFactory(this.constructorConstructor));
-        factories2.add(new MapTypeAdapterFactory(this.constructorConstructor, complexMapKeySerialization));
-        factories2.add(new ReflectiveTypeAdapterFactory(this.constructorConstructor, fieldNamingPolicy, excluder));
+        factories2.add(new CollectionTypeAdapterFactory(constructorConstructor2));
+        factories2.add(new MapTypeAdapterFactory(constructorConstructor2, complexMapKeySerialization));
+        factories2.add(new ReflectiveTypeAdapterFactory(constructorConstructor2, fieldNamingPolicy, excluder2));
         this.factories = Collections.unmodifiableList(factories2);
     }
 
@@ -449,15 +452,17 @@ public final class Gson {
         }
 
         public T read(JsonReader in) throws IOException {
-            if (this.delegate != null) {
-                return this.delegate.read(in);
+            TypeAdapter<T> typeAdapter = this.delegate;
+            if (typeAdapter != null) {
+                return typeAdapter.read(in);
             }
             throw new IllegalStateException();
         }
 
         public void write(JsonWriter out, T value) throws IOException {
-            if (this.delegate != null) {
-                this.delegate.write(out, value);
+            TypeAdapter<T> typeAdapter = this.delegate;
+            if (typeAdapter != null) {
+                typeAdapter.write(out, value);
                 return;
             }
             throw new IllegalStateException();

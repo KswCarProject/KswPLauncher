@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,8 +120,7 @@ public final class DiskLruCache implements Closeable {
                     diskLruCache.processJournal();
                     return diskLruCache;
                 } catch (IOException journalIsCorrupt) {
-                    PrintStream printStream = System.out;
-                    printStream.println("DiskLruCache " + directory2 + " is corrupt: " + journalIsCorrupt.getMessage() + ", removing");
+                    System.out.println("DiskLruCache " + directory2 + " is corrupt: " + journalIsCorrupt.getMessage() + ", removing");
                     diskLruCache.delete();
                 }
             }
@@ -206,26 +204,15 @@ public final class DiskLruCache implements Closeable {
         Iterator<Entry> i = this.lruEntries.values().iterator();
         while (i.hasNext()) {
             Entry entry = i.next();
-            int t = 0;
             if (entry.currentEditor == null) {
-                while (true) {
-                    int t2 = t;
-                    if (t2 >= this.valueCount) {
-                        break;
-                    }
-                    this.size += entry.lengths[t2];
-                    t = t2 + 1;
+                for (int t = 0; t < this.valueCount; t++) {
+                    this.size += entry.lengths[t];
                 }
             } else {
                 Editor unused = entry.currentEditor = null;
-                while (true) {
-                    int t3 = t;
-                    if (t3 >= this.valueCount) {
-                        break;
-                    }
-                    deleteIfExists(entry.getCleanFile(t3));
-                    deleteIfExists(entry.getDirtyFile(t3));
-                    t = t3 + 1;
+                for (int t2 = 0; t2 < this.valueCount; t2++) {
+                    deleteIfExists(entry.getCleanFile(t2));
+                    deleteIfExists(entry.getDirtyFile(t2));
                 }
                 i.remove();
             }
@@ -235,28 +222,29 @@ public final class DiskLruCache implements Closeable {
     /* JADX INFO: finally extract failed */
     /* access modifiers changed from: private */
     public synchronized void rebuildJournal() throws IOException {
-        if (this.journalWriter != null) {
-            this.journalWriter.close();
+        Writer writer = this.journalWriter;
+        if (writer != null) {
+            writer.close();
         }
-        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.journalFileTmp), Util.US_ASCII));
+        Writer writer2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.journalFileTmp), Util.US_ASCII));
         try {
-            writer.write(MAGIC);
-            writer.write("\n");
-            writer.write(VERSION_1);
-            writer.write("\n");
-            writer.write(Integer.toString(this.appVersion));
-            writer.write("\n");
-            writer.write(Integer.toString(this.valueCount));
-            writer.write("\n");
-            writer.write("\n");
+            writer2.write(MAGIC);
+            writer2.write("\n");
+            writer2.write(VERSION_1);
+            writer2.write("\n");
+            writer2.write(Integer.toString(this.appVersion));
+            writer2.write("\n");
+            writer2.write(Integer.toString(this.valueCount));
+            writer2.write("\n");
+            writer2.write("\n");
             for (Entry entry : this.lruEntries.values()) {
                 if (entry.currentEditor != null) {
-                    writer.write("DIRTY " + entry.key + 10);
+                    writer2.write("DIRTY " + entry.key + 10);
                 } else {
-                    writer.write("CLEAN " + entry.key + entry.getLengths() + 10);
+                    writer2.write("CLEAN " + entry.key + entry.getLengths() + 10);
                 }
             }
-            writer.close();
+            writer2.close();
             if (this.journalFile.exists()) {
                 renameTo(this.journalFile, this.journalFileBackup, true);
             }
@@ -264,7 +252,7 @@ public final class DiskLruCache implements Closeable {
             this.journalFileBackup.delete();
             this.journalWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.journalFile, true), Util.US_ASCII));
         } catch (Throwable th) {
-            writer.close();
+            writer2.close();
             throw th;
         }
     }
@@ -395,7 +383,7 @@ public final class DiskLruCache implements Closeable {
     }
 
     /* access modifiers changed from: private */
-    /* JADX WARNING: Code restructure failed: missing block: B:43:0x0109, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:43:0x010a, code lost:
         return;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
@@ -403,134 +391,134 @@ public final class DiskLruCache implements Closeable {
         /*
             r10 = this;
             monitor-enter(r10)
-            com.bumptech.glide.disklrucache.DiskLruCache$Entry r0 = r11.entry     // Catch:{ all -> 0x0110 }
-            com.bumptech.glide.disklrucache.DiskLruCache$Editor r1 = r0.currentEditor     // Catch:{ all -> 0x0110 }
-            if (r1 != r11) goto L_0x010a
+            com.bumptech.glide.disklrucache.DiskLruCache$Entry r0 = r11.entry     // Catch:{ all -> 0x0111 }
+            com.bumptech.glide.disklrucache.DiskLruCache$Editor r1 = r0.currentEditor     // Catch:{ all -> 0x0111 }
+            if (r1 != r11) goto L_0x010b
+            if (r12 == 0) goto L_0x004e
+            boolean r1 = r0.readable     // Catch:{ all -> 0x0111 }
+            if (r1 != 0) goto L_0x004e
             r1 = 0
-            if (r12 == 0) goto L_0x004d
-            boolean r2 = r0.readable     // Catch:{ all -> 0x0110 }
-            if (r2 != 0) goto L_0x004d
-            r2 = r1
-        L_0x0015:
-            int r3 = r10.valueCount     // Catch:{ all -> 0x0110 }
-            if (r2 >= r3) goto L_0x004d
-            boolean[] r3 = r11.written     // Catch:{ all -> 0x0110 }
-            boolean r3 = r3[r2]     // Catch:{ all -> 0x0110 }
-            if (r3 == 0) goto L_0x0033
-            java.io.File r3 = r0.getDirtyFile(r2)     // Catch:{ all -> 0x0110 }
-            boolean r3 = r3.exists()     // Catch:{ all -> 0x0110 }
-            if (r3 != 0) goto L_0x0030
-            r11.abort()     // Catch:{ all -> 0x0110 }
+        L_0x0014:
+            int r2 = r10.valueCount     // Catch:{ all -> 0x0111 }
+            if (r1 >= r2) goto L_0x004e
+            boolean[] r2 = r11.written     // Catch:{ all -> 0x0111 }
+            boolean r2 = r2[r1]     // Catch:{ all -> 0x0111 }
+            if (r2 == 0) goto L_0x0032
+            java.io.File r2 = r0.getDirtyFile(r1)     // Catch:{ all -> 0x0111 }
+            boolean r2 = r2.exists()     // Catch:{ all -> 0x0111 }
+            if (r2 != 0) goto L_0x002f
+            r11.abort()     // Catch:{ all -> 0x0111 }
             monitor-exit(r10)
             return
-        L_0x0030:
-            int r2 = r2 + 1
-            goto L_0x0015
-        L_0x0033:
-            r11.abort()     // Catch:{ all -> 0x0110 }
-            java.lang.IllegalStateException r1 = new java.lang.IllegalStateException     // Catch:{ all -> 0x0110 }
-            java.lang.StringBuilder r3 = new java.lang.StringBuilder     // Catch:{ all -> 0x0110 }
-            r3.<init>()     // Catch:{ all -> 0x0110 }
+        L_0x002f:
+            int r1 = r1 + 1
+            goto L_0x0014
+        L_0x0032:
+            r11.abort()     // Catch:{ all -> 0x0111 }
+            java.lang.IllegalStateException r2 = new java.lang.IllegalStateException     // Catch:{ all -> 0x0111 }
+            java.lang.StringBuilder r3 = new java.lang.StringBuilder     // Catch:{ all -> 0x0111 }
+            r3.<init>()     // Catch:{ all -> 0x0111 }
             java.lang.String r4 = "Newly created entry didn't create value for index "
-            r3.append(r4)     // Catch:{ all -> 0x0110 }
-            r3.append(r2)     // Catch:{ all -> 0x0110 }
-            java.lang.String r3 = r3.toString()     // Catch:{ all -> 0x0110 }
-            r1.<init>(r3)     // Catch:{ all -> 0x0110 }
-            throw r1     // Catch:{ all -> 0x0110 }
-        L_0x004d:
+            java.lang.StringBuilder r3 = r3.append(r4)     // Catch:{ all -> 0x0111 }
+            java.lang.StringBuilder r3 = r3.append(r1)     // Catch:{ all -> 0x0111 }
+            java.lang.String r3 = r3.toString()     // Catch:{ all -> 0x0111 }
+            r2.<init>(r3)     // Catch:{ all -> 0x0111 }
+            throw r2     // Catch:{ all -> 0x0111 }
         L_0x004e:
-            int r2 = r10.valueCount     // Catch:{ all -> 0x0110 }
-            if (r1 >= r2) goto L_0x0083
-            java.io.File r2 = r0.getDirtyFile(r1)     // Catch:{ all -> 0x0110 }
-            if (r12 == 0) goto L_0x007d
-            boolean r3 = r2.exists()     // Catch:{ all -> 0x0110 }
-            if (r3 == 0) goto L_0x0080
-            java.io.File r3 = r0.getCleanFile(r1)     // Catch:{ all -> 0x0110 }
-            r2.renameTo(r3)     // Catch:{ all -> 0x0110 }
-            long[] r4 = r0.lengths     // Catch:{ all -> 0x0110 }
-            r5 = r4[r1]     // Catch:{ all -> 0x0110 }
+            r1 = 0
+        L_0x004f:
+            int r2 = r10.valueCount     // Catch:{ all -> 0x0111 }
+            if (r1 >= r2) goto L_0x0084
+            java.io.File r2 = r0.getDirtyFile(r1)     // Catch:{ all -> 0x0111 }
+            if (r12 == 0) goto L_0x007e
+            boolean r3 = r2.exists()     // Catch:{ all -> 0x0111 }
+            if (r3 == 0) goto L_0x0081
+            java.io.File r3 = r0.getCleanFile(r1)     // Catch:{ all -> 0x0111 }
+            r2.renameTo(r3)     // Catch:{ all -> 0x0111 }
+            long[] r4 = r0.lengths     // Catch:{ all -> 0x0111 }
+            r5 = r4[r1]     // Catch:{ all -> 0x0111 }
             r4 = r5
-            long r6 = r3.length()     // Catch:{ all -> 0x0110 }
-            long[] r8 = r0.lengths     // Catch:{ all -> 0x0110 }
-            r8[r1] = r6     // Catch:{ all -> 0x0110 }
-            long r8 = r10.size     // Catch:{ all -> 0x0110 }
+            long r6 = r3.length()     // Catch:{ all -> 0x0111 }
+            long[] r8 = r0.lengths     // Catch:{ all -> 0x0111 }
+            r8[r1] = r6     // Catch:{ all -> 0x0111 }
+            long r8 = r10.size     // Catch:{ all -> 0x0111 }
             long r8 = r8 - r4
             long r8 = r8 + r6
-            r10.size = r8     // Catch:{ all -> 0x0110 }
-            goto L_0x0080
-        L_0x007d:
-            deleteIfExists(r2)     // Catch:{ all -> 0x0110 }
-        L_0x0080:
+            r10.size = r8     // Catch:{ all -> 0x0111 }
+            goto L_0x0081
+        L_0x007e:
+            deleteIfExists(r2)     // Catch:{ all -> 0x0111 }
+        L_0x0081:
             int r1 = r1 + 1
-            goto L_0x004e
-        L_0x0083:
-            int r1 = r10.redundantOpCount     // Catch:{ all -> 0x0110 }
+            goto L_0x004f
+        L_0x0084:
+            int r1 = r10.redundantOpCount     // Catch:{ all -> 0x0111 }
             r2 = 1
             int r1 = r1 + r2
-            r10.redundantOpCount = r1     // Catch:{ all -> 0x0110 }
+            r10.redundantOpCount = r1     // Catch:{ all -> 0x0111 }
             r1 = 0
-            com.bumptech.glide.disklrucache.DiskLruCache.Editor unused = r0.currentEditor = r1     // Catch:{ all -> 0x0110 }
-            boolean r1 = r0.readable     // Catch:{ all -> 0x0110 }
+            com.bumptech.glide.disklrucache.DiskLruCache.Editor unused = r0.currentEditor = r1     // Catch:{ all -> 0x0111 }
+            boolean r1 = r0.readable     // Catch:{ all -> 0x0111 }
             r1 = r1 | r12
             r3 = 10
             r4 = 32
-            if (r1 == 0) goto L_0x00cb
-            boolean unused = r0.readable = r2     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
+            if (r1 == 0) goto L_0x00cc
+            boolean unused = r0.readable = r2     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
             java.lang.String r2 = "CLEAN"
-            r1.append(r2)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            r1.append(r4)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            java.lang.String r2 = r0.key     // Catch:{ all -> 0x0110 }
-            r1.append(r2)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            java.lang.String r2 = r0.getLengths()     // Catch:{ all -> 0x0110 }
-            r1.append(r2)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            r1.append(r3)     // Catch:{ all -> 0x0110 }
-            if (r12 == 0) goto L_0x00ee
-            long r1 = r10.nextSequenceNumber     // Catch:{ all -> 0x0110 }
+            r1.append(r2)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            r1.append(r4)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            java.lang.String r2 = r0.key     // Catch:{ all -> 0x0111 }
+            r1.append(r2)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            java.lang.String r2 = r0.getLengths()     // Catch:{ all -> 0x0111 }
+            r1.append(r2)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            r1.append(r3)     // Catch:{ all -> 0x0111 }
+            if (r12 == 0) goto L_0x00ef
+            long r1 = r10.nextSequenceNumber     // Catch:{ all -> 0x0111 }
             r3 = 1
             long r3 = r3 + r1
-            r10.nextSequenceNumber = r3     // Catch:{ all -> 0x0110 }
-            long unused = r0.sequenceNumber = r1     // Catch:{ all -> 0x0110 }
-            goto L_0x00ee
-        L_0x00cb:
-            java.util.LinkedHashMap<java.lang.String, com.bumptech.glide.disklrucache.DiskLruCache$Entry> r1 = r10.lruEntries     // Catch:{ all -> 0x0110 }
-            java.lang.String r2 = r0.key     // Catch:{ all -> 0x0110 }
-            r1.remove(r2)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
+            r10.nextSequenceNumber = r3     // Catch:{ all -> 0x0111 }
+            long unused = r0.sequenceNumber = r1     // Catch:{ all -> 0x0111 }
+            goto L_0x00ef
+        L_0x00cc:
+            java.util.LinkedHashMap<java.lang.String, com.bumptech.glide.disklrucache.DiskLruCache$Entry> r1 = r10.lruEntries     // Catch:{ all -> 0x0111 }
+            java.lang.String r2 = r0.key     // Catch:{ all -> 0x0111 }
+            r1.remove(r2)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
             java.lang.String r2 = "REMOVE"
-            r1.append(r2)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            r1.append(r4)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            java.lang.String r2 = r0.key     // Catch:{ all -> 0x0110 }
-            r1.append(r2)     // Catch:{ all -> 0x0110 }
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            r1.append(r3)     // Catch:{ all -> 0x0110 }
-        L_0x00ee:
-            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0110 }
-            r1.flush()     // Catch:{ all -> 0x0110 }
-            long r1 = r10.size     // Catch:{ all -> 0x0110 }
-            long r3 = r10.maxSize     // Catch:{ all -> 0x0110 }
+            r1.append(r2)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            r1.append(r4)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            java.lang.String r2 = r0.key     // Catch:{ all -> 0x0111 }
+            r1.append(r2)     // Catch:{ all -> 0x0111 }
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            r1.append(r3)     // Catch:{ all -> 0x0111 }
+        L_0x00ef:
+            java.io.Writer r1 = r10.journalWriter     // Catch:{ all -> 0x0111 }
+            r1.flush()     // Catch:{ all -> 0x0111 }
+            long r1 = r10.size     // Catch:{ all -> 0x0111 }
+            long r3 = r10.maxSize     // Catch:{ all -> 0x0111 }
             int r1 = (r1 > r3 ? 1 : (r1 == r3 ? 0 : -1))
-            if (r1 > 0) goto L_0x0101
-            boolean r1 = r10.journalRebuildRequired()     // Catch:{ all -> 0x0110 }
-            if (r1 == 0) goto L_0x0108
-        L_0x0101:
-            java.util.concurrent.ThreadPoolExecutor r1 = r10.executorService     // Catch:{ all -> 0x0110 }
-            java.util.concurrent.Callable<java.lang.Void> r2 = r10.cleanupCallable     // Catch:{ all -> 0x0110 }
-            r1.submit(r2)     // Catch:{ all -> 0x0110 }
-        L_0x0108:
+            if (r1 > 0) goto L_0x0102
+            boolean r1 = r10.journalRebuildRequired()     // Catch:{ all -> 0x0111 }
+            if (r1 == 0) goto L_0x0109
+        L_0x0102:
+            java.util.concurrent.ThreadPoolExecutor r1 = r10.executorService     // Catch:{ all -> 0x0111 }
+            java.util.concurrent.Callable<java.lang.Void> r2 = r10.cleanupCallable     // Catch:{ all -> 0x0111 }
+            r1.submit(r2)     // Catch:{ all -> 0x0111 }
+        L_0x0109:
             monitor-exit(r10)
             return
-        L_0x010a:
-            java.lang.IllegalStateException r1 = new java.lang.IllegalStateException     // Catch:{ all -> 0x0110 }
-            r1.<init>()     // Catch:{ all -> 0x0110 }
-            throw r1     // Catch:{ all -> 0x0110 }
-        L_0x0110:
+        L_0x010b:
+            java.lang.IllegalStateException r1 = new java.lang.IllegalStateException     // Catch:{ all -> 0x0111 }
+            r1.<init>()     // Catch:{ all -> 0x0111 }
+            throw r1     // Catch:{ all -> 0x0111 }
+        L_0x0111:
             r11 = move-exception
             monitor-exit(r10)
             throw r11
@@ -540,90 +528,89 @@ public final class DiskLruCache implements Closeable {
 
     /* access modifiers changed from: private */
     public boolean journalRebuildRequired() {
-        return this.redundantOpCount >= 2000 && this.redundantOpCount >= this.lruEntries.size();
+        int i = this.redundantOpCount;
+        return i >= 2000 && i >= this.lruEntries.size();
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:21:0x008d, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:22:0x008e, code lost:
         return true;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:23:0x008f, code lost:
-        return false;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public synchronized boolean remove(java.lang.String r9) throws java.io.IOException {
         /*
             r8 = this;
             monitor-enter(r8)
-            r8.checkNotClosed()     // Catch:{ all -> 0x0090 }
-            java.util.LinkedHashMap<java.lang.String, com.bumptech.glide.disklrucache.DiskLruCache$Entry> r0 = r8.lruEntries     // Catch:{ all -> 0x0090 }
-            java.lang.Object r0 = r0.get(r9)     // Catch:{ all -> 0x0090 }
-            com.bumptech.glide.disklrucache.DiskLruCache$Entry r0 = (com.bumptech.glide.disklrucache.DiskLruCache.Entry) r0     // Catch:{ all -> 0x0090 }
+            r8.checkNotClosed()     // Catch:{ all -> 0x0092 }
+            java.util.LinkedHashMap<java.lang.String, com.bumptech.glide.disklrucache.DiskLruCache$Entry> r0 = r8.lruEntries     // Catch:{ all -> 0x0092 }
+            java.lang.Object r0 = r0.get(r9)     // Catch:{ all -> 0x0092 }
+            com.bumptech.glide.disklrucache.DiskLruCache$Entry r0 = (com.bumptech.glide.disklrucache.DiskLruCache.Entry) r0     // Catch:{ all -> 0x0092 }
+            if (r0 == 0) goto L_0x008f
+            com.bumptech.glide.disklrucache.DiskLruCache$Editor r1 = r0.currentEditor     // Catch:{ all -> 0x0092 }
+            if (r1 == 0) goto L_0x0016
+            goto L_0x008f
+        L_0x0016:
             r1 = 0
-            if (r0 == 0) goto L_0x008e
-            com.bumptech.glide.disklrucache.DiskLruCache$Editor r2 = r0.currentEditor     // Catch:{ all -> 0x0090 }
-            if (r2 == 0) goto L_0x0017
-            goto L_0x008e
         L_0x0017:
-        L_0x0018:
-            int r2 = r8.valueCount     // Catch:{ all -> 0x0090 }
-            if (r1 >= r2) goto L_0x005a
-            java.io.File r2 = r0.getCleanFile(r1)     // Catch:{ all -> 0x0090 }
-            boolean r3 = r2.exists()     // Catch:{ all -> 0x0090 }
-            if (r3 == 0) goto L_0x0044
-            boolean r3 = r2.delete()     // Catch:{ all -> 0x0090 }
-            if (r3 == 0) goto L_0x002d
-            goto L_0x0044
-        L_0x002d:
-            java.io.IOException r3 = new java.io.IOException     // Catch:{ all -> 0x0090 }
-            java.lang.StringBuilder r4 = new java.lang.StringBuilder     // Catch:{ all -> 0x0090 }
-            r4.<init>()     // Catch:{ all -> 0x0090 }
+            int r2 = r8.valueCount     // Catch:{ all -> 0x0092 }
+            if (r1 >= r2) goto L_0x005b
+            java.io.File r2 = r0.getCleanFile(r1)     // Catch:{ all -> 0x0092 }
+            boolean r3 = r2.exists()     // Catch:{ all -> 0x0092 }
+            if (r3 == 0) goto L_0x0045
+            boolean r3 = r2.delete()     // Catch:{ all -> 0x0092 }
+            if (r3 == 0) goto L_0x002c
+            goto L_0x0045
+        L_0x002c:
+            java.io.IOException r3 = new java.io.IOException     // Catch:{ all -> 0x0092 }
+            java.lang.StringBuilder r4 = new java.lang.StringBuilder     // Catch:{ all -> 0x0092 }
+            r4.<init>()     // Catch:{ all -> 0x0092 }
             java.lang.String r5 = "failed to delete "
-            r4.append(r5)     // Catch:{ all -> 0x0090 }
-            r4.append(r2)     // Catch:{ all -> 0x0090 }
-            java.lang.String r4 = r4.toString()     // Catch:{ all -> 0x0090 }
-            r3.<init>(r4)     // Catch:{ all -> 0x0090 }
-            throw r3     // Catch:{ all -> 0x0090 }
-        L_0x0044:
-            long r3 = r8.size     // Catch:{ all -> 0x0090 }
-            long[] r5 = r0.lengths     // Catch:{ all -> 0x0090 }
-            r6 = r5[r1]     // Catch:{ all -> 0x0090 }
+            java.lang.StringBuilder r4 = r4.append(r5)     // Catch:{ all -> 0x0092 }
+            java.lang.StringBuilder r4 = r4.append(r2)     // Catch:{ all -> 0x0092 }
+            java.lang.String r4 = r4.toString()     // Catch:{ all -> 0x0092 }
+            r3.<init>(r4)     // Catch:{ all -> 0x0092 }
+            throw r3     // Catch:{ all -> 0x0092 }
+        L_0x0045:
+            long r3 = r8.size     // Catch:{ all -> 0x0092 }
+            long[] r5 = r0.lengths     // Catch:{ all -> 0x0092 }
+            r6 = r5[r1]     // Catch:{ all -> 0x0092 }
             long r3 = r3 - r6
-            r8.size = r3     // Catch:{ all -> 0x0090 }
-            long[] r3 = r0.lengths     // Catch:{ all -> 0x0090 }
+            r8.size = r3     // Catch:{ all -> 0x0092 }
+            long[] r3 = r0.lengths     // Catch:{ all -> 0x0092 }
             r4 = 0
-            r3[r1] = r4     // Catch:{ all -> 0x0090 }
+            r3[r1] = r4     // Catch:{ all -> 0x0092 }
             int r1 = r1 + 1
-            goto L_0x0018
-        L_0x005a:
-            int r1 = r8.redundantOpCount     // Catch:{ all -> 0x0090 }
+            goto L_0x0017
+        L_0x005b:
+            int r1 = r8.redundantOpCount     // Catch:{ all -> 0x0092 }
             r2 = 1
             int r1 = r1 + r2
-            r8.redundantOpCount = r1     // Catch:{ all -> 0x0090 }
-            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0090 }
+            r8.redundantOpCount = r1     // Catch:{ all -> 0x0092 }
+            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0092 }
             java.lang.String r3 = "REMOVE"
-            r1.append(r3)     // Catch:{ all -> 0x0090 }
-            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0090 }
+            r1.append(r3)     // Catch:{ all -> 0x0092 }
+            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0092 }
             r3 = 32
-            r1.append(r3)     // Catch:{ all -> 0x0090 }
-            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0090 }
-            r1.append(r9)     // Catch:{ all -> 0x0090 }
-            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0090 }
+            r1.append(r3)     // Catch:{ all -> 0x0092 }
+            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0092 }
+            r1.append(r9)     // Catch:{ all -> 0x0092 }
+            java.io.Writer r1 = r8.journalWriter     // Catch:{ all -> 0x0092 }
             r3 = 10
-            r1.append(r3)     // Catch:{ all -> 0x0090 }
-            java.util.LinkedHashMap<java.lang.String, com.bumptech.glide.disklrucache.DiskLruCache$Entry> r1 = r8.lruEntries     // Catch:{ all -> 0x0090 }
-            r1.remove(r9)     // Catch:{ all -> 0x0090 }
-            boolean r1 = r8.journalRebuildRequired()     // Catch:{ all -> 0x0090 }
-            if (r1 == 0) goto L_0x008c
-            java.util.concurrent.ThreadPoolExecutor r1 = r8.executorService     // Catch:{ all -> 0x0090 }
-            java.util.concurrent.Callable<java.lang.Void> r3 = r8.cleanupCallable     // Catch:{ all -> 0x0090 }
-            r1.submit(r3)     // Catch:{ all -> 0x0090 }
-        L_0x008c:
+            r1.append(r3)     // Catch:{ all -> 0x0092 }
+            java.util.LinkedHashMap<java.lang.String, com.bumptech.glide.disklrucache.DiskLruCache$Entry> r1 = r8.lruEntries     // Catch:{ all -> 0x0092 }
+            r1.remove(r9)     // Catch:{ all -> 0x0092 }
+            boolean r1 = r8.journalRebuildRequired()     // Catch:{ all -> 0x0092 }
+            if (r1 == 0) goto L_0x008d
+            java.util.concurrent.ThreadPoolExecutor r1 = r8.executorService     // Catch:{ all -> 0x0092 }
+            java.util.concurrent.Callable<java.lang.Void> r3 = r8.cleanupCallable     // Catch:{ all -> 0x0092 }
+            r1.submit(r3)     // Catch:{ all -> 0x0092 }
+        L_0x008d:
             monitor-exit(r8)
             return r2
-        L_0x008e:
+        L_0x008f:
+            r1 = 0
             monitor-exit(r8)
             return r1
-        L_0x0090:
+        L_0x0092:
             r9 = move-exception
             monitor-exit(r8)
             throw r9
@@ -826,8 +813,7 @@ public final class DiskLruCache implements Closeable {
         public String getLengths() throws IOException {
             StringBuilder result = new StringBuilder();
             for (long size : this.lengths) {
-                result.append(' ');
-                result.append(size);
+                result.append(' ').append(size);
             }
             return result.toString();
         }

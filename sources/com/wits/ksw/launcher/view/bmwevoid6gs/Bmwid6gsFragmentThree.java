@@ -3,8 +3,6 @@ package com.wits.ksw.launcher.view.bmwevoid6gs;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,18 +19,19 @@ public class Bmwid6gsFragmentThree extends Fragment {
     /* access modifiers changed from: private */
     public BmwId6gsViewMode viewMode;
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.binding = (FraBmwEvoId6GsThreeBinding) DataBindingUtil.inflate(inflater, R.layout.fra_bmw_evo_id6_gs_three, (ViewGroup) null, false);
-        View view = this.binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FraBmwEvoId6GsThreeBinding fraBmwEvoId6GsThreeBinding = (FraBmwEvoId6GsThreeBinding) DataBindingUtil.inflate(inflater, R.layout.fra_bmw_evo_id6_gs_three, (ViewGroup) null, false);
+        this.binding = fraBmwEvoId6GsThreeBinding;
+        View view = fraBmwEvoId6GsThreeBinding.getRoot();
         this.childViews = getAllChildViews(view);
         return view;
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.viewMode = (BmwId6gsViewMode) ViewModelProviders.of(getActivity()).get(BmwId6gsViewMode.class);
-        this.binding.setVm(this.viewMode);
+        BmwId6gsViewMode bmwId6gsViewMode = (BmwId6gsViewMode) ViewModelProviders.of(getActivity()).get(BmwId6gsViewMode.class);
+        this.viewMode = bmwId6gsViewMode;
+        this.binding.setVm(bmwId6gsViewMode);
         for (int i = 0; i < this.childViews.size(); i++) {
             final int finalI = i + 8;
             this.childViews.get(i).setOnClickListener(new View.OnClickListener() {

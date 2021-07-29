@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,7 +70,7 @@ public final class RemoteInput {
         private CharSequence mLabel;
         private final String mResultKey;
 
-        public Builder(@NonNull String resultKey) {
+        public Builder(String resultKey) {
             if (resultKey != null) {
                 this.mResultKey = resultKey;
                 return;
@@ -81,20 +78,17 @@ public final class RemoteInput {
             throw new IllegalArgumentException("Result key can't be null");
         }
 
-        @NonNull
-        public Builder setLabel(@Nullable CharSequence label) {
+        public Builder setLabel(CharSequence label) {
             this.mLabel = label;
             return this;
         }
 
-        @NonNull
-        public Builder setChoices(@Nullable CharSequence[] choices) {
+        public Builder setChoices(CharSequence[] choices) {
             this.mChoices = choices;
             return this;
         }
 
-        @NonNull
-        public Builder setAllowDataType(@NonNull String mimeType, boolean doAllow) {
+        public Builder setAllowDataType(String mimeType, boolean doAllow) {
             if (doAllow) {
                 this.mAllowedDataTypes.add(mimeType);
             } else {
@@ -103,26 +97,22 @@ public final class RemoteInput {
             return this;
         }
 
-        @NonNull
         public Builder setAllowFreeFormInput(boolean allowFreeFormTextInput) {
             this.mAllowFreeFormTextInput = allowFreeFormTextInput;
             return this;
         }
 
-        @NonNull
-        public Builder addExtras(@NonNull Bundle extras) {
+        public Builder addExtras(Bundle extras) {
             if (extras != null) {
                 this.mExtras.putAll(extras);
             }
             return this;
         }
 
-        @NonNull
         public Bundle getExtras() {
             return this.mExtras;
         }
 
-        @NonNull
         public RemoteInput build() {
             return new RemoteInput(this.mResultKey, this.mLabel, this.mChoices, this.mAllowFreeFormTextInput, this.mExtras, this.mAllowedDataTypes);
         }
@@ -242,7 +232,6 @@ public final class RemoteInput {
         return EXTRA_DATA_TYPE_RESULTS_DATA + mimeType;
     }
 
-    @RequiresApi(20)
     static android.app.RemoteInput[] fromCompat(RemoteInput[] srcArray) {
         if (srcArray == null) {
             return null;
@@ -254,12 +243,10 @@ public final class RemoteInput {
         return result;
     }
 
-    @RequiresApi(20)
     static android.app.RemoteInput fromCompat(RemoteInput src) {
         return new RemoteInput.Builder(src.getResultKey()).setLabel(src.getLabel()).setChoices(src.getChoices()).setAllowFreeFormInput(src.getAllowFreeFormInput()).addExtras(src.getExtras()).build();
     }
 
-    @RequiresApi(16)
     private static Intent getClipDataIntentFromIntent(Intent intent) {
         ClipData clipData = intent.getClipData();
         if (clipData == null) {

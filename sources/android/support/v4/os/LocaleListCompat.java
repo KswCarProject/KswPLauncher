@@ -2,11 +2,6 @@ package android.support.v4.os;
 
 import android.os.Build;
 import android.os.LocaleList;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.Size;
 import java.util.Locale;
 
 public final class LocaleListCompat {
@@ -27,7 +22,7 @@ public final class LocaleListCompat {
         LocaleListCompatBaseImpl() {
         }
 
-        public void setLocaleList(@NonNull Locale... list) {
+        public void setLocaleList(Locale... list) {
             this.mLocaleList = new LocaleListHelper(list);
         }
 
@@ -43,12 +38,10 @@ public final class LocaleListCompat {
             return this.mLocaleList.isEmpty();
         }
 
-        @IntRange(from = 0)
         public int size() {
             return this.mLocaleList.size();
         }
 
-        @IntRange(from = -1)
         public int indexOf(Locale locale) {
             return this.mLocaleList.indexOf(locale);
         }
@@ -69,23 +62,22 @@ public final class LocaleListCompat {
             return this.mLocaleList.toLanguageTags();
         }
 
-        @Nullable
         public Locale getFirstMatch(String[] supportedLocales) {
-            if (this.mLocaleList != null) {
-                return this.mLocaleList.getFirstMatch(supportedLocales);
+            LocaleListHelper localeListHelper = this.mLocaleList;
+            if (localeListHelper != null) {
+                return localeListHelper.getFirstMatch(supportedLocales);
             }
             return null;
         }
     }
 
-    @RequiresApi(24)
     static class LocaleListCompatApi24Impl implements LocaleListInterface {
         private LocaleList mLocaleList = new LocaleList(new Locale[0]);
 
         LocaleListCompatApi24Impl() {
         }
 
-        public void setLocaleList(@NonNull Locale... list) {
+        public void setLocaleList(Locale... list) {
             this.mLocaleList = new LocaleList(list);
         }
 
@@ -101,12 +93,10 @@ public final class LocaleListCompat {
             return this.mLocaleList.isEmpty();
         }
 
-        @IntRange(from = 0)
         public int size() {
             return this.mLocaleList.size();
         }
 
-        @IntRange(from = -1)
         public int indexOf(Locale locale) {
             return this.mLocaleList.indexOf(locale);
         }
@@ -127,10 +117,10 @@ public final class LocaleListCompat {
             return this.mLocaleList.toLanguageTags();
         }
 
-        @Nullable
         public Locale getFirstMatch(String[] supportedLocales) {
-            if (this.mLocaleList != null) {
-                return this.mLocaleList.getFirstMatch(supportedLocales);
+            LocaleList localeList = this.mLocaleList;
+            if (localeList != null) {
+                return localeList.getFirstMatch(supportedLocales);
             }
             return null;
         }
@@ -139,7 +129,6 @@ public final class LocaleListCompat {
     private LocaleListCompat() {
     }
 
-    @RequiresApi(24)
     public static LocaleListCompat wrap(Object object) {
         LocaleListCompat instance = new LocaleListCompat();
         if (object instanceof LocaleList) {
@@ -148,12 +137,11 @@ public final class LocaleListCompat {
         return instance;
     }
 
-    @Nullable
     public Object unwrap() {
         return IMPL.getLocaleList();
     }
 
-    public static LocaleListCompat create(@NonNull Locale... localeList) {
+    public static LocaleListCompat create(Locale... localeList) {
         LocaleListCompat instance = new LocaleListCompat();
         instance.setLocaleListArray(localeList);
         return instance;
@@ -167,17 +155,14 @@ public final class LocaleListCompat {
         return IMPL.isEmpty();
     }
 
-    @IntRange(from = 0)
     public int size() {
         return IMPL.size();
     }
 
-    @IntRange(from = -1)
     public int indexOf(Locale locale) {
         return IMPL.indexOf(locale);
     }
 
-    @NonNull
     public String toLanguageTags() {
         return IMPL.toLanguageTags();
     }
@@ -186,13 +171,11 @@ public final class LocaleListCompat {
         return IMPL.getFirstMatch(supportedLocales);
     }
 
-    @NonNull
     public static LocaleListCompat getEmptyLocaleList() {
         return sEmptyLocaleList;
     }
 
-    @NonNull
-    public static LocaleListCompat forLanguageTags(@Nullable String list) {
+    public static LocaleListCompat forLanguageTags(String list) {
         Locale locale;
         if (list == null || list.isEmpty()) {
             return getEmptyLocaleList();
@@ -212,8 +195,6 @@ public final class LocaleListCompat {
         return instance;
     }
 
-    @Size(min = 1)
-    @NonNull
     public static LocaleListCompat getAdjustedDefault() {
         if (Build.VERSION.SDK_INT >= 24) {
             return wrap(LocaleList.getAdjustedDefault());
@@ -221,8 +202,6 @@ public final class LocaleListCompat {
         return create(Locale.getDefault());
     }
 
-    @Size(min = 1)
-    @NonNull
     public static LocaleListCompat getDefault() {
         if (Build.VERSION.SDK_INT >= 24) {
             return wrap(LocaleList.getDefault());
@@ -242,7 +221,6 @@ public final class LocaleListCompat {
         return IMPL.toString();
     }
 
-    @RequiresApi(24)
     private void setLocaleList(LocaleList localeList) {
         int localeListSize = localeList.size();
         if (localeListSize > 0) {

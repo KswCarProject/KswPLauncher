@@ -90,7 +90,8 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
         if (nearest != null) {
             Comparable<Object> comparableKey = comparator2 == NATURAL_ORDER ? key : null;
             while (true) {
-                comparison = comparableKey != null ? comparableKey.compareTo(nearest.key) : comparator2.compare(key, nearest.key);
+                K k = nearest.key;
+                comparison = comparableKey != null ? comparableKey.compareTo(k) : comparator2.compare(key, k);
                 if (comparison == 0) {
                     return nearest;
                 }
@@ -214,8 +215,10 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
             this.root = replacement;
         } else if (parent.left == node) {
             parent.left = replacement;
-        } else {
+        } else if (parent.right == node) {
             parent.right = replacement;
+        } else {
+            throw new AssertionError();
         }
     }
 
@@ -237,9 +240,11 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
                 int rightDelta = rightLeftHeight - rightRightHeight;
                 if (rightDelta == -1 || (rightDelta == 0 && !insert)) {
                     rotateLeft(node);
-                } else {
+                } else if (rightDelta == 1) {
                     rotateRight(right);
                     rotateLeft(node);
+                } else {
+                    throw new AssertionError();
                 }
                 if (insert) {
                     return;
@@ -254,9 +259,11 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
                 int leftDelta = rightLeftHeight - leftRightHeight;
                 if (leftDelta == 1 || (leftDelta == 0 && !insert)) {
                     rotateRight(node);
-                } else {
+                } else if (leftDelta == -1) {
                     rotateLeft(left);
                     rotateRight(node);
+                } else {
+                    throw new AssertionError();
                 }
                 if (insert) {
                     return;
@@ -266,11 +273,13 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
                 if (insert) {
                     return;
                 }
-            } else {
+            } else if (delta == -1 || delta == 1) {
                 node.height = Math.max(leftHeight, rightHeight) + 1;
                 if (!insert) {
                     return;
                 }
+            } else {
+                throw new AssertionError();
             }
         }
     }
@@ -377,52 +386,52 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
             return oldValue;
         }
 
-        /* JADX WARNING: Removed duplicated region for block: B:14:0x0036 A[ORIG_RETURN, RETURN, SYNTHETIC] */
+        /* JADX WARNING: Removed duplicated region for block: B:14:0x0032 A[ORIG_RETURN, RETURN, SYNTHETIC] */
         /* Code decompiled incorrectly, please refer to instructions dump. */
         public boolean equals(java.lang.Object r5) {
             /*
                 r4 = this;
                 boolean r0 = r5 instanceof java.util.Map.Entry
                 r1 = 0
-                if (r0 == 0) goto L_0x0039
+                if (r0 == 0) goto L_0x0034
                 r0 = r5
                 java.util.Map$Entry r0 = (java.util.Map.Entry) r0
                 K r2 = r4.key
                 if (r2 != 0) goto L_0x0013
                 java.lang.Object r2 = r0.getKey()
-                if (r2 != 0) goto L_0x0038
-                goto L_0x001f
+                if (r2 != 0) goto L_0x0033
+                goto L_0x001d
             L_0x0013:
-                K r2 = r4.key
                 java.lang.Object r3 = r0.getKey()
                 boolean r2 = r2.equals(r3)
-                if (r2 == 0) goto L_0x0038
-            L_0x001f:
+                if (r2 == 0) goto L_0x0033
+            L_0x001d:
                 V r2 = r4.value
-                if (r2 != 0) goto L_0x002a
+                if (r2 != 0) goto L_0x0028
                 java.lang.Object r2 = r0.getValue()
-                if (r2 != 0) goto L_0x0038
-                goto L_0x0036
-            L_0x002a:
-                V r2 = r4.value
+                if (r2 != 0) goto L_0x0033
+                goto L_0x0032
+            L_0x0028:
                 java.lang.Object r3 = r0.getValue()
                 boolean r2 = r2.equals(r3)
-                if (r2 == 0) goto L_0x0038
-            L_0x0036:
+                if (r2 == 0) goto L_0x0033
+            L_0x0032:
                 r1 = 1
-            L_0x0038:
+            L_0x0033:
                 return r1
-            L_0x0039:
+            L_0x0034:
                 return r1
             */
             throw new UnsupportedOperationException("Method not decompiled: com.google.gson.internal.LinkedTreeMap.Node.equals(java.lang.Object):boolean");
         }
 
         public int hashCode() {
+            K k = this.key;
             int i = 0;
-            int hashCode = this.key == null ? 0 : this.key.hashCode();
-            if (this.value != null) {
-                i = this.value.hashCode();
+            int hashCode = k == null ? 0 : k.hashCode();
+            V v = this.value;
+            if (v != null) {
+                i = v.hashCode();
             }
             return hashCode ^ i;
         }
@@ -482,8 +491,9 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
         }
 
         public final void remove() {
-            if (this.lastReturned != null) {
-                LinkedTreeMap.this.removeInternal(this.lastReturned, true);
+            Node<K, V> node = this.lastReturned;
+            if (node != null) {
+                LinkedTreeMap.this.removeInternal(node, true);
                 this.lastReturned = null;
                 this.expectedModCount = LinkedTreeMap.this.modCount;
                 return;

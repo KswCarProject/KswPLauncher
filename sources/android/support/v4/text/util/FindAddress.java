@@ -1,13 +1,10 @@
 package android.support.v4.text.util;
 
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
 import java.util.Locale;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class FindAddress {
     private static final String HOUSE_COMPONENT = "(?:one|\\d+([a-z](?=[^a-z]|$)|st|nd|rd|th)?)";
     private static final String HOUSE_END = "(?=[,\"'\t                　\n\u000b\f\r  ]|$)";
@@ -73,19 +70,28 @@ class FindAddress {
             return false;
         }
         String suffix = suffixMatcher.group(2).toLowerCase(Locale.getDefault());
+        String str = "th";
         switch (num % 10) {
             case 1:
-                return suffix.equals(num % 100 == 11 ? "th" : "st");
+                if (num % 100 != 11) {
+                    str = "st";
+                }
+                return suffix.equals(str);
             case 2:
-                return suffix.equals(num % 100 == 12 ? "th" : "nd");
+                if (num % 100 != 12) {
+                    str = "nd";
+                }
+                return suffix.equals(str);
             case 3:
-                return suffix.equals(num % 100 == 13 ? "th" : "rd");
+                if (num % 100 != 13) {
+                    str = "rd";
+                }
+                return suffix.equals(str);
             default:
-                return suffix.equals("th");
+                return suffix.equals(str);
         }
     }
 
-    @VisibleForTesting
     public static MatchResult matchHouseNumber(String content, int offset) {
         if (offset > 0 && HOUSE_PRE_DELIM.indexOf(content.charAt(offset - 1)) == -1) {
             return null;
@@ -100,7 +106,6 @@ class FindAddress {
         return null;
     }
 
-    @VisibleForTesting
     public static MatchResult matchState(String content, int offset) {
         if (offset > 0 && WORD_DELIM.indexOf(content.charAt(offset - 1)) == -1) {
             return null;
@@ -134,17 +139,14 @@ class FindAddress {
         return true;
     }
 
-    @VisibleForTesting
     public static boolean isValidZipCode(String zipCode, String state) {
         return isValidZipCode(zipCode, matchState(state, 0));
     }
 
-    @VisibleForTesting
     public static boolean isValidZipCode(String zipCode) {
         return sZipCodeRe.matcher(zipCode).matches();
     }
 
-    @VisibleForTesting
     public static boolean isValidLocationName(String location) {
         return sLocationNameRe.matcher(location).matches();
     }

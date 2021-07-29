@@ -2,10 +2,6 @@ package com.bumptech.glide.request;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.GuardedBy;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.Pools;
 import android.util.Log;
 import com.bumptech.glide.GlideContext;
@@ -18,7 +14,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableDecoderCompat;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.TransitionFactory;
-import com.bumptech.glide.util.Util;
 import com.bumptech.glide.util.pool.FactoryPools;
 import com.bumptech.glide.util.pool.StateVerifier;
 import java.util.List;
@@ -43,27 +38,21 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
     private int height;
     private boolean isCallingCallbacks;
     private Engine.LoadStatus loadStatus;
-    @Nullable
     private Object model;
     private int overrideHeight;
     private int overrideWidth;
     private Drawable placeholderDrawable;
     private Priority priority;
     private RequestCoordinator requestCoordinator;
-    @Nullable
     private List<RequestListener<R>> requestListeners;
     private BaseRequestOptions<?> requestOptions;
-    @Nullable
     private RuntimeException requestOrigin;
     private Resource<R> resource;
     private long startTime;
     private final StateVerifier stateVerifier;
-    @GuardedBy("this")
     private Status status;
-    @Nullable
     private final String tag;
     private Target<R> target;
-    @Nullable
     private RequestListener<R> targetListener;
     private Class<R> transcodeClass;
     private int width;
@@ -77,7 +66,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         CLEARED
     }
 
-    public static <R> SingleRequest<R> obtain(Context context2, GlideContext glideContext2, Object model2, Class<R> transcodeClass2, BaseRequestOptions<?> requestOptions2, int overrideWidth2, int overrideHeight2, Priority priority2, Target<R> target2, RequestListener<R> targetListener2, @Nullable List<RequestListener<R>> requestListeners2, RequestCoordinator requestCoordinator2, Engine engine2, TransitionFactory<? super R> animationFactory2, Executor callbackExecutor2) {
+    public static <R> SingleRequest<R> obtain(Context context2, GlideContext glideContext2, Object model2, Class<R> transcodeClass2, BaseRequestOptions<?> requestOptions2, int overrideWidth2, int overrideHeight2, Priority priority2, Target<R> target2, RequestListener<R> targetListener2, List<RequestListener<R>> requestListeners2, RequestCoordinator requestCoordinator2, Engine engine2, TransitionFactory<? super R> animationFactory2, Executor callbackExecutor2) {
         SingleRequest<R> request = POOL.acquire();
         if (request == null) {
             request = new SingleRequest<>();
@@ -91,7 +80,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         this.stateVerifier = StateVerifier.newInstance();
     }
 
-    private synchronized void init(Context context2, GlideContext glideContext2, Object model2, Class<R> transcodeClass2, BaseRequestOptions<?> requestOptions2, int overrideWidth2, int overrideHeight2, Priority priority2, Target<R> target2, RequestListener<R> targetListener2, @Nullable List<RequestListener<R>> requestListeners2, RequestCoordinator requestCoordinator2, Engine engine2, TransitionFactory<? super R> animationFactory2, Executor callbackExecutor2) {
+    private synchronized void init(Context context2, GlideContext glideContext2, Object model2, Class<R> transcodeClass2, BaseRequestOptions<?> requestOptions2, int overrideWidth2, int overrideHeight2, Priority priority2, Target<R> target2, RequestListener<R> targetListener2, List<RequestListener<R>> requestListeners2, RequestCoordinator requestCoordinator2, Engine engine2, TransitionFactory<? super R> animationFactory2, Executor callbackExecutor2) {
         synchronized (this) {
             this.context = context2;
             this.glideContext = glideContext2;
@@ -115,7 +104,6 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         }
     }
 
-    @NonNull
     public StateVerifier getVerifier() {
         return this.stateVerifier;
     }
@@ -144,7 +132,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         POOL.release(this);
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:38:0x00a4, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:38:0x00a6, code lost:
         return;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
@@ -152,95 +140,95 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         /*
             r3 = this;
             monitor-enter(r3)
-            r3.assertNotCallingCallbacks()     // Catch:{ all -> 0x00ad }
-            com.bumptech.glide.util.pool.StateVerifier r0 = r3.stateVerifier     // Catch:{ all -> 0x00ad }
-            r0.throwIfRecycled()     // Catch:{ all -> 0x00ad }
-            long r0 = com.bumptech.glide.util.LogTime.getLogTime()     // Catch:{ all -> 0x00ad }
-            r3.startTime = r0     // Catch:{ all -> 0x00ad }
-            java.lang.Object r0 = r3.model     // Catch:{ all -> 0x00ad }
+            r3.assertNotCallingCallbacks()     // Catch:{ all -> 0x00af }
+            com.bumptech.glide.util.pool.StateVerifier r0 = r3.stateVerifier     // Catch:{ all -> 0x00af }
+            r0.throwIfRecycled()     // Catch:{ all -> 0x00af }
+            long r0 = com.bumptech.glide.util.LogTime.getLogTime()     // Catch:{ all -> 0x00af }
+            r3.startTime = r0     // Catch:{ all -> 0x00af }
+            java.lang.Object r0 = r3.model     // Catch:{ all -> 0x00af }
             if (r0 != 0) goto L_0x003a
-            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00ad }
-            int r1 = r3.overrideHeight     // Catch:{ all -> 0x00ad }
-            boolean r0 = com.bumptech.glide.util.Util.isValidDimensions(r0, r1)     // Catch:{ all -> 0x00ad }
+            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00af }
+            int r1 = r3.overrideHeight     // Catch:{ all -> 0x00af }
+            boolean r0 = com.bumptech.glide.util.Util.isValidDimensions(r0, r1)     // Catch:{ all -> 0x00af }
             if (r0 == 0) goto L_0x0025
-            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00ad }
-            r3.width = r0     // Catch:{ all -> 0x00ad }
-            int r0 = r3.overrideHeight     // Catch:{ all -> 0x00ad }
-            r3.height = r0     // Catch:{ all -> 0x00ad }
+            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00af }
+            r3.width = r0     // Catch:{ all -> 0x00af }
+            int r0 = r3.overrideHeight     // Catch:{ all -> 0x00af }
+            r3.height = r0     // Catch:{ all -> 0x00af }
         L_0x0025:
-            android.graphics.drawable.Drawable r0 = r3.getFallbackDrawable()     // Catch:{ all -> 0x00ad }
+            android.graphics.drawable.Drawable r0 = r3.getFallbackDrawable()     // Catch:{ all -> 0x00af }
             if (r0 != 0) goto L_0x002d
             r0 = 5
             goto L_0x002e
         L_0x002d:
             r0 = 3
         L_0x002e:
-            com.bumptech.glide.load.engine.GlideException r1 = new com.bumptech.glide.load.engine.GlideException     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.load.engine.GlideException r1 = new com.bumptech.glide.load.engine.GlideException     // Catch:{ all -> 0x00af }
             java.lang.String r2 = "Received null model"
-            r1.<init>(r2)     // Catch:{ all -> 0x00ad }
-            r3.onLoadFailed(r1, r0)     // Catch:{ all -> 0x00ad }
+            r1.<init>(r2)     // Catch:{ all -> 0x00af }
+            r3.onLoadFailed(r1, r0)     // Catch:{ all -> 0x00af }
             monitor-exit(r3)
             return
         L_0x003a:
-            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00ad }
-            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x00ad }
-            if (r0 == r1) goto L_0x00a5
-            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00ad }
-            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.COMPLETE     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00af }
+            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x00af }
+            if (r0 == r1) goto L_0x00a7
+            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00af }
+            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.COMPLETE     // Catch:{ all -> 0x00af }
             if (r0 != r1) goto L_0x004f
-            com.bumptech.glide.load.engine.Resource<R> r0 = r3.resource     // Catch:{ all -> 0x00ad }
-            com.bumptech.glide.load.DataSource r1 = com.bumptech.glide.load.DataSource.MEMORY_CACHE     // Catch:{ all -> 0x00ad }
-            r3.onResourceReady(r0, r1)     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.load.engine.Resource<R> r0 = r3.resource     // Catch:{ all -> 0x00af }
+            com.bumptech.glide.load.DataSource r1 = com.bumptech.glide.load.DataSource.MEMORY_CACHE     // Catch:{ all -> 0x00af }
+            r3.onResourceReady(r0, r1)     // Catch:{ all -> 0x00af }
             monitor-exit(r3)
             return
         L_0x004f:
-            com.bumptech.glide.request.SingleRequest$Status r0 = com.bumptech.glide.request.SingleRequest.Status.WAITING_FOR_SIZE     // Catch:{ all -> 0x00ad }
-            r3.status = r0     // Catch:{ all -> 0x00ad }
-            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00ad }
-            int r1 = r3.overrideHeight     // Catch:{ all -> 0x00ad }
-            boolean r0 = com.bumptech.glide.util.Util.isValidDimensions(r0, r1)     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.request.SingleRequest$Status r0 = com.bumptech.glide.request.SingleRequest.Status.WAITING_FOR_SIZE     // Catch:{ all -> 0x00af }
+            r3.status = r0     // Catch:{ all -> 0x00af }
+            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00af }
+            int r1 = r3.overrideHeight     // Catch:{ all -> 0x00af }
+            boolean r0 = com.bumptech.glide.util.Util.isValidDimensions(r0, r1)     // Catch:{ all -> 0x00af }
             if (r0 == 0) goto L_0x0065
-            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00ad }
-            int r1 = r3.overrideHeight     // Catch:{ all -> 0x00ad }
-            r3.onSizeReady(r0, r1)     // Catch:{ all -> 0x00ad }
+            int r0 = r3.overrideWidth     // Catch:{ all -> 0x00af }
+            int r1 = r3.overrideHeight     // Catch:{ all -> 0x00af }
+            r3.onSizeReady(r0, r1)     // Catch:{ all -> 0x00af }
             goto L_0x006a
         L_0x0065:
-            com.bumptech.glide.request.target.Target<R> r0 = r3.target     // Catch:{ all -> 0x00ad }
-            r0.getSize(r3)     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.request.target.Target<R> r0 = r3.target     // Catch:{ all -> 0x00af }
+            r0.getSize(r3)     // Catch:{ all -> 0x00af }
         L_0x006a:
-            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00ad }
-            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00af }
+            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x00af }
             if (r0 == r1) goto L_0x0076
-            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00ad }
-            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.WAITING_FOR_SIZE     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.request.SingleRequest$Status r0 = r3.status     // Catch:{ all -> 0x00af }
+            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.WAITING_FOR_SIZE     // Catch:{ all -> 0x00af }
             if (r0 != r1) goto L_0x0085
         L_0x0076:
-            boolean r0 = r3.canNotifyStatusChanged()     // Catch:{ all -> 0x00ad }
+            boolean r0 = r3.canNotifyStatusChanged()     // Catch:{ all -> 0x00af }
             if (r0 == 0) goto L_0x0085
-            com.bumptech.glide.request.target.Target<R> r0 = r3.target     // Catch:{ all -> 0x00ad }
-            android.graphics.drawable.Drawable r1 = r3.getPlaceholderDrawable()     // Catch:{ all -> 0x00ad }
-            r0.onLoadStarted(r1)     // Catch:{ all -> 0x00ad }
+            com.bumptech.glide.request.target.Target<R> r0 = r3.target     // Catch:{ all -> 0x00af }
+            android.graphics.drawable.Drawable r1 = r3.getPlaceholderDrawable()     // Catch:{ all -> 0x00af }
+            r0.onLoadStarted(r1)     // Catch:{ all -> 0x00af }
         L_0x0085:
-            boolean r0 = IS_VERBOSE_LOGGABLE     // Catch:{ all -> 0x00ad }
-            if (r0 == 0) goto L_0x00a3
-            java.lang.StringBuilder r0 = new java.lang.StringBuilder     // Catch:{ all -> 0x00ad }
-            r0.<init>()     // Catch:{ all -> 0x00ad }
+            boolean r0 = IS_VERBOSE_LOGGABLE     // Catch:{ all -> 0x00af }
+            if (r0 == 0) goto L_0x00a5
+            java.lang.StringBuilder r0 = new java.lang.StringBuilder     // Catch:{ all -> 0x00af }
+            r0.<init>()     // Catch:{ all -> 0x00af }
             java.lang.String r1 = "finished run method in "
-            r0.append(r1)     // Catch:{ all -> 0x00ad }
-            long r1 = r3.startTime     // Catch:{ all -> 0x00ad }
-            double r1 = com.bumptech.glide.util.LogTime.getElapsedMillis(r1)     // Catch:{ all -> 0x00ad }
-            r0.append(r1)     // Catch:{ all -> 0x00ad }
-            java.lang.String r0 = r0.toString()     // Catch:{ all -> 0x00ad }
-            r3.logV(r0)     // Catch:{ all -> 0x00ad }
-        L_0x00a3:
+            java.lang.StringBuilder r0 = r0.append(r1)     // Catch:{ all -> 0x00af }
+            long r1 = r3.startTime     // Catch:{ all -> 0x00af }
+            double r1 = com.bumptech.glide.util.LogTime.getElapsedMillis(r1)     // Catch:{ all -> 0x00af }
+            java.lang.StringBuilder r0 = r0.append(r1)     // Catch:{ all -> 0x00af }
+            java.lang.String r0 = r0.toString()     // Catch:{ all -> 0x00af }
+            r3.logV(r0)     // Catch:{ all -> 0x00af }
+        L_0x00a5:
             monitor-exit(r3)
             return
-        L_0x00a5:
-            java.lang.IllegalArgumentException r0 = new java.lang.IllegalArgumentException     // Catch:{ all -> 0x00ad }
+        L_0x00a7:
+            java.lang.IllegalArgumentException r0 = new java.lang.IllegalArgumentException     // Catch:{ all -> 0x00af }
             java.lang.String r1 = "Cannot restart a running request"
-            r0.<init>(r1)     // Catch:{ all -> 0x00ad }
-            throw r0     // Catch:{ all -> 0x00ad }
-        L_0x00ad:
+            r0.<init>(r1)     // Catch:{ all -> 0x00af }
+            throw r0     // Catch:{ all -> 0x00af }
+        L_0x00af:
             r0 = move-exception
             monitor-exit(r3)
             throw r0
@@ -252,8 +240,9 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         assertNotCallingCallbacks();
         this.stateVerifier.throwIfRecycled();
         this.target.removeCallback(this);
-        if (this.loadStatus != null) {
-            this.loadStatus.cancel();
+        Engine.LoadStatus loadStatus2 = this.loadStatus;
+        if (loadStatus2 != null) {
+            loadStatus2.cancel();
             this.loadStatus = null;
         }
     }
@@ -269,8 +258,9 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         this.stateVerifier.throwIfRecycled();
         if (this.status != Status.CLEARED) {
             cancel();
-            if (this.resource != null) {
-                releaseResource(this.resource);
+            Resource<R> resource2 = this.resource;
+            if (resource2 != null) {
+                releaseResource(resource2);
             }
             if (canNotifyCleared()) {
                 this.target.onLoadCleared(getPlaceholderDrawable());
@@ -306,8 +296,9 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
 
     private Drawable getErrorDrawable() {
         if (this.errorDrawable == null) {
-            this.errorDrawable = this.requestOptions.getErrorPlaceholder();
-            if (this.errorDrawable == null && this.requestOptions.getErrorId() > 0) {
+            Drawable errorPlaceholder = this.requestOptions.getErrorPlaceholder();
+            this.errorDrawable = errorPlaceholder;
+            if (errorPlaceholder == null && this.requestOptions.getErrorId() > 0) {
                 this.errorDrawable = loadDrawable(this.requestOptions.getErrorId());
             }
         }
@@ -316,8 +307,9 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
 
     private Drawable getPlaceholderDrawable() {
         if (this.placeholderDrawable == null) {
-            this.placeholderDrawable = this.requestOptions.getPlaceholderDrawable();
-            if (this.placeholderDrawable == null && this.requestOptions.getPlaceholderId() > 0) {
+            Drawable placeholderDrawable2 = this.requestOptions.getPlaceholderDrawable();
+            this.placeholderDrawable = placeholderDrawable2;
+            if (placeholderDrawable2 == null && this.requestOptions.getPlaceholderId() > 0) {
                 this.placeholderDrawable = loadDrawable(this.requestOptions.getPlaceholderId());
             }
         }
@@ -326,15 +318,16 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
 
     private Drawable getFallbackDrawable() {
         if (this.fallbackDrawable == null) {
-            this.fallbackDrawable = this.requestOptions.getFallbackDrawable();
-            if (this.fallbackDrawable == null && this.requestOptions.getFallbackId() > 0) {
+            Drawable fallbackDrawable2 = this.requestOptions.getFallbackDrawable();
+            this.fallbackDrawable = fallbackDrawable2;
+            if (fallbackDrawable2 == null && this.requestOptions.getFallbackId() > 0) {
                 this.fallbackDrawable = loadDrawable(this.requestOptions.getFallbackId());
             }
         }
         return this.fallbackDrawable;
     }
 
-    private Drawable loadDrawable(@DrawableRes int resourceId) {
+    private Drawable loadDrawable(int resourceId) {
         return DrawableDecoderCompat.getDrawable((Context) this.glideContext, resourceId, this.requestOptions.getTheme() != null ? this.requestOptions.getTheme() : this.context.getTheme());
     }
 
@@ -354,7 +347,7 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:27:0x00fb, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:26:0x0105, code lost:
         return;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
@@ -363,122 +356,124 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
             r23 = this;
             r15 = r23
             monitor-enter(r23)
-            com.bumptech.glide.util.pool.StateVerifier r0 = r15.stateVerifier     // Catch:{ all -> 0x0102 }
-            r0.throwIfRecycled()     // Catch:{ all -> 0x0102 }
-            boolean r0 = IS_VERBOSE_LOGGABLE     // Catch:{ all -> 0x0102 }
-            if (r0 == 0) goto L_0x0026
-            java.lang.StringBuilder r0 = new java.lang.StringBuilder     // Catch:{ all -> 0x0102 }
-            r0.<init>()     // Catch:{ all -> 0x0102 }
-            java.lang.String r1 = "Got onSizeReady in "
-            r0.append(r1)     // Catch:{ all -> 0x0102 }
-            long r1 = r15.startTime     // Catch:{ all -> 0x0102 }
-            double r1 = com.bumptech.glide.util.LogTime.getElapsedMillis(r1)     // Catch:{ all -> 0x0102 }
-            r0.append(r1)     // Catch:{ all -> 0x0102 }
-            java.lang.String r0 = r0.toString()     // Catch:{ all -> 0x0102 }
-            r15.logV(r0)     // Catch:{ all -> 0x0102 }
-        L_0x0026:
-            com.bumptech.glide.request.SingleRequest$Status r0 = r15.status     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.WAITING_FOR_SIZE     // Catch:{ all -> 0x0102 }
-            if (r0 == r1) goto L_0x002e
+            com.bumptech.glide.util.pool.StateVerifier r0 = r15.stateVerifier     // Catch:{ all -> 0x010c }
+            r0.throwIfRecycled()     // Catch:{ all -> 0x010c }
+            boolean r0 = IS_VERBOSE_LOGGABLE     // Catch:{ all -> 0x010c }
+            if (r0 == 0) goto L_0x0028
+            java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch:{ all -> 0x010c }
+            r1.<init>()     // Catch:{ all -> 0x010c }
+            java.lang.String r2 = "Got onSizeReady in "
+            java.lang.StringBuilder r1 = r1.append(r2)     // Catch:{ all -> 0x010c }
+            long r2 = r15.startTime     // Catch:{ all -> 0x010c }
+            double r2 = com.bumptech.glide.util.LogTime.getElapsedMillis(r2)     // Catch:{ all -> 0x010c }
+            java.lang.StringBuilder r1 = r1.append(r2)     // Catch:{ all -> 0x010c }
+            java.lang.String r1 = r1.toString()     // Catch:{ all -> 0x010c }
+            r15.logV(r1)     // Catch:{ all -> 0x010c }
+        L_0x0028:
+            com.bumptech.glide.request.SingleRequest$Status r1 = r15.status     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.SingleRequest$Status r2 = com.bumptech.glide.request.SingleRequest.Status.WAITING_FOR_SIZE     // Catch:{ all -> 0x010c }
+            if (r1 == r2) goto L_0x0030
             monitor-exit(r23)
             return
-        L_0x002e:
-            com.bumptech.glide.request.SingleRequest$Status r0 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x0102 }
-            r15.status = r0     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r0 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            float r0 = r0.getSizeMultiplier()     // Catch:{ all -> 0x0102 }
-            r14 = r24
-            int r1 = maybeApplySizeMultiplier(r14, r0)     // Catch:{ all -> 0x0102 }
-            r15.width = r1     // Catch:{ all -> 0x0102 }
-            r13 = r25
-            int r1 = maybeApplySizeMultiplier(r13, r0)     // Catch:{ all -> 0x0102 }
-            r15.height = r1     // Catch:{ all -> 0x0102 }
-            boolean r1 = IS_VERBOSE_LOGGABLE     // Catch:{ all -> 0x0102 }
-            if (r1 == 0) goto L_0x0066
-            java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch:{ all -> 0x0102 }
-            r1.<init>()     // Catch:{ all -> 0x0102 }
+        L_0x0030:
+            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x010c }
+            r15.status = r1     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.BaseRequestOptions<?> r1 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            float r1 = r1.getSizeMultiplier()     // Catch:{ all -> 0x010c }
+            r14 = r1
+            r13 = r24
+            int r1 = maybeApplySizeMultiplier(r13, r14)     // Catch:{ all -> 0x010c }
+            r15.width = r1     // Catch:{ all -> 0x010c }
+            r12 = r25
+            int r1 = maybeApplySizeMultiplier(r12, r14)     // Catch:{ all -> 0x010c }
+            r15.height = r1     // Catch:{ all -> 0x010c }
+            if (r0 == 0) goto L_0x0069
+            java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch:{ all -> 0x010c }
+            r1.<init>()     // Catch:{ all -> 0x010c }
             java.lang.String r2 = "finished setup for calling load in "
-            r1.append(r2)     // Catch:{ all -> 0x0102 }
-            long r2 = r15.startTime     // Catch:{ all -> 0x0102 }
-            double r2 = com.bumptech.glide.util.LogTime.getElapsedMillis(r2)     // Catch:{ all -> 0x0102 }
-            r1.append(r2)     // Catch:{ all -> 0x0102 }
-            java.lang.String r1 = r1.toString()     // Catch:{ all -> 0x0102 }
-            r15.logV(r1)     // Catch:{ all -> 0x0102 }
-        L_0x0066:
-            com.bumptech.glide.load.engine.Engine r1 = r15.engine     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.GlideContext r2 = r15.glideContext     // Catch:{ all -> 0x0102 }
-            java.lang.Object r3 = r15.model     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r4 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.load.Key r4 = r4.getSignature()     // Catch:{ all -> 0x0102 }
-            int r5 = r15.width     // Catch:{ all -> 0x0102 }
-            int r6 = r15.height     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r7 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            java.lang.Class r7 = r7.getResourceClass()     // Catch:{ all -> 0x0102 }
-            java.lang.Class<R> r8 = r15.transcodeClass     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.Priority r9 = r15.priority     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r10 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.load.engine.DiskCacheStrategy r10 = r10.getDiskCacheStrategy()     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r11 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            java.util.Map r11 = r11.getTransformations()     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r12 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            boolean r12 = r12.isTransformationRequired()     // Catch:{ all -> 0x0102 }
+            java.lang.StringBuilder r1 = r1.append(r2)     // Catch:{ all -> 0x010c }
+            long r2 = r15.startTime     // Catch:{ all -> 0x010c }
+            double r2 = com.bumptech.glide.util.LogTime.getElapsedMillis(r2)     // Catch:{ all -> 0x010c }
+            java.lang.StringBuilder r1 = r1.append(r2)     // Catch:{ all -> 0x010c }
+            java.lang.String r1 = r1.toString()     // Catch:{ all -> 0x010c }
+            r15.logV(r1)     // Catch:{ all -> 0x010c }
+        L_0x0069:
+            com.bumptech.glide.load.engine.Engine r1 = r15.engine     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.GlideContext r2 = r15.glideContext     // Catch:{ all -> 0x010c }
+            java.lang.Object r3 = r15.model     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.BaseRequestOptions<?> r4 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.load.Key r4 = r4.getSignature()     // Catch:{ all -> 0x010c }
+            int r5 = r15.width     // Catch:{ all -> 0x010c }
+            int r6 = r15.height     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.BaseRequestOptions<?> r7 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            java.lang.Class r7 = r7.getResourceClass()     // Catch:{ all -> 0x010c }
+            java.lang.Class<R> r8 = r15.transcodeClass     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.Priority r9 = r15.priority     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.BaseRequestOptions<?> r10 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.load.engine.DiskCacheStrategy r10 = r10.getDiskCacheStrategy()     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.BaseRequestOptions<?> r11 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            java.util.Map r11 = r11.getTransformations()     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.BaseRequestOptions<?> r12 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            boolean r12 = r12.isTransformationRequired()     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.request.BaseRequestOptions<?> r13 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            boolean r13 = r13.isScaleOnlyOrNoTransform()     // Catch:{ all -> 0x010c }
+            r16 = r14
+            com.bumptech.glide.request.BaseRequestOptions<?> r14 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            com.bumptech.glide.load.Options r14 = r14.getOptions()     // Catch:{ all -> 0x010c }
             r21 = r0
-            com.bumptech.glide.request.BaseRequestOptions<?> r0 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            boolean r0 = r0.isScaleOnlyOrNoTransform()     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r13 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.load.Options r16 = r13.getOptions()     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r13 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            boolean r17 = r13.isMemoryCacheable()     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r13 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            boolean r18 = r13.getUseUnlimitedSourceGeneratorsPool()     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r13 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            boolean r19 = r13.getUseAnimationPool()     // Catch:{ all -> 0x0102 }
-            com.bumptech.glide.request.BaseRequestOptions<?> r13 = r15.requestOptions     // Catch:{ all -> 0x0102 }
-            boolean r20 = r13.getOnlyRetrieveFromCache()     // Catch:{ all -> 0x0102 }
-            java.util.concurrent.Executor r13 = r15.callbackExecutor     // Catch:{ all -> 0x0102 }
-            r22 = r13
-            r13 = r0
-            r14 = r16
+            com.bumptech.glide.request.BaseRequestOptions<?> r0 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            boolean r0 = r0.isMemoryCacheable()     // Catch:{ all -> 0x010c }
+            r17 = r0
+            com.bumptech.glide.request.BaseRequestOptions<?> r0 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            boolean r0 = r0.getUseUnlimitedSourceGeneratorsPool()     // Catch:{ all -> 0x010c }
+            r18 = r0
+            com.bumptech.glide.request.BaseRequestOptions<?> r0 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            boolean r0 = r0.getUseAnimationPool()     // Catch:{ all -> 0x010c }
+            r19 = r0
+            com.bumptech.glide.request.BaseRequestOptions<?> r0 = r15.requestOptions     // Catch:{ all -> 0x010c }
+            boolean r0 = r0.getOnlyRetrieveFromCache()     // Catch:{ all -> 0x010c }
+            r20 = r0
+            java.util.concurrent.Executor r0 = r15.callbackExecutor     // Catch:{ all -> 0x010c }
+            r22 = r16
             r15 = r17
             r16 = r18
             r17 = r19
             r18 = r20
             r19 = r23
-            r20 = r22
-            com.bumptech.glide.load.engine.Engine$LoadStatus r0 = r1.load(r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20)     // Catch:{ all -> 0x00fe }
+            r20 = r0
+            com.bumptech.glide.load.engine.Engine$LoadStatus r0 = r1.load(r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20)     // Catch:{ all -> 0x0108 }
             r1 = r23
-            r1.loadStatus = r0     // Catch:{ all -> 0x00fc }
-            com.bumptech.glide.request.SingleRequest$Status r0 = r1.status     // Catch:{ all -> 0x00fc }
-            com.bumptech.glide.request.SingleRequest$Status r2 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x00fc }
-            if (r0 == r2) goto L_0x00dc
+            r1.loadStatus = r0     // Catch:{ all -> 0x0106 }
+            com.bumptech.glide.request.SingleRequest$Status r0 = r1.status     // Catch:{ all -> 0x0106 }
+            com.bumptech.glide.request.SingleRequest$Status r2 = com.bumptech.glide.request.SingleRequest.Status.RUNNING     // Catch:{ all -> 0x0106 }
+            if (r0 == r2) goto L_0x00e6
             r0 = 0
-            r1.loadStatus = r0     // Catch:{ all -> 0x00fc }
-        L_0x00dc:
-            boolean r0 = IS_VERBOSE_LOGGABLE     // Catch:{ all -> 0x00fc }
-            if (r0 == 0) goto L_0x00fa
-            java.lang.StringBuilder r0 = new java.lang.StringBuilder     // Catch:{ all -> 0x00fc }
-            r0.<init>()     // Catch:{ all -> 0x00fc }
+            r1.loadStatus = r0     // Catch:{ all -> 0x0106 }
+        L_0x00e6:
+            if (r21 == 0) goto L_0x0104
+            java.lang.StringBuilder r0 = new java.lang.StringBuilder     // Catch:{ all -> 0x0106 }
+            r0.<init>()     // Catch:{ all -> 0x0106 }
             java.lang.String r2 = "finished onSizeReady in "
-            r0.append(r2)     // Catch:{ all -> 0x00fc }
-            long r2 = r1.startTime     // Catch:{ all -> 0x00fc }
-            double r2 = com.bumptech.glide.util.LogTime.getElapsedMillis(r2)     // Catch:{ all -> 0x00fc }
-            r0.append(r2)     // Catch:{ all -> 0x00fc }
-            java.lang.String r0 = r0.toString()     // Catch:{ all -> 0x00fc }
-            r1.logV(r0)     // Catch:{ all -> 0x00fc }
-        L_0x00fa:
+            java.lang.StringBuilder r0 = r0.append(r2)     // Catch:{ all -> 0x0106 }
+            long r2 = r1.startTime     // Catch:{ all -> 0x0106 }
+            double r2 = com.bumptech.glide.util.LogTime.getElapsedMillis(r2)     // Catch:{ all -> 0x0106 }
+            java.lang.StringBuilder r0 = r0.append(r2)     // Catch:{ all -> 0x0106 }
+            java.lang.String r0 = r0.toString()     // Catch:{ all -> 0x0106 }
+            r1.logV(r0)     // Catch:{ all -> 0x0106 }
+        L_0x0104:
             monitor-exit(r23)
             return
-        L_0x00fc:
+        L_0x0106:
             r0 = move-exception
-            goto L_0x0104
-        L_0x00fe:
+            goto L_0x010e
+        L_0x0108:
             r0 = move-exception
             r1 = r23
-            goto L_0x0104
-        L_0x0102:
+            goto L_0x010e
+        L_0x010c:
             r0 = move-exception
             r1 = r15
-        L_0x0104:
+        L_0x010e:
             monitor-exit(r23)
             throw r0
         */
@@ -490,30 +485,36 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
     }
 
     private boolean canSetResource() {
-        return this.requestCoordinator == null || this.requestCoordinator.canSetImage(this);
+        RequestCoordinator requestCoordinator2 = this.requestCoordinator;
+        return requestCoordinator2 == null || requestCoordinator2.canSetImage(this);
     }
 
     private boolean canNotifyCleared() {
-        return this.requestCoordinator == null || this.requestCoordinator.canNotifyCleared(this);
+        RequestCoordinator requestCoordinator2 = this.requestCoordinator;
+        return requestCoordinator2 == null || requestCoordinator2.canNotifyCleared(this);
     }
 
     private boolean canNotifyStatusChanged() {
-        return this.requestCoordinator == null || this.requestCoordinator.canNotifyStatusChanged(this);
+        RequestCoordinator requestCoordinator2 = this.requestCoordinator;
+        return requestCoordinator2 == null || requestCoordinator2.canNotifyStatusChanged(this);
     }
 
     private boolean isFirstReadyResource() {
-        return this.requestCoordinator == null || !this.requestCoordinator.isAnyResourceSet();
+        RequestCoordinator requestCoordinator2 = this.requestCoordinator;
+        return requestCoordinator2 == null || !requestCoordinator2.isAnyResourceSet();
     }
 
     private void notifyLoadSuccess() {
-        if (this.requestCoordinator != null) {
-            this.requestCoordinator.onRequestSuccess(this);
+        RequestCoordinator requestCoordinator2 = this.requestCoordinator;
+        if (requestCoordinator2 != null) {
+            requestCoordinator2.onRequestSuccess(this);
         }
     }
 
     private void notifyLoadFailed() {
-        if (this.requestCoordinator != null) {
-            this.requestCoordinator.onRequestFailed(this);
+        RequestCoordinator requestCoordinator2 = this.requestCoordinator;
+        if (requestCoordinator2 != null) {
+            requestCoordinator2.onRequestFailed(this);
         }
     }
 
@@ -537,123 +538,110 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
             }
         }
         releaseResource(resource2);
-        StringBuilder sb = new StringBuilder();
-        sb.append("Expected to receive an object of ");
-        sb.append(this.transcodeClass);
-        sb.append(" but instead got ");
-        sb.append(received != null ? received.getClass() : "");
-        sb.append("{");
-        sb.append(received);
-        sb.append("} inside Resource{");
-        sb.append(resource2);
-        sb.append("}.");
-        sb.append(received != null ? "" : " To indicate failure return a null Resource object, rather than a Resource object containing null data.");
-        onLoadFailed(new GlideException(sb.toString()));
+        onLoadFailed(new GlideException("Expected to receive an object of " + this.transcodeClass + " but instead got " + (received != null ? received.getClass() : "") + "{" + received + "} inside Resource{" + resource2 + "}." + (received != null ? "" : " To indicate failure return a null Resource object, rather than a Resource object containing null data.")));
     }
 
     /* JADX INFO: finally extract failed */
-    /* JADX WARNING: Removed duplicated region for block: B:23:0x00ae A[Catch:{ all -> 0x00c1 }] */
+    /* JADX WARNING: Removed duplicated region for block: B:23:0x00b7 A[Catch:{ all -> 0x00ca }] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     private synchronized void onResourceReady(com.bumptech.glide.load.engine.Resource<R> r12, R r13, com.bumptech.glide.load.DataSource r14) {
         /*
             r11 = this;
             monitor-enter(r11)
-            boolean r0 = r11.isFirstReadyResource()     // Catch:{ all -> 0x00c5 }
-            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.COMPLETE     // Catch:{ all -> 0x00c5 }
-            r11.status = r1     // Catch:{ all -> 0x00c5 }
-            r11.resource = r12     // Catch:{ all -> 0x00c5 }
-            com.bumptech.glide.GlideContext r1 = r11.glideContext     // Catch:{ all -> 0x00c5 }
-            int r1 = r1.getLogLevel()     // Catch:{ all -> 0x00c5 }
+            boolean r0 = r11.isFirstReadyResource()     // Catch:{ all -> 0x00ce }
+            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.COMPLETE     // Catch:{ all -> 0x00ce }
+            r11.status = r1     // Catch:{ all -> 0x00ce }
+            r11.resource = r12     // Catch:{ all -> 0x00ce }
+            com.bumptech.glide.GlideContext r1 = r11.glideContext     // Catch:{ all -> 0x00ce }
+            int r1 = r1.getLogLevel()     // Catch:{ all -> 0x00ce }
             r2 = 3
-            if (r1 > r2) goto L_0x006b
+            if (r1 > r2) goto L_0x0078
             java.lang.String r1 = "Glide"
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder     // Catch:{ all -> 0x00c5 }
-            r2.<init>()     // Catch:{ all -> 0x00c5 }
+            java.lang.StringBuilder r2 = new java.lang.StringBuilder     // Catch:{ all -> 0x00ce }
+            r2.<init>()     // Catch:{ all -> 0x00ce }
             java.lang.String r3 = "Finished loading "
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
-            java.lang.Class r3 = r13.getClass()     // Catch:{ all -> 0x00c5 }
-            java.lang.String r3 = r3.getSimpleName()     // Catch:{ all -> 0x00c5 }
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.Class r3 = r13.getClass()     // Catch:{ all -> 0x00ce }
+            java.lang.String r3 = r3.getSimpleName()     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
             java.lang.String r3 = " from "
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
-            r2.append(r14)     // Catch:{ all -> 0x00c5 }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r14)     // Catch:{ all -> 0x00ce }
             java.lang.String r3 = " for "
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
-            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00c5 }
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
             java.lang.String r3 = " with size ["
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
-            int r3 = r11.width     // Catch:{ all -> 0x00c5 }
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            int r3 = r11.width     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
             java.lang.String r3 = "x"
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
-            int r3 = r11.height     // Catch:{ all -> 0x00c5 }
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            int r3 = r11.height     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
             java.lang.String r3 = "] in "
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
-            long r3 = r11.startTime     // Catch:{ all -> 0x00c5 }
-            double r3 = com.bumptech.glide.util.LogTime.getElapsedMillis(r3)     // Catch:{ all -> 0x00c5 }
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            long r3 = r11.startTime     // Catch:{ all -> 0x00ce }
+            double r3 = com.bumptech.glide.util.LogTime.getElapsedMillis(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
             java.lang.String r3 = " ms"
-            r2.append(r3)     // Catch:{ all -> 0x00c5 }
-            java.lang.String r2 = r2.toString()     // Catch:{ all -> 0x00c5 }
-            android.util.Log.d(r1, r2)     // Catch:{ all -> 0x00c5 }
-        L_0x006b:
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.String r2 = r2.toString()     // Catch:{ all -> 0x00ce }
+            android.util.Log.d(r1, r2)     // Catch:{ all -> 0x00ce }
+        L_0x0078:
             r7 = 1
-            r11.isCallingCallbacks = r7     // Catch:{ all -> 0x00c5 }
+            r11.isCallingCallbacks = r7     // Catch:{ all -> 0x00ce }
             r1 = 0
             r8 = 0
-            java.util.List<com.bumptech.glide.request.RequestListener<R>> r2 = r11.requestListeners     // Catch:{ all -> 0x00c1 }
-            if (r2 == 0) goto L_0x0094
-            java.util.List<com.bumptech.glide.request.RequestListener<R>> r2 = r11.requestListeners     // Catch:{ all -> 0x00c1 }
-            java.util.Iterator r9 = r2.iterator()     // Catch:{ all -> 0x00c1 }
+            java.util.List<com.bumptech.glide.request.RequestListener<R>> r2 = r11.requestListeners     // Catch:{ all -> 0x00ca }
+            if (r2 == 0) goto L_0x009f
+            java.util.Iterator r9 = r2.iterator()     // Catch:{ all -> 0x00ca }
             r10 = r1
-        L_0x007b:
-            boolean r1 = r9.hasNext()     // Catch:{ all -> 0x00c1 }
-            if (r1 == 0) goto L_0x0095
-            java.lang.Object r1 = r9.next()     // Catch:{ all -> 0x00c1 }
-            com.bumptech.glide.request.RequestListener r1 = (com.bumptech.glide.request.RequestListener) r1     // Catch:{ all -> 0x00c1 }
-            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00c1 }
-            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00c1 }
+        L_0x0086:
+            boolean r1 = r9.hasNext()     // Catch:{ all -> 0x00ca }
+            if (r1 == 0) goto L_0x00a0
+            java.lang.Object r1 = r9.next()     // Catch:{ all -> 0x00ca }
+            com.bumptech.glide.request.RequestListener r1 = (com.bumptech.glide.request.RequestListener) r1     // Catch:{ all -> 0x00ca }
+            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00ca }
+            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00ca }
             r2 = r13
             r5 = r14
             r6 = r0
-            boolean r2 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00c1 }
+            boolean r2 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00ca }
             r10 = r10 | r2
-            goto L_0x007b
-        L_0x0094:
+            goto L_0x0086
+        L_0x009f:
             r10 = r1
-        L_0x0095:
-            com.bumptech.glide.request.RequestListener<R> r1 = r11.targetListener     // Catch:{ all -> 0x00c1 }
-            if (r1 == 0) goto L_0x00a9
-            com.bumptech.glide.request.RequestListener<R> r1 = r11.targetListener     // Catch:{ all -> 0x00c1 }
-            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00c1 }
-            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00c1 }
+        L_0x00a0:
+            com.bumptech.glide.request.RequestListener<R> r1 = r11.targetListener     // Catch:{ all -> 0x00ca }
+            if (r1 == 0) goto L_0x00b2
+            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00ca }
+            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00ca }
             r2 = r13
             r5 = r14
             r6 = r0
-            boolean r1 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00c1 }
-            if (r1 == 0) goto L_0x00a9
-            goto L_0x00aa
-        L_0x00a9:
+            boolean r1 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00ca }
+            if (r1 == 0) goto L_0x00b2
+            goto L_0x00b3
+        L_0x00b2:
             r7 = r8
-        L_0x00aa:
+        L_0x00b3:
             r1 = r10 | r7
-            if (r1 != 0) goto L_0x00b9
-            com.bumptech.glide.request.transition.TransitionFactory<? super R> r2 = r11.animationFactory     // Catch:{ all -> 0x00c1 }
-            com.bumptech.glide.request.transition.Transition r2 = r2.build(r14, r0)     // Catch:{ all -> 0x00c1 }
-            com.bumptech.glide.request.target.Target<R> r3 = r11.target     // Catch:{ all -> 0x00c1 }
-            r3.onResourceReady(r13, r2)     // Catch:{ all -> 0x00c1 }
-        L_0x00b9:
-            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00c5 }
-            r11.notifyLoadSuccess()     // Catch:{ all -> 0x00c5 }
+            if (r1 != 0) goto L_0x00c2
+            com.bumptech.glide.request.transition.TransitionFactory<? super R> r2 = r11.animationFactory     // Catch:{ all -> 0x00ca }
+            com.bumptech.glide.request.transition.Transition r2 = r2.build(r14, r0)     // Catch:{ all -> 0x00ca }
+            com.bumptech.glide.request.target.Target<R> r3 = r11.target     // Catch:{ all -> 0x00ca }
+            r3.onResourceReady(r13, r2)     // Catch:{ all -> 0x00ca }
+        L_0x00c2:
+            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00ce }
+            r11.notifyLoadSuccess()     // Catch:{ all -> 0x00ce }
             monitor-exit(r11)
             return
-        L_0x00c1:
+        L_0x00ca:
             r1 = move-exception
-            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00c5 }
-            throw r1     // Catch:{ all -> 0x00c5 }
-        L_0x00c5:
+            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00ce }
+            throw r1     // Catch:{ all -> 0x00ce }
+        L_0x00ce:
             r12 = move-exception
             monitor-exit(r11)
             throw r12
@@ -682,12 +670,14 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         this.isCallingCallbacks = true;
         boolean anyListenerHandledUpdatingTarget = false;
         try {
-            if (this.requestListeners != null) {
-                for (RequestListener<R> listener : this.requestListeners) {
+            List<RequestListener<R>> list = this.requestListeners;
+            if (list != null) {
+                for (RequestListener<R> listener : list) {
                     anyListenerHandledUpdatingTarget |= listener.onLoadFailed(e, this.model, this.target, isFirstReadyResource());
                 }
             }
-            if (this.targetListener == null || !this.targetListener.onLoadFailed(e, this.model, this.target, isFirstReadyResource())) {
+            RequestListener<R> requestListener = this.targetListener;
+            if (requestListener == null || !requestListener.onLoadFailed(e, this.model, this.target, isFirstReadyResource())) {
                 z = false;
             }
             if (!z && !anyListenerHandledUpdatingTarget) {
@@ -701,29 +691,113 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
         }
     }
 
-    public synchronized boolean isEquivalentTo(Request o) {
-        boolean z = false;
-        if (!(o instanceof SingleRequest)) {
-            return false;
-        }
-        SingleRequest<?> that = (SingleRequest) o;
-        synchronized (that) {
-            if (this.overrideWidth == that.overrideWidth && this.overrideHeight == that.overrideHeight && Util.bothModelsNullEquivalentOrEquals(this.model, that.model) && this.transcodeClass.equals(that.transcodeClass) && this.requestOptions.equals(that.requestOptions) && this.priority == that.priority && listenerCountEquals(that)) {
-                z = true;
-            }
-        }
-        return z;
+    /* JADX WARNING: Code restructure failed: missing block: B:30:0x0049, code lost:
+        r1 = th;
+     */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
+    public synchronized boolean isEquivalentTo(com.bumptech.glide.request.Request r5) {
+        /*
+            r4 = this;
+            monitor-enter(r4)
+            boolean r0 = r5 instanceof com.bumptech.glide.request.SingleRequest     // Catch:{ all -> 0x004d }
+            r1 = 0
+            if (r0 == 0) goto L_0x004b
+            r0 = r5
+            com.bumptech.glide.request.SingleRequest r0 = (com.bumptech.glide.request.SingleRequest) r0     // Catch:{ all -> 0x004d }
+            monitor-enter(r0)     // Catch:{ all -> 0x004d }
+            int r2 = r4.overrideWidth     // Catch:{ all -> 0x0046 }
+            int r3 = r0.overrideWidth     // Catch:{ all -> 0x0046 }
+            if (r2 != r3) goto L_0x0042
+            int r2 = r4.overrideHeight     // Catch:{ all -> 0x0046 }
+            int r3 = r0.overrideHeight     // Catch:{ all -> 0x0046 }
+            if (r2 != r3) goto L_0x0042
+            java.lang.Object r2 = r4.model     // Catch:{ all -> 0x0046 }
+            java.lang.Object r3 = r0.model     // Catch:{ all -> 0x0046 }
+            boolean r2 = com.bumptech.glide.util.Util.bothModelsNullEquivalentOrEquals(r2, r3)     // Catch:{ all -> 0x0046 }
+            if (r2 == 0) goto L_0x0042
+            java.lang.Class<R> r2 = r4.transcodeClass     // Catch:{ all -> 0x0046 }
+            java.lang.Class<R> r3 = r0.transcodeClass     // Catch:{ all -> 0x0046 }
+            boolean r2 = r2.equals(r3)     // Catch:{ all -> 0x0046 }
+            if (r2 == 0) goto L_0x0042
+            com.bumptech.glide.request.BaseRequestOptions<?> r2 = r4.requestOptions     // Catch:{ all -> 0x0046 }
+            com.bumptech.glide.request.BaseRequestOptions<?> r3 = r0.requestOptions     // Catch:{ all -> 0x0046 }
+            boolean r2 = r2.equals(r3)     // Catch:{ all -> 0x0046 }
+            if (r2 == 0) goto L_0x0042
+            com.bumptech.glide.Priority r2 = r4.priority     // Catch:{ all -> 0x0046 }
+            com.bumptech.glide.Priority r3 = r0.priority     // Catch:{ all -> 0x0046 }
+            if (r2 != r3) goto L_0x0042
+            boolean r2 = r4.listenerCountEquals(r0)     // Catch:{ all -> 0x0046 }
+            if (r2 == 0) goto L_0x0042
+            r1 = 1
+            goto L_0x0043
+        L_0x0042:
+        L_0x0043:
+            monitor-exit(r0)     // Catch:{ all -> 0x0046 }
+            monitor-exit(r4)
+            return r1
+        L_0x0046:
+            r1 = move-exception
+        L_0x0047:
+            monitor-exit(r0)     // Catch:{ all -> 0x0049 }
+            throw r1     // Catch:{ all -> 0x004d }
+        L_0x0049:
+            r1 = move-exception
+            goto L_0x0047
+        L_0x004b:
+            monitor-exit(r4)
+            return r1
+        L_0x004d:
+            r5 = move-exception
+            monitor-exit(r4)
+            throw r5
+        */
+        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.SingleRequest.isEquivalentTo(com.bumptech.glide.request.Request):boolean");
     }
 
-    private synchronized boolean listenerCountEquals(SingleRequest<?> other) {
-        boolean z;
-        synchronized (other) {
-            z = false;
-            if ((this.requestListeners == null ? 0 : this.requestListeners.size()) == (other.requestListeners == null ? 0 : other.requestListeners.size())) {
-                z = true;
-            }
-        }
-        return z;
+    /* JADX WARNING: Code restructure failed: missing block: B:22:0x0020, code lost:
+        r0 = th;
+     */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
+    private synchronized boolean listenerCountEquals(com.bumptech.glide.request.SingleRequest<?> r4) {
+        /*
+            r3 = this;
+            monitor-enter(r3)
+            monitor-enter(r4)     // Catch:{ all -> 0x0022 }
+            java.util.List<com.bumptech.glide.request.RequestListener<R>> r0 = r3.requestListeners     // Catch:{ all -> 0x001d }
+            r1 = 0
+            if (r0 != 0) goto L_0x0009
+            r0 = r1
+            goto L_0x000d
+        L_0x0009:
+            int r0 = r0.size()     // Catch:{ all -> 0x001d }
+        L_0x000d:
+            java.util.List<com.bumptech.glide.request.RequestListener<R>> r2 = r4.requestListeners     // Catch:{ all -> 0x001d }
+            if (r2 != 0) goto L_0x0013
+            r2 = r1
+            goto L_0x0017
+        L_0x0013:
+            int r2 = r2.size()     // Catch:{ all -> 0x001d }
+        L_0x0017:
+            if (r0 != r2) goto L_0x001a
+            r1 = 1
+        L_0x001a:
+            monitor-exit(r4)     // Catch:{ all -> 0x001d }
+            monitor-exit(r3)
+            return r1
+        L_0x001d:
+            r0 = move-exception
+        L_0x001e:
+            monitor-exit(r4)     // Catch:{ all -> 0x0020 }
+            throw r0     // Catch:{ all -> 0x0022 }
+        L_0x0020:
+            r0 = move-exception
+            goto L_0x001e
+        L_0x0022:
+            r4 = move-exception
+            monitor-exit(r3)
+            throw r4
+        */
+        throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.request.SingleRequest.listenerCountEquals(com.bumptech.glide.request.SingleRequest):boolean");
     }
 
     private void logV(String message) {

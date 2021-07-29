@@ -94,6 +94,7 @@ public final class ConstructorConstructor {
             if (EnumSet.class.isAssignableFrom(rawType)) {
                 return new ObjectConstructor<T>() {
                     public T construct() {
+                        Type type = type;
                         if (type instanceof ParameterizedType) {
                             Type elementType = ((ParameterizedType) type).getActualTypeArguments()[0];
                             if (elementType instanceof Class) {

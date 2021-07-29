@@ -7,8 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.mediacompat.R;
 import android.support.v4.app.BundleCompat;
 import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
@@ -81,7 +79,6 @@ public class NotificationCompat {
             return this;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 21) {
                 builder.getBuilder().setStyle(fillInMediaStyle(new Notification.MediaStyle()));
@@ -91,18 +88,18 @@ public class NotificationCompat {
         }
 
         /* access modifiers changed from: package-private */
-        @RequiresApi(21)
         public Notification.MediaStyle fillInMediaStyle(Notification.MediaStyle style) {
-            if (this.mActionsToShowInCompact != null) {
-                style.setShowActionsInCompactView(this.mActionsToShowInCompact);
+            int[] iArr = this.mActionsToShowInCompact;
+            if (iArr != null) {
+                style.setShowActionsInCompactView(iArr);
             }
-            if (this.mToken != null) {
-                style.setMediaSession((MediaSession.Token) this.mToken.getToken());
+            MediaSessionCompat.Token token = this.mToken;
+            if (token != null) {
+                style.setMediaSession((MediaSession.Token) token.getToken());
             }
             return style;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeContentView(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 21) {
                 return null;
@@ -112,9 +109,15 @@ public class NotificationCompat {
 
         /* access modifiers changed from: package-private */
         public RemoteViews generateContentView() {
+            int numActionsInCompact;
             RemoteViews view = applyStandardTemplate(false, getContentViewLayoutResource(), true);
             int numActions = this.mBuilder.mActions.size();
-            int numActionsInCompact = this.mActionsToShowInCompact == null ? 0 : Math.min(this.mActionsToShowInCompact.length, 3);
+            int[] iArr = this.mActionsToShowInCompact;
+            if (iArr == null) {
+                numActionsInCompact = 0;
+            } else {
+                numActionsInCompact = Math.min(iArr.length, 3);
+            }
             view.removeAllViews(R.id.media_actions);
             if (numActionsInCompact > 0) {
                 int i = 0;
@@ -157,7 +160,6 @@ public class NotificationCompat {
             return R.layout.notification_template_media;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeBigContentView(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 21) {
                 return null;
@@ -192,7 +194,6 @@ public class NotificationCompat {
     }
 
     public static class DecoratedMediaCustomViewStyle extends MediaStyle {
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 24) {
                 builder.getBuilder().setStyle(fillInMediaStyle(new Notification.DecoratedMediaCustomViewStyle()));
@@ -201,16 +202,15 @@ public class NotificationCompat {
             }
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeContentView(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 24) {
                 return null;
             }
-            boolean createCustomContent = false;
+            boolean createCustomContent = true;
             boolean hasContentView = this.mBuilder.getContentView() != null;
             if (Build.VERSION.SDK_INT >= 21) {
-                if (hasContentView || this.mBuilder.getBigContentView() != null) {
-                    createCustomContent = true;
+                if (!hasContentView && this.mBuilder.getBigContentView() == null) {
+                    createCustomContent = false;
                 }
                 if (createCustomContent) {
                     RemoteViews contentView = generateContentView();
@@ -238,7 +238,6 @@ public class NotificationCompat {
             return super.getContentViewLayoutResource();
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeBigContentView(NotificationBuilderWithBuilderAccessor builder) {
             RemoteViews innerView;
             if (Build.VERSION.SDK_INT >= 24) {
@@ -265,7 +264,6 @@ public class NotificationCompat {
             return actionCount <= 3 ? R.layout.notification_template_big_media_narrow_custom : R.layout.notification_template_big_media_custom;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeHeadsUpContentView(NotificationBuilderWithBuilderAccessor builder) {
             RemoteViews innerView;
             if (Build.VERSION.SDK_INT >= 24) {

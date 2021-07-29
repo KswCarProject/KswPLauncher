@@ -48,8 +48,8 @@ public class JsonReader implements Closeable {
     private int peekedNumberLength;
     private String peekedString;
     private int pos = 0;
-    private int[] stack = new int[32];
-    private int stackSize = 0;
+    private int[] stack;
+    private int stackSize;
 
     static {
         JsonReaderInternalAccess.INSTANCE = new JsonReaderInternalAccess() {
@@ -76,10 +76,11 @@ public class JsonReader implements Closeable {
     }
 
     public JsonReader(Reader in2) {
-        int[] iArr = this.stack;
-        int i = this.stackSize;
-        this.stackSize = i + 1;
-        iArr[i] = 6;
+        int[] iArr = new int[32];
+        this.stack = iArr;
+        this.stackSize = 0;
+        this.stackSize = 0 + 1;
+        iArr[0] = 6;
         if (in2 != null) {
             this.in = in2;
             return;
@@ -195,68 +196,82 @@ public class JsonReader implements Closeable {
 
     /* access modifiers changed from: private */
     public int doPeek() throws IOException {
-        int c;
-        int peekStack = this.stack[this.stackSize - 1];
+        int[] iArr = this.stack;
+        int i = this.stackSize;
+        int peekStack = iArr[i - 1];
         if (peekStack == 1) {
-            this.stack[this.stackSize - 1] = 2;
+            iArr[i - 1] = 2;
         } else if (peekStack == 2) {
-            int c2 = nextNonWhitespace(true);
-            if (c2 != 44) {
-                if (c2 == 59) {
+            switch (nextNonWhitespace(true)) {
+                case 44:
+                    break;
+                case 59:
                     checkLenient();
-                } else if (c2 == 93) {
+                    break;
+                case 93:
                     this.peeked = 4;
                     return 4;
-                } else {
+                default:
                     throw syntaxError("Unterminated array");
-                }
             }
         } else if (peekStack == 3 || peekStack == 5) {
-            this.stack[this.stackSize - 1] = 4;
-            if (peekStack == 5 && (c = nextNonWhitespace(true)) != 44) {
-                if (c == 59) {
-                    checkLenient();
-                } else if (c == 125) {
-                    this.peeked = 2;
-                    return 2;
-                } else {
-                    throw syntaxError("Unterminated object");
+            iArr[i - 1] = 4;
+            if (peekStack == 5) {
+                switch (nextNonWhitespace(true)) {
+                    case 44:
+                        break;
+                    case 59:
+                        checkLenient();
+                        break;
+                    case 125:
+                        this.peeked = 2;
+                        return 2;
+                    default:
+                        throw syntaxError("Unterminated object");
                 }
             }
-            int c3 = nextNonWhitespace(true);
-            if (c3 == 34) {
-                this.peeked = 13;
-                return 13;
-            } else if (c3 == 39) {
-                checkLenient();
-                this.peeked = 12;
-                return 12;
-            } else if (c3 != 125) {
-                checkLenient();
-                this.pos--;
-                if (isLiteral((char) c3)) {
-                    this.peeked = 14;
-                    return 14;
-                }
-                throw syntaxError("Expected name");
-            } else if (peekStack != 5) {
-                this.peeked = 2;
-                return 2;
-            } else {
-                throw syntaxError("Expected name");
+            int c = nextNonWhitespace(true);
+            switch (c) {
+                case 34:
+                    this.peeked = 13;
+                    return 13;
+                case 39:
+                    checkLenient();
+                    this.peeked = 12;
+                    return 12;
+                case 125:
+                    if (peekStack != 5) {
+                        this.peeked = 2;
+                        return 2;
+                    }
+                    throw syntaxError("Expected name");
+                default:
+                    checkLenient();
+                    this.pos--;
+                    if (isLiteral((char) c)) {
+                        this.peeked = 14;
+                        return 14;
+                    }
+                    throw syntaxError("Expected name");
             }
         } else if (peekStack == 4) {
-            this.stack[this.stackSize - 1] = 5;
-            int c4 = nextNonWhitespace(true);
-            if (c4 != 58) {
-                if (c4 == 61) {
+            iArr[i - 1] = 5;
+            switch (nextNonWhitespace(true)) {
+                case 58:
+                    break;
+                case 61:
                     checkLenient();
-                    if ((this.pos < this.limit || fillBuffer(1)) && this.buffer[this.pos] == '>') {
-                        this.pos++;
+                    if (this.pos < this.limit || fillBuffer(1)) {
+                        char[] cArr = this.buffer;
+                        int i2 = this.pos;
+                        if (cArr[i2] == '>') {
+                            this.pos = i2 + 1;
+                            break;
+                        }
                     }
-                } else {
+                    break;
+                default:
                     throw syntaxError("Expected ':'");
-                }
             }
         } else if (peekStack == 6) {
             if (this.lenient) {
@@ -273,58 +288,59 @@ public class JsonReader implements Closeable {
         } else if (peekStack == 8) {
             throw new IllegalStateException("JsonReader is closed");
         }
-        int c5 = nextNonWhitespace(true);
-        if (c5 == 34) {
-            if (this.stackSize == 1) {
+        switch (nextNonWhitespace(true)) {
+            case 34:
+                if (this.stackSize == 1) {
+                    checkLenient();
+                }
+                this.peeked = 9;
+                return 9;
+            case 39:
                 checkLenient();
-            }
-            this.peeked = 9;
-            return 9;
-        } else if (c5 != 39) {
-            if (!(c5 == 44 || c5 == 59)) {
-                if (c5 == 91) {
-                    this.peeked = 3;
-                    return 3;
-                } else if (c5 != 93) {
-                    if (c5 != 123) {
-                        this.pos--;
-                        if (this.stackSize == 1) {
-                            checkLenient();
-                        }
-                        int result = peekKeyword();
-                        if (result != 0) {
-                            return result;
-                        }
-                        int result2 = peekNumber();
-                        if (result2 != 0) {
-                            return result2;
-                        }
-                        if (isLiteral(this.buffer[this.pos])) {
-                            checkLenient();
-                            this.peeked = 10;
-                            return 10;
-                        }
-                        throw syntaxError("Expected value");
-                    }
-                    this.peeked = 1;
-                    return 1;
-                } else if (peekStack == 1) {
+                this.peeked = 8;
+                return 8;
+            case 44:
+            case 59:
+                break;
+            case 91:
+                this.peeked = 3;
+                return 3;
+            case 93:
+                if (peekStack == 1) {
                     this.peeked = 4;
                     return 4;
                 }
-            }
-            if (peekStack == 1 || peekStack == 2) {
-                checkLenient();
+                break;
+            case 123:
+                this.peeked = 1;
+                return 1;
+            default:
                 this.pos--;
-                this.peeked = 7;
-                return 7;
-            }
-            throw syntaxError("Unexpected value");
-        } else {
-            checkLenient();
-            this.peeked = 8;
-            return 8;
+                if (this.stackSize == 1) {
+                    checkLenient();
+                }
+                int result = peekKeyword();
+                if (result != 0) {
+                    return result;
+                }
+                int result2 = peekNumber();
+                if (result2 != 0) {
+                    return result2;
+                }
+                if (isLiteral(this.buffer[this.pos])) {
+                    checkLenient();
+                    this.peeked = 10;
+                    return 10;
+                }
+                throw syntaxError("Expected value");
         }
+        if (peekStack == 1 || peekStack == 2) {
+            checkLenient();
+            this.pos--;
+            this.peeked = 7;
+            return 7;
+        }
+        throw syntaxError("Unexpected value");
     }
 
     private int peekKeyword() throws IOException {
@@ -366,138 +382,111 @@ public class JsonReader implements Closeable {
     }
 
     private int peekNumber() throws IOException {
-        long value;
         char c;
-        long value2;
         char[] buffer2 = this.buffer;
         int p = this.pos;
+        int l = this.limit;
+        long value = 0;
         boolean negative = false;
         boolean fitsInLong = true;
         int last = 0;
         int i = 0;
-        long value3 = 0;
-        int l = this.limit;
-        int p2 = p;
-        int i2 = 0;
         while (true) {
-            if (p2 + i2 == l) {
-                if (i2 == buffer2.length) {
-                    return i;
+            boolean z = false;
+            if (p + i == l) {
+                if (i == buffer2.length) {
+                    return 0;
                 }
-                if (!fillBuffer(i2 + 1)) {
-                    value = value3;
-                } else {
-                    p2 = this.pos;
+                if (fillBuffer(i + 1)) {
+                    p = this.pos;
                     l = this.limit;
                 }
             }
-            c = buffer2[p2 + i2];
-            if (c != '+') {
-                if (c != 'E' && c != 'e') {
-                    switch (c) {
-                        case '-':
-                            value2 = value3;
-                            if (last == 0) {
-                                negative = true;
-                                last = 1;
-                                break;
-                            } else if (last == 5) {
-                                last = 6;
+            c = buffer2[p + i];
+            switch (c) {
+                case '+':
+                    if (last != 5) {
+                        return 0;
+                    }
+                    last = 6;
+                    continue;
+                case '-':
+                    if (last == 0) {
+                        negative = true;
+                        last = 1;
+                        continue;
+                    } else if (last == 5) {
+                        last = 6;
+                        break;
+                    } else {
+                        return 0;
+                    }
+                case '.':
+                    if (last != 2) {
+                        return 0;
+                    }
+                    last = 3;
+                    continue;
+                case 'E':
+                case 'e':
+                    if (last != 2 && last != 4) {
+                        return 0;
+                    }
+                    last = 5;
+                    continue;
+                default:
+                    if (c >= '0' && c <= '9') {
+                        if (last != 1 && last != 0) {
+                            if (last != 2) {
+                                if (last != 3) {
+                                    if (last != 5 && last != 6) {
+                                        break;
+                                    } else {
+                                        last = 7;
+                                        break;
+                                    }
+                                } else {
+                                    last = 4;
+                                    break;
+                                }
+                            } else if (value != 0) {
+                                long newValue = (10 * value) - ((long) (c - '0'));
+                                if (value > MIN_INCOMPLETE_INTEGER || (value == MIN_INCOMPLETE_INTEGER && newValue < value)) {
+                                    z = true;
+                                }
+                                fitsInLong &= z;
+                                value = newValue;
                                 break;
                             } else {
                                 return 0;
                             }
-                        case '.':
-                            int i3 = i;
-                            value2 = value3;
-                            if (last == 2) {
-                                last = 3;
-                                break;
-                            } else {
-                                return i3;
-                            }
-                        default:
-                            if (c >= '0') {
-                                if (c <= '9') {
-                                    boolean z = true;
-                                    if (last != 1) {
-                                        if (last != 0) {
-                                            if (last == 2) {
-                                                if (value3 != 0) {
-                                                    long value4 = value3;
-                                                    long newValue = (10 * value3) - ((long) (c - '0'));
-                                                    if (value4 <= MIN_INCOMPLETE_INTEGER && (value4 != MIN_INCOMPLETE_INTEGER || newValue >= value4)) {
-                                                        z = false;
-                                                    }
-                                                    fitsInLong &= z;
-                                                    value2 = newValue;
-                                                    break;
-                                                } else {
-                                                    return i;
-                                                }
-                                            } else {
-                                                long value5 = value3;
-                                                if (last == 3) {
-                                                    last = 4;
-                                                } else if (last == 5 || last == 6) {
-                                                    last = 7;
-                                                }
-                                                value3 = value5;
-                                                break;
-                                            }
-                                        } else {
-                                            long j = value3;
-                                        }
-                                    }
-                                    value2 = (long) (-(c - '0'));
-                                    last = 2;
-                                    break;
-                                } else {
-                                    value = value3;
-                                    break;
-                                }
-                            } else {
-                                value = value3;
-                                break;
-                            }
+                        } else {
+                            value = (long) (-(c - '0'));
+                            last = 2;
+                            continue;
+                        }
+                    } else {
+                        break;
                     }
-                } else {
-                    int i4 = i;
-                    value2 = value3;
-                    if (last != 2 && last != 4) {
-                        return i4;
-                    }
-                    last = 5;
-                }
-            } else {
-                value2 = value3;
-                if (last != 5) {
-                    return 0;
-                }
-                last = 6;
+                    break;
             }
-            value3 = value2;
-            i2++;
-            i = 0;
+            i++;
         }
         if (isLiteral(c)) {
             return 0;
         }
-        if (last != 2 || !fitsInLong) {
-        } else if (value != Long.MIN_VALUE || negative) {
+        if (last == 2 && fitsInLong && (value != Long.MIN_VALUE || negative)) {
             this.peekedLong = negative ? value : -value;
-            this.pos += i2;
+            this.pos += i;
             this.peeked = 15;
             return 15;
-        } else {
-            long j2 = value;
-        }
-        if (last != 2 && last != 4 && last != 7) {
+        } else if (last != 2 && last != 4 && last != 7) {
             return 0;
+        } else {
+            this.peekedNumberLength = i;
+            this.peeked = 16;
+            return 16;
         }
-        this.peekedNumberLength = i2;
-        this.peeked = 16;
-        return 16;
     }
 
     private boolean isLiteral(char c) throws IOException {
@@ -642,9 +631,10 @@ public class JsonReader implements Closeable {
             this.peekedString = new String(this.buffer, this.pos, this.peekedNumberLength);
             this.pos += this.peekedNumberLength;
         } else if (p == 8 || p == 9) {
-            this.peekedString = nextQuotedValue(p == 8 ? '\'' : '\"');
+            String nextQuotedValue = nextQuotedValue(p == 8 ? '\'' : '\"');
+            this.peekedString = nextQuotedValue;
             try {
-                long result = Long.parseLong(this.peekedString);
+                long result = Long.parseLong(nextQuotedValue);
                 this.peeked = 0;
                 return result;
             } catch (NumberFormatException e) {
@@ -667,9 +657,9 @@ public class JsonReader implements Closeable {
         char[] buffer2 = this.buffer;
         StringBuilder builder = new StringBuilder();
         do {
-            int start = this.pos;
+            int c = this.pos;
             int l = this.limit;
-            int c = start;
+            int start = c;
             while (c < l) {
                 int p = c + 1;
                 char p2 = buffer2[c];
@@ -704,8 +694,9 @@ public class JsonReader implements Closeable {
         StringBuilder builder = null;
         int i = 0;
         while (true) {
-            if (this.pos + i < this.limit) {
-                switch (this.buffer[this.pos + i]) {
+            int i2 = this.pos;
+            if (i2 + i < this.limit) {
+                switch (this.buffer[i2 + i]) {
                     case 9:
                     case 10:
                     case 12:
@@ -784,34 +775,38 @@ public class JsonReader implements Closeable {
     private void skipUnquotedValue() throws IOException {
         do {
             int i = 0;
-            while (this.pos + i < this.limit) {
-                switch (this.buffer[this.pos + i]) {
-                    case 9:
-                    case 10:
-                    case 12:
-                    case 13:
-                    case ' ':
-                    case ',':
-                    case ':':
-                    case '[':
-                    case ']':
-                    case '{':
-                    case '}':
-                        break;
-                    case '#':
-                    case '/':
-                    case ';':
-                    case '=':
-                    case '\\':
-                        checkLenient();
-                        break;
-                    default:
-                        i++;
+            while (true) {
+                int i2 = this.pos;
+                if (i2 + i < this.limit) {
+                    switch (this.buffer[i2 + i]) {
+                        case 9:
+                        case 10:
+                        case 12:
+                        case 13:
+                        case ' ':
+                        case ',':
+                        case ':':
+                        case '[':
+                        case ']':
+                        case '{':
+                        case '}':
+                            break;
+                        case '#':
+                        case '/':
+                        case ';':
+                        case '=':
+                        case '\\':
+                            checkLenient();
+                            break;
+                        default:
+                            i++;
+                    }
+                } else {
+                    this.pos = i2 + i;
                 }
-                this.pos += i;
-                return;
             }
             this.pos += i;
+            return;
         } while (fillBuffer(1));
     }
 
@@ -821,8 +816,9 @@ public class JsonReader implements Closeable {
             p = doPeek();
         }
         if (p == 15) {
-            int result = (int) this.peekedLong;
-            if (this.peekedLong == ((long) result)) {
+            long j = this.peekedLong;
+            int result = (int) j;
+            if (j == ((long) result)) {
                 this.peeked = 0;
                 return result;
             }
@@ -832,9 +828,10 @@ public class JsonReader implements Closeable {
             this.peekedString = new String(this.buffer, this.pos, this.peekedNumberLength);
             this.pos += this.peekedNumberLength;
         } else if (p == 8 || p == 9) {
-            this.peekedString = nextQuotedValue(p == 8 ? '\'' : '\"');
+            String nextQuotedValue = nextQuotedValue(p == 8 ? '\'' : '\"');
+            this.peekedString = nextQuotedValue;
             try {
-                int result2 = Integer.parseInt(this.peekedString);
+                int result2 = Integer.parseInt(nextQuotedValue);
                 try {
                     this.peeked = 0;
                     return result2;
@@ -896,40 +893,52 @@ public class JsonReader implements Closeable {
     }
 
     private void push(int newTop) {
-        if (this.stackSize == this.stack.length) {
-            int[] newStack = new int[(this.stackSize * 2)];
-            System.arraycopy(this.stack, 0, newStack, 0, this.stackSize);
+        int i = this.stackSize;
+        int[] iArr = this.stack;
+        if (i == iArr.length) {
+            int[] newStack = new int[(i * 2)];
+            System.arraycopy(iArr, 0, newStack, 0, i);
             this.stack = newStack;
         }
-        int[] newStack2 = this.stack;
-        int i = this.stackSize;
-        this.stackSize = i + 1;
-        newStack2[i] = newTop;
+        int[] iArr2 = this.stack;
+        int i2 = this.stackSize;
+        this.stackSize = i2 + 1;
+        iArr2[i2] = newTop;
     }
 
     private boolean fillBuffer(int minimum) throws IOException {
+        int i;
+        int i2;
         char[] buffer2 = this.buffer;
-        this.lineStart -= this.pos;
-        if (this.limit != this.pos) {
-            this.limit -= this.pos;
-            System.arraycopy(buffer2, this.pos, buffer2, 0, this.limit);
+        int i3 = this.lineStart;
+        int i4 = this.pos;
+        this.lineStart = i3 - i4;
+        int i5 = this.limit;
+        if (i5 != i4) {
+            int i6 = i5 - i4;
+            this.limit = i6;
+            System.arraycopy(buffer2, i4, buffer2, 0, i6);
         } else {
             this.limit = 0;
         }
         this.pos = 0;
         do {
-            int read = this.in.read(buffer2, this.limit, buffer2.length - this.limit);
+            Reader reader = this.in;
+            int i7 = this.limit;
+            int read = reader.read(buffer2, i7, buffer2.length - i7);
             int total = read;
             if (read == -1) {
                 return false;
             }
-            this.limit += total;
-            if (this.lineNumber == 0 && this.lineStart == 0 && this.limit > 0 && buffer2[0] == 65279) {
+            i = this.limit + total;
+            this.limit = i;
+            if (this.lineNumber == 0 && (i2 = this.lineStart) == 0 && i > 0 && buffer2[0] == 65279) {
                 this.pos++;
-                this.lineStart++;
+                this.lineStart = i2 + 1;
                 minimum++;
+                continue;
             }
-        } while (this.limit < minimum);
+        } while (i < minimum);
         return true;
     }
 
@@ -944,15 +953,14 @@ public class JsonReader implements Closeable {
     }
 
     private int nextNonWhitespace(boolean throwOnEof) throws IOException {
-        int p;
         char[] buffer2 = this.buffer;
-        int p2 = this.pos;
+        int p = this.pos;
         int l = this.limit;
         while (true) {
-            if (p2 == l) {
-                this.pos = p2;
+            if (p == l) {
+                this.pos = p;
                 if (fillBuffer(1)) {
-                    p2 = this.pos;
+                    p = this.pos;
                     l = this.limit;
                 } else if (!throwOnEof) {
                     return -1;
@@ -960,53 +968,57 @@ public class JsonReader implements Closeable {
                     throw new EOFException("End of input at line " + getLineNumber() + " column " + getColumnNumber());
                 }
             }
-            int p3 = p2 + 1;
-            char c = buffer2[p2];
-            if (c == 10) {
+            int p2 = p + 1;
+            char p3 = buffer2[p];
+            if (p3 == 10) {
                 this.lineNumber++;
-                this.lineStart = p3;
-            } else if (!(c == ' ' || c == 13 || c == 9)) {
-                if (c == '/') {
-                    this.pos = p3;
-                    if (p3 == l) {
-                        this.pos--;
+                this.lineStart = p2;
+            } else if (!(p3 == ' ' || p3 == 13 || p3 == 9)) {
+                if (p3 == '/') {
+                    this.pos = p2;
+                    if (p2 == l) {
+                        this.pos = p2 - 1;
                         boolean charsLoaded = fillBuffer(2);
                         this.pos++;
                         if (!charsLoaded) {
-                            return c;
+                            return p3;
                         }
                     }
                     checkLenient();
-                    char peek = buffer2[this.pos];
-                    if (peek == '*') {
-                        this.pos++;
-                        if (skipTo("*/")) {
-                            p = this.pos + 2;
+                    int p4 = this.pos;
+                    switch (buffer2[p4]) {
+                        case '*':
+                            this.pos = p4 + 1;
+                            if (skipTo("*/")) {
+                                l = this.limit;
+                                p = this.pos + 2;
+                                break;
+                            } else {
+                                throw syntaxError("Unterminated comment");
+                            }
+                        case '/':
+                            this.pos = p4 + 1;
+                            skipToEndOfLine();
+                            int p5 = this.pos;
                             l = this.limit;
-                        } else {
-                            throw syntaxError("Unterminated comment");
-                        }
-                    } else if (peek != '/') {
-                        return c;
-                    } else {
-                        this.pos++;
-                        skipToEndOfLine();
-                        p = this.pos;
-                        l = this.limit;
+                            p = p5;
+                            break;
+                        default:
+                            return p3;
                     }
-                } else if (c == '#') {
-                    this.pos = p3;
+                } else if (p3 == '#') {
+                    this.pos = p2;
                     checkLenient();
                     skipToEndOfLine();
-                    p = this.pos;
+                    int p6 = this.pos;
                     l = this.limit;
+                    p = p6;
                 } else {
-                    this.pos = p3;
-                    return c;
+                    this.pos = p2;
+                    return p3;
                 }
-                p2 = p;
             }
-            p2 = p3;
+            p = p2;
         }
     }
 
@@ -1022,11 +1034,12 @@ public class JsonReader implements Closeable {
             if (this.pos < this.limit || fillBuffer(1)) {
                 char[] cArr = this.buffer;
                 int i = this.pos;
-                this.pos = i + 1;
+                int i2 = i + 1;
+                this.pos = i2;
                 c = cArr[i];
                 if (c == 10) {
                     this.lineNumber++;
-                    this.lineStart = this.pos;
+                    this.lineStart = i2;
                     return;
                 }
             } else {
@@ -1037,24 +1050,22 @@ public class JsonReader implements Closeable {
 
     private boolean skipTo(String toFind) throws IOException {
         while (true) {
-            int c = 0;
             if (this.pos + toFind.length() > this.limit && !fillBuffer(toFind.length())) {
                 return false;
             }
-            if (this.buffer[this.pos] == 10) {
+            char[] cArr = this.buffer;
+            int i = this.pos;
+            if (cArr[i] == 10) {
                 this.lineNumber++;
-                this.lineStart = this.pos + 1;
+                this.lineStart = i + 1;
             } else {
-                while (true) {
-                    int c2 = c;
-                    if (c2 >= toFind.length()) {
-                        return true;
+                int c = 0;
+                while (c < toFind.length()) {
+                    if (this.buffer[this.pos + c] == toFind.charAt(c)) {
+                        c++;
                     }
-                    if (this.buffer[this.pos + c2] != toFind.charAt(c2)) {
-                        break;
-                    }
-                    c = c2 + 1;
                 }
+                return true;
             }
             this.pos++;
         }
@@ -1069,51 +1080,48 @@ public class JsonReader implements Closeable {
         if (this.pos != this.limit || fillBuffer(1)) {
             char[] cArr = this.buffer;
             int i2 = this.pos;
-            this.pos = i2 + 1;
+            int i3 = i2 + 1;
+            this.pos = i3;
             char escaped = cArr[i2];
-            if (escaped == 10) {
-                this.lineNumber++;
-                this.lineStart = this.pos;
-            } else if (escaped == 'b') {
-                return 8;
-            } else {
-                if (escaped == 'f') {
+            switch (escaped) {
+                case 10:
+                    this.lineNumber++;
+                    this.lineStart = i3;
+                    break;
+                case 'b':
+                    return 8;
+                case 'f':
                     return 12;
-                }
-                if (escaped == 'n') {
+                case 'n':
                     return 10;
-                }
-                if (escaped == 'r') {
+                case 'r':
                     return 13;
-                }
-                switch (escaped) {
-                    case 't':
-                        return 9;
-                    case 'u':
-                        if (this.pos + 4 <= this.limit || fillBuffer(4)) {
-                            char result = 0;
-                            int i3 = this.pos;
-                            int end = i3 + 4;
-                            while (i3 < end) {
-                                char c = this.buffer[i3];
-                                char result2 = (char) (result << 4);
-                                if (c >= '0' && c <= '9') {
-                                    i = c - '0';
-                                } else if (c >= 'a' && c <= 'f') {
-                                    i = (c - 'a') + 10;
-                                } else if (c < 'A' || c > 'F') {
-                                    throw new NumberFormatException("\\u" + new String(this.buffer, this.pos, 4));
-                                } else {
-                                    i = (c - 'A') + 10;
-                                }
-                                result = (char) (i + result2);
-                                i3++;
+                case 't':
+                    return 9;
+                case 'u':
+                    if (i3 + 4 <= this.limit || fillBuffer(4)) {
+                        char result = 0;
+                        int i4 = this.pos;
+                        int end = i4 + 4;
+                        while (i4 < end) {
+                            char c = this.buffer[i4];
+                            char result2 = (char) (result << 4);
+                            if (c >= '0' && c <= '9') {
+                                i = c - '0';
+                            } else if (c >= 'a' && c <= 'f') {
+                                i = (c - 'a') + 10;
+                            } else if (c < 'A' || c > 'F') {
+                                throw new NumberFormatException("\\u" + new String(this.buffer, this.pos, 4));
+                            } else {
+                                i = (c - 'A') + 10;
                             }
-                            this.pos += 4;
-                            return result;
+                            result = (char) (i + result2);
+                            i4++;
                         }
-                        throw syntaxError("Unterminated escape sequence");
-                }
+                        this.pos += 4;
+                        return result;
+                    }
+                    throw syntaxError("Unterminated escape sequence");
             }
             return escaped;
         }
@@ -1126,17 +1134,22 @@ public class JsonReader implements Closeable {
 
     private void consumeNonExecutePrefix() throws IOException {
         nextNonWhitespace(true);
-        this.pos--;
-        if (this.pos + NON_EXECUTE_PREFIX.length <= this.limit || fillBuffer(NON_EXECUTE_PREFIX.length)) {
-            int i = 0;
-            while (i < NON_EXECUTE_PREFIX.length) {
-                if (this.buffer[this.pos + i] == NON_EXECUTE_PREFIX[i]) {
-                    i++;
+        int i = this.pos - 1;
+        this.pos = i;
+        char[] cArr = NON_EXECUTE_PREFIX;
+        if (i + cArr.length <= this.limit || fillBuffer(cArr.length)) {
+            int i2 = 0;
+            while (true) {
+                char[] cArr2 = NON_EXECUTE_PREFIX;
+                if (i2 >= cArr2.length) {
+                    this.pos += cArr2.length;
+                    return;
+                } else if (this.buffer[this.pos + i2] == cArr2[i2]) {
+                    i2++;
                 } else {
                     return;
                 }
             }
-            this.pos += NON_EXECUTE_PREFIX.length;
         }
     }
 }

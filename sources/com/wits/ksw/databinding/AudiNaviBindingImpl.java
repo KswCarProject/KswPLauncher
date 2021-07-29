@@ -2,24 +2,22 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
 
 public class AudiNaviBindingImpl extends AudiNaviBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.naviListView, 1);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.naviListView, 1);
     }
 
-    public AudiNaviBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public AudiNaviBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 2, sIncludes, sViewsWithIds));
     }
 
@@ -47,7 +45,7 @@ public class AudiNaviBindingImpl extends AudiNaviBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         return true;
     }
 

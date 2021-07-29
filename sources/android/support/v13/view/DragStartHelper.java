@@ -57,8 +57,9 @@ public class DragStartHelper {
                 if (MotionEventCompat.isFromSource(event, 8194) && (event.getButtonState() & 1) != 0 && !this.mDragging && !(this.mLastTouchX == x && this.mLastTouchY == y)) {
                     this.mLastTouchX = x;
                     this.mLastTouchY = y;
-                    this.mDragging = this.mListener.onDragStart(v, this);
-                    return this.mDragging;
+                    boolean onDragStart = this.mListener.onDragStart(v, this);
+                    this.mDragging = onDragStart;
+                    return onDragStart;
                 }
         }
         return false;

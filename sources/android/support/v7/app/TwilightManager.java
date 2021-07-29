@@ -1,12 +1,8 @@
 package android.support.v7.app;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import java.util.Calendar;
@@ -20,7 +16,7 @@ class TwilightManager {
     private final LocationManager mLocationManager;
     private final TwilightState mTwilightState = new TwilightState();
 
-    static TwilightManager getInstance(@NonNull Context context) {
+    static TwilightManager getInstance(Context context) {
         if (sInstance == null) {
             Context context2 = context.getApplicationContext();
             sInstance = new TwilightManager(context2, (LocationManager) context2.getSystemService("location"));
@@ -28,13 +24,11 @@ class TwilightManager {
         return sInstance;
     }
 
-    @VisibleForTesting
     static void setInstance(TwilightManager twilightManager) {
         sInstance = twilightManager;
     }
 
-    @VisibleForTesting
-    TwilightManager(@NonNull Context context, @NonNull LocationManager locationManager) {
+    TwilightManager(Context context, LocationManager locationManager) {
         this.mContext = context;
         this.mLocationManager = locationManager;
     }
@@ -55,7 +49,6 @@ class TwilightManager {
         return hour < 6 || hour >= 22;
     }
 
-    @SuppressLint({"MissingPermission"})
     private Location getLastKnownLocation() {
         Location coarseLoc = null;
         Location fineLoc = null;
@@ -68,7 +61,6 @@ class TwilightManager {
         return (fineLoc == null || coarseLoc == null) ? fineLoc != null ? fineLoc : coarseLoc : fineLoc.getTime() > coarseLoc.getTime() ? fineLoc : coarseLoc;
     }
 
-    @RequiresPermission(anyOf = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"})
     private Location getLastKnownLocationForProvider(String provider) {
         try {
             if (this.mLocationManager.isProviderEnabled(provider)) {
@@ -85,7 +77,7 @@ class TwilightManager {
         return this.mTwilightState.nextUpdate > System.currentTimeMillis();
     }
 
-    private void updateState(@NonNull Location location) {
+    private void updateState(Location location) {
         long nextUpdate;
         long nextUpdate2;
         TwilightState state = this.mTwilightState;

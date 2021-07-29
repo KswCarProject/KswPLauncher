@@ -42,11 +42,13 @@ public class ID6NaviLayout extends RelativeLayout {
 
     private void initView(View view) {
         this.navi_recycle = (RecyclerView) view.findViewById(R.id.navi_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.navi_recycle.setLayoutManager(this.layoutManager);
-        this.naviAdapter = new ID6NaviAdapter(this.context, this.mapBanList, false);
-        this.navi_recycle.setAdapter(this.naviAdapter);
+        ID6NaviAdapter iD6NaviAdapter = new ID6NaviAdapter(this.context, this.mapBanList, false);
+        this.naviAdapter = iD6NaviAdapter;
+        this.navi_recycle.setAdapter(iD6NaviAdapter);
         this.naviAdapter.registCheckListener(new ID6NaviAdapter.IrbtCheckListener() {
             public void checkListener(int pos) {
                 MapBean mapBean = (MapBean) ID6NaviLayout.this.mapBanList.get(pos);

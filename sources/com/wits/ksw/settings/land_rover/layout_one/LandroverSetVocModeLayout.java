@@ -43,47 +43,48 @@ public class LandroverSetVocModeLayout extends RelativeLayout {
     }
 
     private void initView(View view) {
-        this.rdg_vocmd = (RadioGroup) view.findViewById(R.id.rdg_vocmd);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_vocmd);
+        this.rdg_vocmd = radioGroup;
         switch (this.eqModel) {
             case 0:
-                this.rdg_vocmd.check(R.id.rdb_vocmd1);
+                radioGroup.check(R.id.rdb_vocmd1);
                 break;
             case 1:
-                this.rdg_vocmd.check(R.id.rdb_vocmd2);
+                radioGroup.check(R.id.rdb_vocmd2);
                 break;
             case 2:
-                this.rdg_vocmd.check(R.id.rdb_vocmd3);
+                radioGroup.check(R.id.rdb_vocmd3);
                 break;
             case 3:
-                this.rdg_vocmd.check(R.id.rdb_vocmd4);
+                radioGroup.check(R.id.rdb_vocmd4);
                 break;
             case 4:
-                this.rdg_vocmd.check(R.id.rdb_vocmd5);
+                radioGroup.check(R.id.rdb_vocmd5);
                 break;
             case 5:
-                this.rdg_vocmd.check(R.id.rdb_vocmd6);
+                radioGroup.check(R.id.rdb_vocmd6);
                 break;
         }
         this.rdg_vocmd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (LandroverSetVocModeLayout.this.updateTwoLayout != null) {
                     switch (checkedId) {
-                        case R.id.rdb_vocmd1:
+                        case R.id.rdb_vocmd1 /*2131297092*/:
                             LandroverSetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 0);
                             return;
-                        case R.id.rdb_vocmd2:
+                        case R.id.rdb_vocmd2 /*2131297093*/:
                             LandroverSetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 1);
                             return;
-                        case R.id.rdb_vocmd3:
+                        case R.id.rdb_vocmd3 /*2131297094*/:
                             LandroverSetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 2);
                             return;
-                        case R.id.rdb_vocmd4:
+                        case R.id.rdb_vocmd4 /*2131297095*/:
                             LandroverSetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 3);
                             return;
-                        case R.id.rdb_vocmd5:
+                        case R.id.rdb_vocmd5 /*2131297096*/:
                             LandroverSetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 4);
                             return;
-                        case R.id.rdb_vocmd6:
+                        case R.id.rdb_vocmd6 /*2131297097*/:
                             LandroverSetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 5);
                             return;
                         default:

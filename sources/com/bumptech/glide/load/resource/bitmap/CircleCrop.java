@@ -1,7 +1,6 @@
 package com.bumptech.glide.load.resource.bitmap;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import java.security.MessageDigest;
 
@@ -11,7 +10,7 @@ public class CircleCrop extends BitmapTransformation {
     private static final int VERSION = 1;
 
     /* access modifiers changed from: protected */
-    public Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+    public Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
         return TransformationUtils.circleCrop(pool, toTransform, outWidth, outHeight);
     }
 
@@ -23,7 +22,7 @@ public class CircleCrop extends BitmapTransformation {
         return ID.hashCode();
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         messageDigest.update(ID_BYTES);
     }
 }

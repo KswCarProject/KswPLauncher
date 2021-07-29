@@ -6,10 +6,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ColorStateListInflaterCompat;
 import android.support.v7.widget.AppCompatDrawableManager;
@@ -27,7 +23,7 @@ public final class AppCompatResources {
     private AppCompatResources() {
     }
 
-    public static ColorStateList getColorStateList(@NonNull Context context, @ColorRes int resId) {
+    public static ColorStateList getColorStateList(Context context, int resId) {
         if (Build.VERSION.SDK_INT >= 23) {
             return context.getColorStateList(resId);
         }
@@ -43,12 +39,10 @@ public final class AppCompatResources {
         return csl2;
     }
 
-    @Nullable
-    public static Drawable getDrawable(@NonNull Context context, @DrawableRes int resId) {
+    public static Drawable getDrawable(Context context, int resId) {
         return AppCompatDrawableManager.get().getDrawable(context, resId);
     }
 
-    @Nullable
     private static ColorStateList inflateColorStateList(Context context, int resId) {
         if (isColorInt(context, resId)) {
             return null;
@@ -65,9 +59,8 @@ public final class AppCompatResources {
     /* JADX WARNING: Code restructure failed: missing block: B:16:0x0033, code lost:
         return null;
      */
-    @android.support.annotation.Nullable
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static android.content.res.ColorStateList getCachedColorStateList(@android.support.annotation.NonNull android.content.Context r5, @android.support.annotation.ColorRes int r6) {
+    private static android.content.res.ColorStateList getCachedColorStateList(android.content.Context r5, int r6) {
         /*
             java.lang.Object r0 = sColorStateCacheLock
             monitor-enter(r0)
@@ -102,18 +95,19 @@ public final class AppCompatResources {
         throw new UnsupportedOperationException("Method not decompiled: android.support.v7.content.res.AppCompatResources.getCachedColorStateList(android.content.Context, int):android.content.res.ColorStateList");
     }
 
-    private static void addColorStateListToCache(@NonNull Context context, @ColorRes int resId, @NonNull ColorStateList value) {
+    private static void addColorStateListToCache(Context context, int resId, ColorStateList value) {
         synchronized (sColorStateCacheLock) {
-            SparseArray<ColorStateListCacheEntry> entries = sColorStateCaches.get(context);
+            WeakHashMap<Context, SparseArray<ColorStateListCacheEntry>> weakHashMap = sColorStateCaches;
+            SparseArray<ColorStateListCacheEntry> entries = weakHashMap.get(context);
             if (entries == null) {
                 entries = new SparseArray<>();
-                sColorStateCaches.put(context, entries);
+                weakHashMap.put(context, entries);
             }
             entries.append(resId, new ColorStateListCacheEntry(value, context.getResources().getConfiguration()));
         }
     }
 
-    private static boolean isColorInt(@NonNull Context context, @ColorRes int resId) {
+    private static boolean isColorInt(Context context, int resId) {
         Resources r = context.getResources();
         TypedValue value = getTypedValue();
         r.getValue(resId, value, true);
@@ -123,14 +117,14 @@ public final class AppCompatResources {
         return true;
     }
 
-    @NonNull
     private static TypedValue getTypedValue() {
-        TypedValue tv = TL_TYPED_VALUE.get();
+        ThreadLocal<TypedValue> threadLocal = TL_TYPED_VALUE;
+        TypedValue tv = threadLocal.get();
         if (tv != null) {
             return tv;
         }
         TypedValue tv2 = new TypedValue();
-        TL_TYPED_VALUE.set(tv2);
+        threadLocal.set(tv2);
         return tv2;
     }
 
@@ -138,7 +132,7 @@ public final class AppCompatResources {
         final Configuration configuration;
         final ColorStateList value;
 
-        ColorStateListCacheEntry(@NonNull ColorStateList value2, @NonNull Configuration configuration2) {
+        ColorStateListCacheEntry(ColorStateList value2, Configuration configuration2) {
             this.value = value2;
             this.configuration = configuration2;
         }

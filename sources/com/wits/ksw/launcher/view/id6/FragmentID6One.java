@@ -3,8 +3,6 @@ package com.wits.ksw.launcher.view.id6;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -36,13 +34,13 @@ public class FragmentID6One extends ID6BaseFragment implements View.OnKeyListene
         }
     };
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.binding = (ID6FragmentOne) DataBindingUtil.inflate(inflater, R.layout.id6_fragment_one, (ViewGroup) null, false);
-        return this.binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ID6FragmentOne iD6FragmentOne = (ID6FragmentOne) DataBindingUtil.inflate(inflater, R.layout.id6_fragment_one, (ViewGroup) null, false);
+        this.binding = iD6FragmentOne;
+        return iD6FragmentOne.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.binding.setViewModel(this.viewModel);
         PowerManagerApp.registerIContentObserver("topApp", this.topAppContentObserver);
@@ -79,12 +77,12 @@ public class FragmentID6One extends ID6BaseFragment implements View.OnKeyListene
     }
 
     public void setItemSelected(View view) {
-        boolean z = false;
+        boolean z = true;
         this.binding.id6MusicIamgeView.setSelected(this.binding.id6MusicIamgeView == view);
         this.binding.id6NavImageView.setSelected(this.binding.id6NavImageView == view);
         ImageView imageView = this.binding.id6BtImageView;
-        if (this.binding.id6BtImageView == view) {
-            z = true;
+        if (this.binding.id6BtImageView != view) {
+            z = false;
         }
         imageView.setSelected(z);
     }

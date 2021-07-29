@@ -1,8 +1,6 @@
 package android.arch.lifecycle;
 
 import android.app.Application;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
 import java.lang.reflect.InvocationTargetException;
 
 public class ViewModelProvider {
@@ -11,22 +9,19 @@ public class ViewModelProvider {
     private final ViewModelStore mViewModelStore;
 
     public interface Factory {
-        @NonNull
-        <T extends ViewModel> T create(@NonNull Class<T> cls);
+        <T extends ViewModel> T create(Class<T> cls);
     }
 
-    public ViewModelProvider(@NonNull ViewModelStoreOwner owner, @NonNull Factory factory) {
+    public ViewModelProvider(ViewModelStoreOwner owner, Factory factory) {
         this(owner.getViewModelStore(), factory);
     }
 
-    public ViewModelProvider(@NonNull ViewModelStore store, @NonNull Factory factory) {
+    public ViewModelProvider(ViewModelStore store, Factory factory) {
         this.mFactory = factory;
         this.mViewModelStore = store;
     }
 
-    @MainThread
-    @NonNull
-    public <T extends ViewModel> T get(@NonNull Class<T> modelClass) {
+    public <T extends ViewModel> T get(Class<T> modelClass) {
         String canonicalName = modelClass.getCanonicalName();
         if (canonicalName != null) {
             return get("android.arch.lifecycle.ViewModelProvider.DefaultKey:" + canonicalName, modelClass);
@@ -34,9 +29,7 @@ public class ViewModelProvider {
         throw new IllegalArgumentException("Local and anonymous classes can not be ViewModels");
     }
 
-    @MainThread
-    @NonNull
-    public <T extends ViewModel> T get(@NonNull String key, @NonNull Class<T> modelClass) {
+    public <T extends ViewModel> T get(String key, Class<T> modelClass) {
         ViewModel viewModel = this.mViewModelStore.get(key);
         if (modelClass.isInstance(viewModel)) {
             return viewModel;
@@ -47,8 +40,7 @@ public class ViewModelProvider {
     }
 
     public static class NewInstanceFactory implements Factory {
-        @NonNull
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        public <T extends ViewModel> T create(Class<T> modelClass) {
             try {
                 return (ViewModel) modelClass.newInstance();
             } catch (InstantiationException e) {
@@ -63,20 +55,18 @@ public class ViewModelProvider {
         private static AndroidViewModelFactory sInstance;
         private Application mApplication;
 
-        @NonNull
-        public static AndroidViewModelFactory getInstance(@NonNull Application application) {
+        public static AndroidViewModelFactory getInstance(Application application) {
             if (sInstance == null) {
                 sInstance = new AndroidViewModelFactory(application);
             }
             return sInstance;
         }
 
-        public AndroidViewModelFactory(@NonNull Application application) {
+        public AndroidViewModelFactory(Application application) {
             this.mApplication = application;
         }
 
-        @NonNull
-        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        public <T extends ViewModel> T create(Class<T> modelClass) {
             if (!AndroidViewModel.class.isAssignableFrom(modelClass)) {
                 return super.create(modelClass);
             }

@@ -1,7 +1,6 @@
 package android.support.v7.view.menu;
 
 import android.content.Context;
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.TintTypedArray;
 import android.util.AttributeSet;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public final class ExpandedMenuView extends ListView implements MenuBuilder.ItemInvoker, MenuView, AdapterView.OnItemClickListener {
     private static final int[] TINT_ATTRS = {16842964, 16843049};
     private int mAnimations;

@@ -3,8 +3,6 @@ package android.support.v4.accessibilityservice;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 public final class AccessibilityServiceInfoCompat {
     public static final int CAPABILITY_CAN_FILTER_KEY_EVENTS = 8;
@@ -22,15 +20,13 @@ public final class AccessibilityServiceInfoCompat {
     private AccessibilityServiceInfoCompat() {
     }
 
-    @Nullable
-    public static String loadDescription(@NonNull AccessibilityServiceInfo info, @NonNull PackageManager packageManager) {
+    public static String loadDescription(AccessibilityServiceInfo info, PackageManager packageManager) {
         if (Build.VERSION.SDK_INT >= 16) {
             return info.loadDescription(packageManager);
         }
         return info.getDescription();
     }
 
-    @NonNull
     public static String feedbackTypeToString(int feedbackType) {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
@@ -40,52 +36,48 @@ public final class AccessibilityServiceInfoCompat {
             if (builder.length() > 1) {
                 builder.append(", ");
             }
-            if (feedbackTypeFlag == 4) {
-                builder.append("FEEDBACK_AUDIBLE");
-            } else if (feedbackTypeFlag == 8) {
-                builder.append("FEEDBACK_VISUAL");
-            } else if (feedbackTypeFlag != 16) {
-                switch (feedbackTypeFlag) {
-                    case 1:
-                        builder.append("FEEDBACK_SPOKEN");
-                        break;
-                    case 2:
-                        builder.append("FEEDBACK_HAPTIC");
-                        break;
-                }
-            } else {
-                builder.append("FEEDBACK_GENERIC");
+            switch (feedbackTypeFlag) {
+                case 1:
+                    builder.append("FEEDBACK_SPOKEN");
+                    break;
+                case 2:
+                    builder.append("FEEDBACK_HAPTIC");
+                    break;
+                case 4:
+                    builder.append("FEEDBACK_AUDIBLE");
+                    break;
+                case 8:
+                    builder.append("FEEDBACK_VISUAL");
+                    break;
+                case 16:
+                    builder.append("FEEDBACK_GENERIC");
+                    break;
             }
         }
         builder.append("]");
         return builder.toString();
     }
 
-    @Nullable
     public static String flagToString(int flag) {
-        if (flag == 4) {
-            return "FLAG_REQUEST_TOUCH_EXPLORATION_MODE";
-        }
-        if (flag == 8) {
-            return "FLAG_REQUEST_ENHANCED_WEB_ACCESSIBILITY";
-        }
-        if (flag == 16) {
-            return "FLAG_REPORT_VIEW_IDS";
-        }
-        if (flag == 32) {
-            return "FLAG_REQUEST_FILTER_KEY_EVENTS";
-        }
         switch (flag) {
             case 1:
                 return "DEFAULT";
             case 2:
                 return "FLAG_INCLUDE_NOT_IMPORTANT_VIEWS";
+            case 4:
+                return "FLAG_REQUEST_TOUCH_EXPLORATION_MODE";
+            case 8:
+                return "FLAG_REQUEST_ENHANCED_WEB_ACCESSIBILITY";
+            case 16:
+                return "FLAG_REPORT_VIEW_IDS";
+            case 32:
+                return "FLAG_REQUEST_FILTER_KEY_EVENTS";
             default:
                 return null;
         }
     }
 
-    public static int getCapabilities(@NonNull AccessibilityServiceInfo info) {
+    public static int getCapabilities(AccessibilityServiceInfo info) {
         if (Build.VERSION.SDK_INT >= 18) {
             return info.getCapabilities();
         }
@@ -95,19 +87,16 @@ public final class AccessibilityServiceInfoCompat {
         return 0;
     }
 
-    @NonNull
     public static String capabilityToString(int capability) {
-        if (capability == 4) {
-            return "CAPABILITY_CAN_REQUEST_ENHANCED_WEB_ACCESSIBILITY";
-        }
-        if (capability == 8) {
-            return "CAPABILITY_CAN_FILTER_KEY_EVENTS";
-        }
         switch (capability) {
             case 1:
                 return "CAPABILITY_CAN_RETRIEVE_WINDOW_CONTENT";
             case 2:
                 return "CAPABILITY_CAN_REQUEST_TOUCH_EXPLORATION";
+            case 4:
+                return "CAPABILITY_CAN_REQUEST_ENHANCED_WEB_ACCESSIBILITY";
+            case 8:
+                return "CAPABILITY_CAN_FILTER_KEY_EVENTS";
             default:
                 return "UNKNOWN";
         }

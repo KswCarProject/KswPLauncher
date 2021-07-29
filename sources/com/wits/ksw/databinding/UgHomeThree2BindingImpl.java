@@ -2,27 +2,20 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback11;
-    @Nullable
-    private final View.OnClickListener mCallback12;
-    @Nullable
-    private final View.OnClickListener mCallback13;
+    private final View.OnClickListener mCallback206;
+    private final View.OnClickListener mCallback207;
+    private final View.OnClickListener mCallback208;
     private long mDirtyFlags;
 
-    public UgHomeThree2BindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public UgHomeThree2BindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -34,9 +27,9 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
         this.ugHomeDashboradVaiw.setTag((Object) null);
         this.ugHomeSettingVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback13 = new OnClickListener(this, 3);
-        this.mCallback11 = new OnClickListener(this, 1);
-        this.mCallback12 = new OnClickListener(this, 2);
+        this.mCallback206 = new OnClickListener(this, 1);
+        this.mCallback207 = new OnClickListener(this, 2);
+        this.mCallback208 = new OnClickListener(this, 3);
         invalidateAll();
     }
 
@@ -56,20 +49,20 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(19);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
@@ -87,19 +80,19 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeCarVaiw.setOnClickListener(this.mCallback11);
-            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback12);
-            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback13);
+            this.ugHomeCarVaiw.setOnClickListener(this.mCallback206);
+            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback207);
+            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback208);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = false;
+        boolean viewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openCar(callbackArg_0);
@@ -108,8 +101,8 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
                 return;
             case 2:
                 LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel2 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openDashboard(callbackArg_0);
@@ -118,8 +111,8 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
                 return;
             case 3:
                 LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel3 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openSettings(callbackArg_0);

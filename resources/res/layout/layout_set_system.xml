@@ -18,5 +18,7 @@
         <ImageView android:background="@mipmap/id7_mp_line" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <TextView android:textSize="25sp" android:textColor="#ffffff" android:gravity="center_vertical" android:id="@+id/tv_sysTempUnit" android:background="@drawable/ksw_id7_seting_mp_bg" android:paddingLeft="5dp" android:focusable="true" android:layout_width="600dp" android:layout_height="77dp" android:text="@string/audi_set_temp_unit"/>
         <ImageView android:background="@mipmap/id7_mp_line" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:textSize="25sp" android:textColor="#ffffff" android:gravity="center_vertical" android:id="@+id/tv_sysFuelUnit" android:background="@drawable/ksw_id7_seting_mp_bg" android:paddingLeft="5dp" android:focusable="true" android:layout_width="600dp" android:layout_height="77dp" android:text="@string/fuel_unit"/>
+        <ImageView android:background="@mipmap/id7_mp_line" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>

@@ -4,8 +4,6 @@ import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,39 +13,24 @@ import com.wits.ksw.launcher.base.BaseBindingModel;
 import com.wits.ksw.launcher.model.BwmNbtModel;
 
 public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback171;
-    @Nullable
-    private final View.OnClickListener mCallback172;
-    @Nullable
-    private final View.OnClickListener mCallback173;
-    @Nullable
-    private final View.OnClickListener mCallback174;
-    @Nullable
-    private final View.OnClickListener mCallback175;
-    @Nullable
-    private final View.OnClickListener mCallback176;
-    @Nullable
-    private final View.OnClickListener mCallback177;
-    @Nullable
-    private final View.OnClickListener mCallback178;
+    private final View.OnClickListener mCallback142;
+    private final View.OnClickListener mCallback143;
+    private final View.OnClickListener mCallback144;
+    private final View.OnClickListener mCallback145;
+    private final View.OnClickListener mCallback146;
+    private final View.OnClickListener mCallback147;
+    private final View.OnClickListener mCallback148;
+    private final View.OnClickListener mCallback149;
     private long mDirtyFlags;
-    @NonNull
     private final RelativeLayout mboundView0;
-    @NonNull
     private final ImageView mboundView1;
-    @NonNull
     private final ImageView mboundView2;
-    @NonNull
     private final ImageView mboundView3;
-    @NonNull
     private final ImageView mboundView4;
 
-    public ActivityBmwNbtBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityBmwNbtBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 13, sIncludes, sViewsWithIds));
     }
 
@@ -57,16 +40,21 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
         this.mDirtyFlags = -1;
         this.appLl.setTag((Object) null);
         this.dashbroadLl.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView1 = bindings[1];
-        this.mboundView1.setTag((Object) null);
-        this.mboundView2 = bindings[2];
-        this.mboundView2.setTag((Object) null);
-        this.mboundView3 = bindings[3];
-        this.mboundView3.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
+        RelativeLayout relativeLayout = bindings[0];
+        this.mboundView0 = relativeLayout;
+        relativeLayout.setTag((Object) null);
+        ImageView imageView = bindings[1];
+        this.mboundView1 = imageView;
+        imageView.setTag((Object) null);
+        ImageView imageView2 = bindings[2];
+        this.mboundView2 = imageView2;
+        imageView2.setTag((Object) null);
+        ImageView imageView3 = bindings[3];
+        this.mboundView3 = imageView3;
+        imageView3.setTag((Object) null);
+        ImageView imageView4 = bindings[4];
+        this.mboundView4 = imageView4;
+        imageView4.setTag((Object) null);
         this.musicLl.setTag((Object) null);
         this.naviLl.setTag((Object) null);
         this.phoneLl.setTag((Object) null);
@@ -74,14 +62,14 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
         this.rlSettings.setTag((Object) null);
         this.videoLl.setTag((Object) null);
         setRootTag(root);
-        this.mCallback176 = new OnClickListener(this, 6);
-        this.mCallback177 = new OnClickListener(this, 7);
-        this.mCallback174 = new OnClickListener(this, 4);
-        this.mCallback175 = new OnClickListener(this, 5);
-        this.mCallback172 = new OnClickListener(this, 2);
-        this.mCallback173 = new OnClickListener(this, 3);
-        this.mCallback178 = new OnClickListener(this, 8);
-        this.mCallback171 = new OnClickListener(this, 1);
+        this.mCallback148 = new OnClickListener(this, 7);
+        this.mCallback146 = new OnClickListener(this, 5);
+        this.mCallback144 = new OnClickListener(this, 3);
+        this.mCallback142 = new OnClickListener(this, 1);
+        this.mCallback149 = new OnClickListener(this, 8);
+        this.mCallback147 = new OnClickListener(this, 6);
+        this.mCallback145 = new OnClickListener(this, 4);
+        this.mCallback143 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -101,20 +89,20 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (11 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (14 != variableId) {
             return false;
         }
         setNbtModel((BwmNbtModel) variable);
         return true;
     }
 
-    public void setNbtModel(@Nullable BwmNbtModel NbtModel) {
+    public void setNbtModel(BwmNbtModel NbtModel) {
         this.mNbtModel = NbtModel;
         synchronized (this) {
             this.mDirtyFlags |= 16;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 
@@ -124,11 +112,11 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
             case 0:
                 return onChangeNbtModelCircleBgId((ObservableInt) object, fieldId);
             case 1:
-                return onChangeNbtModelIndicatorBgId((ObservableInt) object, fieldId);
+                return onChangeNbtModelLeftBGId((ObservableInt) object, fieldId);
             case 2:
                 return onChangeNbtModelItemLogoId((ObservableInt) object, fieldId);
             case 3:
-                return onChangeNbtModelLeftBGId((ObservableInt) object, fieldId);
+                return onChangeNbtModelIndicatorBgId((ObservableInt) object, fieldId);
             default:
                 return false;
         }
@@ -144,7 +132,7 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
         return true;
     }
 
-    private boolean onChangeNbtModelIndicatorBgId(ObservableInt NbtModelIndicatorBgId, int fieldId) {
+    private boolean onChangeNbtModelLeftBGId(ObservableInt NbtModelLeftBGId, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -164,7 +152,7 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
         return true;
     }
 
-    private boolean onChangeNbtModelLeftBGId(ObservableInt NbtModelLeftBGId, int fieldId) {
+    private boolean onChangeNbtModelIndicatorBgId(ObservableInt NbtModelIndicatorBgId, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -181,15 +169,15 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        int nbtModelIndicatorBgIdGet = 0;
-        int nbtModelCircleBgIdGet = 0;
-        ObservableInt nbtModelCircleBgId = null;
-        ObservableInt nbtModelIndicatorBgId = null;
-        int nbtModelLeftBGIdGet = 0;
-        ObservableInt nbtModelItemLogoId = null;
-        int nbtModelItemLogoIdGet = 0;
         BwmNbtModel nbtModel = this.mNbtModel;
+        int nbtModelLeftBGIdGet = 0;
+        ObservableInt nbtModelCircleBgId = null;
         ObservableInt nbtModelLeftBGId = null;
+        ObservableInt nbtModelItemLogoId = null;
+        int nbtModelIndicatorBgIdGet = 0;
+        ObservableInt nbtModelIndicatorBgId = null;
+        int nbtModelCircleBgIdGet = 0;
+        int nbtModelItemLogoIdGet = 0;
         if ((63 & dirtyFlags) != 0) {
             if ((dirtyFlags & 49) != 0) {
                 if (nbtModel != null) {
@@ -202,11 +190,11 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
             }
             if ((dirtyFlags & 50) != 0) {
                 if (nbtModel != null) {
-                    nbtModelIndicatorBgId = nbtModel.indicatorBgId;
+                    nbtModelLeftBGId = nbtModel.leftBGId;
                 }
-                updateRegistration(1, (Observable) nbtModelIndicatorBgId);
-                if (nbtModelIndicatorBgId != null) {
-                    nbtModelIndicatorBgIdGet = nbtModelIndicatorBgId.get();
+                updateRegistration(1, (Observable) nbtModelLeftBGId);
+                if (nbtModelLeftBGId != null) {
+                    nbtModelLeftBGIdGet = nbtModelLeftBGId.get();
                 }
             }
             if ((dirtyFlags & 52) != 0) {
@@ -220,28 +208,28 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
             }
             if ((dirtyFlags & 56) != 0) {
                 if (nbtModel != null) {
-                    nbtModelLeftBGId = nbtModel.leftBGId;
+                    nbtModelIndicatorBgId = nbtModel.indicatorBgId;
                 }
-                updateRegistration(3, (Observable) nbtModelLeftBGId);
-                if (nbtModelLeftBGId != null) {
-                    nbtModelLeftBGIdGet = nbtModelLeftBGId.get();
+                updateRegistration(3, (Observable) nbtModelIndicatorBgId);
+                if (nbtModelIndicatorBgId != null) {
+                    nbtModelIndicatorBgIdGet = nbtModelIndicatorBgId.get();
                 }
             }
         }
         if ((dirtyFlags & 32) != 0) {
-            this.appLl.setOnClickListener(this.mCallback171);
-            this.dashbroadLl.setOnClickListener(this.mCallback177);
-            this.musicLl.setOnClickListener(this.mCallback173);
-            this.naviLl.setOnClickListener(this.mCallback172);
-            this.phoneLl.setOnClickListener(this.mCallback175);
-            this.rlCar.setOnClickListener(this.mCallback176);
-            this.rlSettings.setOnClickListener(this.mCallback178);
-            this.videoLl.setOnClickListener(this.mCallback174);
-        }
-        if ((dirtyFlags & 56) != 0) {
-            BaseBindingModel.srcImage(this.mboundView1, nbtModelLeftBGIdGet);
+            this.appLl.setOnClickListener(this.mCallback142);
+            this.dashbroadLl.setOnClickListener(this.mCallback148);
+            this.musicLl.setOnClickListener(this.mCallback144);
+            this.naviLl.setOnClickListener(this.mCallback143);
+            this.phoneLl.setOnClickListener(this.mCallback146);
+            this.rlCar.setOnClickListener(this.mCallback147);
+            this.rlSettings.setOnClickListener(this.mCallback149);
+            this.videoLl.setOnClickListener(this.mCallback145);
         }
         if ((dirtyFlags & 50) != 0) {
+            BaseBindingModel.srcImage(this.mboundView1, nbtModelLeftBGIdGet);
+        }
+        if ((dirtyFlags & 56) != 0) {
             BaseBindingModel.srcImage(this.mboundView2, nbtModelIndicatorBgIdGet);
         }
         if ((dirtyFlags & 49) != 0) {
@@ -253,12 +241,12 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean nbtModelJavaLangObjectNull = false;
+        boolean nbtModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 BwmNbtModel nbtModel = this.mNbtModel;
-                if (nbtModel != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel.onNbtClick(callbackArg_0);
@@ -267,8 +255,8 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
                 return;
             case 2:
                 BwmNbtModel nbtModel2 = this.mNbtModel;
-                if (nbtModel2 != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel2 == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel2.onNbtClick(callbackArg_0);
@@ -277,8 +265,8 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
                 return;
             case 3:
                 BwmNbtModel nbtModel3 = this.mNbtModel;
-                if (nbtModel3 != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel3 == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel3.onNbtClick(callbackArg_0);
@@ -287,8 +275,8 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
                 return;
             case 4:
                 BwmNbtModel nbtModel4 = this.mNbtModel;
-                if (nbtModel4 != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel4 == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel4.onNbtClick(callbackArg_0);
@@ -297,8 +285,8 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
                 return;
             case 5:
                 BwmNbtModel nbtModel5 = this.mNbtModel;
-                if (nbtModel5 != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel5 == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel5.onNbtClick(callbackArg_0);
@@ -307,8 +295,8 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
                 return;
             case 6:
                 BwmNbtModel nbtModel6 = this.mNbtModel;
-                if (nbtModel6 != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel6 == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel6.onNbtClick(callbackArg_0);
@@ -317,8 +305,8 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
                 return;
             case 7:
                 BwmNbtModel nbtModel7 = this.mNbtModel;
-                if (nbtModel7 != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel7 == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel7.onNbtClick(callbackArg_0);
@@ -327,8 +315,8 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
                 return;
             case 8:
                 BwmNbtModel nbtModel8 = this.mNbtModel;
-                if (nbtModel8 != null) {
-                    nbtModelJavaLangObjectNull = true;
+                if (nbtModel8 == null) {
+                    nbtModelJavaLangObjectNull = false;
                 }
                 if (nbtModelJavaLangObjectNull) {
                     nbtModel8.onNbtClick(callbackArg_0);

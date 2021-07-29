@@ -4,14 +4,11 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Build;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +23,6 @@ import com.wits.ksw.settings.utlis_view.UtilsInfo;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
-@BindingMethods({@BindingMethod(attribute = "OnCheckedChangeListener", method = "setOnCheckedChangeListener", type = TimeVm.class)})
 public class AudiSettingViewModel extends AndroidViewModel {
     private static final String TAG = ("KSWLauncher." + AudiSettingViewModel.class.getSimpleName());
     public ObservableField<String> appVer = new ObservableField<>();
@@ -69,20 +65,21 @@ public class AudiSettingViewModel extends AndroidViewModel {
     public ObservableField<String> ramVer = new ObservableField<>();
     public ObservableField<String> systemVersion = new ObservableField<>();
 
-    public AudiSettingViewModel(@NonNull Application application) {
+    public AudiSettingViewModel(Application application) {
         super(application);
-        this.context = application.getApplicationContext();
-        String appVerStr = this.context.getString(R.string.audi_set_sys_info_app_ver, new Object[]{getAppVersion()});
+        Context applicationContext = application.getApplicationContext();
+        this.context = applicationContext;
+        String appVerStr = applicationContext.getString(R.string.audi_set_sys_info_app_ver, new Object[]{getAppVersion()});
         String mcuVerStr = this.context.getString(R.string.audi_set_sys_info_mcu_ver, new Object[]{McuUtil.getMcuVersion()});
-        String ramStr = this.context.getString(R.string.audi_set_sys_info_ram, new Object[]{UtilsInfo.getRAMSize(this.context)});
+        Context context2 = this.context;
+        String ramStr = context2.getString(R.string.audi_set_sys_info_ram, new Object[]{UtilsInfo.getRAMSize(context2)});
         String flashStr = this.context.getString(R.string.audi_set_sys_info_nanndflash, new Object[]{UtilsInfo.getROMSize()});
         this.nandflash.set(flashStr);
         this.ramVer.set(ramStr);
         this.appVer.set(appVerStr);
         this.mcuVer.set(mcuVerStr);
         systemVersion();
-        String str = TAG;
-        Log.i(str, " \nflashStr : " + flashStr + " \nramVer : " + ramStr + " \nis24Hour : " + TimeUtil.is24HourFormat(this.context) + " \nappVer : " + appVerStr + " \nmcuVer : " + mcuVerStr);
+        Log.i(TAG, " \nflashStr : " + flashStr + " \nramVer : " + ramStr + " \nis24Hour : " + TimeUtil.is24HourFormat(this.context) + " \nappVer : " + appVerStr + " \nmcuVer : " + mcuVerStr);
         PowerManagerApp.registerIContentObserver("mcuVerison", new IContentObserver.Stub() {
             public void onChange() throws RemoteException {
                 new Handler().post(new Runnable() {
@@ -106,8 +103,7 @@ public class AudiSettingViewModel extends AndroidViewModel {
                 z = false;
             }
             observableBoolean.set(z);
-            String str = TAG;
-            Log.i(str, "updataTime: " + timeSync);
+            Log.i(TAG, "updataTime: " + timeSync);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -118,58 +114,14 @@ public class AudiSettingViewModel extends AndroidViewModel {
         try {
             int timeZhis = PowerManagerApp.getSettingsInt(KeyConfig.TIME_FORMAT);
             this.is24Hour.set(timeZhis == 0);
-            String str = TAG;
-            Log.i(str, "updata24HourFormat: " + timeZhis);
+            Log.i(TAG, "updata24HourFormat: " + timeZhis);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
     private void systemVersion() {
-        String pingtai;
-        if (!TextUtils.isEmpty(UtilsInfo.getBaseband_Ver())) {
-            String substring = UtilsInfo.getBaseband_Ver().substring(0, 4);
-            int index_NA = UtilsInfo.getBaseband_Ver().indexOf("NA");
-            int index_platform_M506 = UtilsInfo.getBaseband_Ver().indexOf("M506");
-            int index_platform_M501 = UtilsInfo.getBaseband_Ver().indexOf("M501");
-            int index_platform_8953 = UtilsInfo.getBaseband_Ver().indexOf("8953");
-            int index_platform_8937 = UtilsInfo.getBaseband_Ver().indexOf("8937");
-            if (index_platform_M506 > -1) {
-                pingtai = "M506";
-            } else if (index_platform_M501 > -1) {
-                pingtai = "8953";
-            } else if (index_platform_8953 > -1) {
-                pingtai = "8953";
-            } else if (index_platform_8937 > -1) {
-                pingtai = "8937";
-            } else {
-                pingtai = "8953";
-            }
-            ObservableField<String> observableField = this.systemVersion;
-            Context context2 = this.context;
-            observableField.set(context2.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai}));
-            if (index_NA > -1) {
-                if (index_platform_M501 > -1) {
-                    ObservableField<String> observableField2 = this.systemVersion;
-                    Context context3 = this.context;
-                    observableField2.set(context3.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "NA-1"}));
-                    return;
-                }
-                ObservableField<String> observableField3 = this.systemVersion;
-                Context context4 = this.context;
-                observableField3.set(context4.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "NA"}));
-            } else if (index_platform_M501 > -1) {
-                ObservableField<String> observableField4 = this.systemVersion;
-                Context context5 = this.context;
-                observableField4.set(context5.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "EA-1"}));
-            } else {
-                ObservableField<String> observableField5 = this.systemVersion;
-                Context context6 = this.context;
-                observableField5.set(context6.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE + "-" + pingtai + "EA"}));
-            }
-        } else {
-            this.systemVersion.set(this.context.getString(R.string.audi_set_sys_info_system_ver, new Object[]{Build.VERSION.RELEASE}));
-        }
+        this.systemVersion.set(UtilsInfo.getSettingsVer(this.context) + "-" + UtilsInfo.getIMEI());
     }
 
     private String getAppVersion() {
@@ -222,27 +174,20 @@ public class AudiSettingViewModel extends AndroidViewModel {
     }
 
     private String getFactoryPassword() {
-        String str;
-        StringBuilder sb;
-        String factoryPassword = "1314";
         try {
-            factoryPassword = PowerManagerApp.getSettingsString(KeyConfig.PASSWORD);
-            str = TAG;
-            sb = new StringBuilder();
+            String factoryPassword = PowerManagerApp.getSettingsString(KeyConfig.PASSWORD);
+            Log.e(TAG, "factoryPassword：" + factoryPassword);
+            return factoryPassword;
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(TAG, "Exception: 获取工厂配置密码失败");
-            str = TAG;
-            sb = new StringBuilder();
+            String str = TAG;
+            Log.e(str, "Exception: 获取工厂配置密码失败");
+            Log.e(str, "factoryPassword：" + "1314");
+            return "1314";
         } catch (Throwable th) {
-            String str2 = TAG;
-            Log.e(str2, "factoryPassword：" + factoryPassword);
+            Log.e(TAG, "factoryPassword：" + "1314");
             throw th;
         }
-        sb.append("factoryPassword：");
-        sb.append(factoryPassword);
-        Log.e(str, sb.toString());
-        return factoryPassword;
     }
 
     private String getInputPassword() {

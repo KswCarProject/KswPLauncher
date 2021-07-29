@@ -45,44 +45,64 @@ public class SolverVariable {
         if (prefix != null) {
             return prefix + uniqueErrorId;
         }
-        switch (type) {
-            case UNRESTRICTED:
-                StringBuilder sb = new StringBuilder();
-                sb.append("U");
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$SolverVariable$Type[type.ordinal()]) {
+            case 1:
+                StringBuilder append = new StringBuilder().append("U");
                 int i = uniqueUnrestrictedId + 1;
                 uniqueUnrestrictedId = i;
-                sb.append(i);
-                return sb.toString();
-            case CONSTANT:
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("C");
+                return append.append(i).toString();
+            case 2:
+                StringBuilder append2 = new StringBuilder().append("C");
                 int i2 = uniqueConstantId + 1;
                 uniqueConstantId = i2;
-                sb2.append(i2);
-                return sb2.toString();
-            case SLACK:
-                StringBuilder sb3 = new StringBuilder();
-                sb3.append("S");
+                return append2.append(i2).toString();
+            case 3:
+                StringBuilder append3 = new StringBuilder().append("S");
                 int i3 = uniqueSlackId + 1;
                 uniqueSlackId = i3;
-                sb3.append(i3);
-                return sb3.toString();
-            case ERROR:
-                StringBuilder sb4 = new StringBuilder();
-                sb4.append("e");
+                return append3.append(i3).toString();
+            case 4:
+                StringBuilder append4 = new StringBuilder().append("e");
                 int i4 = uniqueErrorId + 1;
                 uniqueErrorId = i4;
-                sb4.append(i4);
-                return sb4.toString();
-            case UNKNOWN:
-                StringBuilder sb5 = new StringBuilder();
-                sb5.append("V");
+                return append4.append(i4).toString();
+            case 5:
+                StringBuilder append5 = new StringBuilder().append("V");
                 int i5 = uniqueId + 1;
                 uniqueId = i5;
-                sb5.append(i5);
-                return sb5.toString();
+                return append5.append(i5).toString();
             default:
                 throw new AssertionError(type.name());
+        }
+    }
+
+    /* renamed from: android.support.constraint.solver.SolverVariable$1  reason: invalid class name */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$SolverVariable$Type;
+
+        static {
+            int[] iArr = new int[Type.values().length];
+            $SwitchMap$android$support$constraint$solver$SolverVariable$Type = iArr;
+            try {
+                iArr[Type.UNRESTRICTED.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$SolverVariable$Type[Type.CONSTANT.ordinal()] = 2;
+            } catch (NoSuchFieldError e2) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$SolverVariable$Type[Type.SLACK.ordinal()] = 3;
+            } catch (NoSuchFieldError e3) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$SolverVariable$Type[Type.ERROR.ordinal()] = 4;
+            } catch (NoSuchFieldError e4) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$SolverVariable$Type[Type.UNKNOWN.ordinal()] = 5;
+            } catch (NoSuchFieldError e5) {
+            }
         }
     }
 
@@ -109,15 +129,16 @@ public class SolverVariable {
         boolean empty = true;
         for (int j = 0; j < this.strengthVector.length; j++) {
             String representation2 = representation + this.strengthVector[j];
-            if (this.strengthVector[j] > 0.0f) {
+            float[] fArr = this.strengthVector;
+            if (fArr[j] > 0.0f) {
                 negative = false;
-            } else if (this.strengthVector[j] < 0.0f) {
+            } else if (fArr[j] < 0.0f) {
                 negative = true;
             }
-            if (this.strengthVector[j] != 0.0f) {
+            if (fArr[j] != 0.0f) {
                 empty = false;
             }
-            if (j < this.strengthVector.length - 1) {
+            if (j < fArr.length - 1) {
                 representation = representation2 + ", ";
             } else {
                 representation = representation2 + "] ";
@@ -126,26 +147,32 @@ public class SolverVariable {
         if (negative) {
             representation = representation + " (-)";
         }
-        if (!empty) {
-            return representation;
+        if (empty) {
+            return representation + " (*)";
         }
-        return representation + " (*)";
+        return representation;
     }
 
     public final void addToRow(ArrayRow row) {
         int i = 0;
-        while (i < this.mClientEquationsCount) {
-            if (this.mClientEquations[i] != row) {
+        while (true) {
+            int i2 = this.mClientEquationsCount;
+            if (i >= i2) {
+                ArrayRow[] arrayRowArr = this.mClientEquations;
+                if (i2 >= arrayRowArr.length) {
+                    this.mClientEquations = (ArrayRow[]) Arrays.copyOf(arrayRowArr, arrayRowArr.length * 2);
+                }
+                ArrayRow[] arrayRowArr2 = this.mClientEquations;
+                int i3 = this.mClientEquationsCount;
+                arrayRowArr2[i3] = row;
+                this.mClientEquationsCount = i3 + 1;
+                return;
+            } else if (this.mClientEquations[i] != row) {
                 i++;
             } else {
                 return;
             }
         }
-        if (this.mClientEquationsCount >= this.mClientEquations.length) {
-            this.mClientEquations = (ArrayRow[]) Arrays.copyOf(this.mClientEquations, this.mClientEquations.length * 2);
-        }
-        this.mClientEquations[this.mClientEquationsCount] = row;
-        this.mClientEquationsCount++;
     }
 
     public final void removeFromRow(ArrayRow row) {
@@ -153,7 +180,8 @@ public class SolverVariable {
         for (int i = 0; i < count; i++) {
             if (this.mClientEquations[i] == row) {
                 for (int j = 0; j < (count - i) - 1; j++) {
-                    this.mClientEquations[i + j] = this.mClientEquations[i + j + 1];
+                    ArrayRow[] arrayRowArr = this.mClientEquations;
+                    arrayRowArr[i + j] = arrayRowArr[i + j + 1];
                 }
                 this.mClientEquationsCount--;
                 return;

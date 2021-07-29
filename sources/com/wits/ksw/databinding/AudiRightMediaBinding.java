@@ -1,11 +1,8 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.Bindable;
-import android.databinding.DataBindingComponent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,28 +14,20 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.AudiViewModel;
 
 public abstract class AudiRightMediaBinding extends ViewDataBinding {
-    @NonNull
     public final ImageView IvRightMusicIcon;
-    @NonNull
     public final View KSWA4LRightShowMedia;
-    @NonNull
     public final Button btnMusicNext;
-    @NonNull
     public final Button btnMusicPlayPause;
-    @NonNull
     public final Button btnMusicPrev;
-    @NonNull
     public final ImageView infoBg;
-    @Nullable
     public final LinearLayout linearLayout7;
     @Bindable
     protected AudiViewModel mVm;
-    @NonNull
     public final TextView tvMusicTitleInfor;
 
-    public abstract void setVm(@Nullable AudiViewModel audiViewModel);
+    public abstract void setVm(AudiViewModel audiViewModel);
 
-    protected AudiRightMediaBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView IvRightMusicIcon2, View KSWA4LRightShowMedia2, Button btnMusicNext2, Button btnMusicPlayPause2, Button btnMusicPrev2, ImageView infoBg2, LinearLayout linearLayout72, TextView tvMusicTitleInfor2) {
+    protected AudiRightMediaBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView IvRightMusicIcon2, View KSWA4LRightShowMedia2, Button btnMusicNext2, Button btnMusicPlayPause2, Button btnMusicPrev2, ImageView infoBg2, LinearLayout linearLayout72, TextView tvMusicTitleInfor2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.IvRightMusicIcon = IvRightMusicIcon2;
         this.KSWA4LRightShowMedia = KSWA4LRightShowMedia2;
@@ -50,36 +39,34 @@ public abstract class AudiRightMediaBinding extends ViewDataBinding {
         this.tvMusicTitleInfor = tvMusicTitleInfor2;
     }
 
-    @Nullable
     public AudiViewModel getVm() {
         return this.mVm;
     }
 
-    @NonNull
-    public static AudiRightMediaBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot) {
+    public static AudiRightMediaBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
         return inflate(inflater, root, attachToRoot, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static AudiRightMediaBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
-        return (AudiRightMediaBinding) DataBindingUtil.inflate(inflater, R.layout.audi_right_media, root, attachToRoot, component);
+    @Deprecated
+    public static AudiRightMediaBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
+        return (AudiRightMediaBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_right_media, root, attachToRoot, component);
     }
 
-    @NonNull
-    public static AudiRightMediaBinding inflate(@NonNull LayoutInflater inflater) {
+    public static AudiRightMediaBinding inflate(LayoutInflater inflater) {
         return inflate(inflater, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static AudiRightMediaBinding inflate(@NonNull LayoutInflater inflater, @Nullable DataBindingComponent component) {
-        return (AudiRightMediaBinding) DataBindingUtil.inflate(inflater, R.layout.audi_right_media, (ViewGroup) null, false, component);
+    @Deprecated
+    public static AudiRightMediaBinding inflate(LayoutInflater inflater, Object component) {
+        return (AudiRightMediaBinding) ViewDataBinding.inflateInternal(inflater, R.layout.audi_right_media, (ViewGroup) null, false, component);
     }
 
-    public static AudiRightMediaBinding bind(@NonNull View view) {
+    public static AudiRightMediaBinding bind(View view) {
         return bind(view, DataBindingUtil.getDefaultComponent());
     }
 
-    public static AudiRightMediaBinding bind(@NonNull View view, @Nullable DataBindingComponent component) {
+    @Deprecated
+    public static AudiRightMediaBinding bind(View view, Object component) {
         return (AudiRightMediaBinding) bind(component, view, R.layout.audi_right_media);
     }
 }

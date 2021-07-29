@@ -15,8 +15,9 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
     }
 
     public void removeOnListChangedCallback(ObservableList.OnListChangedCallback listener) {
-        if (this.mListeners != null) {
-            this.mListeners.remove(listener);
+        ListChangeRegistry listChangeRegistry = this.mListeners;
+        if (listChangeRegistry != null) {
+            listChangeRegistry.remove(listener);
         }
     }
 
@@ -73,8 +74,9 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
 
     public T set(int index, T object) {
         T val = super.set(index, object);
-        if (this.mListeners != null) {
-            this.mListeners.notifyChanged(this, index, 1);
+        ListChangeRegistry listChangeRegistry = this.mListeners;
+        if (listChangeRegistry != null) {
+            listChangeRegistry.notifyChanged(this, index, 1);
         }
         return val;
     }
@@ -86,14 +88,16 @@ public class ObservableArrayList<T> extends ArrayList<T> implements ObservableLi
     }
 
     private void notifyAdd(int start, int count) {
-        if (this.mListeners != null) {
-            this.mListeners.notifyInserted(this, start, count);
+        ListChangeRegistry listChangeRegistry = this.mListeners;
+        if (listChangeRegistry != null) {
+            listChangeRegistry.notifyInserted(this, start, count);
         }
     }
 
     private void notifyRemove(int start, int count) {
-        if (this.mListeners != null) {
-            this.mListeners.notifyRemoved(this, start, count);
+        ListChangeRegistry listChangeRegistry = this.mListeners;
+        if (listChangeRegistry != null) {
+            listChangeRegistry.notifyRemoved(this, start, count);
         }
     }
 }

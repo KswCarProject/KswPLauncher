@@ -2,7 +2,6 @@ package com.bumptech.glide.load.resource.drawable;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.engine.Initializable;
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
@@ -15,7 +14,6 @@ public abstract class DrawableResource<T extends Drawable> implements Resource<T
         this.drawable = (Drawable) Preconditions.checkNotNull(drawable2);
     }
 
-    @NonNull
     public final T get() {
         Drawable.ConstantState state = this.drawable.getConstantState();
         if (state == null) {
@@ -25,10 +23,11 @@ public abstract class DrawableResource<T extends Drawable> implements Resource<T
     }
 
     public void initialize() {
-        if (this.drawable instanceof BitmapDrawable) {
-            ((BitmapDrawable) this.drawable).getBitmap().prepareToDraw();
-        } else if (this.drawable instanceof GifDrawable) {
-            ((GifDrawable) this.drawable).getFirstFrame().prepareToDraw();
+        T t = this.drawable;
+        if (t instanceof BitmapDrawable) {
+            ((BitmapDrawable) t).getBitmap().prepareToDraw();
+        } else if (t instanceof GifDrawable) {
+            ((GifDrawable) t).getFirstFrame().prepareToDraw();
         }
     }
 }

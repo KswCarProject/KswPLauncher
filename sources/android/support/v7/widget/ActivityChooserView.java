@@ -9,7 +9,6 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v7.appcompat.R;
@@ -29,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ActivityChooserView extends ViewGroup implements ActivityChooserModel.ActivityChooserModelClient {
     private static final String LOG_TAG = "ActivityChooserView";
     private final View mActivityChooserContent;
@@ -93,15 +91,18 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
         Drawable expandActivityOverflowButtonDrawable = attributesArray.getDrawable(R.styleable.ActivityChooserView_expandActivityOverflowButtonDrawable);
         attributesArray.recycle();
         LayoutInflater.from(getContext()).inflate(R.layout.abc_activity_chooser_view, this, true);
-        this.mCallbacks = new Callbacks();
-        this.mActivityChooserContent = findViewById(R.id.activity_chooser_view_content);
-        this.mActivityChooserContentBackground = this.mActivityChooserContent.getBackground();
-        this.mDefaultActivityButton = (FrameLayout) findViewById(R.id.default_activity_button);
-        this.mDefaultActivityButton.setOnClickListener(this.mCallbacks);
-        this.mDefaultActivityButton.setOnLongClickListener(this.mCallbacks);
-        this.mDefaultActivityButtonImage = (ImageView) this.mDefaultActivityButton.findViewById(R.id.image);
+        Callbacks callbacks = new Callbacks();
+        this.mCallbacks = callbacks;
+        View findViewById = findViewById(R.id.activity_chooser_view_content);
+        this.mActivityChooserContent = findViewById;
+        this.mActivityChooserContentBackground = findViewById.getBackground();
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.default_activity_button);
+        this.mDefaultActivityButton = frameLayout;
+        frameLayout.setOnClickListener(callbacks);
+        frameLayout.setOnLongClickListener(callbacks);
+        this.mDefaultActivityButtonImage = (ImageView) frameLayout.findViewById(R.id.image);
         FrameLayout expandButton = (FrameLayout) findViewById(R.id.expand_activities_button);
-        expandButton.setOnClickListener(this.mCallbacks);
+        expandButton.setOnClickListener(callbacks);
         expandButton.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(host, info);
@@ -126,10 +127,12 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
             }
         });
         this.mExpandActivityOverflowButton = expandButton;
-        this.mExpandActivityOverflowButtonImage = (ImageView) expandButton.findViewById(R.id.image);
-        this.mExpandActivityOverflowButtonImage.setImageDrawable(expandActivityOverflowButtonDrawable);
-        this.mAdapter = new ActivityChooserViewAdapter();
-        this.mAdapter.registerDataSetObserver(new DataSetObserver() {
+        ImageView imageView = (ImageView) expandButton.findViewById(R.id.image);
+        this.mExpandActivityOverflowButtonImage = imageView;
+        imageView.setImageDrawable(expandActivityOverflowButtonDrawable);
+        ActivityChooserViewAdapter activityChooserViewAdapter = new ActivityChooserViewAdapter();
+        this.mAdapter = activityChooserViewAdapter;
+        activityChooserViewAdapter.registerDataSetObserver(new DataSetObserver() {
             public void onChanged() {
                 super.onChanged();
                 ActivityChooserView.this.updateAppearance();
@@ -155,7 +158,6 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
         this.mExpandActivityOverflowButtonImage.setContentDescription(getContext().getString(resourceId));
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setProvider(ActionProvider provider) {
         this.mProvider = provider;
     }
@@ -192,8 +194,9 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
                 }
                 popupWindow.setContentWidth(Math.min(this.mAdapter.measureContentWidth(), this.mListPopupMaxWidth));
                 popupWindow.show();
-                if (this.mProvider != null) {
-                    this.mProvider.subUiVisibilityChanged(true);
+                ActionProvider actionProvider = this.mProvider;
+                if (actionProvider != null) {
+                    actionProvider.subUiVisibilityChanged(true);
                 }
                 popupWindow.getListView().setContentDescription(getContext().getString(R.string.abc_activitychooserview_choose_application));
                 popupWindow.getListView().setSelector(new ColorDrawable(0));
@@ -285,8 +288,9 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
     /* access modifiers changed from: package-private */
     public ListPopupWindow getListPopupWindow() {
         if (this.mListPopupWindow == null) {
-            this.mListPopupWindow = new ListPopupWindow(getContext());
-            this.mListPopupWindow.setAdapter(this.mAdapter);
+            ListPopupWindow listPopupWindow = new ListPopupWindow(getContext());
+            this.mListPopupWindow = listPopupWindow;
+            listPopupWindow.setAdapter(this.mAdapter);
             this.mListPopupWindow.setAnchorView(this);
             this.mListPopupWindow.setModal(true);
             this.mListPopupWindow.setOnItemClickListener(this.mCallbacks);
@@ -346,7 +350,7 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
                         return;
                     }
                 case 1:
-                    ActivityChooserView.this.showPopupUnchecked(ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED);
+                    ActivityChooserView.this.showPopupUnchecked(Integer.MAX_VALUE);
                     return;
                 default:
                     throw new IllegalArgumentException();
@@ -363,7 +367,8 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
                 }
             } else if (view == ActivityChooserView.this.mExpandActivityOverflowButton) {
                 ActivityChooserView.this.mIsSelectingDefaultActivity = false;
-                ActivityChooserView.this.showPopupUnchecked(ActivityChooserView.this.mInitialActivityCount);
+                ActivityChooserView activityChooserView = ActivityChooserView.this;
+                activityChooserView.showPopupUnchecked(activityChooserView.mInitialActivityCount);
             } else {
                 throw new IllegalArgumentException();
             }
@@ -373,7 +378,8 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
             if (view == ActivityChooserView.this.mDefaultActivityButton) {
                 if (ActivityChooserView.this.mAdapter.getCount() > 0) {
                     ActivityChooserView.this.mIsSelectingDefaultActivity = true;
-                    ActivityChooserView.this.showPopupUnchecked(ActivityChooserView.this.mInitialActivityCount);
+                    ActivityChooserView activityChooserView = ActivityChooserView.this;
+                    activityChooserView.showPopupUnchecked(activityChooserView.mInitialActivityCount);
                 }
                 return true;
             }
@@ -493,7 +499,7 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
 
         public int measureContentWidth() {
             int oldMaxActivityCount = this.mMaxActivityCount;
-            this.mMaxActivityCount = MAX_ACTIVITY_COUNT_UNLIMITED;
+            this.mMaxActivityCount = Integer.MAX_VALUE;
             int contentWidth = 0;
             View itemView = null;
             int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, 0);
@@ -551,7 +557,6 @@ public class ActivityChooserView extends ViewGroup implements ActivityChooserMod
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static class InnerLayout extends LinearLayout {
         private static final int[] TINT_ATTRS = {16842964};
 

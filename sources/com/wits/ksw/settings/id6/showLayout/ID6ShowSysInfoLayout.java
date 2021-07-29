@@ -61,8 +61,9 @@ public class ID6ShowSysInfoLayout extends RelativeLayout {
             String mvformat = String.format(getResources().getString(R.string.text_8), new Object[]{McuUtil.getMcuVersion()});
             SpannableString ss1 = new SpannableString(mvformat);
             ss1.setSpan(new RelativeSizeSpan(0.7f), getResources().getString(R.string.text_8).length() - 2, mvformat.length(), 17);
-            this.tv_infoMcuv = (TextView) view.findViewById(R.id.tv_infoMcuv);
-            this.tv_infoMcuv.setText(ss1);
+            TextView textView = (TextView) view.findViewById(R.id.tv_infoMcuv);
+            this.tv_infoMcuv = textView;
+            textView.setText(ss1);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -72,15 +73,17 @@ public class ID6ShowSysInfoLayout extends RelativeLayout {
             }
         });
         String avformat = String.format(getResources().getString(R.string.text_9), new Object[]{getVersion()});
-        this.tv_infoAppv = (TextView) view.findViewById(R.id.tv_infoAppv);
-        this.tv_infoAppv.setText(avformat);
+        TextView textView2 = (TextView) view.findViewById(R.id.tv_infoAppv);
+        this.tv_infoAppv = textView2;
+        textView2.setText(avformat);
         if (Build.VERSION.SDK_INT > 28) {
             svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"10.0"});
         } else {
             svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"9.0"});
         }
-        this.tv_infoSysv = (TextView) view.findViewById(R.id.tv_infoSysv);
-        this.tv_infoSysv.setText(svformat);
+        TextView textView3 = (TextView) view.findViewById(R.id.tv_infoSysv);
+        this.tv_infoSysv = textView3;
+        textView3.setText(svformat);
     }
 
     private String getVersion() {

@@ -1,15 +1,11 @@
 package android.support.v4.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 public final class Pools {
 
     public interface Pool<T> {
-        @Nullable
         T acquire();
 
-        boolean release(@NonNull T t);
+        boolean release(T t);
     }
 
     private Pools() {
@@ -28,29 +24,33 @@ public final class Pools {
         }
 
         public T acquire() {
-            if (this.mPoolSize <= 0) {
+            int i = this.mPoolSize;
+            if (i <= 0) {
                 return null;
             }
-            int lastPooledIndex = this.mPoolSize - 1;
-            T instance = this.mPool[lastPooledIndex];
-            this.mPool[lastPooledIndex] = null;
-            this.mPoolSize--;
+            int lastPooledIndex = i - 1;
+            T[] tArr = this.mPool;
+            T instance = tArr[lastPooledIndex];
+            tArr[lastPooledIndex] = null;
+            this.mPoolSize = i - 1;
             return instance;
         }
 
-        public boolean release(@NonNull T instance) {
-            if (isInPool(instance)) {
-                throw new IllegalStateException("Already in the pool!");
-            } else if (this.mPoolSize >= this.mPool.length) {
-                return false;
-            } else {
-                this.mPool[this.mPoolSize] = instance;
-                this.mPoolSize++;
+        public boolean release(T instance) {
+            if (!isInPool(instance)) {
+                int i = this.mPoolSize;
+                Object[] objArr = this.mPool;
+                if (i >= objArr.length) {
+                    return false;
+                }
+                objArr[i] = instance;
+                this.mPoolSize = i + 1;
                 return true;
             }
+            throw new IllegalStateException("Already in the pool!");
         }
 
-        private boolean isInPool(@NonNull T instance) {
+        private boolean isInPool(T instance) {
             for (int i = 0; i < this.mPoolSize; i++) {
                 if (this.mPool[i] == instance) {
                     return true;
@@ -75,7 +75,7 @@ public final class Pools {
             return acquire;
         }
 
-        public boolean release(@NonNull T element) {
+        public boolean release(T element) {
             boolean release;
             synchronized (this.mLock) {
                 release = super.release(element);

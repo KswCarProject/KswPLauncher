@@ -1,13 +1,10 @@
 package com.bumptech.glide.load.resource.drawable;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.load.engine.Resource;
 
 final class NonOwnedDrawableResource extends DrawableResource<Drawable> {
-    @Nullable
-    static Resource<Drawable> newInstance(@Nullable Drawable drawable) {
+    static Resource<Drawable> newInstance(Drawable drawable) {
         if (drawable != null) {
             return new NonOwnedDrawableResource(drawable);
         }
@@ -18,7 +15,6 @@ final class NonOwnedDrawableResource extends DrawableResource<Drawable> {
         super(drawable);
     }
 
-    @NonNull
     public Class<Drawable> getResourceClass() {
         return this.drawable.getClass();
     }

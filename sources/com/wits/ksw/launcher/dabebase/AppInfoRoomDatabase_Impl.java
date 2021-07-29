@@ -68,8 +68,6 @@ public class AppInfoRoomDatabase_Impl extends AppInfoRoomDatabase {
     }
 
     public void clearAllTables() {
-        String str;
-        String str2;
         super.assertNotMainThread();
         SupportSQLiteDatabase _db = super.getOpenHelper().getWritableDatabase();
         try {
@@ -78,11 +76,9 @@ public class AppInfoRoomDatabase_Impl extends AppInfoRoomDatabase {
             super.setTransactionSuccessful();
         } finally {
             super.endTransaction();
-            str = "PRAGMA wal_checkpoint(FULL)";
-            _db.query(str).close();
+            _db.query("PRAGMA wal_checkpoint(FULL)").close();
             if (!_db.inTransaction()) {
-                str2 = "VACUUM";
-                _db.execSQL(str2);
+                _db.execSQL("VACUUM");
             }
         }
     }

@@ -75,11 +75,13 @@ public class Ntg6NaviTwo extends RelativeLayout {
         this.relate_naviv = (ScrollView) view.findViewById(R.id.relate_naviv);
         this.relate_app = (RelativeLayout) view.findViewById(R.id.relate_app);
         this.navi_recycle = (RecyclerView) view.findViewById(R.id.navi_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.navi_recycle.setLayoutManager(this.layoutManager);
-        this.naviAdapter = new Ntg6NaviAdapter(this.context, this.mapBanList);
-        this.navi_recycle.setAdapter(this.naviAdapter);
+        Ntg6NaviAdapter ntg6NaviAdapter = new Ntg6NaviAdapter(this.context, this.mapBanList);
+        this.naviAdapter = ntg6NaviAdapter;
+        this.navi_recycle.setAdapter(ntg6NaviAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this.context, 1);
         divider.setDrawable(ContextCompat.getDrawable(this.context, R.mipmap.ntg55_right_big_line1));
         this.navi_recycle.addItemDecoration(divider);
@@ -92,25 +94,26 @@ public class Ntg6NaviTwo extends RelativeLayout {
                 }
             }
         });
-        this.rdg_naviv = (RadioGroup) view.findViewById(R.id.rdg_naviv);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_naviv);
+        this.rdg_naviv = radioGroup;
         switch (this.naviMin) {
             case 0:
-                this.rdg_naviv.check(R.id.rdb_naviv1);
+                radioGroup.check(R.id.rdb_naviv1);
                 break;
             case 1:
-                this.rdg_naviv.check(R.id.rdb_naviv2);
+                radioGroup.check(R.id.rdb_naviv2);
                 break;
             case 2:
-                this.rdg_naviv.check(R.id.rdb_naviv3);
+                radioGroup.check(R.id.rdb_naviv3);
                 break;
             case 3:
-                this.rdg_naviv.check(R.id.rdb_naviv4);
+                radioGroup.check(R.id.rdb_naviv4);
                 break;
             case 4:
-                this.rdg_naviv.check(R.id.rdb_naviv5);
+                radioGroup.check(R.id.rdb_naviv5);
                 break;
             case 5:
-                this.rdg_naviv.check(R.id.rdb_naviv6);
+                radioGroup.check(R.id.rdb_naviv6);
                 break;
         }
         this.rdg_naviv.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

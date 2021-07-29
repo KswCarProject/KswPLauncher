@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="vertical" android:background="@drawable/fy_theme_bg_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RadioGroup android:gravity="center" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="80dp">
+        <RadioButton android:id="@+id/rb_benz_fy_bg1" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_1" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rb_benz_fy_bg2" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_2" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rb_benz_fy_bg3" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_3" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rb_benz_fy_bg4" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_4" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rb_benz_fy_bg5" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_5" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rb_benz_fy_bg6" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_6" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rb_benz_fy_bg7" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_7" android:layout_weight="1"/>
+        <RadioButton android:id="@+id/rb_benz_fy_bg8" android:layout_width="0dp" android:layout_height="match_parent" android:button="@drawable/benz_ntg6_fy_bg_sel_8" android:layout_weight="1"/>
+    </RadioGroup>
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg4" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg5" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg6" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg7" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+        <TextView android:textSize="23sp" android:textColor="#80ffffff" android:gravity="center" android:id="@+id/tv_bg8" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>

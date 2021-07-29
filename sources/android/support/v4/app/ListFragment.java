@@ -3,8 +3,6 @@ package android.support.v4.app;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +65,7 @@ public class ListFragment extends Fragment {
         return root;
     }
 
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ensureList();
     }
@@ -90,8 +88,9 @@ public class ListFragment extends Fragment {
         boolean z = false;
         boolean hadAdapter = this.mAdapter != null;
         this.mAdapter = adapter;
-        if (this.mList != null) {
-            this.mList.setAdapter(adapter);
+        ListView listView = this.mList;
+        if (listView != null) {
+            listView.setAdapter(adapter);
             if (!this.mListShown && !hadAdapter) {
                 if (getView().getWindowToken() != null) {
                     z = true;
@@ -123,8 +122,9 @@ public class ListFragment extends Fragment {
 
     public void setEmptyText(CharSequence text) {
         ensureList();
-        if (this.mStandardEmptyView != null) {
-            this.mStandardEmptyView.setText(text);
+        TextView textView = this.mStandardEmptyView;
+        if (textView != null) {
+            textView.setText(text);
             if (this.mEmptyText == null) {
                 this.mList.setEmptyView(this.mStandardEmptyView);
             }
@@ -144,16 +144,17 @@ public class ListFragment extends Fragment {
 
     private void setListShown(boolean shown, boolean animate) {
         ensureList();
-        if (this.mProgressContainer == null) {
+        View view = this.mProgressContainer;
+        if (view == null) {
             throw new IllegalStateException("Can't be used with a custom content view");
         } else if (this.mListShown != shown) {
             this.mListShown = shown;
             if (shown) {
                 if (animate) {
-                    this.mProgressContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), 17432577));
+                    view.startAnimation(AnimationUtils.loadAnimation(getContext(), 17432577));
                     this.mListContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), 17432576));
                 } else {
-                    this.mProgressContainer.clearAnimation();
+                    view.clearAnimation();
                     this.mListContainer.clearAnimation();
                 }
                 this.mProgressContainer.setVisibility(8);
@@ -161,10 +162,10 @@ public class ListFragment extends Fragment {
                 return;
             }
             if (animate) {
-                this.mProgressContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), 17432576));
+                view.startAnimation(AnimationUtils.loadAnimation(getContext(), 17432576));
                 this.mListContainer.startAnimation(AnimationUtils.loadAnimation(getContext(), 17432577));
             } else {
-                this.mProgressContainer.clearAnimation();
+                view.clearAnimation();
                 this.mListContainer.clearAnimation();
             }
             this.mProgressContainer.setVisibility(0);
@@ -183,22 +184,28 @@ public class ListFragment extends Fragment {
                 if (root instanceof ListView) {
                     this.mList = (ListView) root;
                 } else {
-                    this.mStandardEmptyView = (TextView) root.findViewById(INTERNAL_EMPTY_ID);
-                    if (this.mStandardEmptyView == null) {
+                    TextView textView = (TextView) root.findViewById(INTERNAL_EMPTY_ID);
+                    this.mStandardEmptyView = textView;
+                    if (textView == null) {
                         this.mEmptyView = root.findViewById(16908292);
                     } else {
-                        this.mStandardEmptyView.setVisibility(8);
+                        textView.setVisibility(8);
                     }
                     this.mProgressContainer = root.findViewById(INTERNAL_PROGRESS_CONTAINER_ID);
                     this.mListContainer = root.findViewById(INTERNAL_LIST_CONTAINER_ID);
                     View rawListView = root.findViewById(16908298);
                     if (rawListView instanceof ListView) {
-                        this.mList = (ListView) rawListView;
-                        if (this.mEmptyView != null) {
-                            this.mList.setEmptyView(this.mEmptyView);
-                        } else if (this.mEmptyText != null) {
-                            this.mStandardEmptyView.setText(this.mEmptyText);
-                            this.mList.setEmptyView(this.mStandardEmptyView);
+                        ListView listView = (ListView) rawListView;
+                        this.mList = listView;
+                        View view = this.mEmptyView;
+                        if (view != null) {
+                            listView.setEmptyView(view);
+                        } else {
+                            CharSequence charSequence = this.mEmptyText;
+                            if (charSequence != null) {
+                                this.mStandardEmptyView.setText(charSequence);
+                                this.mList.setEmptyView(this.mStandardEmptyView);
+                            }
                         }
                     } else if (rawListView == null) {
                         throw new RuntimeException("Your content must have a ListView whose id attribute is 'android.R.id.list'");

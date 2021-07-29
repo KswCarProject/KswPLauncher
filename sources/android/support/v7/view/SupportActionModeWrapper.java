@@ -1,7 +1,6 @@
 package android.support.v7.view;
 
 import android.content.Context;
-import android.support.annotation.RestrictTo;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v4.internal.view.SupportMenuItem;
 import android.support.v4.util.SimpleArrayMap;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import java.util.ArrayList;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class SupportActionModeWrapper extends ActionMode {
     final Context mContext;
     final ActionMode mWrappedObject;
@@ -92,7 +90,6 @@ public class SupportActionModeWrapper extends ActionMode {
         return this.mWrappedObject.isTitleOptional();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static class CallbackWrapper implements ActionMode.Callback {
         final ArrayList<SupportActionModeWrapper> mActionModes = new ArrayList<>();
         final Context mContext;

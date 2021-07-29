@@ -1,7 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.Pools;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -19,12 +17,12 @@ class MultiModelLoader<Model, Data> implements ModelLoader<Model, Data> {
     private final Pools.Pool<List<Throwable>> exceptionListPool;
     private final List<ModelLoader<Model, Data>> modelLoaders;
 
-    MultiModelLoader(@NonNull List<ModelLoader<Model, Data>> modelLoaders2, @NonNull Pools.Pool<List<Throwable>> exceptionListPool2) {
+    MultiModelLoader(List<ModelLoader<Model, Data>> modelLoaders2, Pools.Pool<List<Throwable>> exceptionListPool2) {
         this.modelLoaders = modelLoaders2;
         this.exceptionListPool = exceptionListPool2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull Model model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(Model model, int width, int height, Options options) {
         ModelLoader.LoadData<Data> loadData;
         Key sourceKey = null;
         int size = this.modelLoaders.size();
@@ -42,7 +40,7 @@ class MultiModelLoader<Model, Data> implements ModelLoader<Model, Data> {
         return new ModelLoader.LoadData<>(sourceKey, new MultiFetcher(fetchers, this.exceptionListPool));
     }
 
-    public boolean handles(@NonNull Model model) {
+    public boolean handles(Model model) {
         for (ModelLoader<Model, Data> modelLoader : this.modelLoaders) {
             if (modelLoader.handles(model)) {
                 return true;
@@ -58,20 +56,19 @@ class MultiModelLoader<Model, Data> implements ModelLoader<Model, Data> {
     static class MultiFetcher<Data> implements DataFetcher<Data>, DataFetcher.DataCallback<Data> {
         private DataFetcher.DataCallback<? super Data> callback;
         private int currentIndex = 0;
-        @Nullable
         private List<Throwable> exceptions;
         private final List<DataFetcher<Data>> fetchers;
         private boolean isCancelled;
         private Priority priority;
         private final Pools.Pool<List<Throwable>> throwableListPool;
 
-        MultiFetcher(@NonNull List<DataFetcher<Data>> fetchers2, @NonNull Pools.Pool<List<Throwable>> throwableListPool2) {
+        MultiFetcher(List<DataFetcher<Data>> fetchers2, Pools.Pool<List<Throwable>> throwableListPool2) {
             this.throwableListPool = throwableListPool2;
             Preconditions.checkNotEmpty(fetchers2);
             this.fetchers = fetchers2;
         }
 
-        public void loadData(@NonNull Priority priority2, @NonNull DataFetcher.DataCallback<? super Data> callback2) {
+        public void loadData(Priority priority2, DataFetcher.DataCallback<? super Data> callback2) {
             this.priority = priority2;
             this.callback = callback2;
             this.exceptions = this.throwableListPool.acquire();
@@ -82,8 +79,9 @@ class MultiModelLoader<Model, Data> implements ModelLoader<Model, Data> {
         }
 
         public void cleanup() {
-            if (this.exceptions != null) {
-                this.throwableListPool.release(this.exceptions);
+            List<Throwable> list = this.exceptions;
+            if (list != null) {
+                this.throwableListPool.release(list);
             }
             this.exceptions = null;
             for (DataFetcher<Data> fetcher : this.fetchers) {
@@ -98,17 +96,15 @@ class MultiModelLoader<Model, Data> implements ModelLoader<Model, Data> {
             }
         }
 
-        @NonNull
         public Class<Data> getDataClass() {
             return this.fetchers.get(0).getDataClass();
         }
 
-        @NonNull
         public DataSource getDataSource() {
             return this.fetchers.get(0).getDataSource();
         }
 
-        public void onDataReady(@Nullable Data data) {
+        public void onDataReady(Data data) {
             if (data != null) {
                 this.callback.onDataReady(data);
             } else {
@@ -116,7 +112,7 @@ class MultiModelLoader<Model, Data> implements ModelLoader<Model, Data> {
             }
         }
 
-        public void onLoadFailed(@NonNull Exception e) {
+        public void onLoadFailed(Exception e) {
             ((List) Preconditions.checkNotNull(this.exceptions)).add(e);
             startNextOrFail();
         }

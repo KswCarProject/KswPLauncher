@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +13,9 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.BaseActivity;
 import com.wits.ksw.settings.id7.FactoryActivity;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
@@ -56,33 +56,30 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     private FrameLayout frame_OneLayout;
     private FrameLayout frame_TwoLayout;
     Handler handler = new Handler() {
-        @RequiresApi(api = 24)
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            int i = msg.what;
-            if (i != 0) {
-                switch (i) {
-                    case 2:
-                        if (TextUtils.equals(LexusSettingsActivity.this.defPwd, (String) msg.obj)) {
-                            LexusSettingsActivity.this.startActivity(new Intent(LexusSettingsActivity.this, FactoryActivity.class));
-                            LexusSettingsActivity.this.finish();
-                            return;
-                        }
-                        LexusSettingsActivity.this.setFactoryLayout.SetTextEEro();
+            switch (msg.what) {
+                case 0:
+                    LexusSettingsActivity.this.initOneLayout();
+                    LexusSettingsActivity.this.initTwoLayout();
+                    return;
+                case 2:
+                    if (TextUtils.equals(LexusSettingsActivity.this.defPwd, (String) msg.obj)) {
+                        LexusSettingsActivity.this.startActivity(new Intent(LexusSettingsActivity.this, FactoryActivity.class));
+                        LexusSettingsActivity.this.finish();
                         return;
-                    case 3:
-                        if (LexusSettingsActivity.this.naviTwo != null) {
-                            Log.d("Navi", "updateList: " + LexusSettingsActivity.this.mapList.size());
-                            LexusSettingsActivity.this.naviTwo.updateMapList(LexusSettingsActivity.this.mapList);
-                            return;
-                        }
+                    }
+                    LexusSettingsActivity.this.setFactoryLayout.SetTextEEro();
+                    return;
+                case 3:
+                    if (LexusSettingsActivity.this.naviTwo != null) {
+                        Log.d("Navi", "updateList: " + LexusSettingsActivity.this.mapList.size());
+                        LexusSettingsActivity.this.naviTwo.updateMapList(LexusSettingsActivity.this.mapList);
                         return;
-                    default:
-                        return;
-                }
-            } else {
-                LexusSettingsActivity.this.initOneLayout();
-                LexusSettingsActivity.this.initTwoLayout();
+                    }
+                    return;
+                default:
+                    return;
             }
         }
     };
@@ -94,6 +91,20 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     /* access modifiers changed from: private */
     public NaviTwo naviTwo;
     private RecyclerView recyclerView;
+    String screenFile = "";
+    private Handler screenHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 666:
+                    LexusSettingsActivity lexusSettingsActivity = LexusSettingsActivity.this;
+                    lexusSettingsActivity.screenFile = MainActivity.screenShotByShell(lexusSettingsActivity);
+                    Log.d("liuhao SettingsActivity", LexusSettingsActivity.this.screenFile);
+                    return;
+                default:
+                    return;
+            }
+        }
+    };
     /* access modifiers changed from: private */
     public SetFactoryLayout setFactoryLayout;
     private SetImageTwo setImageTwo;
@@ -112,15 +123,13 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     private String voiceData;
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_lexus_settings);
         initData();
         initView();
     }
 
-    @RequiresApi(api = 24)
     public void skipItem() {
         if (TextUtils.equals("voic", this.voiceData)) {
             initOneLayout();
@@ -130,8 +139,9 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
                 fb.setIscheck(false);
             }
             this.data.get(2).setIscheck(true);
-            if (this.adapter != null) {
-                this.adapter.notifyDataSetChanged();
+            FunctionAdapter functionAdapter = this.adapter;
+            if (functionAdapter != null) {
+                functionAdapter.notifyDataSetChanged();
             }
         } else if (TextUtils.equals("voicFun", this.voiceData)) {
             initOneLayout();
@@ -141,8 +151,9 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
                 fb2.setIscheck(false);
             }
             this.data.get(3).setIscheck(true);
-            if (this.adapter != null) {
-                this.adapter.notifyDataSetChanged();
+            FunctionAdapter functionAdapter2 = this.adapter;
+            if (functionAdapter2 != null) {
+                functionAdapter2.notifyDataSetChanged();
             }
         }
     }
@@ -161,13 +172,21 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
     public void onResume() {
         super.onResume();
         ScanNaviList.getInstance().setMapListScanListener(this);
         this.handler.sendEmptyMessageDelayed(0, 1000);
         initSaveData();
         skipItem();
+        if (UiThemeUtils.isLEXUS_LS_UI(this)) {
+            this.screenHandler.sendEmptyMessageDelayed(666, 1800);
+        }
+    }
+
+    /* access modifiers changed from: protected */
+    public void onPause() {
+        super.onPause();
+        this.screenHandler.removeMessages(666);
     }
 
     /* access modifiers changed from: protected */
@@ -177,23 +196,26 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void initOneLayout() {
         if (this.setSystemInfoLayout == null) {
-            this.setSystemLayout = new SetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
+            SetSystemLayout setSystemLayout2 = new SetSystemLayout(this);
+            this.setSystemLayout = setSystemLayout2;
+            setSystemLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setNaviLayout == null) {
-            this.setNaviLayout = new SetNaviLayout(this);
-            this.setNaviLayout.registIUpdateTwoLayout(this);
+            SetNaviLayout setNaviLayout2 = new SetNaviLayout(this);
+            this.setNaviLayout = setNaviLayout2;
+            setNaviLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setVoiceLayout == null) {
-            this.setVoiceLayout = new SetVoiceLayout(this);
-            this.setVoiceLayout.registIUpdateTwoLayout(this);
+            SetVoiceLayout setVoiceLayout2 = new SetVoiceLayout(this);
+            this.setVoiceLayout = setVoiceLayout2;
+            setVoiceLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setVocModeLayout == null) {
-            this.setVocModeLayout = new SetVocModeLayout(this);
-            this.setVocModeLayout.registIUpdateTwoLayout(this);
+            SetVocModeLayout setVocModeLayout2 = new SetVocModeLayout(this);
+            this.setVocModeLayout = setVocModeLayout2;
+            setVocModeLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setLanguageLayout == null) {
             this.setLanguageLayout = new SetLanguageLayout(this);
@@ -202,8 +224,9 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
             this.setToAndSysLayout = new SetToAndSysLayout(this);
         }
         if (this.setTimeLayout == null) {
-            this.setTimeLayout = new SetTimeLayout(this);
-            this.setTimeLayout.registIUpdateTwoLayout(this);
+            SetTimeLayout setTimeLayout2 = new SetTimeLayout(this);
+            this.setTimeLayout = setTimeLayout2;
+            setTimeLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setSystemInfoLayout == null) {
             this.setSystemInfoLayout = new SetSystemInfoLayout(this);
@@ -269,14 +292,15 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     private void initView() {
         this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         this.lexus_set_title = (TextView) findViewById(R.id.lexus_set_title);
-        this.layoutManager = new LinearLayoutManager(this);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
-        this.adapter = new FunctionAdapter(this, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        FunctionAdapter functionAdapter = new FunctionAdapter(this, this.data);
+        this.adapter = functionAdapter;
+        this.recyclerView.setAdapter(functionAdapter);
         new DividerItemDecoration(this, 1).setDrawable(ContextCompat.getDrawable(this, R.drawable.lexus_settings_line_left));
         this.adapter.registOnFunctionClickListener(new FunctionAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 String[] stringArray = LexusSettingsActivity.this.getResources().getStringArray(R.array.set_function);
                 int arrayPos = pos;
@@ -295,8 +319,9 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
         this.frame_OneLayout = (FrameLayout) findViewById(R.id.frame_OneLayout);
         this.frame_TwoLayout = (FrameLayout) findViewById(R.id.frame_TwoLayout);
         if (this.setSystemLayout == null) {
-            this.setSystemLayout = new SetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
+            SetSystemLayout setSystemLayout2 = new SetSystemLayout(this);
+            this.setSystemLayout = setSystemLayout2;
+            setSystemLayout2.registIUpdateTwoLayout(this);
         }
         this.frame_OneLayout.addView(this.setSystemLayout);
         if (this.setSystemTwo == null) {
@@ -306,7 +331,6 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void setOneLayout(int type) {
         this.frame_OneLayout.removeAllViews();
         this.frame_TwoLayout.removeAllViews();
@@ -314,8 +338,9 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
         switch (type) {
             case 0:
                 if (this.setSystemLayout == null) {
-                    this.setSystemLayout = new SetSystemLayout(this);
-                    this.setSystemLayout.registIUpdateTwoLayout(this);
+                    SetSystemLayout setSystemLayout2 = new SetSystemLayout(this);
+                    this.setSystemLayout = setSystemLayout2;
+                    setSystemLayout2.registIUpdateTwoLayout(this);
                 }
                 if (this.setSystemTwo == null) {
                     this.setSystemTwo = new SetSystemTwo(this);
@@ -326,8 +351,9 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
                 break;
             case 1:
                 if (this.setNaviLayout == null) {
-                    this.setNaviLayout = new SetNaviLayout(this);
-                    this.setNaviLayout.registIUpdateTwoLayout(this);
+                    SetNaviLayout setNaviLayout2 = new SetNaviLayout(this);
+                    this.setNaviLayout = setNaviLayout2;
+                    setNaviLayout2.registIUpdateTwoLayout(this);
                 }
                 if (this.naviTwo == null) {
                     this.naviTwo = new NaviTwo(this);
@@ -364,8 +390,9 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
                 break;
             case 4:
                 if (this.setTimeLayout == null) {
-                    this.setTimeLayout = new SetTimeLayout(this);
-                    this.setTimeLayout.registIUpdateTwoLayout(this);
+                    SetTimeLayout setTimeLayout2 = new SetTimeLayout(this);
+                    this.setTimeLayout = setTimeLayout2;
+                    setTimeLayout2.registIUpdateTwoLayout(this);
                 }
                 if (this.timeSetTwo == null) {
                     this.timeSetTwo = new TimeSetTwo(this);
@@ -410,8 +437,7 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     public void updateTwoLayout(int type, int shwoIndex) {
-        String str = this.TAG;
-        Log.d(str, "updateTwoLayout type=" + type + " shwoIndex=" + shwoIndex);
+        Log.d(this.TAG, "updateTwoLayout type=" + type + " shwoIndex=" + shwoIndex);
         switch (type) {
             case 1:
                 this.setSystemTwo.showLayout(shwoIndex);

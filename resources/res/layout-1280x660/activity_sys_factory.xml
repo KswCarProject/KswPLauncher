@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:background="@mipmap/id7_sys_factory_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView android:textSize="30sp" android:textColor="@color/text_red" android:id="@+id/title" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="130dp" android:layout_marginRight="90dp" android:text="@string/factory_text"/>
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@+id/title">
+        <LinearLayout android:padding="10dp" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="1dp" android:layout_marginRight="10dp" android:layout_weight="7">
+            <android.support.v7.widget.RecyclerView android:id="@+id/factory_recycle" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="50dp"/>
+        </LinearLayout>
+        <FrameLayout android:id="@+id/factory_Frame" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="50dp" android:layout_marginTop="70dp" android:layout_marginBottom="30dp" android:layout_weight="3"/>
+    </LinearLayout>
+</RelativeLayout>

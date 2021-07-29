@@ -1,7 +1,6 @@
 package android.support.v7.widget;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
@@ -24,30 +23,33 @@ public class AppCompatCheckedTextView extends CheckedTextView {
 
     public AppCompatCheckedTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(TintContextWrapper.wrap(context), attrs, defStyleAttr);
-        this.mTextHelper = new AppCompatTextHelper(this);
-        this.mTextHelper.loadFromAttributes(attrs, defStyleAttr);
-        this.mTextHelper.applyCompoundDrawablesTints();
+        AppCompatTextHelper appCompatTextHelper = new AppCompatTextHelper(this);
+        this.mTextHelper = appCompatTextHelper;
+        appCompatTextHelper.loadFromAttributes(attrs, defStyleAttr);
+        appCompatTextHelper.applyCompoundDrawablesTints();
         TintTypedArray a = TintTypedArray.obtainStyledAttributes(getContext(), attrs, TINT_ATTRS, defStyleAttr, 0);
         setCheckMarkDrawable(a.getDrawable(0));
         a.recycle();
     }
 
-    public void setCheckMarkDrawable(@DrawableRes int resId) {
+    public void setCheckMarkDrawable(int resId) {
         setCheckMarkDrawable(AppCompatResources.getDrawable(getContext(), resId));
     }
 
     public void setTextAppearance(Context context, int resId) {
         super.setTextAppearance(context, resId);
-        if (this.mTextHelper != null) {
-            this.mTextHelper.onSetTextAppearance(context, resId);
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.onSetTextAppearance(context, resId);
         }
     }
 
     /* access modifiers changed from: protected */
     public void drawableStateChanged() {
         super.drawableStateChanged();
-        if (this.mTextHelper != null) {
-            this.mTextHelper.applyCompoundDrawablesTints();
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.applyCompoundDrawablesTints();
         }
     }
 

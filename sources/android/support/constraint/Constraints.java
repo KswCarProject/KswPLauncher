@@ -33,69 +33,30 @@ public class Constraints extends ViewGroup {
     }
 
     public static class LayoutParams extends ConstraintLayout.LayoutParams {
-        public float alpha;
-        public boolean applyElevation;
-        public float elevation;
-        public float rotation;
-        public float rotationX;
-        public float rotationY;
-        public float scaleX;
-        public float scaleY;
-        public float transformPivotX;
-        public float transformPivotY;
-        public float translationX;
-        public float translationY;
-        public float translationZ;
+        public float alpha = 1.0f;
+        public boolean applyElevation = false;
+        public float elevation = 0.0f;
+        public float rotation = 0.0f;
+        public float rotationX = 0.0f;
+        public float rotationY = 0.0f;
+        public float scaleX = 1.0f;
+        public float scaleY = 1.0f;
+        public float transformPivotX = 0.0f;
+        public float transformPivotY = 0.0f;
+        public float translationX = 0.0f;
+        public float translationY = 0.0f;
+        public float translationZ = 0.0f;
 
         public LayoutParams(int width, int height) {
             super(width, height);
-            this.alpha = 1.0f;
-            this.applyElevation = false;
-            this.elevation = 0.0f;
-            this.rotation = 0.0f;
-            this.rotationX = 0.0f;
-            this.rotationY = 0.0f;
-            this.scaleX = 1.0f;
-            this.scaleY = 1.0f;
-            this.transformPivotX = 0.0f;
-            this.transformPivotY = 0.0f;
-            this.translationX = 0.0f;
-            this.translationY = 0.0f;
-            this.translationZ = 0.0f;
         }
 
         public LayoutParams(LayoutParams source) {
             super((ConstraintLayout.LayoutParams) source);
-            this.alpha = 1.0f;
-            this.applyElevation = false;
-            this.elevation = 0.0f;
-            this.rotation = 0.0f;
-            this.rotationX = 0.0f;
-            this.rotationY = 0.0f;
-            this.scaleX = 1.0f;
-            this.scaleY = 1.0f;
-            this.transformPivotX = 0.0f;
-            this.transformPivotY = 0.0f;
-            this.translationX = 0.0f;
-            this.translationY = 0.0f;
-            this.translationZ = 0.0f;
         }
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-            this.alpha = 1.0f;
-            this.applyElevation = false;
-            this.elevation = 0.0f;
-            this.rotation = 0.0f;
-            this.rotationX = 0.0f;
-            this.rotationY = 0.0f;
-            this.scaleX = 1.0f;
-            this.scaleY = 1.0f;
-            this.transformPivotX = 0.0f;
-            this.transformPivotY = 0.0f;
-            this.translationX = 0.0f;
-            this.translationY = 0.0f;
-            this.translationZ = 0.0f;
             TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.ConstraintSet);
             int N = a.getIndexCount();
             for (int i = 0; i < N; i++) {

@@ -1,8 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,8 +37,7 @@ public final class LazyHeaders implements Headers {
         return combinedHeaders2;
     }
 
-    @NonNull
-    private String buildHeaderValue(@NonNull List<LazyHeaderFactory> factories) {
+    private String buildHeaderValue(List<LazyHeaderFactory> factories) {
         StringBuilder sb = new StringBuilder();
         int size = factories.size();
         for (int i = 0; i < size; i++) {
@@ -73,25 +69,27 @@ public final class LazyHeaders implements Headers {
 
     public static final class Builder {
         private static final Map<String, List<LazyHeaderFactory>> DEFAULT_HEADERS;
-        private static final String DEFAULT_USER_AGENT = getSanitizedUserAgent();
+        private static final String DEFAULT_USER_AGENT;
         private static final String USER_AGENT_HEADER = "User-Agent";
         private boolean copyOnModify = true;
         private Map<String, List<LazyHeaderFactory>> headers = DEFAULT_HEADERS;
         private boolean isUserAgentDefault = true;
 
         static {
+            String sanitizedUserAgent = getSanitizedUserAgent();
+            DEFAULT_USER_AGENT = sanitizedUserAgent;
             Map<String, List<LazyHeaderFactory>> temp = new HashMap<>(2);
-            if (!TextUtils.isEmpty(DEFAULT_USER_AGENT)) {
-                temp.put(USER_AGENT_HEADER, Collections.singletonList(new StringHeaderFactory(DEFAULT_USER_AGENT)));
+            if (!TextUtils.isEmpty(sanitizedUserAgent)) {
+                temp.put(USER_AGENT_HEADER, Collections.singletonList(new StringHeaderFactory(sanitizedUserAgent)));
             }
             DEFAULT_HEADERS = Collections.unmodifiableMap(temp);
         }
 
-        public Builder addHeader(@NonNull String key, @NonNull String value) {
+        public Builder addHeader(String key, String value) {
             return addHeader(key, (LazyHeaderFactory) new StringHeaderFactory(value));
         }
 
-        public Builder addHeader(@NonNull String key, @NonNull LazyHeaderFactory factory) {
+        public Builder addHeader(String key, LazyHeaderFactory factory) {
             if (this.isUserAgentDefault && USER_AGENT_HEADER.equalsIgnoreCase(key)) {
                 return setHeader(key, factory);
             }
@@ -100,11 +98,11 @@ public final class LazyHeaders implements Headers {
             return this;
         }
 
-        public Builder setHeader(@NonNull String key, @Nullable String value) {
+        public Builder setHeader(String key, String value) {
             return setHeader(key, (LazyHeaderFactory) value == null ? null : new StringHeaderFactory(value));
         }
 
-        public Builder setHeader(@NonNull String key, @Nullable LazyHeaderFactory factory) {
+        public Builder setHeader(String key, LazyHeaderFactory factory) {
             copyIfNecessary();
             if (factory == null) {
                 this.headers.remove(key);
@@ -149,7 +147,6 @@ public final class LazyHeaders implements Headers {
             return result;
         }
 
-        @VisibleForTesting
         static String getSanitizedUserAgent() {
             String defaultUserAgent = System.getProperty("http.agent");
             if (TextUtils.isEmpty(defaultUserAgent)) {
@@ -170,10 +167,9 @@ public final class LazyHeaders implements Headers {
     }
 
     static final class StringHeaderFactory implements LazyHeaderFactory {
-        @NonNull
         private final String value;
 
-        StringHeaderFactory(@NonNull String value2) {
+        StringHeaderFactory(String value2) {
             this.value = value2;
         }
 

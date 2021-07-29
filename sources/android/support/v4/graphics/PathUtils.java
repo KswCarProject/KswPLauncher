@@ -2,23 +2,16 @@ package android.support.v4.graphics;
 
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public final class PathUtils {
-    @RequiresApi(26)
-    @NonNull
-    public static Collection<PathSegment> flatten(@NonNull Path path) {
+    public static Collection<PathSegment> flatten(Path path) {
         return flatten(path, 0.5f);
     }
 
-    @RequiresApi(26)
-    @NonNull
-    public static Collection<PathSegment> flatten(@NonNull Path path, @FloatRange(from = 0.0d) float error) {
+    public static Collection<PathSegment> flatten(Path path, float error) {
         float[] pathData = path.approximate(error);
         int pointCount = pathData.length / 3;
         List<PathSegment> segments = new ArrayList<>(pointCount);

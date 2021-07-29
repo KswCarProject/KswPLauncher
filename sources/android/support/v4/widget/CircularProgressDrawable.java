@@ -12,8 +12,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.support.v4.util.Preconditions;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.animation.Interpolator;
@@ -45,18 +43,19 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
     private Animator mAnimator;
     boolean mFinishing;
     private Resources mResources;
-    private final Ring mRing = new Ring();
+    private final Ring mRing;
     private float mRotation;
     float mRotationCount;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ProgressDrawableSize {
     }
 
-    public CircularProgressDrawable(@NonNull Context context) {
+    public CircularProgressDrawable(Context context) {
         this.mResources = ((Context) Preconditions.checkNotNull(context)).getResources();
-        this.mRing.setColors(COLORS);
+        Ring ring = new Ring();
+        this.mRing = ring;
+        ring.setColors(COLORS);
         setStrokeWidth(STROKE_WIDTH);
         setupAnimators();
     }
@@ -97,12 +96,11 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         invalidateSelf();
     }
 
-    public void setStrokeCap(@NonNull Paint.Cap strokeCap) {
+    public void setStrokeCap(Paint.Cap strokeCap) {
         this.mRing.setStrokeCap(strokeCap);
         invalidateSelf();
     }
 
-    @NonNull
     public Paint.Cap getStrokeCap() {
         return this.mRing.getStrokeCap();
     }
@@ -170,12 +168,11 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         invalidateSelf();
     }
 
-    @NonNull
     public int[] getColorSchemeColors() {
         return this.mRing.getColors();
     }
 
-    public void setColorSchemeColors(@NonNull int... colors) {
+    public void setColorSchemeColors(int... colors) {
         this.mRing.setColors(colors);
         this.mRing.setColorIndex(0);
         invalidateSelf();
@@ -269,25 +266,25 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
 
     /* access modifiers changed from: package-private */
     public void applyTransformation(float interpolatedTime, Ring ring, boolean lastFrame) {
+        float scaledTime;
         float startTrim;
-        float startTrim2;
         if (this.mFinishing) {
             applyFinishTranslation(interpolatedTime, ring);
         } else if (interpolatedTime != 1.0f || lastFrame) {
             float startingRotation = ring.getStartingRotation();
             if (interpolatedTime < SHRINK_OFFSET) {
-                float scaledTime = interpolatedTime / SHRINK_OFFSET;
-                float startTrim3 = ring.getStartingStartTrim();
-                startTrim2 = startTrim3;
-                startTrim = (MATERIAL_INTERPOLATOR.getInterpolation(scaledTime) * 0.79f) + MIN_PROGRESS_ARC + startTrim3;
+                float scaledTime2 = interpolatedTime / SHRINK_OFFSET;
+                startTrim = ring.getStartingStartTrim();
+                scaledTime = (MATERIAL_INTERPOLATOR.getInterpolation(scaledTime2) * 0.79f) + MIN_PROGRESS_ARC + startTrim;
             } else {
-                float scaledTime2 = (interpolatedTime - SHRINK_OFFSET) / SHRINK_OFFSET;
-                startTrim = ring.getStartingStartTrim() + 0.79f;
-                startTrim2 = startTrim - (((1.0f - MATERIAL_INTERPOLATOR.getInterpolation(scaledTime2)) * 0.79f) + MIN_PROGRESS_ARC);
+                float scaledTime3 = (interpolatedTime - SHRINK_OFFSET) / SHRINK_OFFSET;
+                float endTrim = ring.getStartingStartTrim() + 0.79f;
+                scaledTime = endTrim;
+                startTrim = endTrim - (((1.0f - MATERIAL_INTERPOLATOR.getInterpolation(scaledTime3)) * 0.79f) + MIN_PROGRESS_ARC);
             }
             float groupRotation = (this.mRotationCount + interpolatedTime) * GROUP_FULL_ROTATION;
-            ring.setStartTrim(startTrim2);
-            ring.setEndTrim(startTrim);
+            ring.setStartTrim(startTrim);
+            ring.setEndTrim(scaledTime);
             ring.setRotation((RING_ROTATION * interpolatedTime) + startingRotation);
             setRotation(groupRotation);
         }
@@ -337,35 +334,47 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
     }
 
     private static class Ring {
-        int mAlpha = 255;
+        int mAlpha;
         Path mArrow;
         int mArrowHeight;
-        final Paint mArrowPaint = new Paint();
-        float mArrowScale = 1.0f;
+        final Paint mArrowPaint;
+        float mArrowScale;
         int mArrowWidth;
-        final Paint mCirclePaint = new Paint();
+        final Paint mCirclePaint;
         int mColorIndex;
         int[] mColors;
         int mCurrentColor;
-        float mEndTrim = 0.0f;
-        final Paint mPaint = new Paint();
+        float mEndTrim;
+        final Paint mPaint;
         float mRingCenterRadius;
-        float mRotation = 0.0f;
+        float mRotation;
         boolean mShowArrow;
-        float mStartTrim = 0.0f;
+        float mStartTrim;
         float mStartingEndTrim;
         float mStartingRotation;
         float mStartingStartTrim;
-        float mStrokeWidth = 5.0f;
+        float mStrokeWidth;
         final RectF mTempBounds = new RectF();
 
         Ring() {
-            this.mPaint.setStrokeCap(Paint.Cap.SQUARE);
-            this.mPaint.setAntiAlias(true);
-            this.mPaint.setStyle(Paint.Style.STROKE);
-            this.mArrowPaint.setStyle(Paint.Style.FILL);
-            this.mArrowPaint.setAntiAlias(true);
-            this.mCirclePaint.setColor(0);
+            Paint paint = new Paint();
+            this.mPaint = paint;
+            Paint paint2 = new Paint();
+            this.mArrowPaint = paint2;
+            Paint paint3 = new Paint();
+            this.mCirclePaint = paint3;
+            this.mStartTrim = 0.0f;
+            this.mEndTrim = 0.0f;
+            this.mRotation = 0.0f;
+            this.mStrokeWidth = 5.0f;
+            this.mArrowScale = 1.0f;
+            this.mAlpha = 255;
+            paint.setStrokeCap(Paint.Cap.SQUARE);
+            paint.setAntiAlias(true);
+            paint.setStyle(Paint.Style.STROKE);
+            paint2.setStyle(Paint.Style.FILL);
+            paint2.setAntiAlias(true);
+            paint3.setColor(0);
         }
 
         /* access modifiers changed from: package-private */
@@ -396,15 +405,20 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
 
         /* access modifiers changed from: package-private */
         public void draw(Canvas c, Rect bounds) {
+            float arcRadius;
             RectF arcBounds = this.mTempBounds;
-            float arcRadius = this.mRingCenterRadius + (this.mStrokeWidth / 2.0f);
-            if (this.mRingCenterRadius <= 0.0f) {
+            float f = this.mRingCenterRadius;
+            float arcRadius2 = (this.mStrokeWidth / 2.0f) + f;
+            if (f <= 0.0f) {
                 arcRadius = (((float) Math.min(bounds.width(), bounds.height())) / 2.0f) - Math.max((((float) this.mArrowWidth) * this.mArrowScale) / 2.0f, this.mStrokeWidth / 2.0f);
+            } else {
+                arcRadius = arcRadius2;
             }
-            float arcRadius2 = arcRadius;
-            arcBounds.set(((float) bounds.centerX()) - arcRadius2, ((float) bounds.centerY()) - arcRadius2, ((float) bounds.centerX()) + arcRadius2, ((float) bounds.centerY()) + arcRadius2);
-            float startAngle = (this.mStartTrim + this.mRotation) * 360.0f;
-            float sweepAngle = ((this.mEndTrim + this.mRotation) * 360.0f) - startAngle;
+            arcBounds.set(((float) bounds.centerX()) - arcRadius, ((float) bounds.centerY()) - arcRadius, ((float) bounds.centerX()) + arcRadius, ((float) bounds.centerY()) + arcRadius);
+            float f2 = this.mStartTrim;
+            float f3 = this.mRotation;
+            float startAngle = (f2 + f3) * 360.0f;
+            float sweepAngle = ((this.mEndTrim + f3) * 360.0f) - startAngle;
             this.mPaint.setColor(this.mCurrentColor);
             this.mPaint.setAlpha(this.mAlpha);
             float inset = this.mStrokeWidth / 2.0f;
@@ -418,15 +432,19 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         /* access modifiers changed from: package-private */
         public void drawTriangle(Canvas c, float startAngle, float sweepAngle, RectF bounds) {
             if (this.mShowArrow) {
-                if (this.mArrow == null) {
-                    this.mArrow = new Path();
-                    this.mArrow.setFillType(Path.FillType.EVEN_ODD);
+                Path path = this.mArrow;
+                if (path == null) {
+                    Path path2 = new Path();
+                    this.mArrow = path2;
+                    path2.setFillType(Path.FillType.EVEN_ODD);
                 } else {
-                    this.mArrow.reset();
+                    path.reset();
                 }
                 this.mArrow.moveTo(0.0f, 0.0f);
                 this.mArrow.lineTo(((float) this.mArrowWidth) * this.mArrowScale, 0.0f);
-                this.mArrow.lineTo((((float) this.mArrowWidth) * this.mArrowScale) / 2.0f, ((float) this.mArrowHeight) * this.mArrowScale);
+                Path path3 = this.mArrow;
+                float f = this.mArrowScale;
+                path3.lineTo((((float) this.mArrowWidth) * f) / 2.0f, ((float) this.mArrowHeight) * f);
                 this.mArrow.offset((bounds.centerX() + (Math.min(bounds.width(), bounds.height()) / 2.0f)) - ((((float) this.mArrowWidth) * this.mArrowScale) / 2.0f), bounds.centerY() + (this.mStrokeWidth / 2.0f));
                 this.mArrow.close();
                 this.mArrowPaint.setColor(this.mCurrentColor);
@@ -439,7 +457,7 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         }
 
         /* access modifiers changed from: package-private */
-        public void setColors(@NonNull int[] colors) {
+        public void setColors(int[] colors) {
             this.mColors = colors;
             setColorIndex(0);
         }
@@ -467,7 +485,7 @@ public class CircularProgressDrawable extends Drawable implements Animatable {
         /* access modifiers changed from: package-private */
         public void setColorIndex(int index) {
             this.mColorIndex = index;
-            this.mCurrentColor = this.mColors[this.mColorIndex];
+            this.mCurrentColor = this.mColors[index];
         }
 
         /* access modifiers changed from: package-private */

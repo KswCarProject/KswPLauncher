@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -35,16 +33,16 @@ public class ThumbFetcher implements DataFetcher<InputStream> {
         return new ThumbFetcher(uri, new ThumbnailStreamOpener(Glide.get(context).getRegistry().getImageHeaderParsers(), query, Glide.get(context).getArrayPool(), context.getContentResolver()));
     }
 
-    @VisibleForTesting
     ThumbFetcher(Uri mediaStoreImageUri2, ThumbnailStreamOpener opener2) {
         this.mediaStoreImageUri = mediaStoreImageUri2;
         this.opener = opener2;
     }
 
-    public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super InputStream> callback) {
+    public void loadData(Priority priority, DataFetcher.DataCallback<? super InputStream> callback) {
         try {
-            this.inputStream = openThumbInputStream();
-            callback.onDataReady(this.inputStream);
+            InputStream openThumbInputStream = openThumbInputStream();
+            this.inputStream = openThumbInputStream;
+            callback.onDataReady(openThumbInputStream);
         } catch (FileNotFoundException e) {
             if (Log.isLoggable(TAG, 3)) {
                 Log.d(TAG, "Failed to find thumbnail file", e);
@@ -66,9 +64,10 @@ public class ThumbFetcher implements DataFetcher<InputStream> {
     }
 
     public void cleanup() {
-        if (this.inputStream != null) {
+        InputStream inputStream2 = this.inputStream;
+        if (inputStream2 != null) {
             try {
-                this.inputStream.close();
+                inputStream2.close();
             } catch (IOException e) {
             }
         }
@@ -77,12 +76,10 @@ public class ThumbFetcher implements DataFetcher<InputStream> {
     public void cancel() {
     }
 
-    @NonNull
     public Class<InputStream> getDataClass() {
         return InputStream.class;
     }
 
-    @NonNull
     public DataSource getDataSource() {
         return DataSource.LOCAL;
     }

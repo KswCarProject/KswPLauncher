@@ -5,9 +5,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -15,7 +12,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class KeyEventDispatcher {
     private static boolean sActionBarFieldsFetched = false;
     private static Method sActionBarOnMenuKeyMethod = null;
@@ -29,11 +25,11 @@ public class KeyEventDispatcher {
     private KeyEventDispatcher() {
     }
 
-    public static boolean dispatchBeforeHierarchy(@NonNull View root, @NonNull KeyEvent event) {
+    public static boolean dispatchBeforeHierarchy(View root, KeyEvent event) {
         return ViewCompat.dispatchUnhandledKeyEventBeforeHierarchy(root, event);
     }
 
-    public static boolean dispatchKeyEvent(@NonNull Component component, @Nullable View root, @Nullable Window.Callback callback, @NonNull KeyEvent event) {
+    public static boolean dispatchKeyEvent(Component component, View root, Window.Callback callback, KeyEvent event) {
         if (component == null) {
             return false;
         }
@@ -60,9 +56,10 @@ public class KeyEventDispatcher {
             }
             sActionBarFieldsFetched = true;
         }
-        if (sActionBarOnMenuKeyMethod != null) {
+        Method method = sActionBarOnMenuKeyMethod;
+        if (method != null) {
             try {
-                return ((Boolean) sActionBarOnMenuKeyMethod.invoke(actionBar, new Object[]{event})).booleanValue();
+                return ((Boolean) method.invoke(actionBar, new Object[]{event})).booleanValue();
             } catch (IllegalAccessException | InvocationTargetException e2) {
             }
         }
@@ -91,17 +88,19 @@ public class KeyEventDispatcher {
     private static DialogInterface.OnKeyListener getDialogKeyListenerPre28(Dialog dialog) {
         if (!sDialogFieldsFetched) {
             try {
-                sDialogKeyListenerField = Dialog.class.getDeclaredField("mOnKeyListener");
-                sDialogKeyListenerField.setAccessible(true);
+                Field declaredField = Dialog.class.getDeclaredField("mOnKeyListener");
+                sDialogKeyListenerField = declaredField;
+                declaredField.setAccessible(true);
             } catch (NoSuchFieldException e) {
             }
             sDialogFieldsFetched = true;
         }
-        if (sDialogKeyListenerField == null) {
+        Field field = sDialogKeyListenerField;
+        if (field == null) {
             return null;
         }
         try {
-            return (DialogInterface.OnKeyListener) sDialogKeyListenerField.get(dialog);
+            return (DialogInterface.OnKeyListener) field.get(dialog);
         } catch (IllegalAccessException e2) {
             return null;
         }

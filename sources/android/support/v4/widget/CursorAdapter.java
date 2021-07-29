@@ -5,7 +5,6 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.os.Handler;
-import android.support.annotation.RestrictTo;
 import android.support.v4.widget.CursorFilter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,23 +17,14 @@ public abstract class CursorAdapter extends BaseAdapter implements Filterable, C
     @Deprecated
     public static final int FLAG_AUTO_REQUERY = 1;
     public static final int FLAG_REGISTER_CONTENT_OBSERVER = 2;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected boolean mAutoRequery;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected ChangeObserver mChangeObserver;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected Context mContext;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected Cursor mCursor;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected CursorFilter mCursorFilter;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected DataSetObserver mDataSetObserver;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected boolean mDataValid;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected FilterQueryProvider mFilterQueryProvider;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected int mRowIDColumn;
 
     public abstract void bindView(View view, Context context, Cursor cursor);
@@ -85,11 +75,13 @@ public abstract class CursorAdapter extends BaseAdapter implements Filterable, C
             this.mDataSetObserver = null;
         }
         if (cursorPresent) {
-            if (this.mChangeObserver != null) {
-                c.registerContentObserver(this.mChangeObserver);
+            ChangeObserver changeObserver = this.mChangeObserver;
+            if (changeObserver != null) {
+                c.registerContentObserver(changeObserver);
             }
-            if (this.mDataSetObserver != null) {
-                c.registerDataSetObserver(this.mDataSetObserver);
+            DataSetObserver dataSetObserver = this.mDataSetObserver;
+            if (dataSetObserver != null) {
+                c.registerDataSetObserver(dataSetObserver);
             }
         }
     }
@@ -99,22 +91,25 @@ public abstract class CursorAdapter extends BaseAdapter implements Filterable, C
     }
 
     public int getCount() {
-        if (!this.mDataValid || this.mCursor == null) {
+        Cursor cursor;
+        if (!this.mDataValid || (cursor = this.mCursor) == null) {
             return 0;
         }
-        return this.mCursor.getCount();
+        return cursor.getCount();
     }
 
     public Object getItem(int position) {
-        if (!this.mDataValid || this.mCursor == null) {
+        Cursor cursor;
+        if (!this.mDataValid || (cursor = this.mCursor) == null) {
             return null;
         }
-        this.mCursor.moveToPosition(position);
+        cursor.moveToPosition(position);
         return this.mCursor;
     }
 
     public long getItemId(int position) {
-        if (!this.mDataValid || this.mCursor == null || !this.mCursor.moveToPosition(position)) {
+        Cursor cursor;
+        if (!this.mDataValid || (cursor = this.mCursor) == null || !cursor.moveToPosition(position)) {
             return 0;
         }
         return this.mCursor.getLong(this.mRowIDColumn);
@@ -173,20 +168,24 @@ public abstract class CursorAdapter extends BaseAdapter implements Filterable, C
         }
         Cursor oldCursor = this.mCursor;
         if (oldCursor != null) {
-            if (this.mChangeObserver != null) {
-                oldCursor.unregisterContentObserver(this.mChangeObserver);
+            ChangeObserver changeObserver = this.mChangeObserver;
+            if (changeObserver != null) {
+                oldCursor.unregisterContentObserver(changeObserver);
             }
-            if (this.mDataSetObserver != null) {
-                oldCursor.unregisterDataSetObserver(this.mDataSetObserver);
+            DataSetObserver dataSetObserver = this.mDataSetObserver;
+            if (dataSetObserver != null) {
+                oldCursor.unregisterDataSetObserver(dataSetObserver);
             }
         }
         this.mCursor = newCursor;
         if (newCursor != null) {
-            if (this.mChangeObserver != null) {
-                newCursor.registerContentObserver(this.mChangeObserver);
+            ChangeObserver changeObserver2 = this.mChangeObserver;
+            if (changeObserver2 != null) {
+                newCursor.registerContentObserver(changeObserver2);
             }
-            if (this.mDataSetObserver != null) {
-                newCursor.registerDataSetObserver(this.mDataSetObserver);
+            DataSetObserver dataSetObserver2 = this.mDataSetObserver;
+            if (dataSetObserver2 != null) {
+                newCursor.registerDataSetObserver(dataSetObserver2);
             }
             this.mRowIDColumn = newCursor.getColumnIndexOrThrow("_id");
             this.mDataValid = true;
@@ -204,8 +203,9 @@ public abstract class CursorAdapter extends BaseAdapter implements Filterable, C
     }
 
     public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-        if (this.mFilterQueryProvider != null) {
-            return this.mFilterQueryProvider.runQuery(constraint);
+        FilterQueryProvider filterQueryProvider = this.mFilterQueryProvider;
+        if (filterQueryProvider != null) {
+            return filterQueryProvider.runQuery(constraint);
         }
         return this.mCursor;
     }
@@ -227,7 +227,8 @@ public abstract class CursorAdapter extends BaseAdapter implements Filterable, C
 
     /* access modifiers changed from: protected */
     public void onContentChanged() {
-        if (this.mAutoRequery && this.mCursor != null && !this.mCursor.isClosed()) {
+        Cursor cursor;
+        if (this.mAutoRequery && (cursor = this.mCursor) != null && !cursor.isClosed()) {
             this.mDataValid = this.mCursor.requery();
         }
     }

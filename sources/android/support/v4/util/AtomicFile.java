@@ -1,7 +1,5 @@
 package android.support.v4.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,12 +11,11 @@ public class AtomicFile {
     private final File mBackupName;
     private final File mBaseName;
 
-    public AtomicFile(@NonNull File baseName) {
+    public AtomicFile(File baseName) {
         this.mBaseName = baseName;
         this.mBackupName = new File(baseName.getPath() + ".bak");
     }
 
-    @NonNull
     public File getBaseFile() {
         return this.mBaseName;
     }
@@ -28,7 +25,6 @@ public class AtomicFile {
         this.mBackupName.delete();
     }
 
-    @NonNull
     public FileOutputStream startWrite() throws IOException {
         if (this.mBaseName.exists()) {
             if (this.mBackupName.exists()) {
@@ -52,7 +48,7 @@ public class AtomicFile {
         }
     }
 
-    public void finishWrite(@Nullable FileOutputStream str) {
+    public void finishWrite(FileOutputStream str) {
         if (str != null) {
             sync(str);
             try {
@@ -64,7 +60,7 @@ public class AtomicFile {
         }
     }
 
-    public void failWrite(@Nullable FileOutputStream str) {
+    public void failWrite(FileOutputStream str) {
         if (str != null) {
             sync(str);
             try {
@@ -77,7 +73,6 @@ public class AtomicFile {
         }
     }
 
-    @NonNull
     public FileInputStream openRead() throws FileNotFoundException {
         if (this.mBackupName.exists()) {
             this.mBaseName.delete();
@@ -86,7 +81,6 @@ public class AtomicFile {
         return new FileInputStream(this.mBaseName);
     }
 
-    @NonNull
     public byte[] readFully() throws IOException {
         FileInputStream stream = openRead();
         int pos = 0;
@@ -110,7 +104,7 @@ public class AtomicFile {
         }
     }
 
-    private static boolean sync(@NonNull FileOutputStream stream) {
+    private static boolean sync(FileOutputStream stream) {
         try {
             stream.getFD().sync();
             return true;

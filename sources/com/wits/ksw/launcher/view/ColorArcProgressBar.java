@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import com.ibm.icu.text.BreakIterator;
 import com.wits.ksw.R;
 
 public class ColorArcProgressBar extends View {
@@ -35,7 +36,7 @@ public class ColorArcProgressBar extends View {
     /* access modifiers changed from: private */
     public float currentAngle = 0.0f;
     private Paint degreePaint;
-    private int diameter = 500;
+    private int diameter = BreakIterator.WORD_IDEO_LIMIT;
     private int hintColor = -10000537;
     private Paint hintPaint;
     private float hintSize = ((float) dipToPx(15.0f));
@@ -132,53 +133,63 @@ public class ColorArcProgressBar extends View {
         this.mHeight = h;
         Log.v("ColorArcProgressBar", "onSizeChanged: mWidth:" + this.mWidth + " mHeight:" + this.mHeight);
         this.diameter = (int) (((float) Math.min(this.mWidth, this.mHeight)) - (((this.longDegree + ((float) this.DEGREE_PROGRESS_DISTANCE)) + (this.progressWidth / 2.0f)) * 2.0f));
-        StringBuilder sb = new StringBuilder();
-        sb.append("onSizeChanged: diameter:");
-        sb.append(this.diameter);
-        Log.v("ColorArcProgressBar", sb.toString());
-        this.bgRect = new RectF();
-        this.bgRect.top = this.longDegree + ((float) this.DEGREE_PROGRESS_DISTANCE) + (this.progressWidth / 2.0f);
+        Log.v("ColorArcProgressBar", "onSizeChanged: diameter:" + this.diameter);
+        RectF rectF = new RectF();
+        this.bgRect = rectF;
+        rectF.top = this.longDegree + ((float) this.DEGREE_PROGRESS_DISTANCE) + (this.progressWidth / 2.0f);
         this.bgRect.left = this.longDegree + ((float) this.DEGREE_PROGRESS_DISTANCE) + (this.progressWidth / 2.0f);
         this.bgRect.right = ((float) this.diameter) + this.longDegree + (this.progressWidth / 2.0f) + ((float) this.DEGREE_PROGRESS_DISTANCE);
         this.bgRect.bottom = ((float) this.diameter) + this.longDegree + (this.progressWidth / 2.0f) + ((float) this.DEGREE_PROGRESS_DISTANCE);
         Log.v("ColorArcProgressBar", "initView: " + this.diameter);
-        this.centerX = ((((this.longDegree + ((float) this.DEGREE_PROGRESS_DISTANCE)) + (this.progressWidth / 2.0f)) * 2.0f) + ((float) this.diameter)) / 2.0f;
-        this.centerY = ((((this.longDegree + ((float) this.DEGREE_PROGRESS_DISTANCE)) + (this.progressWidth / 2.0f)) * 2.0f) + ((float) this.diameter)) / 2.0f;
+        float f = this.longDegree;
+        int i = this.DEGREE_PROGRESS_DISTANCE;
+        float f2 = this.progressWidth;
+        int i2 = this.diameter;
+        this.centerX = ((((((float) i) + f) + (f2 / 2.0f)) * 2.0f) + ((float) i2)) / 2.0f;
+        this.centerY = ((((f + ((float) i)) + (f2 / 2.0f)) * 2.0f) + ((float) i2)) / 2.0f;
         this.sweepGradient = new SweepGradient(this.centerX, this.centerY, this.colors, (float[]) null);
         this.mTouchInvalidateRadius = 50.0f;
         if (this.isAutoTextSize) {
-            this.textSize = (float) (((double) this.diameter) * 0.3d);
-            this.hintSize = (float) (((double) this.diameter) * 0.1d);
-            this.curSpeedSize = (float) (((double) this.diameter) * 0.1d);
-            this.vTextPaint.setTextSize(this.textSize);
+            int i3 = this.diameter;
+            float f3 = (float) (((double) i3) * 0.3d);
+            this.textSize = f3;
+            this.hintSize = (float) (((double) i3) * 0.1d);
+            this.curSpeedSize = (float) (((double) i3) * 0.1d);
+            this.vTextPaint.setTextSize(f3);
             this.hintPaint.setTextSize(this.hintSize);
             this.curSpeedPaint.setTextSize(this.curSpeedSize);
         }
     }
 
     private void initView() {
-        this.degreePaint = new Paint();
-        this.degreePaint.setColor(this.longDegreeColor);
-        this.allArcPaint = new Paint();
-        this.allArcPaint.setAntiAlias(true);
+        Paint paint = new Paint();
+        this.degreePaint = paint;
+        paint.setColor(this.longDegreeColor);
+        Paint paint2 = new Paint();
+        this.allArcPaint = paint2;
+        paint2.setAntiAlias(true);
         this.allArcPaint.setStyle(Paint.Style.STROKE);
         this.allArcPaint.setStrokeWidth(this.bgArcWidth);
         this.allArcPaint.setColor(this.bgArcColor);
         this.allArcPaint.setStrokeCap(Paint.Cap.SQUARE);
-        this.progressPaint = new Paint();
-        this.progressPaint.setAntiAlias(true);
+        Paint paint3 = new Paint();
+        this.progressPaint = paint3;
+        paint3.setAntiAlias(true);
         this.progressPaint.setStyle(Paint.Style.STROKE);
         this.progressPaint.setStrokeCap(Paint.Cap.SQUARE);
         this.progressPaint.setStrokeWidth(this.progressWidth);
         this.progressPaint.setColor(-16776961);
-        this.vTextPaint = new Paint();
-        this.vTextPaint.setColor(ViewCompat.MEASURED_STATE_MASK);
+        Paint paint4 = new Paint();
+        this.vTextPaint = paint4;
+        paint4.setColor(ViewCompat.MEASURED_STATE_MASK);
         this.vTextPaint.setTextAlign(Paint.Align.CENTER);
-        this.hintPaint = new Paint();
-        this.hintPaint.setColor(this.hintColor);
+        Paint paint5 = new Paint();
+        this.hintPaint = paint5;
+        paint5.setColor(this.hintColor);
         this.hintPaint.setTextAlign(Paint.Align.CENTER);
-        this.curSpeedPaint = new Paint();
-        this.curSpeedPaint.setColor(this.hintColor);
+        Paint paint6 = new Paint();
+        this.curSpeedPaint = paint6;
+        paint6.setColor(this.hintColor);
         this.curSpeedPaint.setTextAlign(Paint.Align.CENTER);
         this.mDrawFilter = new PaintFlagsDrawFilter(0, 3);
         this.rotateMatrix = new Matrix();
@@ -193,11 +204,25 @@ public class ColorArcProgressBar extends View {
                     if (i % 5 == 0) {
                         this.degreePaint.setStrokeWidth((float) dipToPx(2.0f));
                         this.degreePaint.setColor(this.longDegreeColor);
-                        canvas.drawLine(this.centerX, ((this.centerY - ((float) (this.diameter / 2))) - (this.progressWidth / 2.0f)) - ((float) this.DEGREE_PROGRESS_DISTANCE), this.centerX, (((this.centerY - ((float) (this.diameter / 2))) - (this.progressWidth / 2.0f)) - ((float) this.DEGREE_PROGRESS_DISTANCE)) - this.longDegree, this.degreePaint);
+                        float f = this.centerX;
+                        float f2 = this.centerY;
+                        int i2 = this.diameter;
+                        float f3 = this.progressWidth;
+                        int i3 = this.DEGREE_PROGRESS_DISTANCE;
+                        float f4 = ((f2 - ((float) (i2 / 2))) - (f3 / 2.0f)) - ((float) i3);
+                        canvas.drawLine(f, f4, f, (((f2 - ((float) (i2 / 2))) - (f3 / 2.0f)) - ((float) i3)) - this.longDegree, this.degreePaint);
                     } else {
                         this.degreePaint.setStrokeWidth((float) dipToPx(1.4f));
                         this.degreePaint.setColor(this.shortDegreeColor);
-                        canvas.drawLine(this.centerX, (((this.centerY - ((float) (this.diameter / 2))) - (this.progressWidth / 2.0f)) - ((float) this.DEGREE_PROGRESS_DISTANCE)) - ((this.longDegree - this.shortDegree) / 2.0f), this.centerX, ((((this.centerY - ((float) (this.diameter / 2))) - (this.progressWidth / 2.0f)) - ((float) this.DEGREE_PROGRESS_DISTANCE)) - ((this.longDegree - this.shortDegree) / 2.0f)) - this.shortDegree, this.degreePaint);
+                        float f5 = this.centerX;
+                        float f6 = this.centerY;
+                        int i4 = this.diameter;
+                        float f7 = this.progressWidth;
+                        int i5 = this.DEGREE_PROGRESS_DISTANCE;
+                        float f8 = this.longDegree;
+                        float f9 = this.shortDegree;
+                        float f10 = (((f6 - ((float) (i4 / 2))) - (f7 / 2.0f)) - ((float) i5)) - ((f8 - f9) / 2.0f);
+                        canvas.drawLine(f5, f10, f5, ((((f6 - ((float) (i4 / 2))) - (f7 / 2.0f)) - ((float) i5)) - ((f8 - f9) / 2.0f)) - f9, this.degreePaint);
                     }
                     canvas.rotate(9.0f, this.centerX, this.centerY);
                 } else {
@@ -235,8 +260,9 @@ public class ColorArcProgressBar extends View {
             progress2 = 0.0f;
         }
         this.progress = progress2;
-        this.lastAngle = this.currentAngle;
-        setAnimation(this.lastAngle, this.k * progress2, this.aniSpeed);
+        float f = this.currentAngle;
+        this.lastAngle = f;
+        setAnimation(f, this.k * progress2, this.aniSpeed);
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -263,14 +289,16 @@ public class ColorArcProgressBar extends View {
     }
 
     private void onStartTrackingTouch() {
-        if (this.listener != null) {
-            this.listener.onStartTrackingTouch(this);
+        OnSeekArcChangeListener onSeekArcChangeListener = this.listener;
+        if (onSeekArcChangeListener != null) {
+            onSeekArcChangeListener.onStartTrackingTouch(this);
         }
     }
 
     private void onStopTrackingTouch() {
-        if (this.listener != null) {
-            this.listener.onStopTrackingTouch(this);
+        OnSeekArcChangeListener onSeekArcChangeListener = this.listener;
+        if (onSeekArcChangeListener != null) {
+            onSeekArcChangeListener.onStopTrackingTouch(this);
         }
     }
 
@@ -310,7 +338,8 @@ public class ColorArcProgressBar extends View {
     private int angleToProgress(double angle) {
         int progress2 = (int) Math.round(((double) valuePerDegree()) * angle);
         int progress3 = progress2 < 0 ? 0 : progress2;
-        return ((float) progress3) > this.maxValues ? (int) this.maxValues : progress3;
+        float f = this.maxValues;
+        return ((float) progress3) > f ? (int) f : progress3;
     }
 
     private float valuePerDegree() {
@@ -323,11 +352,13 @@ public class ColorArcProgressBar extends View {
 
     private void updateProgress(int progress2, boolean fromUser) {
         this.progress = (float) progress2;
-        if (this.listener != null) {
-            this.listener.onProgressChanged(this, progress2, fromUser);
+        OnSeekArcChangeListener onSeekArcChangeListener = this.listener;
+        if (onSeekArcChangeListener != null) {
+            onSeekArcChangeListener.onProgressChanged(this, progress2, fromUser);
         }
-        this.currentAngle = (((float) progress2) / this.maxValues) * this.sweepAngle;
-        this.lastAngle = this.currentAngle;
+        float f = (((float) progress2) / this.maxValues) * this.sweepAngle;
+        this.currentAngle = f;
+        this.lastAngle = f;
         invalidate();
     }
 
@@ -373,13 +404,15 @@ public class ColorArcProgressBar extends View {
     }
 
     private void setAnimation(float last, float current, int length) {
-        this.progressAnimator = ValueAnimator.ofFloat(new float[]{last, current});
-        this.progressAnimator.setDuration((long) length);
+        ValueAnimator ofFloat = ValueAnimator.ofFloat(new float[]{last, current});
+        this.progressAnimator = ofFloat;
+        ofFloat.setDuration((long) length);
         this.progressAnimator.setTarget(Float.valueOf(this.currentAngle));
         this.progressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float unused = ColorArcProgressBar.this.currentAngle = ((Float) animation.getAnimatedValue()).floatValue();
-                float unused2 = ColorArcProgressBar.this.progress = ColorArcProgressBar.this.currentAngle / ColorArcProgressBar.this.k;
+                ColorArcProgressBar colorArcProgressBar = ColorArcProgressBar.this;
+                float unused2 = colorArcProgressBar.progress = colorArcProgressBar.currentAngle / ColorArcProgressBar.this.k;
             }
         });
         this.progressAnimator.start();

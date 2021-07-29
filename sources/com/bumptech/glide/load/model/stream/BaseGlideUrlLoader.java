@@ -1,7 +1,5 @@
 package com.bumptech.glide.load.model.stream;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.Options;
@@ -17,7 +15,6 @@ import java.util.List;
 
 public abstract class BaseGlideUrlLoader<Model> implements ModelLoader<Model, InputStream> {
     private final ModelLoader<GlideUrl, InputStream> concreteLoader;
-    @Nullable
     private final ModelCache<Model, GlideUrl> modelCache;
 
     /* access modifiers changed from: protected */
@@ -27,16 +24,16 @@ public abstract class BaseGlideUrlLoader<Model> implements ModelLoader<Model, In
         this(concreteLoader2, (ModelCache) null);
     }
 
-    protected BaseGlideUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader2, @Nullable ModelCache<Model, GlideUrl> modelCache2) {
+    protected BaseGlideUrlLoader(ModelLoader<GlideUrl, InputStream> concreteLoader2, ModelCache<Model, GlideUrl> modelCache2) {
         this.concreteLoader = concreteLoader2;
         this.modelCache = modelCache2;
     }
 
-    @Nullable
-    public ModelLoader.LoadData<InputStream> buildLoadData(@NonNull Model model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<InputStream> buildLoadData(Model model, int width, int height, Options options) {
         GlideUrl result = null;
-        if (this.modelCache != null) {
-            result = this.modelCache.get(model, width, height);
+        ModelCache<Model, GlideUrl> modelCache2 = this.modelCache;
+        if (modelCache2 != null) {
+            result = modelCache2.get(model, width, height);
         }
         if (result == null) {
             String stringURL = getUrl(model, width, height, options);
@@ -44,8 +41,9 @@ public abstract class BaseGlideUrlLoader<Model> implements ModelLoader<Model, In
                 return null;
             }
             result = new GlideUrl(stringURL, getHeaders(model, width, height, options));
-            if (this.modelCache != null) {
-                this.modelCache.put(model, width, height, result);
+            ModelCache<Model, GlideUrl> modelCache3 = this.modelCache;
+            if (modelCache3 != null) {
+                modelCache3.put(model, width, height, result);
             }
         }
         List<String> alternateUrls = getAlternateUrls(model, width, height, options);
@@ -70,7 +68,6 @@ public abstract class BaseGlideUrlLoader<Model> implements ModelLoader<Model, In
     }
 
     /* access modifiers changed from: protected */
-    @Nullable
     public Headers getHeaders(Model model, int width, int height, Options options) {
         return Headers.DEFAULT;
     }

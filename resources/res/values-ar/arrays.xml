@@ -36,6 +36,17 @@
         <item>لوحة القيادة</item>
         <item>DVR</item>
     </array>
+    <array name="benz_mbux_2021_home_item_array">
+        <item>الهاتف</item>
+        <item>ملاحة</item>
+        <item>NTG</item>
+        <item>الفيديو</item>
+        <item>الموسيقى</item>
+        <item>الإعدادات</item>
+        <item>PhoneLink</item>
+        <item>التطبيقات</item>
+        <item>لوحة القيادة</item>
+    </array>
     <array name="benz_mbux_home_item_array">
         <item>ملاحة</item>
         <item>الموسيقى</item>

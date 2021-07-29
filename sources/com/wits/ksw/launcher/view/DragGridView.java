@@ -79,7 +79,8 @@ public class DragGridView extends GridView {
             public void run() {
                 boolean unused = DragGridView.this.isDrag = true;
                 DragGridView.this.mStartDragItemView.setVisibility(4);
-                DragGridView.this.createDragImage(DragGridView.this.mDragBitmap, DragGridView.this.mDownX, DragGridView.this.mDownY);
+                DragGridView dragGridView = DragGridView.this;
+                dragGridView.createDragImage(dragGridView.mDragBitmap, DragGridView.this.mDownX, DragGridView.this.mDownY);
             }
         };
         this.scrollRunnable = new Runnable() {
@@ -108,8 +109,9 @@ public class DragGridView extends GridView {
                 this.mDownX = (int) ev.getX();
                 this.mDownY = (int) ev.getY();
                 Log.i(TAG, "手指按下ev.getX---------->" + this.mDownX + "  ev.getY-------->" + this.mDownY);
-                this.mDragPosition = pointToPosition(this.mDownX, this.mDownY);
-                if (this.mDragPosition != -1) {
+                int pointToPosition = pointToPosition(this.mDownX, this.mDownY);
+                this.mDragPosition = pointToPosition;
+                if (pointToPosition != -1) {
                     Log.i(TAG, "手指按下mDragPosition---------->" + this.mDragPosition);
                     this.mStartDragItemView = getChildAt(this.mDragPosition - getFirstVisiblePosition());
                     this.handler.postDelayed(this.dragRunnable, this.dragRespondTime);
@@ -135,8 +137,9 @@ public class DragGridView extends GridView {
             case 2:
                 if (this.isDrag && this.isMoveStart && (Math.abs(ev.getX() - ((float) this.mDownX)) > ((float) this.movePosXy) || Math.abs(ev.getY() - ((float) this.mDownY)) > ((float) this.movePosXy))) {
                     this.isMoveStart = false;
-                    if (this.listener != null) {
-                        this.listener.onStartMoving();
+                    onItemChangerListener onitemchangerlistener = this.listener;
+                    if (onitemchangerlistener != null) {
+                        onitemchangerlistener.onStartMoving();
                         break;
                     }
                 }
@@ -152,13 +155,15 @@ public class DragGridView extends GridView {
                     this.isDrag = false;
                     onStopDrag();
                     this.moveX = (int) ev.getX();
-                    this.moveY = (int) ev.getY();
-                    swapItem(this.moveX, this.moveY);
+                    int y = (int) ev.getY();
+                    this.moveY = y;
+                    swapItem(this.moveX, y);
                     break;
                 case 2:
                     this.moveX = (int) ev.getX();
-                    this.moveY = (int) ev.getY();
-                    updateDragImage(this.moveX, this.moveY);
+                    int y2 = (int) ev.getY();
+                    this.moveY = y2;
+                    updateDragImage(this.moveX, y2);
                     break;
             }
         }
@@ -167,8 +172,9 @@ public class DragGridView extends GridView {
 
     /* access modifiers changed from: private */
     public void createDragImage(Bitmap mDragBitmap2, int mDownX2, int mDownY2) {
-        this.winLayoutParams = new WindowManager.LayoutParams();
-        this.winLayoutParams.format = -3;
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        this.winLayoutParams = layoutParams;
+        layoutParams.format = -3;
         this.winLayoutParams.gravity = 51;
         Log.i(TAG, "createDragImage ev.getX---------->" + mDownX2 + "  ev.getY-------->" + mDownY2);
         this.winLayoutParams.x = (mDownX2 - this.mPoint2ItemLeft) + this.mOffsetLeft;
@@ -177,8 +183,9 @@ public class DragGridView extends GridView {
         this.winLayoutParams.width = -2;
         this.winLayoutParams.height = -2;
         this.winLayoutParams.flags = 24;
-        this.mDragImageView = new ImageView(getContext());
-        this.mDragImageView.setImageBitmap(mDragBitmap2);
+        ImageView imageView = new ImageView(getContext());
+        this.mDragImageView = imageView;
+        imageView.setImageBitmap(mDragBitmap2);
         this.windowManager.addView(this.mDragImageView, this.winLayoutParams);
     }
 
@@ -191,8 +198,9 @@ public class DragGridView extends GridView {
     }
 
     private void removeDragImage() {
-        if (this.mDragImageView != null) {
-            this.windowManager.removeView(this.mDragImageView);
+        ImageView imageView = this.mDragImageView;
+        if (imageView != null) {
+            this.windowManager.removeView(imageView);
             this.mDragImageView = null;
         }
     }
@@ -206,9 +214,11 @@ public class DragGridView extends GridView {
 
     private void swapItem(int moveX2, int moveY2) {
         int tempPositon = pointToPosition(moveX2, moveY2);
-        if (this.mDragPosition != tempPositon && tempPositon != -1) {
-            if (this.listener != null) {
-                this.listener.onChange(this, this.mDragPosition, tempPositon);
+        int i = this.mDragPosition;
+        if (i != tempPositon && tempPositon != -1) {
+            onItemChangerListener onitemchangerlistener = this.listener;
+            if (onitemchangerlistener != null) {
+                onitemchangerlistener.onChange(this, i, tempPositon);
             }
             this.mDragPosition = tempPositon;
         }

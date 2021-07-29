@@ -1,11 +1,8 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.Bindable;
-import android.databinding.DataBindingComponent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,24 +12,18 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
 
 public abstract class FraBmwEvoId6GsOneBinding extends ViewDataBinding {
-    @NonNull
     public final TextView bmwEvoId6GsHmoeMusicHintTextview;
-    @NonNull
     public final TextView bmwEvoId6GsHmoeMusicNameTextview;
-    @NonNull
     public final ConstraintLayout bmwEvoId6GsHmoeNaviBtn;
-    @NonNull
     public final TextView bmwEvoId6GsHmoeNaviHintTextview;
-    @NonNull
     public final TextView bmwEvoId6GsHmoeVideoHintTextview;
     @Bindable
     protected BmwId6gsViewMode mVm;
-    @NonNull
     public final TextView textView17;
 
-    public abstract void setVm(@Nullable BmwId6gsViewMode bmwId6gsViewMode);
+    public abstract void setVm(BmwId6gsViewMode bmwId6gsViewMode);
 
-    protected FraBmwEvoId6GsOneBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, TextView bmwEvoId6GsHmoeMusicHintTextview2, TextView bmwEvoId6GsHmoeMusicNameTextview2, ConstraintLayout bmwEvoId6GsHmoeNaviBtn2, TextView bmwEvoId6GsHmoeNaviHintTextview2, TextView bmwEvoId6GsHmoeVideoHintTextview2, TextView textView172) {
+    protected FraBmwEvoId6GsOneBinding(Object _bindingComponent, View _root, int _localFieldCount, TextView bmwEvoId6GsHmoeMusicHintTextview2, TextView bmwEvoId6GsHmoeMusicNameTextview2, ConstraintLayout bmwEvoId6GsHmoeNaviBtn2, TextView bmwEvoId6GsHmoeNaviHintTextview2, TextView bmwEvoId6GsHmoeVideoHintTextview2, TextView textView172) {
         super(_bindingComponent, _root, _localFieldCount);
         this.bmwEvoId6GsHmoeMusicHintTextview = bmwEvoId6GsHmoeMusicHintTextview2;
         this.bmwEvoId6GsHmoeMusicNameTextview = bmwEvoId6GsHmoeMusicNameTextview2;
@@ -42,36 +33,34 @@ public abstract class FraBmwEvoId6GsOneBinding extends ViewDataBinding {
         this.textView17 = textView172;
     }
 
-    @Nullable
     public BmwId6gsViewMode getVm() {
         return this.mVm;
     }
 
-    @NonNull
-    public static FraBmwEvoId6GsOneBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot) {
+    public static FraBmwEvoId6GsOneBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
         return inflate(inflater, root, attachToRoot, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static FraBmwEvoId6GsOneBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
-        return (FraBmwEvoId6GsOneBinding) DataBindingUtil.inflate(inflater, R.layout.fra_bmw_evo_id6_gs_one, root, attachToRoot, component);
+    @Deprecated
+    public static FraBmwEvoId6GsOneBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
+        return (FraBmwEvoId6GsOneBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fra_bmw_evo_id6_gs_one, root, attachToRoot, component);
     }
 
-    @NonNull
-    public static FraBmwEvoId6GsOneBinding inflate(@NonNull LayoutInflater inflater) {
+    public static FraBmwEvoId6GsOneBinding inflate(LayoutInflater inflater) {
         return inflate(inflater, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static FraBmwEvoId6GsOneBinding inflate(@NonNull LayoutInflater inflater, @Nullable DataBindingComponent component) {
-        return (FraBmwEvoId6GsOneBinding) DataBindingUtil.inflate(inflater, R.layout.fra_bmw_evo_id6_gs_one, (ViewGroup) null, false, component);
+    @Deprecated
+    public static FraBmwEvoId6GsOneBinding inflate(LayoutInflater inflater, Object component) {
+        return (FraBmwEvoId6GsOneBinding) ViewDataBinding.inflateInternal(inflater, R.layout.fra_bmw_evo_id6_gs_one, (ViewGroup) null, false, component);
     }
 
-    public static FraBmwEvoId6GsOneBinding bind(@NonNull View view) {
+    public static FraBmwEvoId6GsOneBinding bind(View view) {
         return bind(view, DataBindingUtil.getDefaultComponent());
     }
 
-    public static FraBmwEvoId6GsOneBinding bind(@NonNull View view, @Nullable DataBindingComponent component) {
+    @Deprecated
+    public static FraBmwEvoId6GsOneBinding bind(View view, Object component) {
         return (FraBmwEvoId6GsOneBinding) bind(component, view, R.layout.fra_bmw_evo_id6_gs_one);
     }
 }

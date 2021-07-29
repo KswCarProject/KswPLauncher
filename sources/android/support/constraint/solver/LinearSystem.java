@@ -3,6 +3,7 @@ package android.support.constraint.solver;
 import android.support.constraint.solver.SolverVariable;
 import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.constraint.solver.widgets.ConstraintWidget;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -46,21 +47,22 @@ public class LinearSystem {
         this.mVariablesID = 0;
         this.mVariables = null;
         this.TABLE_SIZE = 32;
-        this.mMaxColumns = this.TABLE_SIZE;
+        this.mMaxColumns = 32;
         this.mRows = null;
         this.graphOptimizer = false;
-        this.mAlreadyTestedCandidates = new boolean[this.TABLE_SIZE];
+        this.mAlreadyTestedCandidates = new boolean[32];
         this.mNumColumns = 1;
         this.mNumRows = 0;
-        this.mMaxRows = this.TABLE_SIZE;
+        this.mMaxRows = 32;
         this.mPoolVariables = new SolverVariable[POOL_SIZE];
         this.mPoolVariablesCount = 0;
-        this.tempClientsCopy = new ArrayRow[this.TABLE_SIZE];
-        this.mRows = new ArrayRow[this.TABLE_SIZE];
+        this.tempClientsCopy = new ArrayRow[32];
+        this.mRows = new ArrayRow[32];
         releaseRows();
-        this.mCache = new Cache();
-        this.mGoal = new GoalRow(this.mCache);
-        this.mTempGoal = new ArrayRow(this.mCache);
+        Cache cache = new Cache();
+        this.mCache = cache;
+        this.mGoal = new GoalRow(cache);
+        this.mTempGoal = new ArrayRow(cache);
     }
 
     public void fillMetrics(Metrics metrics) {
@@ -72,26 +74,39 @@ public class LinearSystem {
     }
 
     private void increaseTableSize() {
-        this.TABLE_SIZE *= 2;
-        this.mRows = (ArrayRow[]) Arrays.copyOf(this.mRows, this.TABLE_SIZE);
-        this.mCache.mIndexedVariables = (SolverVariable[]) Arrays.copyOf(this.mCache.mIndexedVariables, this.TABLE_SIZE);
-        this.mAlreadyTestedCandidates = new boolean[this.TABLE_SIZE];
-        this.mMaxColumns = this.TABLE_SIZE;
-        this.mMaxRows = this.TABLE_SIZE;
-        if (sMetrics != null) {
-            sMetrics.tableSizeIncrease++;
-            sMetrics.maxTableSize = Math.max(sMetrics.maxTableSize, (long) this.TABLE_SIZE);
-            sMetrics.lastTableSize = sMetrics.maxTableSize;
+        int i = this.TABLE_SIZE * 2;
+        this.TABLE_SIZE = i;
+        this.mRows = (ArrayRow[]) Arrays.copyOf(this.mRows, i);
+        Cache cache = this.mCache;
+        cache.mIndexedVariables = (SolverVariable[]) Arrays.copyOf(cache.mIndexedVariables, this.TABLE_SIZE);
+        int i2 = this.TABLE_SIZE;
+        this.mAlreadyTestedCandidates = new boolean[i2];
+        this.mMaxColumns = i2;
+        this.mMaxRows = i2;
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.tableSizeIncrease++;
+            Metrics metrics2 = sMetrics;
+            metrics2.maxTableSize = Math.max(metrics2.maxTableSize, (long) this.TABLE_SIZE);
+            Metrics metrics3 = sMetrics;
+            metrics3.lastTableSize = metrics3.maxTableSize;
         }
     }
 
     private void releaseRows() {
-        for (int i = 0; i < this.mRows.length; i++) {
-            ArrayRow row = this.mRows[i];
-            if (row != null) {
-                this.mCache.arrayRowPool.release(row);
+        int i = 0;
+        while (true) {
+            ArrayRow[] arrayRowArr = this.mRows;
+            if (i < arrayRowArr.length) {
+                ArrayRow row = arrayRowArr[i];
+                if (row != null) {
+                    this.mCache.arrayRowPool.release(row);
+                }
+                this.mRows[i] = null;
+                i++;
+            } else {
+                return;
             }
-            this.mRows[i] = null;
         }
     }
 
@@ -104,8 +119,9 @@ public class LinearSystem {
         this.mCache.solverVariablePool.releaseAll(this.mPoolVariables, this.mPoolVariablesCount);
         this.mPoolVariablesCount = 0;
         Arrays.fill(this.mCache.mIndexedVariables, (Object) null);
-        if (this.mVariables != null) {
-            this.mVariables.clear();
+        HashMap<String, SolverVariable> hashMap = this.mVariables;
+        if (hashMap != null) {
+            hashMap.clear();
         }
         this.mVariablesID = 0;
         this.mGoal.clear();
@@ -135,9 +151,10 @@ public class LinearSystem {
                 if (variable.id != -1) {
                     variable.reset();
                 }
-                this.mVariablesID++;
+                int i = this.mVariablesID + 1;
+                this.mVariablesID = i;
                 this.mNumColumns++;
-                variable.id = this.mVariablesID;
+                variable.id = i;
                 variable.mType = SolverVariable.Type.UNRESTRICTED;
                 this.mCache.mIndexedVariables[this.mVariablesID] = variable;
             }
@@ -157,31 +174,35 @@ public class LinearSystem {
     }
 
     public SolverVariable createSlackVariable() {
-        if (sMetrics != null) {
-            sMetrics.slackvariables++;
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.slackvariables++;
         }
         if (this.mNumColumns + 1 >= this.mMaxColumns) {
             increaseTableSize();
         }
         SolverVariable variable = acquireSolverVariable(SolverVariable.Type.SLACK, (String) null);
-        this.mVariablesID++;
+        int i = this.mVariablesID + 1;
+        this.mVariablesID = i;
         this.mNumColumns++;
-        variable.id = this.mVariablesID;
+        variable.id = i;
         this.mCache.mIndexedVariables[this.mVariablesID] = variable;
         return variable;
     }
 
     public SolverVariable createExtraVariable() {
-        if (sMetrics != null) {
-            sMetrics.extravariables++;
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.extravariables++;
         }
         if (this.mNumColumns + 1 >= this.mMaxColumns) {
             increaseTableSize();
         }
         SolverVariable variable = acquireSolverVariable(SolverVariable.Type.SLACK, (String) null);
-        this.mVariablesID++;
+        int i = this.mVariablesID + 1;
+        this.mVariablesID = i;
         this.mNumColumns++;
-        variable.id = this.mVariablesID;
+        variable.id = i;
         this.mCache.mIndexedVariables[this.mVariablesID] = variable;
         return variable;
     }
@@ -200,17 +221,19 @@ public class LinearSystem {
     }
 
     private SolverVariable createVariable(String name, SolverVariable.Type type) {
-        if (sMetrics != null) {
-            sMetrics.variables++;
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.variables++;
         }
         if (this.mNumColumns + 1 >= this.mMaxColumns) {
             increaseTableSize();
         }
         SolverVariable variable = acquireSolverVariable(type, (String) null);
         variable.setName(name);
-        this.mVariablesID++;
+        int i = this.mVariablesID + 1;
+        this.mVariablesID = i;
         this.mNumColumns++;
-        variable.id = this.mVariablesID;
+        variable.id = i;
         if (this.mVariables == null) {
             this.mVariables = new HashMap<>();
         }
@@ -220,16 +243,18 @@ public class LinearSystem {
     }
 
     public SolverVariable createErrorVariable(int strength, String prefix) {
-        if (sMetrics != null) {
-            sMetrics.errors++;
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.errors++;
         }
         if (this.mNumColumns + 1 >= this.mMaxColumns) {
             increaseTableSize();
         }
         SolverVariable variable = acquireSolverVariable(SolverVariable.Type.ERROR, prefix);
-        this.mVariablesID++;
+        int i = this.mVariablesID + 1;
+        this.mVariablesID = i;
         this.mNumColumns++;
-        variable.id = this.mVariablesID;
+        variable.id = i;
         variable.strength = strength;
         this.mCache.mIndexedVariables[this.mVariablesID] = variable;
         this.mGoal.addError(variable);
@@ -245,14 +270,17 @@ public class LinearSystem {
             variable.reset();
             variable.setType(type, prefix);
         }
-        if (this.mPoolVariablesCount >= POOL_SIZE) {
-            POOL_SIZE *= 2;
-            this.mPoolVariables = (SolverVariable[]) Arrays.copyOf(this.mPoolVariables, POOL_SIZE);
+        int i = this.mPoolVariablesCount;
+        int i2 = POOL_SIZE;
+        if (i >= i2) {
+            int i3 = i2 * 2;
+            POOL_SIZE = i3;
+            this.mPoolVariables = (SolverVariable[]) Arrays.copyOf(this.mPoolVariables, i3);
         }
         SolverVariable[] solverVariableArr = this.mPoolVariables;
-        int i = this.mPoolVariablesCount;
-        this.mPoolVariablesCount = i + 1;
-        solverVariableArr[i] = variable;
+        int i4 = this.mPoolVariablesCount;
+        this.mPoolVariablesCount = i4 + 1;
+        solverVariableArr[i4] = variable;
         return variable;
     }
 
@@ -296,12 +324,14 @@ public class LinearSystem {
     }
 
     public void minimize() throws Exception {
-        if (sMetrics != null) {
-            sMetrics.minimize++;
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.minimize++;
         }
         if (this.graphOptimizer) {
-            if (sMetrics != null) {
-                sMetrics.graphOptimizer++;
+            Metrics metrics2 = sMetrics;
+            if (metrics2 != null) {
+                metrics2.graphOptimizer++;
             }
             boolean fullySolved = true;
             int i = 0;
@@ -319,8 +349,9 @@ public class LinearSystem {
                 minimizeGoal(this.mGoal);
                 return;
             }
-            if (sMetrics != null) {
-                sMetrics.fullySolved++;
+            Metrics metrics3 = sMetrics;
+            if (metrics3 != null) {
+                metrics3.fullySolved++;
             }
             computeValues();
             return;
@@ -330,10 +361,13 @@ public class LinearSystem {
 
     /* access modifiers changed from: package-private */
     public void minimizeGoal(Row goal) throws Exception {
-        if (sMetrics != null) {
-            sMetrics.minimizeGoal++;
-            sMetrics.maxVariables = Math.max(sMetrics.maxVariables, (long) this.mNumColumns);
-            sMetrics.maxRows = Math.max(sMetrics.maxRows, (long) this.mNumRows);
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.minimizeGoal++;
+            Metrics metrics2 = sMetrics;
+            metrics2.maxVariables = Math.max(metrics2.maxVariables, (long) this.mNumColumns);
+            Metrics metrics3 = sMetrics;
+            metrics3.maxRows = Math.max(metrics3.maxRows, (long) this.mNumRows);
         }
         updateRowFromVariables((ArrayRow) goal);
         enforceBFS(goal);
@@ -353,8 +387,9 @@ public class LinearSystem {
     public void addConstraint(ArrayRow row) {
         SolverVariable pivotCandidate;
         if (row != null) {
-            if (sMetrics != null) {
-                sMetrics.constraints++;
+            Metrics metrics = sMetrics;
+            if (metrics != null) {
+                metrics.constraints++;
                 if (row.isSimpleDefinition) {
                     sMetrics.simpleconstraints++;
                 }
@@ -376,8 +411,9 @@ public class LinearSystem {
                         optimize(this.mTempGoal, true);
                         if (extra.definitionId == -1) {
                             if (row.variable == extra && (pivotCandidate = row.pickPivot(extra)) != null) {
-                                if (sMetrics != null) {
-                                    sMetrics.pivots++;
+                                Metrics metrics2 = sMetrics;
+                                if (metrics2 != null) {
+                                    metrics2.pivots++;
                                 }
                                 row.pivot(pivotCandidate);
                             }
@@ -411,8 +447,9 @@ public class LinearSystem {
     }
 
     private final int optimize(Row goal, boolean b) {
-        if (sMetrics != null) {
-            sMetrics.optimize++;
+        Metrics metrics = sMetrics;
+        if (metrics != null) {
+            metrics.optimize++;
         }
         boolean done = false;
         int tries = 0;
@@ -420,8 +457,9 @@ public class LinearSystem {
             this.mAlreadyTestedCandidates[i] = false;
         }
         while (!done) {
-            if (sMetrics != null) {
-                sMetrics.iterations++;
+            Metrics metrics2 = sMetrics;
+            if (metrics2 != null) {
+                metrics2.iterations++;
             }
             tries++;
             if (tries >= this.mNumColumns * 2) {
@@ -438,8 +476,8 @@ public class LinearSystem {
                 this.mAlreadyTestedCandidates[pivotCandidate.id] = true;
             }
             if (pivotCandidate != null) {
-                int pivotRowIndex = -1;
                 float min = Float.MAX_VALUE;
+                int pivotRowIndex = -1;
                 for (int i2 = 0; i2 < this.mNumRows; i2++) {
                     ArrayRow current = this.mRows[i2];
                     if (current.variable.mType != SolverVariable.Type.UNRESTRICTED && !current.isSimpleDefinition && current.hasVariable(pivotCandidate)) {
@@ -456,8 +494,9 @@ public class LinearSystem {
                 if (pivotRowIndex > -1) {
                     ArrayRow pivotEquation = this.mRows[pivotRowIndex];
                     pivotEquation.variable.definitionId = -1;
-                    if (sMetrics != null) {
-                        sMetrics.pivots++;
+                    Metrics metrics3 = sMetrics;
+                    if (metrics3 != null) {
+                        metrics3.pivots++;
                     }
                     pivotEquation.pivot(pivotCandidate);
                     pivotEquation.variable.definitionId = pivotRowIndex;
@@ -469,7 +508,6 @@ public class LinearSystem {
                 done = true;
             }
         }
-        Row row = goal;
         return tries;
     }
 
@@ -493,14 +531,15 @@ public class LinearSystem {
             boolean done = false;
             tries = 0;
             while (!done) {
-                if (sMetrics != null) {
-                    sMetrics.bfs++;
+                Metrics metrics = sMetrics;
+                if (metrics != null) {
+                    metrics.bfs++;
                 }
                 tries++;
+                float min = Float.MAX_VALUE;
+                int strength = 0;
                 int pivotRowIndex = -1;
                 int pivotColumnIndex = -1;
-                int strength = 0;
-                float min = Float.MAX_VALUE;
                 int i2 = 0;
                 while (i2 < this.mNumRows) {
                     ArrayRow current = this.mRows[i2];
@@ -530,8 +569,9 @@ public class LinearSystem {
                 if (pivotRowIndex != -1) {
                     ArrayRow pivotEquation = this.mRows[pivotRowIndex];
                     pivotEquation.variable.definitionId = -1;
-                    if (sMetrics != null) {
-                        sMetrics.pivots++;
+                    Metrics metrics2 = sMetrics;
+                    if (metrics2 != null) {
+                        metrics2.pivots++;
                     }
                     pivotEquation.pivot(this.mCache.mIndexedVariables[pivotColumnIndex]);
                     pivotEquation.variable.definitionId = pivotRowIndex;
@@ -591,8 +631,9 @@ public class LinearSystem {
     public int getMemoryUsed() {
         int actualRowSize = 0;
         for (int i = 0; i < this.mNumRows; i++) {
-            if (this.mRows[i] != null) {
-                actualRowSize += this.mRows[i].sizeInBytes();
+            ArrayRow[] arrayRowArr = this.mRows;
+            if (arrayRowArr[i] != null) {
+                actualRowSize += arrayRowArr[i].sizeInBytes();
             }
         }
         return actualRowSize;
@@ -610,17 +651,22 @@ public class LinearSystem {
     public void displaySystemInformations() {
         int rowSize = 0;
         for (int i = 0; i < this.TABLE_SIZE; i++) {
-            if (this.mRows[i] != null) {
-                rowSize += this.mRows[i].sizeInBytes();
+            ArrayRow[] arrayRowArr = this.mRows;
+            if (arrayRowArr[i] != null) {
+                rowSize += arrayRowArr[i].sizeInBytes();
             }
         }
         int actualRowSize = 0;
         for (int i2 = 0; i2 < this.mNumRows; i2++) {
-            if (this.mRows[i2] != null) {
-                actualRowSize += this.mRows[i2].sizeInBytes();
+            ArrayRow[] arrayRowArr2 = this.mRows;
+            if (arrayRowArr2[i2] != null) {
+                actualRowSize += arrayRowArr2[i2].sizeInBytes();
             }
         }
-        System.out.println("Linear System -> Table size: " + this.TABLE_SIZE + " (" + getDisplaySize(this.TABLE_SIZE * this.TABLE_SIZE) + ") -- row sizes: " + getDisplaySize(rowSize) + ", actual size: " + getDisplaySize(actualRowSize) + " rows: " + this.mNumRows + "/" + this.mMaxRows + " cols: " + this.mNumColumns + "/" + this.mMaxColumns + " " + 0 + " occupied cells, " + getDisplaySize(0));
+        PrintStream printStream = System.out;
+        StringBuilder append = new StringBuilder().append("Linear System -> Table size: ").append(this.TABLE_SIZE).append(" (");
+        int i3 = this.TABLE_SIZE;
+        printStream.println(append.append(getDisplaySize(i3 * i3)).append(") -- row sizes: ").append(getDisplaySize(rowSize)).append(", actual size: ").append(getDisplaySize(actualRowSize)).append(" rows: ").append(this.mNumRows).append("/").append(this.mMaxRows).append(" cols: ").append(this.mNumColumns).append("/").append(this.mMaxColumns).append(" ").append(0).append(" occupied cells, ").append(getDisplaySize(0)).toString());
     }
 
     private void displaySolverVariables() {

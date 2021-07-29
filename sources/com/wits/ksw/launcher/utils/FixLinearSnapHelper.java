@@ -1,7 +1,5 @@
 package com.wits.ksw.launcher.utils;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +10,7 @@ public class FixLinearSnapHelper extends LinearSnapHelper {
     private RecyclerView mRecyclerView;
     private OrientationHelper mVerticalHelper;
 
-    public int[] calculateDistanceToFinalSnap(@NonNull RecyclerView.LayoutManager layoutManager, @NonNull View targetView) {
+    public int[] calculateDistanceToFinalSnap(RecyclerView.LayoutManager layoutManager, View targetView) {
         int[] out = new int[2];
         if (layoutManager.canScrollHorizontally()) {
             out[0] = distanceToCenter(targetView, getHorizontalHelper(layoutManager));
@@ -27,7 +25,7 @@ public class FixLinearSnapHelper extends LinearSnapHelper {
         return out;
     }
 
-    public void attachToRecyclerView(@Nullable RecyclerView recyclerView) throws IllegalStateException {
+    public void attachToRecyclerView(RecyclerView recyclerView) throws IllegalStateException {
         this.mRecyclerView = recyclerView;
         super.attachToRecyclerView(recyclerView);
     }

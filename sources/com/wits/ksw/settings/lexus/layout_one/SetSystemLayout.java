@@ -104,8 +104,9 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         this.tv_sysDcsxt.setTextColor(-1);
         this.tv_sysBgld.setTextColor(-1);
         this.tempUnitView.setTextColor(-1);
-        if (this.updateTwoLayout != null) {
-            this.updateTwoLayout.updateTwoLayout(1, 0);
+        IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+        if (iUpdateTwoLayout != null) {
+            iUpdateTwoLayout.updateTwoLayout(1, 0);
         }
     }
 

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.appcompat.R;
@@ -42,7 +40,7 @@ public class AppCompatViewInflater {
     private final Object[] mConstructorArgs = new Object[2];
 
     /* access modifiers changed from: package-private */
-    public final View createView(View parent, String name, @NonNull Context context, @NonNull AttributeSet attrs, boolean inheritContext, boolean readAndroidTheme, boolean readAppTheme, boolean wrapContext) {
+    public final View createView(View parent, String name, Context context, AttributeSet attrs, boolean inheritContext, boolean readAndroidTheme, boolean readAppTheme, boolean wrapContext) {
         View view;
         Context originalContext = context;
         if (inheritContext && parent != null) {
@@ -202,79 +200,66 @@ public class AppCompatViewInflater {
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatTextView createTextView(Context context, AttributeSet attrs) {
         return new AppCompatTextView(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatImageView createImageView(Context context, AttributeSet attrs) {
         return new AppCompatImageView(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatButton createButton(Context context, AttributeSet attrs) {
         return new AppCompatButton(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatEditText createEditText(Context context, AttributeSet attrs) {
         return new AppCompatEditText(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatSpinner createSpinner(Context context, AttributeSet attrs) {
         return new AppCompatSpinner(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatImageButton createImageButton(Context context, AttributeSet attrs) {
         return new AppCompatImageButton(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatCheckBox createCheckBox(Context context, AttributeSet attrs) {
         return new AppCompatCheckBox(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatRadioButton createRadioButton(Context context, AttributeSet attrs) {
         return new AppCompatRadioButton(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatCheckedTextView createCheckedTextView(Context context, AttributeSet attrs) {
         return new AppCompatCheckedTextView(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatAutoCompleteTextView createAutoCompleteTextView(Context context, AttributeSet attrs) {
         return new AppCompatAutoCompleteTextView(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatMultiAutoCompleteTextView createMultiAutoCompleteTextView(Context context, AttributeSet attrs) {
         return new AppCompatMultiAutoCompleteTextView(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatRatingBar createRatingBar(Context context, AttributeSet attrs) {
         return new AppCompatRatingBar(context, attrs);
     }
 
     /* access modifiers changed from: protected */
-    @NonNull
     public AppCompatSeekBar createSeekBar(Context context, AttributeSet attrs) {
         return new AppCompatSeekBar(context, attrs);
     }
@@ -286,7 +271,6 @@ public class AppCompatViewInflater {
     }
 
     /* access modifiers changed from: protected */
-    @Nullable
     public View createView(Context context, String name, AttributeSet attrs) {
         return null;
     }
@@ -296,28 +280,39 @@ public class AppCompatViewInflater {
             name = attrs.getAttributeValue((String) null, "class");
         }
         try {
-            this.mConstructorArgs[0] = context;
-            this.mConstructorArgs[1] = attrs;
+            Object[] objArr = this.mConstructorArgs;
+            objArr[0] = context;
+            objArr[1] = attrs;
             if (-1 == name.indexOf(46)) {
-                for (String createViewByPrefix : sClassPrefixList) {
-                    View view = createViewByPrefix(context, name, createViewByPrefix);
-                    if (view != null) {
-                        return view;
+                int i = 0;
+                while (true) {
+                    String[] strArr = sClassPrefixList;
+                    if (i < strArr.length) {
+                        View view = createViewByPrefix(context, name, strArr[i]);
+                        if (view != null) {
+                            return view;
+                        }
+                        i++;
+                    } else {
+                        Object[] objArr2 = this.mConstructorArgs;
+                        objArr2[0] = null;
+                        objArr2[1] = null;
+                        return null;
                     }
                 }
-                this.mConstructorArgs[0] = null;
-                this.mConstructorArgs[1] = null;
-                return null;
+            } else {
+                View createViewByPrefix = createViewByPrefix(context, name, (String) null);
+                Object[] objArr3 = this.mConstructorArgs;
+                objArr3[0] = null;
+                objArr3[1] = null;
+                return createViewByPrefix;
             }
-            View createViewByPrefix2 = createViewByPrefix(context, name, (String) null);
-            this.mConstructorArgs[0] = null;
-            this.mConstructorArgs[1] = null;
-            return createViewByPrefix2;
         } catch (Exception e) {
             return null;
         } finally {
-            this.mConstructorArgs[0] = null;
-            this.mConstructorArgs[1] = null;
+            Object[] objArr4 = this.mConstructorArgs;
+            objArr4[0] = null;
+            objArr4[1] = null;
         }
     }
 
@@ -337,18 +332,12 @@ public class AppCompatViewInflater {
     }
 
     private View createViewByPrefix(Context context, String name, String prefix) throws ClassNotFoundException, InflateException {
-        String str;
-        Constructor<? extends U> constructor = sConstructorMap.get(name);
+        Map<String, Constructor<? extends View>> map = sConstructorMap;
+        Constructor<? extends U> constructor = map.get(name);
         if (constructor == null) {
             try {
-                ClassLoader classLoader = context.getClassLoader();
-                if (prefix != null) {
-                    str = prefix + name;
-                } else {
-                    str = name;
-                }
-                constructor = classLoader.loadClass(str).asSubclass(View.class).getConstructor(sConstructorSignature);
-                sConstructorMap.put(name, constructor);
+                constructor = context.getClassLoader().loadClass(prefix != null ? prefix + name : name).asSubclass(View.class).getConstructor(sConstructorSignature);
+                map.put(name, constructor);
             } catch (Exception e) {
                 return null;
             }
@@ -382,12 +371,12 @@ public class AppCompatViewInflater {
         private Context mResolvedContext;
         private Method mResolvedMethod;
 
-        public DeclaredOnClickListener(@NonNull View hostView, @NonNull String methodName) {
+        public DeclaredOnClickListener(View hostView, String methodName) {
             this.mHostView = hostView;
             this.mMethodName = methodName;
         }
 
-        public void onClick(@NonNull View v) {
+        public void onClick(View v) {
             if (this.mResolvedMethod == null) {
                 resolveMethod(this.mHostView.getContext(), this.mMethodName);
             }
@@ -400,8 +389,7 @@ public class AppCompatViewInflater {
             }
         }
 
-        @NonNull
-        private void resolveMethod(@Nullable Context context, @NonNull String name) {
+        private void resolveMethod(Context context, String name) {
             String idText;
             Method method;
             while (context != null) {

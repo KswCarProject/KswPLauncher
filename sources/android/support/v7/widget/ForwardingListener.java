@@ -1,14 +1,12 @@
 package android.support.v7.widget;
 
 import android.os.SystemClock;
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.ShowableListMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public abstract class ForwardingListener implements View.OnTouchListener, View.OnAttachStateChangeListener {
     private int mActivePointerId;
     private Runnable mDisallowIntercept;
@@ -27,8 +25,9 @@ public abstract class ForwardingListener implements View.OnTouchListener, View.O
         src.setLongClickable(true);
         src.addOnAttachStateChangeListener(this);
         this.mScaledTouchSlop = (float) ViewConfiguration.get(src.getContext()).getScaledTouchSlop();
-        this.mTapTimeout = ViewConfiguration.getTapTimeout();
-        this.mLongPressTimeout = (this.mTapTimeout + ViewConfiguration.getLongPressTimeout()) / 2;
+        int tapTimeout = ViewConfiguration.getTapTimeout();
+        this.mTapTimeout = tapTimeout;
+        this.mLongPressTimeout = (tapTimeout + ViewConfiguration.getLongPressTimeout()) / 2;
     }
 
     public boolean onTouch(View v, MotionEvent event) {
@@ -59,8 +58,9 @@ public abstract class ForwardingListener implements View.OnTouchListener, View.O
     public void onViewDetachedFromWindow(View v) {
         this.mForwarding = false;
         this.mActivePointerId = -1;
-        if (this.mDisallowIntercept != null) {
-            this.mSrc.removeCallbacks(this.mDisallowIntercept);
+        Runnable runnable = this.mDisallowIntercept;
+        if (runnable != null) {
+            this.mSrc.removeCallbacks(runnable);
         }
     }
 
@@ -117,11 +117,13 @@ public abstract class ForwardingListener implements View.OnTouchListener, View.O
     }
 
     private void clearCallbacks() {
-        if (this.mTriggerLongPress != null) {
-            this.mSrc.removeCallbacks(this.mTriggerLongPress);
+        Runnable runnable = this.mTriggerLongPress;
+        if (runnable != null) {
+            this.mSrc.removeCallbacks(runnable);
         }
-        if (this.mDisallowIntercept != null) {
-            this.mSrc.removeCallbacks(this.mDisallowIntercept);
+        Runnable runnable2 = this.mDisallowIntercept;
+        if (runnable2 != null) {
+            this.mSrc.removeCallbacks(runnable2);
         }
     }
 

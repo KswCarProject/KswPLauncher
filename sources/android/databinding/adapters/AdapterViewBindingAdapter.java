@@ -1,19 +1,10 @@
 package android.databinding.adapters;
 
-import android.databinding.BindingAdapter;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.InverseBindingListener;
-import android.databinding.InverseBindingMethod;
-import android.databinding.InverseBindingMethods;
-import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 
-@InverseBindingMethods({@InverseBindingMethod(attribute = "android:selectedItemPosition", type = AdapterView.class), @InverseBindingMethod(attribute = "android:selection", event = "android:selectedItemPositionAttrChanged", method = "getSelectedItemPosition", type = AdapterView.class)})
-@BindingMethods({@BindingMethod(attribute = "android:onItemClick", method = "setOnItemClickListener", type = AdapterView.class), @BindingMethod(attribute = "android:onItemLongClick", method = "setOnItemLongClickListener", type = AdapterView.class)})
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class AdapterViewBindingAdapter {
 
     public interface OnItemSelected {
@@ -24,19 +15,16 @@ public class AdapterViewBindingAdapter {
         void onNothingSelected(AdapterView<?> adapterView);
     }
 
-    @BindingAdapter({"android:selectedItemPosition"})
     public static void setSelectedItemPosition(AdapterView view, int position) {
         if (view.getSelectedItemPosition() != position) {
             view.setSelection(position);
         }
     }
 
-    @BindingAdapter({"android:selection"})
     public static void setSelection(AdapterView view, int position) {
         setSelectedItemPosition(view, position);
     }
 
-    @BindingAdapter({"android:selectedItemPosition", "android:adapter"})
     public static void setSelectedItemPosition(AdapterView view, int position, Adapter adapter) {
         if (adapter != view.getAdapter()) {
             view.setAdapter(adapter);
@@ -46,12 +34,10 @@ public class AdapterViewBindingAdapter {
         }
     }
 
-    @BindingAdapter({"android:selection", "android:adapter"})
     public static void setSelection(AdapterView view, int position, Adapter adapter) {
         setSelectedItemPosition(view, position, adapter);
     }
 
-    @BindingAdapter(requireAll = false, value = {"android:onItemSelected", "android:onNothingSelected", "android:selectedItemPositionAttrChanged"})
     public static void setOnItemSelectedListener(AdapterView view, OnItemSelected selected, OnNothingSelected nothingSelected, InverseBindingListener attrChanged) {
         if (selected == null && nothingSelected == null && attrChanged == null) {
             view.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) null);
@@ -72,20 +58,24 @@ public class AdapterViewBindingAdapter {
         }
 
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (this.mSelected != null) {
-                this.mSelected.onItemSelected(parent, view, position, id);
+            OnItemSelected onItemSelected = this.mSelected;
+            if (onItemSelected != null) {
+                onItemSelected.onItemSelected(parent, view, position, id);
             }
-            if (this.mAttrChanged != null) {
-                this.mAttrChanged.onChange();
+            InverseBindingListener inverseBindingListener = this.mAttrChanged;
+            if (inverseBindingListener != null) {
+                inverseBindingListener.onChange();
             }
         }
 
         public void onNothingSelected(AdapterView<?> parent) {
-            if (this.mNothingSelected != null) {
-                this.mNothingSelected.onNothingSelected(parent);
+            OnNothingSelected onNothingSelected = this.mNothingSelected;
+            if (onNothingSelected != null) {
+                onNothingSelected.onNothingSelected(parent);
             }
-            if (this.mAttrChanged != null) {
-                this.mAttrChanged.onChange();
+            InverseBindingListener inverseBindingListener = this.mAttrChanged;
+            if (inverseBindingListener != null) {
+                inverseBindingListener.onChange();
             }
         }
     }

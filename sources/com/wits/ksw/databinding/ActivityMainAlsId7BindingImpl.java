@@ -2,8 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -13,42 +11,32 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback162;
-    @Nullable
-    private final View.OnClickListener mCallback163;
-    @Nullable
-    private final View.OnClickListener mCallback164;
-    @Nullable
-    private final View.OnClickListener mCallback165;
-    @Nullable
-    private final View.OnClickListener mCallback166;
-    @Nullable
-    private final View.OnClickListener mCallback167;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback65;
+    private final View.OnClickListener mCallback66;
+    private final View.OnClickListener mCallback67;
+    private final View.OnClickListener mCallback68;
+    private final View.OnClickListener mCallback69;
+    private final View.OnClickListener mCallback70;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
-    @NonNull
     private final Button mboundView4;
-    @NonNull
     private final Button mboundView5;
-    @NonNull
     private final Button mboundView6;
 
     static {
-        sViewsWithIds.put(R.id.guideline, 7);
-        sViewsWithIds.put(R.id.imageView1, 8);
-        sViewsWithIds.put(R.id.imageView4, 9);
-        sViewsWithIds.put(R.id.imageView3, 10);
-        sViewsWithIds.put(R.id.viewPage, 11);
-        sViewsWithIds.put(R.id.menuConstraintLayout, 12);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.guideline, 7);
+        sparseIntArray.put(R.id.imageView1, 8);
+        sparseIntArray.put(R.id.imageView4, 9);
+        sparseIntArray.put(R.id.imageView3, 10);
+        sparseIntArray.put(R.id.viewPage, 11);
+        sparseIntArray.put(R.id.menuConstraintLayout, 12);
     }
 
-    public ActivityMainAlsId7BindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainAlsId7BindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 13, sIncludes, sViewsWithIds));
     }
 
@@ -56,24 +44,28 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
     private ActivityMainAlsId7BindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0, bindings[7], bindings[8], bindings[10], bindings[9], bindings[1], bindings[2], bindings[3], bindings[12], bindings[11]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
-        this.mboundView5 = bindings[5];
-        this.mboundView5.setTag((Object) null);
-        this.mboundView6 = bindings[6];
-        this.mboundView6.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        Button button = bindings[4];
+        this.mboundView4 = button;
+        button.setTag((Object) null);
+        Button button2 = bindings[5];
+        this.mboundView5 = button2;
+        button2.setTag((Object) null);
+        Button button3 = bindings[6];
+        this.mboundView6 = button3;
+        button3.setTag((Object) null);
         this.menuButton1.setTag((Object) null);
         this.menuButton2.setTag((Object) null);
         this.menuButton3.setTag((Object) null);
         setRootTag(root);
-        this.mCallback164 = new OnClickListener(this, 3);
-        this.mCallback165 = new OnClickListener(this, 4);
-        this.mCallback162 = new OnClickListener(this, 1);
-        this.mCallback163 = new OnClickListener(this, 2);
-        this.mCallback166 = new OnClickListener(this, 5);
-        this.mCallback167 = new OnClickListener(this, 6);
+        this.mCallback69 = new OnClickListener(this, 5);
+        this.mCallback67 = new OnClickListener(this, 3);
+        this.mCallback68 = new OnClickListener(this, 4);
+        this.mCallback65 = new OnClickListener(this, 1);
+        this.mCallback66 = new OnClickListener(this, 2);
+        this.mCallback70 = new OnClickListener(this, 6);
         invalidateAll();
     }
 
@@ -93,20 +85,20 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (18 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (4 != variableId) {
             return false;
         }
         setLauncherViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setLauncherViewModel(@Nullable LauncherViewModel LauncherViewModel) {
+    public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(18);
+        notifyPropertyChanged(4);
         super.requestRebind();
     }
 
@@ -124,22 +116,22 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
         }
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.mboundView4.setOnClickListener(this.mCallback165);
-            this.mboundView5.setOnClickListener(this.mCallback166);
-            this.mboundView6.setOnClickListener(this.mCallback167);
-            this.menuButton1.setOnClickListener(this.mCallback162);
-            this.menuButton2.setOnClickListener(this.mCallback163);
-            this.menuButton3.setOnClickListener(this.mCallback164);
+            this.mboundView4.setOnClickListener(this.mCallback68);
+            this.mboundView5.setOnClickListener(this.mCallback69);
+            this.mboundView6.setOnClickListener(this.mCallback70);
+            this.menuButton1.setOnClickListener(this.mCallback65);
+            this.menuButton2.setOnClickListener(this.mCallback66);
+            this.menuButton3.setOnClickListener(this.mCallback67);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean launcherViewModelJavaLangObjectNull = false;
+        boolean launcherViewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 LauncherViewModel launcherViewModel = this.mLauncherViewModel;
-                if (launcherViewModel != null) {
-                    launcherViewModelJavaLangObjectNull = true;
+                if (launcherViewModel == null) {
+                    launcherViewModelJavaLangObjectNull = false;
                 }
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel.openBrowser(callbackArg_0);
@@ -148,8 +140,8 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
                 return;
             case 2:
                 LauncherViewModel launcherViewModel2 = this.mLauncherViewModel;
-                if (launcherViewModel2 != null) {
-                    launcherViewModelJavaLangObjectNull = true;
+                if (launcherViewModel2 == null) {
+                    launcherViewModelJavaLangObjectNull = false;
                 }
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel2.openApps(callbackArg_0);
@@ -158,8 +150,8 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
                 return;
             case 3:
                 LauncherViewModel launcherViewModel3 = this.mLauncherViewModel;
-                if (launcherViewModel3 != null) {
-                    launcherViewModelJavaLangObjectNull = true;
+                if (launcherViewModel3 == null) {
+                    launcherViewModelJavaLangObjectNull = false;
                 }
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel3.openSettings(callbackArg_0);
@@ -168,8 +160,8 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
                 return;
             case 4:
                 LauncherViewModel launcherViewModel4 = this.mLauncherViewModel;
-                if (launcherViewModel4 != null) {
-                    launcherViewModelJavaLangObjectNull = true;
+                if (launcherViewModel4 == null) {
+                    launcherViewModelJavaLangObjectNull = false;
                 }
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel4.openCar(callbackArg_0);
@@ -178,8 +170,8 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
                 return;
             case 5:
                 LauncherViewModel launcherViewModel5 = this.mLauncherViewModel;
-                if (launcherViewModel5 != null) {
-                    launcherViewModelJavaLangObjectNull = true;
+                if (launcherViewModel5 == null) {
+                    launcherViewModelJavaLangObjectNull = false;
                 }
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel5.openApps(callbackArg_0);
@@ -188,8 +180,8 @@ public class ActivityMainAlsId7BindingImpl extends ActivityMainAlsId7Binding imp
                 return;
             case 6:
                 LauncherViewModel launcherViewModel6 = this.mLauncherViewModel;
-                if (launcherViewModel6 != null) {
-                    launcherViewModelJavaLangObjectNull = true;
+                if (launcherViewModel6 == null) {
+                    launcherViewModelJavaLangObjectNull = false;
                 }
                 if (launcherViewModelJavaLangObjectNull) {
                     launcherViewModel6.openSettings(callbackArg_0);

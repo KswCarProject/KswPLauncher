@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.appcompat.R;
 import android.support.v7.view.menu.MenuView;
@@ -21,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ListMenuItemView extends LinearLayout implements MenuView.ItemView, AbsListView.SelectionBoundsAdjuster {
     private static final String TAG = "ListMenuItemView";
     private Drawable mBackground;
@@ -65,14 +63,17 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView,
     public void onFinishInflate() {
         super.onFinishInflate();
         ViewCompat.setBackground(this, this.mBackground);
-        this.mTitleView = (TextView) findViewById(R.id.title);
-        if (this.mTextAppearance != -1) {
-            this.mTitleView.setTextAppearance(this.mTextAppearanceContext, this.mTextAppearance);
+        TextView textView = (TextView) findViewById(R.id.title);
+        this.mTitleView = textView;
+        int i = this.mTextAppearance;
+        if (i != -1) {
+            textView.setTextAppearance(this.mTextAppearanceContext, i);
         }
         this.mShortcutView = (TextView) findViewById(R.id.shortcut);
-        this.mSubMenuArrowView = (ImageView) findViewById(R.id.submenuarrow);
-        if (this.mSubMenuArrowView != null) {
-            this.mSubMenuArrowView.setImageDrawable(this.mSubMenuArrow);
+        ImageView imageView = (ImageView) findViewById(R.id.submenuarrow);
+        this.mSubMenuArrowView = imageView;
+        if (imageView != null) {
+            imageView.setImageDrawable(this.mSubMenuArrow);
         }
         this.mGroupDivider = (ImageView) findViewById(R.id.group_divider);
         this.mContent = (LinearLayout) findViewById(R.id.content);
@@ -96,8 +97,9 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView,
     }
 
     private void addContentView(View v, int index) {
-        if (this.mContent != null) {
-            this.mContent.addView(v, index);
+        LinearLayout linearLayout = this.mContent;
+        if (linearLayout != null) {
+            linearLayout.addView(v, index);
         } else {
             addView(v, index);
         }
@@ -151,11 +153,13 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView,
                 }
                 return;
             }
-            if (this.mCheckBox != null) {
-                this.mCheckBox.setVisibility(8);
+            CheckBox checkBox = this.mCheckBox;
+            if (checkBox != null) {
+                checkBox.setVisibility(8);
             }
-            if (this.mRadioButton != null) {
-                this.mRadioButton.setVisibility(8);
+            RadioButton radioButton = this.mRadioButton;
+            if (radioButton != null) {
+                radioButton.setVisibility(8);
             }
         }
     }
@@ -177,8 +181,9 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView,
     }
 
     private void setSubMenuArrowVisible(boolean hasSubmenu) {
-        if (this.mSubMenuArrowView != null) {
-            this.mSubMenuArrowView.setVisibility(hasSubmenu ? 0 : 8);
+        ImageView imageView = this.mSubMenuArrowView;
+        if (imageView != null) {
+            imageView.setVisibility(hasSubmenu ? 0 : 8);
         }
     }
 
@@ -194,22 +199,22 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView,
 
     public void setIcon(Drawable icon) {
         boolean showIcon = this.mItemData.shouldShowIcon() || this.mForceShowIcon;
-        if (!showIcon && !this.mPreserveIconSpacing) {
-            return;
-        }
-        if (this.mIconView != null || icon != null || this.mPreserveIconSpacing) {
-            if (this.mIconView == null) {
-                insertIconView();
-            }
-            if (icon != null || this.mPreserveIconSpacing) {
-                this.mIconView.setImageDrawable(showIcon ? icon : null);
-                if (this.mIconView.getVisibility() != 0) {
-                    this.mIconView.setVisibility(0);
+        if (showIcon || this.mPreserveIconSpacing) {
+            ImageView imageView = this.mIconView;
+            if (imageView != null || icon != null || this.mPreserveIconSpacing) {
+                if (imageView == null) {
+                    insertIconView();
+                }
+                if (icon != null || this.mPreserveIconSpacing) {
+                    this.mIconView.setImageDrawable(showIcon ? icon : null);
+                    if (this.mIconView.getVisibility() != 0) {
+                        this.mIconView.setVisibility(0);
+                        return;
+                    }
                     return;
                 }
-                return;
+                this.mIconView.setVisibility(8);
             }
-            this.mIconView.setVisibility(8);
         }
     }
 
@@ -226,18 +231,21 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView,
     }
 
     private void insertIconView() {
-        this.mIconView = (ImageView) getInflater().inflate(R.layout.abc_list_menu_item_icon, this, false);
-        addContentView(this.mIconView, 0);
+        ImageView imageView = (ImageView) getInflater().inflate(R.layout.abc_list_menu_item_icon, this, false);
+        this.mIconView = imageView;
+        addContentView(imageView, 0);
     }
 
     private void insertRadioButton() {
-        this.mRadioButton = (RadioButton) getInflater().inflate(R.layout.abc_list_menu_item_radio, this, false);
-        addContentView(this.mRadioButton);
+        RadioButton radioButton = (RadioButton) getInflater().inflate(R.layout.abc_list_menu_item_radio, this, false);
+        this.mRadioButton = radioButton;
+        addContentView(radioButton);
     }
 
     private void insertCheckBox() {
-        this.mCheckBox = (CheckBox) getInflater().inflate(R.layout.abc_list_menu_item_checkbox, this, false);
-        addContentView(this.mCheckBox);
+        CheckBox checkBox = (CheckBox) getInflater().inflate(R.layout.abc_list_menu_item_checkbox, this, false);
+        this.mCheckBox = checkBox;
+        addContentView(checkBox);
     }
 
     public boolean prefersCondensedTitle() {
@@ -256,13 +264,15 @@ public class ListMenuItemView extends LinearLayout implements MenuView.ItemView,
     }
 
     public void setGroupDividerEnabled(boolean groupDividerEnabled) {
-        if (this.mGroupDivider != null) {
-            this.mGroupDivider.setVisibility((this.mHasListDivider || !groupDividerEnabled) ? 8 : 0);
+        ImageView imageView = this.mGroupDivider;
+        if (imageView != null) {
+            imageView.setVisibility((this.mHasListDivider || !groupDividerEnabled) ? 8 : 0);
         }
     }
 
     public void adjustListItemSelectionBounds(Rect rect) {
-        if (this.mGroupDivider != null && this.mGroupDivider.getVisibility() == 0) {
+        ImageView imageView = this.mGroupDivider;
+        if (imageView != null && imageView.getVisibility() == 0) {
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) this.mGroupDivider.getLayoutParams();
             rect.top += this.mGroupDivider.getHeight() + lp.topMargin + lp.bottomMargin;
         }

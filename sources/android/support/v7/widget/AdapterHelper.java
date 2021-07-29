@@ -72,23 +72,23 @@ class AdapterHelper implements OpReorderer.Callback {
         int count = this.mPendingUpdates.size();
         for (int i = 0; i < count; i++) {
             UpdateOp op = this.mPendingUpdates.get(i);
-            int i2 = op.cmd;
-            if (i2 == 4) {
-                applyUpdate(op);
-            } else if (i2 != 8) {
-                switch (i2) {
-                    case 1:
-                        applyAdd(op);
-                        break;
-                    case 2:
-                        applyRemove(op);
-                        break;
-                }
-            } else {
-                applyMove(op);
+            switch (op.cmd) {
+                case 1:
+                    applyAdd(op);
+                    break;
+                case 2:
+                    applyRemove(op);
+                    break;
+                case 4:
+                    applyUpdate(op);
+                    break;
+                case 8:
+                    applyMove(op);
+                    break;
             }
-            if (this.mOnItemProcessedCallback != null) {
-                this.mOnItemProcessedCallback.run();
+            Runnable runnable = this.mOnItemProcessedCallback;
+            if (runnable != null) {
+                runnable.run();
             }
         }
         this.mPendingUpdates.clear();
@@ -192,50 +192,52 @@ class AdapterHelper implements OpReorderer.Callback {
         int tmpStart = updatePositionWithPostponed(op.positionStart, op.cmd);
         int tmpCnt = 1;
         int offsetPositionForPartial = op.positionStart;
-        int i = op.cmd;
-        if (i == 2) {
-            positionMultiplier = 0;
-        } else if (i == 4) {
-            positionMultiplier = 1;
-        } else {
-            throw new IllegalArgumentException("op should be remove or update." + op);
+        switch (op.cmd) {
+            case 2:
+                positionMultiplier = 0;
+                break;
+            case 4:
+                positionMultiplier = 1;
+                break;
+            default:
+                throw new IllegalArgumentException("op should be remove or update." + op);
         }
-        int offsetPositionForPartial2 = offsetPositionForPartial;
-        int tmpStart2 = tmpStart;
         for (int p = 1; p < op.itemCount; p++) {
             int updatedPos = updatePositionWithPostponed(op.positionStart + (positionMultiplier * p), op.cmd);
             boolean continuous = false;
-            int i2 = op.cmd;
             boolean z = false;
-            if (i2 == 2) {
-                if (updatedPos == tmpStart2) {
-                    z = true;
-                }
-                continuous = z;
-            } else if (i2 == 4) {
-                if (updatedPos == tmpStart2 + 1) {
-                    z = true;
-                }
-                continuous = z;
+            switch (op.cmd) {
+                case 2:
+                    if (updatedPos == tmpStart) {
+                        z = true;
+                    }
+                    continuous = z;
+                    break;
+                case 4:
+                    if (updatedPos == tmpStart + 1) {
+                        z = true;
+                    }
+                    continuous = z;
+                    break;
             }
             if (continuous) {
                 tmpCnt++;
             } else {
-                UpdateOp tmp = obtainUpdateOp(op.cmd, tmpStart2, tmpCnt, op.payload);
-                dispatchFirstPassAndUpdateViewHolders(tmp, offsetPositionForPartial2);
+                UpdateOp tmp = obtainUpdateOp(op.cmd, tmpStart, tmpCnt, op.payload);
+                dispatchFirstPassAndUpdateViewHolders(tmp, offsetPositionForPartial);
                 recycleUpdateOp(tmp);
                 if (op.cmd == 4) {
-                    offsetPositionForPartial2 += tmpCnt;
+                    offsetPositionForPartial += tmpCnt;
                 }
-                tmpStart2 = updatedPos;
+                tmpStart = updatedPos;
                 tmpCnt = 1;
             }
         }
         Object payload = op.payload;
         recycleUpdateOp(op);
         if (tmpCnt > 0) {
-            UpdateOp tmp2 = obtainUpdateOp(op.cmd, tmpStart2, tmpCnt, payload);
-            dispatchFirstPassAndUpdateViewHolders(tmp2, offsetPositionForPartial2);
+            UpdateOp tmp2 = obtainUpdateOp(op.cmd, tmpStart, tmpCnt, payload);
+            dispatchFirstPassAndUpdateViewHolders(tmp2, offsetPositionForPartial);
             recycleUpdateOp(tmp2);
         }
     }
@@ -243,13 +245,15 @@ class AdapterHelper implements OpReorderer.Callback {
     /* access modifiers changed from: package-private */
     public void dispatchFirstPassAndUpdateViewHolders(UpdateOp op, int offsetStart) {
         this.mCallback.onDispatchFirstPass(op);
-        int i = op.cmd;
-        if (i == 2) {
-            this.mCallback.offsetPositionsForRemovingInvisible(offsetStart, op.itemCount);
-        } else if (i == 4) {
-            this.mCallback.markViewHoldersUpdated(offsetStart, op.itemCount, op.payload);
-        } else {
-            throw new IllegalArgumentException("only remove and update ops can be dispatched in first pass");
+        switch (op.cmd) {
+            case 2:
+                this.mCallback.offsetPositionsForRemovingInvisible(offsetStart, op.itemCount);
+                return;
+            case 4:
+                this.mCallback.markViewHoldersUpdated(offsetStart, op.itemCount, op.payload);
+                return;
+            default:
+                throw new IllegalArgumentException("only remove and update ops can be dispatched in first pass");
         }
     }
 
@@ -347,22 +351,21 @@ class AdapterHelper implements OpReorderer.Callback {
 
     private void postponeAndUpdateViewHolders(UpdateOp op) {
         this.mPostponedList.add(op);
-        int i = op.cmd;
-        if (i == 4) {
-            this.mCallback.markViewHoldersUpdated(op.positionStart, op.itemCount, op.payload);
-        } else if (i != 8) {
-            switch (i) {
-                case 1:
-                    this.mCallback.offsetPositionsForAdd(op.positionStart, op.itemCount);
-                    return;
-                case 2:
-                    this.mCallback.offsetPositionsForRemovingLaidOutOrNewView(op.positionStart, op.itemCount);
-                    return;
-                default:
-                    throw new IllegalArgumentException("Unknown update op type for " + op);
-            }
-        } else {
-            this.mCallback.offsetPositionsForMove(op.positionStart, op.itemCount);
+        switch (op.cmd) {
+            case 1:
+                this.mCallback.offsetPositionsForAdd(op.positionStart, op.itemCount);
+                return;
+            case 2:
+                this.mCallback.offsetPositionsForRemovingLaidOutOrNewView(op.positionStart, op.itemCount);
+                return;
+            case 4:
+                this.mCallback.markViewHoldersUpdated(op.positionStart, op.itemCount, op.payload);
+                return;
+            case 8:
+                this.mCallback.offsetPositionsForMove(op.positionStart, op.itemCount);
+                return;
+            default:
+                throw new IllegalArgumentException("Unknown update op type for " + op);
         }
     }
 
@@ -384,32 +387,31 @@ class AdapterHelper implements OpReorderer.Callback {
     /* access modifiers changed from: package-private */
     public int findPositionOffset(int position, int firstPostponedItem) {
         int count = this.mPostponedList.size();
-        int position2 = position;
         for (int i = firstPostponedItem; i < count; i++) {
             UpdateOp op = this.mPostponedList.get(i);
             if (op.cmd == 8) {
-                if (op.positionStart == position2) {
-                    position2 = op.itemCount;
+                if (op.positionStart == position) {
+                    position = op.itemCount;
                 } else {
-                    if (op.positionStart < position2) {
-                        position2--;
+                    if (op.positionStart < position) {
+                        position--;
                     }
-                    if (op.itemCount <= position2) {
-                        position2++;
+                    if (op.itemCount <= position) {
+                        position++;
                     }
                 }
-            } else if (op.positionStart > position2) {
+            } else if (op.positionStart > position) {
                 continue;
             } else if (op.cmd == 2) {
-                if (position2 < op.positionStart + op.itemCount) {
+                if (position < op.positionStart + op.itemCount) {
                     return -1;
                 }
-                position2 -= op.itemCount;
+                position -= op.itemCount;
             } else if (op.cmd == 1) {
-                position2 += op.itemCount;
+                position += op.itemCount;
             }
         }
-        return position2;
+        return position;
     }
 
     /* access modifiers changed from: package-private */
@@ -473,97 +475,74 @@ class AdapterHelper implements OpReorderer.Callback {
         int count = this.mPendingUpdates.size();
         for (int i = 0; i < count; i++) {
             UpdateOp op = this.mPendingUpdates.get(i);
-            int i2 = op.cmd;
-            if (i2 == 4) {
-                this.mCallback.onDispatchSecondPass(op);
-                this.mCallback.markViewHoldersUpdated(op.positionStart, op.itemCount, op.payload);
-            } else if (i2 != 8) {
-                switch (i2) {
-                    case 1:
-                        this.mCallback.onDispatchSecondPass(op);
-                        this.mCallback.offsetPositionsForAdd(op.positionStart, op.itemCount);
-                        break;
-                    case 2:
-                        this.mCallback.onDispatchSecondPass(op);
-                        this.mCallback.offsetPositionsForRemovingInvisible(op.positionStart, op.itemCount);
-                        break;
-                }
-            } else {
-                this.mCallback.onDispatchSecondPass(op);
-                this.mCallback.offsetPositionsForMove(op.positionStart, op.itemCount);
+            switch (op.cmd) {
+                case 1:
+                    this.mCallback.onDispatchSecondPass(op);
+                    this.mCallback.offsetPositionsForAdd(op.positionStart, op.itemCount);
+                    break;
+                case 2:
+                    this.mCallback.onDispatchSecondPass(op);
+                    this.mCallback.offsetPositionsForRemovingInvisible(op.positionStart, op.itemCount);
+                    break;
+                case 4:
+                    this.mCallback.onDispatchSecondPass(op);
+                    this.mCallback.markViewHoldersUpdated(op.positionStart, op.itemCount, op.payload);
+                    break;
+                case 8:
+                    this.mCallback.onDispatchSecondPass(op);
+                    this.mCallback.offsetPositionsForMove(op.positionStart, op.itemCount);
+                    break;
             }
-            if (this.mOnItemProcessedCallback != null) {
-                this.mOnItemProcessedCallback.run();
+            Runnable runnable = this.mOnItemProcessedCallback;
+            if (runnable != null) {
+                runnable.run();
             }
         }
         recycleUpdateOpsAndClearList(this.mPendingUpdates);
         this.mExistingUpdateTypes = 0;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:34:0x0047, code lost:
-        continue;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public int applyPendingUpdatesToPosition(int r6) {
-        /*
-            r5 = this;
-            java.util.ArrayList<android.support.v7.widget.AdapterHelper$UpdateOp> r0 = r5.mPendingUpdates
-            int r0 = r0.size()
-            r1 = 0
-        L_0x0007:
-            if (r1 >= r0) goto L_0x004a
-            java.util.ArrayList<android.support.v7.widget.AdapterHelper$UpdateOp> r2 = r5.mPendingUpdates
-            java.lang.Object r2 = r2.get(r1)
-            android.support.v7.widget.AdapterHelper$UpdateOp r2 = (android.support.v7.widget.AdapterHelper.UpdateOp) r2
-            int r3 = r2.cmd
-            r4 = 8
-            if (r3 == r4) goto L_0x0034
-            switch(r3) {
-                case 1: goto L_0x002c;
-                case 2: goto L_0x001b;
-                default: goto L_0x001a;
+    public int applyPendingUpdatesToPosition(int position) {
+        int size = this.mPendingUpdates.size();
+        for (int i = 0; i < size; i++) {
+            UpdateOp op = this.mPendingUpdates.get(i);
+            switch (op.cmd) {
+                case 1:
+                    if (op.positionStart > position) {
+                        break;
+                    } else {
+                        position += op.itemCount;
+                        break;
+                    }
+                case 2:
+                    if (op.positionStart <= position) {
+                        if (op.positionStart + op.itemCount <= position) {
+                            position -= op.itemCount;
+                            break;
+                        } else {
+                            return -1;
+                        }
+                    } else {
+                        continue;
+                    }
+                case 8:
+                    if (op.positionStart != position) {
+                        if (op.positionStart < position) {
+                            position--;
+                        }
+                        if (op.itemCount > position) {
+                            break;
+                        } else {
+                            position++;
+                            break;
+                        }
+                    } else {
+                        position = op.itemCount;
+                        break;
+                    }
             }
-        L_0x001a:
-            goto L_0x0047
-        L_0x001b:
-            int r3 = r2.positionStart
-            if (r3 > r6) goto L_0x0047
-            int r3 = r2.positionStart
-            int r4 = r2.itemCount
-            int r3 = r3 + r4
-            if (r3 <= r6) goto L_0x0028
-            r4 = -1
-            return r4
-        L_0x0028:
-            int r4 = r2.itemCount
-            int r6 = r6 - r4
-            goto L_0x0047
-        L_0x002c:
-            int r3 = r2.positionStart
-            if (r3 > r6) goto L_0x0047
-            int r3 = r2.itemCount
-            int r6 = r6 + r3
-            goto L_0x0047
-        L_0x0034:
-            int r3 = r2.positionStart
-            if (r3 != r6) goto L_0x003b
-            int r6 = r2.itemCount
-            goto L_0x0047
-        L_0x003b:
-            int r3 = r2.positionStart
-            if (r3 >= r6) goto L_0x0041
-            int r6 = r6 + -1
-        L_0x0041:
-            int r3 = r2.itemCount
-            if (r3 > r6) goto L_0x0047
-            int r6 = r6 + 1
-        L_0x0047:
-            int r1 = r1 + 1
-            goto L_0x0007
-        L_0x004a:
-            return r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.v7.widget.AdapterHelper.applyPendingUpdatesToPosition(int):int");
+        }
+        return position;
     }
 
     /* access modifiers changed from: package-private */
@@ -591,18 +570,15 @@ class AdapterHelper implements OpReorderer.Callback {
 
         /* access modifiers changed from: package-private */
         public String cmdToString() {
-            int i = this.cmd;
-            if (i == 4) {
-                return "up";
-            }
-            if (i == 8) {
-                return "mv";
-            }
-            switch (i) {
+            switch (this.cmd) {
                 case 1:
                     return "add";
                 case 2:
                     return "rm";
+                case 4:
+                    return "up";
+                case 8:
+                    return "mv";
                 default:
                     return "??";
             }
@@ -620,17 +596,19 @@ class AdapterHelper implements OpReorderer.Callback {
                 return false;
             }
             UpdateOp op = (UpdateOp) o;
-            if (this.cmd != op.cmd) {
+            int i = this.cmd;
+            if (i != op.cmd) {
                 return false;
             }
-            if (this.cmd == 8 && Math.abs(this.itemCount - this.positionStart) == 1 && this.itemCount == op.positionStart && this.positionStart == op.itemCount) {
+            if (i == 8 && Math.abs(this.itemCount - this.positionStart) == 1 && this.itemCount == op.positionStart && this.positionStart == op.itemCount) {
                 return true;
             }
             if (this.itemCount != op.itemCount || this.positionStart != op.positionStart) {
                 return false;
             }
-            if (this.payload != null) {
-                if (!this.payload.equals(op.payload)) {
+            Object obj = this.payload;
+            if (obj != null) {
+                if (!obj.equals(op.payload)) {
                     return false;
                 }
             } else if (op.payload != null) {

@@ -2,23 +2,24 @@ package android.arch.lifecycle;
 
 import android.arch.lifecycle.Lifecycle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 
 public class ServiceLifecycleDispatcher {
     private final Handler mHandler = new Handler();
     private DispatchRunnable mLastDispatchRunnable;
     private final LifecycleRegistry mRegistry;
 
-    public ServiceLifecycleDispatcher(@NonNull LifecycleOwner provider) {
+    public ServiceLifecycleDispatcher(LifecycleOwner provider) {
         this.mRegistry = new LifecycleRegistry(provider);
     }
 
     private void postDispatchRunnable(Lifecycle.Event event) {
-        if (this.mLastDispatchRunnable != null) {
-            this.mLastDispatchRunnable.run();
+        DispatchRunnable dispatchRunnable = this.mLastDispatchRunnable;
+        if (dispatchRunnable != null) {
+            dispatchRunnable.run();
         }
-        this.mLastDispatchRunnable = new DispatchRunnable(this.mRegistry, event);
-        this.mHandler.postAtFrontOfQueue(this.mLastDispatchRunnable);
+        DispatchRunnable dispatchRunnable2 = new DispatchRunnable(this.mRegistry, event);
+        this.mLastDispatchRunnable = dispatchRunnable2;
+        this.mHandler.postAtFrontOfQueue(dispatchRunnable2);
     }
 
     public void onServicePreSuperOnCreate() {
@@ -47,7 +48,7 @@ public class ServiceLifecycleDispatcher {
         private final LifecycleRegistry mRegistry;
         private boolean mWasExecuted = false;
 
-        DispatchRunnable(@NonNull LifecycleRegistry registry, Lifecycle.Event event) {
+        DispatchRunnable(LifecycleRegistry registry, Lifecycle.Event event) {
             this.mRegistry = registry;
             this.mEvent = event;
         }

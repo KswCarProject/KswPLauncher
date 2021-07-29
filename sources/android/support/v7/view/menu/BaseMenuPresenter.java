@@ -1,7 +1,6 @@
 package android.support.v7.view.menu;
 
 import android.content.Context;
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuPresenter;
 import android.support.v7.view.menu.MenuView;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public abstract class BaseMenuPresenter implements MenuPresenter {
     private MenuPresenter.Callback mCallback;
     protected Context mContext;
@@ -33,14 +31,15 @@ public abstract class BaseMenuPresenter implements MenuPresenter {
 
     public void initForMenu(Context context, MenuBuilder menu) {
         this.mContext = context;
-        this.mInflater = LayoutInflater.from(this.mContext);
+        this.mInflater = LayoutInflater.from(context);
         this.mMenu = menu;
     }
 
     public MenuView getMenuView(ViewGroup root) {
         if (this.mMenuView == null) {
-            this.mMenuView = (MenuView) this.mSystemInflater.inflate(this.mMenuLayoutRes, root, false);
-            this.mMenuView.initialize(this.mMenu);
+            MenuView menuView = (MenuView) this.mSystemInflater.inflate(this.mMenuLayoutRes, root, false);
+            this.mMenuView = menuView;
+            menuView.initialize(this.mMenu);
             updateMenuView(true);
         }
         return this.mMenuView;
@@ -49,14 +48,14 @@ public abstract class BaseMenuPresenter implements MenuPresenter {
     public void updateMenuView(boolean cleared) {
         ViewGroup parent = (ViewGroup) this.mMenuView;
         if (parent != null) {
-            int i = 0;
-            if (this.mMenu != null) {
-                this.mMenu.flagActionItems();
+            int childIndex = 0;
+            MenuBuilder menuBuilder = this.mMenu;
+            if (menuBuilder != null) {
+                menuBuilder.flagActionItems();
                 ArrayList<MenuItemImpl> visibleItems = this.mMenu.getVisibleItems();
                 int itemCount = visibleItems.size();
-                int childIndex = 0;
-                for (int i2 = 0; i2 < itemCount; i2++) {
-                    MenuItemImpl item = visibleItems.get(i2);
+                for (int i = 0; i < itemCount; i++) {
+                    MenuItemImpl item = visibleItems.get(i);
                     if (shouldIncludeItem(childIndex, item)) {
                         View convertView = parent.getChildAt(childIndex);
                         MenuItemImpl oldItem = convertView instanceof MenuView.ItemView ? ((MenuView.ItemView) convertView).getItemData() : null;
@@ -71,11 +70,10 @@ public abstract class BaseMenuPresenter implements MenuPresenter {
                         childIndex++;
                     }
                 }
-                i = childIndex;
             }
-            while (i < parent.getChildCount()) {
-                if (!filterLeftoverView(parent, i)) {
-                    i++;
+            while (childIndex < parent.getChildCount()) {
+                if (!filterLeftoverView(parent, childIndex)) {
+                    childIndex++;
                 }
             }
         }
@@ -124,14 +122,16 @@ public abstract class BaseMenuPresenter implements MenuPresenter {
     }
 
     public void onCloseMenu(MenuBuilder menu, boolean allMenusAreClosing) {
-        if (this.mCallback != null) {
-            this.mCallback.onCloseMenu(menu, allMenusAreClosing);
+        MenuPresenter.Callback callback = this.mCallback;
+        if (callback != null) {
+            callback.onCloseMenu(menu, allMenusAreClosing);
         }
     }
 
     public boolean onSubMenuSelected(SubMenuBuilder menu) {
-        if (this.mCallback != null) {
-            return this.mCallback.onOpenSubMenu(menu);
+        MenuPresenter.Callback callback = this.mCallback;
+        if (callback != null) {
+            return callback.onOpenSubMenu(menu);
         }
         return false;
     }

@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.appcompat.R;
@@ -35,7 +34,8 @@ class AppCompatCompoundButtonHelper {
         TypedArray a = this.mView.getContext().obtainStyledAttributes(attrs, R.styleable.CompoundButton, defStyleAttr, 0);
         try {
             if (a.hasValue(R.styleable.CompoundButton_android_button) && (resourceId = a.getResourceId(R.styleable.CompoundButton_android_button, 0)) != 0) {
-                this.mView.setButtonDrawable(AppCompatResources.getDrawable(this.mView.getContext(), resourceId));
+                CompoundButton compoundButton = this.mView;
+                compoundButton.setButtonDrawable(AppCompatResources.getDrawable(compoundButton.getContext(), resourceId));
             }
             if (a.hasValue(R.styleable.CompoundButton_buttonTint)) {
                 CompoundButtonCompat.setButtonTintList(this.mView, a.getColorStateList(R.styleable.CompoundButton_buttonTint));
@@ -61,7 +61,7 @@ class AppCompatCompoundButtonHelper {
     }
 
     /* access modifiers changed from: package-private */
-    public void setSupportButtonTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setSupportButtonTintMode(PorterDuff.Mode tintMode) {
         this.mButtonTintMode = tintMode;
         this.mHasButtonTintMode = true;
         applyButtonTint();

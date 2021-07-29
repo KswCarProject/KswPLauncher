@@ -3,7 +3,6 @@ package com.bumptech.glide.load.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -22,11 +21,11 @@ public final class MediaStoreFileLoader implements ModelLoader<Uri, File> {
         this.context = context2;
     }
 
-    public ModelLoader.LoadData<File> buildLoadData(@NonNull Uri uri, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<File> buildLoadData(Uri uri, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(uri), new FilePathFetcher(this.context, uri));
     }
 
-    public boolean handles(@NonNull Uri uri) {
+    public boolean handles(Uri uri) {
         return MediaStoreUtil.isMediaStoreUri(uri);
     }
 
@@ -40,7 +39,7 @@ public final class MediaStoreFileLoader implements ModelLoader<Uri, File> {
             this.uri = uri2;
         }
 
-        public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super File> callback) {
+        public void loadData(Priority priority, DataFetcher.DataCallback<? super File> callback) {
             Cursor cursor = this.context.getContentResolver().query(this.uri, PROJECTION, (String) null, (String[]) null, (String) null);
             String filePath = null;
             if (cursor != null) {
@@ -54,9 +53,9 @@ public final class MediaStoreFileLoader implements ModelLoader<Uri, File> {
             }
             if (TextUtils.isEmpty(filePath)) {
                 callback.onLoadFailed(new FileNotFoundException("Failed to find file path for: " + this.uri));
-                return;
+            } else {
+                callback.onDataReady(new File(filePath));
             }
-            callback.onDataReady(new File(filePath));
         }
 
         public void cleanup() {
@@ -65,12 +64,10 @@ public final class MediaStoreFileLoader implements ModelLoader<Uri, File> {
         public void cancel() {
         }
 
-        @NonNull
         public Class<File> getDataClass() {
             return File.class;
         }
 
-        @NonNull
         public DataSource getDataSource() {
             return DataSource.LOCAL;
         }
@@ -83,7 +80,6 @@ public final class MediaStoreFileLoader implements ModelLoader<Uri, File> {
             this.context = context2;
         }
 
-        @NonNull
         public ModelLoader<Uri, File> build(MultiModelLoaderFactory multiFactory) {
             return new MediaStoreFileLoader(this.context);
         }

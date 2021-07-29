@@ -8,13 +8,13 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import com.ibm.icu.text.DateFormat;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
@@ -114,17 +114,17 @@ public class KswUtils {
     }
 
     public static String formatMonth(Date date) {
-        String m = new SimpleDateFormat("M").format(date);
+        String m = new SimpleDateFormat(DateFormat.NUM_MONTH).format(date);
         Log.i("KswUtils", "formatMonth: " + getLocalLanager());
         return KswApplication.appContext.getResources().getStringArray(R.array.ksw_id7_months)[Integer.valueOf(m).intValue() - 1];
     }
 
     public static String formatDay(Date date) {
-        return new SimpleDateFormat(is24Hour() ? "dd" : "d").format(date);
+        return new SimpleDateFormat(is24Hour() ? "dd" : DateFormat.DAY).format(date);
     }
 
     public static boolean is24Hour() {
-        return DateFormat.is24HourFormat(KswApplication.appContext);
+        return android.text.format.DateFormat.is24HourFormat(KswApplication.appContext);
     }
 
     public static String splitPathMusicName(String path) {
@@ -139,12 +139,10 @@ public class KswUtils {
         Locale locale = Locale.getDefault();
         String str = TAG;
         Log.i(str, "getLocalLanager: " + locale.getDisplayLanguage() + "_" + locale.getDisplayCountry());
-        String str2 = TAG;
-        Log.i(str2, "getLocalLanager: " + locale.getLanguage() + "_" + locale.getCountry());
+        Log.i(str, "getLocalLanager: " + locale.getLanguage() + "_" + locale.getCountry());
         StringBuilder result = new StringBuilder(locale.getLanguage());
         if (locale.getCountry().length() > 0) {
-            result.append("_");
-            result.append(locale.getCountry());
+            result.append("_").append(locale.getCountry());
         }
         return result.toString();
     }
@@ -228,8 +226,7 @@ public class KswUtils {
     public static void saveLastViewId(Context context, View view) {
         if (view != null && context != null) {
             Settings.System.putInt(context.getContentResolver(), "view", view.getId());
-            String str = TAG;
-            Log.i(str, "saveLastViewId: resId=" + view.getId());
+            Log.i(TAG, "saveLastViewId: resId=" + view.getId());
         }
     }
 
@@ -242,27 +239,19 @@ public class KswUtils {
     }
 
     public static int getBenzpaneVersion() {
-        String str;
-        StringBuilder sb;
-        int benzpane = 0;
         try {
-            benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
-            str = TAG;
-            sb = new StringBuilder();
+            int benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
+            Log.d(TAG, "getBenzpaneVersion: benzpane=" + benzpane);
+            return benzpane;
         } catch (Exception e) {
             e.printStackTrace();
-            String str2 = TAG;
-            Log.e(str2, "getBenzpaneVersion: RemoteException=" + e.getMessage());
-            str = TAG;
-            sb = new StringBuilder();
+            String str = TAG;
+            Log.e(str, "getBenzpaneVersion: RemoteException=" + e.getMessage());
+            Log.d(str, "getBenzpaneVersion: benzpane=" + 0);
+            return 0;
         } catch (Throwable th) {
-            String str3 = TAG;
-            Log.d(str3, "getBenzpaneVersion: benzpane=" + 0);
+            Log.d(TAG, "getBenzpaneVersion: benzpane=" + 0);
             throw th;
         }
-        sb.append("getBenzpaneVersion: benzpane=");
-        sb.append(benzpane);
-        Log.d(str, sb.toString());
-        return benzpane;
     }
 }

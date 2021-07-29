@@ -17,6 +17,12 @@
     <string name="audi_set_temp_unit">Sıcaklık birimi</string>
     <string name="bc_apps_btn_text">Daha Apps</string>
     <string name="benz_gs_home_navi">Navigation</string>
+    <string name="benz_mbux_2021_bg_sel_tip">Arka plan rengi</string>
+    <string name="benz_mbux_2021_img_sel_tip">Simge stili</string>
+    <string name="benz_mbux_2021_style_classical_tip">klasik</string>
+    <string name="benz_mbux_2021_style_modern_tip">bugünlerde</string>
+    <string name="benz_mbux_2021_theme_settings">Tema ayarları</string>
+    <string name="benz_ntg6_fy_theme_settings">konu</string>
     <string name="boot_record_mode">Son Modu Hatırla</string>
     <string name="boot_record_mode_radio1">Etkinleştirme</string>
     <string name="boot_record_mode_radio2">Oem sistemi</string>
@@ -92,6 +98,7 @@
     <string name="factory_yuyinkey2">Kısa basma faydasız, Uzun basma NAVI demektir</string>
     <string name="factory_yuyinkey3">Kısa basma SES anlamına gelir, Uzun basma NAVI demektir</string>
     <string name="factory_yuyinkey4">Kısa basış NAVI anlamına gelir, Uzun basmanın yararsız</string>
+    <string name="fuel_unit">Yakıt Ünitesi</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>
@@ -134,12 +141,13 @@
     <string name="id6_phone">Telefon</string>
     <string name="id6_phone_mess">Arama yapın</string>
     <string name="id6_setting_mess">Sistem işlevi ayarları</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">Destek Telefon bağlantısı</string>
     <string name="id6_xingchejily_mess">Sürüş videosunu kaydet</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">KONFOR</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">Sistem</string>
     <string name="item2">Gezinme</string>
     <string name="item3">Hacim</string>
@@ -174,8 +182,13 @@
     <string name="ksw_idf7_unknow_artis">Bilinmeyen sanatçı</string>
     <string name="ksw_idf7_unkonw_album">Bilinmeyen albüm</string>
     <string name="ksw_idf7_unkonw_soung">Bilinmeyen şarkı</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Şifre hatası!</string>
     <string name="mcu_file_corrupted">Yükseltme dosyası bozuk!</string>
+    <string name="music_app_sel">Bir müzik uygulaması seçin</string>
     <string name="ntg6_dvr_toast">Cihaz yok!</string>
     <string name="oil_size">oil: %s</string>
     <string name="raw_car_text1">tam ekran görüntüsü</string>
@@ -255,6 +268,7 @@
     <string name="update_mcu_file">MCU’yu yükseltmek ister misiniz?</string>
     <string name="update_reset_all">Fabrika ayarlarını geri yüklemek istiyor musunuz?</string>
     <string name="video">Video</string>
+    <string name="video_app_sel">Video uygulamasını seçin</string>
     <string name="voic_1">Android Mod Birimi</string>
     <string name="voic_2">Medya</string>
     <string name="voic_3">Arama</string>

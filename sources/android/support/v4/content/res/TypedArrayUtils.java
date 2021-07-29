@@ -4,54 +4,46 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.AnyRes;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleableRes;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import org.xmlpull.v1.XmlPullParser;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class TypedArrayUtils {
     private static final String NAMESPACE = "http://schemas.android.com/apk/res/android";
 
-    public static boolean hasAttribute(@NonNull XmlPullParser parser, @NonNull String attrName) {
+    public static boolean hasAttribute(XmlPullParser parser, String attrName) {
         return parser.getAttributeValue(NAMESPACE, attrName) != null;
     }
 
-    public static float getNamedFloat(@NonNull TypedArray a, @NonNull XmlPullParser parser, @NonNull String attrName, @StyleableRes int resId, float defaultValue) {
+    public static float getNamedFloat(TypedArray a, XmlPullParser parser, String attrName, int resId, float defaultValue) {
         if (!hasAttribute(parser, attrName)) {
             return defaultValue;
         }
         return a.getFloat(resId, defaultValue);
     }
 
-    public static boolean getNamedBoolean(@NonNull TypedArray a, @NonNull XmlPullParser parser, @NonNull String attrName, @StyleableRes int resId, boolean defaultValue) {
+    public static boolean getNamedBoolean(TypedArray a, XmlPullParser parser, String attrName, int resId, boolean defaultValue) {
         if (!hasAttribute(parser, attrName)) {
             return defaultValue;
         }
         return a.getBoolean(resId, defaultValue);
     }
 
-    public static int getNamedInt(@NonNull TypedArray a, @NonNull XmlPullParser parser, @NonNull String attrName, @StyleableRes int resId, int defaultValue) {
+    public static int getNamedInt(TypedArray a, XmlPullParser parser, String attrName, int resId, int defaultValue) {
         if (!hasAttribute(parser, attrName)) {
             return defaultValue;
         }
         return a.getInt(resId, defaultValue);
     }
 
-    @ColorInt
-    public static int getNamedColor(@NonNull TypedArray a, @NonNull XmlPullParser parser, @NonNull String attrName, @StyleableRes int resId, @ColorInt int defaultValue) {
+    public static int getNamedColor(TypedArray a, XmlPullParser parser, String attrName, int resId, int defaultValue) {
         if (!hasAttribute(parser, attrName)) {
             return defaultValue;
         }
         return a.getColor(resId, defaultValue);
     }
 
-    public static ComplexColorCompat getNamedComplexColor(@NonNull TypedArray a, @NonNull XmlPullParser parser, @Nullable Resources.Theme theme, @NonNull String attrName, @StyleableRes int resId, @ColorInt int defaultValue) {
+    public static ComplexColorCompat getNamedComplexColor(TypedArray a, XmlPullParser parser, Resources.Theme theme, String attrName, int resId, int defaultValue) {
         if (hasAttribute(parser, attrName)) {
             TypedValue value = new TypedValue();
             a.getValue(resId, value);
@@ -66,44 +58,39 @@ public class TypedArrayUtils {
         return ComplexColorCompat.from(defaultValue);
     }
 
-    @AnyRes
-    public static int getNamedResourceId(@NonNull TypedArray a, @NonNull XmlPullParser parser, @NonNull String attrName, @StyleableRes int resId, @AnyRes int defaultValue) {
+    public static int getNamedResourceId(TypedArray a, XmlPullParser parser, String attrName, int resId, int defaultValue) {
         if (!hasAttribute(parser, attrName)) {
             return defaultValue;
         }
         return a.getResourceId(resId, defaultValue);
     }
 
-    @Nullable
-    public static String getNamedString(@NonNull TypedArray a, @NonNull XmlPullParser parser, @NonNull String attrName, @StyleableRes int resId) {
+    public static String getNamedString(TypedArray a, XmlPullParser parser, String attrName, int resId) {
         if (!hasAttribute(parser, attrName)) {
             return null;
         }
         return a.getString(resId);
     }
 
-    @Nullable
-    public static TypedValue peekNamedValue(@NonNull TypedArray a, @NonNull XmlPullParser parser, @NonNull String attrName, int resId) {
+    public static TypedValue peekNamedValue(TypedArray a, XmlPullParser parser, String attrName, int resId) {
         if (!hasAttribute(parser, attrName)) {
             return null;
         }
         return a.peekValue(resId);
     }
 
-    @NonNull
-    public static TypedArray obtainAttributes(@NonNull Resources res, @Nullable Resources.Theme theme, @NonNull AttributeSet set, @NonNull int[] attrs) {
+    public static TypedArray obtainAttributes(Resources res, Resources.Theme theme, AttributeSet set, int[] attrs) {
         if (theme == null) {
             return res.obtainAttributes(set, attrs);
         }
         return theme.obtainStyledAttributes(set, attrs, 0, 0);
     }
 
-    public static boolean getBoolean(@NonNull TypedArray a, @StyleableRes int index, @StyleableRes int fallbackIndex, boolean defaultValue) {
+    public static boolean getBoolean(TypedArray a, int index, int fallbackIndex, boolean defaultValue) {
         return a.getBoolean(index, a.getBoolean(fallbackIndex, defaultValue));
     }
 
-    @Nullable
-    public static Drawable getDrawable(@NonNull TypedArray a, @StyleableRes int index, @StyleableRes int fallbackIndex) {
+    public static Drawable getDrawable(TypedArray a, int index, int fallbackIndex) {
         Drawable val = a.getDrawable(index);
         if (val == null) {
             return a.getDrawable(fallbackIndex);
@@ -111,17 +98,15 @@ public class TypedArrayUtils {
         return val;
     }
 
-    public static int getInt(@NonNull TypedArray a, @StyleableRes int index, @StyleableRes int fallbackIndex, int defaultValue) {
+    public static int getInt(TypedArray a, int index, int fallbackIndex, int defaultValue) {
         return a.getInt(index, a.getInt(fallbackIndex, defaultValue));
     }
 
-    @AnyRes
-    public static int getResourceId(@NonNull TypedArray a, @StyleableRes int index, @StyleableRes int fallbackIndex, @AnyRes int defaultValue) {
+    public static int getResourceId(TypedArray a, int index, int fallbackIndex, int defaultValue) {
         return a.getResourceId(index, a.getResourceId(fallbackIndex, defaultValue));
     }
 
-    @Nullable
-    public static String getString(@NonNull TypedArray a, @StyleableRes int index, @StyleableRes int fallbackIndex) {
+    public static String getString(TypedArray a, int index, int fallbackIndex) {
         String val = a.getString(index);
         if (val == null) {
             return a.getString(fallbackIndex);
@@ -129,8 +114,7 @@ public class TypedArrayUtils {
         return val;
     }
 
-    @Nullable
-    public static CharSequence getText(@NonNull TypedArray a, @StyleableRes int index, @StyleableRes int fallbackIndex) {
+    public static CharSequence getText(TypedArray a, int index, int fallbackIndex) {
         CharSequence val = a.getText(index);
         if (val == null) {
             return a.getText(fallbackIndex);
@@ -138,8 +122,7 @@ public class TypedArrayUtils {
         return val;
     }
 
-    @Nullable
-    public static CharSequence[] getTextArray(@NonNull TypedArray a, @StyleableRes int index, @StyleableRes int fallbackIndex) {
+    public static CharSequence[] getTextArray(TypedArray a, int index, int fallbackIndex) {
         CharSequence[] val = a.getTextArray(index);
         if (val == null) {
             return a.getTextArray(fallbackIndex);
@@ -147,7 +130,7 @@ public class TypedArrayUtils {
         return val;
     }
 
-    public static int getAttr(@NonNull Context context, int attr, int fallbackAttr) {
+    public static int getAttr(Context context, int attr, int fallbackAttr) {
         TypedValue value = new TypedValue();
         context.getTheme().resolveAttribute(attr, value, true);
         if (value.resourceId != 0) {

@@ -65,7 +65,8 @@ public final class JsonPrimitive extends JsonElement {
     }
 
     public Number getAsNumber() {
-        return this.value instanceof String ? new LazilyParsedNumber((String) this.value) : (Number) this.value;
+        Object obj = this.value;
+        return obj instanceof String ? new LazilyParsedNumber((String) this.value) : (Number) obj;
     }
 
     public boolean isString() {
@@ -87,11 +88,13 @@ public final class JsonPrimitive extends JsonElement {
     }
 
     public BigDecimal getAsBigDecimal() {
-        return this.value instanceof BigDecimal ? (BigDecimal) this.value : new BigDecimal(this.value.toString());
+        Object obj = this.value;
+        return obj instanceof BigDecimal ? (BigDecimal) obj : new BigDecimal(this.value.toString());
     }
 
     public BigInteger getAsBigInteger() {
-        return this.value instanceof BigInteger ? (BigInteger) this.value : new BigInteger(this.value.toString());
+        Object obj = this.value;
+        return obj instanceof BigInteger ? (BigInteger) obj : new BigInteger(this.value.toString());
     }
 
     public float getAsFloat() {
@@ -138,12 +141,13 @@ public final class JsonPrimitive extends JsonElement {
         if (isIntegral(this)) {
             long value2 = getAsNumber().longValue();
             return (int) ((value2 >>> 32) ^ value2);
-        } else if (!(this.value instanceof Number)) {
-            return this.value.hashCode();
-        } else {
-            long value3 = Double.doubleToLongBits(getAsNumber().doubleValue());
-            return (int) ((value3 >>> 32) ^ value3);
         }
+        Object obj = this.value;
+        if (!(obj instanceof Number)) {
+            return obj.hashCode();
+        }
+        long value3 = Double.doubleToLongBits(getAsNumber().doubleValue());
+        return (int) ((value3 >>> 32) ^ value3);
     }
 
     public boolean equals(Object obj) {
@@ -160,8 +164,9 @@ public final class JsonPrimitive extends JsonElement {
             }
             return false;
         } else if (!isIntegral(this) || !isIntegral(other)) {
-            if (!(this.value instanceof Number) || !(other.value instanceof Number)) {
-                return this.value.equals(other.value);
+            Object obj2 = this.value;
+            if (!(obj2 instanceof Number) || !(other.value instanceof Number)) {
+                return obj2.equals(other.value);
             }
             double a = getAsNumber().doubleValue();
             double b = other.getAsNumber().doubleValue();
@@ -180,10 +185,11 @@ public final class JsonPrimitive extends JsonElement {
     }
 
     private static boolean isIntegral(JsonPrimitive primitive) {
-        if (!(primitive.value instanceof Number)) {
+        Object obj = primitive.value;
+        if (!(obj instanceof Number)) {
             return false;
         }
-        Number number = (Number) primitive.value;
+        Number number = (Number) obj;
         if ((number instanceof BigInteger) || (number instanceof Long) || (number instanceof Integer) || (number instanceof Short) || (number instanceof Byte)) {
             return true;
         }

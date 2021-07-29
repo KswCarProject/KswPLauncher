@@ -1,8 +1,5 @@
 package com.bumptech.glide.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 public class MultiClassKey {
     private Class<?> first;
     private Class<?> second;
@@ -11,19 +8,19 @@ public class MultiClassKey {
     public MultiClassKey() {
     }
 
-    public MultiClassKey(@NonNull Class<?> first2, @NonNull Class<?> second2) {
+    public MultiClassKey(Class<?> first2, Class<?> second2) {
         set(first2, second2);
     }
 
-    public MultiClassKey(@NonNull Class<?> first2, @NonNull Class<?> second2, @Nullable Class<?> third2) {
+    public MultiClassKey(Class<?> first2, Class<?> second2, Class<?> third2) {
         set(first2, second2, third2);
     }
 
-    public void set(@NonNull Class<?> first2, @NonNull Class<?> second2) {
+    public void set(Class<?> first2, Class<?> second2) {
         set(first2, second2, (Class<?>) null);
     }
 
-    public void set(@NonNull Class<?> first2, @NonNull Class<?> second2, @Nullable Class<?> third2) {
+    public void set(Class<?> first2, Class<?> second2, Class<?> third2) {
         this.first = first2;
         this.second = second2;
         this.third = third2;
@@ -48,6 +45,8 @@ public class MultiClassKey {
     }
 
     public int hashCode() {
-        return (((this.first.hashCode() * 31) + this.second.hashCode()) * 31) + (this.third != null ? this.third.hashCode() : 0);
+        int result = ((this.first.hashCode() * 31) + this.second.hashCode()) * 31;
+        Class<?> cls = this.third;
+        return result + (cls != null ? cls.hashCode() : 0);
     }
 }

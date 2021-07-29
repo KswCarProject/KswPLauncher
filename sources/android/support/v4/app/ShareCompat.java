@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.StringRes;
 import android.support.v4.content.IntentCompat;
 import android.text.Html;
 import android.text.Spanned;
@@ -72,7 +71,7 @@ public final class ShareCompat {
         private ArrayList<String> mBccAddresses;
         private ArrayList<String> mCcAddresses;
         private CharSequence mChooserTitle;
-        private Intent mIntent = new Intent().setAction("android.intent.action.SEND");
+        private Intent mIntent;
         private ArrayList<Uri> mStreams;
         private ArrayList<String> mToAddresses;
 
@@ -82,33 +81,40 @@ public final class ShareCompat {
 
         private IntentBuilder(Activity launchingActivity) {
             this.mActivity = launchingActivity;
-            this.mIntent.putExtra(ShareCompat.EXTRA_CALLING_PACKAGE, launchingActivity.getPackageName());
+            Intent action = new Intent().setAction("android.intent.action.SEND");
+            this.mIntent = action;
+            action.putExtra(ShareCompat.EXTRA_CALLING_PACKAGE, launchingActivity.getPackageName());
             this.mIntent.putExtra(ShareCompat.EXTRA_CALLING_ACTIVITY, launchingActivity.getComponentName());
             this.mIntent.addFlags(524288);
         }
 
         public Intent getIntent() {
-            if (this.mToAddresses != null) {
-                combineArrayExtra("android.intent.extra.EMAIL", this.mToAddresses);
+            ArrayList<String> arrayList = this.mToAddresses;
+            if (arrayList != null) {
+                combineArrayExtra("android.intent.extra.EMAIL", arrayList);
                 this.mToAddresses = null;
             }
-            if (this.mCcAddresses != null) {
-                combineArrayExtra("android.intent.extra.CC", this.mCcAddresses);
+            ArrayList<String> arrayList2 = this.mCcAddresses;
+            if (arrayList2 != null) {
+                combineArrayExtra("android.intent.extra.CC", arrayList2);
                 this.mCcAddresses = null;
             }
-            if (this.mBccAddresses != null) {
-                combineArrayExtra("android.intent.extra.BCC", this.mBccAddresses);
+            ArrayList<String> arrayList3 = this.mBccAddresses;
+            if (arrayList3 != null) {
+                combineArrayExtra("android.intent.extra.BCC", arrayList3);
                 this.mBccAddresses = null;
             }
+            ArrayList<Uri> arrayList4 = this.mStreams;
             boolean z = true;
-            if (this.mStreams == null || this.mStreams.size() <= 1) {
+            if (arrayList4 == null || arrayList4.size() <= 1) {
                 z = false;
             }
             boolean needsSendMultiple = z;
             boolean isSendMultiple = this.mIntent.getAction().equals("android.intent.action.SEND_MULTIPLE");
             if (!needsSendMultiple && isSendMultiple) {
                 this.mIntent.setAction("android.intent.action.SEND");
-                if (this.mStreams == null || this.mStreams.isEmpty()) {
+                ArrayList<Uri> arrayList5 = this.mStreams;
+                if (arrayList5 == null || arrayList5.isEmpty()) {
                     this.mIntent.removeExtra("android.intent.extra.STREAM");
                 } else {
                     this.mIntent.putExtra("android.intent.extra.STREAM", this.mStreams.get(0));
@@ -117,7 +123,8 @@ public final class ShareCompat {
             }
             if (needsSendMultiple && !isSendMultiple) {
                 this.mIntent.setAction("android.intent.action.SEND_MULTIPLE");
-                if (this.mStreams == null || this.mStreams.isEmpty()) {
+                ArrayList<Uri> arrayList6 = this.mStreams;
+                if (arrayList6 == null || arrayList6.isEmpty()) {
                     this.mIntent.removeExtra("android.intent.extra.STREAM");
                 } else {
                     this.mIntent.putParcelableArrayListExtra("android.intent.extra.STREAM", this.mStreams);
@@ -167,7 +174,7 @@ public final class ShareCompat {
             return this;
         }
 
-        public IntentBuilder setChooserTitle(@StringRes int resId) {
+        public IntentBuilder setChooserTitle(int resId) {
             return setChooserTitle(this.mActivity.getText(resId));
         }
 
@@ -200,10 +207,11 @@ public final class ShareCompat {
 
         public IntentBuilder addStream(Uri streamUri) {
             Uri currentStream = (Uri) this.mIntent.getParcelableExtra("android.intent.extra.STREAM");
-            if (this.mStreams == null && currentStream == null) {
+            ArrayList<Uri> arrayList = this.mStreams;
+            if (arrayList == null && currentStream == null) {
                 return setStream(streamUri);
             }
-            if (this.mStreams == null) {
+            if (arrayList == null) {
                 this.mStreams = new ArrayList<>();
             }
             if (currentStream != null) {
@@ -370,8 +378,9 @@ public final class ShareCompat {
             if (this.mStreams == null && isMultipleShare()) {
                 this.mStreams = this.mIntent.getParcelableArrayListExtra("android.intent.extra.STREAM");
             }
-            if (this.mStreams != null) {
-                return this.mStreams.get(index);
+            ArrayList<Uri> arrayList = this.mStreams;
+            if (arrayList != null) {
+                return arrayList.get(index);
             }
             if (index == 0) {
                 return (Uri) this.mIntent.getParcelableExtra("android.intent.extra.STREAM");
@@ -383,8 +392,9 @@ public final class ShareCompat {
             if (this.mStreams == null && isMultipleShare()) {
                 this.mStreams = this.mIntent.getParcelableArrayListExtra("android.intent.extra.STREAM");
             }
-            if (this.mStreams != null) {
-                return this.mStreams.size();
+            ArrayList<Uri> arrayList = this.mStreams;
+            if (arrayList != null) {
+                return arrayList.size();
             }
             return this.mIntent.hasExtra("android.intent.extra.STREAM") ? 1 : 0;
         }

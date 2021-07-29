@@ -3,25 +3,32 @@ package com.wits.ksw.launcher.utils;
 import android.content.Context;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
 
 public class UiThemeUtils {
     public static final String ALS_ID6 = "ALS_ID6_UI";
     public static final String Audi_MMI_4G = "Audi_MMI_4G";
+    public static final String Audi_mib3 = "Audi_mib3";
     public static final String BMW_EVO_ID5 = "BMW_EVO_ID5";
     public static final String BMW_EVO_ID6 = "BMW_EVO_ID6";
+    public static final String BMW_EVO_ID6_CUSP = "BMW_EVO_ID6_CUSP";
     public static final String BMW_EVO_ID6_GS = "BMW_EVO_ID6_GS";
     public static final String BMW_EVO_ID7 = "BMW_EVO_ID7";
     public static final String BMW_EVO_ID7_HiCar = "BMW_EVO_ID7_HiCar";
     public static final String BMW_NBT = "BMW_NBT_UI";
     public static final String Benz_GS = "Benz_GS";
     public static final String Benz_MBUX = "Benz_MBUX";
+    public static final String Benz_MBUX_2021 = "Benz_MBUX_2021";
     public static final String Benz_NTG5 = "Benz_NTG5";
     public static final String Benz_NTG6 = "Benz_NTG6";
+    public static final String Benz_NTG6_FY = "Benz_NTG6_FY";
     public static final String Common_UI_GS = "Common_UI_GS";
     public static final String Common_UI_GS_UG = "Common_UI_GS_UG";
     public static final String Common_UI_GS_UG_1024 = "Common_UI_GS_UG_1024";
     public static final String ID7_ALS = "PEMP_ID7_UI";
     public static final String LAND_ROVER = "LAND_ROVER";
+    public static final String LEXUS_LS_UI = "LEXUS_LS_UI";
     public static final String LEXUS_UI = "LEXUS_UI";
     public static final String ROMEO_UI = "Alfa_Romeo";
 
@@ -53,6 +60,10 @@ public class UiThemeUtils {
         return TextUtils.equals(getUiName(context), BMW_EVO_ID6);
     }
 
+    public static boolean isBMW_EVO_ID6_CUSP(Context context) {
+        return TextUtils.equals(getUiName(context), BMW_EVO_ID6_CUSP);
+    }
+
     public static boolean isBMW_EVO_ID5(Context context) {
         return TextUtils.equals(getUiName(context), BMW_EVO_ID5);
     }
@@ -71,6 +82,10 @@ public class UiThemeUtils {
 
     public static boolean isAudi_MMI_4G(Context context) {
         return TextUtils.equals(getUiName(context), Audi_MMI_4G);
+    }
+
+    public static boolean isAudi_mib3(Context context) {
+        return TextUtils.equals(getUiName(context), Audi_mib3);
     }
 
     public static boolean isBenz_GS(Context context) {
@@ -105,6 +120,25 @@ public class UiThemeUtils {
         return TextUtils.equals(getUiName(context), Common_UI_GS_UG_1024);
     }
 
+    public static boolean isLEXUS_LS_UI(Context context) {
+        return TextUtils.equals(getUiName(context), LEXUS_LS_UI);
+    }
+
+    public static boolean isBenz_MBUX_2021(Context context) {
+        return TextUtils.equals(getUiName(context), Benz_MBUX_2021);
+    }
+
+    public static boolean isBenz_NTG6_FY(Context context) {
+        return TextUtils.equals(getUiName(context), Benz_NTG6_FY);
+    }
+
+    public static void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
     public static int getCarManufacturer(Context context) {
         if (isBMW_EVO_ID5(context) || isBMW_EVO_ID6(context)) {
             return 1;
@@ -122,6 +156,10 @@ public class UiThemeUtils {
     }
 
     public static String getUiName(Context context) {
+        return Settings.System.getString(context.getContentResolver(), "UiName");
+    }
+
+    public static String getThemeName(Context context) {
         return Settings.System.getString(context.getContentResolver(), "UiName");
     }
 }

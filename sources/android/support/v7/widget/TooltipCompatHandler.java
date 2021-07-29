@@ -1,9 +1,7 @@
 package android.support.v7.widget;
 
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
-import android.support.v7.widget.ActivityChooserView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -11,7 +9,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityManager;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverListener, View.OnAttachStateChangeListener {
     private static final long HOVER_HIDE_TIMEOUT_MS = 15000;
     private static final long HOVER_HIDE_TIMEOUT_SHORT_MS = 3000;
@@ -38,12 +35,14 @@ class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverList
     private final CharSequence mTooltipText;
 
     public static void setTooltipText(View view, CharSequence tooltipText) {
-        if (sPendingHandler != null && sPendingHandler.mAnchor == view) {
+        TooltipCompatHandler tooltipCompatHandler = sPendingHandler;
+        if (tooltipCompatHandler != null && tooltipCompatHandler.mAnchor == view) {
             setPendingHandler((TooltipCompatHandler) null);
         }
         if (TextUtils.isEmpty(tooltipText)) {
-            if (sActiveHandler != null && sActiveHandler.mAnchor == view) {
-                sActiveHandler.hide();
+            TooltipCompatHandler tooltipCompatHandler2 = sActiveHandler;
+            if (tooltipCompatHandler2 != null && tooltipCompatHandler2.mAnchor == view) {
+                tooltipCompatHandler2.hide();
             }
             view.setOnLongClickListener((View.OnLongClickListener) null);
             view.setLongClickable(false);
@@ -56,10 +55,10 @@ class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverList
     private TooltipCompatHandler(View anchor, CharSequence tooltipText) {
         this.mAnchor = anchor;
         this.mTooltipText = tooltipText;
-        this.mHoverSlop = ViewConfigurationCompat.getScaledHoverSlop(ViewConfiguration.get(this.mAnchor.getContext()));
+        this.mHoverSlop = ViewConfigurationCompat.getScaledHoverSlop(ViewConfiguration.get(anchor.getContext()));
         clearAnchorPos();
-        this.mAnchor.setOnLongClickListener(this);
-        this.mAnchor.setOnHoverListener(this);
+        anchor.setOnLongClickListener(this);
+        anchor.setOnHoverListener(this);
     }
 
     public boolean onLongClick(View v) {
@@ -77,14 +76,16 @@ class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverList
         if (manager.isEnabled() && manager.isTouchExplorationEnabled()) {
             return false;
         }
-        int action = event.getAction();
-        if (action != 7) {
-            if (action == 10) {
+        switch (event.getAction()) {
+            case 7:
+                if (this.mAnchor.isEnabled() && this.mPopup == null && updateAnchorPos(event)) {
+                    setPendingHandler(this);
+                    break;
+                }
+            case 10:
                 clearAnchorPos();
                 hide();
-            }
-        } else if (this.mAnchor.isEnabled() && this.mPopup == null && updateAnchorPos(event)) {
-            setPendingHandler(this);
+                break;
         }
         return false;
     }
@@ -101,13 +102,15 @@ class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverList
         long timeout;
         if (ViewCompat.isAttachedToWindow(this.mAnchor)) {
             setPendingHandler((TooltipCompatHandler) null);
-            if (sActiveHandler != null) {
-                sActiveHandler.hide();
+            TooltipCompatHandler tooltipCompatHandler = sActiveHandler;
+            if (tooltipCompatHandler != null) {
+                tooltipCompatHandler.hide();
             }
             sActiveHandler = this;
             this.mFromTouch = fromTouch;
-            this.mPopup = new TooltipPopup(this.mAnchor.getContext());
-            this.mPopup.show(this.mAnchor, this.mAnchorX, this.mAnchorY, this.mFromTouch, this.mTooltipText);
+            TooltipPopup tooltipPopup = new TooltipPopup(this.mAnchor.getContext());
+            this.mPopup = tooltipPopup;
+            tooltipPopup.show(this.mAnchor, this.mAnchorX, this.mAnchorY, this.mFromTouch, this.mTooltipText);
             this.mAnchor.addOnAttachStateChangeListener(this);
             if (this.mFromTouch) {
                 timeout = LONG_CLICK_HIDE_TIMEOUT_MS;
@@ -125,8 +128,9 @@ class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverList
     public void hide() {
         if (sActiveHandler == this) {
             sActiveHandler = null;
-            if (this.mPopup != null) {
-                this.mPopup.hide();
+            TooltipPopup tooltipPopup = this.mPopup;
+            if (tooltipPopup != null) {
+                tooltipPopup.hide();
                 this.mPopup = null;
                 clearAnchorPos();
                 this.mAnchor.removeOnAttachStateChangeListener(this);
@@ -141,12 +145,13 @@ class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverList
     }
 
     private static void setPendingHandler(TooltipCompatHandler handler) {
-        if (sPendingHandler != null) {
-            sPendingHandler.cancelPendingShow();
+        TooltipCompatHandler tooltipCompatHandler = sPendingHandler;
+        if (tooltipCompatHandler != null) {
+            tooltipCompatHandler.cancelPendingShow();
         }
         sPendingHandler = handler;
-        if (sPendingHandler != null) {
-            sPendingHandler.scheduleShow();
+        if (handler != null) {
+            handler.scheduleShow();
         }
     }
 
@@ -170,7 +175,7 @@ class TooltipCompatHandler implements View.OnLongClickListener, View.OnHoverList
     }
 
     private void clearAnchorPos() {
-        this.mAnchorX = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
-        this.mAnchorY = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
+        this.mAnchorX = Integer.MAX_VALUE;
+        this.mAnchorY = Integer.MAX_VALUE;
     }
 }

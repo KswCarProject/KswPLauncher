@@ -3,10 +3,6 @@ package android.support.v4.media;
 import android.content.Context;
 import android.media.session.MediaSessionManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.media.MediaSessionManagerImplApi28;
 import android.support.v4.media.MediaSessionManagerImplBase;
 import android.util.Log;
@@ -32,8 +28,7 @@ public final class MediaSessionManager {
         int getUid();
     }
 
-    @NonNull
-    public static MediaSessionManager getSessionManager(@NonNull Context context) {
+    public static MediaSessionManager getSessionManager(Context context) {
         MediaSessionManager manager = sSessionManager;
         if (manager == null) {
             synchronized (sLock) {
@@ -57,7 +52,7 @@ public final class MediaSessionManager {
         }
     }
 
-    public boolean isTrustedForMediaControl(@NonNull RemoteUserInfo userInfo) {
+    public boolean isTrustedForMediaControl(RemoteUserInfo userInfo) {
         if (userInfo != null) {
             return this.mImpl.isTrustedForMediaControl(userInfo.mImpl);
         }
@@ -73,7 +68,7 @@ public final class MediaSessionManager {
         public static final String LEGACY_CONTROLLER = "android.media.session.MediaController";
         RemoteUserInfoImpl mImpl;
 
-        public RemoteUserInfo(@NonNull String packageName, int pid, int uid) {
+        public RemoteUserInfo(String packageName, int pid, int uid) {
             if (Build.VERSION.SDK_INT >= 28) {
                 this.mImpl = new MediaSessionManagerImplApi28.RemoteUserInfoImplApi28(packageName, pid, uid);
             } else {
@@ -81,13 +76,10 @@ public final class MediaSessionManager {
             }
         }
 
-        @RequiresApi(28)
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteUserInfo(MediaSessionManager.RemoteUserInfo remoteUserInfo) {
             this.mImpl = new MediaSessionManagerImplApi28.RemoteUserInfoImplApi28(remoteUserInfo);
         }
 
-        @NonNull
         public String getPackageName() {
             return this.mImpl.getPackageName();
         }
@@ -100,7 +92,7 @@ public final class MediaSessionManager {
             return this.mImpl.getUid();
         }
 
-        public boolean equals(@Nullable Object obj) {
+        public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
             }

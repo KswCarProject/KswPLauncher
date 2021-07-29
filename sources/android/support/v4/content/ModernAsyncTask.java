@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
-import android.support.annotation.RestrictTo;
 import android.util.Log;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -28,52 +27,16 @@ abstract class ModernAsyncTask<Params, Progress, Result> {
     private static final int MAXIMUM_POOL_SIZE = 128;
     private static final int MESSAGE_POST_PROGRESS = 2;
     private static final int MESSAGE_POST_RESULT = 1;
-    public static final Executor THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(5, 128, 1, TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);
-    private static volatile Executor sDefaultExecutor = THREAD_POOL_EXECUTOR;
+    public static final Executor THREAD_POOL_EXECUTOR;
+    private static volatile Executor sDefaultExecutor;
     private static InternalHandler sHandler;
-    private static final BlockingQueue<Runnable> sPoolWorkQueue = new LinkedBlockingQueue(10);
-    private static final ThreadFactory sThreadFactory = new ThreadFactory() {
-        private final AtomicInteger mCount = new AtomicInteger(1);
-
-        public Thread newThread(Runnable r) {
-            return new Thread(r, "ModernAsyncTask #" + this.mCount.getAndIncrement());
-        }
-    };
+    private static final BlockingQueue<Runnable> sPoolWorkQueue;
+    private static final ThreadFactory sThreadFactory;
     final AtomicBoolean mCancelled = new AtomicBoolean();
-    private final FutureTask<Result> mFuture = new FutureTask<Result>(this.mWorker) {
-        /* access modifiers changed from: protected */
-        public void done() {
-            try {
-                ModernAsyncTask.this.postResultIfNotInvoked(get());
-            } catch (InterruptedException e) {
-                Log.w(ModernAsyncTask.LOG_TAG, e);
-            } catch (ExecutionException e2) {
-                throw new RuntimeException("An error occurred while executing doInBackground()", e2.getCause());
-            } catch (CancellationException e3) {
-                ModernAsyncTask.this.postResultIfNotInvoked(null);
-            } catch (Throwable t) {
-                throw new RuntimeException("An error occurred while executing doInBackground()", t);
-            }
-        }
-    };
+    private final FutureTask<Result> mFuture;
     private volatile Status mStatus = Status.PENDING;
     final AtomicBoolean mTaskInvoked = new AtomicBoolean();
-    private final WorkerRunnable<Params, Result> mWorker = new WorkerRunnable<Params, Result>() {
-        public Result call() throws Exception {
-            ModernAsyncTask.this.mTaskInvoked.set(true);
-            Result result = null;
-            try {
-                Process.setThreadPriority(10);
-                result = ModernAsyncTask.this.doInBackground(this.mParams);
-                Binder.flushPendingCommands();
-                ModernAsyncTask.this.postResult(result);
-                return result;
-            } catch (Throwable th) {
-                ModernAsyncTask.this.postResult(result);
-                throw th;
-            }
-        }
-    };
+    private final WorkerRunnable<Params, Result> mWorker;
 
     public enum Status {
         PENDING,
@@ -83,6 +46,22 @@ abstract class ModernAsyncTask<Params, Progress, Result> {
 
     /* access modifiers changed from: protected */
     public abstract Result doInBackground(Params... paramsArr);
+
+    static {
+        AnonymousClass1 r7 = new ThreadFactory() {
+            private final AtomicInteger mCount = new AtomicInteger(1);
+
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "ModernAsyncTask #" + this.mCount.getAndIncrement());
+            }
+        };
+        sThreadFactory = r7;
+        LinkedBlockingQueue linkedBlockingQueue = new LinkedBlockingQueue(10);
+        sPoolWorkQueue = linkedBlockingQueue;
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 128, 1, TimeUnit.SECONDS, linkedBlockingQueue, r7);
+        THREAD_POOL_EXECUTOR = threadPoolExecutor;
+        sDefaultExecutor = threadPoolExecutor;
+    }
 
     private static Handler getHandler() {
         InternalHandler internalHandler;
@@ -95,12 +74,44 @@ abstract class ModernAsyncTask<Params, Progress, Result> {
         return internalHandler;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static void setDefaultExecutor(Executor exec) {
         sDefaultExecutor = exec;
     }
 
     ModernAsyncTask() {
+        AnonymousClass2 r0 = new WorkerRunnable<Params, Result>() {
+            public Result call() throws Exception {
+                ModernAsyncTask.this.mTaskInvoked.set(true);
+                Result result = null;
+                try {
+                    Process.setThreadPriority(10);
+                    result = ModernAsyncTask.this.doInBackground(this.mParams);
+                    Binder.flushPendingCommands();
+                    ModernAsyncTask.this.postResult(result);
+                    return result;
+                } catch (Throwable th) {
+                    ModernAsyncTask.this.postResult(result);
+                    throw th;
+                }
+            }
+        };
+        this.mWorker = r0;
+        this.mFuture = new FutureTask<Result>(r0) {
+            /* access modifiers changed from: protected */
+            public void done() {
+                try {
+                    ModernAsyncTask.this.postResultIfNotInvoked(get());
+                } catch (InterruptedException e) {
+                    Log.w(ModernAsyncTask.LOG_TAG, e);
+                } catch (ExecutionException e2) {
+                    throw new RuntimeException("An error occurred while executing doInBackground()", e2.getCause());
+                } catch (CancellationException e3) {
+                    ModernAsyncTask.this.postResultIfNotInvoked(null);
+                } catch (Throwable t) {
+                    throw new RuntimeException("An error occurred while executing doInBackground()", t);
+                }
+            }
+        };
     }
 
     /* access modifiers changed from: package-private */
@@ -162,12 +173,30 @@ abstract class ModernAsyncTask<Params, Progress, Result> {
         return executeOnExecutor(sDefaultExecutor, params);
     }
 
+    /* renamed from: android.support.v4.content.ModernAsyncTask$4  reason: invalid class name */
+    static /* synthetic */ class AnonymousClass4 {
+        static final /* synthetic */ int[] $SwitchMap$androidx$loader$content$ModernAsyncTask$Status;
+
+        static {
+            int[] iArr = new int[Status.values().length];
+            $SwitchMap$androidx$loader$content$ModernAsyncTask$Status = iArr;
+            try {
+                iArr[Status.RUNNING.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
+            try {
+                $SwitchMap$androidx$loader$content$ModernAsyncTask$Status[Status.FINISHED.ordinal()] = 2;
+            } catch (NoSuchFieldError e2) {
+            }
+        }
+    }
+
     public final ModernAsyncTask<Params, Progress, Result> executeOnExecutor(Executor exec, Params... params) {
         if (this.mStatus != Status.PENDING) {
-            switch (this.mStatus) {
-                case RUNNING:
+            switch (AnonymousClass4.$SwitchMap$androidx$loader$content$ModernAsyncTask$Status[this.mStatus.ordinal()]) {
+                case 1:
                     throw new IllegalStateException("Cannot execute task: the task is already running.");
-                case FINISHED:
+                case 2:
                     throw new IllegalStateException("Cannot execute task: the task has already been executed (a task can be executed only once)");
                 default:
                     throw new IllegalStateException("We should never reach this state");

@@ -14,14 +14,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@RequiresApi(21)
 class MediaSessionCompatApi21 {
     static final String TAG = "MediaSessionCompatApi21";
 

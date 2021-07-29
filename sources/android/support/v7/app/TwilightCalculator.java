@@ -32,15 +32,13 @@ class TwilightCalculator {
         double trueAnomaly = ((double) meanAnomaly) + (Math.sin((double) meanAnomaly) * 0.03341960161924362d) + (Math.sin((double) (2.0f * meanAnomaly)) * 3.4906598739326E-4d) + (Math.sin((double) (3.0f * meanAnomaly)) * 5.236000106378924E-6d);
         double solarLng = 1.796593063d + trueAnomaly + 3.141592653589793d;
         double arcLongitude = (-longitude) / 360.0d;
-        float n = (float) Math.round(((double) (daysSince2000 - J0)) - arcLongitude);
-        float f = n;
         double d = trueAnomaly;
-        double solarTransitJ2000 = ((double) (J0 + n)) + arcLongitude + (Math.sin((double) meanAnomaly) * 0.0053d) + (Math.sin(2.0d * solarLng) * -0.0069d);
+        double solarTransitJ2000 = ((double) (J0 + ((float) Math.round(((double) (daysSince2000 - J0)) - arcLongitude)))) + arcLongitude + (Math.sin((double) meanAnomaly) * 0.0053d) + (Math.sin(2.0d * solarLng) * -0.0069d);
         double solarDec = Math.asin(Math.sin(solarLng) * Math.sin(0.4092797040939331d));
         double latRad = 0.01745329238474369d * latitude;
         double cosHourAngle = (Math.sin(-0.10471975803375244d) - (Math.sin(latRad) * Math.sin(solarDec))) / (Math.cos(latRad) * Math.cos(solarDec));
-        float f2 = daysSince2000;
-        float f3 = meanAnomaly;
+        float f = daysSince2000;
+        float f2 = meanAnomaly;
         if (cosHourAngle >= 1.0d) {
             this.state = 1;
             this.sunset = -1;
@@ -53,8 +51,9 @@ class TwilightCalculator {
             float hourAngle = (float) (Math.acos(cosHourAngle) / 6.283185307179586d);
             double d2 = solarDec;
             this.sunset = Math.round((((double) hourAngle) + solarTransitJ2000) * 8.64E7d) + UTC_2000;
-            this.sunrise = Math.round((solarTransitJ2000 - ((double) hourAngle)) * 8.64E7d) + UTC_2000;
-            if (this.sunrise >= time || this.sunset <= time) {
+            long round = Math.round((solarTransitJ2000 - ((double) hourAngle)) * 8.64E7d) + UTC_2000;
+            this.sunrise = round;
+            if (round >= time || this.sunset <= time) {
                 this.state = 1;
             } else {
                 this.state = 0;

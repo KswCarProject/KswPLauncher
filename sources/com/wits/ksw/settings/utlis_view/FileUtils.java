@@ -5,9 +5,11 @@ import android.content.res.Configuration;
 import android.os.Environment;
 import android.os.LocaleList;
 import android.os.StatFs;
-import android.support.annotation.RequiresApi;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 import android.util.Log;
 import android.widget.Toast;
+import com.google.zxing.common.StringUtils;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -30,7 +33,6 @@ public class FileUtils {
 
     public static boolean copyFile(String newPath, Context context) {
         int bytesum = 0;
-        boolean isFile = false;
         try {
             File oldfile = new File(newPath);
             if (oldfile.exists()) {
@@ -62,11 +64,11 @@ public class FileUtils {
                 fs.close();
                 inStream.close();
             }
-            isFile = true;
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return isFile;
     }
 
     public static long getAvailableBlocks(String path) {
@@ -131,14 +133,13 @@ public class FileUtils {
                 bufferedOutputStream.close();
                 inputStream.close();
                 outputStream.close();
-                long end = System.currentTimeMillis();
-                Log.d("logoUpdate", "耗时：" + ((end - start) / 1000) + " s");
+                Log.d("logoUpdate", "耗时：" + ((System.currentTimeMillis() - start) / 1000) + " s");
                 return;
             }
         }
     }
 
-    public static void upZipFile(File zipFile, String folderPath) throws IOException {
+    public static void upZipFile(File zipFile, String folderPath) throws IOException, IllegalArgumentException {
         ZipFile zfile = new ZipFile(zipFile);
         Enumeration zList = zfile.entries();
         byte[] buf = new byte[1024];
@@ -146,7 +147,7 @@ public class FileUtils {
             ZipEntry ze = (ZipEntry) zList.nextElement();
             if (ze.isDirectory()) {
                 Log.d("unzip", "ze.getName() = " + ze.getName());
-                String dirstr = new String((folderPath + ze.getName()).getBytes("8859_1"), "GB2312");
+                String dirstr = new String((folderPath + ze.getName()).getBytes("8859_1"), StringUtils.GB2312);
                 Log.d("unzip", "str = " + dirstr);
                 new File(dirstr).mkdir();
             } else {
@@ -177,7 +178,7 @@ public class FileUtils {
         for (int i = 0; i < dirs.length - 1; i++) {
             String substr = dirs[i];
             try {
-                substr = new String(substr.getBytes("8859_1"), "GB2312");
+                substr = new String(substr.getBytes("8859_1"), StringUtils.GB2312);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -189,7 +190,7 @@ public class FileUtils {
         }
         String substr2 = dirs[dirs.length - 1];
         try {
-            substr2 = new String(substr2.getBytes("8859_1"), "GB2312");
+            substr2 = new String(substr2.getBytes("8859_1"), StringUtils.GB2312);
             Log.d("", "substr = " + substr2);
         } catch (UnsupportedEncodingException e2) {
             e2.printStackTrace();
@@ -202,14 +203,39 @@ public class FileUtils {
     public static List<String> getExtSdUsbPathList() {
         List<String> paths = new ArrayList<>();
         for (File fl : new File("/storage").listFiles()) {
+            Log.i("FileUtil ", "path =" + fl.getAbsolutePath());
             if (fl.getAbsolutePath().lastIndexOf("self") < 0 && fl.getAbsolutePath().lastIndexOf("emulated") < 0) {
                 paths.add(fl.getAbsolutePath());
+                Log.i("FileUtil ", "path =" + fl.getAbsolutePath());
             }
         }
         return paths;
     }
 
-    @RequiresApi(api = 24)
+    public static List<String> getSDPath(Context context) {
+        List<String> paths = new ArrayList<>();
+        List<StorageVolume> volumes = ((StorageManager) context.getSystemService("storage")).getStorageVolumes();
+        try {
+            Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+            Method getPath = storageVolumeClazz.getMethod("getPath", new Class[0]);
+            Method isRemovable = storageVolumeClazz.getMethod("isRemovable", new Class[0]);
+            for (int i = 0; i < volumes.size(); i++) {
+                StorageVolume storageVolume = volumes.get(i);
+                String storagePath = (String) getPath.invoke(storageVolume, new Object[0]);
+                boolean isRemovableResult = ((Boolean) isRemovable.invoke(storageVolume, new Object[0])).booleanValue();
+                String description = storageVolume.getDescription(context);
+                if (storagePath.lastIndexOf("self") < 0 && storagePath.lastIndexOf("emulated") < 0) {
+                    paths.add(storagePath);
+                    Log.i("FileUtil ", "path =" + storagePath);
+                }
+                Log.d("FileUtil", " i=" + i + " ,storagePath=" + storagePath + " ,isRemovableResult=" + isRemovableResult + " ,description=" + description);
+            }
+        } catch (Exception e) {
+            Log.d("jason", " e:" + e);
+        }
+        return paths;
+    }
+
     public static void changeSystemLanguage(LocaleList locale) {
         if (locale != null) {
             try {

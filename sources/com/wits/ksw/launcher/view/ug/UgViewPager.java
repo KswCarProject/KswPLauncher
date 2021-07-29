@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.view.ug;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -26,11 +24,11 @@ public class UgViewPager extends ViewPager {
         void onPageSelected(int i, boolean z, boolean z2);
     }
 
-    public UgViewPager(@NonNull Context context) {
+    public UgViewPager(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public UgViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public UgViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mViewPagerIndex = -1;
         this.left = false;
@@ -51,17 +49,16 @@ public class UgViewPager extends ViewPager {
             }
 
             public void onPageSelected(int i) {
-                String access$400 = UgViewPager.TAG;
-                Log.i(access$400, "onPageSelected: " + i + " left:" + UgViewPager.this.left + " right:" + UgViewPager.this.right);
+                Log.i(UgViewPager.TAG, "onPageSelected: " + i + " left:" + UgViewPager.this.left + " right:" + UgViewPager.this.right);
                 if (UgViewPager.this.listener != null) {
                     UgViewPager.this.listener.onPageSelected(i, UgViewPager.this.left, UgViewPager.this.right);
-                    boolean unused = UgViewPager.this.right = UgViewPager.this.left = false;
+                    UgViewPager ugViewPager = UgViewPager.this;
+                    boolean unused = ugViewPager.right = ugViewPager.left = false;
                 }
             }
 
             public void onPageScrollStateChanged(int arg0) {
-                String access$400 = UgViewPager.TAG;
-                Log.i(access$400, "onPageScrollStateChanged: " + arg0);
+                Log.i(UgViewPager.TAG, "onPageScrollStateChanged: " + arg0);
                 UgViewPager ugViewPager = UgViewPager.this;
                 boolean z = true;
                 if (arg0 != 1) {
@@ -69,7 +66,8 @@ public class UgViewPager extends ViewPager {
                 }
                 ugViewPager.isScrolling = z;
                 if (UgViewPager.this.isScrolling) {
-                    int unused = UgViewPager.this.mViewPagerIndex = UgViewPager.this.getCurrentItem();
+                    UgViewPager ugViewPager2 = UgViewPager.this;
+                    int unused = ugViewPager2.mViewPagerIndex = ugViewPager2.getCurrentItem();
                 }
             }
         });

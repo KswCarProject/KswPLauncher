@@ -7,8 +7,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.graphics.PorterDuff;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.RestrictTo;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
@@ -31,27 +29,44 @@ import java.lang.reflect.Method;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class SupportMenuInflater extends MenuInflater {
-    static final Class<?>[] ACTION_PROVIDER_CONSTRUCTOR_SIGNATURE = ACTION_VIEW_CONSTRUCTOR_SIGNATURE;
-    static final Class<?>[] ACTION_VIEW_CONSTRUCTOR_SIGNATURE = {Context.class};
+    static final Class<?>[] ACTION_PROVIDER_CONSTRUCTOR_SIGNATURE;
+    static final Class<?>[] ACTION_VIEW_CONSTRUCTOR_SIGNATURE;
     static final String LOG_TAG = "SupportMenuInflater";
     static final int NO_ID = 0;
     private static final String XML_GROUP = "group";
     private static final String XML_ITEM = "item";
     private static final String XML_MENU = "menu";
-    final Object[] mActionProviderConstructorArguments = this.mActionViewConstructorArguments;
+    final Object[] mActionProviderConstructorArguments;
     final Object[] mActionViewConstructorArguments;
     Context mContext;
     private Object mRealOwner;
 
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v1, resolved type: java.lang.Class<?>[]} */
+    /* JADX WARNING: Multi-variable type inference failed */
+    static {
+        /*
+            r0 = 1
+            java.lang.Class[] r0 = new java.lang.Class[r0]
+            r1 = 0
+            java.lang.Class<android.content.Context> r2 = android.content.Context.class
+            r0[r1] = r2
+            ACTION_VIEW_CONSTRUCTOR_SIGNATURE = r0
+            ACTION_PROVIDER_CONSTRUCTOR_SIGNATURE = r0
+            return
+        */
+        throw new UnsupportedOperationException("Method not decompiled: android.support.v7.view.SupportMenuInflater.<clinit>():void");
+    }
+
     public SupportMenuInflater(Context context) {
         super(context);
         this.mContext = context;
-        this.mActionViewConstructorArguments = new Object[]{context};
+        Object[] objArr = {context};
+        this.mActionViewConstructorArguments = objArr;
+        this.mActionProviderConstructorArguments = objArr;
     }
 
-    public void inflate(@LayoutRes int menuRes, Menu menu) {
+    public void inflate(int menuRes, Menu menu) {
         if (!(menu instanceof SupportMenu)) {
             super.inflate(menuRes, menu);
             return;
@@ -294,10 +309,11 @@ public class SupportMenuInflater extends MenuInflater {
             this.itemListenerMethodName = a.getString(R.styleable.MenuItem_android_onClick);
             this.itemActionViewLayout = a.getResourceId(R.styleable.MenuItem_actionLayout, 0);
             this.itemActionViewClassName = a.getString(R.styleable.MenuItem_actionViewClass);
-            this.itemActionProviderClassName = a.getString(R.styleable.MenuItem_actionProviderClass);
-            boolean hasActionProvider = this.itemActionProviderClassName != null;
+            String string = a.getString(R.styleable.MenuItem_actionProviderClass);
+            this.itemActionProviderClassName = string;
+            boolean hasActionProvider = string != null;
             if (hasActionProvider && this.itemActionViewLayout == 0 && this.itemActionViewClassName == null) {
-                this.itemActionProvider = (ActionProvider) newInstance(this.itemActionProviderClassName, SupportMenuInflater.ACTION_PROVIDER_CONSTRUCTOR_SIGNATURE, SupportMenuInflater.this.mActionProviderConstructorArguments);
+                this.itemActionProvider = (ActionProvider) newInstance(string, SupportMenuInflater.ACTION_PROVIDER_CONSTRUCTOR_SIGNATURE, SupportMenuInflater.this.mActionProviderConstructorArguments);
             } else {
                 if (hasActionProvider) {
                     Log.w(SupportMenuInflater.LOG_TAG, "Ignoring attribute 'actionProviderClass'. Action view already specified.");
@@ -328,16 +344,10 @@ public class SupportMenuInflater extends MenuInflater {
         }
 
         private void setItem(MenuItem item) {
-            boolean z;
-            MenuItem enabled = item.setChecked(this.itemChecked).setVisible(this.itemVisible).setEnabled(this.itemEnabled);
-            if (this.itemCheckable >= 1) {
-                z = true;
-            } else {
-                z = false;
-            }
-            enabled.setCheckable(z).setTitleCondensed(this.itemTitleCondensed).setIcon(this.itemIconResId);
-            if (this.itemShowAsAction >= 0) {
-                item.setShowAsAction(this.itemShowAsAction);
+            item.setChecked(this.itemChecked).setVisible(this.itemVisible).setEnabled(this.itemEnabled).setCheckable(this.itemCheckable >= 1).setTitleCondensed(this.itemTitleCondensed).setIcon(this.itemIconResId);
+            int i = this.itemShowAsAction;
+            if (i >= 0) {
+                item.setShowAsAction(i);
             }
             if (this.itemListenerMethodName != null) {
                 if (!SupportMenuInflater.this.mContext.isRestricted()) {
@@ -357,29 +367,34 @@ public class SupportMenuInflater extends MenuInflater {
                 }
             }
             boolean actionViewSpecified = false;
-            if (this.itemActionViewClassName != null) {
-                item.setActionView((View) newInstance(this.itemActionViewClassName, SupportMenuInflater.ACTION_VIEW_CONSTRUCTOR_SIGNATURE, SupportMenuInflater.this.mActionViewConstructorArguments));
+            String str = this.itemActionViewClassName;
+            if (str != null) {
+                item.setActionView((View) newInstance(str, SupportMenuInflater.ACTION_VIEW_CONSTRUCTOR_SIGNATURE, SupportMenuInflater.this.mActionViewConstructorArguments));
                 actionViewSpecified = true;
             }
-            if (this.itemActionViewLayout > 0) {
+            int i2 = this.itemActionViewLayout;
+            if (i2 > 0) {
                 if (!actionViewSpecified) {
-                    item.setActionView(this.itemActionViewLayout);
+                    item.setActionView(i2);
                 } else {
                     Log.w(SupportMenuInflater.LOG_TAG, "Ignoring attribute 'itemActionViewLayout'. Action view already specified.");
                 }
             }
-            if (this.itemActionProvider != null) {
-                MenuItemCompat.setActionProvider(item, this.itemActionProvider);
+            ActionProvider actionProvider = this.itemActionProvider;
+            if (actionProvider != null) {
+                MenuItemCompat.setActionProvider(item, actionProvider);
             }
             MenuItemCompat.setContentDescription(item, this.itemContentDescription);
             MenuItemCompat.setTooltipText(item, this.itemTooltipText);
             MenuItemCompat.setAlphabeticShortcut(item, this.itemAlphabeticShortcut, this.itemAlphabeticModifiers);
             MenuItemCompat.setNumericShortcut(item, this.itemNumericShortcut, this.itemNumericModifiers);
-            if (this.itemIconTintMode != null) {
-                MenuItemCompat.setIconTintMode(item, this.itemIconTintMode);
+            PorterDuff.Mode mode = this.itemIconTintMode;
+            if (mode != null) {
+                MenuItemCompat.setIconTintMode(item, mode);
             }
-            if (this.itemIconTintList != null) {
-                MenuItemCompat.setIconTintList(item, this.itemIconTintList);
+            ColorStateList colorStateList = this.itemIconTintList;
+            if (colorStateList != null) {
+                MenuItemCompat.setIconTintList(item, colorStateList);
             }
         }
 

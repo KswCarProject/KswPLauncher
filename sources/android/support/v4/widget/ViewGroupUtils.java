@@ -3,29 +3,29 @@ package android.support.v4.widget;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class ViewGroupUtils {
     private static final ThreadLocal<Matrix> sMatrix = new ThreadLocal<>();
     private static final ThreadLocal<RectF> sRectF = new ThreadLocal<>();
 
     static void offsetDescendantRect(ViewGroup parent, View descendant, Rect rect) {
-        Matrix m = sMatrix.get();
+        ThreadLocal<Matrix> threadLocal = sMatrix;
+        Matrix m = threadLocal.get();
         if (m == null) {
             m = new Matrix();
-            sMatrix.set(m);
+            threadLocal.set(m);
         } else {
             m.reset();
         }
         offsetDescendantMatrix(parent, descendant, m);
-        RectF rectF = sRectF.get();
+        ThreadLocal<RectF> threadLocal2 = sRectF;
+        RectF rectF = threadLocal2.get();
         if (rectF == null) {
             rectF = new RectF();
-            sRectF.set(rectF);
+            threadLocal2.set(rectF);
         }
         rectF.set(rect);
         m.mapRect(rectF);

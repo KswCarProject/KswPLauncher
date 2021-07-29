@@ -7,11 +7,8 @@ import android.arch.lifecycle.ReportFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 
 public class ProcessLifecycleOwner implements LifecycleOwner {
-    @VisibleForTesting
     static final long TIMEOUT_MS = 700;
     private static final ProcessLifecycleOwner sInstance = new ProcessLifecycleOwner();
     private Runnable mDelayedPauseRunnable = new Runnable() {
@@ -50,8 +47,9 @@ public class ProcessLifecycleOwner implements LifecycleOwner {
 
     /* access modifiers changed from: package-private */
     public void activityStarted() {
-        this.mStartedCounter++;
-        if (this.mStartedCounter == 1 && this.mStopSent) {
+        int i = this.mStartedCounter + 1;
+        this.mStartedCounter = i;
+        if (i == 1 && this.mStopSent) {
             this.mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
             this.mStopSent = false;
         }
@@ -59,8 +57,9 @@ public class ProcessLifecycleOwner implements LifecycleOwner {
 
     /* access modifiers changed from: package-private */
     public void activityResumed() {
-        this.mResumedCounter++;
-        if (this.mResumedCounter != 1) {
+        int i = this.mResumedCounter + 1;
+        this.mResumedCounter = i;
+        if (i != 1) {
             return;
         }
         if (this.mPauseSent) {
@@ -73,8 +72,9 @@ public class ProcessLifecycleOwner implements LifecycleOwner {
 
     /* access modifiers changed from: package-private */
     public void activityPaused() {
-        this.mResumedCounter--;
-        if (this.mResumedCounter == 0) {
+        int i = this.mResumedCounter - 1;
+        this.mResumedCounter = i;
+        if (i == 0) {
             this.mHandler.postDelayed(this.mDelayedPauseRunnable, TIMEOUT_MS);
         }
     }
@@ -123,7 +123,6 @@ public class ProcessLifecycleOwner implements LifecycleOwner {
         });
     }
 
-    @NonNull
     public Lifecycle getLifecycle() {
         return this.mRegistry;
     }

@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pools;
 import com.bumptech.glide.util.Preconditions;
 import com.bumptech.glide.util.pool.FactoryPools;
@@ -17,7 +16,6 @@ final class LockedResource<Z> implements Resource<Z>, FactoryPools.Poolable {
     private final StateVerifier stateVerifier = StateVerifier.newInstance();
     private Resource<Z> toWrap;
 
-    @NonNull
     static <Z> LockedResource<Z> obtain(Resource<Z> resource) {
         LockedResource<Z> result = (LockedResource) Preconditions.checkNotNull(POOL.acquire());
         result.init(resource);
@@ -51,12 +49,10 @@ final class LockedResource<Z> implements Resource<Z>, FactoryPools.Poolable {
         }
     }
 
-    @NonNull
     public Class<Z> getResourceClass() {
         return this.toWrap.getResourceClass();
     }
 
-    @NonNull
     public Z get() {
         return this.toWrap.get();
     }
@@ -74,7 +70,6 @@ final class LockedResource<Z> implements Resource<Z>, FactoryPools.Poolable {
         }
     }
 
-    @NonNull
     public StateVerifier getVerifier() {
         return this.stateVerifier;
     }

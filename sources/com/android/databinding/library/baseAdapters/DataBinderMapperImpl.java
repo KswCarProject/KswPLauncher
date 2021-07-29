@@ -44,13 +44,15 @@ public class DataBinderMapperImpl extends DataBinderMapper {
     }
 
     private static class InnerBrLookup {
-        static final SparseArray<String> sKeys = new SparseArray<>(2);
+        static final SparseArray<String> sKeys;
 
         private InnerBrLookup() {
         }
 
         static {
-            sKeys.put(0, "_all");
+            SparseArray<String> sparseArray = new SparseArray<>(1);
+            sKeys = sparseArray;
+            sparseArray.put(0, "_all");
         }
     }
 

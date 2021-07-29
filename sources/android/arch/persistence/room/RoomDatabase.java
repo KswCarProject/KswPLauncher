@@ -1,6 +1,5 @@
 package android.arch.persistence.room;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.arch.core.executor.ArchTaskExecutor;
 import android.arch.persistence.db.SimpleSQLiteQuery;
@@ -13,11 +12,6 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.WorkerThread;
 import android.support.v4.app.ActivityManagerCompat;
 import android.support.v4.util.SparseArrayCompat;
 import android.util.Log;
@@ -32,26 +26,23 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class RoomDatabase {
     private static final String DB_IMPL_SUFFIX = "_Impl";
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static final int MAX_BIND_PARAMETER_CNT = 999;
     private boolean mAllowMainThreadQueries;
-    @Nullable
-    protected List<Callback> mCallbacks;
+    /* access modifiers changed from: protected */
+    public List<Callback> mCallbacks;
     private final ReentrantLock mCloseLock = new ReentrantLock();
-    protected volatile SupportSQLiteDatabase mDatabase;
+    /* access modifiers changed from: protected */
+    public volatile SupportSQLiteDatabase mDatabase;
     private final InvalidationTracker mInvalidationTracker = createInvalidationTracker();
     private SupportSQLiteOpenHelper mOpenHelper;
     boolean mWriteAheadLoggingEnabled;
 
-    @WorkerThread
     public abstract void clearAllTables();
 
     /* access modifiers changed from: protected */
-    @NonNull
     public abstract InvalidationTracker createInvalidationTracker();
 
     /* access modifiers changed from: protected */
-    @NonNull
     public abstract SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration databaseConfiguration);
 
     /* access modifiers changed from: package-private */
@@ -59,8 +50,7 @@ public abstract class RoomDatabase {
         return this.mCloseLock;
     }
 
-    @CallSuper
-    public void init(@NonNull DatabaseConfiguration configuration) {
+    public void init(DatabaseConfiguration configuration) {
         this.mOpenHelper = createOpenHelper(configuration);
         boolean wal = false;
         if (Build.VERSION.SDK_INT >= 16) {
@@ -72,7 +62,6 @@ public abstract class RoomDatabase {
         this.mWriteAheadLoggingEnabled = wal;
     }
 
-    @NonNull
     public SupportSQLiteOpenHelper getOpenHelper() {
         return this.mOpenHelper;
     }
@@ -93,14 +82,13 @@ public abstract class RoomDatabase {
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void assertNotMainThread() {
         if (!this.mAllowMainThreadQueries && ArchTaskExecutor.getInstance().isMainThread()) {
             throw new IllegalStateException("Cannot access database on the main thread since it may potentially lock the UI for a long period of time.");
         }
     }
 
-    public Cursor query(String query, @Nullable Object[] args) {
+    public Cursor query(String query, Object[] args) {
         return this.mOpenHelper.getWritableDatabase().query((SupportSQLiteQuery) new SimpleSQLiteQuery(query, args));
     }
 
@@ -109,7 +97,7 @@ public abstract class RoomDatabase {
         return this.mOpenHelper.getWritableDatabase().query(query);
     }
 
-    public SupportSQLiteStatement compileStatement(@NonNull String sql) {
+    public SupportSQLiteStatement compileStatement(String sql) {
         assertNotMainThread();
         return this.mOpenHelper.getWritableDatabase().compileStatement(sql);
     }
@@ -132,7 +120,7 @@ public abstract class RoomDatabase {
         this.mOpenHelper.getWritableDatabase().setTransactionSuccessful();
     }
 
-    public void runInTransaction(@NonNull Runnable body) {
+    public void runInTransaction(Runnable body) {
         beginTransaction();
         try {
             body.run();
@@ -142,7 +130,7 @@ public abstract class RoomDatabase {
         }
     }
 
-    public <V> V runInTransaction(@NonNull Callable<V> body) {
+    public <V> V runInTransaction(Callable<V> body) {
         beginTransaction();
         try {
             V result = body.call();
@@ -160,11 +148,10 @@ public abstract class RoomDatabase {
     }
 
     /* access modifiers changed from: protected */
-    public void internalInitInvalidationTracker(@NonNull SupportSQLiteDatabase db) {
+    public void internalInitInvalidationTracker(SupportSQLiteDatabase db) {
         this.mInvalidationTracker.internalInit(db);
     }
 
-    @NonNull
     public InvalidationTracker getInvalidationTracker() {
         return this.mInvalidationTracker;
     }
@@ -179,7 +166,6 @@ public abstract class RoomDatabase {
         WRITE_AHEAD_LOGGING;
 
         /* access modifiers changed from: package-private */
-        @SuppressLint({"NewApi"})
         public JournalMode resolve(Context context) {
             ActivityManager manager;
             if (this != AUTOMATIC) {
@@ -205,20 +191,18 @@ public abstract class RoomDatabase {
         private final String mName;
         private boolean mRequireMigration = true;
 
-        Builder(@NonNull Context context, @NonNull Class<T> klass, @Nullable String name) {
+        Builder(Context context, Class<T> klass, String name) {
             this.mContext = context;
             this.mDatabaseClass = klass;
             this.mName = name;
         }
 
-        @NonNull
-        public Builder<T> openHelperFactory(@Nullable SupportSQLiteOpenHelper.Factory factory) {
+        public Builder<T> openHelperFactory(SupportSQLiteOpenHelper.Factory factory) {
             this.mFactory = factory;
             return this;
         }
 
-        @NonNull
-        public Builder<T> addMigrations(@NonNull Migration... migrations) {
+        public Builder<T> addMigrations(Migration... migrations) {
             if (this.mMigrationStartAndEndVersions == null) {
                 this.mMigrationStartAndEndVersions = new HashSet();
             }
@@ -230,25 +214,21 @@ public abstract class RoomDatabase {
             return this;
         }
 
-        @NonNull
         public Builder<T> allowMainThreadQueries() {
             this.mAllowMainThreadQueries = true;
             return this;
         }
 
-        @NonNull
-        public Builder<T> setJournalMode(@NonNull JournalMode journalMode) {
+        public Builder<T> setJournalMode(JournalMode journalMode) {
             this.mJournalMode = journalMode;
             return this;
         }
 
-        @NonNull
         public Builder<T> fallbackToDestructiveMigration() {
             this.mRequireMigration = false;
             return this;
         }
 
-        @NonNull
         public Builder<T> fallbackToDestructiveMigrationFrom(int... startVersions) {
             if (this.mMigrationsNotRequiredFrom == null) {
                 this.mMigrationsNotRequiredFrom = new HashSet(startVersions.length);
@@ -259,8 +239,7 @@ public abstract class RoomDatabase {
             return this;
         }
 
-        @NonNull
-        public Builder<T> addCallback(@NonNull Callback callback) {
+        public Builder<T> addCallback(Callback callback) {
             if (this.mCallbacks == null) {
                 this.mCallbacks = new ArrayList<>();
             }
@@ -268,13 +247,13 @@ public abstract class RoomDatabase {
             return this;
         }
 
-        @NonNull
         public T build() {
             if (this.mContext == null) {
                 throw new IllegalArgumentException("Cannot provide null context for the database.");
             } else if (this.mDatabaseClass != null) {
-                if (!(this.mMigrationStartAndEndVersions == null || this.mMigrationsNotRequiredFrom == null)) {
-                    for (Integer version : this.mMigrationStartAndEndVersions) {
+                Set<Integer> set = this.mMigrationStartAndEndVersions;
+                if (!(set == null || this.mMigrationsNotRequiredFrom == null)) {
+                    for (Integer version : set) {
                         if (this.mMigrationsNotRequiredFrom.contains(version)) {
                             throw new IllegalArgumentException("Inconsistency detected. A Migration was supplied to addMigration(Migration... migrations) that has a start or end version equal to a start version supplied to fallbackToDestructiveMigrationFrom(int... startVersions). Start version: " + version);
                         }
@@ -283,7 +262,8 @@ public abstract class RoomDatabase {
                 if (this.mFactory == null) {
                     this.mFactory = new FrameworkSQLiteOpenHelperFactory();
                 }
-                T db = new DatabaseConfiguration(this.mContext, this.mName, this.mFactory, this.mMigrationContainer, this.mCallbacks, this.mAllowMainThreadQueries, this.mJournalMode.resolve(this.mContext), this.mRequireMigration, this.mMigrationsNotRequiredFrom);
+                Context context = this.mContext;
+                T db = new DatabaseConfiguration(context, this.mName, this.mFactory, this.mMigrationContainer, this.mCallbacks, this.mAllowMainThreadQueries, this.mJournalMode.resolve(context), this.mRequireMigration, this.mMigrationsNotRequiredFrom);
                 T db2 = (RoomDatabase) Room.getGeneratedImplementation(this.mDatabaseClass, RoomDatabase.DB_IMPL_SUFFIX);
                 db2.init(db);
                 return db2;
@@ -296,7 +276,7 @@ public abstract class RoomDatabase {
     public static class MigrationContainer {
         private SparseArrayCompat<SparseArrayCompat<Migration>> mMigrations = new SparseArrayCompat<>();
 
-        public void addMigrations(@NonNull Migration... migrations) {
+        public void addMigrations(Migration... migrations) {
             for (Migration migration : migrations) {
                 addMigration(migration);
             }
@@ -317,7 +297,6 @@ public abstract class RoomDatabase {
             targetMap.append(end, migration);
         }
 
-        @Nullable
         public List<Migration> findMigrationPath(int start, int end) {
             if (start == end) {
                 return Collections.emptyList();
@@ -325,92 +304,69 @@ public abstract class RoomDatabase {
             return findUpMigrationPath(new ArrayList<>(), end > start, start, end);
         }
 
-        /* JADX WARNING: Removed duplicated region for block: B:12:0x0021  */
-        /* JADX WARNING: Removed duplicated region for block: B:35:0x0020 A[SYNTHETIC] */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        private java.util.List<android.arch.persistence.room.migration.Migration> findUpMigrationPath(java.util.List<android.arch.persistence.room.migration.Migration> r16, boolean r17, int r18, int r19) {
-            /*
-                r15 = this;
-                r0 = r16
-                r1 = r19
-                if (r17 == 0) goto L_0x0008
-                r3 = -1
-                goto L_0x0009
-            L_0x0008:
-                r3 = 1
-            L_0x0009:
-                r4 = r18
-            L_0x000b:
-                if (r17 == 0) goto L_0x0012
-                if (r4 >= r1) goto L_0x0010
-                goto L_0x0014
-            L_0x0010:
-                r5 = r15
-                goto L_0x0059
-            L_0x0012:
-                if (r4 <= r1) goto L_0x0010
-            L_0x0014:
-                r5 = r15
-                android.support.v4.util.SparseArrayCompat<android.support.v4.util.SparseArrayCompat<android.arch.persistence.room.migration.Migration>> r6 = r5.mMigrations
-                java.lang.Object r6 = r6.get(r4)
-                android.support.v4.util.SparseArrayCompat r6 = (android.support.v4.util.SparseArrayCompat) r6
-                r7 = 0
-                if (r6 != 0) goto L_0x0021
-                return r7
-            L_0x0021:
-                int r8 = r6.size()
-                if (r17 == 0) goto L_0x002b
-                int r9 = r8 + -1
-                r10 = -1
-                goto L_0x002d
-            L_0x002b:
-                r9 = 0
-                r10 = r8
-            L_0x002d:
-                r11 = 0
-                r12 = r9
-            L_0x002f:
-                if (r12 == r10) goto L_0x0055
-                int r13 = r6.keyAt(r12)
-                r14 = 0
-                if (r17 == 0) goto L_0x003f
-                if (r13 > r1) goto L_0x003e
-                if (r13 <= r4) goto L_0x003e
-                r14 = 1
-            L_0x003e:
-                goto L_0x0045
-            L_0x003f:
-                if (r13 < r1) goto L_0x0045
-                if (r13 >= r4) goto L_0x0045
-                r14 = 1
-            L_0x0045:
-                if (r14 == 0) goto L_0x0053
-                java.lang.Object r2 = r6.valueAt(r12)
-                r0.add(r2)
-                r2 = r13
-                r11 = 1
-                r4 = r2
-                goto L_0x0055
-            L_0x0053:
-                int r12 = r12 + r3
-                goto L_0x002f
-            L_0x0055:
-                if (r11 != 0) goto L_0x0058
-                return r7
-            L_0x0058:
-                goto L_0x000b
-            L_0x0059:
-                return r0
-            */
-            throw new UnsupportedOperationException("Method not decompiled: android.arch.persistence.room.RoomDatabase.MigrationContainer.findUpMigrationPath(java.util.List, boolean, int, int):java.util.List");
+        private List<Migration> findUpMigrationPath(List<Migration> result, boolean upgrade, int start, int end) {
+            int lastIndex;
+            int firstIndex;
+            boolean found;
+            List<Migration> list = result;
+            int i = end;
+            int searchDirection = upgrade ? -1 : 1;
+            int start2 = start;
+            do {
+                if (upgrade) {
+                    if (start2 >= i) {
+                        return list;
+                    }
+                } else if (start2 <= i) {
+                    return list;
+                }
+                SparseArrayCompat<Migration> targetNodes = this.mMigrations.get(start2);
+                if (targetNodes != null) {
+                    int size = targetNodes.size();
+                    if (upgrade) {
+                        firstIndex = size - 1;
+                        lastIndex = -1;
+                    } else {
+                        firstIndex = 0;
+                        lastIndex = size;
+                    }
+                    found = false;
+                    int i2 = firstIndex;
+                    while (true) {
+                        if (i2 == lastIndex) {
+                            break;
+                        }
+                        int targetVersion = targetNodes.keyAt(i2);
+                        boolean shouldAddToPath = false;
+                        if (upgrade) {
+                            if (targetVersion <= i && targetVersion > start2) {
+                                shouldAddToPath = true;
+                            }
+                        } else if (targetVersion >= i && targetVersion < start2) {
+                            shouldAddToPath = true;
+                        }
+                        if (shouldAddToPath) {
+                            list.add(targetNodes.valueAt(i2));
+                            start2 = targetVersion;
+                            found = true;
+                            continue;
+                            break;
+                        }
+                        i2 += searchDirection;
+                    }
+                } else {
+                    return null;
+                }
+            } while (found);
+            return null;
         }
     }
 
     public static abstract class Callback {
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+        public void onCreate(SupportSQLiteDatabase db) {
         }
 
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+        public void onOpen(SupportSQLiteDatabase db) {
         }
     }
 }

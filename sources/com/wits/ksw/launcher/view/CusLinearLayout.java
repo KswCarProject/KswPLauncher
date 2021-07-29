@@ -1,10 +1,8 @@
 package com.wits.ksw.launcher.view;
 
-import android.annotation.SuppressLint;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,8 +23,7 @@ public class CusLinearLayout extends LinearLayout implements View.OnFocusChangeL
         this(context, (AttributeSet) null);
     }
 
-    @SuppressLint({"NewApi"})
-    public CusLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public CusLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.leftX = 60;
         setOnFocusChangeListener(this);
@@ -117,7 +114,7 @@ public class CusLinearLayout extends LinearLayout implements View.OnFocusChangeL
     private void itemRightPostionX(View view) {
         int scrrenWidth = KswUtils.screenWidth(view.getContext());
         Log.i(TAG, "itemRightPostionX: scrrenWidth=" + scrrenWidth);
-        this.itemRightPostionX = (scrrenWidth + -116) - this.leftX;
+        this.itemRightPostionX = (scrrenWidth - 116) - this.leftX;
         Log.i(TAG, "itemRightPostionX: itemRightPostionX=" + this.itemRightPostionX);
     }
 

@@ -1,12 +1,13 @@
 package com.google.gson.stream;
 
+import com.ibm.icu.text.PluralRules;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.io.Writer;
 
 public class JsonWriter implements Closeable, Flushable {
-    private static final String[] HTML_SAFE_REPLACEMENT_CHARS = ((String[]) REPLACEMENT_CHARS.clone());
+    private static final String[] HTML_SAFE_REPLACEMENT_CHARS;
     private static final String[] REPLACEMENT_CHARS = new String[128];
     private String deferredName;
     private boolean htmlSafe;
@@ -22,18 +23,21 @@ public class JsonWriter implements Closeable, Flushable {
         for (int i = 0; i <= 31; i++) {
             REPLACEMENT_CHARS[i] = String.format("\\u%04x", new Object[]{Integer.valueOf(i)});
         }
-        REPLACEMENT_CHARS[34] = "\\\"";
-        REPLACEMENT_CHARS[92] = "\\\\";
-        REPLACEMENT_CHARS[9] = "\\t";
-        REPLACEMENT_CHARS[8] = "\\b";
-        REPLACEMENT_CHARS[10] = "\\n";
-        REPLACEMENT_CHARS[13] = "\\r";
-        REPLACEMENT_CHARS[12] = "\\f";
-        HTML_SAFE_REPLACEMENT_CHARS[60] = "\\u003c";
-        HTML_SAFE_REPLACEMENT_CHARS[62] = "\\u003e";
-        HTML_SAFE_REPLACEMENT_CHARS[38] = "\\u0026";
-        HTML_SAFE_REPLACEMENT_CHARS[61] = "\\u003d";
-        HTML_SAFE_REPLACEMENT_CHARS[39] = "\\u0027";
+        String[] strArr = REPLACEMENT_CHARS;
+        strArr[34] = "\\\"";
+        strArr[92] = "\\\\";
+        strArr[9] = "\\t";
+        strArr[8] = "\\b";
+        strArr[10] = "\\n";
+        strArr[13] = "\\r";
+        strArr[12] = "\\f";
+        String[] strArr2 = (String[]) strArr.clone();
+        HTML_SAFE_REPLACEMENT_CHARS = strArr2;
+        strArr2[60] = "\\u003c";
+        strArr2[62] = "\\u003e";
+        strArr2[38] = "\\u0026";
+        strArr2[61] = "\\u003d";
+        strArr2[39] = "\\u0027";
     }
 
     public JsonWriter(Writer out2) {
@@ -54,7 +58,7 @@ public class JsonWriter implements Closeable, Flushable {
             return;
         }
         this.indent = indent2;
-        this.separator = ": ";
+        this.separator = PluralRules.KEYWORD_RULE_SEPARATOR;
     }
 
     public final void setLenient(boolean lenient2) {
@@ -123,20 +127,23 @@ public class JsonWriter implements Closeable, Flushable {
     }
 
     private void push(int newTop) {
-        if (this.stackSize == this.stack.length) {
-            int[] newStack = new int[(this.stackSize * 2)];
-            System.arraycopy(this.stack, 0, newStack, 0, this.stackSize);
+        int i = this.stackSize;
+        int[] iArr = this.stack;
+        if (i == iArr.length) {
+            int[] newStack = new int[(i * 2)];
+            System.arraycopy(iArr, 0, newStack, 0, i);
             this.stack = newStack;
         }
-        int[] newStack2 = this.stack;
-        int i = this.stackSize;
-        this.stackSize = i + 1;
-        newStack2[i] = newTop;
+        int[] iArr2 = this.stack;
+        int i2 = this.stackSize;
+        this.stackSize = i2 + 1;
+        iArr2[i2] = newTop;
     }
 
     private int peek() {
-        if (this.stackSize != 0) {
-            return this.stack[this.stackSize - 1];
+        int i = this.stackSize;
+        if (i != 0) {
+            return this.stack[i - 1];
         }
         throw new IllegalStateException("JsonWriter is closed.");
     }

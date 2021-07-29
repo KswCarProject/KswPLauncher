@@ -55,9 +55,10 @@ public class BwmNbtModel extends LauncherViewModel implements View.OnFocusChange
     }
 
     private void btnSelect(int index) {
-        if (this.mainnbtBinging != null) {
+        ActivityBmwNbtBinding activityBmwNbtBinding = this.mainnbtBinging;
+        if (activityBmwNbtBinding != null) {
             boolean z = false;
-            this.mainnbtBinging.appLl.setSelected(index == 0);
+            activityBmwNbtBinding.appLl.setSelected(index == 0);
             this.mainnbtBinging.naviLl.setSelected(index == 1);
             this.mainnbtBinging.musicLl.setSelected(index == 2);
             this.mainnbtBinging.videoLl.setSelected(index == 3);

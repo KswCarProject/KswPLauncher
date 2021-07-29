@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class ConstraintWidgetGroup {
     public List<ConstraintWidget> mConstrainedGroup;
-    public final int[] mGroupDimensions = {this.mGroupWidth, this.mGroupHeight};
+    public final int[] mGroupDimensions = {-1, -1};
     int mGroupHeight = -1;
     int mGroupWidth = -1;
     public boolean mSkipSolver = false;

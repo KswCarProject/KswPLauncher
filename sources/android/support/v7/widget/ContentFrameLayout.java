@@ -2,7 +2,6 @@ package android.support.v7.widget;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -10,7 +9,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class ContentFrameLayout extends FrameLayout {
     private OnAttachListener mAttachListener;
     private final Rect mDecorPadding;
@@ -40,7 +38,6 @@ public class ContentFrameLayout extends FrameLayout {
         this.mDecorPadding = new Rect();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void dispatchFitSystemWindows(Rect insets) {
         fitSystemWindows(insets);
     }
@@ -49,7 +46,6 @@ public class ContentFrameLayout extends FrameLayout {
         this.mAttachListener = attachListener;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setDecorPadding(int left, int top, int right, int bottom) {
         this.mDecorPadding.set(left, top, right, bottom);
         if (ViewCompat.isLaidOut(this)) {
@@ -165,16 +161,18 @@ public class ContentFrameLayout extends FrameLayout {
     /* access modifiers changed from: protected */
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (this.mAttachListener != null) {
-            this.mAttachListener.onAttachedFromWindow();
+        OnAttachListener onAttachListener = this.mAttachListener;
+        if (onAttachListener != null) {
+            onAttachListener.onAttachedFromWindow();
         }
     }
 
     /* access modifiers changed from: protected */
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (this.mAttachListener != null) {
-            this.mAttachListener.onDetachedFromWindow();
+        OnAttachListener onAttachListener = this.mAttachListener;
+        if (onAttachListener != null) {
+            onAttachListener.onDetachedFromWindow();
         }
     }
 }

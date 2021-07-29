@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
@@ -28,24 +27,23 @@ public class AudiLanguageViewModel extends AndroidViewModel {
     public MutableLiveData<Locale> languageChange = new MutableLiveData<>();
     public MutableLiveData<List<FunctionBean>> languageDatas = new MutableLiveData<>();
 
-    public AudiLanguageViewModel(@NonNull Application application) {
+    public AudiLanguageViewModel(Application application) {
         super(application);
         Log.i(TAG, "AudiLanguageViewModel: ");
-        this.context = application.getApplicationContext();
-        this.context.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.LANGUAGE_DEFUAL), false, this.contentObserver);
+        Context applicationContext = application.getApplicationContext();
+        this.context = applicationContext;
+        applicationContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.LANGUAGE_DEFUAL), false, this.contentObserver);
     }
 
     public void updataLanguage() {
         try {
             int defaultIndex = PowerManagerApp.getSettingsInt(KeyConfig.LANGUAGE_DEFUAL);
-            String str = TAG;
-            Log.i(str, "defaultIndex: " + defaultIndex);
+            Log.i(TAG, "defaultIndex: " + defaultIndex);
             List<FunctionBean> data = new ArrayList<>();
             List<String> languags = PowerManagerApp.getDataListFromJsonKey(KeyConfig.LANGUAGE_LIST);
             int i = 0;
             while (i < languags.size()) {
-                String str2 = TAG;
-                Log.d(str2, "factory Language：" + languags.get(i));
+                Log.d(TAG, "factory Language：" + languags.get(i));
                 FunctionBean fb = new FunctionBean();
                 fb.setTitle(languags.get(i));
                 fb.setIscheck(defaultIndex == i);
@@ -53,9 +51,7 @@ public class AudiLanguageViewModel extends AndroidViewModel {
                 i++;
             }
             this.languageDatas.setValue(data);
-            Locale sysLanguage = Locale.getDefault();
-            String str3 = TAG;
-            Log.i(str3, "System Language：" + sysLanguage.getDisplayName());
+            Log.i(TAG, "System Language：" + Locale.getDefault().getDisplayName());
         } catch (Exception e) {
             e.printStackTrace();
         }

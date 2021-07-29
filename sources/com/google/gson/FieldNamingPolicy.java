@@ -55,17 +55,13 @@ public enum FieldNamingPolicy implements FieldNamingStrategy {
         if (index == name.length()) {
             return fieldNameBuilder.toString();
         }
-        if (Character.isUpperCase(firstCharacter)) {
-            return name;
+        if (!Character.isUpperCase(firstCharacter)) {
+            return fieldNameBuilder.append(modifyString(Character.toUpperCase(firstCharacter), name, index + 1)).toString();
         }
-        fieldNameBuilder.append(modifyString(Character.toUpperCase(firstCharacter), name, index + 1));
-        return fieldNameBuilder.toString();
+        return name;
     }
 
     private static String modifyString(char firstCharacter, String srcString, int indexOfSubstring) {
-        if (indexOfSubstring >= srcString.length()) {
-            return String.valueOf(firstCharacter);
-        }
-        return firstCharacter + srcString.substring(indexOfSubstring);
+        return indexOfSubstring < srcString.length() ? firstCharacter + srcString.substring(indexOfSubstring) : String.valueOf(firstCharacter);
     }
 }

@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.media.MediaSessionManager;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
@@ -17,18 +16,19 @@ class MediaSessionManagerImplBase implements MediaSessionManager.MediaSessionMan
     private static final String PERMISSION_MEDIA_CONTENT_CONTROL = "android.permission.MEDIA_CONTENT_CONTROL";
     private static final String PERMISSION_STATUS_BAR_SERVICE = "android.permission.STATUS_BAR_SERVICE";
     private static final String TAG = "MediaSessionManager";
-    ContentResolver mContentResolver = this.mContext.getContentResolver();
+    ContentResolver mContentResolver;
     Context mContext;
 
     MediaSessionManagerImplBase(Context context) {
         this.mContext = context;
+        this.mContentResolver = context.getContentResolver();
     }
 
     public Context getContext() {
         return this.mContext;
     }
 
-    public boolean isTrustedForMediaControl(@NonNull MediaSessionManager.RemoteUserInfoImpl userInfo) {
+    public boolean isTrustedForMediaControl(MediaSessionManager.RemoteUserInfoImpl userInfo) {
         try {
             if (this.mContext.getPackageManager().getApplicationInfo(userInfo.getPackageName(), 0).uid != userInfo.getUid()) {
                 if (DEBUG) {
@@ -62,15 +62,16 @@ class MediaSessionManagerImplBase implements MediaSessionManager.MediaSessionMan
     }
 
     /* access modifiers changed from: package-private */
-    public boolean isEnabledNotificationListener(@NonNull MediaSessionManager.RemoteUserInfoImpl userInfo) {
+    public boolean isEnabledNotificationListener(MediaSessionManager.RemoteUserInfoImpl userInfo) {
         String enabledNotifListeners = Settings.Secure.getString(this.mContentResolver, ENABLED_NOTIFICATION_LISTENERS);
-        if (enabledNotifListeners != null) {
-            String[] components = enabledNotifListeners.split(":");
-            for (String unflattenFromString : components) {
-                ComponentName component = ComponentName.unflattenFromString(unflattenFromString);
-                if (component != null && component.getPackageName().equals(userInfo.getPackageName())) {
-                    return true;
-                }
+        if (enabledNotifListeners == null) {
+            return false;
+        }
+        String[] components = enabledNotifListeners.split(":");
+        for (String unflattenFromString : components) {
+            ComponentName component = ComponentName.unflattenFromString(unflattenFromString);
+            if (component != null && component.getPackageName().equals(userInfo.getPackageName())) {
+                return true;
             }
         }
         return false;

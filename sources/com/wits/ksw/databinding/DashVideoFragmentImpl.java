@@ -3,8 +3,6 @@ package com.wits.ksw.databinding;
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,35 +10,35 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 
 public class DashVideoFragmentImpl extends DashVideoFragment {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(3);
-    @Nullable
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @Nullable
     private final AlsId7SubDashboardViewBinding mboundView0;
-    @NonNull
     private final ConstraintLayout mboundView01;
-    @Nullable
     private final AlsId7SubVideoViewBinding mboundView02;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"als_id7_sub_dashboard_view", "als_id7_sub_video_view"}, new int[]{1, 2}, new int[]{R.layout.als_id7_sub_dashboard_view, R.layout.als_id7_sub_video_view});
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"als_id7_sub_dashboard_view", "als_id7_sub_video_view"}, new int[]{1, 2}, new int[]{R.layout.als_id7_sub_dashboard_view, R.layout.als_id7_sub_video_view});
     }
 
-    public DashVideoFragmentImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public DashVideoFragmentImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private DashVideoFragmentImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[1];
-        setContainedBinding(this.mboundView0);
-        this.mboundView01 = bindings[0];
-        this.mboundView01.setTag((Object) null);
-        this.mboundView02 = bindings[2];
-        setContainedBinding(this.mboundView02);
+        AlsId7SubDashboardViewBinding alsId7SubDashboardViewBinding = bindings[1];
+        this.mboundView0 = alsId7SubDashboardViewBinding;
+        setContainedBinding(alsId7SubDashboardViewBinding);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView01 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        AlsId7SubVideoViewBinding alsId7SubVideoViewBinding = bindings[2];
+        this.mboundView02 = alsId7SubVideoViewBinding;
+        setContainedBinding(alsId7SubVideoViewBinding);
         setRootTag(root);
         invalidateAll();
     }
@@ -103,24 +101,24 @@ public class DashVideoFragmentImpl extends DashVideoFragment {
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.DashVideoFragmentImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (15 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (3 != variableId) {
             return false;
         }
         setDashVideoViewModel((AlsID7ViewModel) variable);
         return true;
     }
 
-    public void setDashVideoViewModel(@Nullable AlsID7ViewModel DashVideoViewModel) {
+    public void setDashVideoViewModel(AlsID7ViewModel DashVideoViewModel) {
         this.mDashVideoViewModel = DashVideoViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(3);
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.mboundView0.setLifecycleOwner(lifecycleOwner);
         this.mboundView02.setLifecycleOwner(lifecycleOwner);

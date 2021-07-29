@@ -2,14 +2,11 @@ package android.support.v4.media;
 
 import android.media.browse.MediaBrowser;
 import android.os.Parcel;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 
-@RequiresApi(23)
 class MediaBrowserCompatApi23 {
 
     interface ItemCallback {
-        void onError(@NonNull String str);
+        void onError(String str);
 
         void onItemLoaded(Parcel parcel);
     }
@@ -39,7 +36,7 @@ class MediaBrowserCompatApi23 {
             this.mItemCallback.onItemLoaded(parcel);
         }
 
-        public void onError(@NonNull String itemId) {
+        public void onError(String itemId) {
             this.mItemCallback.onError(itemId);
         }
     }

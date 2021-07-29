@@ -77,15 +77,17 @@ public class TimeSetTwo extends RelativeLayout implements RadioGroup.OnCheckedCh
             this.rdg_timeSy.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (motionEvent.getAction() == 0) {
-                        if (finalI == 0) {
+                        int i = finalI;
+                        if (i == 0) {
                             TimeSetTwo.this.romeo_list_r1.setVisibility(0);
-                        } else if (finalI == 1) {
+                        } else if (i == 1) {
                             TimeSetTwo.this.romeo_list_r2.setVisibility(0);
                         }
                     } else if (motionEvent.getAction() == 1 || motionEvent.getAction() == 3) {
-                        if (finalI == 0) {
+                        int i2 = finalI;
+                        if (i2 == 0) {
                             TimeSetTwo.this.romeo_list_r1.setVisibility(4);
-                        } else if (finalI == 1) {
+                        } else if (i2 == 1) {
                             TimeSetTwo.this.romeo_list_r2.setVisibility(4);
                         }
                     }
@@ -94,19 +96,20 @@ public class TimeSetTwo extends RelativeLayout implements RadioGroup.OnCheckedCh
             });
             this.rdg_timeSy.getChildAt(i).setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 public void onFocusChange(View view, boolean b) {
-                    int i = 4;
-                    if (finalI == 0) {
+                    int i = finalI;
+                    int i2 = 0;
+                    if (i == 0) {
                         ImageView access$000 = TimeSetTwo.this.romeo_list_r1;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$000.setVisibility(i);
-                    } else if (finalI == 1) {
+                        access$000.setVisibility(i2);
+                    } else if (i == 1) {
                         ImageView access$100 = TimeSetTwo.this.romeo_list_r2;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$100.setVisibility(i);
+                        access$100.setVisibility(i2);
                     }
                 }
             });
@@ -116,15 +119,17 @@ public class TimeSetTwo extends RelativeLayout implements RadioGroup.OnCheckedCh
             this.rdg_timeZhis.getChildAt(i2).setOnTouchListener(new View.OnTouchListener() {
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (motionEvent.getAction() == 0) {
-                        if (finalI2 == 0) {
+                        int i = finalI2;
+                        if (i == 0) {
                             TimeSetTwo.this.romeo_list_r1.setVisibility(0);
-                        } else if (finalI2 == 1) {
+                        } else if (i == 1) {
                             TimeSetTwo.this.romeo_list_r2.setVisibility(0);
                         }
                     } else if (motionEvent.getAction() == 1 || motionEvent.getAction() == 3) {
-                        if (finalI2 == 0) {
+                        int i2 = finalI2;
+                        if (i2 == 0) {
                             TimeSetTwo.this.romeo_list_r1.setVisibility(4);
-                        } else if (finalI2 == 1) {
+                        } else if (i2 == 1) {
                             TimeSetTwo.this.romeo_list_r2.setVisibility(4);
                         }
                     }
@@ -133,19 +138,20 @@ public class TimeSetTwo extends RelativeLayout implements RadioGroup.OnCheckedCh
             });
             this.rdg_timeZhis.getChildAt(i2).setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 public void onFocusChange(View view, boolean b) {
-                    int i = 4;
-                    if (finalI2 == 0) {
+                    int i = finalI2;
+                    int i2 = 0;
+                    if (i == 0) {
                         ImageView access$000 = TimeSetTwo.this.romeo_list_r1;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$000.setVisibility(i);
-                    } else if (finalI2 == 1) {
+                        access$000.setVisibility(i2);
+                    } else if (i == 1) {
                         ImageView access$100 = TimeSetTwo.this.romeo_list_r2;
-                        if (b) {
-                            i = 0;
+                        if (!b) {
+                            i2 = 4;
                         }
-                        access$100.setVisibility(i);
+                        access$100.setVisibility(i2);
                     }
                 }
             });

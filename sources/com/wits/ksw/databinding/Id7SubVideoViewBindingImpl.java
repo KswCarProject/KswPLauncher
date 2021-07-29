@@ -2,8 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
@@ -11,20 +9,19 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback117;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback52;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.textView2, 2);
-        sViewsWithIds.put(R.id.textView3, 3);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.textView2, 2);
+        sparseIntArray.put(R.id.textView3, 3);
     }
 
-    public Id7SubVideoViewBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public Id7SubVideoViewBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -34,7 +31,7 @@ public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implement
         this.videoConstraintLayout.setTag((Object) null);
         this.videoImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback117 = new OnClickListener(this, 1);
+        this.mCallback52 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -54,20 +51,20 @@ public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implement
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (22 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (6 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setMediaViewModel(@Nullable LauncherViewModel MediaViewModel) {
+    public void setMediaViewModel(LauncherViewModel MediaViewModel) {
         this.mMediaViewModel = MediaViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(22);
+        notifyPropertyChanged(6);
         super.requestRebind();
     }
 
@@ -89,7 +86,7 @@ public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implement
             mediaViewModelVideoViewFocusChangeListener = mediaViewModel.videoViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.videoImageView.setOnClickListener(this.mCallback117);
+            this.videoImageView.setOnClickListener(this.mCallback52);
         }
         if ((3 & dirtyFlags) != 0) {
             this.videoImageView.setOnFocusChangeListener(mediaViewModelVideoViewFocusChangeListener);

@@ -5,8 +5,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,29 +31,30 @@ public class UgHomeFragmentFour extends Fragment implements View.OnFocusChangeLi
         this.mainActivity = (MainActivity) activity;
     }
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("aa", "onCreate: MediaFragment");
         this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
-            this.binding2 = (UgHomeFour2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_four2, (ViewGroup) null, false);
-            return this.binding2.getRoot();
+            UgHomeFour2BindingImpl ugHomeFour2BindingImpl = (UgHomeFour2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_four2, (ViewGroup) null, false);
+            this.binding2 = ugHomeFour2BindingImpl;
+            return ugHomeFour2BindingImpl.getRoot();
         }
-        this.binding = (UgHomeFourBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_four, (ViewGroup) null, false);
-        return this.binding.getRoot();
+        UgHomeFourBindingImpl ugHomeFourBindingImpl = (UgHomeFourBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_four, (ViewGroup) null, false);
+        this.binding = ugHomeFourBindingImpl;
+        return ugHomeFourBindingImpl.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
             this.binding2.setViewModel(this.viewModel);
             this.binding2.ugHomeBrowserVaiw.setOnFocusChangeListener(this);
             this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-                public void onChanged(@Nullable UgPager ugPager) {
+                public void onChanged(UgPager ugPager) {
                     if (ugPager.index == 3 && ugPager.left) {
                         WiewFocusUtils.setViewRequestFocus(UgHomeFragmentFour.this.binding2.ugHomeBrowserVaiw);
                     }
@@ -66,7 +65,7 @@ public class UgHomeFragmentFour extends Fragment implements View.OnFocusChangeLi
         this.binding.setViewModel(this.viewModel);
         this.binding.ugHomeBrowserVaiw.setOnFocusChangeListener(this);
         this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-            public void onChanged(@Nullable UgPager ugPager) {
+            public void onChanged(UgPager ugPager) {
                 if (ugPager.index == 3 && ugPager.left) {
                     WiewFocusUtils.setViewRequestFocus(UgHomeFragmentFour.this.binding.ugHomeBrowserVaiw);
                 }

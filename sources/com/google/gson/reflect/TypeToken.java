@@ -15,15 +15,17 @@ public class TypeToken<T> {
     final Type type;
 
     protected TypeToken() {
-        this.type = getSuperclassTypeParameter(getClass());
-        this.rawType = C$Gson$Types.getRawType(this.type);
-        this.hashCode = this.type.hashCode();
+        Type superclassTypeParameter = getSuperclassTypeParameter(getClass());
+        this.type = superclassTypeParameter;
+        this.rawType = C$Gson$Types.getRawType(superclassTypeParameter);
+        this.hashCode = superclassTypeParameter.hashCode();
     }
 
     TypeToken(Type type2) {
-        this.type = C$Gson$Types.canonicalize((Type) C$Gson$Preconditions.checkNotNull(type2));
-        this.rawType = C$Gson$Types.getRawType(this.type);
-        this.hashCode = this.type.hashCode();
+        Type canonicalize = C$Gson$Types.canonicalize((Type) C$Gson$Preconditions.checkNotNull(type2));
+        this.type = canonicalize;
+        this.rawType = C$Gson$Types.getRawType(canonicalize);
+        this.hashCode = canonicalize.hashCode();
     }
 
     static Type getSuperclassTypeParameter(Class<?> subclass) {
@@ -55,14 +57,15 @@ public class TypeToken<T> {
         if (this.type.equals(from)) {
             return true;
         }
-        if (this.type instanceof Class) {
+        Type type2 = this.type;
+        if (type2 instanceof Class) {
             return this.rawType.isAssignableFrom(C$Gson$Types.getRawType(from));
         }
-        if (this.type instanceof ParameterizedType) {
-            return isAssignableFrom(from, (ParameterizedType) this.type, new HashMap());
+        if (type2 instanceof ParameterizedType) {
+            return isAssignableFrom(from, (ParameterizedType) type2, new HashMap());
         }
-        if (!(this.type instanceof GenericArrayType)) {
-            throw buildUnexpectedTypeError(this.type, Class.class, ParameterizedType.class, GenericArrayType.class);
+        if (!(type2 instanceof GenericArrayType)) {
+            throw buildUnexpectedTypeError(type2, Class.class, ParameterizedType.class, GenericArrayType.class);
         } else if (!this.rawType.isAssignableFrom(C$Gson$Types.getRawType(from)) || !isAssignableFrom(from, (GenericArrayType) this.type)) {
             return false;
         } else {
@@ -145,14 +148,9 @@ public class TypeToken<T> {
     private static AssertionError buildUnexpectedTypeError(Type token, Class<?>... expected) {
         StringBuilder exceptionMessage = new StringBuilder("Unexpected type. Expected one of: ");
         for (Class<?> clazz : expected) {
-            exceptionMessage.append(clazz.getName());
-            exceptionMessage.append(", ");
+            exceptionMessage.append(clazz.getName()).append(", ");
         }
-        exceptionMessage.append("but got: ");
-        exceptionMessage.append(token.getClass().getName());
-        exceptionMessage.append(", for type token: ");
-        exceptionMessage.append(token.toString());
-        exceptionMessage.append('.');
+        exceptionMessage.append("but got: ").append(token.getClass().getName()).append(", for type token: ").append(token.toString()).append('.');
         return new AssertionError(exceptionMessage.toString());
     }
 

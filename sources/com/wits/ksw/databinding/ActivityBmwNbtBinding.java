@@ -1,11 +1,8 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.Bindable;
-import android.databinding.DataBindingComponent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,28 +11,20 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.BwmNbtModel;
 
 public abstract class ActivityBmwNbtBinding extends ViewDataBinding {
-    @NonNull
     public final Button appLl;
-    @NonNull
     public final Button dashbroadLl;
     @Bindable
     protected BwmNbtModel mNbtModel;
-    @NonNull
     public final Button musicLl;
-    @NonNull
     public final Button naviLl;
-    @NonNull
     public final Button phoneLl;
-    @NonNull
     public final Button rlCar;
-    @NonNull
     public final Button rlSettings;
-    @NonNull
     public final Button videoLl;
 
-    public abstract void setNbtModel(@Nullable BwmNbtModel bwmNbtModel);
+    public abstract void setNbtModel(BwmNbtModel bwmNbtModel);
 
-    protected ActivityBmwNbtBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, Button appLl2, Button dashbroadLl2, Button musicLl2, Button naviLl2, Button phoneLl2, Button rlCar2, Button rlSettings2, Button videoLl2) {
+    protected ActivityBmwNbtBinding(Object _bindingComponent, View _root, int _localFieldCount, Button appLl2, Button dashbroadLl2, Button musicLl2, Button naviLl2, Button phoneLl2, Button rlCar2, Button rlSettings2, Button videoLl2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.appLl = appLl2;
         this.dashbroadLl = dashbroadLl2;
@@ -47,36 +36,34 @@ public abstract class ActivityBmwNbtBinding extends ViewDataBinding {
         this.videoLl = videoLl2;
     }
 
-    @Nullable
     public BwmNbtModel getNbtModel() {
         return this.mNbtModel;
     }
 
-    @NonNull
-    public static ActivityBmwNbtBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot) {
+    public static ActivityBmwNbtBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
         return inflate(inflater, root, attachToRoot, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ActivityBmwNbtBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
-        return (ActivityBmwNbtBinding) DataBindingUtil.inflate(inflater, R.layout.activity_bmw_nbt, root, attachToRoot, component);
+    @Deprecated
+    public static ActivityBmwNbtBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
+        return (ActivityBmwNbtBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_bmw_nbt, root, attachToRoot, component);
     }
 
-    @NonNull
-    public static ActivityBmwNbtBinding inflate(@NonNull LayoutInflater inflater) {
+    public static ActivityBmwNbtBinding inflate(LayoutInflater inflater) {
         return inflate(inflater, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ActivityBmwNbtBinding inflate(@NonNull LayoutInflater inflater, @Nullable DataBindingComponent component) {
-        return (ActivityBmwNbtBinding) DataBindingUtil.inflate(inflater, R.layout.activity_bmw_nbt, (ViewGroup) null, false, component);
+    @Deprecated
+    public static ActivityBmwNbtBinding inflate(LayoutInflater inflater, Object component) {
+        return (ActivityBmwNbtBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_bmw_nbt, (ViewGroup) null, false, component);
     }
 
-    public static ActivityBmwNbtBinding bind(@NonNull View view) {
+    public static ActivityBmwNbtBinding bind(View view) {
         return bind(view, DataBindingUtil.getDefaultComponent());
     }
 
-    public static ActivityBmwNbtBinding bind(@NonNull View view, @Nullable DataBindingComponent component) {
+    @Deprecated
+    public static ActivityBmwNbtBinding bind(View view, Object component) {
         return (ActivityBmwNbtBinding) bind(component, view, R.layout.activity_bmw_nbt);
     }
 }

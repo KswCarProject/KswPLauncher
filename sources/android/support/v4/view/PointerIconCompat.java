@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.annotation.RestrictTo;
 import android.view.PointerIcon;
 
 public final class PointerIconCompat {
@@ -37,7 +36,6 @@ public final class PointerIconCompat {
         this.mPointerIcon = pointerIcon;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public Object getPointerIcon() {
         return this.mPointerIcon;
     }

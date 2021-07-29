@@ -25,7 +25,8 @@ class LayoutState {
 
     /* access modifiers changed from: package-private */
     public boolean hasMore(RecyclerView.State state) {
-        return this.mCurrentPosition >= 0 && this.mCurrentPosition < state.getItemCount();
+        int i = this.mCurrentPosition;
+        return i >= 0 && i < state.getItemCount();
     }
 
     /* access modifiers changed from: package-private */

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.os.Build;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class AnimationUtilsCompat {
     public static Interpolator loadInterpolator(Context context, int id) throws Resources.NotFoundException {
         if (Build.VERSION.SDK_INT >= 21) {

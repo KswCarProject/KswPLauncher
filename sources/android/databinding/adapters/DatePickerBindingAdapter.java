@@ -1,17 +1,10 @@
 package android.databinding.adapters;
 
-import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingListener;
-import android.databinding.InverseBindingMethod;
-import android.databinding.InverseBindingMethods;
-import android.support.annotation.RestrictTo;
 import android.widget.DatePicker;
 import com.android.databinding.library.baseAdapters.R;
 
-@InverseBindingMethods({@InverseBindingMethod(attribute = "android:year", type = DatePicker.class), @InverseBindingMethod(attribute = "android:month", type = DatePicker.class), @InverseBindingMethod(attribute = "android:day", method = "getDayOfMonth", type = DatePicker.class)})
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class DatePickerBindingAdapter {
-    @BindingAdapter(requireAll = false, value = {"android:year", "android:month", "android:day", "android:onDateChanged", "android:yearAttrChanged", "android:monthAttrChanged", "android:dayAttrChanged"})
     public static void setListeners(DatePicker view, int year, int month, int day, DatePicker.OnDateChangedListener listener, InverseBindingListener yearChanged, InverseBindingListener monthChanged, InverseBindingListener dayChanged) {
         if (year == 0) {
             year = view.getYear();
@@ -49,17 +42,21 @@ public class DatePickerBindingAdapter {
         }
 
         public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            if (this.mListener != null) {
-                this.mListener.onDateChanged(view, year, monthOfYear, dayOfMonth);
+            DatePicker.OnDateChangedListener onDateChangedListener = this.mListener;
+            if (onDateChangedListener != null) {
+                onDateChangedListener.onDateChanged(view, year, monthOfYear, dayOfMonth);
             }
-            if (this.mYearChanged != null) {
-                this.mYearChanged.onChange();
+            InverseBindingListener inverseBindingListener = this.mYearChanged;
+            if (inverseBindingListener != null) {
+                inverseBindingListener.onChange();
             }
-            if (this.mMonthChanged != null) {
-                this.mMonthChanged.onChange();
+            InverseBindingListener inverseBindingListener2 = this.mMonthChanged;
+            if (inverseBindingListener2 != null) {
+                inverseBindingListener2.onChange();
             }
-            if (this.mDayChanged != null) {
-                this.mDayChanged.onChange();
+            InverseBindingListener inverseBindingListener3 = this.mDayChanged;
+            if (inverseBindingListener3 != null) {
+                inverseBindingListener3.onChange();
             }
         }
     }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AudiHomeItemWidthHeight">
+        <item name="android:layout_width">245dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="audi_set_checkbox">
+        <item name="android:background">@drawable/audi_set_item_selector</item>
+        <item name="android:paddingLeft">45dp</item>
+        <item name="android:paddingRight">80dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:button">@null</item>
+    </style>
+    <style name="audi_set_default_text">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="audi_set_info_item">
+        <item name="android:gravity">clip_horizontal</item>
+        <item name="android:background">@drawable/audi_set_item_selector</item>
+        <item name="android:paddingLeft">45dp</item>
+        <item name="android:paddingRight">80dp</item>
+    </style>
+    <style name="audi_set_item">
+        <item name="android:textColor">@color/audi_item_text_color</item>
+        <item name="android:gravity">clip_horizontal</item>
+        <item name="android:background">@drawable/audi_set_item_selector</item>
+        <item name="android:paddingLeft">45dp</item>
+        <item name="android:paddingRight">80dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:drawableRight">@drawable/audi_set_item_icon_selector</item>
+    </style>
+    <style name="land_rover_main_text_style">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">85dp</item>
+        <item name="android:maxWidth">210dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_marginStart">93dp</item>
+    </style>
+    <style name="land_rover_settings_sec_item">
+        <item name="android:textSize">27sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@drawable/ksw_land_rover_seting_mp_bg</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">86dp</item>
+        <item name="android:paddingStart">36dp</item>
+        <item name="android:paddingEnd">34dp</item>
+    </style>
+</resources>

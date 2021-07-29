@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:tag="layout-1920x660/landrover_main_0" android:background="@drawable/landrover_main_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:paddingTop="60dp" android:paddingBottom="0dp" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <ImageView android:id="@+id/icon_left" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="123dp" android:src="@drawable/landrover_main_icon_left" android:layout_marginStart="45dp"/>
+        <ImageView android:id="@+id/icon_right" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="123dp" android:src="@drawable/landrover_main_icon_right" android:layout_marginEnd="45dp" android:layout_alignParentEnd="true"/>
+        <ImageView android:id="@+id/indicato1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="614dp" android:layout_marginBottom="14dp" android:src="@drawable/landrover_main_indicato" android:layout_alignParentBottom="true"/>
+        <ImageView android:id="@+id/indicato2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="28dp" android:layout_marginBottom="14dp" android:src="@drawable/landrover_main_indicato" android:layout_toRightOf="@+id/indicato1" android:layout_alignTop="@+id/indicato1" android:layout_alignParentBottom="true"/>
+        <android.support.v4.view.ViewPager android:id="@+id/viewPager" android:paddingTop="0dp" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_centerHorizontal="true" android:layout_marginStart="122dp" android:layout_marginEnd="122dp"/>
+    </RelativeLayout>
+    <include android:layout_width="match_parent" android:layout_height="80dp" layout="@layout/landrover_main_bottom_lay"/>
+</LinearLayout>

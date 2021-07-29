@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.service.media.MediaBrowserService;
-import android.support.annotation.RequiresApi;
 import android.support.v4.media.session.MediaSessionCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(21)
 class MediaBrowserServiceCompatApi21 {
 
     public interface ServiceCompatProxy {

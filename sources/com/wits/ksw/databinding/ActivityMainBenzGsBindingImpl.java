@@ -7,12 +7,10 @@ import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.wits.ksw.R;
 import com.wits.ksw.generated.callback.OnClickListener;
@@ -20,20 +18,15 @@ import com.wits.ksw.launcher.model.ControlBean;
 import com.wits.ksw.launcher.view.benzgs.BenzGsViewMoel;
 
 public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback184;
-    @Nullable
-    private final View.OnClickListener mCallback185;
+    private final View.OnClickListener mCallback159;
+    private final View.OnClickListener mCallback160;
     private long mDirtyFlags;
     private OnClickListenerImpl mVmOnControlClickAndroidViewViewOnClickListener;
-    @NonNull
     private final RelativeLayout mboundView0;
 
-    public ActivityMainBenzGsBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainBenzGsBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 5, sIncludes, sViewsWithIds));
     }
 
@@ -44,11 +37,12 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         this.benzgsHomeRightBtn.setTag((Object) null);
         this.benzgsViewpage.setTag((Object) null);
         this.controlBtn.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        RelativeLayout relativeLayout = bindings[0];
+        this.mboundView0 = relativeLayout;
+        relativeLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback184 = new OnClickListener(this, 1);
-        this.mCallback185 = new OnClickListener(this, 2);
+        this.mCallback160 = new OnClickListener(this, 2);
+        this.mCallback159 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -68,7 +62,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -76,7 +70,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         return true;
     }
 
-    public void setVm(@Nullable BenzGsViewMoel Vm) {
+    public void setVm(BenzGsViewMoel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 8;
@@ -89,17 +83,17 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeVmPageIndex((ObservableInt) object, fieldId);
-            case 1:
-                return onChangeVmControlBeanControlPanelClose((ObservableBoolean) object, fieldId);
-            case 2:
                 return onChangeVmControlBeanBenzControlPanelState((ObservableBoolean) object, fieldId);
+            case 1:
+                return onChangeVmPageIndex((ObservableInt) object, fieldId);
+            case 2:
+                return onChangeVmControlBeanControlPanelClose((ObservableBoolean) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeVmPageIndex(ObservableInt VmPageIndex, int fieldId) {
+    private boolean onChangeVmControlBeanBenzControlPanelState(ObservableBoolean VmControlBeanBenzControlPanelState, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -109,7 +103,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         return true;
     }
 
-    private boolean onChangeVmControlBeanControlPanelClose(ObservableBoolean VmControlBeanControlPanelClose, int fieldId) {
+    private boolean onChangeVmPageIndex(ObservableInt VmPageIndex, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -119,7 +113,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         return true;
     }
 
-    private boolean onChangeVmControlBeanBenzControlPanelState(ObservableBoolean VmControlBeanBenzControlPanelState, int fieldId) {
+    private boolean onChangeVmControlBeanControlPanelClose(ObservableBoolean VmControlBeanControlPanelClose, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -132,140 +126,137 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
-        OnClickListenerImpl onClickListenerImpl;
-        ImageView imageView;
-        int i;
+        int vmPageIndexGet;
+        int vmPageIndexInt1ViewVISIBLEViewINVISIBLE;
+        int vmPageIndexInt0ViewVISIBLEViewINVISIBLE;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
+        ControlBean vmControlBean = null;
         BenzGsViewMoel vm = this.mVm;
-        boolean vmControlBeanControlPanelCloseGet = false;
-        int vmPageIndexInt0ViewVISIBLEViewINVISIBLE = 0;
+        int vmControlBeanControlPanelCloseViewGONEViewVISIBLE = 0;
+        boolean vmControlBeanBenzControlPanelStateGet = false;
+        View.OnClickListener vmOnControlClickAndroidViewViewOnClickListener = null;
+        ObservableBoolean vmControlBeanBenzControlPanelState = null;
+        Drawable vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = null;
         ObservableInt vmPageIndex = null;
         ObservableBoolean vmControlBeanControlPanelClose = null;
-        boolean vmControlBeanBenzControlPanelStateGet = false;
-        ObservableBoolean vmControlBeanBenzControlPanelState = null;
-        boolean vmPageIndexInt1 = false;
-        ControlBean vmControlBean = null;
-        int vmControlBeanControlPanelCloseViewGONEViewVISIBLE = 0;
-        View.OnClickListener vmOnControlClickAndroidViewViewOnClickListener = null;
-        Drawable vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = null;
-        int vmPageIndexGet = 0;
-        int vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 0;
+        boolean vmControlBeanControlPanelCloseGet = false;
         if ((dirtyFlags & 31) != 0) {
-            if ((dirtyFlags & 25) != 0) {
-                if (vm != null) {
-                    vmPageIndex = vm.pageIndex;
-                }
-                updateRegistration(0, (Observable) vmPageIndex);
-                if (vmPageIndex != null) {
-                    vmPageIndexGet = vmPageIndex.get();
-                }
-                int vmPageIndexGet2 = vmPageIndexGet;
-                vmPageIndexInt1 = vmPageIndexGet2 == 1;
-                boolean vmPageIndexInt0 = vmPageIndexGet2 == 0;
-                if ((dirtyFlags & 25) != 0) {
-                    if (vmPageIndexInt1) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
-                    } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
-                    }
-                }
-                if ((dirtyFlags & 25) != 0) {
-                    if (vmPageIndexInt0) {
-                        dirtyFlags |= 64;
-                    } else {
-                        dirtyFlags |= 32;
-                    }
-                }
-                int i2 = 4;
-                vmPageIndexInt1ViewVISIBLEViewINVISIBLE = vmPageIndexInt1 ? 0 : 4;
-                if (vmPageIndexInt0) {
-                    i2 = 0;
-                }
-                vmPageIndexInt0ViewVISIBLEViewINVISIBLE = i2;
-                vmPageIndexGet = vmPageIndexGet2;
-            }
-            if ((dirtyFlags & 30) != 0) {
+            if ((dirtyFlags & 29) != 0) {
                 if (vm != null) {
                     vmControlBean = vm.controlBean;
                 }
-                if ((dirtyFlags & 26) != 0) {
+                if ((dirtyFlags & 25) != 0) {
                     if (vmControlBean != null) {
-                        vmControlBeanControlPanelClose = vmControlBean.controlPanelClose;
+                        vmControlBeanBenzControlPanelState = vmControlBean.benzControlPanelState;
                     }
-                    updateRegistration(1, (Observable) vmControlBeanControlPanelClose);
-                    if (vmControlBeanControlPanelClose != null) {
-                        vmControlBeanControlPanelCloseGet = vmControlBeanControlPanelClose.get();
+                    updateRegistration(0, (Observable) vmControlBeanBenzControlPanelState);
+                    if (vmControlBeanBenzControlPanelState != null) {
+                        vmControlBeanBenzControlPanelStateGet = vmControlBeanBenzControlPanelState.get();
                     }
-                    if ((dirtyFlags & 26) != 0) {
-                        if (vmControlBeanControlPanelCloseGet) {
+                    if ((dirtyFlags & 25) != 0) {
+                        if (vmControlBeanBenzControlPanelStateGet) {
                             dirtyFlags |= 256;
                         } else {
                             dirtyFlags |= 128;
                         }
                     }
-                    vmControlBeanControlPanelCloseViewGONEViewVISIBLE = vmControlBeanControlPanelCloseGet ? 8 : 0;
+                    vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = vmControlBeanBenzControlPanelStateGet ? AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_down_selector) : AppCompatResources.getDrawable(this.controlBtn.getContext(), R.drawable.ntg55_ctrlpanel_up_selector);
                 }
                 if ((dirtyFlags & 28) != 0) {
                     if (vmControlBean != null) {
-                        vmControlBeanBenzControlPanelState = vmControlBean.benzControlPanelState;
+                        vmControlBeanControlPanelClose = vmControlBean.controlPanelClose;
                     }
-                    updateRegistration(2, (Observable) vmControlBeanBenzControlPanelState);
-                    if (vmControlBeanBenzControlPanelState != null) {
-                        vmControlBeanBenzControlPanelStateGet = vmControlBeanBenzControlPanelState.get();
+                    updateRegistration(2, (Observable) vmControlBeanControlPanelClose);
+                    if (vmControlBeanControlPanelClose != null) {
+                        vmControlBeanControlPanelCloseGet = vmControlBeanControlPanelClose.get();
                     }
                     if ((dirtyFlags & 28) != 0) {
-                        if (vmControlBeanBenzControlPanelStateGet) {
-                            dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+                        if (vmControlBeanControlPanelCloseGet) {
+                            dirtyFlags |= 64;
                         } else {
-                            dirtyFlags |= 512;
+                            dirtyFlags |= 32;
                         }
                     }
-                    if (vmControlBeanBenzControlPanelStateGet) {
-                        imageView = this.controlBtn;
-                        i = R.drawable.ntg55_ctrlpanel_down_selector;
-                    } else {
-                        imageView = this.controlBtn;
-                        i = R.drawable.ntg55_ctrlpanel_up_selector;
-                    }
-                    vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = getDrawableFromResource(imageView, i);
+                    vmControlBeanControlPanelCloseViewGONEViewVISIBLE = vmControlBeanControlPanelCloseGet ? 8 : 0;
                 }
             }
             if (!((dirtyFlags & 24) == 0 || vm == null)) {
-                if (this.mVmOnControlClickAndroidViewViewOnClickListener == null) {
+                OnClickListenerImpl onClickListenerImpl = this.mVmOnControlClickAndroidViewViewOnClickListener;
+                if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
                     this.mVmOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl;
-                } else {
-                    onClickListenerImpl = this.mVmOnControlClickAndroidViewViewOnClickListener;
                 }
                 vmOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl.setValue(vm);
             }
+            if ((dirtyFlags & 26) != 0) {
+                if (vm != null) {
+                    vmPageIndex = vm.pageIndex;
+                }
+                boolean z = true;
+                updateRegistration(1, (Observable) vmPageIndex);
+                if (vmPageIndex != null) {
+                    vmPageIndexGet = vmPageIndex.get();
+                } else {
+                    vmPageIndexGet = 0;
+                }
+                boolean vmPageIndexInt0 = vmPageIndexGet == 0;
+                if (vmPageIndexGet != 1) {
+                    z = false;
+                }
+                boolean vmPageIndexInt1 = z;
+                if ((dirtyFlags & 26) != 0) {
+                    if (vmPageIndexInt0) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+                    } else {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+                    }
+                }
+                if ((dirtyFlags & 26) != 0) {
+                    if (vmPageIndexInt1) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+                    } else {
+                        dirtyFlags |= 512;
+                    }
+                }
+                vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 4;
+                int vmPageIndexInt0ViewVISIBLEViewINVISIBLE2 = vmPageIndexInt0 ? 0 : 4;
+                if (vmPageIndexInt1) {
+                    vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 0;
+                }
+                ControlBean controlBean = vmControlBean;
+                vmPageIndexInt0ViewVISIBLEViewINVISIBLE = vmPageIndexInt0ViewVISIBLEViewINVISIBLE2;
+            } else {
+                vmPageIndexGet = 0;
+                vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 0;
+                ControlBean controlBean2 = vmControlBean;
+                vmPageIndexInt0ViewVISIBLEViewINVISIBLE = 0;
+            }
+        } else {
+            vmPageIndexGet = 0;
+            vmPageIndexInt1ViewVISIBLEViewINVISIBLE = 0;
+            vmPageIndexInt0ViewVISIBLEViewINVISIBLE = 0;
         }
-        int vmPageIndexGet3 = vmPageIndexGet;
-        int vmPageIndexInt1ViewVISIBLEViewINVISIBLE2 = vmPageIndexInt1ViewVISIBLEViewINVISIBLE;
-        boolean z = vmControlBeanBenzControlPanelStateGet;
-        Drawable vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector2 = vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector;
-        boolean vmControlBeanBenzControlPanelStateGet2 = z;
         if ((dirtyFlags & 16) != 0) {
             BenzGsViewMoel benzGsViewMoel = vm;
-            ObservableInt observableInt = vmPageIndex;
-            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback184);
-            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback185);
+            boolean z2 = vmControlBeanBenzControlPanelStateGet;
+            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback159);
+            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback160);
         } else {
-            ObservableInt observableInt2 = vmPageIndex;
-        }
-        if ((dirtyFlags & 25) != 0) {
-            this.benzgsHomeLeftBtn.setVisibility(vmPageIndexInt1ViewVISIBLEViewINVISIBLE2);
-            this.benzgsHomeRightBtn.setVisibility(vmPageIndexInt0ViewVISIBLEViewINVISIBLE);
-            this.benzgsViewpage.setCurrentItem(vmPageIndexGet3);
+            boolean z3 = vmControlBeanBenzControlPanelStateGet;
         }
         if ((dirtyFlags & 26) != 0) {
-            this.controlBtn.setVisibility(vmControlBeanControlPanelCloseViewGONEViewVISIBLE);
+            this.benzgsHomeLeftBtn.setVisibility(vmPageIndexInt1ViewVISIBLEViewINVISIBLE);
+            this.benzgsHomeRightBtn.setVisibility(vmPageIndexInt0ViewVISIBLEViewINVISIBLE);
+            this.benzgsViewpage.setCurrentItem(vmPageIndexGet);
         }
         if ((dirtyFlags & 28) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.controlBtn, vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector2);
+            this.controlBtn.setVisibility(vmControlBeanControlPanelCloseViewGONEViewVISIBLE);
+        }
+        if ((dirtyFlags & 25) != 0) {
+            ImageViewBindingAdapter.setImageDrawable(this.controlBtn, vmControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector);
         }
         if ((dirtyFlags & 24) != 0) {
             this.controlBtn.setOnClickListener(vmOnControlClickAndroidViewViewOnClickListener);
@@ -289,15 +280,15 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean vmJavaLangObjectNull = false;
-        boolean vmJavaLangObjectNull2 = true;
+        boolean vmJavaLangObjectNull = true;
+        boolean vmJavaLangObjectNull2 = false;
         switch (sourceId) {
             case 1:
                 BenzGsViewMoel vm = this.mVm;
                 if (vm == null) {
-                    vmJavaLangObjectNull2 = false;
+                    vmJavaLangObjectNull = false;
                 }
-                if (vmJavaLangObjectNull2) {
+                if (vmJavaLangObjectNull) {
                     vm.setCurrentItem(callbackArg_0, 0);
                     return;
                 }
@@ -305,9 +296,9 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
             case 2:
                 BenzGsViewMoel vm2 = this.mVm;
                 if (vm2 != null) {
-                    vmJavaLangObjectNull = true;
+                    vmJavaLangObjectNull2 = true;
                 }
-                if (vmJavaLangObjectNull) {
+                if (vmJavaLangObjectNull2) {
                     vm2.setCurrentItem(callbackArg_0, 1);
                     return;
                 }

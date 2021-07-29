@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.support.annotation.RestrictTo;
 import android.support.v7.appcompat.R;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -15,29 +14,31 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class TooltipPopup {
     private static final String TAG = "TooltipPopup";
     private final View mContentView;
     private final Context mContext;
-    private final WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
+    private final WindowManager.LayoutParams mLayoutParams;
     private final TextView mMessageView;
     private final int[] mTmpAnchorPos = new int[2];
     private final int[] mTmpAppPos = new int[2];
     private final Rect mTmpDisplayFrame = new Rect();
 
     TooltipPopup(Context context) {
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        this.mLayoutParams = layoutParams;
         this.mContext = context;
-        this.mContentView = LayoutInflater.from(this.mContext).inflate(R.layout.abc_tooltip, (ViewGroup) null);
-        this.mMessageView = (TextView) this.mContentView.findViewById(R.id.message);
-        this.mLayoutParams.setTitle(getClass().getSimpleName());
-        this.mLayoutParams.packageName = this.mContext.getPackageName();
-        this.mLayoutParams.type = 1002;
-        this.mLayoutParams.width = -2;
-        this.mLayoutParams.height = -2;
-        this.mLayoutParams.format = -3;
-        this.mLayoutParams.windowAnimations = R.style.Animation_AppCompat_Tooltip;
-        this.mLayoutParams.flags = 24;
+        View inflate = LayoutInflater.from(context).inflate(R.layout.abc_tooltip, (ViewGroup) null);
+        this.mContentView = inflate;
+        this.mMessageView = (TextView) inflate.findViewById(R.id.message);
+        layoutParams.setTitle(getClass().getSimpleName());
+        layoutParams.packageName = context.getPackageName();
+        layoutParams.type = 1002;
+        layoutParams.width = -2;
+        layoutParams.height = -2;
+        layoutParams.format = -3;
+        layoutParams.windowAnimations = R.style.Animation_AppCompat_Tooltip;
+        layoutParams.flags = 24;
     }
 
     /* access modifiers changed from: package-private */
@@ -91,8 +92,7 @@ class TooltipPopup {
             return;
         }
         appView.getWindowVisibleDisplayFrame(this.mTmpDisplayFrame);
-        if (this.mTmpDisplayFrame.left >= 0 || this.mTmpDisplayFrame.top >= 0) {
-        } else {
+        if (this.mTmpDisplayFrame.left < 0 && this.mTmpDisplayFrame.top < 0) {
             Resources res = this.mContext.getResources();
             int resourceId = res.getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId != 0) {
@@ -101,21 +101,22 @@ class TooltipPopup {
                 statusBarHeight = 0;
             }
             DisplayMetrics metrics = res.getDisplayMetrics();
-            int i = tooltipPreciseAnchorThreshold;
             this.mTmpDisplayFrame.set(0, statusBarHeight, metrics.widthPixels, metrics.heightPixels);
         }
         appView.getLocationOnScreen(this.mTmpAppPos);
         anchorView.getLocationOnScreen(this.mTmpAnchorPos);
         int[] iArr = this.mTmpAnchorPos;
-        iArr[0] = iArr[0] - this.mTmpAppPos[0];
-        int[] iArr2 = this.mTmpAnchorPos;
-        iArr2[1] = iArr2[1] - this.mTmpAppPos[1];
-        layoutParams.x = (this.mTmpAnchorPos[0] + offsetX) - (appView.getWidth() / 2);
+        int i = iArr[0];
+        int[] iArr2 = this.mTmpAppPos;
+        iArr[0] = i - iArr2[0];
+        iArr[1] = iArr[1] - iArr2[1];
+        layoutParams.x = (iArr[0] + offsetX) - (appView.getWidth() / 2);
         int spec = View.MeasureSpec.makeMeasureSpec(0, 0);
         this.mContentView.measure(spec, spec);
         int tooltipHeight = this.mContentView.getMeasuredHeight();
-        int yAbove = ((this.mTmpAnchorPos[1] + offsetExtra) - tooltipOffset) - tooltipHeight;
-        int yBelow = this.mTmpAnchorPos[1] + offsetBelow + tooltipOffset;
+        int[] iArr3 = this.mTmpAnchorPos;
+        int yAbove = ((iArr3[1] + offsetExtra) - tooltipOffset) - tooltipHeight;
+        int yBelow = iArr3[1] + offsetBelow + tooltipOffset;
         if (fromTouch) {
             if (yAbove >= 0) {
                 layoutParams.y = yAbove;

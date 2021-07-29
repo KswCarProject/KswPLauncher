@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.Initializable;
 import com.bumptech.glide.load.engine.Resource;
@@ -26,25 +24,22 @@ public final class LazyBitmapDrawableResource implements Resource<BitmapDrawable
         return (LazyBitmapDrawableResource) obtain(resources2, (Resource<Bitmap>) BitmapResource.obtain(bitmap, bitmapPool));
     }
 
-    @Nullable
-    public static Resource<BitmapDrawable> obtain(@NonNull Resources resources2, @Nullable Resource<Bitmap> bitmapResource2) {
+    public static Resource<BitmapDrawable> obtain(Resources resources2, Resource<Bitmap> bitmapResource2) {
         if (bitmapResource2 == null) {
             return null;
         }
         return new LazyBitmapDrawableResource(resources2, bitmapResource2);
     }
 
-    private LazyBitmapDrawableResource(@NonNull Resources resources2, @NonNull Resource<Bitmap> bitmapResource2) {
+    private LazyBitmapDrawableResource(Resources resources2, Resource<Bitmap> bitmapResource2) {
         this.resources = (Resources) Preconditions.checkNotNull(resources2);
         this.bitmapResource = (Resource) Preconditions.checkNotNull(bitmapResource2);
     }
 
-    @NonNull
     public Class<BitmapDrawable> getResourceClass() {
         return BitmapDrawable.class;
     }
 
-    @NonNull
     public BitmapDrawable get() {
         return new BitmapDrawable(this.resources, this.bitmapResource.get());
     }
@@ -58,8 +53,9 @@ public final class LazyBitmapDrawableResource implements Resource<BitmapDrawable
     }
 
     public void initialize() {
-        if (this.bitmapResource instanceof Initializable) {
-            ((Initializable) this.bitmapResource).initialize();
+        Resource<Bitmap> resource = this.bitmapResource;
+        if (resource instanceof Initializable) {
+            ((Initializable) resource).initialize();
         }
     }
 }

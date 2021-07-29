@@ -1,7 +1,6 @@
 package com.wits.ksw.settings.alsid7.layout_one;
 
 import android.content.Context;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +32,6 @@ public class AlsID7SetLanguageLayout extends RelativeLayout {
     private List<Locale> locales;
     private RecyclerView recyclerView;
 
-    @RequiresApi(api = 24)
     public AlsID7SetLanguageLayout(Context context2) {
         super(context2);
         this.context = context2;
@@ -46,7 +44,6 @@ public class AlsID7SetLanguageLayout extends RelativeLayout {
         addView(view);
     }
 
-    @RequiresApi(api = 24)
     private void initData() {
         try {
             this.defLanguage = PowerManagerApp.getSettingsInt(KeyConfig.LANGUAGE_DEFUAL);
@@ -60,9 +57,9 @@ public class AlsID7SetLanguageLayout extends RelativeLayout {
             }
             this.data.get(this.defLanguage).setIscheck(true);
             Locale sysLanguage = Locale.getDefault();
-            Log.d("SystemLa", "21 la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
-            int checkInex = -1;
             boolean ishave = false;
+            int checkInex = -1;
+            Log.d("SystemLa", "21 la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
             for (int i = 0; i < languags.size(); i++) {
                 Log.d("SystemLa", "language:" + this.locales.get(i).getLanguage() + "country:" + this.locales.get(i).getCountry());
                 Log.d("SystemLa", "22 la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
@@ -91,17 +88,18 @@ public class AlsID7SetLanguageLayout extends RelativeLayout {
 
     private void initView(View view) {
         this.recyclerView = (RecyclerView) view.findViewById(R.id.language_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
-        this.adapter = new AlsID7LanguageAdapter(this.context, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        AlsID7LanguageAdapter alsID7LanguageAdapter = new AlsID7LanguageAdapter(this.context, this.data);
+        this.adapter = alsID7LanguageAdapter;
+        this.recyclerView.setAdapter(alsID7LanguageAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this.context, 1);
         divider.setDrawable(ContextCompat.getDrawable(this.context, R.mipmap.als_id7_lp_line));
         this.recyclerView.addItemDecoration(divider);
         this.recyclerView.setItemViewCacheSize(30);
         this.adapter.registOnFunctionClickListener(new AlsID7LanguageAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 for (FunctionBean fb : AlsID7SetLanguageLayout.this.data) {
                     fb.setIscheck(false);
@@ -118,8 +116,9 @@ public class AlsID7SetLanguageLayout extends RelativeLayout {
     }
 
     private void LocaleList() {
-        this.locales = new ArrayList();
-        this.locales.add(new Locale("zh", "CN"));
+        ArrayList arrayList = new ArrayList();
+        this.locales = arrayList;
+        arrayList.add(new Locale("zh", "CN"));
         this.locales.add(new Locale("zh", "TW"));
         this.locales.add(new Locale("en"));
         this.locales.add(new Locale("de"));

@@ -15,7 +15,7 @@ public class CarInfo {
     public ObservableField<Boolean> flDoorState = new ObservableField<>();
     public ObservableField<Boolean> frDoorState = new ObservableField<>();
     public ObservableField<String> mileage = new ObservableField<>();
-    public ObservableInt oilValue = new ObservableInt();
+    public ObservableField<String> oilValue = new ObservableField<>();
     public ObservableField<Boolean> rlDoorState = new ObservableField<>();
     public ObservableField<Boolean> rrDoorState = new ObservableField<>();
     public ObservableField<Boolean> seatBeltpValue = new ObservableField<>();
@@ -28,4 +28,5 @@ public class CarInfo {
     public ObservableInt turnSpeed = new ObservableInt();
     public ObservableFloat turnSpeedAnge = new ObservableFloat();
     public ObservableInt unit = new ObservableInt();
+    public ObservableField<String> unitStr = new ObservableField<>();
 }

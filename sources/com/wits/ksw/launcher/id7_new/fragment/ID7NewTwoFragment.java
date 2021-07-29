@@ -43,22 +43,30 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     private void init() {
-        this.rel_firtfm = (RelativeLayout) this.view.findViewById(R.id.rel_firtfm);
-        this.rel_firtfm.setOnClickListener(this);
+        RelativeLayout relativeLayout = (RelativeLayout) this.view.findViewById(R.id.rel_firtfm);
+        this.rel_firtfm = relativeLayout;
+        relativeLayout.setOnClickListener(this);
         this.tv_msInfo = (TextView) this.view.findViewById(R.id.tv_msInfo);
-        this.rel_firtMs = (RelativeLayout) this.view.findViewById(R.id.rel_firtMs);
-        this.rel_firtMs.setOnClickListener(this);
-        this.rel_firtvd = (RelativeLayout) this.view.findViewById(R.id.rel_firtvd);
-        this.rel_firtvd.setOnClickListener(this);
-        this.rel_firtie = (RelativeLayout) this.view.findViewById(R.id.rel_firtie);
-        this.rel_firtie.setOnClickListener(this);
-        this.rel_firtset = (RelativeLayout) this.view.findViewById(R.id.rel_firtset);
-        this.rel_firtset.setOnClickListener(this);
+        RelativeLayout relativeLayout2 = (RelativeLayout) this.view.findViewById(R.id.rel_firtMs);
+        this.rel_firtMs = relativeLayout2;
+        relativeLayout2.setOnClickListener(this);
+        RelativeLayout relativeLayout3 = (RelativeLayout) this.view.findViewById(R.id.rel_firtvd);
+        this.rel_firtvd = relativeLayout3;
+        relativeLayout3.setOnClickListener(this);
+        RelativeLayout relativeLayout4 = (RelativeLayout) this.view.findViewById(R.id.rel_firtie);
+        this.rel_firtie = relativeLayout4;
+        relativeLayout4.setOnClickListener(this);
+        RelativeLayout relativeLayout5 = (RelativeLayout) this.view.findViewById(R.id.rel_firtset);
+        this.rel_firtset = relativeLayout5;
+        relativeLayout5.setOnClickListener(this);
         try {
-            if (!TextUtils.isEmpty(MediaImpl.getInstance().getMediaInfo().musicName.get())) {
+            if (TextUtils.isEmpty(MediaImpl.getInstance().getMediaInfo().musicName.get())) {
+                Context context = this.m_con;
+                if (context != null) {
+                    this.tv_msInfo.setText(context.getString(R.string.unkonw));
+                }
+            } else {
                 this.tv_msInfo.setText(MediaImpl.getInstance().getMediaInfo().musicName.get());
-            } else if (this.m_con != null) {
-                this.tv_msInfo.setText(this.m_con.getString(R.string.unkonw));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,11 +80,15 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     public void setMediaInfo(MediaInfo mediaInfo) {
-        if (!TextUtils.isEmpty(mediaInfo.musicName.get())) {
-            this.tv_msInfo.setText(mediaInfo.musicName.get());
-        } else if (this.m_con != null) {
-            this.tv_msInfo.setText(this.m_con.getString(R.string.unkonw));
+        if (TextUtils.isEmpty(mediaInfo.musicName.get())) {
+            Context context = this.m_con;
+            if (context != null) {
+                this.tv_msInfo.setText(context.getString(R.string.unkonw));
+                return;
+            }
+            return;
         }
+        this.tv_msInfo.setText(mediaInfo.musicName.get());
     }
 
     public void initFouse(int inext) {
@@ -86,52 +98,51 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     public void updateFouce(int index) {
-        if (index != -1) {
-            switch (index) {
-                case 5:
-                    this.rel_firtMs.setSelected(true);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 6:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(true);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 7:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(true);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 8:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(true);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 9:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(true);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            this.rel_firtMs.setSelected(false);
-            this.rel_firtvd.setSelected(false);
-            this.rel_firtie.setSelected(false);
-            this.rel_firtfm.setSelected(false);
-            this.rel_firtset.setSelected(false);
+        switch (index) {
+            case -1:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 5:
+                this.rel_firtMs.setSelected(true);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 6:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(true);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 7:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(true);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 8:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(true);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 9:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(true);
+                return;
+            default:
+                return;
         }
     }
 
@@ -194,26 +205,24 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     public void onClick(View v) {
-        int id = v.getId();
-        if (id != R.id.rel_firtMs) {
-            switch (id) {
-                case R.id.rel_firtfm:
-                    oncheckID(8);
-                    return;
-                case R.id.rel_firtie:
-                    oncheckID(7);
-                    return;
-                case R.id.rel_firtset:
-                    oncheckID(9);
-                    return;
-                case R.id.rel_firtvd:
-                    oncheckID(6);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            oncheckID(5);
+        switch (v.getId()) {
+            case R.id.rel_firtMs:
+                oncheckID(5);
+                return;
+            case R.id.rel_firtfm:
+                oncheckID(8);
+                return;
+            case R.id.rel_firtie:
+                oncheckID(7);
+                return;
+            case R.id.rel_firtset:
+                oncheckID(9);
+                return;
+            case R.id.rel_firtvd:
+                oncheckID(6);
+                return;
+            default:
+                return;
         }
     }
 

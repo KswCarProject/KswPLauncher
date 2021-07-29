@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 
 @Documented
 @Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
-@Dimension(unit = 1)
 @Retention(RetentionPolicy.CLASS)
 public @interface Px {
 }

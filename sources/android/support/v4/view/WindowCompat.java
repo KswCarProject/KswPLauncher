@@ -1,8 +1,6 @@
 package android.support.v4.view;
 
 import android.os.Build;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 
@@ -14,8 +12,7 @@ public final class WindowCompat {
     private WindowCompat() {
     }
 
-    @NonNull
-    public static <T extends View> T requireViewById(@NonNull Window window, @IdRes int id) {
+    public static <T extends View> T requireViewById(Window window, int id) {
         if (Build.VERSION.SDK_INT >= 28) {
             return window.requireViewById(id);
         }

@@ -46,8 +46,9 @@ public abstract class ConstraintHelper extends View {
             for (int i = 0; i < N; i++) {
                 int attr = a.getIndex(i);
                 if (attr == R.styleable.ConstraintLayout_Layout_constraint_referenced_ids) {
-                    this.mReferenceIds = a.getString(attr);
-                    setIds(this.mReferenceIds);
+                    String string = a.getString(attr);
+                    this.mReferenceIds = string;
+                    setIds(string);
                 }
             }
         }
@@ -65,11 +66,15 @@ public abstract class ConstraintHelper extends View {
     }
 
     public void setTag(int tag, Object value) {
-        if (this.mCount + 1 > this.mIds.length) {
-            this.mIds = Arrays.copyOf(this.mIds, this.mIds.length * 2);
+        int i = this.mCount + 1;
+        int[] iArr = this.mIds;
+        if (i > iArr.length) {
+            this.mIds = Arrays.copyOf(iArr, iArr.length * 2);
         }
-        this.mIds[this.mCount] = tag;
-        this.mCount++;
+        int[] iArr2 = this.mIds;
+        int i2 = this.mCount;
+        iArr2[i2] = tag;
+        this.mCount = i2 + 1;
     }
 
     public void onDraw(Canvas canvas) {
@@ -110,9 +115,9 @@ public abstract class ConstraintHelper extends View {
             }
             if (tag != 0) {
                 setTag(tag, (Object) null);
-                return;
+            } else {
+                Log.w("ConstraintHelper", "Could not find id of \"" + idString2 + "\"");
             }
-            Log.w("ConstraintHelper", "Could not find id of \"" + idString2 + "\"");
         }
     }
 
@@ -136,8 +141,9 @@ public abstract class ConstraintHelper extends View {
         if (isInEditMode()) {
             setIds(this.mReferenceIds);
         }
-        if (this.mHelperWidget != null) {
-            this.mHelperWidget.removeAllIds();
+        Helper helper = this.mHelperWidget;
+        if (helper != null) {
+            helper.removeAllIds();
             for (int i = 0; i < this.mCount; i++) {
                 View view = container.getViewById(this.mIds[i]);
                 if (view != null) {

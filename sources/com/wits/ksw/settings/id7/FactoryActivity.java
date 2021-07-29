@@ -1,8 +1,6 @@
 package com.wits.ksw.settings.id7;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.FrameLayout;
 import com.wits.ksw.R;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.BaseActivity;
 import com.wits.ksw.settings.id7.adapter.FunctionAdapter;
 import com.wits.ksw.settings.id7.bean.FunctionBean;
@@ -44,8 +43,7 @@ public class FactoryActivity extends BaseActivity {
     private RawCarShow rawCarShow;
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 26)
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("funtionAc", "====onCreate=====");
         setContentView((int) R.layout.activity_sys_factory);
@@ -55,13 +53,20 @@ public class FactoryActivity extends BaseActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void onResume() {
+        super.onResume();
+        if (UiThemeUtils.isLAND_ROVER(this)) {
+            Log.w("FactoryActivity", "onresume isLAND_ROVER");
+        }
+    }
+
+    /* access modifiers changed from: protected */
     public void onStop() {
         super.onStop();
         Log.d("funtionAc", "====onStop=====");
         finish();
     }
 
-    @RequiresApi(api = 26)
     private boolean deleteAllByPath(File rootFilePath) {
         File[] needToDeleteFiles = rootFilePath.listFiles();
         if (needToDeleteFiles == null) {
@@ -83,13 +88,14 @@ public class FactoryActivity extends BaseActivity {
         return true;
     }
 
-    @RequiresApi(api = 26)
     private void initData() {
         deleteAllByPath(new File("/storage/emulated/0/mylogo"));
         try {
             FileUtils.upZipFile(new File("/mnt/vendor/persist/mylogo.zip"), "/storage/emulated/0");
         } catch (IOException e) {
             Log.d("unzip", e.getLocalizedMessage());
+        } catch (IllegalArgumentException e2) {
+            Log.d("unzip", e2.getLocalizedMessage());
         }
         this.data = new ArrayList();
         String[] functions = getResources().getStringArray(R.array.set_factory);
@@ -113,11 +119,13 @@ public class FactoryActivity extends BaseActivity {
 
     private void initView() {
         this.factory_recycle = (RecyclerView) findViewById(R.id.factory_recycle);
-        this.layoutManager = new LinearLayoutManager(this);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.factory_recycle.setLayoutManager(this.layoutManager);
-        this.adapter = new FunctionAdapter(this, this.data);
-        this.factory_recycle.setAdapter(this.adapter);
+        FunctionAdapter functionAdapter = new FunctionAdapter(this, this.data);
+        this.adapter = functionAdapter;
+        this.factory_recycle.setAdapter(functionAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this, 1);
         divider.setDrawable(ContextCompat.getDrawable(this, R.mipmap.id7_lp_line));
         this.factory_recycle.addItemDecoration(divider);
@@ -131,8 +139,9 @@ public class FactoryActivity extends BaseActivity {
                 FactoryActivity.this.adapter.notifyDataSetChanged();
             }
         });
-        this.factory_Frame = (FrameLayout) findViewById(R.id.factory_Frame);
-        this.factory_Frame.addView(this.functionConfig);
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.factory_Frame);
+        this.factory_Frame = frameLayout;
+        frameLayout.addView(this.functionConfig);
     }
 
     /* access modifiers changed from: private */

@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Key;
 import java.security.MessageDigest;
 
@@ -37,7 +36,7 @@ final class DataCacheKey implements Key {
         return "DataCacheKey{sourceKey=" + this.sourceKey + ", signature=" + this.signature + '}';
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         this.sourceKey.updateDiskCacheKey(messageDigest);
         this.signature.updateDiskCacheKey(messageDigest);
     }

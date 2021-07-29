@@ -1,11 +1,8 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.Bindable;
-import android.databinding.DataBindingComponent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,45 +14,29 @@ import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
 public abstract class ActivityNtg6DashBoardBinding extends ViewDataBinding {
-    @NonNull
     public final ImageView brakeTextView;
-    @NonNull
     public final ImageView carImageView;
-    @NonNull
     public final ImageView dorrBackImageView;
-    @NonNull
     public final ImageView dorrLeftFlImageView;
-    @NonNull
     public final ImageView dorrLeftFrImageView;
-    @NonNull
     public final ImageView dorrLeftRlImageView;
-    @NonNull
     public final ImageView imageView19;
-    @NonNull
     public final ConstraintLayout linearLayout2;
     @Bindable
     protected DashboardViewModel mViewModel;
-    @NonNull
     public final ImageView ntg55PointerSpeedHighlightImageView;
-    @NonNull
     public final ImageView ntg55PointerTachometerHighlightImageView;
-    @NonNull
     public final ImageView seatBeltTextView;
-    @NonNull
     public final ID7SpeedImageView speedPointerImageView;
-    @NonNull
     public final ID7SpeedImageView speedometerImageView;
-    @NonNull
     public final ImageView tachometerImageView;
-    @NonNull
     public final TextView temperatureTextView;
-    @NonNull
     public final ImageView zspeedPointerImageView;
 
-    public abstract void setViewModel(@Nullable DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityNtg6DashBoardBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView2, ImageView carImageView2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, ImageView ntg55PointerSpeedHighlightImageView2, ImageView ntg55PointerTachometerHighlightImageView2, ImageView seatBeltTextView2, ID7SpeedImageView speedPointerImageView2, ID7SpeedImageView speedometerImageView2, ImageView tachometerImageView2, TextView temperatureTextView2, ImageView zspeedPointerImageView2) {
+    protected ActivityNtg6DashBoardBinding(Object _bindingComponent, View _root, int _localFieldCount, ImageView brakeTextView2, ImageView carImageView2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, ImageView ntg55PointerSpeedHighlightImageView2, ImageView ntg55PointerTachometerHighlightImageView2, ImageView seatBeltTextView2, ID7SpeedImageView speedPointerImageView2, ID7SpeedImageView speedometerImageView2, ImageView tachometerImageView2, TextView temperatureTextView2, ImageView zspeedPointerImageView2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.brakeTextView = brakeTextView2;
         this.carImageView = carImageView2;
@@ -75,36 +56,34 @@ public abstract class ActivityNtg6DashBoardBinding extends ViewDataBinding {
         this.zspeedPointerImageView = zspeedPointerImageView2;
     }
 
-    @Nullable
     public DashboardViewModel getViewModel() {
         return this.mViewModel;
     }
 
-    @NonNull
-    public static ActivityNtg6DashBoardBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot) {
+    public static ActivityNtg6DashBoardBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
         return inflate(inflater, root, attachToRoot, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ActivityNtg6DashBoardBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
-        return (ActivityNtg6DashBoardBinding) DataBindingUtil.inflate(inflater, R.layout.activity_ntg6_dash_board, root, attachToRoot, component);
+    @Deprecated
+    public static ActivityNtg6DashBoardBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
+        return (ActivityNtg6DashBoardBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_ntg6_dash_board, root, attachToRoot, component);
     }
 
-    @NonNull
-    public static ActivityNtg6DashBoardBinding inflate(@NonNull LayoutInflater inflater) {
+    public static ActivityNtg6DashBoardBinding inflate(LayoutInflater inflater) {
         return inflate(inflater, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ActivityNtg6DashBoardBinding inflate(@NonNull LayoutInflater inflater, @Nullable DataBindingComponent component) {
-        return (ActivityNtg6DashBoardBinding) DataBindingUtil.inflate(inflater, R.layout.activity_ntg6_dash_board, (ViewGroup) null, false, component);
+    @Deprecated
+    public static ActivityNtg6DashBoardBinding inflate(LayoutInflater inflater, Object component) {
+        return (ActivityNtg6DashBoardBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_ntg6_dash_board, (ViewGroup) null, false, component);
     }
 
-    public static ActivityNtg6DashBoardBinding bind(@NonNull View view) {
+    public static ActivityNtg6DashBoardBinding bind(View view) {
         return bind(view, DataBindingUtil.getDefaultComponent());
     }
 
-    public static ActivityNtg6DashBoardBinding bind(@NonNull View view, @Nullable DataBindingComponent component) {
+    @Deprecated
+    public static ActivityNtg6DashBoardBinding bind(View view, Object component) {
         return (ActivityNtg6DashBoardBinding) bind(component, view, R.layout.activity_ntg6_dash_board);
     }
 }

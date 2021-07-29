@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Options;
@@ -15,11 +14,11 @@ public class UnitModelLoader<Model> implements ModelLoader<Model, Model> {
         return INSTANCE;
     }
 
-    public ModelLoader.LoadData<Model> buildLoadData(@NonNull Model model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Model> buildLoadData(Model model, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(model), new UnitFetcher(model));
     }
 
-    public boolean handles(@NonNull Model model) {
+    public boolean handles(Model model) {
         return true;
     }
 
@@ -30,7 +29,7 @@ public class UnitModelLoader<Model> implements ModelLoader<Model, Model> {
             this.resource = resource2;
         }
 
-        public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super Model> callback) {
+        public void loadData(Priority priority, DataFetcher.DataCallback<? super Model> callback) {
             callback.onDataReady(this.resource);
         }
 
@@ -40,12 +39,10 @@ public class UnitModelLoader<Model> implements ModelLoader<Model, Model> {
         public void cancel() {
         }
 
-        @NonNull
         public Class<Model> getDataClass() {
             return this.resource.getClass();
         }
 
-        @NonNull
         public DataSource getDataSource() {
             return DataSource.LOCAL;
         }
@@ -58,7 +55,6 @@ public class UnitModelLoader<Model> implements ModelLoader<Model, Model> {
             return FACTORY;
         }
 
-        @NonNull
         public ModelLoader<Model, Model> build(MultiModelLoaderFactory multiFactory) {
             return UnitModelLoader.getInstance();
         }

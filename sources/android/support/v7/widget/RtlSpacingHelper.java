@@ -71,11 +71,27 @@ class RtlSpacingHelper {
                 this.mLeft = this.mExplicitLeft;
                 this.mRight = this.mExplicitRight;
             } else if (isRtl) {
-                this.mLeft = this.mEnd != Integer.MIN_VALUE ? this.mEnd : this.mExplicitLeft;
-                this.mRight = this.mStart != Integer.MIN_VALUE ? this.mStart : this.mExplicitRight;
+                int i = this.mEnd;
+                if (i == Integer.MIN_VALUE) {
+                    i = this.mExplicitLeft;
+                }
+                this.mLeft = i;
+                int i2 = this.mStart;
+                if (i2 == Integer.MIN_VALUE) {
+                    i2 = this.mExplicitRight;
+                }
+                this.mRight = i2;
             } else {
-                this.mLeft = this.mStart != Integer.MIN_VALUE ? this.mStart : this.mExplicitLeft;
-                this.mRight = this.mEnd != Integer.MIN_VALUE ? this.mEnd : this.mExplicitRight;
+                int i3 = this.mStart;
+                if (i3 == Integer.MIN_VALUE) {
+                    i3 = this.mExplicitLeft;
+                }
+                this.mLeft = i3;
+                int i4 = this.mEnd;
+                if (i4 == Integer.MIN_VALUE) {
+                    i4 = this.mExplicitRight;
+                }
+                this.mRight = i4;
             }
         }
     }

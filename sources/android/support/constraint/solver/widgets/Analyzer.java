@@ -168,10 +168,10 @@ public class Analyzer {
     }
 
     private static int getMaxDimension(ConstraintWidgetGroup group, int orientation) {
+        int dimension = 0;
         int offset = orientation * 2;
         List<ConstraintWidget> startWidgets = group.getStartWidgets(orientation);
         int size = startWidgets.size();
-        int dimension = 0;
         for (int i = 0; i < size; i++) {
             ConstraintWidget widget = startWidgets.get(i);
             dimension = Math.max(dimension, getMaxDimensionTraversal(widget, orientation, widget.mListAnchors[offset + 1].mTarget == null || !(widget.mListAnchors[offset].mTarget == null || widget.mListAnchors[offset + 1].mTarget == null), 0));
@@ -231,8 +231,10 @@ public class Analyzer {
         int dimension = (constraintWidget.mListAnchors[startOffset].getMargin() * flow) + getParentBiasOffset(widget, orientation);
         int downDepth = dimension + depth2;
         int postTemp3 = (i == 0 ? widget.getWidth() : widget.getHeight()) * flow;
-        for (Iterator it = constraintWidget.mListAnchors[startOffset].getResolutionNode().dependents.iterator(); it.hasNext(); it = it) {
+        Iterator it = constraintWidget.mListAnchors[startOffset].getResolutionNode().dependents.iterator();
+        while (it.hasNext()) {
             dimensionPre = Math.max(dimensionPre, getMaxDimensionTraversal(((ResolutionAnchor) ((ResolutionNode) it.next())).myAnchor.mOwner, i, z, downDepth));
+            it = it;
             dimensionPost2 = dimensionPost2;
         }
         int dimensionPost3 = dimensionPost2;

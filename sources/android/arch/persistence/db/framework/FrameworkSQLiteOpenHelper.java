@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.RequiresApi;
 
 class FrameworkSQLiteOpenHelper implements SupportSQLiteOpenHelper {
     private final OpenHelper mDelegate;
@@ -23,7 +22,6 @@ class FrameworkSQLiteOpenHelper implements SupportSQLiteOpenHelper {
         return this.mDelegate.getDatabaseName();
     }
 
-    @RequiresApi(api = 16)
     public void setWriteAheadLoggingEnabled(boolean enabled) {
         this.mDelegate.setWriteAheadLoggingEnabled(enabled);
     }

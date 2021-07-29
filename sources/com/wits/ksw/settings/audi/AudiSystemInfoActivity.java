@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.databinding.AudiSysinfoBinding;
 import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
 import com.wits.ksw.settings.utlis_view.DialogViews;
+import com.wits.ksw.settings.utlis_view.UtilsInfo;
 
 public class AudiSystemInfoActivity extends AudiSubActivity {
     private AudiSysinfoBinding binding;
@@ -40,12 +40,14 @@ public class AudiSystemInfoActivity extends AudiSubActivity {
     public AudiSettingViewModel viewModel;
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.binding = (AudiSysinfoBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_sysinfo, (ViewGroup) null, false);
-        this.contentLayout.addView(this.binding.getRoot(), -1, -1);
-        this.viewModel = (AudiSettingViewModel) ViewModelProviders.of((FragmentActivity) this).get(AudiSettingViewModel.class);
-        this.binding.setVm(this.viewModel);
+        AudiSysinfoBinding audiSysinfoBinding = (AudiSysinfoBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_sysinfo, (ViewGroup) null, false);
+        this.binding = audiSysinfoBinding;
+        this.contentLayout.addView(audiSysinfoBinding.getRoot(), -1, -1);
+        AudiSettingViewModel audiSettingViewModel = (AudiSettingViewModel) ViewModelProviders.of((FragmentActivity) this).get(AudiSettingViewModel.class);
+        this.viewModel = audiSettingViewModel;
+        this.binding.setVm(audiSettingViewModel);
         this.dialogViews = new DialogViews(this);
         int count = this.binding.audiSysInfParentPanel.getChildCount();
         for (int i = 0; i < count; i++) {
@@ -62,11 +64,18 @@ public class AudiSystemInfoActivity extends AudiSubActivity {
 
     public void onClick(View v) {
         this.binding.audiSysInfParentPanel.setSeleted(v);
-        int id = v.getId();
-        if (id == R.id.audioSysInfoMcuUpdata) {
-            this.dialogViews.updateMcu(getString(R.string.update_mcu_file));
-        } else if (id == R.id.audioSysInfoRestoreFactory) {
-            this.dialogViews.isQuestView(getString(R.string.update_reset_all), this.handler);
+        switch (v.getId()) {
+            case R.id.audiSysInfoSysVer:
+                UtilsInfo.showQRCode(this);
+                return;
+            case R.id.audioSysInfoMcuUpdata:
+                this.dialogViews.updateMcu(getString(R.string.update_mcu_file));
+                return;
+            case R.id.audioSysInfoRestoreFactory:
+                this.dialogViews.isQuestView(getString(R.string.update_reset_all), this.handler);
+                return;
+            default:
+                return;
         }
     }
 }

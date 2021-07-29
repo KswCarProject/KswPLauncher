@@ -5,10 +5,8 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.RemoteException;
-import android.support.annotation.RestrictTo;
 import android.support.v4.os.IResultReceiver;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ResultReceiver implements Parcelable {
     public static final Parcelable.Creator<ResultReceiver> CREATOR = new Parcelable.Creator<ResultReceiver>() {
         public ResultReceiver createFromParcel(Parcel in) {
@@ -57,15 +55,19 @@ public class ResultReceiver implements Parcelable {
 
     public void send(int resultCode, Bundle resultData) {
         if (this.mLocal) {
-            if (this.mHandler != null) {
-                this.mHandler.post(new MyRunnable(resultCode, resultData));
+            Handler handler = this.mHandler;
+            if (handler != null) {
+                handler.post(new MyRunnable(resultCode, resultData));
             } else {
                 onReceiveResult(resultCode, resultData);
             }
-        } else if (this.mReceiver != null) {
-            try {
-                this.mReceiver.send(resultCode, resultData);
-            } catch (RemoteException e) {
+        } else {
+            IResultReceiver iResultReceiver = this.mReceiver;
+            if (iResultReceiver != null) {
+                try {
+                    iResultReceiver.send(resultCode, resultData);
+                } catch (RemoteException e) {
+                }
             }
         }
     }

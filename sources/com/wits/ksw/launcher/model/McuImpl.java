@@ -17,6 +17,7 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class McuImpl {
     private static final String TAG = "KSWLauncher";
@@ -26,21 +27,37 @@ public class McuImpl {
     private int carDataPackHz;
     public CarInfo carInfo = new CarInfo();
     public MutableLiveData<CarInfo> carInfoMutableLiveData = new MutableLiveData<>();
+    int fuelUnit = 0;
     int tempUnit = 0;
 
     private McuImpl() {
         try {
             this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
+            this.fuelUnit = PowerManagerApp.getSettingsInt(KeyConfig.FUEL_UNIT);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         KswApplication.appContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.TempUnit), false, new ContentObserver(new Handler()) {
             public void onChange(boolean selfChange) {
                 Log.d("KSWLauncher", " tempUnit change");
-                McuImpl.this.setTemperature(McuImpl.this.carData);
                 try {
                     McuImpl.this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
                     Log.d("KSWLauncher", " tempUnit " + McuImpl.this.tempUnit);
+                    McuImpl mcuImpl = McuImpl.this;
+                    mcuImpl.setTemperature(mcuImpl.carData);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        KswApplication.appContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.FUEL_UNIT), false, new ContentObserver(new Handler()) {
+            public void onChange(boolean selfChange) {
+                Log.d("KSWLauncher", " fuelUnit change");
+                try {
+                    McuImpl.this.fuelUnit = PowerManagerApp.getSettingsInt(KeyConfig.FUEL_UNIT);
+                    Log.d("KSWLauncher", " fuelUnit " + McuImpl.this.fuelUnit);
+                    McuImpl mcuImpl = McuImpl.this;
+                    mcuImpl.setOilValue(mcuImpl.carData);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -105,13 +122,11 @@ public class McuImpl {
         int mileage = carDatam.getMileage();
         if (KswUtils.ismph()) {
             int reslut = new BigDecimal(((double) mileage) * 0.621d).intValue();
-            ObservableField<String> observableField = this.carInfo.mileage;
-            observableField.set(reslut + "mile");
+            this.carInfo.mileage.set(reslut + "mile");
             Log.i("KSWLauncher", "setMileage 英制续航：" + reslut);
             return;
         }
-        ObservableField<String> observableField2 = this.carInfo.mileage;
-        observableField2.set(mileage + "km");
+        this.carInfo.mileage.set(mileage + "km");
         Log.i("KSWLauncher", "setMileage 公制续航：" + mileage);
     }
 
@@ -156,6 +171,7 @@ public class McuImpl {
         }
         Log.i("KSWLauncher", "setUint: " + unit);
         this.carInfo.unit.set(unit);
+        this.carInfo.unitStr.set("rpm");
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
 
@@ -195,9 +211,27 @@ public class McuImpl {
             return;
         }
         int oilSum = carDatam.getOilSum();
-        this.carInfo.oilValue.set(oilSum);
+        if (this.fuelUnit == 0) {
+            this.carInfo.oilValue.set(oilSum + "L");
+        } else {
+            this.carInfo.oilValue.set(l2Gal(oilSum, this.fuelUnit));
+        }
         Log.i("KSWLauncher", "setOilValue: 油量:" + oilSum);
         this.carInfoMutableLiveData.postValue(this.carInfo);
+    }
+
+    private String l2Gal(int l, int type) {
+        Double d;
+        if (type == 1) {
+            d = Double.valueOf(((double) l) / 3.78541178d);
+        } else {
+            d = Double.valueOf(((double) l) / 4.54609188d);
+        }
+        DecimalFormat df = new DecimalFormat("#.0");
+        if (df.format(d).startsWith(".")) {
+            return "0.0gal";
+        }
+        return df.format(d) + "gal";
     }
 
     public void setBrakeValue(McuStatus.CarData carDatam) {
@@ -222,11 +256,9 @@ public class McuImpl {
         if (this.tempUnit == 1) {
             int tempToF = KswUtils.tempToF(airTemperature);
             Log.i("KSWLauncher", "setTemperature: F " + tempToF);
-            ObservableField<String> observableField = this.carInfo.tempStr;
-            observableField.set(tempToF + "°F");
+            this.carInfo.tempStr.set(tempToF + "°F");
         } else {
-            ObservableField<String> observableField2 = this.carInfo.tempStr;
-            observableField2.set(airTemperature + "℃");
+            this.carInfo.tempStr.set(airTemperature + "℃");
         }
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
@@ -284,7 +316,6 @@ public class McuImpl {
         boolean LEFT_BACK = carDatam.isOpen(64);
         boolean RIGHT_BACK = carDatam.isOpen(128);
         boolean BACK_COVER = carDatam.isOpen(4);
-        boolean z = false;
         int doorCount = 0;
         try {
             doorCount = PowerManagerApp.getSettingsInt(KeyConfig.CAR_DOOR_NUM);
@@ -297,6 +328,7 @@ public class McuImpl {
         } catch (RemoteException e2) {
             e2.printStackTrace();
         }
+        boolean z = false;
         if (doorCount == 2) {
             this.carInfo.flDoorState.set(false);
             this.carInfo.frDoorState.set(false);

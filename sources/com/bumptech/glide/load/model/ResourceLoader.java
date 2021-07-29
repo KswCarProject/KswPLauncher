@@ -4,8 +4,6 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.ModelLoader;
@@ -21,7 +19,7 @@ public class ResourceLoader<Data> implements ModelLoader<Integer, Data> {
         this.uriLoader = uriLoader2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull Integer model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(Integer model, int width, int height, Options options) {
         Uri uri = getResourceUri(model);
         if (uri == null) {
             return null;
@@ -29,7 +27,6 @@ public class ResourceLoader<Data> implements ModelLoader<Integer, Data> {
         return this.uriLoader.buildLoadData(uri, width, height, options);
     }
 
-    @Nullable
     private Uri getResourceUri(Integer model) {
         try {
             return Uri.parse("android.resource://" + this.resources.getResourcePackageName(model.intValue()) + '/' + this.resources.getResourceTypeName(model.intValue()) + '/' + this.resources.getResourceEntryName(model.intValue()));
@@ -42,7 +39,7 @@ public class ResourceLoader<Data> implements ModelLoader<Integer, Data> {
         }
     }
 
-    public boolean handles(@NonNull Integer model) {
+    public boolean handles(Integer model) {
         return true;
     }
 
@@ -53,7 +50,6 @@ public class ResourceLoader<Data> implements ModelLoader<Integer, Data> {
             this.resources = resources2;
         }
 
-        @NonNull
         public ModelLoader<Integer, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new ResourceLoader(this.resources, multiFactory.build(Uri.class, InputStream.class));
         }
@@ -69,7 +65,6 @@ public class ResourceLoader<Data> implements ModelLoader<Integer, Data> {
             this.resources = resources2;
         }
 
-        @NonNull
         public ModelLoader<Integer, ParcelFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new ResourceLoader(this.resources, multiFactory.build(Uri.class, ParcelFileDescriptor.class));
         }
@@ -100,7 +95,6 @@ public class ResourceLoader<Data> implements ModelLoader<Integer, Data> {
             this.resources = resources2;
         }
 
-        @NonNull
         public ModelLoader<Integer, Uri> build(MultiModelLoaderFactory multiFactory) {
             return new ResourceLoader(this.resources, UnitModelLoader.getInstance());
         }

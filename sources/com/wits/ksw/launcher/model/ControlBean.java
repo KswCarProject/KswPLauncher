@@ -35,16 +35,14 @@ public class ControlBean {
     public void updataControl() {
         try {
             int benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
-            boolean z = false;
+            boolean z = true;
             this.controlPanelClose.set(benzpane == 0);
             String str = TAG;
-            StringBuilder sb = new StringBuilder();
-            sb.append("benzControlPanel: ");
-            if (benzpane == 0) {
-                z = true;
+            StringBuilder append = new StringBuilder().append("benzControlPanel: ");
+            if (benzpane != 0) {
+                z = false;
             }
-            sb.append(z);
-            Log.i(str, sb.toString());
+            Log.i(str, append.append(z).toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

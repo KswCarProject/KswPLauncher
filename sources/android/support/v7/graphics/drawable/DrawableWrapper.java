@@ -7,10 +7,8 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class DrawableWrapper extends Drawable implements Drawable.Callback {
     private Drawable mDrawable;
 
@@ -153,8 +151,9 @@ public class DrawableWrapper extends Drawable implements Drawable.Callback {
     }
 
     public void setWrappedDrawable(Drawable drawable) {
-        if (this.mDrawable != null) {
-            this.mDrawable.setCallback((Drawable.Callback) null);
+        Drawable drawable2 = this.mDrawable;
+        if (drawable2 != null) {
+            drawable2.setCallback((Drawable.Callback) null);
         }
         this.mDrawable = drawable;
         if (drawable != null) {

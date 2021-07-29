@@ -2,8 +2,6 @@ package android.support.v4.view;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 public abstract class AbsSavedState implements Parcelable {
     public static final Parcelable.Creator<AbsSavedState> CREATOR = new Parcelable.ClassLoaderCreator<AbsSavedState>() {
@@ -30,7 +28,7 @@ public abstract class AbsSavedState implements Parcelable {
         this.mSuperState = null;
     }
 
-    protected AbsSavedState(@NonNull Parcelable superState) {
+    protected AbsSavedState(Parcelable superState) {
         if (superState != null) {
             this.mSuperState = superState != EMPTY_STATE ? superState : null;
             return;
@@ -38,16 +36,15 @@ public abstract class AbsSavedState implements Parcelable {
         throw new IllegalArgumentException("superState must not be null");
     }
 
-    protected AbsSavedState(@NonNull Parcel source) {
+    protected AbsSavedState(Parcel source) {
         this(source, (ClassLoader) null);
     }
 
-    protected AbsSavedState(@NonNull Parcel source, @Nullable ClassLoader loader) {
+    protected AbsSavedState(Parcel source, ClassLoader loader) {
         Parcelable superState = source.readParcelable(loader);
         this.mSuperState = superState != null ? superState : EMPTY_STATE;
     }
 
-    @Nullable
     public final Parcelable getSuperState() {
         return this.mSuperState;
     }

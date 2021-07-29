@@ -1,7 +1,6 @@
 package com.wits.ksw.settings.romeo.layout_two;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -81,7 +80,7 @@ public class NaviTwo extends RelativeLayout {
                     viewGroup.getChildAt(finalI).getLocationInWindow(locW);
                     if (motionEvent.getAction() == 0) {
                         Log.d("NaviTwo", "changeItemBg onTouch y=" + locW[1]);
-                        NaviTwo.this.updateListBg.updateListBg(locW[1] + -78, 2);
+                        NaviTwo.this.updateListBg.updateListBg(locW[1] - 78, 2);
                     } else if (motionEvent.getAction() == 1) {
                         NaviTwo.this.updateListBg.updateListBg(locW[1] - 78, 0);
                     } else if (motionEvent.getAction() == 3) {
@@ -96,7 +95,7 @@ public class NaviTwo extends RelativeLayout {
                         int[] locW = new int[2];
                         viewGroup.getChildAt(finalI).getLocationInWindow(locW);
                         Log.d("NaviTwo", "changeItemBg onFocusChange y=" + locW[1]);
-                        NaviTwo.this.updateListBg.updateListBg(locW[1] + -78, 1);
+                        NaviTwo.this.updateListBg.updateListBg(locW[1] - 78, 1);
                     }
                 }
             });
@@ -107,8 +106,9 @@ public class NaviTwo extends RelativeLayout {
         this.relate_naviv = (RelativeLayout) view.findViewById(R.id.relate_naviv);
         this.relate_app = (RelativeLayout) view.findViewById(R.id.relate_app);
         this.navi_recycle = (RecyclerView) view.findViewById(R.id.navi_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.navi_recycle.setLayoutManager(this.layoutManager);
         this.navi_recycle.setItemViewCacheSize(0);
         new FixLinearSnapHelper().attachToRecyclerView(this.navi_recycle);
@@ -117,11 +117,11 @@ public class NaviTwo extends RelativeLayout {
         this.navi_recycle.setAdapter(this.naviAdapter);
         this.naviAdapter.setIUpdateListBg(this.updateListBg);
         this.navi_recycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 for (int i = 0; i < recyclerView.getChildCount(); i++) {
                     int pad = KswUtils.calculateTranslate(recyclerView.getChildAt(i).getTop(), KswUtils.dip2px(NaviTwo.this.getContext(), 428.0f), i, NaviTwo.this.getContext());
@@ -138,25 +138,26 @@ public class NaviTwo extends RelativeLayout {
                 }
             }
         });
-        this.rdg_naviv = (RadioGroup) view.findViewById(R.id.rdg_naviv);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_naviv);
+        this.rdg_naviv = radioGroup;
         switch (this.naviMin) {
             case 0:
-                this.rdg_naviv.check(R.id.rdb_naviv1);
+                radioGroup.check(R.id.rdb_naviv1);
                 break;
             case 1:
-                this.rdg_naviv.check(R.id.rdb_naviv2);
+                radioGroup.check(R.id.rdb_naviv2);
                 break;
             case 2:
-                this.rdg_naviv.check(R.id.rdb_naviv3);
+                radioGroup.check(R.id.rdb_naviv3);
                 break;
             case 3:
-                this.rdg_naviv.check(R.id.rdb_naviv4);
+                radioGroup.check(R.id.rdb_naviv4);
                 break;
             case 4:
-                this.rdg_naviv.check(R.id.rdb_naviv5);
+                radioGroup.check(R.id.rdb_naviv5);
                 break;
             case 5:
-                this.rdg_naviv.check(R.id.rdb_naviv6);
+                radioGroup.check(R.id.rdb_naviv6);
                 break;
         }
         this.rdg_naviv.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

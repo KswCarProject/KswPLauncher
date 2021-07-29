@@ -49,30 +49,42 @@ public class AlsID7SetFactoryLayout extends RelativeLayout implements View.OnCli
 
     private void initView(View view) {
         this.tv_showPwd = (TextView) view.findViewById(R.id.tv_showPwd);
-        this.img_btn1 = (ImageView) view.findViewById(R.id.img_btn1);
-        this.img_btn1.setOnClickListener(this);
-        this.img_btn2 = (ImageView) view.findViewById(R.id.img_btn2);
-        this.img_btn2.setOnClickListener(this);
-        this.img_btn3 = (ImageView) view.findViewById(R.id.img_btn3);
-        this.img_btn3.setOnClickListener(this);
-        this.img_btn4 = (ImageView) view.findViewById(R.id.img_btn4);
-        this.img_btn4.setOnClickListener(this);
-        this.img_btn5 = (ImageView) view.findViewById(R.id.img_btn5);
-        this.img_btn5.setOnClickListener(this);
-        this.img_btn6 = (ImageView) view.findViewById(R.id.img_btn6);
-        this.img_btn6.setOnClickListener(this);
-        this.img_btn7 = (ImageView) view.findViewById(R.id.img_btn7);
-        this.img_btn7.setOnClickListener(this);
-        this.img_btn8 = (ImageView) view.findViewById(R.id.img_btn8);
-        this.img_btn8.setOnClickListener(this);
-        this.img_btn9 = (ImageView) view.findViewById(R.id.img_btn9);
-        this.img_btn9.setOnClickListener(this);
-        this.img_btn0 = (ImageView) view.findViewById(R.id.img_btn0);
-        this.img_btn0.setOnClickListener(this);
-        this.img_enter = (ImageView) view.findViewById(R.id.img_enter);
-        this.img_enter.setOnClickListener(this);
-        this.img_del = (ImageView) view.findViewById(R.id.img_del);
-        this.img_del.setOnClickListener(this);
+        ImageView imageView = (ImageView) view.findViewById(R.id.img_btn1);
+        this.img_btn1 = imageView;
+        imageView.setOnClickListener(this);
+        ImageView imageView2 = (ImageView) view.findViewById(R.id.img_btn2);
+        this.img_btn2 = imageView2;
+        imageView2.setOnClickListener(this);
+        ImageView imageView3 = (ImageView) view.findViewById(R.id.img_btn3);
+        this.img_btn3 = imageView3;
+        imageView3.setOnClickListener(this);
+        ImageView imageView4 = (ImageView) view.findViewById(R.id.img_btn4);
+        this.img_btn4 = imageView4;
+        imageView4.setOnClickListener(this);
+        ImageView imageView5 = (ImageView) view.findViewById(R.id.img_btn5);
+        this.img_btn5 = imageView5;
+        imageView5.setOnClickListener(this);
+        ImageView imageView6 = (ImageView) view.findViewById(R.id.img_btn6);
+        this.img_btn6 = imageView6;
+        imageView6.setOnClickListener(this);
+        ImageView imageView7 = (ImageView) view.findViewById(R.id.img_btn7);
+        this.img_btn7 = imageView7;
+        imageView7.setOnClickListener(this);
+        ImageView imageView8 = (ImageView) view.findViewById(R.id.img_btn8);
+        this.img_btn8 = imageView8;
+        imageView8.setOnClickListener(this);
+        ImageView imageView9 = (ImageView) view.findViewById(R.id.img_btn9);
+        this.img_btn9 = imageView9;
+        imageView9.setOnClickListener(this);
+        ImageView imageView10 = (ImageView) view.findViewById(R.id.img_btn0);
+        this.img_btn0 = imageView10;
+        imageView10.setOnClickListener(this);
+        ImageView imageView11 = (ImageView) view.findViewById(R.id.img_enter);
+        this.img_enter = imageView11;
+        imageView11.setOnClickListener(this);
+        ImageView imageView12 = (ImageView) view.findViewById(R.id.img_del);
+        this.img_del = imageView12;
+        imageView12.setOnClickListener(this);
         this.img_del.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View view) {
                 if (AlsID7SetFactoryLayout.this.pwdInput.length() <= 0) {
@@ -149,7 +161,8 @@ public class AlsID7SetFactoryLayout extends RelativeLayout implements View.OnCli
                 break;
             case R.id.img_del:
                 if (this.pwdInput.length() > 0) {
-                    this.pwdInput.deleteCharAt(this.pwdInput.length() - 1);
+                    StringBuffer stringBuffer = this.pwdInput;
+                    stringBuffer.deleteCharAt(stringBuffer.length() - 1);
                     break;
                 }
                 break;
@@ -158,7 +171,8 @@ public class AlsID7SetFactoryLayout extends RelativeLayout implements View.OnCli
                 message.obj = this.pwdInput.toString();
                 message.what = 2;
                 if (this.pwdInput.length() > 0) {
-                    this.pwdInput.delete(0, this.pwdInput.length());
+                    StringBuffer stringBuffer2 = this.pwdInput;
+                    stringBuffer2.delete(0, stringBuffer2.length());
                     this.tv_showPwd.setText(this.pwdInput.toString());
                 }
                 this.handler.sendMessage(message);

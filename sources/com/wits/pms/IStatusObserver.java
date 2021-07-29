@@ -33,16 +33,17 @@ public interface IStatusObserver extends IInterface {
         }
 
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-            if (code == 1) {
-                data.enforceInterface(DESCRIPTOR);
-                onChange();
-                reply.writeNoException();
-                return true;
-            } else if (code != 1598968902) {
-                return super.onTransact(code, data, reply, flags);
-            } else {
-                reply.writeString(DESCRIPTOR);
-                return true;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    onChange();
+                    reply.writeNoException();
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
             }
         }
 

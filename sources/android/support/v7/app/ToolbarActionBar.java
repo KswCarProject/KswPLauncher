@@ -1,10 +1,8 @@
 package android.support.v7.app;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.view.WindowCallbackWrapper;
@@ -28,11 +26,7 @@ class ToolbarActionBar extends ActionBar {
     DecorToolbar mDecorToolbar;
     private boolean mLastMenuVisibility;
     private boolean mMenuCallbackSet;
-    private final Toolbar.OnMenuItemClickListener mMenuClicker = new Toolbar.OnMenuItemClickListener() {
-        public boolean onMenuItemClick(MenuItem item) {
-            return ToolbarActionBar.this.mWindowCallback.onMenuItemSelected(0, item);
-        }
-    };
+    private final Toolbar.OnMenuItemClickListener mMenuClicker;
     private final Runnable mMenuInvalidator = new Runnable() {
         public void run() {
             ToolbarActionBar.this.populateOptionsMenu();
@@ -43,10 +37,17 @@ class ToolbarActionBar extends ActionBar {
     Window.Callback mWindowCallback;
 
     ToolbarActionBar(Toolbar toolbar, CharSequence title, Window.Callback windowCallback) {
+        AnonymousClass2 r0 = new Toolbar.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                return ToolbarActionBar.this.mWindowCallback.onMenuItemSelected(0, item);
+            }
+        };
+        this.mMenuClicker = r0;
         this.mDecorToolbar = new ToolbarWidgetWrapper(toolbar, false);
-        this.mWindowCallback = new ToolbarCallbackWrapper(windowCallback);
-        this.mDecorToolbar.setWindowCallback(this.mWindowCallback);
-        toolbar.setOnMenuItemClickListener(this.mMenuClicker);
+        ToolbarCallbackWrapper toolbarCallbackWrapper = new ToolbarCallbackWrapper(windowCallback);
+        this.mWindowCallback = toolbarCallbackWrapper;
+        this.mDecorToolbar.setWindowCallback(toolbarCallbackWrapper);
+        toolbar.setOnMenuItemClickListener(r0);
         this.mDecorToolbar.setWindowTitle(title);
     }
 
@@ -141,11 +142,13 @@ class ToolbarActionBar extends ActionBar {
     }
 
     public void setSelectedNavigationItem(int position) {
-        if (this.mDecorToolbar.getNavigationMode() == 1) {
-            this.mDecorToolbar.setDropdownSelectedPosition(position);
-            return;
+        switch (this.mDecorToolbar.getNavigationMode()) {
+            case 1:
+                this.mDecorToolbar.setDropdownSelectedPosition(position);
+                return;
+            default:
+                throw new IllegalStateException("setSelectedNavigationIndex not valid for current navigation mode");
         }
-        throw new IllegalStateException("setSelectedNavigationIndex not valid for current navigation mode");
     }
 
     public int getSelectedNavigationIndex() {
@@ -161,7 +164,8 @@ class ToolbarActionBar extends ActionBar {
     }
 
     public void setTitle(int resId) {
-        this.mDecorToolbar.setTitle(resId != 0 ? this.mDecorToolbar.getContext().getText(resId) : null);
+        DecorToolbar decorToolbar = this.mDecorToolbar;
+        decorToolbar.setTitle(resId != 0 ? decorToolbar.getContext().getText(resId) : null);
     }
 
     public void setWindowTitle(CharSequence title) {
@@ -182,10 +186,10 @@ class ToolbarActionBar extends ActionBar {
     }
 
     public void setSubtitle(int resId) {
-        this.mDecorToolbar.setSubtitle(resId != 0 ? this.mDecorToolbar.getContext().getText(resId) : null);
+        DecorToolbar decorToolbar = this.mDecorToolbar;
+        decorToolbar.setSubtitle(resId != 0 ? decorToolbar.getContext().getText(resId) : null);
     }
 
-    @SuppressLint({"WrongConstant"})
     public void setDisplayOptions(int options) {
         setDisplayOptions(options, -1);
     }
@@ -214,7 +218,7 @@ class ToolbarActionBar extends ActionBar {
         setDisplayOptions(showCustom ? 16 : 0, 16);
     }
 
-    public void setBackgroundDrawable(@Nullable Drawable d) {
+    public void setBackgroundDrawable(Drawable d) {
         this.mDecorToolbar.setBackgroundDrawable(d);
     }
 

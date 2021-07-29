@@ -26,14 +26,16 @@ public class BmwId6ViewPagerAdpater extends FragmentPagerAdapter {
     }
 
     public Fragment getItem(int i) {
-        if (this.fragmentList == null || this.fragmentList.isEmpty()) {
+        List<Fragment> list = this.fragmentList;
+        if (list == null || list.isEmpty()) {
             return null;
         }
         return this.fragmentList.get(i);
     }
 
     public int getCount() {
-        if (this.fragmentList == null || this.fragmentList.isEmpty()) {
+        List<Fragment> list = this.fragmentList;
+        if (list == null || list.isEmpty()) {
             return 0;
         }
         return this.fragmentList.size();

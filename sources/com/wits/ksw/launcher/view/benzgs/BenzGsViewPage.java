@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.view.benzgs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,11 +14,11 @@ public class BenzGsViewPage extends ViewPager {
     /* access modifiers changed from: private */
     public BenzGsViewMoel viewMoel;
 
-    public BenzGsViewPage(@NonNull Context context) {
+    public BenzGsViewPage(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public BenzGsViewPage(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public BenzGsViewPage(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
         addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -51,10 +49,11 @@ public class BenzGsViewPage extends ViewPager {
         if (event.getAction() != 1) {
             return true;
         }
-        Log.i(TAG, "dispatchKeyEvent: ");
+        String str = TAG;
+        Log.i(str, "dispatchKeyEvent: ");
         if (event.getKeyCode() == 19) {
             int index = BenzConfig.getIndex(this.mContext) - 1;
-            Log.i(TAG, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index);
+            Log.i(str, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index);
             if (index < 0) {
                 index = 0;
             }
@@ -64,7 +63,7 @@ public class BenzGsViewPage extends ViewPager {
             }
         } else if (event.getKeyCode() == 20) {
             int index2 = BenzConfig.getIndex(this.mContext) + 1;
-            Log.i(TAG, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index2);
+            Log.i(str, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index2);
             if (index2 > 9) {
                 index2 = 9;
             }

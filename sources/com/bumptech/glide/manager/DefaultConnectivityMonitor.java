@@ -1,13 +1,11 @@
 package com.bumptech.glide.manager;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.bumptech.glide.manager.ConnectivityMonitor;
 import com.bumptech.glide.util.Preconditions;
@@ -15,9 +13,10 @@ import com.bumptech.glide.util.Preconditions;
 final class DefaultConnectivityMonitor implements ConnectivityMonitor {
     private static final String TAG = "ConnectivityMonitor";
     private final BroadcastReceiver connectivityReceiver = new BroadcastReceiver() {
-        public void onReceive(@NonNull Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent) {
             boolean wasConnected = DefaultConnectivityMonitor.this.isConnected;
-            DefaultConnectivityMonitor.this.isConnected = DefaultConnectivityMonitor.this.isConnected(context);
+            DefaultConnectivityMonitor defaultConnectivityMonitor = DefaultConnectivityMonitor.this;
+            defaultConnectivityMonitor.isConnected = defaultConnectivityMonitor.isConnected(context);
             if (wasConnected != DefaultConnectivityMonitor.this.isConnected) {
                 if (Log.isLoggable(DefaultConnectivityMonitor.TAG, 3)) {
                     Log.d(DefaultConnectivityMonitor.TAG, "connectivity changed, isConnected: " + DefaultConnectivityMonitor.this.isConnected);
@@ -31,7 +30,7 @@ final class DefaultConnectivityMonitor implements ConnectivityMonitor {
     private boolean isRegistered;
     final ConnectivityMonitor.ConnectivityListener listener;
 
-    DefaultConnectivityMonitor(@NonNull Context context2, @NonNull ConnectivityMonitor.ConnectivityListener listener2) {
+    DefaultConnectivityMonitor(Context context2, ConnectivityMonitor.ConnectivityListener listener2) {
         this.context = context2.getApplicationContext();
         this.listener = listener2;
     }
@@ -58,8 +57,7 @@ final class DefaultConnectivityMonitor implements ConnectivityMonitor {
     }
 
     /* access modifiers changed from: package-private */
-    @SuppressLint({"MissingPermission"})
-    public boolean isConnected(@NonNull Context context2) {
+    public boolean isConnected(Context context2) {
         try {
             NetworkInfo networkInfo = ((ConnectivityManager) Preconditions.checkNotNull((ConnectivityManager) context2.getSystemService("connectivity"))).getActiveNetworkInfo();
             if (networkInfo == null || !networkInfo.isConnected()) {

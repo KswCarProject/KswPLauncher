@@ -36,25 +36,23 @@ public interface ICmdListener extends IInterface {
         }
 
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-            if (code != 1598968902) {
-                switch (code) {
-                    case 1:
-                        data.enforceInterface(DESCRIPTOR);
-                        boolean _result = handleCommand(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result);
-                        return true;
-                    case 2:
-                        data.enforceInterface(DESCRIPTOR);
-                        updateStatusInfo(data.readString());
-                        reply.writeNoException();
-                        return true;
-                    default:
-                        return super.onTransact(code, data, reply, flags);
-                }
-            } else {
-                reply.writeString(DESCRIPTOR);
-                return true;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result = handleCommand(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result);
+                    return true;
+                case 2:
+                    data.enforceInterface(DESCRIPTOR);
+                    updateStatusInfo(data.readString());
+                    reply.writeNoException();
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
             }
         }
 

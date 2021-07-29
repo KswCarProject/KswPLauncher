@@ -35,21 +35,22 @@ public interface IResultReceiver extends IInterface {
 
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
             Bundle _arg1;
-            if (code == 1) {
-                data.enforceInterface(DESCRIPTOR);
-                int _arg0 = data.readInt();
-                if (data.readInt() != 0) {
-                    _arg1 = (Bundle) Bundle.CREATOR.createFromParcel(data);
-                } else {
-                    _arg1 = null;
-                }
-                send(_arg0, _arg1);
-                return true;
-            } else if (code != 1598968902) {
-                return super.onTransact(code, data, reply, flags);
-            } else {
-                reply.writeString(DESCRIPTOR);
-                return true;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    int _arg0 = data.readInt();
+                    if (data.readInt() != 0) {
+                        _arg1 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg1 = null;
+                    }
+                    send(_arg0, _arg1);
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
             }
         }
 

@@ -4,10 +4,8 @@ import android.content.Context;
 import android.media.browse.MediaBrowser;
 import android.os.Parcel;
 import android.service.media.MediaBrowserService;
-import android.support.annotation.RequiresApi;
 import android.support.v4.media.MediaBrowserServiceCompatApi21;
 
-@RequiresApi(23)
 class MediaBrowserServiceCompatApi23 {
 
     public interface ServiceCompatProxy extends MediaBrowserServiceCompatApi21.ServiceCompatProxy {

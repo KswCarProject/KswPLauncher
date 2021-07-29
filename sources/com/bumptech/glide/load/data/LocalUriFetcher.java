@@ -2,7 +2,6 @@ package com.bumptech.glide.load.data;
 
 import android.content.ContentResolver;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -27,10 +26,11 @@ public abstract class LocalUriFetcher<T> implements DataFetcher<T> {
         this.uri = uri2;
     }
 
-    public final void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super T> callback) {
+    public final void loadData(Priority priority, DataFetcher.DataCallback<? super T> callback) {
         try {
-            this.data = loadResource(this.uri, this.contentResolver);
-            callback.onDataReady(this.data);
+            T loadResource = loadResource(this.uri, this.contentResolver);
+            this.data = loadResource;
+            callback.onDataReady(loadResource);
         } catch (FileNotFoundException e) {
             if (Log.isLoggable(TAG, 3)) {
                 Log.d(TAG, "Failed to open Uri", e);
@@ -40,9 +40,10 @@ public abstract class LocalUriFetcher<T> implements DataFetcher<T> {
     }
 
     public void cleanup() {
-        if (this.data != null) {
+        T t = this.data;
+        if (t != null) {
             try {
-                close(this.data);
+                close(t);
             } catch (IOException e) {
             }
         }
@@ -51,7 +52,6 @@ public abstract class LocalUriFetcher<T> implements DataFetcher<T> {
     public void cancel() {
     }
 
-    @NonNull
     public DataSource getDataSource() {
         return DataSource.LOCAL;
     }

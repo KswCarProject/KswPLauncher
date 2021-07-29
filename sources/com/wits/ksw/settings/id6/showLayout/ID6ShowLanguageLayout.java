@@ -2,7 +2,6 @@ package com.wits.ksw.settings.id6.showLayout;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -31,7 +30,6 @@ public class ID6ShowLanguageLayout extends RelativeLayout {
     private RecyclerView recyclerView;
     private View view;
 
-    @RequiresApi(api = 24)
     public ID6ShowLanguageLayout(Context context2) {
         super(context2);
         this.context = context2;
@@ -44,7 +42,6 @@ public class ID6ShowLanguageLayout extends RelativeLayout {
         addView(this.view);
     }
 
-    @RequiresApi(api = 24)
     private void initData() {
         try {
             this.defLanguage = PowerManagerApp.getSettingsInt(KeyConfig.LANGUAGE_DEFUAL);
@@ -58,9 +55,9 @@ public class ID6ShowLanguageLayout extends RelativeLayout {
             }
             this.data.get(this.defLanguage).setIscheck(true);
             Locale sysLanguage = Locale.getDefault();
-            Log.d("SystemLa", "la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
-            int checkInex = -1;
             boolean ishave = false;
+            int checkInex = -1;
+            Log.d("SystemLa", "la:" + sysLanguage.getLanguage() + "dw:" + sysLanguage.getCountry());
             for (int i = 0; i < languags.size(); i++) {
                 if (TextUtils.equals(this.locales.get(i).getLanguage(), sysLanguage.getLanguage()) && this.locales.get(i).getCountry().equals(sysLanguage.getCountry())) {
                     ishave = true;
@@ -87,8 +84,9 @@ public class ID6ShowLanguageLayout extends RelativeLayout {
 
     private void initView(View view2) {
         this.recyclerView = (RecyclerView) view2.findViewById(R.id.language_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
         if (Build.DISPLAY.contains("8937")) {
             this.adapter = new ID6LanguageAdapter(this.context, this.data, 1);
@@ -99,15 +97,15 @@ public class ID6ShowLanguageLayout extends RelativeLayout {
         this.recyclerView.setEnabled(false);
     }
 
-    @RequiresApi(api = 24)
     public void updateView() {
         initData();
         initView(this.view);
     }
 
     private void LocaleList() {
-        this.locales = new ArrayList();
-        this.locales.add(new Locale("zh", "CN"));
+        ArrayList arrayList = new ArrayList();
+        this.locales = arrayList;
+        arrayList.add(new Locale("zh", "CN"));
         this.locales.add(new Locale("zh", "TW"));
         this.locales.add(new Locale("en"));
         this.locales.add(new Locale("de"));

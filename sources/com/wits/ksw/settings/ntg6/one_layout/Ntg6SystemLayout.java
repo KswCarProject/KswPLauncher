@@ -120,23 +120,21 @@ public class Ntg6SystemLayout extends RelativeLayout implements View.OnClickList
             ExceptionPrint.print("updateTwoLayout is null");
             return;
         }
-        int id = v.getId();
-        if (id != R.id.benz_sysTempUnit) {
-            switch (id) {
-                case R.id.tv_sysBgld:
-                    this.updateTwoLayout.updateTwoLayout(1, 2);
-                    return;
-                case R.id.tv_sysCaux:
-                    this.updateTwoLayout.updateTwoLayout(1, 3);
-                    return;
-                case R.id.tv_sysDcsxt:
-                    this.updateTwoLayout.updateTwoLayout(1, 1);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            this.updateTwoLayout.updateTwoLayout(1, 4);
+        switch (v.getId()) {
+            case R.id.benz_sysTempUnit:
+                this.updateTwoLayout.updateTwoLayout(1, 4);
+                return;
+            case R.id.tv_sysBgld:
+                this.updateTwoLayout.updateTwoLayout(1, 2);
+                return;
+            case R.id.tv_sysCaux:
+                this.updateTwoLayout.updateTwoLayout(1, 3);
+                return;
+            case R.id.tv_sysDcsxt:
+                this.updateTwoLayout.updateTwoLayout(1, 1);
+                return;
+            default:
+                return;
         }
     }
 

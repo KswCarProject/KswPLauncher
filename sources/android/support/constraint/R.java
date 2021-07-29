@@ -1,87 +1,85 @@
 package android.support.constraint;
 
 public final class R {
-    private R() {
-    }
 
     public static final class attr {
-        public static final int barrierAllowsGoneWidgets = 2130903096;
-        public static final int barrierDirection = 2130903097;
-        public static final int chainUseRtl = 2130903113;
-        public static final int constraintSet = 2130903132;
-        public static final int constraint_referenced_ids = 2130903133;
-        public static final int content = 2130903134;
-        public static final int emptyVisibility = 2130903166;
-        public static final int layout_constrainedHeight = 2130903217;
-        public static final int layout_constrainedWidth = 2130903218;
-        public static final int layout_constraintBaseline_creator = 2130903219;
-        public static final int layout_constraintBaseline_toBaselineOf = 2130903220;
-        public static final int layout_constraintBottom_creator = 2130903221;
-        public static final int layout_constraintBottom_toBottomOf = 2130903222;
-        public static final int layout_constraintBottom_toTopOf = 2130903223;
-        public static final int layout_constraintCircle = 2130903224;
-        public static final int layout_constraintCircleAngle = 2130903225;
-        public static final int layout_constraintCircleRadius = 2130903226;
-        public static final int layout_constraintDimensionRatio = 2130903227;
-        public static final int layout_constraintEnd_toEndOf = 2130903228;
-        public static final int layout_constraintEnd_toStartOf = 2130903229;
-        public static final int layout_constraintGuide_begin = 2130903230;
-        public static final int layout_constraintGuide_end = 2130903231;
-        public static final int layout_constraintGuide_percent = 2130903232;
-        public static final int layout_constraintHeight_default = 2130903233;
-        public static final int layout_constraintHeight_max = 2130903234;
-        public static final int layout_constraintHeight_min = 2130903235;
-        public static final int layout_constraintHeight_percent = 2130903236;
-        public static final int layout_constraintHorizontal_bias = 2130903237;
-        public static final int layout_constraintHorizontal_chainStyle = 2130903238;
-        public static final int layout_constraintHorizontal_weight = 2130903239;
-        public static final int layout_constraintLeft_creator = 2130903240;
-        public static final int layout_constraintLeft_toLeftOf = 2130903241;
-        public static final int layout_constraintLeft_toRightOf = 2130903242;
-        public static final int layout_constraintRight_creator = 2130903243;
-        public static final int layout_constraintRight_toLeftOf = 2130903244;
-        public static final int layout_constraintRight_toRightOf = 2130903245;
-        public static final int layout_constraintStart_toEndOf = 2130903246;
-        public static final int layout_constraintStart_toStartOf = 2130903247;
-        public static final int layout_constraintTop_creator = 2130903248;
-        public static final int layout_constraintTop_toBottomOf = 2130903249;
-        public static final int layout_constraintTop_toTopOf = 2130903250;
-        public static final int layout_constraintVertical_bias = 2130903251;
-        public static final int layout_constraintVertical_chainStyle = 2130903252;
-        public static final int layout_constraintVertical_weight = 2130903253;
-        public static final int layout_constraintWidth_default = 2130903254;
-        public static final int layout_constraintWidth_max = 2130903255;
-        public static final int layout_constraintWidth_min = 2130903256;
-        public static final int layout_constraintWidth_percent = 2130903257;
-        public static final int layout_editor_absoluteX = 2130903259;
-        public static final int layout_editor_absoluteY = 2130903260;
-        public static final int layout_goneMarginBottom = 2130903261;
-        public static final int layout_goneMarginEnd = 2130903262;
-        public static final int layout_goneMarginLeft = 2130903263;
-        public static final int layout_goneMarginRight = 2130903264;
-        public static final int layout_goneMarginStart = 2130903265;
-        public static final int layout_goneMarginTop = 2130903266;
-        public static final int layout_optimizationLevel = 2130903269;
+        public static final int barrierAllowsGoneWidgets = 2130968632;
+        public static final int barrierDirection = 2130968633;
+        public static final int chainUseRtl = 2130968656;
+        public static final int constraintSet = 2130968679;
+        public static final int constraint_referenced_ids = 2130968680;
+        public static final int content = 2130968681;
+        public static final int emptyVisibility = 2130968718;
+        public static final int layout_constrainedHeight = 2130968772;
+        public static final int layout_constrainedWidth = 2130968773;
+        public static final int layout_constraintBaseline_creator = 2130968774;
+        public static final int layout_constraintBaseline_toBaselineOf = 2130968775;
+        public static final int layout_constraintBottom_creator = 2130968776;
+        public static final int layout_constraintBottom_toBottomOf = 2130968777;
+        public static final int layout_constraintBottom_toTopOf = 2130968778;
+        public static final int layout_constraintCircle = 2130968779;
+        public static final int layout_constraintCircleAngle = 2130968780;
+        public static final int layout_constraintCircleRadius = 2130968781;
+        public static final int layout_constraintDimensionRatio = 2130968782;
+        public static final int layout_constraintEnd_toEndOf = 2130968783;
+        public static final int layout_constraintEnd_toStartOf = 2130968784;
+        public static final int layout_constraintGuide_begin = 2130968785;
+        public static final int layout_constraintGuide_end = 2130968786;
+        public static final int layout_constraintGuide_percent = 2130968787;
+        public static final int layout_constraintHeight_default = 2130968788;
+        public static final int layout_constraintHeight_max = 2130968789;
+        public static final int layout_constraintHeight_min = 2130968790;
+        public static final int layout_constraintHeight_percent = 2130968791;
+        public static final int layout_constraintHorizontal_bias = 2130968792;
+        public static final int layout_constraintHorizontal_chainStyle = 2130968793;
+        public static final int layout_constraintHorizontal_weight = 2130968794;
+        public static final int layout_constraintLeft_creator = 2130968795;
+        public static final int layout_constraintLeft_toLeftOf = 2130968796;
+        public static final int layout_constraintLeft_toRightOf = 2130968797;
+        public static final int layout_constraintRight_creator = 2130968798;
+        public static final int layout_constraintRight_toLeftOf = 2130968799;
+        public static final int layout_constraintRight_toRightOf = 2130968800;
+        public static final int layout_constraintStart_toEndOf = 2130968801;
+        public static final int layout_constraintStart_toStartOf = 2130968802;
+        public static final int layout_constraintTop_creator = 2130968803;
+        public static final int layout_constraintTop_toBottomOf = 2130968804;
+        public static final int layout_constraintTop_toTopOf = 2130968805;
+        public static final int layout_constraintVertical_bias = 2130968806;
+        public static final int layout_constraintVertical_chainStyle = 2130968807;
+        public static final int layout_constraintVertical_weight = 2130968808;
+        public static final int layout_constraintWidth_default = 2130968809;
+        public static final int layout_constraintWidth_max = 2130968810;
+        public static final int layout_constraintWidth_min = 2130968811;
+        public static final int layout_constraintWidth_percent = 2130968812;
+        public static final int layout_editor_absoluteX = 2130968814;
+        public static final int layout_editor_absoluteY = 2130968815;
+        public static final int layout_goneMarginBottom = 2130968816;
+        public static final int layout_goneMarginEnd = 2130968817;
+        public static final int layout_goneMarginLeft = 2130968818;
+        public static final int layout_goneMarginRight = 2130968819;
+        public static final int layout_goneMarginStart = 2130968820;
+        public static final int layout_goneMarginTop = 2130968821;
+        public static final int layout_optimizationLevel = 2130968824;
 
         private attr() {
         }
     }
 
     public static final class id {
-        public static final int bottom = 2131230919;
-        public static final int end = 2131231021;
-        public static final int gone = 2131231040;
-        public static final int invisible = 2131231167;
-        public static final int left = 2131231213;
-        public static final int packed = 2131231297;
-        public static final int parent = 2131231300;
-        public static final int percent = 2131231302;
-        public static final int right = 2131231447;
-        public static final int spread = 2131231551;
-        public static final int spread_inside = 2131231552;
-        public static final int start = 2131231558;
-        public static final int top = 2131231599;
-        public static final int wrap = 2131231738;
+        public static final int bottom = 2131296467;
+        public static final int end = 2131296609;
+        public static final int gone = 2131296634;
+        public static final int invisible = 2131296799;
+        public static final int left = 2131296910;
+        public static final int packed = 2131297027;
+        public static final int parent = 2131297030;
+        public static final int percent = 2131297032;
+        public static final int right = 2131297212;
+        public static final int spread = 2131297329;
+        public static final int spread_inside = 2131297330;
+        public static final int start = 2131297336;
+        public static final int top = 2131297382;
+        public static final int wrap = 2131297551;
 
         private id() {
         }
@@ -238,5 +236,8 @@ public final class R {
 
         private styleable() {
         }
+    }
+
+    private R() {
     }
 }

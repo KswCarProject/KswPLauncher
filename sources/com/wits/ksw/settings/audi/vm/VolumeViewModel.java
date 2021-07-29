@@ -3,12 +3,10 @@ package com.wits.ksw.settings.audi.vm;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.database.ContentObserver;
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableInt;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.widget.SeekBar;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
@@ -20,7 +18,7 @@ public class VolumeViewModel extends AndroidViewModel {
     public ObservableInt hzMediaVolume = new ObservableInt(26);
     public ObservableInt hzcallVolume = new ObservableInt(26);
 
-    public VolumeViewModel(@NonNull Application application) {
+    public VolumeViewModel(Application application) {
         super(application);
         try {
             int hz_mediaVolume = PowerManagerApp.getSettingsInt(KeyConfig.ANDROID_MEDIA_VOL);
@@ -44,7 +42,6 @@ public class VolumeViewModel extends AndroidViewModel {
         });
     }
 
-    @BindingAdapter({"setHzMediaSeekBarChangeListener"})
     public static void setOnSeekBarChangeListener(SeekBar seekBar, final ObservableInt observableInt) {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -65,7 +62,6 @@ public class VolumeViewModel extends AndroidViewModel {
         });
     }
 
-    @BindingAdapter({"setHzCallSeekBarChangeListener"})
     public static void setHzCallSeekBarChangeListener(SeekBar seekBar, final ObservableInt observableInt) {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -86,7 +82,6 @@ public class VolumeViewModel extends AndroidViewModel {
         });
     }
 
-    @BindingAdapter({"setCarCallSeekBarChangeListener"})
     public static void setCarCallSeekBarChangeListener(SeekBar seekBar, final ObservableInt observableInt) {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -107,7 +102,6 @@ public class VolumeViewModel extends AndroidViewModel {
         });
     }
 
-    @BindingAdapter({"setCarNaviSeekBarChangeListener"})
     public static void setCarNaviSeekBarChangeListener(SeekBar seekBar, final ObservableInt observableInt) {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

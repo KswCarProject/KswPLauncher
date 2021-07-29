@@ -1,7 +1,6 @@
 package com.bumptech.glide.load.resource.bitmap;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.ResourceDecoder;
 import com.bumptech.glide.load.engine.Resource;
@@ -22,11 +21,11 @@ public class StreamBitmapDecoder implements ResourceDecoder<InputStream, Bitmap>
         this.byteArrayPool = byteArrayPool2;
     }
 
-    public boolean handles(@NonNull InputStream source, @NonNull Options options) {
+    public boolean handles(InputStream source, Options options) {
         return this.downsampler.handles(source);
     }
 
-    public Resource<Bitmap> decode(@NonNull InputStream source, int width, int height, @NonNull Options options) throws IOException {
+    public Resource<Bitmap> decode(InputStream source, int width, int height, Options options) throws IOException {
         boolean ownsBufferedStream;
         RecyclableBufferedInputStream bufferedStream;
         if (source instanceof RecyclableBufferedInputStream) {

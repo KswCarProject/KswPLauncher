@@ -24,8 +24,9 @@ class MenuDialogHelper implements DialogInterface.OnKeyListener, DialogInterface
     public void show(IBinder windowToken) {
         MenuBuilder menu = this.mMenu;
         AlertDialog.Builder builder = new AlertDialog.Builder(menu.getContext());
-        this.mPresenter = new ListMenuPresenter(builder.getContext(), R.layout.abc_list_menu_item_layout);
-        this.mPresenter.setCallback(this);
+        ListMenuPresenter listMenuPresenter = new ListMenuPresenter(builder.getContext(), R.layout.abc_list_menu_item_layout);
+        this.mPresenter = listMenuPresenter;
+        listMenuPresenter.setCallback(this);
         this.mMenu.addMenuPresenter(this.mPresenter);
         builder.setAdapter(this.mPresenter.getAdapter(), this);
         View headerView = menu.getHeaderView();
@@ -35,8 +36,9 @@ class MenuDialogHelper implements DialogInterface.OnKeyListener, DialogInterface
             builder.setIcon(menu.getHeaderIcon()).setTitle(menu.getHeaderTitle());
         }
         builder.setOnKeyListener(this);
-        this.mDialog = builder.create();
-        this.mDialog.setOnDismissListener(this);
+        AlertDialog create = builder.create();
+        this.mDialog = create;
+        create.setOnDismissListener(this);
         WindowManager.LayoutParams lp = this.mDialog.getWindow().getAttributes();
         lp.type = PointerIconCompat.TYPE_HELP;
         if (windowToken != null) {
@@ -73,8 +75,9 @@ class MenuDialogHelper implements DialogInterface.OnKeyListener, DialogInterface
     }
 
     public void dismiss() {
-        if (this.mDialog != null) {
-            this.mDialog.dismiss();
+        AlertDialog alertDialog = this.mDialog;
+        if (alertDialog != null) {
+            alertDialog.dismiss();
         }
     }
 
@@ -86,14 +89,16 @@ class MenuDialogHelper implements DialogInterface.OnKeyListener, DialogInterface
         if (allMenusAreClosing || menu == this.mMenu) {
             dismiss();
         }
-        if (this.mPresenterCallback != null) {
-            this.mPresenterCallback.onCloseMenu(menu, allMenusAreClosing);
+        MenuPresenter.Callback callback = this.mPresenterCallback;
+        if (callback != null) {
+            callback.onCloseMenu(menu, allMenusAreClosing);
         }
     }
 
     public boolean onOpenSubMenu(MenuBuilder subMenu) {
-        if (this.mPresenterCallback != null) {
-            return this.mPresenterCallback.onOpenSubMenu(subMenu);
+        MenuPresenter.Callback callback = this.mPresenterCallback;
+        if (callback != null) {
+            return callback.onOpenSubMenu(subMenu);
         }
         return false;
     }

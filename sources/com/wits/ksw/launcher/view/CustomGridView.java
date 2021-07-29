@@ -22,7 +22,7 @@ public class CustomGridView extends DragGridView {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.i("KSWLauncher", "onItemSelected: " + position);
                 int count = CustomGridView.this.getAdapter().getCount();
-                int maxIndex = count + -1;
+                int maxIndex = count - 1;
                 if (position >= count) {
                     CustomGridView.this.setSelection(maxIndex);
                 }
@@ -41,49 +41,44 @@ public class CustomGridView extends DragGridView {
         int maxIndex = count - 1;
         this.row = (int) Math.ceil((double) (count / this.column));
         Log.i("KSWLauncher", "onKeyDown: column= " + this.column + " row = " + this.row);
-        StringBuilder sb = new StringBuilder();
-        sb.append("onKeyDown: ");
-        sb.append(keyCode);
-        sb.append("  SelectedPosition= ");
-        sb.append(selectedpostion);
-        sb.append("   ");
-        sb.append(this.column - 1);
-        Log.i("KSWLauncher", sb.toString());
-        if (keyCode != 66) {
-            switch (keyCode) {
-                case 19:
-                case 21:
-                    if (selectedpostion < count) {
-                        if (selectedpostion % this.column != 0) {
-                            if (selectedpostion == 0) {
-                                setSelection(0);
-                                break;
-                            }
-                        } else if (selectedpostion > 0) {
-                            setSelection(selectedpostion - 1);
+        Log.i("KSWLauncher", "onKeyDown: " + keyCode + "  SelectedPosition= " + selectedpostion + "   " + (this.column - 1));
+        switch (keyCode) {
+            case 19:
+            case 21:
+                if (selectedpostion < count) {
+                    if (selectedpostion % this.column != 0) {
+                        if (selectedpostion == 0) {
+                            setSelection(0);
                             break;
                         }
-                    } else {
-                        setSelection(maxIndex);
+                    } else if (selectedpostion > 0) {
+                        setSelection(selectedpostion - 1);
                         break;
+                    }
+                } else {
+                    setSelection(maxIndex);
+                    break;
+                }
+                break;
+            case 20:
+            case 22:
+                if (selectedpostion < count) {
+                    for (int i = 0; i < this.row; i++) {
+                        if (selectedpostion % ((this.column * (i + 1)) - 1) == 0) {
+                            setSelection(selectedpostion + 1);
+                        }
                     }
                     break;
-                case 20:
-                case 22:
-                    if (selectedpostion < count) {
-                        for (int i = 0; i < this.row; i++) {
-                            if (selectedpostion % ((this.column * (i + 1)) - 1) == 0) {
-                                setSelection(selectedpostion + 1);
-                            }
-                        }
-                        break;
-                    } else {
-                        setSelection(maxIndex);
-                        break;
-                    }
-            }
-        } else if (selectedpostion >= count) {
-            setSelection(maxIndex);
+                } else {
+                    setSelection(maxIndex);
+                    break;
+                }
+            case 66:
+                if (selectedpostion >= count) {
+                    setSelection(maxIndex);
+                    break;
+                }
+                break;
         }
         return false;
     }

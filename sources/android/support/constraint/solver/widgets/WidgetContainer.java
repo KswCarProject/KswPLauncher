@@ -1,7 +1,6 @@
 package android.support.constraint.solver.widgets;
 
 import android.support.constraint.solver.Cache;
-import android.support.v7.widget.ActivityChooserView;
 import java.util.ArrayList;
 
 public class WidgetContainer extends ConstraintWidget {
@@ -84,8 +83,13 @@ public class WidgetContainer extends ConstraintWidget {
                 int t2 = widget.getDrawY();
                 int r2 = widget.getWidth() + l2;
                 int b2 = widget.getHeight() + t2;
-                if (x >= ((float) l2) && x <= ((float) r2) && y >= ((float) t2) && y <= ((float) b2)) {
+                if (x < ((float) l2) || x > ((float) r2) || y < ((float) t2) || y > ((float) b2)) {
+                    int i2 = b2;
+                    int b3 = r2;
+                } else {
                     found = widget;
+                    int i3 = b2;
+                    int b4 = r2;
                 }
             }
         }
@@ -113,9 +117,9 @@ public class WidgetContainer extends ConstraintWidget {
         if (widgets.size() == 0) {
             return bounds;
         }
-        int minX = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
+        int minX = Integer.MAX_VALUE;
         int maxX = 0;
-        int minY = ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED;
+        int minY = Integer.MAX_VALUE;
         int maxY = 0;
         int widgetsSize = widgets.size();
         for (int i = 0; i < widgetsSize; i++) {
@@ -147,8 +151,9 @@ public class WidgetContainer extends ConstraintWidget {
 
     public void updateDrawPosition() {
         super.updateDrawPosition();
-        if (this.mChildren != null) {
-            int count = this.mChildren.size();
+        ArrayList<ConstraintWidget> arrayList = this.mChildren;
+        if (arrayList != null) {
+            int count = arrayList.size();
             for (int i = 0; i < count; i++) {
                 ConstraintWidget widget = this.mChildren.get(i);
                 widget.setOffset(getDrawX(), getDrawY());
@@ -161,8 +166,9 @@ public class WidgetContainer extends ConstraintWidget {
 
     public void layout() {
         updateDrawPosition();
-        if (this.mChildren != null) {
-            int count = this.mChildren.size();
+        ArrayList<ConstraintWidget> arrayList = this.mChildren;
+        if (arrayList != null) {
+            int count = arrayList.size();
             for (int i = 0; i < count; i++) {
                 ConstraintWidget widget = this.mChildren.get(i);
                 if (widget instanceof WidgetContainer) {

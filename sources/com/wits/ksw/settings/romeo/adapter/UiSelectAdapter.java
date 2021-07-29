@@ -1,7 +1,6 @@
 package com.wits.ksw.settings.romeo.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,12 +35,11 @@ public class UiSelectAdapter extends RecyclerView.Adapter<ViewHolder> {
         Log.i(TAG, "FunctionAdapter: ");
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.item_ui_select, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         ((RequestBuilder) ((RequestBuilder) Glide.with(this.context).load(this.data.get(position).getUiPath()).skipMemoryCache(true)).diskCacheStrategy(DiskCacheStrategy.NONE)).into(holder.img_UiSelct);
         if (this.functionClickListener != null) {
             holder.img_UiSelct.setOnClickListener(new View.OnClickListener() {
@@ -53,16 +51,17 @@ public class UiSelectAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.data == null) {
+        List<UiSelectBean> list = this.data;
+        if (list == null) {
             return 0;
         }
-        return this.data.size();
+        return list.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_UiSelct;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             this.img_UiSelct = (ImageView) itemView.findViewById(R.id.img_UiSelct);
         }

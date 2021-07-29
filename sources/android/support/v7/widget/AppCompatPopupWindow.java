@@ -2,10 +2,6 @@ package android.support.v7.widget;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.appcompat.R;
 import android.util.AttributeSet;
@@ -16,12 +12,12 @@ class AppCompatPopupWindow extends PopupWindow {
     private static final boolean COMPAT_OVERLAP_ANCHOR = (Build.VERSION.SDK_INT < 21);
     private boolean mOverlapAnchor;
 
-    public AppCompatPopupWindow(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public AppCompatPopupWindow(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr, 0);
     }
 
-    public AppCompatPopupWindow(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    public AppCompatPopupWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }

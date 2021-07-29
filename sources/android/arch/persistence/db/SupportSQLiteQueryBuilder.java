@@ -68,10 +68,11 @@ public final class SupportSQLiteQueryBuilder {
             if (this.mDistinct) {
                 query.append("DISTINCT ");
             }
-            if (this.mColumns == null || this.mColumns.length == 0) {
+            String[] strArr = this.mColumns;
+            if (strArr == null || strArr.length == 0) {
                 query.append(" * ");
             } else {
-                appendColumns(query, this.mColumns);
+                appendColumns(query, strArr);
             }
             query.append(" FROM ");
             query.append(this.mTable);

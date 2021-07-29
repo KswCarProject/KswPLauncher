@@ -6,7 +6,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +34,7 @@ public class AudiNaviActivity extends AudiSubActivity {
     public NaviVm naviVm;
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = (AudiNaviBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_navi, (ViewGroup) null, false);
         this.contentLayout.addView(this.binding.getRoot(), -1, -1);
@@ -47,8 +46,7 @@ public class AudiNaviActivity extends AudiSubActivity {
                 view.setSelected(true);
                 MapBean mapBean = (MapBean) parent.getItemAtPosition(position);
                 FileUtils.savaStringData(KeyConfig.NAVI_DEFUAL, mapBean.getPackageName());
-                String access$000 = AudiNaviActivity.TAG;
-                Log.i(access$000, "NaviApp: " + mapBean.getPackageName());
+                Log.i(AudiNaviActivity.TAG, "NaviApp: " + mapBean.getPackageName());
                 List<MapBean> mapBeans = AudiNaviActivity.this.naviVm.naviList.getValue();
                 if (mapBeans != null && !mapBeans.isEmpty()) {
                     Iterator<MapBean> it = mapBeans.iterator();
@@ -62,9 +60,8 @@ public class AudiNaviActivity extends AudiSubActivity {
             }
         });
         this.naviVm.naviList.observe(this, new Observer<List<MapBean>>() {
-            public void onChanged(@Nullable final List<MapBean> mapBeans) {
-                String access$000 = AudiNaviActivity.TAG;
-                Log.i(access$000, "run: " + mapBeans.size());
+            public void onChanged(final List<MapBean> mapBeans) {
+                Log.i(AudiNaviActivity.TAG, "run: " + mapBeans.size());
                 new Handler().post(new Runnable() {
                     public void run() {
                         AudiNaviActivity.this.adpater.setMapBeans(mapBeans);
@@ -89,14 +86,16 @@ public class AudiNaviActivity extends AudiSubActivity {
         }
 
         public int getCount() {
-            if (this.mapBeans == null || this.mapBeans.isEmpty()) {
+            List<MapBean> list = this.mapBeans;
+            if (list == null || list.isEmpty()) {
                 return 0;
             }
             return this.mapBeans.size();
         }
 
         public Object getItem(int position) {
-            if (this.mapBeans == null || this.mapBeans.isEmpty()) {
+            List<MapBean> list = this.mapBeans;
+            if (list == null || list.isEmpty()) {
                 return null;
             }
             return this.mapBeans.get(position);
@@ -116,17 +115,17 @@ public class AudiNaviActivity extends AudiSubActivity {
                 r0 = 0
                 if (r7 != 0) goto L_0x002d
                 android.view.LayoutInflater r1 = r5.layoutInflater
-                r2 = 2131361897(0x7f0a0069, float:1.834356E38)
+                r2 = 2131427468(0x7f0b008c, float:1.8476553E38)
                 r3 = 0
                 android.view.View r7 = r1.inflate(r2, r3)
                 com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder r1 = new com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder
                 r1.<init>()
                 r0 = r1
-                r1 = 2131231276(0x7f08022c, float:1.8078628E38)
+                r1 = 2131296999(0x7f0902e7, float:1.821193E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.RadioButton r1 = (android.widget.RadioButton) r1
                 r0.radioButton = r1
-                r1 = 2131231275(0x7f08022b, float:1.8078626E38)
+                r1 = 2131296998(0x7f0902e6, float:1.8211928E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.ImageView r1 = (android.widget.ImageView) r1
                 r0.icon = r1
@@ -153,9 +152,9 @@ public class AudiNaviActivity extends AudiSubActivity {
                 java.lang.StringBuilder r3 = new java.lang.StringBuilder
                 r3.<init>()
                 java.lang.String r4 = "getView: "
-                r3.append(r4)
+                java.lang.StringBuilder r3 = r3.append(r4)
                 java.lang.String r4 = r1.getName()
-                r3.append(r4)
+                java.lang.StringBuilder r3 = r3.append(r4)
                 java.lang.String r3 = r3.toString()
                 android.util.Log.i(r2, r3)
                 return r7

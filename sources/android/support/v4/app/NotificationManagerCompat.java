@@ -18,9 +18,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.support.annotation.GuardedBy;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 import java.lang.reflect.InvocationTargetException;
@@ -49,35 +46,32 @@ public final class NotificationManagerCompat {
     private static final int SIDE_CHANNEL_RETRY_BASE_INTERVAL_MS = 1000;
     private static final int SIDE_CHANNEL_RETRY_MAX_COUNT = 6;
     private static final String TAG = "NotifManCompat";
-    @GuardedBy("sEnabledNotificationListenersLock")
     private static Set<String> sEnabledNotificationListenerPackages = new HashSet();
-    @GuardedBy("sEnabledNotificationListenersLock")
     private static String sEnabledNotificationListeners;
     private static final Object sEnabledNotificationListenersLock = new Object();
     private static final Object sLock = new Object();
-    @GuardedBy("sLock")
     private static SideChannelManager sSideChannelManager;
     private final Context mContext;
-    private final NotificationManager mNotificationManager = ((NotificationManager) this.mContext.getSystemService("notification"));
+    private final NotificationManager mNotificationManager;
 
     private interface Task {
         void send(INotificationSideChannel iNotificationSideChannel) throws RemoteException;
     }
 
-    @NonNull
-    public static NotificationManagerCompat from(@NonNull Context context) {
+    public static NotificationManagerCompat from(Context context) {
         return new NotificationManagerCompat(context);
     }
 
     private NotificationManagerCompat(Context context) {
         this.mContext = context;
+        this.mNotificationManager = (NotificationManager) context.getSystemService("notification");
     }
 
     public void cancel(int id) {
         cancel((String) null, id);
     }
 
-    public void cancel(@Nullable String tag, int id) {
+    public void cancel(String tag, int id) {
         this.mNotificationManager.cancel(tag, id);
         if (Build.VERSION.SDK_INT <= 19) {
             pushSideChannelQueue(new CancelTask(this.mContext.getPackageName(), id, tag));
@@ -91,11 +85,11 @@ public final class NotificationManagerCompat {
         }
     }
 
-    public void notify(int id, @NonNull Notification notification) {
+    public void notify(int id, Notification notification) {
         notify((String) null, id, notification);
     }
 
-    public void notify(@Nullable String tag, int id, @NonNull Notification notification) {
+    public void notify(String tag, int id, Notification notification) {
         if (useSideChannelForNotification(notification)) {
             pushSideChannelQueue(new NotifyTask(this.mContext.getPackageName(), id, tag, notification));
             this.mNotificationManager.cancel(tag, id);
@@ -133,27 +127,22 @@ public final class NotificationManagerCompat {
         return IMPORTANCE_UNSPECIFIED;
     }
 
-    @NonNull
-    public static Set<String> getEnabledListenerPackages(@NonNull Context context) {
+    public static Set<String> getEnabledListenerPackages(Context context) {
         Set<String> set;
         String enabledNotificationListeners = Settings.Secure.getString(context.getContentResolver(), SETTING_ENABLED_NOTIFICATION_LISTENERS);
         synchronized (sEnabledNotificationListenersLock) {
             if (enabledNotificationListeners != null) {
-                try {
-                    if (!enabledNotificationListeners.equals(sEnabledNotificationListeners)) {
-                        String[] components = enabledNotificationListeners.split(":", -1);
-                        Set<String> packageNames = new HashSet<>(components.length);
-                        for (String component : components) {
-                            ComponentName componentName = ComponentName.unflattenFromString(component);
-                            if (componentName != null) {
-                                packageNames.add(componentName.getPackageName());
-                            }
+                if (!enabledNotificationListeners.equals(sEnabledNotificationListeners)) {
+                    String[] components = enabledNotificationListeners.split(":", -1);
+                    Set<String> packageNames = new HashSet<>(components.length);
+                    for (String component : components) {
+                        ComponentName componentName = ComponentName.unflattenFromString(component);
+                        if (componentName != null) {
+                            packageNames.add(componentName.getPackageName());
                         }
-                        sEnabledNotificationListenerPackages = packageNames;
-                        sEnabledNotificationListeners = enabledNotificationListeners;
                     }
-                } catch (Throwable th) {
-                    throw th;
+                    sEnabledNotificationListenerPackages = packageNames;
+                    sEnabledNotificationListeners = enabledNotificationListeners;
                 }
             }
             set = sEnabledNotificationListenerPackages;
@@ -188,9 +177,10 @@ public final class NotificationManagerCompat {
 
         SideChannelManager(Context context) {
             this.mContext = context;
-            this.mHandlerThread = new HandlerThread("NotificationManagerCompat");
-            this.mHandlerThread.start();
-            this.mHandler = new Handler(this.mHandlerThread.getLooper(), this);
+            HandlerThread handlerThread = new HandlerThread("NotificationManagerCompat");
+            this.mHandlerThread = handlerThread;
+            handlerThread.start();
+            this.mHandler = new Handler(handlerThread.getLooper(), this);
         }
 
         public void queueTask(Task task) {
@@ -413,7 +403,12 @@ public final class NotificationManagerCompat {
         }
 
         public String toString() {
-            return "NotifyTask[" + "packageName:" + this.packageName + ", id:" + this.id + ", tag:" + this.tag + "]";
+            StringBuilder sb = new StringBuilder("NotifyTask[");
+            sb.append("packageName:").append(this.packageName);
+            sb.append(", id:").append(this.id);
+            sb.append(", tag:").append(this.tag);
+            sb.append("]");
+            return sb.toString();
         }
     }
 
@@ -446,7 +441,13 @@ public final class NotificationManagerCompat {
         }
 
         public String toString() {
-            return "CancelTask[" + "packageName:" + this.packageName + ", id:" + this.id + ", tag:" + this.tag + ", all:" + this.all + "]";
+            StringBuilder sb = new StringBuilder("CancelTask[");
+            sb.append("packageName:").append(this.packageName);
+            sb.append(", id:").append(this.id);
+            sb.append(", tag:").append(this.tag);
+            sb.append(", all:").append(this.all);
+            sb.append("]");
+            return sb.toString();
         }
     }
 }

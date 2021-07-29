@@ -7,9 +7,6 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggleHoneycomb;
@@ -40,25 +37,24 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
 
         boolean isNavigationVisible();
 
-        void setActionBarDescription(@StringRes int i);
+        void setActionBarDescription(int i);
 
-        void setActionBarUpIndicator(Drawable drawable, @StringRes int i);
+        void setActionBarUpIndicator(Drawable drawable, int i);
     }
 
     public interface DelegateProvider {
-        @Nullable
         Delegate getDrawerToggleDelegate();
     }
 
-    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
+    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         this(activity, (Toolbar) null, drawerLayout, (DrawerArrowDrawable) null, openDrawerContentDescRes, closeDrawerContentDescRes);
     }
 
-    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
+    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         this(activity, toolbar, drawerLayout, (DrawerArrowDrawable) null, openDrawerContentDescRes, closeDrawerContentDescRes);
     }
 
-    ActionBarDrawerToggle(Activity activity, Toolbar toolbar, DrawerLayout drawerLayout, DrawerArrowDrawable slider, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
+    ActionBarDrawerToggle(Activity activity, Toolbar toolbar, DrawerLayout drawerLayout, DrawerArrowDrawable slider, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         this.mDrawerSlideAnimationEnabled = true;
         this.mDrawerIndicatorEnabled = true;
         this.mWarnedForDisplayHomeAsUp = false;
@@ -161,12 +157,11 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
         }
     }
 
-    @NonNull
     public DrawerArrowDrawable getDrawerArrowDrawable() {
         return this.mSlider;
     }
 
-    public void setDrawerArrowDrawable(@NonNull DrawerArrowDrawable drawable) {
+    public void setDrawerArrowDrawable(DrawerArrowDrawable drawable) {
         this.mSlider = drawable;
         syncState();
     }
@@ -313,12 +308,12 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
             this.mDefaultContentDescription = toolbar.getNavigationContentDescription();
         }
 
-        public void setActionBarUpIndicator(Drawable upDrawable, @StringRes int contentDescRes) {
+        public void setActionBarUpIndicator(Drawable upDrawable, int contentDescRes) {
             this.mToolbar.setNavigationIcon(upDrawable);
             setActionBarDescription(contentDescRes);
         }
 
-        public void setActionBarDescription(@StringRes int contentDescRes) {
+        public void setActionBarDescription(int contentDescRes) {
             if (contentDescRes == 0) {
                 this.mToolbar.setNavigationContentDescription(this.mDefaultContentDescription);
             } else {

@@ -2,28 +2,24 @@ package com.bumptech.glide.load.engine.bitmap_recycle;
 
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.util.Util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-@RequiresApi(19)
 public class SizeConfigStrategy implements LruPoolStrategy {
     private static final Bitmap.Config[] ALPHA_8_IN_CONFIGS = {Bitmap.Config.ALPHA_8};
     private static final Bitmap.Config[] ARGB_4444_IN_CONFIGS = {Bitmap.Config.ARGB_4444};
     private static final Bitmap.Config[] ARGB_8888_IN_CONFIGS;
     private static final int MAX_SIZE_MULTIPLE = 8;
-    private static final Bitmap.Config[] RGBA_F16_IN_CONFIGS = ARGB_8888_IN_CONFIGS;
+    private static final Bitmap.Config[] RGBA_F16_IN_CONFIGS;
     private static final Bitmap.Config[] RGB_565_IN_CONFIGS = {Bitmap.Config.RGB_565};
     private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
     private final KeyPool keyPool = new KeyPool();
     private final Map<Bitmap.Config, NavigableMap<Integer, Integer>> sortedSizes = new HashMap();
 
-    /* JADX WARNING: type inference failed for: r3v6, types: [java.lang.Object[]] */
+    /* JADX WARNING: type inference failed for: r1v8, types: [java.lang.Object[]] */
     /* JADX WARNING: Multi-variable type inference failed */
     static {
         /*
@@ -32,34 +28,33 @@ public class SizeConfigStrategy implements LruPoolStrategy {
             android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.ARGB_8888
             r2 = 0
             r0[r2] = r1
-            r1 = 1
-            r3 = 0
-            r0[r1] = r3
-            int r3 = android.os.Build.VERSION.SDK_INT
+            r1 = 0
+            r3 = 1
+            r0[r3] = r1
+            int r1 = android.os.Build.VERSION.SDK_INT
             r4 = 26
-            if (r3 < r4) goto L_0x0021
-            int r3 = r0.length
-            int r3 = r3 + r1
-            java.lang.Object[] r3 = java.util.Arrays.copyOf(r0, r3)
-            r0 = r3
+            if (r1 < r4) goto L_0x0021
+            int r1 = r0.length
+            int r1 = r1 + r3
+            java.lang.Object[] r1 = java.util.Arrays.copyOf(r0, r1)
+            r0 = r1
             android.graphics.Bitmap$Config[] r0 = (android.graphics.Bitmap.Config[]) r0
-            int r3 = r0.length
-            int r3 = r3 - r1
+            int r1 = r0.length
+            int r1 = r1 - r3
             android.graphics.Bitmap$Config r4 = android.graphics.Bitmap.Config.RGBA_F16
-            r0[r3] = r4
+            r0[r1] = r4
         L_0x0021:
             ARGB_8888_IN_CONFIGS = r0
-            android.graphics.Bitmap$Config[] r0 = ARGB_8888_IN_CONFIGS
             RGBA_F16_IN_CONFIGS = r0
-            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r1]
-            android.graphics.Bitmap$Config r3 = android.graphics.Bitmap.Config.RGB_565
-            r0[r2] = r3
+            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r3]
+            android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.RGB_565
+            r0[r2] = r1
             RGB_565_IN_CONFIGS = r0
-            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r1]
-            android.graphics.Bitmap$Config r3 = android.graphics.Bitmap.Config.ARGB_4444
-            r0[r2] = r3
+            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r3]
+            android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.ARGB_4444
+            r0[r2] = r1
             ARGB_4444_IN_CONFIGS = r0
-            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r1]
+            android.graphics.Bitmap$Config[] r0 = new android.graphics.Bitmap.Config[r3]
             android.graphics.Bitmap$Config r1 = android.graphics.Bitmap.Config.ALPHA_8
             r0[r2] = r1
             ALPHA_8_IN_CONFIGS = r0
@@ -81,7 +76,6 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         sizes.put(valueOf, Integer.valueOf(i));
     }
 
-    @Nullable
     public Bitmap get(int width, int height, Bitmap.Config config) {
         Key bestKey = findBestKey(Util.getBitmapByteSize(width, height, config), config);
         Bitmap result = this.groupedMap.get(bestKey);
@@ -119,7 +113,6 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         return result;
     }
 
-    @Nullable
     public Bitmap removeLast() {
         Bitmap removed = this.groupedMap.removeLast();
         if (removed != null) {
@@ -163,24 +156,16 @@ public class SizeConfigStrategy implements LruPoolStrategy {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SizeConfigStrategy{groupedMap=");
-        sb.append(this.groupedMap);
-        StringBuilder sb2 = sb.append(", sortedSizes=(");
+        StringBuilder sb = new StringBuilder().append("SizeConfigStrategy{groupedMap=").append(this.groupedMap).append(", sortedSizes=(");
         for (Map.Entry<Bitmap.Config, NavigableMap<Integer, Integer>> entry : this.sortedSizes.entrySet()) {
-            sb2.append(entry.getKey());
-            sb2.append('[');
-            sb2.append(entry.getValue());
-            sb2.append("], ");
+            sb.append(entry.getKey()).append('[').append(entry.getValue()).append("], ");
         }
         if (!this.sortedSizes.isEmpty()) {
-            sb2.replace(sb2.length() - 2, sb2.length(), "");
+            sb.replace(sb.length() - 2, sb.length(), "");
         }
-        sb2.append(")}");
-        return sb2.toString();
+        return sb.append(")}").toString();
     }
 
-    @VisibleForTesting
     static class KeyPool extends BaseKeyPool<Key> {
         KeyPool() {
         }
@@ -197,7 +182,6 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         }
     }
 
-    @VisibleForTesting
     static final class Key implements Poolable {
         private Bitmap.Config config;
         private final KeyPool pool;
@@ -207,7 +191,6 @@ public class SizeConfigStrategy implements LruPoolStrategy {
             this.pool = pool2;
         }
 
-        @VisibleForTesting
         Key(KeyPool pool2, int size2, Bitmap.Config config2) {
             this(pool2);
             init(size2, config2);
@@ -238,7 +221,9 @@ public class SizeConfigStrategy implements LruPoolStrategy {
         }
 
         public int hashCode() {
-            return (this.size * 31) + (this.config != null ? this.config.hashCode() : 0);
+            int i = this.size * 31;
+            Bitmap.Config config2 = this.config;
+            return i + (config2 != null ? config2.hashCode() : 0);
         }
     }
 
@@ -266,11 +251,13 @@ public class SizeConfigStrategy implements LruPoolStrategy {
 
     /* renamed from: com.bumptech.glide.load.engine.bitmap_recycle.SizeConfigStrategy$1  reason: invalid class name */
     static /* synthetic */ class AnonymousClass1 {
-        static final /* synthetic */ int[] $SwitchMap$android$graphics$Bitmap$Config = new int[Bitmap.Config.values().length];
+        static final /* synthetic */ int[] $SwitchMap$android$graphics$Bitmap$Config;
 
         static {
+            int[] iArr = new int[Bitmap.Config.values().length];
+            $SwitchMap$android$graphics$Bitmap$Config = iArr;
             try {
-                $SwitchMap$android$graphics$Bitmap$Config[Bitmap.Config.ARGB_8888.ordinal()] = 1;
+                iArr[Bitmap.Config.ARGB_8888.ordinal()] = 1;
             } catch (NoSuchFieldError e) {
             }
             try {

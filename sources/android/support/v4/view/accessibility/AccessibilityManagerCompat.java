@@ -2,8 +2,6 @@ package android.support.v4.view.accessibility;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.view.accessibility.AccessibilityManager;
 import java.util.List;
 
@@ -42,7 +40,7 @@ public final class AccessibilityManagerCompat {
     private static class AccessibilityStateChangeListenerWrapper implements AccessibilityManager.AccessibilityStateChangeListener {
         AccessibilityStateChangeListener mListener;
 
-        AccessibilityStateChangeListenerWrapper(@NonNull AccessibilityStateChangeListener listener) {
+        AccessibilityStateChangeListenerWrapper(AccessibilityStateChangeListener listener) {
             this.mListener = listener;
         }
 
@@ -94,11 +92,10 @@ public final class AccessibilityManagerCompat {
         return manager.removeTouchExplorationStateChangeListener(new TouchExplorationStateChangeListenerWrapper(listener));
     }
 
-    @RequiresApi(19)
     private static class TouchExplorationStateChangeListenerWrapper implements AccessibilityManager.TouchExplorationStateChangeListener {
         final TouchExplorationStateChangeListener mListener;
 
-        TouchExplorationStateChangeListenerWrapper(@NonNull TouchExplorationStateChangeListener listener) {
+        TouchExplorationStateChangeListenerWrapper(TouchExplorationStateChangeListener listener) {
             this.mListener = listener;
         }
 

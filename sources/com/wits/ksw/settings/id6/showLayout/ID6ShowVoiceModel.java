@@ -53,14 +53,17 @@ public class ID6ShowVoiceModel extends RelativeLayout {
 
     private void initView(View view2) {
         this.tv_mdiSize = (TextView) view2.findViewById(R.id.tv_mdiSize);
-        this.seekbar_mdi = (SeekBar) view2.findViewById(R.id.seekbar_mdi);
-        this.seekbar_mdi.setMax(this.barMax);
+        SeekBar seekBar = (SeekBar) view2.findViewById(R.id.seekbar_mdi);
+        this.seekbar_mdi = seekBar;
+        seekBar.setMax(this.barMax);
         this.tv_mzhSize = (TextView) view2.findViewById(R.id.tv_mzhSize);
-        this.seekbar_mzh = (SeekBar) view2.findViewById(R.id.seekbar_mzh);
-        this.seekbar_mzh.setMax(this.barMax);
+        SeekBar seekBar2 = (SeekBar) view2.findViewById(R.id.seekbar_mzh);
+        this.seekbar_mzh = seekBar2;
+        seekBar2.setMax(this.barMax);
         this.tv_mgoSize = (TextView) view2.findViewById(R.id.tv_mgoSize);
-        this.seekbar_mgo = (SeekBar) view2.findViewById(R.id.seekbar_mgo);
-        this.seekbar_mgo.setMax(this.barMax);
+        SeekBar seekBar3 = (SeekBar) view2.findViewById(R.id.seekbar_mgo);
+        this.seekbar_mgo = seekBar3;
+        seekBar3.setMax(this.barMax);
         initBarView(this.eqModel);
         this.seekbar_mdi.setEnabled(false);
         this.seekbar_mzh.setEnabled(false);
@@ -100,21 +103,9 @@ public class ID6ShowVoiceModel extends RelativeLayout {
                 this.seekbar_mgo.setProgress(19);
                 break;
         }
-        TextView textView = this.tv_mdiSize;
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.seekbar_mdi.getProgress() - 12);
-        sb.append("");
-        textView.setText(sb.toString());
-        TextView textView2 = this.tv_mzhSize;
-        StringBuilder sb2 = new StringBuilder();
-        sb2.append(this.seekbar_mzh.getProgress() - 12);
-        sb2.append("");
-        textView2.setText(sb2.toString());
-        TextView textView3 = this.tv_mgoSize;
-        StringBuilder sb3 = new StringBuilder();
-        sb3.append(this.seekbar_mgo.getProgress() - 12);
-        sb3.append("");
-        textView3.setText(sb3.toString());
+        this.tv_mdiSize.setText((this.seekbar_mdi.getProgress() - 12) + "");
+        this.tv_mzhSize.setText((this.seekbar_mzh.getProgress() - 12) + "");
+        this.tv_mgoSize.setText((this.seekbar_mgo.getProgress() - 12) + "");
     }
 
     public void updateView() {

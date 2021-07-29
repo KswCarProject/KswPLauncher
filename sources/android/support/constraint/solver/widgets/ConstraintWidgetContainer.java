@@ -164,25 +164,42 @@ public class ConstraintWidgetContainer extends WidgetContainer {
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:113:0x0282  */
-    /* JADX WARNING: Removed duplicated region for block: B:116:0x029a  */
-    /* JADX WARNING: Removed duplicated region for block: B:119:0x02b7  */
-    /* JADX WARNING: Removed duplicated region for block: B:121:0x02c6  */
-    /* JADX WARNING: Removed duplicated region for block: B:134:0x0311  */
-    /* JADX WARNING: Removed duplicated region for block: B:77:0x01a3  */
-    /* JADX WARNING: Removed duplicated region for block: B:78:0x01ad  */
-    /* JADX WARNING: Removed duplicated region for block: B:98:0x020b  */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v18, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v2, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v19, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v20, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v47, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r19v13, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v14, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v53, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v15, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v54, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v16, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v55, resolved type: boolean} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v18, resolved type: boolean} */
+    /* JADX WARNING: type inference failed for: r17v3 */
+    /* JADX WARNING: type inference failed for: r17v5 */
+    /* JADX WARNING: Incorrect type for immutable var: ssa=boolean, code=?, for r17v2, types: [boolean] */
+    /* JADX WARNING: Multi-variable type inference failed */
+    /* JADX WARNING: Removed duplicated region for block: B:111:0x027c  */
+    /* JADX WARNING: Removed duplicated region for block: B:115:0x0294  */
+    /* JADX WARNING: Removed duplicated region for block: B:118:0x02b1  */
+    /* JADX WARNING: Removed duplicated region for block: B:120:0x02c0  */
+    /* JADX WARNING: Removed duplicated region for block: B:136:0x0317  */
+    /* JADX WARNING: Removed duplicated region for block: B:75:0x019c  */
+    /* JADX WARNING: Removed duplicated region for block: B:76:0x01a6  */
+    /* JADX WARNING: Removed duplicated region for block: B:98:0x0206  */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public void layout() {
         /*
-            r27 = this;
-            r1 = r27
+            r24 = this;
+            r1 = r24
             int r2 = r1.mX
             int r3 = r1.mY
-            int r0 = r27.getWidth()
+            int r0 = r24.getWidth()
             r4 = 0
             int r5 = java.lang.Math.max(r4, r0)
-            int r0 = r27.getHeight()
+            int r0 = r24.getHeight()
             int r6 = java.lang.Math.max(r4, r0)
             r1.mWidthMeasuredTooSmall = r4
             r1.mHeightMeasuredTooSmall = r4
@@ -200,7 +217,7 @@ public class ConstraintWidgetContainer extends WidgetContainer {
             r1.setX(r0)
             int r0 = r1.mPaddingTop
             r1.setY(r0)
-            r27.resetAnchors()
+            r24.resetAnchors()
             android.support.constraint.solver.LinearSystem r0 = r1.mSystem
             android.support.constraint.solver.Cache r0 = r0.getCache()
             r1.resetSolverVariables(r0)
@@ -216,11 +233,11 @@ public class ConstraintWidgetContainer extends WidgetContainer {
             if (r0 == 0) goto L_0x006a
             boolean r0 = r1.optimizeFor(r8)
             if (r0 != 0) goto L_0x005c
-            r27.optimizeReset()
+            r24.optimizeReset()
         L_0x005c:
             boolean r0 = r1.optimizeFor(r7)
             if (r0 != 0) goto L_0x0065
-            r27.optimize()
+            r24.optimize()
         L_0x0065:
             android.support.constraint.solver.LinearSystem r0 = r1.mSystem
             r0.graphOptimizer = r9
@@ -234,7 +251,7 @@ public class ConstraintWidgetContainer extends WidgetContainer {
             r10 = r10[r9]
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r11 = r1.mListDimensionBehaviors
             r11 = r11[r4]
-            r27.resetChains()
+            r24.resetChains()
             java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r12 = r1.mWidgetGroups
             int r12 = r12.size()
             if (r12 != 0) goto L_0x0093
@@ -250,10 +267,10 @@ public class ConstraintWidgetContainer extends WidgetContainer {
             java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r13 = r1.mWidgetGroups
             int r13 = r13.size()
             java.util.ArrayList r14 = r1.mChildren
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r15 = r27.getHorizontalDimensionBehaviour()
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r15 = r24.getHorizontalDimensionBehaviour()
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r8 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
             if (r15 == r8) goto L_0x00af
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r8 = r27.getVerticalDimensionBehaviour()
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r8 = r24.getVerticalDimensionBehaviour()
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r15 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
             if (r8 != r15) goto L_0x00ad
             goto L_0x00af
@@ -263,400 +280,408 @@ public class ConstraintWidgetContainer extends WidgetContainer {
         L_0x00af:
             r8 = r9
         L_0x00b0:
-            r15 = r12
-            r12 = r0
-            r0 = r4
-        L_0x00b3:
-            r17 = r0
-            r9 = r17
-            if (r9 >= r13) goto L_0x033a
-            boolean r0 = r1.mSkipSolver
-            if (r0 != 0) goto L_0x033a
-            java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r0 = r1.mWidgetGroups
-            java.lang.Object r0 = r0.get(r9)
-            android.support.constraint.solver.widgets.ConstraintWidgetGroup r0 = (android.support.constraint.solver.widgets.ConstraintWidgetGroup) r0
-            boolean r0 = r0.mSkipSolver
-            if (r0 == 0) goto L_0x00ce
+            r15 = 0
+        L_0x00b1:
+            if (r15 >= r13) goto L_0x0344
+            boolean r9 = r1.mSkipSolver
+            if (r9 != 0) goto L_0x0344
+            java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r9 = r1.mWidgetGroups
+            java.lang.Object r9 = r9.get(r15)
+            android.support.constraint.solver.widgets.ConstraintWidgetGroup r9 = (android.support.constraint.solver.widgets.ConstraintWidgetGroup) r9
+            boolean r9 = r9.mSkipSolver
+            if (r9 == 0) goto L_0x00c7
             r22 = r13
-            goto L_0x0330
-        L_0x00ce:
-            boolean r0 = r1.optimizeFor(r7)
-            if (r0 == 0) goto L_0x0103
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r0 = r27.getHorizontalDimensionBehaviour()
+            goto L_0x033a
+        L_0x00c7:
+            boolean r9 = r1.optimizeFor(r7)
+            if (r9 == 0) goto L_0x00fc
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r9 = r24.getHorizontalDimensionBehaviour()
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r7 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
-            if (r0 != r7) goto L_0x00f5
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r0 = r27.getVerticalDimensionBehaviour()
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r7 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
-            if (r0 != r7) goto L_0x00f5
-            java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r0 = r1.mWidgetGroups
-            java.lang.Object r0 = r0.get(r9)
-            android.support.constraint.solver.widgets.ConstraintWidgetGroup r0 = (android.support.constraint.solver.widgets.ConstraintWidgetGroup) r0
-            java.util.List r0 = r0.getWidgetsToSolve()
-            java.util.ArrayList r0 = (java.util.ArrayList) r0
-            r1.mChildren = r0
-            goto L_0x0103
-        L_0x00f5:
-            java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r0 = r1.mWidgetGroups
-            java.lang.Object r0 = r0.get(r9)
-            android.support.constraint.solver.widgets.ConstraintWidgetGroup r0 = (android.support.constraint.solver.widgets.ConstraintWidgetGroup) r0
-            java.util.List<android.support.constraint.solver.widgets.ConstraintWidget> r0 = r0.mConstrainedGroup
-            java.util.ArrayList r0 = (java.util.ArrayList) r0
-            r1.mChildren = r0
-        L_0x0103:
-            r27.resetChains()
-            java.util.ArrayList r0 = r1.mChildren
-            int r7 = r0.size()
-            r0 = 0
-            r15 = r4
-        L_0x010e:
-            if (r15 >= r7) goto L_0x012a
+            if (r9 != r7) goto L_0x00ee
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r7 = r24.getVerticalDimensionBehaviour()
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r9 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
+            if (r7 != r9) goto L_0x00ee
+            java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r7 = r1.mWidgetGroups
+            java.lang.Object r7 = r7.get(r15)
+            android.support.constraint.solver.widgets.ConstraintWidgetGroup r7 = (android.support.constraint.solver.widgets.ConstraintWidgetGroup) r7
+            java.util.List r7 = r7.getWidgetsToSolve()
+            java.util.ArrayList r7 = (java.util.ArrayList) r7
+            r1.mChildren = r7
+            goto L_0x00fc
+        L_0x00ee:
+            java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r7 = r1.mWidgetGroups
+            java.lang.Object r7 = r7.get(r15)
+            android.support.constraint.solver.widgets.ConstraintWidgetGroup r7 = (android.support.constraint.solver.widgets.ConstraintWidgetGroup) r7
+            java.util.List<android.support.constraint.solver.widgets.ConstraintWidget> r7 = r7.mConstrainedGroup
+            java.util.ArrayList r7 = (java.util.ArrayList) r7
+            r1.mChildren = r7
+        L_0x00fc:
+            r24.resetChains()
+            java.util.ArrayList r7 = r1.mChildren
+            int r7 = r7.size()
+            r9 = 0
+            r12 = 0
+        L_0x0107:
+            if (r12 >= r7) goto L_0x0123
             java.util.ArrayList r4 = r1.mChildren
-            java.lang.Object r4 = r4.get(r15)
+            java.lang.Object r4 = r4.get(r12)
             android.support.constraint.solver.widgets.ConstraintWidget r4 = (android.support.constraint.solver.widgets.ConstraintWidget) r4
-            r18 = r0
-            boolean r0 = r4 instanceof android.support.constraint.solver.widgets.WidgetContainer
-            if (r0 == 0) goto L_0x0124
-            r0 = r4
-            android.support.constraint.solver.widgets.WidgetContainer r0 = (android.support.constraint.solver.widgets.WidgetContainer) r0
-            r0.layout()
-        L_0x0124:
-            int r15 = r15 + 1
-            r0 = r18
+            r19 = r9
+            boolean r9 = r4 instanceof android.support.constraint.solver.widgets.WidgetContainer
+            if (r9 == 0) goto L_0x011d
+            r9 = r4
+            android.support.constraint.solver.widgets.WidgetContainer r9 = (android.support.constraint.solver.widgets.WidgetContainer) r9
+            r9.layout()
+        L_0x011d:
+            int r12 = r12 + 1
+            r9 = r19
             r4 = 0
-            goto L_0x010e
-        L_0x012a:
-            r18 = r0
-            r0 = 1
-        L_0x012d:
+            goto L_0x0107
+        L_0x0123:
+            r19 = r9
+            r4 = 1
+            r9 = r4
             r4 = r0
-            if (r4 == 0) goto L_0x031b
-            int r15 = r18 + 1
-            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x017d }
-            r0.reset()     // Catch:{ Exception -> 0x017d }
-            r27.resetChains()     // Catch:{ Exception -> 0x017d }
-            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x017d }
-            r1.createObjectVariables(r0)     // Catch:{ Exception -> 0x017d }
+        L_0x0128:
+            if (r9 == 0) goto L_0x0323
+            int r12 = r19 + 1
+            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x0174 }
+            r0.reset()     // Catch:{ Exception -> 0x0174 }
+            r24.resetChains()     // Catch:{ Exception -> 0x0174 }
+            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x0174 }
+            r1.createObjectVariables(r0)     // Catch:{ Exception -> 0x0174 }
             r0 = 0
-        L_0x0140:
-            if (r0 >= r7) goto L_0x0160
-            r19 = r4
-            java.util.ArrayList r4 = r1.mChildren     // Catch:{ Exception -> 0x015a }
-            java.lang.Object r4 = r4.get(r0)     // Catch:{ Exception -> 0x015a }
-            android.support.constraint.solver.widgets.ConstraintWidget r4 = (android.support.constraint.solver.widgets.ConstraintWidget) r4     // Catch:{ Exception -> 0x015a }
-            r20 = r12
-            android.support.constraint.solver.LinearSystem r12 = r1.mSystem     // Catch:{ Exception -> 0x0179 }
-            r4.createObjectVariables(r12)     // Catch:{ Exception -> 0x0179 }
+        L_0x013a:
+            if (r0 >= r7) goto L_0x0158
+            r20 = r4
+            java.util.ArrayList r4 = r1.mChildren     // Catch:{ Exception -> 0x0154 }
+            java.lang.Object r4 = r4.get(r0)     // Catch:{ Exception -> 0x0154 }
+            android.support.constraint.solver.widgets.ConstraintWidget r4 = (android.support.constraint.solver.widgets.ConstraintWidget) r4     // Catch:{ Exception -> 0x0154 }
+            r21 = r9
+            android.support.constraint.solver.LinearSystem r9 = r1.mSystem     // Catch:{ Exception -> 0x0170 }
+            r4.createObjectVariables(r9)     // Catch:{ Exception -> 0x0170 }
             int r0 = r0 + 1
-            r4 = r19
-            r12 = r20
-            goto L_0x0140
-        L_0x015a:
+            r4 = r20
+            r9 = r21
+            goto L_0x013a
+        L_0x0154:
             r0 = move-exception
-            r20 = r12
-            r4 = r19
-            goto L_0x0182
-        L_0x0160:
-            r19 = r4
-            r20 = r12
-            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x0179 }
-            boolean r0 = r1.addChildrenToSolver(r0)     // Catch:{ Exception -> 0x0179 }
-            r4 = r0
-            if (r4 == 0) goto L_0x0175
-            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x0173 }
-            r0.minimize()     // Catch:{ Exception -> 0x0173 }
-            goto L_0x0175
-        L_0x0173:
+            r21 = r9
+            goto L_0x0179
+        L_0x0158:
+            r20 = r4
+            r21 = r9
+            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x0170 }
+            boolean r0 = r1.addChildrenToSolver(r0)     // Catch:{ Exception -> 0x0170 }
+            r9 = r0
+            if (r9 == 0) goto L_0x016d
+            android.support.constraint.solver.LinearSystem r0 = r1.mSystem     // Catch:{ Exception -> 0x016b }
+            r0.minimize()     // Catch:{ Exception -> 0x016b }
+            goto L_0x016d
+        L_0x016b:
             r0 = move-exception
-            goto L_0x0182
-        L_0x0175:
+            goto L_0x0179
+        L_0x016d:
             r22 = r13
-            goto L_0x01a1
+            goto L_0x019a
+        L_0x0170:
+            r0 = move-exception
+            r9 = r21
+            goto L_0x0179
+        L_0x0174:
+            r0 = move-exception
+            r20 = r4
+            r21 = r9
         L_0x0179:
-            r0 = move-exception
-            r4 = r19
-            goto L_0x0182
-        L_0x017d:
-            r0 = move-exception
-            r19 = r4
-            r20 = r12
-        L_0x0182:
             r0.printStackTrace()
-            java.io.PrintStream r12 = java.lang.System.out
-            r21 = r4
-            java.lang.StringBuilder r4 = new java.lang.StringBuilder
-            r4.<init>()
+            java.io.PrintStream r4 = java.lang.System.out
+            r19 = r9
+            java.lang.StringBuilder r9 = new java.lang.StringBuilder
+            r9.<init>()
             r22 = r13
             java.lang.String r13 = "EXCEPTION : "
-            r4.append(r13)
-            r4.append(r0)
-            java.lang.String r4 = r4.toString()
-            r12.println(r4)
-            r4 = r21
-        L_0x01a1:
-            if (r4 == 0) goto L_0x01ad
-            android.support.constraint.solver.LinearSystem r12 = r1.mSystem
+            java.lang.StringBuilder r9 = r9.append(r13)
+            java.lang.StringBuilder r9 = r9.append(r0)
+            java.lang.String r9 = r9.toString()
+            r4.println(r9)
+            r9 = r19
+        L_0x019a:
+            if (r9 == 0) goto L_0x01a6
+            android.support.constraint.solver.LinearSystem r4 = r1.mSystem
             boolean[] r13 = android.support.constraint.solver.widgets.Optimizer.flags
-            r1.updateChildrenFromSolver(r12, r13)
-            r23 = r4
-            goto L_0x01fd
-        L_0x01ad:
-            android.support.constraint.solver.LinearSystem r12 = r1.mSystem
-            r1.updateFromSolver(r12)
-            r12 = 0
-        L_0x01b3:
-            if (r12 >= r7) goto L_0x01fb
+            r1.updateChildrenFromSolver(r4, r13)
+            r21 = r9
+            goto L_0x01f8
+        L_0x01a6:
+            android.support.constraint.solver.LinearSystem r4 = r1.mSystem
+            r1.updateFromSolver(r4)
+            r4 = 0
+        L_0x01ac:
+            if (r4 >= r7) goto L_0x01f6
             java.util.ArrayList r13 = r1.mChildren
-            java.lang.Object r13 = r13.get(r12)
+            java.lang.Object r13 = r13.get(r4)
             android.support.constraint.solver.widgets.ConstraintWidget r13 = (android.support.constraint.solver.widgets.ConstraintWidget) r13
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r0 = r13.mListDimensionBehaviors
-            r17 = 0
-            r0 = r0[r17]
-            r23 = r4
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r4 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
-            if (r0 != r4) goto L_0x01db
+            r18 = 0
+            r0 = r0[r18]
+            r21 = r9
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r9 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
+            if (r0 != r9) goto L_0x01d7
             int r0 = r13.getWidth()
-            int r4 = r13.getWrapWidth()
-            if (r0 >= r4) goto L_0x01db
+            int r9 = r13.getWrapWidth()
+            if (r0 >= r9) goto L_0x01d4
             boolean[] r0 = android.support.constraint.solver.widgets.Optimizer.flags
-            r4 = 1
-            r17 = 2
-            r0[r17] = r4
-            goto L_0x01fd
-        L_0x01db:
-            r4 = 1
+            r9 = 2
+            r17 = 1
+            r0[r9] = r17
+            goto L_0x01f8
+        L_0x01d4:
+            r17 = 1
+            goto L_0x01d9
+        L_0x01d7:
+            r17 = 1
+        L_0x01d9:
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r0 = r13.mListDimensionBehaviors
-            r0 = r0[r4]
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r4 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
-            if (r0 != r4) goto L_0x01f6
+            r0 = r0[r17]
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r9 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
+            if (r0 != r9) goto L_0x01f1
             int r0 = r13.getHeight()
-            int r4 = r13.getWrapHeight()
-            if (r0 >= r4) goto L_0x01f6
+            int r9 = r13.getWrapHeight()
+            if (r0 >= r9) goto L_0x01f1
             boolean[] r0 = android.support.constraint.solver.widgets.Optimizer.flags
-            r4 = 1
-            r17 = 2
-            r0[r17] = r4
-            goto L_0x01fd
+            r9 = 2
+            r0[r9] = r17
+            goto L_0x01f8
+        L_0x01f1:
+            int r4 = r4 + 1
+            r9 = r21
+            goto L_0x01ac
         L_0x01f6:
-            int r12 = r12 + 1
-            r4 = r23
-            goto L_0x01b3
-        L_0x01fb:
-            r23 = r4
-        L_0x01fd:
+            r21 = r9
+        L_0x01f8:
             r0 = 0
-            if (r8 == 0) goto L_0x0282
+            if (r8 == 0) goto L_0x027c
             r4 = 8
-            if (r15 >= r4) goto L_0x0282
-            boolean[] r12 = android.support.constraint.solver.widgets.Optimizer.flags
+            if (r12 >= r4) goto L_0x027c
+            boolean[] r9 = android.support.constraint.solver.widgets.Optimizer.flags
             r13 = 2
-            boolean r12 = r12[r13]
-            if (r12 == 0) goto L_0x0282
-            r12 = 0
+            boolean r9 = r9[r13]
+            if (r9 == 0) goto L_0x027c
+            r9 = 0
             r13 = 0
-            r4 = r13
-            r13 = r12
-            r12 = 0
-        L_0x0210:
-            if (r12 >= r7) goto L_0x023d
-            r24 = r0
+            r16 = 0
+            r4 = r16
+        L_0x020c:
+            if (r4 >= r7) goto L_0x0239
+            r19 = r0
             java.util.ArrayList r0 = r1.mChildren
-            java.lang.Object r0 = r0.get(r12)
+            java.lang.Object r0 = r0.get(r4)
             android.support.constraint.solver.widgets.ConstraintWidget r0 = (android.support.constraint.solver.widgets.ConstraintWidget) r0
-            r25 = r7
+            r23 = r7
             int r7 = r0.mX
-            int r16 = r0.getWidth()
-            int r7 = r7 + r16
-            int r13 = java.lang.Math.max(r13, r7)
+            int r21 = r0.getWidth()
+            int r7 = r7 + r21
+            int r9 = java.lang.Math.max(r9, r7)
             int r7 = r0.mY
-            int r16 = r0.getHeight()
-            int r7 = r7 + r16
-            int r4 = java.lang.Math.max(r4, r7)
-            int r12 = r12 + 1
-            r0 = r24
-            r7 = r25
-            goto L_0x0210
-        L_0x023d:
-            r24 = r0
-            r25 = r7
+            int r21 = r0.getHeight()
+            int r7 = r7 + r21
+            int r13 = java.lang.Math.max(r13, r7)
+            int r4 = r4 + 1
+            r0 = r19
+            r7 = r23
+            goto L_0x020c
+        L_0x0239:
+            r19 = r0
+            r23 = r7
             int r0 = r1.mMinWidth
-            int r0 = java.lang.Math.max(r0, r13)
-            int r7 = r1.mMinHeight
-            int r4 = java.lang.Math.max(r7, r4)
+            int r0 = java.lang.Math.max(r0, r9)
+            int r4 = r1.mMinHeight
+            int r4 = java.lang.Math.max(r4, r13)
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r7 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
-            if (r11 != r7) goto L_0x0264
-            int r7 = r27.getWidth()
-            if (r7 >= r0) goto L_0x0264
+            if (r11 != r7) goto L_0x0263
+            int r7 = r24.getWidth()
+            if (r7 >= r0) goto L_0x0263
             r1.setWidth(r0)
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r7 = r1.mListDimensionBehaviors
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r12 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r9 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
             r13 = 0
-            r7[r13] = r12
-            r12 = 1
+            r7[r13] = r9
             r7 = 1
-            goto L_0x0268
-        L_0x0264:
-            r12 = r20
-            r7 = r24
-        L_0x0268:
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r13 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
-            if (r10 != r13) goto L_0x0280
-            int r13 = r27.getHeight()
-            if (r13 >= r4) goto L_0x0280
+            r9 = 1
+            r20 = r7
+            r19 = r9
+        L_0x0263:
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r7 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
+            if (r10 != r7) goto L_0x0280
+            int r7 = r24.getHeight()
+            if (r7 >= r4) goto L_0x0280
             r1.setHeight(r4)
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r13 = r1.mListDimensionBehaviors
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r16 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
-            r17 = 1
-            r13[r17] = r16
-            r12 = 1
-            r0 = 1
-            goto L_0x028a
-        L_0x0280:
-            r0 = r7
-            goto L_0x028a
-        L_0x0282:
-            r24 = r0
-            r25 = r7
-            r12 = r20
-            r0 = r24
-        L_0x028a:
-            int r4 = r1.mMinWidth
-            int r7 = r27.getWidth()
-            int r4 = java.lang.Math.max(r4, r7)
-            int r7 = r27.getWidth()
-            if (r4 <= r7) goto L_0x02a7
-            r1.setWidth(r4)
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r7 = r1.mListDimensionBehaviors
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r9 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
+            r13 = 1
+            r7[r13] = r9
+            r7 = 1
+            r9 = 1
+            r4 = r7
+            r0 = r9
+            goto L_0x0284
+        L_0x027c:
+            r19 = r0
+            r23 = r7
+        L_0x0280:
+            r0 = r19
+            r4 = r20
+        L_0x0284:
+            int r7 = r1.mMinWidth
+            int r9 = r24.getWidth()
+            int r7 = java.lang.Math.max(r7, r9)
+            int r9 = r24.getWidth()
+            if (r7 <= r9) goto L_0x02a1
+            r1.setWidth(r7)
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r9 = r1.mListDimensionBehaviors
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r13 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
-            r16 = 0
-            r7[r16] = r13
-            r12 = 1
+            r18 = 0
+            r9[r18] = r13
+            r4 = 1
             r0 = 1
-        L_0x02a7:
-            int r7 = r1.mMinHeight
-            int r13 = r27.getHeight()
-            int r7 = java.lang.Math.max(r7, r13)
-            int r13 = r27.getHeight()
-            if (r7 <= r13) goto L_0x02c4
-            r1.setHeight(r7)
+        L_0x02a1:
+            int r9 = r1.mMinHeight
+            int r13 = r24.getHeight()
+            int r9 = java.lang.Math.max(r9, r13)
+            int r13 = r24.getHeight()
+            if (r9 <= r13) goto L_0x02be
+            r1.setHeight(r9)
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r13 = r1.mListDimensionBehaviors
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r16 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r19 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
             r17 = 1
-            r13[r17] = r16
-            r12 = 1
+            r13[r17] = r19
+            r4 = 1
             r0 = 1
-        L_0x02c4:
-            if (r12 != 0) goto L_0x0311
+        L_0x02be:
+            if (r4 != 0) goto L_0x0317
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r13 = r1.mListDimensionBehaviors
-            r16 = 0
-            r13 = r13[r16]
-            r26 = r0
+            r18 = 0
+            r13 = r13[r18]
+            r19 = r0
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r0 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
-            if (r13 != r0) goto L_0x02ec
-            if (r5 <= 0) goto L_0x02ec
-            int r0 = r27.getWidth()
-            if (r0 <= r5) goto L_0x02ec
+            if (r13 != r0) goto L_0x02e5
+            if (r5 <= 0) goto L_0x02e5
+            int r0 = r24.getWidth()
+            if (r0 <= r5) goto L_0x02e5
             r13 = 1
             r1.mWidthMeasuredTooSmall = r13
-            r12 = 1
+            r4 = 1
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r0 = r1.mListDimensionBehaviors
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r13 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
-            r16 = 0
-            r0[r16] = r13
+            r18 = 0
+            r0[r18] = r13
             r1.setWidth(r5)
             r0 = 1
-            r26 = r0
-        L_0x02ec:
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r0 = r1.mListDimensionBehaviors
-            r13 = 1
-            r0 = r0[r13]
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r13 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
-            if (r0 != r13) goto L_0x030e
-            if (r6 <= 0) goto L_0x030e
-            int r0 = r27.getHeight()
-            if (r0 <= r6) goto L_0x030e
-            r13 = 1
-            r1.mHeightMeasuredTooSmall = r13
-            r0 = 1
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r12 = r1.mListDimensionBehaviors
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r16 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
-            r12[r13] = r16
-            r1.setHeight(r6)
-            r4 = 1
-            r12 = r0
-            r0 = r4
-            goto L_0x0313
-        L_0x030e:
-            r0 = r26
-            goto L_0x0313
-        L_0x0311:
-            r26 = r0
-        L_0x0313:
-            r18 = r15
-            r13 = r22
-            r7 = r25
-            goto L_0x012d
-        L_0x031b:
+            goto L_0x02e7
+        L_0x02e5:
+            r0 = r19
+        L_0x02e7:
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r13 = r1.mListDimensionBehaviors
             r19 = r4
-            r25 = r7
-            r20 = r12
+            r4 = 1
+            r13 = r13[r4]
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r4 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
+            if (r13 != r4) goto L_0x0310
+            if (r6 <= 0) goto L_0x0310
+            int r4 = r24.getHeight()
+            if (r4 <= r6) goto L_0x030d
+            r4 = 1
+            r1.mHeightMeasuredTooSmall = r4
+            r13 = 1
+            r20 = r0
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r0 = r1.mListDimensionBehaviors
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r17 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.FIXED
+            r0[r4] = r17
+            r1.setHeight(r6)
+            r0 = 1
+            r9 = r0
+            r4 = r13
+            goto L_0x031b
+        L_0x030d:
+            r20 = r0
+            goto L_0x0312
+        L_0x0310:
+            r20 = r0
+        L_0x0312:
+            r4 = r19
+            r9 = r20
+            goto L_0x031b
+        L_0x0317:
+            r19 = r0
+            r9 = r19
+        L_0x031b:
+            r19 = r12
+            r13 = r22
+            r7 = r23
+            goto L_0x0128
+        L_0x0323:
+            r20 = r4
+            r23 = r7
+            r21 = r9
             r22 = r13
             java.util.List<android.support.constraint.solver.widgets.ConstraintWidgetGroup> r0 = r1.mWidgetGroups
-            java.lang.Object r0 = r0.get(r9)
+            java.lang.Object r0 = r0.get(r15)
             android.support.constraint.solver.widgets.ConstraintWidgetGroup r0 = (android.support.constraint.solver.widgets.ConstraintWidgetGroup) r0
             r0.updateUnresolvedWidgets()
-            r15 = r18
-        L_0x0330:
-            int r0 = r9 + 1
+            r12 = r19
+            r0 = r20
+        L_0x033a:
+            int r15 = r15 + 1
             r13 = r22
             r4 = 0
             r7 = 32
             r9 = 1
-            goto L_0x00b3
-        L_0x033a:
+            goto L_0x00b1
+        L_0x0344:
             r22 = r13
-            r0 = r14
-            java.util.ArrayList r0 = (java.util.ArrayList) r0
-            r1.mChildren = r0
-            android.support.constraint.solver.widgets.ConstraintWidget r0 = r1.mParent
-            if (r0 == 0) goto L_0x0371
-            int r0 = r1.mMinWidth
-            int r4 = r27.getWidth()
-            int r0 = java.lang.Math.max(r0, r4)
-            int r4 = r1.mMinHeight
-            int r7 = r27.getHeight()
+            r4 = r14
+            java.util.ArrayList r4 = (java.util.ArrayList) r4
+            r1.mChildren = r4
+            android.support.constraint.solver.widgets.ConstraintWidget r4 = r1.mParent
+            if (r4 == 0) goto L_0x037b
+            int r4 = r1.mMinWidth
+            int r7 = r24.getWidth()
             int r4 = java.lang.Math.max(r4, r7)
-            android.support.constraint.solver.widgets.Snapshot r7 = r1.mSnapshot
-            r7.applyTo(r1)
-            int r7 = r1.mPaddingLeft
-            int r7 = r7 + r0
-            int r9 = r1.mPaddingRight
-            int r7 = r7 + r9
-            r1.setWidth(r7)
-            int r7 = r1.mPaddingTop
-            int r7 = r7 + r4
-            int r9 = r1.mPaddingBottom
-            int r7 = r7 + r9
-            r1.setHeight(r7)
-            goto L_0x0375
-        L_0x0371:
+            int r7 = r1.mMinHeight
+            int r9 = r24.getHeight()
+            int r7 = java.lang.Math.max(r7, r9)
+            android.support.constraint.solver.widgets.Snapshot r9 = r1.mSnapshot
+            r9.applyTo(r1)
+            int r9 = r1.mPaddingLeft
+            int r9 = r9 + r4
+            int r13 = r1.mPaddingRight
+            int r9 = r9 + r13
+            r1.setWidth(r9)
+            int r9 = r1.mPaddingTop
+            int r9 = r9 + r7
+            int r13 = r1.mPaddingBottom
+            int r9 = r9 + r13
+            r1.setHeight(r9)
+            goto L_0x037f
+        L_0x037b:
             r1.mX = r2
             r1.mY = r3
-        L_0x0375:
-            if (r12 == 0) goto L_0x0381
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r0 = r1.mListDimensionBehaviors
-            r4 = 0
-            r0[r4] = r11
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r0 = r1.mListDimensionBehaviors
-            r4 = 1
-            r0[r4] = r10
-        L_0x0381:
-            android.support.constraint.solver.LinearSystem r0 = r1.mSystem
-            android.support.constraint.solver.Cache r0 = r0.getCache()
-            r1.resetSolverVariables(r0)
-            android.support.constraint.solver.widgets.ConstraintWidgetContainer r0 = r27.getRootConstraintContainer()
-            if (r1 != r0) goto L_0x0393
-            r27.updateDrawPosition()
-        L_0x0393:
+        L_0x037f:
+            if (r0 == 0) goto L_0x038b
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r4 = r1.mListDimensionBehaviors
+            r7 = 0
+            r4[r7] = r11
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r4 = r1.mListDimensionBehaviors
+            r7 = 1
+            r4[r7] = r10
+        L_0x038b:
+            android.support.constraint.solver.LinearSystem r4 = r1.mSystem
+            android.support.constraint.solver.Cache r4 = r4.getCache()
+            r1.resetSolverVariables(r4)
+            android.support.constraint.solver.widgets.ConstraintWidgetContainer r4 = r24.getRootConstraintContainer()
+            if (r1 != r4) goto L_0x039d
+            r24.updateDrawPosition()
+        L_0x039d:
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.solver.widgets.ConstraintWidgetContainer.layout():void");
@@ -761,16 +786,20 @@ public class ConstraintWidgetContainer extends WidgetContainer {
     }
 
     private void addHorizontalChain(ConstraintWidget widget) {
-        if (this.mHorizontalChainsSize + 1 >= this.mHorizontalChainsArray.length) {
-            this.mHorizontalChainsArray = (ChainHead[]) Arrays.copyOf(this.mHorizontalChainsArray, this.mHorizontalChainsArray.length * 2);
+        int i = this.mHorizontalChainsSize + 1;
+        ChainHead[] chainHeadArr = this.mHorizontalChainsArray;
+        if (i >= chainHeadArr.length) {
+            this.mHorizontalChainsArray = (ChainHead[]) Arrays.copyOf(chainHeadArr, chainHeadArr.length * 2);
         }
         this.mHorizontalChainsArray[this.mHorizontalChainsSize] = new ChainHead(widget, 0, isRtl());
         this.mHorizontalChainsSize++;
     }
 
     private void addVerticalChain(ConstraintWidget widget) {
-        if (this.mVerticalChainsSize + 1 >= this.mVerticalChainsArray.length) {
-            this.mVerticalChainsArray = (ChainHead[]) Arrays.copyOf(this.mVerticalChainsArray, this.mVerticalChainsArray.length * 2);
+        int i = this.mVerticalChainsSize + 1;
+        ChainHead[] chainHeadArr = this.mVerticalChainsArray;
+        if (i >= chainHeadArr.length) {
+            this.mVerticalChainsArray = (ChainHead[]) Arrays.copyOf(chainHeadArr, chainHeadArr.length * 2);
         }
         this.mVerticalChainsArray[this.mVerticalChainsSize] = new ChainHead(widget, 1, isRtl());
         this.mVerticalChainsSize++;

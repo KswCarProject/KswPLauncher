@@ -6,8 +6,6 @@ import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -17,26 +15,25 @@ import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ID6FragmentOneImpl extends ID6FragmentOne {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
     static {
-        sViewsWithIds.put(R.id.id6_music_iamge_view, 4);
-        sViewsWithIds.put(R.id.id6_music_text_view, 5);
-        sViewsWithIds.put(R.id.id6_nav_image_view, 6);
-        sViewsWithIds.put(R.id.id6_navi_text_view, 7);
-        sViewsWithIds.put(R.id.id6_navi_mess, 8);
-        sViewsWithIds.put(R.id.id6_bt_image_view, 9);
-        sViewsWithIds.put(R.id.id6_bt_text_view, 10);
-        sViewsWithIds.put(R.id.id6_bt_mess, 11);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.id6_music_iamge_view, 4);
+        sparseIntArray.put(R.id.id6_music_text_view, 5);
+        sparseIntArray.put(R.id.id6_nav_image_view, 6);
+        sparseIntArray.put(R.id.id6_navi_text_view, 7);
+        sparseIntArray.put(R.id.id6_navi_mess, 8);
+        sparseIntArray.put(R.id.id6_bt_image_view, 9);
+        sparseIntArray.put(R.id.id6_bt_text_view, 10);
+        sparseIntArray.put(R.id.id6_bt_mess, 11);
     }
 
-    public ID6FragmentOneImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ID6FragmentOneImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 12, sIncludes, sViewsWithIds));
     }
 
@@ -47,8 +44,9 @@ public class ID6FragmentOneImpl extends ID6FragmentOne {
         this.id6MusicArtisTextView.setTag((Object) null);
         this.id6MusicIcon.setTag((Object) null);
         this.id6MusicNameTextView.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -69,15 +67,15 @@ public class ID6FragmentOneImpl extends ID6FragmentOne {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
     }
 
@@ -85,17 +83,17 @@ public class ID6FragmentOneImpl extends ID6FragmentOne {
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeViewModelMediaInfoMusicAtist((ObservableField) object, fieldId);
-            case 1:
-                return onChangeViewModelMediaInfoPic((ObservableField) object, fieldId);
-            case 2:
                 return onChangeViewModelMediaInfoMusicName((ObservableField) object, fieldId);
+            case 1:
+                return onChangeViewModelMediaInfoMusicAtist((ObservableField) object, fieldId);
+            case 2:
+                return onChangeViewModelMediaInfoPic((ObservableField) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeViewModelMediaInfoMusicAtist(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeViewModelMediaInfoMusicName(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -105,7 +103,7 @@ public class ID6FragmentOneImpl extends ID6FragmentOne {
         return true;
     }
 
-    private boolean onChangeViewModelMediaInfoPic(ObservableField<BitmapDrawable> observableField, int fieldId) {
+    private boolean onChangeViewModelMediaInfoMusicAtist(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -115,7 +113,7 @@ public class ID6FragmentOneImpl extends ID6FragmentOne {
         return true;
     }
 
-    private boolean onChangeViewModelMediaInfoMusicName(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeViewModelMediaInfoPic(ObservableField<BitmapDrawable> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -132,75 +130,76 @@ public class ID6FragmentOneImpl extends ID6FragmentOne {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        ObservableField<String> viewModelMediaInfoMusicAtist = null;
-        BitmapDrawable viewModelMediaInfoPicGet = null;
-        boolean viewModelMediaInfoMusicNameJavaLangObjectNull = false;
-        ObservableField<BitmapDrawable> viewModelMediaInfoPic = null;
-        String viewModelMediaInfoMusicNameJavaLangObjectNullId6MusicNameTextViewAndroidStringKswIdf7UnkonwSoungViewModelMediaInfoMusicName = null;
-        String viewModelMediaInfoMusicNameGet = null;
-        boolean viewModelMediaInfoMusicAtistJavaLangObjectNull = false;
-        String viewModelMediaInfoMusicAtistJavaLangObjectNullId6MusicArtisTextViewAndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = null;
         String viewModelMediaInfoMusicAtistGet = null;
         ObservableField<String> viewModelMediaInfoMusicName = null;
+        String viewModelMediaInfoMusicNameJavaLangObjectNullId6MusicNameTextViewAndroidStringKswIdf7UnkonwSoungViewModelMediaInfoMusicName = null;
+        ObservableField<String> viewModelMediaInfoMusicAtist = null;
+        String viewModelMediaInfoMusicNameGet = null;
+        boolean viewModelMediaInfoMusicNameJavaLangObjectNull = false;
+        boolean viewModelMediaInfoMusicAtistJavaLangObjectNull = false;
+        BitmapDrawable viewModelMediaInfoPicGet = null;
+        ObservableField<BitmapDrawable> viewModelMediaInfoPic = null;
+        String viewModelMediaInfoMusicAtistJavaLangObjectNullId6MusicArtisTextViewAndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = null;
         if ((dirtyFlags & 23) != 0) {
             MediaInfo viewModelMediaInfo = LauncherViewModel.mediaInfo;
-            boolean z = false;
+            boolean viewModelMediaInfoMusicAtistJavaLangObjectNull2 = true;
             if ((dirtyFlags & 17) != 0) {
                 if (viewModelMediaInfo != null) {
-                    viewModelMediaInfoMusicAtist = viewModelMediaInfo.musicAtist;
+                    viewModelMediaInfoMusicName = viewModelMediaInfo.musicName;
                 }
-                updateRegistration(0, (Observable) viewModelMediaInfoMusicAtist);
-                if (viewModelMediaInfoMusicAtist != null) {
-                    viewModelMediaInfoMusicAtistGet = viewModelMediaInfoMusicAtist.get();
+                updateRegistration(0, (Observable) viewModelMediaInfoMusicName);
+                if (viewModelMediaInfoMusicName != null) {
+                    viewModelMediaInfoMusicNameGet = viewModelMediaInfoMusicName.get();
                 }
-                viewModelMediaInfoMusicAtistJavaLangObjectNull = viewModelMediaInfoMusicAtistGet == null;
+                viewModelMediaInfoMusicNameJavaLangObjectNull = viewModelMediaInfoMusicNameGet == null;
                 if ((dirtyFlags & 17) != 0) {
-                    dirtyFlags = viewModelMediaInfoMusicAtistJavaLangObjectNull ? dirtyFlags | 256 : dirtyFlags | 128;
+                    dirtyFlags = viewModelMediaInfoMusicNameJavaLangObjectNull ? dirtyFlags | 64 : dirtyFlags | 32;
                 }
             }
             if ((dirtyFlags & 18) != 0) {
                 if (viewModelMediaInfo != null) {
-                    viewModelMediaInfoPic = viewModelMediaInfo.pic;
+                    viewModelMediaInfoMusicAtist = viewModelMediaInfo.musicAtist;
                 }
-                updateRegistration(1, (Observable) viewModelMediaInfoPic);
-                if (viewModelMediaInfoPic != null) {
-                    viewModelMediaInfoPicGet = viewModelMediaInfoPic.get();
+                updateRegistration(1, (Observable) viewModelMediaInfoMusicAtist);
+                if (viewModelMediaInfoMusicAtist != null) {
+                    viewModelMediaInfoMusicAtistGet = viewModelMediaInfoMusicAtist.get();
+                }
+                if (viewModelMediaInfoMusicAtistGet != null) {
+                    viewModelMediaInfoMusicAtistJavaLangObjectNull2 = false;
+                }
+                if ((dirtyFlags & 18) == 0) {
+                    viewModelMediaInfoMusicAtistJavaLangObjectNull = viewModelMediaInfoMusicAtistJavaLangObjectNull2;
+                } else if (viewModelMediaInfoMusicAtistJavaLangObjectNull2) {
+                    dirtyFlags |= 256;
+                    viewModelMediaInfoMusicAtistJavaLangObjectNull = viewModelMediaInfoMusicAtistJavaLangObjectNull2;
+                } else {
+                    dirtyFlags |= 128;
+                    viewModelMediaInfoMusicAtistJavaLangObjectNull = viewModelMediaInfoMusicAtistJavaLangObjectNull2;
                 }
             }
             if ((dirtyFlags & 20) != 0) {
                 if (viewModelMediaInfo != null) {
-                    viewModelMediaInfoMusicName = viewModelMediaInfo.musicName;
+                    viewModelMediaInfoPic = viewModelMediaInfo.pic;
                 }
-                updateRegistration(2, (Observable) viewModelMediaInfoMusicName);
-                if (viewModelMediaInfoMusicName != null) {
-                    viewModelMediaInfoMusicNameGet = viewModelMediaInfoMusicName.get();
-                }
-                if (viewModelMediaInfoMusicNameGet == null) {
-                    z = true;
-                }
-                viewModelMediaInfoMusicNameJavaLangObjectNull = z;
-                if ((dirtyFlags & 20) != 0) {
-                    if (viewModelMediaInfoMusicNameJavaLangObjectNull) {
-                        dirtyFlags |= 64;
-                    } else {
-                        dirtyFlags |= 32;
-                    }
+                updateRegistration(2, (Observable) viewModelMediaInfoPic);
+                if (viewModelMediaInfoPic != null) {
+                    viewModelMediaInfoPicGet = viewModelMediaInfoPic.get();
                 }
             }
         }
-        if ((dirtyFlags & 20) != 0) {
+        if ((dirtyFlags & 17) != 0) {
             viewModelMediaInfoMusicNameJavaLangObjectNullId6MusicNameTextViewAndroidStringKswIdf7UnkonwSoungViewModelMediaInfoMusicName = viewModelMediaInfoMusicNameJavaLangObjectNull ? this.id6MusicNameTextView.getResources().getString(R.string.ksw_idf7_unkonw_soung) : viewModelMediaInfoMusicNameGet;
         }
-        if ((dirtyFlags & 17) != 0) {
+        if ((dirtyFlags & 18) != 0) {
             viewModelMediaInfoMusicAtistJavaLangObjectNullId6MusicArtisTextViewAndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = viewModelMediaInfoMusicAtistJavaLangObjectNull ? this.id6MusicArtisTextView.getResources().getString(R.string.ksw_idf7_unknow_artis) : viewModelMediaInfoMusicAtistGet;
         }
-        if ((dirtyFlags & 17) != 0) {
+        if ((dirtyFlags & 18) != 0) {
             TextViewBindingAdapter.setText(this.id6MusicArtisTextView, viewModelMediaInfoMusicAtistJavaLangObjectNullId6MusicArtisTextViewAndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist);
         }
-        if ((dirtyFlags & 18) != 0) {
+        if ((dirtyFlags & 20) != 0) {
             BaseBindingModel.setID6MusicAlbumIcon(this.id6MusicIcon, viewModelMediaInfoPicGet);
         }
-        if ((dirtyFlags & 20) != 0) {
+        if ((dirtyFlags & 17) != 0) {
             TextViewBindingAdapter.setText(this.id6MusicNameTextView, viewModelMediaInfoMusicNameJavaLangObjectNullId6MusicNameTextViewAndroidStringKswIdf7UnkonwSoungViewModelMediaInfoMusicName);
         }
     }

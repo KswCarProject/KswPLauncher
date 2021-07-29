@@ -1,17 +1,13 @@
 package android.databinding.adapters;
 
-import android.databinding.BindingAdapter;
-import android.support.annotation.RestrictTo;
 import android.util.SparseBooleanArray;
 import android.widget.TableLayout;
 import java.util.regex.Pattern;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class TableLayoutBindingAdapter {
     private static final int MAX_COLUMNS = 20;
     private static Pattern sColumnPattern = Pattern.compile("\\s*,\\s*");
 
-    @BindingAdapter({"android:collapseColumns"})
     public static void setCollapseColumns(TableLayout view, CharSequence columnsStr) {
         SparseBooleanArray columns = parseColumns(columnsStr);
         for (int i = 0; i < 20; i++) {
@@ -22,7 +18,6 @@ public class TableLayoutBindingAdapter {
         }
     }
 
-    @BindingAdapter({"android:shrinkColumns"})
     public static void setShrinkColumns(TableLayout view, CharSequence columnsStr) {
         if (columnsStr == null || columnsStr.length() <= 0 || columnsStr.charAt(0) != '*') {
             view.setShrinkAllColumns(false);
@@ -40,7 +35,6 @@ public class TableLayoutBindingAdapter {
         view.setShrinkAllColumns(true);
     }
 
-    @BindingAdapter({"android:stretchColumns"})
     public static void setStretchColumns(TableLayout view, CharSequence columnsStr) {
         if (columnsStr == null || columnsStr.length() <= 0 || columnsStr.charAt(0) != '*') {
             view.setStretchAllColumns(false);

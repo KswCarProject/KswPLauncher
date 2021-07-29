@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -27,28 +25,31 @@ public final class InputConnectionCompat {
         boolean onCommitContent(InputContentInfoCompat inputContentInfoCompat, int i, Bundle bundle);
     }
 
-    static boolean handlePerformPrivateCommand(@Nullable String action, @NonNull Bundle data, @NonNull OnCommitContentListener onCommitContentListener) {
-        boolean z = false;
+    static boolean handlePerformPrivateCommand(String action, Bundle data, OnCommitContentListener onCommitContentListener) {
+        int i = 0;
         if (!TextUtils.equals(COMMIT_CONTENT_ACTION, action) || data == null) {
-            return z;
+            return false;
         }
         ResultReceiver resultReceiver = null;
-        boolean result = z;
         try {
-            resultReceiver = (ResultReceiver) data.getParcelable(COMMIT_CONTENT_RESULT_RECEIVER);
-            result = onCommitContentListener.onCommitContent(new InputContentInfoCompat((Uri) data.getParcelable(COMMIT_CONTENT_CONTENT_URI_KEY), (ClipDescription) data.getParcelable(COMMIT_CONTENT_DESCRIPTION_KEY), (Uri) data.getParcelable(COMMIT_CONTENT_LINK_URI_KEY)), data.getInt(COMMIT_CONTENT_FLAGS_KEY), (Bundle) data.getParcelable(COMMIT_CONTENT_OPTS_KEY));
-            return result;
-        } finally {
-            if (resultReceiver != null) {
+            ResultReceiver resultReceiver2 = (ResultReceiver) data.getParcelable(COMMIT_CONTENT_RESULT_RECEIVER);
+            boolean result = onCommitContentListener.onCommitContent(new InputContentInfoCompat((Uri) data.getParcelable(COMMIT_CONTENT_CONTENT_URI_KEY), (ClipDescription) data.getParcelable(COMMIT_CONTENT_DESCRIPTION_KEY), (Uri) data.getParcelable(COMMIT_CONTENT_LINK_URI_KEY)), data.getInt(COMMIT_CONTENT_FLAGS_KEY), (Bundle) data.getParcelable(COMMIT_CONTENT_OPTS_KEY));
+            if (resultReceiver2 != null) {
                 if (result) {
-                    z = true;
+                    i = 1;
                 }
-                resultReceiver.send(z ? 1 : 0, (Bundle) null);
+                resultReceiver2.send(i, (Bundle) null);
             }
+            return result;
+        } catch (Throwable th) {
+            if (resultReceiver != null) {
+                resultReceiver.send(0, (Bundle) null);
+            }
+            throw th;
         }
     }
 
-    public static boolean commitContent(@NonNull InputConnection inputConnection, @NonNull EditorInfo editorInfo, @NonNull InputContentInfoCompat inputContentInfo, int flags, @Nullable Bundle opts) {
+    public static boolean commitContent(InputConnection inputConnection, EditorInfo editorInfo, InputContentInfoCompat inputContentInfo, int flags, Bundle opts) {
         ClipDescription description = inputContentInfo.getDescription();
         boolean supported = false;
         String[] contentMimeTypes = EditorInfoCompat.getContentMimeTypes(editorInfo);
@@ -79,8 +80,7 @@ public final class InputConnectionCompat {
         return inputConnection.performPrivateCommand(COMMIT_CONTENT_ACTION, params);
     }
 
-    @NonNull
-    public static InputConnection createWrapper(@NonNull InputConnection inputConnection, @NonNull EditorInfo editorInfo, @NonNull OnCommitContentListener onCommitContentListener) {
+    public static InputConnection createWrapper(InputConnection inputConnection, EditorInfo editorInfo, OnCommitContentListener onCommitContentListener) {
         if (inputConnection == null) {
             throw new IllegalArgumentException("inputConnection must be non-null");
         } else if (editorInfo == null) {

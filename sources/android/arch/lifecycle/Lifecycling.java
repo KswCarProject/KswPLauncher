@@ -1,8 +1,5 @@
 package android.arch.lifecycle;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,14 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class Lifecycling {
     private static final int GENERATED_CALLBACK = 2;
     private static final int REFLECTIVE_CALLBACK = 1;
     private static Map<Class, Integer> sCallbackCache = new HashMap();
     private static Map<Class, List<Constructor<? extends GeneratedAdapter>>> sClassToAdapters = new HashMap();
 
-    @NonNull
     static GenericLifecycleObserver getCallback(Object object) {
         if (object instanceof FullLifecycleObserver) {
             return new FullLifecycleObserverAdapter((FullLifecycleObserver) object);
@@ -53,10 +48,8 @@ public class Lifecycling {
         }
     }
 
-    @Nullable
     private static Constructor<? extends GeneratedAdapter> generatedConstructor(Class<?> klass) {
         String str;
-        String str2;
         try {
             Package aPackage = klass.getPackage();
             String name = klass.getCanonicalName();
@@ -67,12 +60,7 @@ public class Lifecycling {
                 str = name.substring(fullPackage.length() + 1);
             }
             String adapterName = getAdapterName(str);
-            if (fullPackage.isEmpty()) {
-                str2 = adapterName;
-            } else {
-                str2 = fullPackage + "." + adapterName;
-            }
-            Constructor<?> declaredConstructor = Class.forName(str2).getDeclaredConstructor(new Class[]{klass});
+            Constructor<?> declaredConstructor = Class.forName(fullPackage.isEmpty() ? adapterName : fullPackage + "." + adapterName).getDeclaredConstructor(new Class[]{klass});
             if (!declaredConstructor.isAccessible()) {
                 declaredConstructor.setAccessible(true);
             }

@@ -12,11 +12,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.ResultReceiver;
-import android.support.annotation.GuardedBy;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.app.BundleCompat;
 import android.support.v4.app.SupportActivity;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -39,19 +34,12 @@ import java.util.HashSet;
 import java.util.List;
 
 public final class MediaControllerCompat {
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static final String COMMAND_ADD_QUEUE_ITEM = "android.support.v4.media.session.command.ADD_QUEUE_ITEM";
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static final String COMMAND_ADD_QUEUE_ITEM_AT = "android.support.v4.media.session.command.ADD_QUEUE_ITEM_AT";
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static final String COMMAND_ARGUMENT_INDEX = "android.support.v4.media.session.command.ARGUMENT_INDEX";
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static final String COMMAND_ARGUMENT_MEDIA_DESCRIPTION = "android.support.v4.media.session.command.ARGUMENT_MEDIA_DESCRIPTION";
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static final String COMMAND_GET_EXTRA_BINDER = "android.support.v4.media.session.command.GET_EXTRA_BINDER";
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static final String COMMAND_REMOVE_QUEUE_ITEM = "android.support.v4.media.session.command.REMOVE_QUEUE_ITEM";
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static final String COMMAND_REMOVE_QUEUE_ITEM_AT = "android.support.v4.media.session.command.REMOVE_QUEUE_ITEM_AT";
     static final String TAG = "MediaControllerCompat";
     private final MediaControllerImpl mImpl;
@@ -123,7 +111,7 @@ public final class MediaControllerCompat {
         }
     }
 
-    public static void setMediaController(@NonNull Activity activity, MediaControllerCompat mediaController) {
+    public static void setMediaController(Activity activity, MediaControllerCompat mediaController) {
         if (activity instanceof SupportActivity) {
             ((SupportActivity) activity).putExtraData(new MediaControllerExtraData(mediaController));
         }
@@ -136,7 +124,7 @@ public final class MediaControllerCompat {
         }
     }
 
-    public static MediaControllerCompat getMediaController(@NonNull Activity activity) {
+    public static MediaControllerCompat getMediaController(Activity activity) {
         Object controllerObj;
         if (activity instanceof SupportActivity) {
             MediaControllerExtraData extraData = (MediaControllerExtraData) ((SupportActivity) activity).getExtraData(MediaControllerExtraData.class);
@@ -159,13 +147,19 @@ public final class MediaControllerCompat {
     static void validateCustomAction(String action, Bundle args) {
         if (action != null) {
             char c = 65535;
-            int hashCode = action.hashCode();
-            if (hashCode != -1348483723) {
-                if (hashCode == 503011406 && action.equals(MediaSessionCompat.ACTION_UNFOLLOW)) {
-                    c = 1;
-                }
-            } else if (action.equals(MediaSessionCompat.ACTION_FOLLOW)) {
-                c = 0;
+            switch (action.hashCode()) {
+                case -1348483723:
+                    if (action.equals(MediaSessionCompat.ACTION_FOLLOW)) {
+                        c = 0;
+                        break;
+                    }
+                    break;
+                case 503011406:
+                    if (action.equals(MediaSessionCompat.ACTION_UNFOLLOW)) {
+                        c = 1;
+                        break;
+                    }
+                    break;
             }
             switch (c) {
                 case 0:
@@ -180,19 +174,20 @@ public final class MediaControllerCompat {
         }
     }
 
-    public MediaControllerCompat(Context context, @NonNull MediaSessionCompat session) {
+    public MediaControllerCompat(Context context, MediaSessionCompat session) {
         if (session != null) {
-            this.mToken = session.getSessionToken();
+            MediaSessionCompat.Token sessionToken = session.getSessionToken();
+            this.mToken = sessionToken;
             MediaControllerImpl impl = null;
             try {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    impl = new MediaControllerImplApi24(context, this.mToken);
+                    impl = new MediaControllerImplApi24(context, sessionToken);
                 } else if (Build.VERSION.SDK_INT >= 23) {
-                    impl = new MediaControllerImplApi23(context, this.mToken);
+                    impl = new MediaControllerImplApi23(context, sessionToken);
                 } else if (Build.VERSION.SDK_INT >= 21) {
-                    impl = new MediaControllerImplApi21(context, this.mToken);
+                    impl = new MediaControllerImplApi21(context, sessionToken);
                 } else {
-                    impl = new MediaControllerImplBase(this.mToken);
+                    impl = new MediaControllerImplBase(sessionToken);
                 }
             } catch (RemoteException e) {
                 Log.w(TAG, "Failed to create MediaControllerImpl.", e);
@@ -203,7 +198,7 @@ public final class MediaControllerCompat {
         throw new IllegalArgumentException("session must not be null");
     }
 
-    public MediaControllerCompat(Context context, @NonNull MediaSessionCompat.Token sessionToken) throws RemoteException {
+    public MediaControllerCompat(Context context, MediaSessionCompat.Token sessionToken) throws RemoteException {
         if (sessionToken != null) {
             this.mToken = sessionToken;
             if (Build.VERSION.SDK_INT >= 24) {
@@ -304,8 +299,6 @@ public final class MediaControllerCompat {
         return this.mToken;
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public Bundle getSessionToken2Bundle() {
         return this.mToken.getSessionToken2Bundle();
     }
@@ -318,11 +311,11 @@ public final class MediaControllerCompat {
         this.mImpl.adjustVolume(direction, flags);
     }
 
-    public void registerCallback(@NonNull Callback callback) {
+    public void registerCallback(Callback callback) {
         registerCallback(callback, (Handler) null);
     }
 
-    public void registerCallback(@NonNull Callback callback, Handler handler) {
+    public void registerCallback(Callback callback, Handler handler) {
         if (callback != null) {
             if (handler == null) {
                 handler = new Handler();
@@ -335,7 +328,7 @@ public final class MediaControllerCompat {
         throw new IllegalArgumentException("callback must not be null");
     }
 
-    public void unregisterCallback(@NonNull Callback callback) {
+    public void unregisterCallback(Callback callback) {
         if (callback != null) {
             try {
                 this.mRegisteredCallbacks.remove(callback);
@@ -348,7 +341,7 @@ public final class MediaControllerCompat {
         }
     }
 
-    public void sendCommand(@NonNull String command, Bundle params, ResultReceiver cb) {
+    public void sendCommand(String command, Bundle params, ResultReceiver cb) {
         if (!TextUtils.isEmpty(command)) {
             this.mImpl.sendCommand(command, params, cb);
             return;
@@ -419,7 +412,6 @@ public final class MediaControllerCompat {
         public void onShuffleModeChanged(int shuffleMode) {
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY})
         public IMediaControllerCallback getIControllerCallback() {
             return this.mIControllerCallback;
         }
@@ -430,20 +422,26 @@ public final class MediaControllerCompat {
 
         /* access modifiers changed from: package-private */
         public void setHandler(Handler handler) {
-            if (handler != null) {
-                this.mHandler = new MessageHandler(handler.getLooper());
-                this.mHandler.mRegistered = true;
-            } else if (this.mHandler != null) {
-                this.mHandler.mRegistered = false;
-                this.mHandler.removeCallbacksAndMessages((Object) null);
-                this.mHandler = null;
+            if (handler == null) {
+                MessageHandler messageHandler = this.mHandler;
+                if (messageHandler != null) {
+                    messageHandler.mRegistered = false;
+                    this.mHandler.removeCallbacksAndMessages((Object) null);
+                    this.mHandler = null;
+                    return;
+                }
+                return;
             }
+            MessageHandler messageHandler2 = new MessageHandler(handler.getLooper());
+            this.mHandler = messageHandler2;
+            messageHandler2.mRegistered = true;
         }
 
         /* access modifiers changed from: package-private */
         public void postToHandler(int what, Object obj, Bundle data) {
-            if (this.mHandler != null) {
-                Message msg = this.mHandler.obtainMessage(what, obj);
+            MessageHandler messageHandler = this.mHandler;
+            if (messageHandler != null) {
+                Message msg = messageHandler.obtainMessage(what, obj);
                 msg.setData(data);
                 msg.sendToTarget();
             }
@@ -1209,21 +1207,20 @@ public final class MediaControllerCompat {
         }
     }
 
-    @RequiresApi(21)
     static class MediaControllerImplApi21 implements MediaControllerImpl {
         private HashMap<Callback, ExtraCallback> mCallbackMap = new HashMap<>();
         protected final Object mControllerObj;
         final Object mLock = new Object();
-        @GuardedBy("mLock")
         private final List<Callback> mPendingCallbacks = new ArrayList();
         final MediaSessionCompat.Token mSessionToken;
 
         public MediaControllerImplApi21(Context context, MediaSessionCompat.Token sessionToken) throws RemoteException {
             this.mSessionToken = sessionToken;
-            this.mControllerObj = MediaControllerCompatApi21.fromToken(context, this.mSessionToken.getToken());
-            if (this.mControllerObj == null) {
+            Object fromToken = MediaControllerCompatApi21.fromToken(context, sessionToken.getToken());
+            this.mControllerObj = fromToken;
+            if (fromToken == null) {
                 throw new RemoteException();
-            } else if (this.mSessionToken.getExtraBinder() == null) {
+            } else if (sessionToken.getExtraBinder() == null) {
                 requestExtraBinder();
             }
         }
@@ -1441,7 +1438,6 @@ public final class MediaControllerCompat {
         }
 
         /* access modifiers changed from: package-private */
-        @GuardedBy("mLock")
         public void processPendingCallbacksLocked() {
             if (this.mSessionToken.getExtraBinder() != null) {
                 for (Callback callback : this.mPendingCallbacks) {
@@ -1637,7 +1633,6 @@ public final class MediaControllerCompat {
         }
     }
 
-    @RequiresApi(23)
     static class MediaControllerImplApi23 extends MediaControllerImplApi21 {
         public MediaControllerImplApi23(Context context, MediaSessionCompat.Token sessionToken) throws RemoteException {
             super(context, sessionToken);
@@ -1652,7 +1647,6 @@ public final class MediaControllerCompat {
         }
     }
 
-    @RequiresApi(23)
     static class TransportControlsApi23 extends TransportControlsApi21 {
         public TransportControlsApi23(Object controlsObj) {
             super(controlsObj);
@@ -1663,7 +1657,6 @@ public final class MediaControllerCompat {
         }
     }
 
-    @RequiresApi(24)
     static class MediaControllerImplApi24 extends MediaControllerImplApi23 {
         public MediaControllerImplApi24(Context context, MediaSessionCompat.Token sessionToken) throws RemoteException {
             super(context, sessionToken);
@@ -1678,7 +1671,6 @@ public final class MediaControllerCompat {
         }
     }
 
-    @RequiresApi(24)
     static class TransportControlsApi24 extends TransportControlsApi23 {
         public TransportControlsApi24(Object controlsObj) {
             super(controlsObj);

@@ -1,7 +1,5 @@
 package com.bumptech.glide.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Queue;
@@ -11,11 +9,11 @@ public class ExceptionCatchingInputStream extends InputStream {
     private IOException exception;
     private InputStream wrapped;
 
-    @NonNull
-    public static ExceptionCatchingInputStream obtain(@NonNull InputStream toWrap) {
+    public static ExceptionCatchingInputStream obtain(InputStream toWrap) {
         ExceptionCatchingInputStream result;
-        synchronized (QUEUE) {
-            result = QUEUE.poll();
+        Queue<ExceptionCatchingInputStream> queue = QUEUE;
+        synchronized (queue) {
+            result = queue.poll();
         }
         if (result == null) {
             result = new ExceptionCatchingInputStream();
@@ -25,8 +23,13 @@ public class ExceptionCatchingInputStream extends InputStream {
     }
 
     static void clearQueue() {
-        while (!QUEUE.isEmpty()) {
-            QUEUE.remove();
+        while (true) {
+            Queue<ExceptionCatchingInputStream> queue = QUEUE;
+            if (!queue.isEmpty()) {
+                queue.remove();
+            } else {
+                return;
+            }
         }
     }
 
@@ -34,7 +37,7 @@ public class ExceptionCatchingInputStream extends InputStream {
     }
 
     /* access modifiers changed from: package-private */
-    public void setInputStream(@NonNull InputStream toWrap) {
+    public void setInputStream(InputStream toWrap) {
         this.wrapped = toWrap;
     }
 
@@ -94,7 +97,6 @@ public class ExceptionCatchingInputStream extends InputStream {
         }
     }
 
-    @Nullable
     public IOException getException() {
         return this.exception;
     }
@@ -102,8 +104,9 @@ public class ExceptionCatchingInputStream extends InputStream {
     public void release() {
         this.exception = null;
         this.wrapped = null;
-        synchronized (QUEUE) {
-            QUEUE.offer(this);
+        Queue<ExceptionCatchingInputStream> queue = QUEUE;
+        synchronized (queue) {
+            queue.offer(this);
         }
     }
 }

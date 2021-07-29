@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.view.bmwevoid6gs;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -24,11 +22,11 @@ public class Bmwid6gsViewPager extends ViewPager {
     /* access modifiers changed from: private */
     public BmwId6gsViewMode viewMode;
 
-    public Bmwid6gsViewPager(@NonNull Context context) {
+    public Bmwid6gsViewPager(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public Bmwid6gsViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public Bmwid6gsViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mViewPagerIndex = -1;
         this.left = false;
@@ -80,7 +78,8 @@ public class Bmwid6gsViewPager extends ViewPager {
                         Bmwid6gsViewPager.this.viewMode.setIndex(8);
                         break;
                 }
-                boolean unused = Bmwid6gsViewPager.this.right = Bmwid6gsViewPager.this.left = false;
+                Bmwid6gsViewPager bmwid6gsViewPager = Bmwid6gsViewPager.this;
+                boolean unused = bmwid6gsViewPager.right = bmwid6gsViewPager.left = false;
             }
 
             public void onPageScrollStateChanged(int arg0) {
@@ -91,7 +90,8 @@ public class Bmwid6gsViewPager extends ViewPager {
                 }
                 bmwid6gsViewPager.isScrolling = z;
                 if (Bmwid6gsViewPager.this.isScrolling) {
-                    int unused = Bmwid6gsViewPager.this.mViewPagerIndex = Bmwid6gsViewPager.this.getCurrentItem();
+                    Bmwid6gsViewPager bmwid6gsViewPager2 = Bmwid6gsViewPager.this;
+                    int unused = bmwid6gsViewPager2.mViewPagerIndex = bmwid6gsViewPager2.getCurrentItem();
                 }
             }
         });
@@ -105,10 +105,11 @@ public class Bmwid6gsViewPager extends ViewPager {
         if (event.getAction() == 0 || event.getAction() != 1) {
             return true;
         }
-        Log.i(TAG, "dispatchKeyEvent: ");
+        String str = TAG;
+        Log.i(str, "dispatchKeyEvent: ");
         if (event.getKeyCode() == 19) {
             int index = BmwId6GsConfig.getIndex(this.mContext) - 1;
-            Log.i(TAG, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index);
+            Log.i(str, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index);
             if (index < 0) {
                 index = 0;
             }
@@ -120,7 +121,7 @@ public class Bmwid6gsViewPager extends ViewPager {
             BmwId6GsConfig.saveIndex(this.mContext, index);
         } else if (event.getKeyCode() == 20) {
             int index2 = BmwId6GsConfig.getIndex(this.mContext) + 1;
-            Log.i(TAG, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index2);
+            Log.i(str, "dispatchKeyEvent: " + event.getAction() + "\t " + event.getKeyCode() + "\t" + index2);
             if (index2 > 11) {
                 index2 = 11;
             }

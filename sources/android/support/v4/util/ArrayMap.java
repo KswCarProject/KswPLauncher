@@ -1,13 +1,10 @@
 package android.support.v4.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 public class ArrayMap<K, V> extends SimpleArrayMap<K, V> implements Map<K, V> {
-    @Nullable
     MapCollections<K, V> mCollections;
 
     public ArrayMap() {
@@ -73,7 +70,7 @@ public class ArrayMap<K, V> extends SimpleArrayMap<K, V> implements Map<K, V> {
         return this.mCollections;
     }
 
-    public boolean containsAll(@NonNull Collection<?> collection) {
+    public boolean containsAll(Collection<?> collection) {
         return MapCollections.containsAllHelper(this, collection);
     }
 
@@ -84,11 +81,11 @@ public class ArrayMap<K, V> extends SimpleArrayMap<K, V> implements Map<K, V> {
         }
     }
 
-    public boolean removeAll(@NonNull Collection<?> collection) {
+    public boolean removeAll(Collection<?> collection) {
         return MapCollections.removeAllHelper(this, collection);
     }
 
-    public boolean retainAll(@NonNull Collection<?> collection) {
+    public boolean retainAll(Collection<?> collection) {
         return MapCollections.retainAllHelper(this, collection);
     }
 

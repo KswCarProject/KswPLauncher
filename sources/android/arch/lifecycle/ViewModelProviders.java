@@ -3,9 +3,6 @@ package android.arch.lifecycle;
 import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -26,21 +23,15 @@ public class ViewModelProviders {
         throw new IllegalStateException("Can't create ViewModelProvider for detached fragment");
     }
 
-    @MainThread
-    @NonNull
-    public static ViewModelProvider of(@NonNull Fragment fragment) {
+    public static ViewModelProvider of(Fragment fragment) {
         return of(fragment, (ViewModelProvider.Factory) null);
     }
 
-    @MainThread
-    @NonNull
-    public static ViewModelProvider of(@NonNull FragmentActivity activity) {
+    public static ViewModelProvider of(FragmentActivity activity) {
         return of(activity, (ViewModelProvider.Factory) null);
     }
 
-    @MainThread
-    @NonNull
-    public static ViewModelProvider of(@NonNull Fragment fragment, @Nullable ViewModelProvider.Factory factory) {
+    public static ViewModelProvider of(Fragment fragment, ViewModelProvider.Factory factory) {
         Application application = checkApplication(checkActivity(fragment));
         if (factory == null) {
             factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application);
@@ -48,9 +39,7 @@ public class ViewModelProviders {
         return new ViewModelProvider(ViewModelStores.of(fragment), factory);
     }
 
-    @MainThread
-    @NonNull
-    public static ViewModelProvider of(@NonNull FragmentActivity activity, @Nullable ViewModelProvider.Factory factory) {
+    public static ViewModelProvider of(FragmentActivity activity, ViewModelProvider.Factory factory) {
         Application application = checkApplication(activity);
         if (factory == null) {
             factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application);
@@ -61,7 +50,7 @@ public class ViewModelProviders {
     @Deprecated
     public static class DefaultFactory extends ViewModelProvider.AndroidViewModelFactory {
         @Deprecated
-        public DefaultFactory(@NonNull Application application) {
+        public DefaultFactory(Application application) {
             super(application);
         }
     }

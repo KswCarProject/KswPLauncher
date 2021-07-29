@@ -3,8 +3,6 @@ package com.wits.ksw.launcher.view.id5;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,52 +13,32 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KswUtils;
 
 public class FragmentId5Right extends Fragment implements View.OnKeyListener, View.OnClickListener {
-    @InjectView(2131231055)
     CheckBox id5ItemApps;
-    @InjectView(2131231056)
     ImageView id5ItemAppsCursor;
-    @InjectView(2131231064)
     ImageView id5ItemDahsCursor;
-    @InjectView(2131231063)
     CheckBox id5ItemDash;
-    @InjectView(2131231066)
     CheckBox id5ItemJly;
-    @InjectView(2131231067)
     ImageView id5ItemJlyCursor;
-    @InjectView(2131231072)
     CheckBox id5ItemSet;
-    @InjectView(2131231073)
     ImageView id5ItemSetCursor;
-    @InjectView(2131231074)
     CheckBox id5ItemSjhl;
-    @InjectView(2131231075)
     ImageView id5ItemSjhlCursor;
-    @InjectView(2131231076)
     CheckBox id5ItemVideo;
-    @InjectView(2131231077)
     ImageView id5ItemVideoCursor;
-    @InjectView(2131231136)
     ImageView imageView8;
     /* access modifiers changed from: private */
     public MainActivity mainActivity;
-    @InjectView(2131231576)
     TextView textView11;
-    @InjectView(2131231577)
     TextView textView12;
-    @InjectView(2131231578)
     TextView textView13;
-    @InjectView(2131231579)
     TextView textView14;
-    @InjectView(2131231580)
     TextView textView15;
-    @InjectView(2131231581)
     TextView textView16;
     private LauncherViewModel viewModel;
 
@@ -69,20 +47,20 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
         this.mainActivity = (MainActivity) activity;
     }
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
-        this.viewModel.setActivity(getActivity());
+        LauncherViewModel launcherViewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
+        this.viewModel = launcherViewModel;
+        launcherViewModel.setActivity(getActivity());
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.id5_fragment_two, container, false);
         ButterKnife.inject((Object) this, view);
         return view;
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setOnFocusChangeListener();
         setOnCheckedChangeListener();
@@ -125,32 +103,38 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
     private void setOnCheckedChangeListener() {
         this.id5ItemVideo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FragmentId5Right.this.setTextAnim(isChecked, FragmentId5Right.this.textView11);
+                FragmentId5Right fragmentId5Right = FragmentId5Right.this;
+                fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView11);
             }
         });
         this.id5ItemJly.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FragmentId5Right.this.setTextAnim(isChecked, FragmentId5Right.this.textView12);
+                FragmentId5Right fragmentId5Right = FragmentId5Right.this;
+                fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView12);
             }
         });
         this.id5ItemSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FragmentId5Right.this.setTextAnim(isChecked, FragmentId5Right.this.textView13);
+                FragmentId5Right fragmentId5Right = FragmentId5Right.this;
+                fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView13);
             }
         });
         this.id5ItemDash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FragmentId5Right.this.setTextAnim(isChecked, FragmentId5Right.this.textView14);
+                FragmentId5Right fragmentId5Right = FragmentId5Right.this;
+                fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView14);
             }
         });
         this.id5ItemSjhl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FragmentId5Right.this.setTextAnim(isChecked, FragmentId5Right.this.textView15);
+                FragmentId5Right fragmentId5Right = FragmentId5Right.this;
+                fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView15);
             }
         });
         this.id5ItemApps.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FragmentId5Right.this.setTextAnim(isChecked, FragmentId5Right.this.textView16);
+                FragmentId5Right fragmentId5Right = FragmentId5Right.this;
+                fragmentId5Right.setTextAnim(isChecked, fragmentId5Right.textView16);
             }
         });
     }
@@ -197,17 +181,22 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
 
     private void addSelected(View view) {
         try {
-            boolean z = false;
-            this.id5ItemVideo.setChecked(view == this.id5ItemVideo);
-            this.id5ItemJly.setChecked(view == this.id5ItemJly);
-            this.id5ItemSet.setChecked(view == this.id5ItemSet);
-            this.id5ItemDash.setChecked(view == this.id5ItemDash);
-            this.id5ItemSjhl.setChecked(view == this.id5ItemSjhl);
-            CheckBox checkBox = this.id5ItemApps;
-            if (view == this.id5ItemApps) {
-                z = true;
+            CheckBox checkBox = this.id5ItemVideo;
+            boolean z = true;
+            checkBox.setChecked(view == checkBox);
+            CheckBox checkBox2 = this.id5ItemJly;
+            checkBox2.setChecked(view == checkBox2);
+            CheckBox checkBox3 = this.id5ItemSet;
+            checkBox3.setChecked(view == checkBox3);
+            CheckBox checkBox4 = this.id5ItemDash;
+            checkBox4.setChecked(view == checkBox4);
+            CheckBox checkBox5 = this.id5ItemSjhl;
+            checkBox5.setChecked(view == checkBox5);
+            CheckBox checkBox6 = this.id5ItemApps;
+            if (view != checkBox6) {
+                z = false;
             }
-            checkBox.setChecked(z);
+            checkBox6.setChecked(z);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -215,15 +204,15 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
 
     private void addCursorSelected() {
         try {
-            int i = 8;
+            int i = 0;
             this.id5ItemVideoCursor.setVisibility(this.id5ItemVideo.isChecked() ? 0 : 8);
             this.id5ItemJlyCursor.setVisibility(this.id5ItemJly.isChecked() ? 0 : 8);
             this.id5ItemSetCursor.setVisibility(this.id5ItemSet.isChecked() ? 0 : 8);
             this.id5ItemDahsCursor.setVisibility(this.id5ItemDash.isChecked() ? 0 : 8);
             this.id5ItemSjhlCursor.setVisibility(this.id5ItemSjhl.isChecked() ? 0 : 8);
             ImageView imageView = this.id5ItemAppsCursor;
-            if (this.id5ItemApps.isChecked()) {
-                i = 0;
+            if (!this.id5ItemApps.isChecked()) {
+                i = 8;
             }
             imageView.setVisibility(i);
         } catch (Exception e) {

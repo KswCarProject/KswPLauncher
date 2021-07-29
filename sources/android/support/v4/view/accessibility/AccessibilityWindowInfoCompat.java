@@ -135,10 +135,11 @@ public class AccessibilityWindowInfoCompat {
     }
 
     public int hashCode() {
-        if (this.mInfo == null) {
+        Object obj = this.mInfo;
+        if (obj == null) {
             return 0;
         }
-        return this.mInfo.hashCode();
+        return obj.hashCode();
     }
 
     public boolean equals(Object obj) {
@@ -149,11 +150,12 @@ public class AccessibilityWindowInfoCompat {
             return false;
         }
         AccessibilityWindowInfoCompat other = (AccessibilityWindowInfoCompat) obj;
-        if (this.mInfo == null) {
+        Object obj2 = this.mInfo;
+        if (obj2 == null) {
             if (other.mInfo != null) {
                 return false;
             }
-        } else if (!this.mInfo.equals(other.mInfo)) {
+        } else if (!obj2.equals(other.mInfo)) {
             return false;
         }
         return true;
@@ -164,26 +166,19 @@ public class AccessibilityWindowInfoCompat {
         Rect bounds = new Rect();
         getBoundsInScreen(bounds);
         builder.append("AccessibilityWindowInfo[");
-        builder.append("id=");
-        builder.append(getId());
-        builder.append(", type=");
-        builder.append(typeToString(getType()));
-        builder.append(", layer=");
-        builder.append(getLayer());
-        builder.append(", bounds=");
-        builder.append(bounds);
-        builder.append(", focused=");
-        builder.append(isFocused());
-        builder.append(", active=");
-        builder.append(isActive());
-        builder.append(", hasParent=");
-        boolean z = false;
-        builder.append(getParent() != null);
-        builder.append(", hasChildren=");
-        if (getChildCount() > 0) {
-            z = true;
+        builder.append("id=").append(getId());
+        builder.append(", type=").append(typeToString(getType()));
+        builder.append(", layer=").append(getLayer());
+        builder.append(", bounds=").append(bounds);
+        builder.append(", focused=").append(isFocused());
+        builder.append(", active=").append(isActive());
+        boolean z = true;
+        builder.append(", hasParent=").append(getParent() != null);
+        StringBuilder append = builder.append(", hasChildren=");
+        if (getChildCount() <= 0) {
+            z = false;
         }
-        builder.append(z);
+        append.append(z);
         builder.append(']');
         return builder.toString();
     }

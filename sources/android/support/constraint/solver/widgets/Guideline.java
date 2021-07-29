@@ -14,21 +14,16 @@ public class Guideline extends ConstraintWidget {
     public static final int RELATIVE_UNKNWON = -1;
     public static final int VERTICAL = 1;
     private ConstraintAnchor mAnchor = this.mTop;
-    private Rectangle mHead;
-    private int mHeadSize;
-    private boolean mIsPositionRelaxed;
-    private int mMinimumPosition;
-    private int mOrientation;
+    private Rectangle mHead = new Rectangle();
+    private int mHeadSize = 8;
+    private boolean mIsPositionRelaxed = false;
+    private int mMinimumPosition = 0;
+    private int mOrientation = 0;
     protected int mRelativeBegin = -1;
     protected int mRelativeEnd = -1;
     protected float mRelativePercent = -1.0f;
 
     public Guideline() {
-        this.mOrientation = 0;
-        this.mIsPositionRelaxed = false;
-        this.mMinimumPosition = 0;
-        this.mHead = new Rectangle();
-        this.mHeadSize = 8;
         this.mAnchors.clear();
         this.mAnchors.add(this.mAnchor);
         int count = this.mListAnchors.length;
@@ -55,9 +50,17 @@ public class Guideline extends ConstraintWidget {
     }
 
     public Rectangle getHead() {
-        this.mHead.setBounds(getDrawX() - this.mHeadSize, getDrawY() - (this.mHeadSize * 2), this.mHeadSize * 2, this.mHeadSize * 2);
+        Rectangle rectangle = this.mHead;
+        int drawX = getDrawX() - this.mHeadSize;
+        int drawY = getDrawY();
+        int i = this.mHeadSize;
+        rectangle.setBounds(drawX, drawY - (i * 2), i * 2, i * 2);
         if (getOrientation() == 0) {
-            this.mHead.setBounds(getDrawX() - (this.mHeadSize * 2), getDrawY() - this.mHeadSize, this.mHeadSize * 2, this.mHeadSize * 2);
+            Rectangle rectangle2 = this.mHead;
+            int drawX2 = getDrawX() - (this.mHeadSize * 2);
+            int drawY2 = getDrawY();
+            int i2 = this.mHeadSize;
+            rectangle2.setBounds(drawX2, drawY2 - i2, i2 * 2, i2 * 2);
         }
         return this.mHead;
     }
@@ -101,25 +104,71 @@ public class Guideline extends ConstraintWidget {
         }
     }
 
+    /* renamed from: android.support.constraint.solver.widgets.Guideline$1  reason: invalid class name */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type;
+
+        static {
+            int[] iArr = new int[ConstraintAnchor.Type.values().length];
+            $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type = iArr;
+            try {
+                iArr[ConstraintAnchor.Type.LEFT.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.RIGHT.ordinal()] = 2;
+            } catch (NoSuchFieldError e2) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.TOP.ordinal()] = 3;
+            } catch (NoSuchFieldError e3) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.BOTTOM.ordinal()] = 4;
+            } catch (NoSuchFieldError e4) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.BASELINE.ordinal()] = 5;
+            } catch (NoSuchFieldError e5) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.CENTER.ordinal()] = 6;
+            } catch (NoSuchFieldError e6) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.CENTER_X.ordinal()] = 7;
+            } catch (NoSuchFieldError e7) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.CENTER_Y.ordinal()] = 8;
+            } catch (NoSuchFieldError e8) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.NONE.ordinal()] = 9;
+            } catch (NoSuchFieldError e9) {
+            }
+        }
+    }
+
     public ConstraintAnchor getAnchor(ConstraintAnchor.Type anchorType) {
-        switch (anchorType) {
-            case LEFT:
-            case RIGHT:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[anchorType.ordinal()]) {
+            case 1:
+            case 2:
                 if (this.mOrientation == 1) {
                     return this.mAnchor;
                 }
                 break;
-            case TOP:
-            case BOTTOM:
+            case 3:
+            case 4:
                 if (this.mOrientation == 0) {
                     return this.mAnchor;
                 }
                 break;
-            case BASELINE:
-            case CENTER:
-            case CENTER_X:
-            case CENTER_Y:
-            case NONE:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
                 return null;
         }
         throw new AssertionError(anchorType.name());

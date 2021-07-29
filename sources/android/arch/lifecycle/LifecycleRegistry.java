@@ -2,9 +2,6 @@ package android.arch.lifecycle;
 
 import android.arch.core.internal.FastSafeIterableMap;
 import android.arch.lifecycle.Lifecycle;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -21,17 +18,16 @@ public class LifecycleRegistry extends Lifecycle {
     private ArrayList<Lifecycle.State> mParentStates = new ArrayList<>();
     private Lifecycle.State mState;
 
-    public LifecycleRegistry(@NonNull LifecycleOwner provider) {
+    public LifecycleRegistry(LifecycleOwner provider) {
         this.mLifecycleOwner = new WeakReference<>(provider);
         this.mState = Lifecycle.State.INITIALIZED;
     }
 
-    @MainThread
-    public void markState(@NonNull Lifecycle.State state) {
+    public void markState(Lifecycle.State state) {
         moveToState(state);
     }
 
-    public void handleLifecycleEvent(@NonNull Lifecycle.Event event) {
+    public void handleLifecycleEvent(Lifecycle.Event event) {
         moveToState(getStateAfter(event));
     }
 
@@ -65,12 +61,13 @@ public class LifecycleRegistry extends Lifecycle {
         Lifecycle.State parentState = null;
         Lifecycle.State siblingState = previous != null ? previous.getValue().mState : null;
         if (!this.mParentStates.isEmpty()) {
-            parentState = this.mParentStates.get(this.mParentStates.size() - 1);
+            ArrayList<Lifecycle.State> arrayList = this.mParentStates;
+            parentState = arrayList.get(arrayList.size() - 1);
         }
         return min(min(this.mState, siblingState), parentState);
     }
 
-    public void addObserver(@NonNull LifecycleObserver observer) {
+    public void addObserver(LifecycleObserver observer) {
         LifecycleOwner lifecycleOwner;
         ObserverWithState statefulObserver = new ObserverWithState(observer, this.mState == Lifecycle.State.DESTROYED ? Lifecycle.State.DESTROYED : Lifecycle.State.INITIALIZED);
         if (this.mObserverMap.putIfAbsent(observer, statefulObserver) == null && (lifecycleOwner = (LifecycleOwner) this.mLifecycleOwner.get()) != null) {
@@ -91,14 +88,15 @@ public class LifecycleRegistry extends Lifecycle {
     }
 
     private void popParentState() {
-        this.mParentStates.remove(this.mParentStates.size() - 1);
+        ArrayList<Lifecycle.State> arrayList = this.mParentStates;
+        arrayList.remove(arrayList.size() - 1);
     }
 
     private void pushParentState(Lifecycle.State state) {
         this.mParentStates.add(state);
     }
 
-    public void removeObserver(@NonNull LifecycleObserver observer) {
+    public void removeObserver(LifecycleObserver observer) {
         this.mObserverMap.remove(observer);
     }
 
@@ -106,39 +104,99 @@ public class LifecycleRegistry extends Lifecycle {
         return this.mObserverMap.size();
     }
 
-    @NonNull
     public Lifecycle.State getCurrentState() {
         return this.mState;
     }
 
     static Lifecycle.State getStateAfter(Lifecycle.Event event) {
-        switch (event) {
-            case ON_CREATE:
-            case ON_STOP:
+        switch (AnonymousClass1.$SwitchMap$android$arch$lifecycle$Lifecycle$Event[event.ordinal()]) {
+            case 1:
+            case 2:
                 return Lifecycle.State.CREATED;
-            case ON_START:
-            case ON_PAUSE:
+            case 3:
+            case 4:
                 return Lifecycle.State.STARTED;
-            case ON_RESUME:
+            case 5:
                 return Lifecycle.State.RESUMED;
-            case ON_DESTROY:
+            case 6:
                 return Lifecycle.State.DESTROYED;
             default:
                 throw new IllegalArgumentException("Unexpected event value " + event);
         }
     }
 
+    /* renamed from: android.arch.lifecycle.LifecycleRegistry$1  reason: invalid class name */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$android$arch$lifecycle$Lifecycle$Event;
+        static final /* synthetic */ int[] $SwitchMap$android$arch$lifecycle$Lifecycle$State;
+
+        static {
+            int[] iArr = new int[Lifecycle.State.values().length];
+            $SwitchMap$android$arch$lifecycle$Lifecycle$State = iArr;
+            try {
+                iArr[Lifecycle.State.INITIALIZED.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$State[Lifecycle.State.CREATED.ordinal()] = 2;
+            } catch (NoSuchFieldError e2) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$State[Lifecycle.State.STARTED.ordinal()] = 3;
+            } catch (NoSuchFieldError e3) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$State[Lifecycle.State.RESUMED.ordinal()] = 4;
+            } catch (NoSuchFieldError e4) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$State[Lifecycle.State.DESTROYED.ordinal()] = 5;
+            } catch (NoSuchFieldError e5) {
+            }
+            int[] iArr2 = new int[Lifecycle.Event.values().length];
+            $SwitchMap$android$arch$lifecycle$Lifecycle$Event = iArr2;
+            try {
+                iArr2[Lifecycle.Event.ON_CREATE.ordinal()] = 1;
+            } catch (NoSuchFieldError e6) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_STOP.ordinal()] = 2;
+            } catch (NoSuchFieldError e7) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_START.ordinal()] = 3;
+            } catch (NoSuchFieldError e8) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_PAUSE.ordinal()] = 4;
+            } catch (NoSuchFieldError e9) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_RESUME.ordinal()] = 5;
+            } catch (NoSuchFieldError e10) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_DESTROY.ordinal()] = 6;
+            } catch (NoSuchFieldError e11) {
+            }
+            try {
+                $SwitchMap$android$arch$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_ANY.ordinal()] = 7;
+            } catch (NoSuchFieldError e12) {
+            }
+        }
+    }
+
     private static Lifecycle.Event downEvent(Lifecycle.State state) {
-        switch (state) {
-            case INITIALIZED:
+        switch (AnonymousClass1.$SwitchMap$android$arch$lifecycle$Lifecycle$State[state.ordinal()]) {
+            case 1:
                 throw new IllegalArgumentException();
-            case CREATED:
+            case 2:
                 return Lifecycle.Event.ON_DESTROY;
-            case STARTED:
+            case 3:
                 return Lifecycle.Event.ON_STOP;
-            case RESUMED:
+            case 4:
                 return Lifecycle.Event.ON_PAUSE;
-            case DESTROYED:
+            case 5:
                 throw new IllegalArgumentException();
             default:
                 throw new IllegalArgumentException("Unexpected state value " + state);
@@ -146,15 +204,15 @@ public class LifecycleRegistry extends Lifecycle {
     }
 
     private static Lifecycle.Event upEvent(Lifecycle.State state) {
-        switch (state) {
-            case INITIALIZED:
-            case DESTROYED:
+        switch (AnonymousClass1.$SwitchMap$android$arch$lifecycle$Lifecycle$State[state.ordinal()]) {
+            case 1:
+            case 5:
                 return Lifecycle.Event.ON_CREATE;
-            case CREATED:
+            case 2:
                 return Lifecycle.Event.ON_START;
-            case STARTED:
+            case 3:
                 return Lifecycle.Event.ON_RESUME;
-            case RESUMED:
+            case 4:
                 throw new IllegalArgumentException();
             default:
                 throw new IllegalArgumentException("Unexpected state value " + state);
@@ -207,7 +265,7 @@ public class LifecycleRegistry extends Lifecycle {
         this.mNewEventOccurred = false;
     }
 
-    static Lifecycle.State min(@NonNull Lifecycle.State state1, @Nullable Lifecycle.State state2) {
+    static Lifecycle.State min(Lifecycle.State state1, Lifecycle.State state2) {
         return (state2 == null || state2.compareTo(state1) >= 0) ? state1 : state2;
     }
 

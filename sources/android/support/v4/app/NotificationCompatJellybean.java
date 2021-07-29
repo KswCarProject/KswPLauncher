@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.util.SparseArray;
@@ -16,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-@RequiresApi(16)
 class NotificationCompatJellybean {
     static final String EXTRA_ALLOW_GENERATED_REPLIES = "android.support.allowGeneratedReplies";
     static final String EXTRA_DATA_ONLY_REMOTE_INPUTS = "android.support.dataRemoteInputs";
@@ -95,14 +93,18 @@ class NotificationCompatJellybean {
     }
 
     public static NotificationCompat.Action readAction(int icon, CharSequence title, PendingIntent actionIntent, Bundle extras) {
+        boolean allowGeneratedReplies;
+        RemoteInput[] dataOnlyRemoteInputs;
+        RemoteInput[] remoteInputs;
         Bundle bundle = extras;
-        RemoteInput[] remoteInputs = null;
-        RemoteInput[] dataOnlyRemoteInputs = null;
-        boolean allowGeneratedReplies = false;
         if (bundle != null) {
             remoteInputs = fromBundleArray(getBundleArrayFromBundle(bundle, NotificationCompatExtras.EXTRA_REMOTE_INPUTS));
             dataOnlyRemoteInputs = fromBundleArray(getBundleArrayFromBundle(bundle, EXTRA_DATA_ONLY_REMOTE_INPUTS));
             allowGeneratedReplies = bundle.getBoolean(EXTRA_ALLOW_GENERATED_REPLIES);
+        } else {
+            remoteInputs = null;
+            dataOnlyRemoteInputs = null;
+            allowGeneratedReplies = false;
         }
         return new NotificationCompat.Action(icon, title, actionIntent, extras, remoteInputs, dataOnlyRemoteInputs, allowGeneratedReplies, 0, true);
     }
@@ -176,12 +178,14 @@ class NotificationCompatJellybean {
         }
         try {
             if (sActionsField == null) {
-                sActionClass = Class.forName("android.app.Notification$Action");
-                sActionIconField = sActionClass.getDeclaredField(KEY_ICON);
+                Class<?> cls = Class.forName("android.app.Notification$Action");
+                sActionClass = cls;
+                sActionIconField = cls.getDeclaredField(KEY_ICON);
                 sActionTitleField = sActionClass.getDeclaredField(KEY_TITLE);
                 sActionIntentField = sActionClass.getDeclaredField(KEY_ACTION_INTENT);
-                sActionsField = Notification.class.getDeclaredField("actions");
-                sActionsField.setAccessible(true);
+                Field declaredField = Notification.class.getDeclaredField("actions");
+                sActionsField = declaredField;
+                declaredField.setAccessible(true);
             }
         } catch (ClassNotFoundException e) {
             Log.e(TAG, "Unable to access notification actions", e);
@@ -190,7 +194,7 @@ class NotificationCompatJellybean {
             Log.e(TAG, "Unable to access notification actions", e2);
             sActionsAccessFailed = true;
         }
-        return true ^ sActionsAccessFailed;
+        return !sActionsAccessFailed;
     }
 
     static NotificationCompat.Action getActionFromBundle(Bundle bundle) {

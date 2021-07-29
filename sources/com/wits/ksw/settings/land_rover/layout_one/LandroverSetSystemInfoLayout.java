@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,12 +66,12 @@ public class LandroverSetSystemInfoLayout extends RelativeLayout implements View
     }
 
     private void initView(View view) {
-        String pingtai;
         this.dialogViews = new DialogViews(this.context);
         try {
             String mvformat = String.format(getResources().getString(R.string.text_8), new Object[]{McuUtil.getMcuVersion()});
-            this.tv_infoMcuv = (TextView) view.findViewById(R.id.tv_infoMcuv);
-            this.tv_infoMcuv.setText(mvformat);
+            TextView textView = (TextView) view.findViewById(R.id.tv_infoMcuv);
+            this.tv_infoMcuv = textView;
+            textView.setText(mvformat);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -82,58 +81,32 @@ public class LandroverSetSystemInfoLayout extends RelativeLayout implements View
             }
         });
         String avformat = String.format(getResources().getString(R.string.text_9), new Object[]{getVersion()});
-        this.tv_infoAppv = (TextView) view.findViewById(R.id.tv_infoAppv);
-        this.tv_infoAppv.setText(avformat);
-        String svformat = String.format(getResources().getString(R.string.text_10), new Object[]{Build.VERSION.RELEASE});
-        this.tv_infoSysv = (TextView) view.findViewById(R.id.tv_infoSysv);
-        if (!TextUtils.isEmpty(UtilsInfo.getBaseband_Ver())) {
-            String substring = UtilsInfo.getBaseband_Ver().substring(0, 4);
-            int index_NA = UtilsInfo.getBaseband_Ver().indexOf("NA");
-            int index_platform_M506 = UtilsInfo.getBaseband_Ver().indexOf("M506");
-            int index_platform_M501 = UtilsInfo.getBaseband_Ver().indexOf("M501");
-            int index_platform_8953 = UtilsInfo.getBaseband_Ver().indexOf("8953");
-            int index_platform_8937 = UtilsInfo.getBaseband_Ver().indexOf("8937");
-            if (index_platform_M506 > -1) {
-                pingtai = "M506";
-            } else if (index_platform_M501 > -1) {
-                pingtai = "8953";
-            } else if (index_platform_8953 > -1) {
-                pingtai = "8953";
-            } else if (index_platform_8937 > -1) {
-                pingtai = "8937";
-            } else {
-                pingtai = "8953";
+        TextView textView2 = (TextView) view.findViewById(R.id.tv_infoAppv);
+        this.tv_infoAppv = textView2;
+        textView2.setText(avformat);
+        String format = String.format(getResources().getString(R.string.text_10), new Object[]{Build.VERSION.RELEASE});
+        TextView textView3 = (TextView) view.findViewById(R.id.tv_infoSysv);
+        this.tv_infoSysv = textView3;
+        textView3.setText(UtilsInfo.getSettingsVer(this.context) + "-" + UtilsInfo.getIMEI());
+        this.tv_infoSysv.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilsInfo.showQRCode(LandroverSetSystemInfoLayout.this.context);
             }
-            TextView textView = this.tv_infoSysv;
-            textView.setText(svformat + "-" + pingtai);
-            if (index_NA > -1) {
-                if (index_platform_M501 > -1) {
-                    TextView textView2 = this.tv_infoSysv;
-                    textView2.setText(svformat + "-" + pingtai + "NA-1");
-                } else {
-                    TextView textView3 = this.tv_infoSysv;
-                    textView3.setText(svformat + "-" + pingtai + "NA");
-                }
-            } else if (index_platform_M501 > -1) {
-                TextView textView4 = this.tv_infoSysv;
-                textView4.setText(svformat + "-" + pingtai + "EA-1");
-            } else {
-                TextView textView5 = this.tv_infoSysv;
-                textView5.setText(svformat + "-" + pingtai + "EA");
-            }
-        } else {
-            this.tv_infoSysv.setText(svformat);
-        }
-        this.tv_infoMcuUp = (TextView) view.findViewById(R.id.tv_infoMcuUp);
-        this.tv_infoMcuUp.setOnClickListener(this);
-        this.tv_infoSysRest = (TextView) view.findViewById(R.id.tv_infoSysRest);
-        this.tv_infoSysRest.setOnClickListener(this);
+        });
+        TextView textView4 = (TextView) view.findViewById(R.id.tv_infoMcuUp);
+        this.tv_infoMcuUp = textView4;
+        textView4.setOnClickListener(this);
+        TextView textView5 = (TextView) view.findViewById(R.id.tv_infoSysRest);
+        this.tv_infoSysRest = textView5;
+        textView5.setOnClickListener(this);
         String allRAM = String.format(getResources().getString(R.string.text_14), new Object[]{UtilsInfo.getRAMSize(this.context)});
-        this.tv_systemInfo2 = (TextView) view.findViewById(R.id.tv_systemInfo2);
-        this.tv_systemInfo2.setText(allRAM);
+        TextView textView6 = (TextView) view.findViewById(R.id.tv_systemInfo2);
+        this.tv_systemInfo2 = textView6;
+        textView6.setText(allRAM);
         String allROM = String.format(getResources().getString(R.string.text_15), new Object[]{UtilsInfo.getROMSize()});
-        this.tv_systemInfo = (TextView) view.findViewById(R.id.tv_systemInfo);
-        this.tv_systemInfo.setText(allROM);
+        TextView textView7 = (TextView) view.findViewById(R.id.tv_systemInfo);
+        this.tv_systemInfo = textView7;
+        textView7.setText(allROM);
     }
 
     private String getVersion() {
@@ -147,11 +120,15 @@ public class LandroverSetSystemInfoLayout extends RelativeLayout implements View
     }
 
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.tv_infoMcuUp) {
-            this.dialogViews.updateMcu(this.context.getString(R.string.update_mcu_file));
-        } else if (id == R.id.tv_infoSysRest) {
-            this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
+        switch (v.getId()) {
+            case R.id.tv_infoMcuUp /*2131297445*/:
+                this.dialogViews.updateMcu(this.context.getString(R.string.update_mcu_file));
+                return;
+            case R.id.tv_infoSysRest /*2131297448*/:
+                this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
+                return;
+            default:
+                return;
         }
     }
 }

@@ -1,14 +1,11 @@
 package com.bumptech.glide.request;
 
-import android.support.annotation.Nullable;
-
 public final class ErrorRequestCoordinator implements RequestCoordinator, Request {
     private Request error;
-    @Nullable
     private final RequestCoordinator parent;
     private Request primary;
 
-    public ErrorRequestCoordinator(@Nullable RequestCoordinator parent2) {
+    public ErrorRequestCoordinator(RequestCoordinator parent2) {
         this.parent = parent2;
     }
 
@@ -71,7 +68,8 @@ public final class ErrorRequestCoordinator implements RequestCoordinator, Reques
     }
 
     private boolean parentCanSetImage() {
-        return this.parent == null || this.parent.canSetImage(this);
+        RequestCoordinator requestCoordinator = this.parent;
+        return requestCoordinator == null || requestCoordinator.canSetImage(this);
     }
 
     public boolean canNotifyStatusChanged(Request request) {
@@ -83,11 +81,13 @@ public final class ErrorRequestCoordinator implements RequestCoordinator, Reques
     }
 
     private boolean parentCanNotifyCleared() {
-        return this.parent == null || this.parent.canNotifyCleared(this);
+        RequestCoordinator requestCoordinator = this.parent;
+        return requestCoordinator == null || requestCoordinator.canNotifyCleared(this);
     }
 
     private boolean parentCanNotifyStatusChanged() {
-        return this.parent == null || this.parent.canNotifyStatusChanged(this);
+        RequestCoordinator requestCoordinator = this.parent;
+        return requestCoordinator == null || requestCoordinator.canNotifyStatusChanged(this);
     }
 
     private boolean isValidRequest(Request request) {
@@ -99,22 +99,25 @@ public final class ErrorRequestCoordinator implements RequestCoordinator, Reques
     }
 
     private boolean parentIsAnyResourceSet() {
-        return this.parent != null && this.parent.isAnyResourceSet();
+        RequestCoordinator requestCoordinator = this.parent;
+        return requestCoordinator != null && requestCoordinator.isAnyResourceSet();
     }
 
     public void onRequestSuccess(Request request) {
-        if (this.parent != null) {
-            this.parent.onRequestSuccess(this);
+        RequestCoordinator requestCoordinator = this.parent;
+        if (requestCoordinator != null) {
+            requestCoordinator.onRequestSuccess(this);
         }
     }
 
     public void onRequestFailed(Request request) {
-        if (!request.equals(this.error)) {
-            if (!this.error.isRunning()) {
-                this.error.begin();
+        if (request.equals(this.error)) {
+            RequestCoordinator requestCoordinator = this.parent;
+            if (requestCoordinator != null) {
+                requestCoordinator.onRequestFailed(this);
             }
-        } else if (this.parent != null) {
-            this.parent.onRequestFailed(this);
+        } else if (!this.error.isRunning()) {
+            this.error.begin();
         }
     }
 }

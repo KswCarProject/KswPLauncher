@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.Transformation;
@@ -43,14 +42,21 @@ class EngineKey implements Key {
 
     public int hashCode() {
         if (this.hashCode == 0) {
-            this.hashCode = this.model.hashCode();
-            this.hashCode = (this.hashCode * 31) + this.signature.hashCode();
-            this.hashCode = (this.hashCode * 31) + this.width;
-            this.hashCode = (this.hashCode * 31) + this.height;
-            this.hashCode = (this.hashCode * 31) + this.transformations.hashCode();
-            this.hashCode = (this.hashCode * 31) + this.resourceClass.hashCode();
-            this.hashCode = (this.hashCode * 31) + this.transcodeClass.hashCode();
-            this.hashCode = (this.hashCode * 31) + this.options.hashCode();
+            int hashCode2 = this.model.hashCode();
+            this.hashCode = hashCode2;
+            int hashCode3 = (hashCode2 * 31) + this.signature.hashCode();
+            this.hashCode = hashCode3;
+            int i = (hashCode3 * 31) + this.width;
+            this.hashCode = i;
+            int i2 = (i * 31) + this.height;
+            this.hashCode = i2;
+            int hashCode4 = (i2 * 31) + this.transformations.hashCode();
+            this.hashCode = hashCode4;
+            int hashCode5 = (hashCode4 * 31) + this.resourceClass.hashCode();
+            this.hashCode = hashCode5;
+            int hashCode6 = (hashCode5 * 31) + this.transcodeClass.hashCode();
+            this.hashCode = hashCode6;
+            this.hashCode = (hashCode6 * 31) + this.options.hashCode();
         }
         return this.hashCode;
     }
@@ -59,7 +65,7 @@ class EngineKey implements Key {
         return "EngineKey{model=" + this.model + ", width=" + this.width + ", height=" + this.height + ", resourceClass=" + this.resourceClass + ", transcodeClass=" + this.transcodeClass + ", signature=" + this.signature + ", hashCode=" + this.hashCode + ", transformations=" + this.transformations + ", options=" + this.options + '}';
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         throw new UnsupportedOperationException();
     }
 }

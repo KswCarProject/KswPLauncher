@@ -12,12 +12,10 @@ import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(21)
 class MediaControllerCompatApi21 {
 
     public interface Callback {

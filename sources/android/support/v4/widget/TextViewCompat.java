@@ -9,14 +9,6 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.icu.text.DecimalFormatSymbols;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Px;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
 import android.support.v4.text.PrecomputedTextCompat;
 import android.support.v4.util.Preconditions;
 import android.text.Editable;
@@ -51,7 +43,6 @@ public final class TextViewCompat {
     private static Field sMinimumField;
     private static boolean sMinimumFieldFetched;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface AutoSizeTextType {
     }
@@ -80,7 +71,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static void setCompoundDrawablesRelative(@NonNull TextView textView, @Nullable Drawable start, @Nullable Drawable top, @Nullable Drawable end, @Nullable Drawable bottom) {
+    public static void setCompoundDrawablesRelative(TextView textView, Drawable start, Drawable top, Drawable end, Drawable bottom) {
         if (Build.VERSION.SDK_INT >= 18) {
             textView.setCompoundDrawablesRelative(start, top, end, bottom);
         } else if (Build.VERSION.SDK_INT >= 17) {
@@ -95,7 +86,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static void setCompoundDrawablesRelativeWithIntrinsicBounds(@NonNull TextView textView, @Nullable Drawable start, @Nullable Drawable top, @Nullable Drawable end, @Nullable Drawable bottom) {
+    public static void setCompoundDrawablesRelativeWithIntrinsicBounds(TextView textView, Drawable start, Drawable top, Drawable end, Drawable bottom) {
         if (Build.VERSION.SDK_INT >= 18) {
             textView.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
         } else if (Build.VERSION.SDK_INT >= 17) {
@@ -110,7 +101,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static void setCompoundDrawablesRelativeWithIntrinsicBounds(@NonNull TextView textView, @DrawableRes int start, @DrawableRes int top, @DrawableRes int end, @DrawableRes int bottom) {
+    public static void setCompoundDrawablesRelativeWithIntrinsicBounds(TextView textView, int start, int top, int end, int bottom) {
         if (Build.VERSION.SDK_INT >= 18) {
             textView.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
         } else if (Build.VERSION.SDK_INT >= 17) {
@@ -125,7 +116,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static int getMaxLines(@NonNull TextView textView) {
+    public static int getMaxLines(TextView textView) {
         if (Build.VERSION.SDK_INT >= 16) {
             return textView.getMaxLines();
         }
@@ -133,20 +124,22 @@ public final class TextViewCompat {
             sMaxModeField = retrieveField("mMaxMode");
             sMaxModeFieldFetched = true;
         }
-        if (sMaxModeField == null || retrieveIntFromField(sMaxModeField, textView) != 1) {
+        Field field = sMaxModeField;
+        if (field == null || retrieveIntFromField(field, textView) != 1) {
             return -1;
         }
         if (!sMaximumFieldFetched) {
             sMaximumField = retrieveField("mMaximum");
             sMaximumFieldFetched = true;
         }
-        if (sMaximumField != null) {
-            return retrieveIntFromField(sMaximumField, textView);
+        Field field2 = sMaximumField;
+        if (field2 != null) {
+            return retrieveIntFromField(field2, textView);
         }
         return -1;
     }
 
-    public static int getMinLines(@NonNull TextView textView) {
+    public static int getMinLines(TextView textView) {
         if (Build.VERSION.SDK_INT >= 16) {
             return textView.getMinLines();
         }
@@ -154,20 +147,22 @@ public final class TextViewCompat {
             sMinModeField = retrieveField("mMinMode");
             sMinModeFieldFetched = true;
         }
-        if (sMinModeField == null || retrieveIntFromField(sMinModeField, textView) != 1) {
+        Field field = sMinModeField;
+        if (field == null || retrieveIntFromField(field, textView) != 1) {
             return -1;
         }
         if (!sMinimumFieldFetched) {
             sMinimumField = retrieveField("mMinimum");
             sMinimumFieldFetched = true;
         }
-        if (sMinimumField != null) {
-            return retrieveIntFromField(sMinimumField, textView);
+        Field field2 = sMinimumField;
+        if (field2 != null) {
+            return retrieveIntFromField(field2, textView);
         }
         return -1;
     }
 
-    public static void setTextAppearance(@NonNull TextView textView, @StyleRes int resId) {
+    public static void setTextAppearance(TextView textView, int resId) {
         if (Build.VERSION.SDK_INT >= 23) {
             textView.setTextAppearance(resId);
         } else {
@@ -175,8 +170,7 @@ public final class TextViewCompat {
         }
     }
 
-    @NonNull
-    public static Drawable[] getCompoundDrawablesRelative(@NonNull TextView textView) {
+    public static Drawable[] getCompoundDrawablesRelative(TextView textView) {
         if (Build.VERSION.SDK_INT >= 18) {
             return textView.getCompoundDrawablesRelative();
         }
@@ -198,7 +192,7 @@ public final class TextViewCompat {
         return compounds;
     }
 
-    public static void setAutoSizeTextTypeWithDefaults(@NonNull TextView textView, int autoSizeTextType) {
+    public static void setAutoSizeTextTypeWithDefaults(TextView textView, int autoSizeTextType) {
         if (Build.VERSION.SDK_INT >= 27) {
             textView.setAutoSizeTextTypeWithDefaults(autoSizeTextType);
         } else if (textView instanceof AutoSizeableTextView) {
@@ -206,7 +200,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static void setAutoSizeTextTypeUniformWithConfiguration(@NonNull TextView textView, int autoSizeMinTextSize, int autoSizeMaxTextSize, int autoSizeStepGranularity, int unit) throws IllegalArgumentException {
+    public static void setAutoSizeTextTypeUniformWithConfiguration(TextView textView, int autoSizeMinTextSize, int autoSizeMaxTextSize, int autoSizeStepGranularity, int unit) throws IllegalArgumentException {
         if (Build.VERSION.SDK_INT >= 27) {
             textView.setAutoSizeTextTypeUniformWithConfiguration(autoSizeMinTextSize, autoSizeMaxTextSize, autoSizeStepGranularity, unit);
         } else if (textView instanceof AutoSizeableTextView) {
@@ -214,7 +208,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static void setAutoSizeTextTypeUniformWithPresetSizes(@NonNull TextView textView, @NonNull int[] presetSizes, int unit) throws IllegalArgumentException {
+    public static void setAutoSizeTextTypeUniformWithPresetSizes(TextView textView, int[] presetSizes, int unit) throws IllegalArgumentException {
         if (Build.VERSION.SDK_INT >= 27) {
             textView.setAutoSizeTextTypeUniformWithPresetSizes(presetSizes, unit);
         } else if (textView instanceof AutoSizeableTextView) {
@@ -222,7 +216,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static int getAutoSizeTextType(@NonNull TextView textView) {
+    public static int getAutoSizeTextType(TextView textView) {
         if (Build.VERSION.SDK_INT >= 27) {
             return textView.getAutoSizeTextType();
         }
@@ -232,7 +226,7 @@ public final class TextViewCompat {
         return 0;
     }
 
-    public static int getAutoSizeStepGranularity(@NonNull TextView textView) {
+    public static int getAutoSizeStepGranularity(TextView textView) {
         if (Build.VERSION.SDK_INT >= 27) {
             return textView.getAutoSizeStepGranularity();
         }
@@ -242,7 +236,7 @@ public final class TextViewCompat {
         return -1;
     }
 
-    public static int getAutoSizeMinTextSize(@NonNull TextView textView) {
+    public static int getAutoSizeMinTextSize(TextView textView) {
         if (Build.VERSION.SDK_INT >= 27) {
             return textView.getAutoSizeMinTextSize();
         }
@@ -252,7 +246,7 @@ public final class TextViewCompat {
         return -1;
     }
 
-    public static int getAutoSizeMaxTextSize(@NonNull TextView textView) {
+    public static int getAutoSizeMaxTextSize(TextView textView) {
         if (Build.VERSION.SDK_INT >= 27) {
             return textView.getAutoSizeMaxTextSize();
         }
@@ -262,8 +256,7 @@ public final class TextViewCompat {
         return -1;
     }
 
-    @NonNull
-    public static int[] getAutoSizeTextAvailableSizes(@NonNull TextView textView) {
+    public static int[] getAutoSizeTextAvailableSizes(TextView textView) {
         if (Build.VERSION.SDK_INT >= 27) {
             return textView.getAutoSizeTextAvailableSizes();
         }
@@ -273,17 +266,14 @@ public final class TextViewCompat {
         return new int[0];
     }
 
-    public static void setCustomSelectionActionModeCallback(@NonNull TextView textView, @NonNull ActionMode.Callback callback) {
+    public static void setCustomSelectionActionModeCallback(TextView textView, ActionMode.Callback callback) {
         textView.setCustomSelectionActionModeCallback(wrapCustomSelectionActionModeCallback(textView, callback));
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    @NonNull
-    public static ActionMode.Callback wrapCustomSelectionActionModeCallback(@NonNull TextView textView, @NonNull ActionMode.Callback callback) {
+    public static ActionMode.Callback wrapCustomSelectionActionModeCallback(TextView textView, ActionMode.Callback callback) {
         return (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 27 || (callback instanceof OreoCallback)) ? callback : new OreoCallback(callback, textView);
     }
 
-    @RequiresApi(26)
     private static class OreoCallback implements ActionMode.Callback {
         private static final int MENU_ITEM_ORDER_PROCESS_TEXT_INTENT_ACTIONS_START = 100;
         private final ActionMode.Callback mCallback;
@@ -322,8 +312,9 @@ public final class TextViewCompat {
             if (!this.mInitializedMenuBuilderReferences) {
                 this.mInitializedMenuBuilderReferences = true;
                 try {
-                    this.mMenuBuilderClass = Class.forName("com.android.internal.view.menu.MenuBuilder");
-                    this.mMenuBuilderRemoveItemAtMethod = this.mMenuBuilderClass.getDeclaredMethod("removeItemAt", new Class[]{Integer.TYPE});
+                    Class<?> cls = Class.forName("com.android.internal.view.menu.MenuBuilder");
+                    this.mMenuBuilderClass = cls;
+                    this.mMenuBuilderRemoveItemAtMethod = cls.getDeclaredMethod("removeItemAt", new Class[]{Integer.TYPE});
                     this.mCanUseMenuBuilderReferences = true;
                 } catch (ClassNotFoundException | NoSuchMethodException e) {
                     this.mMenuBuilderClass = null;
@@ -391,7 +382,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static void setFirstBaselineToTopHeight(@NonNull TextView textView, @Px @IntRange(from = 0) int firstBaselineToTopHeight) {
+    public static void setFirstBaselineToTopHeight(TextView textView, int firstBaselineToTopHeight) {
         int fontMetricsTop;
         Preconditions.checkArgumentNonnegative(firstBaselineToTopHeight);
         if (Build.VERSION.SDK_INT >= 28) {
@@ -409,7 +400,7 @@ public final class TextViewCompat {
         }
     }
 
-    public static void setLastBaselineToBottomHeight(@NonNull TextView textView, @Px @IntRange(from = 0) int lastBaselineToBottomHeight) {
+    public static void setLastBaselineToBottomHeight(TextView textView, int lastBaselineToBottomHeight) {
         int fontMetricsBottom;
         Preconditions.checkArgumentNonnegative(lastBaselineToBottomHeight);
         Paint.FontMetricsInt fontMetrics = textView.getPaint().getFontMetricsInt();
@@ -423,15 +414,15 @@ public final class TextViewCompat {
         }
     }
 
-    public static int getFirstBaselineToTopHeight(@NonNull TextView textView) {
+    public static int getFirstBaselineToTopHeight(TextView textView) {
         return textView.getPaddingTop() - textView.getPaint().getFontMetricsInt().top;
     }
 
-    public static int getLastBaselineToBottomHeight(@NonNull TextView textView) {
+    public static int getLastBaselineToBottomHeight(TextView textView) {
         return textView.getPaddingBottom() + textView.getPaint().getFontMetricsInt().bottom;
     }
 
-    public static void setLineHeight(@NonNull TextView textView, @Px @IntRange(from = 0) int lineHeight) {
+    public static void setLineHeight(TextView textView, int lineHeight) {
         Preconditions.checkArgumentNonnegative(lineHeight);
         int fontHeight = textView.getPaint().getFontMetricsInt((Paint.FontMetricsInt) null);
         if (lineHeight != fontHeight) {
@@ -439,8 +430,7 @@ public final class TextViewCompat {
         }
     }
 
-    @NonNull
-    public static PrecomputedTextCompat.Params getTextMetricsParams(@NonNull TextView textView) {
+    public static PrecomputedTextCompat.Params getTextMetricsParams(TextView textView) {
         if (Build.VERSION.SDK_INT >= 28) {
             return new PrecomputedTextCompat.Params(textView.getTextMetricsParams());
         }
@@ -455,7 +445,7 @@ public final class TextViewCompat {
         return builder.build();
     }
 
-    public static void setTextMetricsParams(@NonNull TextView textView, @NonNull PrecomputedTextCompat.Params params) {
+    public static void setTextMetricsParams(TextView textView, PrecomputedTextCompat.Params params) {
         if (Build.VERSION.SDK_INT >= 18) {
             textView.setTextDirection(getTextDirection(params.getTextDirection()));
         }
@@ -473,7 +463,7 @@ public final class TextViewCompat {
         textView.setHyphenationFrequency(params.getHyphenationFrequency());
     }
 
-    public static void setPrecomputedText(@NonNull TextView textView, @NonNull PrecomputedTextCompat precomputed) {
+    public static void setPrecomputedText(TextView textView, PrecomputedTextCompat precomputed) {
         if (Build.VERSION.SDK_INT >= 28) {
             textView.setText(precomputed.getPrecomputedText());
         } else if (getTextMetricsParams(textView).equals(precomputed.getParams())) {
@@ -483,8 +473,7 @@ public final class TextViewCompat {
         }
     }
 
-    @RequiresApi(18)
-    private static TextDirectionHeuristic getTextDirectionHeuristic(@NonNull TextView textView) {
+    private static TextDirectionHeuristic getTextDirectionHeuristic(TextView textView) {
         if (textView.getTransformationMethod() instanceof PasswordTransformationMethod) {
             return TextDirectionHeuristics.LTR;
         }
@@ -522,8 +511,7 @@ public final class TextViewCompat {
         }
     }
 
-    @RequiresApi(18)
-    private static int getTextDirection(@NonNull TextDirectionHeuristic heuristic) {
+    private static int getTextDirection(TextDirectionHeuristic heuristic) {
         if (heuristic == TextDirectionHeuristics.FIRSTSTRONG_RTL || heuristic == TextDirectionHeuristics.FIRSTSTRONG_LTR) {
             return 1;
         }

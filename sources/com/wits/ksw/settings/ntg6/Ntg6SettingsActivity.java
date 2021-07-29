@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -55,13 +53,13 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
     public String defPwd = "1314";
     private int[] firstImages;
     Handler handler = new Handler() {
-        @RequiresApi(api = 24)
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
                     Ntg6SettingsActivity.this.relat_ntgOneList.setVisibility(0);
-                    Ntg6SettingsActivity.this.setAnimatorIn(Ntg6SettingsActivity.this.relat_ntgTwoList);
+                    Ntg6SettingsActivity ntg6SettingsActivity = Ntg6SettingsActivity.this;
+                    ntg6SettingsActivity.setAnimatorIn(ntg6SettingsActivity.relat_ntgTwoList);
                     Ntg6SettingsActivity.this.animatorIn.setDuration(600);
                     Ntg6SettingsActivity.this.animatorIn.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         public void onAnimationUpdate(ValueAnimator animation) {
@@ -83,11 +81,13 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
                         return;
                     }
                     Ntg6SettingsActivity.this.ntg6FactoryLayout.SetTextEEro();
-                    Toast.makeText(Ntg6SettingsActivity.this, Ntg6SettingsActivity.this.getString(R.string.lb_password_error), 0).show();
+                    Ntg6SettingsActivity ntg6SettingsActivity2 = Ntg6SettingsActivity.this;
+                    Toast.makeText(ntg6SettingsActivity2, ntg6SettingsActivity2.getString(R.string.lb_password_error), 0).show();
                     return;
                 case 3:
                     Ntg6SettingsActivity.this.relat_ntgTwoList.setVisibility(0);
-                    Ntg6SettingsActivity.this.setAnimatorIn(Ntg6SettingsActivity.this.relat_ntgThreeList);
+                    Ntg6SettingsActivity ntg6SettingsActivity3 = Ntg6SettingsActivity.this;
+                    ntg6SettingsActivity3.setAnimatorIn(ntg6SettingsActivity3.relat_ntgThreeList);
                     Ntg6SettingsActivity.this.animatorIn.setDuration(600);
                     Ntg6SettingsActivity.this.animatorIn.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         public void onAnimationUpdate(ValueAnimator animation) {
@@ -149,8 +149,7 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
     private String voiceData;
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_benchi_settings);
         this.handler.sendEmptyMessageDelayed(4, 1000);
@@ -225,15 +224,16 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void initOneLayout() {
         if (this.ntg6SetSystemLayout == null) {
-            this.ntg6SetSystemLayout = new Ntg6SystemLayout(this, this.handler);
-            this.ntg6SetSystemLayout.registIUpdateTwoLayout(this);
+            Ntg6SystemLayout ntg6SystemLayout = new Ntg6SystemLayout(this, this.handler);
+            this.ntg6SetSystemLayout = ntg6SystemLayout;
+            ntg6SystemLayout.registIUpdateTwoLayout(this);
         }
         if (this.ntg6NaviLayout == null) {
-            this.ntg6NaviLayout = new Ntg6NaviLayout(this, this.handler);
-            this.ntg6NaviLayout.registIUpdateTwoLayout(this);
+            Ntg6NaviLayout ntg6NaviLayout2 = new Ntg6NaviLayout(this, this.handler);
+            this.ntg6NaviLayout = ntg6NaviLayout2;
+            ntg6NaviLayout2.registIUpdateTwoLayout(this);
         }
         if (this.ntg6VoiceLayout == null) {
             this.ntg6VoiceLayout = new Ntg6VoiceLayout(this, this.handler);
@@ -294,7 +294,6 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
         this.animatorOut = ObjectAnimator.ofFloat(view, "translationX", new float[]{250.0f, 0.0f});
     }
 
-    @RequiresApi(api = 23)
     private void initView() {
         this.relat_Factory = (RelativeLayout) findViewById(R.id.relat_Factory);
         this.tv_systemInfo = (TextView) findViewById(R.id.tv_systemInfo);
@@ -305,13 +304,14 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
         this.relat_ntgTwoList = (RelativeLayout) findViewById(R.id.relat_ntgTwoList);
         this.relat_ntgThreeList = (RelativeLayout) findViewById(R.id.relat_ntgThreeList);
         this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        this.layoutManager = new LinearLayoutManager(this);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
-        this.adapter = new Ntg6FunctionAdapter(this, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        Ntg6FunctionAdapter ntg6FunctionAdapter = new Ntg6FunctionAdapter(this, this.data);
+        this.adapter = ntg6FunctionAdapter;
+        this.recyclerView.setAdapter(ntg6FunctionAdapter);
         this.adapter.registOnFunctionClickListener(new Ntg6FunctionAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 if (pos == 8) {
                     Ntg6SettingsActivity.this.relat_Factory.removeAllViews();
@@ -321,7 +321,8 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
                     Ntg6SettingsActivity.this.relat_Factory.setVisibility(8);
                     Ntg6SettingsActivity.this.relat_ntgTwoList.setVisibility(0);
                     Ntg6SettingsActivity.this.updateLayout(pos);
-                    Ntg6SettingsActivity.this.setAnimatorOut(Ntg6SettingsActivity.this.relat_ntgTwoList);
+                    Ntg6SettingsActivity ntg6SettingsActivity = Ntg6SettingsActivity.this;
+                    ntg6SettingsActivity.setAnimatorOut(ntg6SettingsActivity.relat_ntgTwoList);
                     Ntg6SettingsActivity.this.animatorOut.setDuration(300);
                     Ntg6SettingsActivity.this.animatorOut.start();
                     Ntg6SettingsActivity.this.relat_ntgOneList.setVisibility(8);
@@ -329,7 +330,6 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
                 Ntg6SettingsActivity.this.setFistImageView(pos);
             }
 
-            @RequiresApi(api = 24)
             public void funSwitImage(int pos) {
                 Log.d("ntg6Image", "index:" + pos);
                 if (pos == 8) {
@@ -346,7 +346,6 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 23)
     public void setFistImageView(int index) {
         if (index == 5) {
             this.tv_systemTime.setText(this.systemTime);
@@ -369,16 +368,17 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void getLayoutFouse() {
         if (this.ntg6SetSystemLayout == null) {
-            this.ntg6SetSystemLayout = new Ntg6SystemLayout(this, this.handler);
-            this.ntg6SetSystemLayout.registIUpdateTwoLayout(this);
+            Ntg6SystemLayout ntg6SystemLayout = new Ntg6SystemLayout(this, this.handler);
+            this.ntg6SetSystemLayout = ntg6SystemLayout;
+            ntg6SystemLayout.registIUpdateTwoLayout(this);
         }
         this.ntg6SetSystemLayout.getFocus();
         if (this.ntg6NaviLayout == null) {
-            this.ntg6NaviLayout = new Ntg6NaviLayout(this, this.handler);
-            this.ntg6NaviLayout.registIUpdateTwoLayout(this);
+            Ntg6NaviLayout ntg6NaviLayout2 = new Ntg6NaviLayout(this, this.handler);
+            this.ntg6NaviLayout = ntg6NaviLayout2;
+            ntg6NaviLayout2.registIUpdateTwoLayout(this);
         }
         this.ntg6NaviLayout.getFocus();
         if (this.ntg6VoiceLayout == null) {
@@ -401,7 +401,6 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void updateLayout(int type) {
         this.relat_ntgTwoList.removeAllViews();
         this.relat_ntgThreeList.removeAllViews();
@@ -409,8 +408,9 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
         switch (type) {
             case 0:
                 if (this.ntg6SetSystemLayout == null) {
-                    this.ntg6SetSystemLayout = new Ntg6SystemLayout(this, this.handler);
-                    this.ntg6SetSystemLayout.registIUpdateTwoLayout(this);
+                    Ntg6SystemLayout ntg6SystemLayout = new Ntg6SystemLayout(this, this.handler);
+                    this.ntg6SetSystemLayout = ntg6SystemLayout;
+                    ntg6SystemLayout.registIUpdateTwoLayout(this);
                 }
                 addNtgTwoList(this.ntg6SetSystemLayout);
                 if (this.ntg6SetSystemTwo == null) {
@@ -420,8 +420,9 @@ public class Ntg6SettingsActivity extends BaseActivity implements IUpdateTwoLayo
                 return;
             case 1:
                 if (this.ntg6NaviLayout == null) {
-                    this.ntg6NaviLayout = new Ntg6NaviLayout(this, this.handler);
-                    this.ntg6NaviLayout.registIUpdateTwoLayout(this);
+                    Ntg6NaviLayout ntg6NaviLayout2 = new Ntg6NaviLayout(this, this.handler);
+                    this.ntg6NaviLayout = ntg6NaviLayout2;
+                    ntg6NaviLayout2.registIUpdateTwoLayout(this);
                 }
                 addNtgTwoList(this.ntg6NaviLayout);
                 if (this.ntg6NaviTwo == null) {

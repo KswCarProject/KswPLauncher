@@ -17,6 +17,12 @@
     <string name="audi_set_temp_unit">יחידת טמפרטורה</string>
     <string name="bc_apps_btn_text">אפליקציות אנדרואיד</string>
     <string name="benz_gs_home_navi">ניווט</string>
+    <string name="benz_mbux_2021_bg_sel_tip">צבע רקע</string>
+    <string name="benz_mbux_2021_img_sel_tip">סגנון סמל</string>
+    <string name="benz_mbux_2021_style_classical_tip">קלאסי</string>
+    <string name="benz_mbux_2021_style_modern_tip">מוֹדֶרנִי</string>
+    <string name="benz_mbux_2021_theme_settings">הגדרות ערכת נושא</string>
+    <string name="benz_ntg6_fy_theme_settings">נושא</string>
     <string name="boot_record_mode">זכור את המצב האחרון</string>
     <string name="boot_record_mode_radio1">אפשר</string>
     <string name="boot_record_mode_radio2">למערכת OEM</string>
@@ -92,6 +98,7 @@
     <string name="factory_yuyinkey2">לחיצה קצרה לא עושה דבר, לחיצה ארוכה פותחת NAVI</string>
     <string name="factory_yuyinkey3">לחיצה קצרה פותחת פקודה קולית, לחיצה ארוכה פותחת NAVI</string>
     <string name="factory_yuyinkey4">לחיצה קצרה פותחת NAVI, לחיצה ארוכה לא עושה דבר</string>
+    <string name="fuel_unit">יחידת דלק</string>
     <string name="function_bt">Bluetooth</string>
     <string name="function_fcam">F_CAM</string>
     <string name="function_google_off">Zlink</string>
@@ -137,12 +144,13 @@
     <string name="id6_phone">טלפון</string>
     <string name="id6_phone_mess">להתקשר</string>
     <string name="id6_setting_mess">הגדרות פונקצית מערכת</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">שיקוף טלפוני</string>
     <string name="id6_xingchejily_mess">הקלטת וידאו נהיגה</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">ספורט</string>
     <string name="id7_als_item_two">נוחות</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">מערכת</string>
     <string name="item2">ניווט</string>
     <string name="item3">כרך</string>
@@ -177,8 +185,13 @@
     <string name="ksw_idf7_unknow_artis">אמן לא ידוע</string>
     <string name="ksw_idf7_unkonw_album">אלבום לא ידוע</string>
     <string name="ksw_idf7_unkonw_soung">שיר לא ידוע</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">שגיאת סיסמא!</string>
     <string name="mcu_file_corrupted">שדרוג קובץ פגום!</string>
+    <string name="music_app_sel">בחר אפליקציית מוזיקה</string>
     <string name="ntg6_dvr_toast">אין מכשירים!</string>
     <string name="oil_size">דלק:%s</string>
     <string name="raw_car_text1">תצוגה במסך מלא</string>
@@ -258,6 +271,7 @@
     <string name="update_mcu_file">האם אתה רוצה לשדרג את MCU?</string>
     <string name="update_reset_all">האם ברצונך לשחזר את הגדרות היצרן?</string>
     <string name="video">וידאו</string>
+    <string name="video_app_sel">בחר אפליקציית וידאו</string>
     <string name="voic_1">נפח אנדרואיד</string>
     <string name="voic_2">מדיה</string>
     <string name="voic_3">התקשרו</string>

@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,11 +10,11 @@ import com.wits.ksw.MainActivity;
 public class CustomBmwMusicLayout extends FrameLayout {
     private static final String TAG = CustomBmwMusicLayout.class.getName();
 
-    public CustomBmwMusicLayout(@NonNull Context context) {
+    public CustomBmwMusicLayout(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public CustomBmwMusicLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CustomBmwMusicLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

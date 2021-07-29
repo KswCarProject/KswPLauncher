@@ -119,11 +119,13 @@ public class ConstraintSet {
     private static final int WIDTH_MIN = 58;
     private static final int WIDTH_PERCENT = 69;
     public static final int WRAP_CONTENT = -2;
-    private static SparseIntArray mapToConstant = new SparseIntArray();
+    private static SparseIntArray mapToConstant;
     private HashMap<Integer, Constraint> mConstraints = new HashMap<>();
 
     static {
-        mapToConstant.append(R.styleable.ConstraintSet_layout_constraintLeft_toLeftOf, 25);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        mapToConstant = sparseIntArray;
+        sparseIntArray.append(R.styleable.ConstraintSet_layout_constraintLeft_toLeftOf, 25);
         mapToConstant.append(R.styleable.ConstraintSet_layout_constraintLeft_toRightOf, 26);
         mapToConstant.append(R.styleable.ConstraintSet_layout_constraintRight_toLeftOf, 29);
         mapToConstant.append(R.styleable.ConstraintSet_layout_constraintRight_toRightOf, 30);
@@ -426,8 +428,9 @@ public class ConstraintSet {
             clone.heightPercent = this.heightPercent;
             clone.mBarrierDirection = this.mBarrierDirection;
             clone.mHelperType = this.mHelperType;
-            if (this.mReferenceIds != null) {
-                clone.mReferenceIds = Arrays.copyOf(this.mReferenceIds, this.mReferenceIds.length);
+            int[] iArr = this.mReferenceIds;
+            if (iArr != null) {
+                clone.mReferenceIds = Arrays.copyOf(iArr, iArr.length);
             }
             clone.circleConstraint = this.circleConstraint;
             clone.circleRadius = this.circleRadius;
@@ -681,16 +684,24 @@ public class ConstraintSet {
                     if (view instanceof Barrier) {
                         constraint.mHelperType = 1;
                     }
-                    if (constraint.mHelperType != -1 && constraint.mHelperType == 1) {
-                        Barrier barrier = (Barrier) view;
-                        barrier.setId(id);
-                        barrier.setType(constraint.mBarrierDirection);
-                        barrier.setAllowsGoneWidget(constraint.mBarrierAllowsGoneWidgets);
-                        if (constraint.mReferenceIds != null) {
-                            barrier.setReferencedIds(constraint.mReferenceIds);
-                        } else if (constraint.mReferenceIdString != null) {
-                            constraint.mReferenceIds = convertReferenceString(barrier, constraint.mReferenceIdString);
-                            barrier.setReferencedIds(constraint.mReferenceIds);
+                    if (constraint.mHelperType != -1) {
+                        switch (constraint.mHelperType) {
+                            case 1:
+                                Barrier barrier = (Barrier) view;
+                                barrier.setId(id);
+                                barrier.setType(constraint.mBarrierDirection);
+                                barrier.setAllowsGoneWidget(constraint.mBarrierAllowsGoneWidgets);
+                                if (constraint.mReferenceIds == null) {
+                                    if (constraint.mReferenceIdString != null) {
+                                        constraint.mReferenceIds = convertReferenceString(barrier, constraint.mReferenceIdString);
+                                        barrier.setReferencedIds(constraint.mReferenceIds);
+                                        break;
+                                    }
+                                } else {
+                                    barrier.setReferencedIds(constraint.mReferenceIds);
+                                    break;
+                                }
+                                break;
                         }
                     }
                     ConstraintLayout.LayoutParams param = (ConstraintLayout.LayoutParams) view.getLayoutParams();
@@ -729,20 +740,24 @@ public class ConstraintSet {
         while (it.hasNext()) {
             Integer id2 = it.next();
             Constraint constraint2 = this.mConstraints.get(id2);
-            if (constraint2.mHelperType != -1 && constraint2.mHelperType == 1) {
-                Barrier barrier2 = new Barrier(constraintLayout.getContext());
-                barrier2.setId(id2.intValue());
-                if (constraint2.mReferenceIds != null) {
-                    barrier2.setReferencedIds(constraint2.mReferenceIds);
-                } else if (constraint2.mReferenceIdString != null) {
-                    constraint2.mReferenceIds = convertReferenceString(barrier2, constraint2.mReferenceIdString);
-                    barrier2.setReferencedIds(constraint2.mReferenceIds);
+            if (constraint2.mHelperType != -1) {
+                switch (constraint2.mHelperType) {
+                    case 1:
+                        Barrier barrier2 = new Barrier(constraintLayout.getContext());
+                        barrier2.setId(id2.intValue());
+                        if (constraint2.mReferenceIds != null) {
+                            barrier2.setReferencedIds(constraint2.mReferenceIds);
+                        } else if (constraint2.mReferenceIdString != null) {
+                            constraint2.mReferenceIds = convertReferenceString(barrier2, constraint2.mReferenceIdString);
+                            barrier2.setReferencedIds(constraint2.mReferenceIds);
+                        }
+                        barrier2.setType(constraint2.mBarrierDirection);
+                        ConstraintLayout.LayoutParams param2 = constraintLayout.generateDefaultLayoutParams();
+                        barrier2.validateParams();
+                        constraint2.applyTo(param2);
+                        constraintLayout.addView(barrier2, param2);
+                        break;
                 }
-                barrier2.setType(constraint2.mBarrierDirection);
-                ConstraintLayout.LayoutParams param2 = constraintLayout.generateDefaultLayoutParams();
-                barrier2.validateParams();
-                constraint2.applyTo(param2);
-                constraintLayout.addView(barrier2, param2);
             }
             if (constraint2.mIsGuideline) {
                 Guideline g = new Guideline(constraintLayout.getContext());
@@ -811,22 +826,15 @@ public class ConstraintSet {
             }
             get(iArr[0]).verticalChainStyle = style;
             connect(iArr[0], 3, topId, topSide, 0);
-            int i2 = 1;
-            while (true) {
-                int i3 = i2;
-                if (i3 < iArr.length) {
-                    int i4 = iArr[i3];
-                    connect(iArr[i3], 3, iArr[i3 - 1], 4, 0);
-                    connect(iArr[i3 - 1], 4, iArr[i3], 3, 0);
-                    if (fArr != null) {
-                        get(iArr[i3]).verticalWeight = fArr[i3];
-                    }
-                    i2 = i3 + 1;
-                } else {
-                    connect(iArr[iArr.length - 1], 4, bottomId, bottomSide, 0);
-                    return;
+            for (int i2 = 1; i2 < iArr.length; i2++) {
+                int i3 = iArr[i2];
+                connect(iArr[i2], 3, iArr[i2 - 1], 4, 0);
+                connect(iArr[i2 - 1], 4, iArr[i2], 3, 0);
+                if (fArr != null) {
+                    get(iArr[i2]).verticalWeight = fArr[i2];
                 }
             }
+            connect(iArr[iArr.length - 1], 4, bottomId, bottomSide, 0);
         } else {
             throw new IllegalArgumentException("must have 2 or more widgets in a chain");
         }
@@ -852,22 +860,15 @@ public class ConstraintSet {
             }
             get(iArr[0]).horizontalChainStyle = style;
             connect(iArr[0], left, leftId, leftSide, -1);
-            int i2 = 1;
-            while (true) {
-                int i3 = i2;
-                if (i3 < iArr.length) {
-                    int i4 = iArr[i3];
-                    connect(iArr[i3], left, iArr[i3 - 1], right, -1);
-                    connect(iArr[i3 - 1], right, iArr[i3], left, -1);
-                    if (fArr != null) {
-                        get(iArr[i3]).horizontalWeight = fArr[i3];
-                    }
-                    i2 = i3 + 1;
-                } else {
-                    connect(iArr[iArr.length - 1], right, rightId, rightSide, -1);
-                    return;
+            for (int i2 = 1; i2 < iArr.length; i2++) {
+                int i3 = iArr[i2];
+                connect(iArr[i2], left, iArr[i2 - 1], right, -1);
+                connect(iArr[i2 - 1], right, iArr[i2], left, -1);
+                if (fArr != null) {
+                    get(iArr[i2]).horizontalWeight = fArr[i2];
                 }
             }
+            connect(iArr[iArr.length - 1], right, rightId, rightSide, -1);
         } else {
             throw new IllegalArgumentException("must have 2 or more widgets in a chain");
         }
@@ -1509,21 +1510,20 @@ public class ConstraintSet {
         XmlPullParser parser = context.getResources().getXml(resourceId);
         try {
             for (int eventType = parser.getEventType(); eventType != 1; eventType = parser.next()) {
-                if (eventType != 0) {
-                    switch (eventType) {
-                        case 2:
-                            String tagName = parser.getName();
-                            Constraint constraint = fillFromAttributeList(context, Xml.asAttributeSet(parser));
-                            if (tagName.equalsIgnoreCase("Guideline")) {
-                                constraint.mIsGuideline = true;
-                            }
-                            this.mConstraints.put(Integer.valueOf(constraint.mViewId), constraint);
-                            break;
-                        case 3:
-                            break;
-                    }
-                } else {
-                    String document = parser.getName();
+                switch (eventType) {
+                    case 0:
+                        String document = parser.getName();
+                        break;
+                    case 2:
+                        String tagName = parser.getName();
+                        Constraint constraint = fillFromAttributeList(context, Xml.asAttributeSet(parser));
+                        if (tagName.equalsIgnoreCase("Guideline")) {
+                            constraint.mIsGuideline = true;
+                        }
+                        this.mConstraints.put(Integer.valueOf(constraint.mViewId), constraint);
+                        break;
+                    case 3:
+                        break;
                 }
             }
         } catch (XmlPullParserException e) {
@@ -1553,8 +1553,7 @@ public class ConstraintSet {
         int N = a.getIndexCount();
         for (int i = 0; i < N; i++) {
             int attr = a.getIndex(i);
-            int i2 = mapToConstant.get(attr);
-            switch (i2) {
+            switch (mapToConstant.get(attr)) {
                 case 1:
                     c.baselineToBaseline = lookupID(a, attr, c.baselineToBaseline);
                     break;
@@ -1716,48 +1715,42 @@ public class ConstraintSet {
                 case 53:
                     c.translationZ = a.getDimension(attr, c.translationZ);
                     break;
+                case 60:
+                    c.rotation = a.getFloat(attr, c.rotation);
+                    break;
+                case 61:
+                    c.circleConstraint = lookupID(a, attr, c.circleConstraint);
+                    break;
+                case 62:
+                    c.circleRadius = a.getDimensionPixelSize(attr, c.circleRadius);
+                    break;
+                case 63:
+                    c.circleAngle = a.getFloat(attr, c.circleAngle);
+                    break;
+                case 69:
+                    c.widthPercent = a.getFloat(attr, 1.0f);
+                    break;
+                case 70:
+                    c.heightPercent = a.getFloat(attr, 1.0f);
+                    break;
+                case 71:
+                    Log.e(TAG, "CURRENTLY UNSUPPORTED");
+                    break;
+                case 72:
+                    c.mBarrierDirection = a.getInt(attr, c.mBarrierDirection);
+                    break;
+                case 73:
+                    c.mReferenceIdString = a.getString(attr);
+                    break;
+                case 74:
+                    c.mBarrierAllowsGoneWidgets = a.getBoolean(attr, c.mBarrierAllowsGoneWidgets);
+                    break;
+                case 75:
+                    Log.w(TAG, "unused attribute 0x" + Integer.toHexString(attr) + "   " + mapToConstant.get(attr));
+                    break;
                 default:
-                    switch (i2) {
-                        case 60:
-                            c.rotation = a.getFloat(attr, c.rotation);
-                            break;
-                        case 61:
-                            c.circleConstraint = lookupID(a, attr, c.circleConstraint);
-                            break;
-                        case 62:
-                            c.circleRadius = a.getDimensionPixelSize(attr, c.circleRadius);
-                            break;
-                        case 63:
-                            c.circleAngle = a.getFloat(attr, c.circleAngle);
-                            break;
-                        default:
-                            switch (i2) {
-                                case 69:
-                                    c.widthPercent = a.getFloat(attr, 1.0f);
-                                    break;
-                                case 70:
-                                    c.heightPercent = a.getFloat(attr, 1.0f);
-                                    break;
-                                case 71:
-                                    Log.e(TAG, "CURRENTLY UNSUPPORTED");
-                                    break;
-                                case 72:
-                                    c.mBarrierDirection = a.getInt(attr, c.mBarrierDirection);
-                                    break;
-                                case 73:
-                                    c.mReferenceIdString = a.getString(attr);
-                                    break;
-                                case 74:
-                                    c.mBarrierAllowsGoneWidgets = a.getBoolean(attr, c.mBarrierAllowsGoneWidgets);
-                                    break;
-                                case 75:
-                                    Log.w(TAG, "unused attribute 0x" + Integer.toHexString(attr) + "   " + mapToConstant.get(attr));
-                                    break;
-                                default:
-                                    Log.w(TAG, "Unknown attribute 0x" + Integer.toHexString(attr) + "   " + mapToConstant.get(attr));
-                                    break;
-                            }
-                    }
+                    Log.w(TAG, "Unknown attribute 0x" + Integer.toHexString(attr) + "   " + mapToConstant.get(attr));
+                    break;
             }
         }
     }

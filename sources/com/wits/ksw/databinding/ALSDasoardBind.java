@@ -1,11 +1,8 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.Bindable;
-import android.databinding.DataBindingComponent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,59 +16,36 @@ import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.view.ID7SpeedImageView;
 
 public abstract class ALSDasoardBind extends ViewDataBinding {
-    @NonNull
     public final ImageView alsCloseView;
-    @NonNull
     public final ConstraintLayout alsMenu;
-    @NonNull
     public final RadioButton alsRadioButton1;
-    @NonNull
     public final RadioButton alsRadioButton2;
-    @NonNull
     public final RadioButton alsRadioButton3;
-    @NonNull
     public final RadioGroup alsRadioGroup;
-    @NonNull
     public final ImageView brakeTextView;
-    @NonNull
     public final ImageView carImageView;
-    @NonNull
     public final ImageView dorrBackImageView;
-    @NonNull
     public final ImageView dorrLeftFlImageView;
-    @NonNull
     public final ImageView dorrLeftFrImageView;
-    @NonNull
     public final ImageView dorrLeftRlImageView;
-    @NonNull
     public final ImageView imageView19;
-    @NonNull
     public final ConstraintLayout linearLayout2;
     @Bindable
     protected DashboardViewModel mViewModel;
-    @NonNull
     public final TextView oilTextView;
-    @NonNull
     public final ImageView seatBeltTextView;
-    @Nullable
     public final ImageView speedPointerImageView;
-    @NonNull
     public final TextView speedPointerTextView;
-    @NonNull
     public final ID7SpeedImageView speedometerImageView;
-    @NonNull
     public final ID7SpeedImageView tachometerImageView;
-    @NonNull
     public final TextView tempTextView;
-    @NonNull
     public final ImageView zspeedPointerImageView;
-    @NonNull
     public final TextView zspeedPointerTextView;
 
-    public abstract void setViewModel(@Nullable DashboardViewModel dashboardViewModel);
+    public abstract void setViewModel(DashboardViewModel dashboardViewModel);
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ALSDasoardBind(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, ImageView alsCloseView2, ConstraintLayout alsMenu2, RadioButton alsRadioButton12, RadioButton alsRadioButton22, RadioButton alsRadioButton32, RadioGroup alsRadioGroup2, ImageView brakeTextView2, ImageView carImageView2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, TextView oilTextView2, ImageView seatBeltTextView2, ImageView speedPointerImageView2, TextView speedPointerTextView2, ID7SpeedImageView speedometerImageView2, ID7SpeedImageView tachometerImageView2, TextView tempTextView2, ImageView zspeedPointerImageView2, TextView zspeedPointerTextView2) {
+    protected ALSDasoardBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView alsCloseView2, ConstraintLayout alsMenu2, RadioButton alsRadioButton12, RadioButton alsRadioButton22, RadioButton alsRadioButton32, RadioGroup alsRadioGroup2, ImageView brakeTextView2, ImageView carImageView2, ImageView dorrBackImageView2, ImageView dorrLeftFlImageView2, ImageView dorrLeftFrImageView2, ImageView dorrLeftRlImageView2, ImageView imageView192, ConstraintLayout linearLayout22, TextView oilTextView2, ImageView seatBeltTextView2, ImageView speedPointerImageView2, TextView speedPointerTextView2, ID7SpeedImageView speedometerImageView2, ID7SpeedImageView tachometerImageView2, TextView tempTextView2, ImageView zspeedPointerImageView2, TextView zspeedPointerTextView2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.alsCloseView = alsCloseView2;
         this.alsMenu = alsMenu2;
@@ -98,36 +72,34 @@ public abstract class ALSDasoardBind extends ViewDataBinding {
         this.zspeedPointerTextView = zspeedPointerTextView2;
     }
 
-    @Nullable
     public DashboardViewModel getViewModel() {
         return this.mViewModel;
     }
 
-    @NonNull
-    public static ALSDasoardBind inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot) {
+    public static ALSDasoardBind inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
         return inflate(inflater, root, attachToRoot, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ALSDasoardBind inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
-        return (ALSDasoardBind) DataBindingUtil.inflate(inflater, R.layout.activity_dash_board_als, root, attachToRoot, component);
+    @Deprecated
+    public static ALSDasoardBind inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
+        return (ALSDasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_als, root, attachToRoot, component);
     }
 
-    @NonNull
-    public static ALSDasoardBind inflate(@NonNull LayoutInflater inflater) {
+    public static ALSDasoardBind inflate(LayoutInflater inflater) {
         return inflate(inflater, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ALSDasoardBind inflate(@NonNull LayoutInflater inflater, @Nullable DataBindingComponent component) {
-        return (ALSDasoardBind) DataBindingUtil.inflate(inflater, R.layout.activity_dash_board_als, (ViewGroup) null, false, component);
+    @Deprecated
+    public static ALSDasoardBind inflate(LayoutInflater inflater, Object component) {
+        return (ALSDasoardBind) ViewDataBinding.inflateInternal(inflater, R.layout.activity_dash_board_als, (ViewGroup) null, false, component);
     }
 
-    public static ALSDasoardBind bind(@NonNull View view) {
+    public static ALSDasoardBind bind(View view) {
         return bind(view, DataBindingUtil.getDefaultComponent());
     }
 
-    public static ALSDasoardBind bind(@NonNull View view, @Nullable DataBindingComponent component) {
+    @Deprecated
+    public static ALSDasoardBind bind(View view, Object component) {
         return (ALSDasoardBind) bind(component, view, R.layout.activity_dash_board_als);
     }
 }

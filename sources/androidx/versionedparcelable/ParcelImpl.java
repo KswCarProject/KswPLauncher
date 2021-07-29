@@ -2,9 +2,7 @@ package androidx.versionedparcelable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class ParcelImpl implements Parcelable {
     public static final Parcelable.Creator<ParcelImpl> CREATOR = new Parcelable.Creator<ParcelImpl>() {
         public ParcelImpl createFromParcel(Parcel in) {

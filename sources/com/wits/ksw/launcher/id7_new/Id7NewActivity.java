@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,7 +41,8 @@ public class Id7NewActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (Id7NewActivity.this.contentResolver == null) {
-                Id7NewActivity.this.contentResolver = Id7NewActivity.this.getContentResolver();
+                Id7NewActivity id7NewActivity = Id7NewActivity.this;
+                id7NewActivity.contentResolver = id7NewActivity.getContentResolver();
             }
             boolean z = false;
             int bluetooth = Settings.System.getInt(Id7NewActivity.this.contentResolver, "ksw_bluetooth", 0);
@@ -58,7 +58,7 @@ public class Id7NewActivity extends BaseActivity {
     public MySeepViewPage vpIndex;
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_id7_new_launch);
         initView();
@@ -105,44 +105,41 @@ public class Id7NewActivity extends BaseActivity {
         if (event.getAction() != 1) {
             return true;
         }
-        int keyCode = event.getKeyCode();
-        if (keyCode != 66) {
-            switch (keyCode) {
-                case 19:
-                    Log.d("ddc", "come on up");
-                    int page = Settings.System.getInt(getContentResolver(), SavaUtils.PAGE_INDEX, 0) - 1;
-                    if (page < 0) {
-                        page = 0;
-                    }
-                    Log.d("ddc", "up page:" + page);
-                    Settings.System.putInt(getContentResolver(), SavaUtils.PAGE_INDEX, page);
-                    updateFragment();
+        switch (event.getKeyCode()) {
+            case 19:
+                Log.d("ddc", "come on up");
+                int page = Settings.System.getInt(getContentResolver(), SavaUtils.PAGE_INDEX, 0) - 1;
+                if (page < 0) {
+                    page = 0;
+                }
+                Log.d("ddc", "up page:" + page);
+                Settings.System.putInt(getContentResolver(), SavaUtils.PAGE_INDEX, page);
+                updateFragment();
+                return true;
+            case 20:
+                Log.d("ddc", "come on down");
+                int pagep = Settings.System.getInt(getContentResolver(), SavaUtils.PAGE_INDEX, 0) + 1;
+                if (pagep > 9) {
+                    pagep = 9;
+                }
+                Settings.System.putInt(getContentResolver(), SavaUtils.PAGE_INDEX, pagep);
+                updateFragment();
+                Log.d("ddc", "up page:" + pagep);
+                return true;
+            case 66:
+                int pageOk = Settings.System.getInt(getContentResolver(), SavaUtils.PAGE_INDEX, 0);
+                Log.d("ddc", "check ok index:" + pageOk);
+                if (pageOk < 5) {
+                    this.id7NewFistFragment.oncheckID(pageOk);
+                } else {
+                    this.id7NewTwoFragment.oncheckID(pageOk);
+                }
+                return true;
+            default:
+                if (event.getKeyCode() == 3) {
                     return true;
-                case 20:
-                    Log.d("ddc", "come on down");
-                    int pagep = Settings.System.getInt(getContentResolver(), SavaUtils.PAGE_INDEX, 0) + 1;
-                    if (pagep > 9) {
-                        pagep = 9;
-                    }
-                    Settings.System.putInt(getContentResolver(), SavaUtils.PAGE_INDEX, pagep);
-                    updateFragment();
-                    Log.d("ddc", "up page:" + pagep);
-                    return true;
-                default:
-                    if (event.getKeyCode() == 3) {
-                        return true;
-                    }
-                    return super.dispatchKeyEvent(event);
-            }
-        } else {
-            int pageOk = Settings.System.getInt(getContentResolver(), SavaUtils.PAGE_INDEX, 0);
-            Log.d("ddc", "check ok index:" + pageOk);
-            if (pageOk < 5) {
-                this.id7NewFistFragment.oncheckID(pageOk);
-            } else {
-                this.id7NewTwoFragment.oncheckID(pageOk);
-            }
-            return true;
+                }
+                return super.dispatchKeyEvent(event);
         }
     }
 
@@ -153,8 +150,9 @@ public class Id7NewActivity extends BaseActivity {
         this.views.add(this.id7NewFistFragment);
         this.views.add(this.id7NewTwoFragment);
         this.vpIndex = (MySeepViewPage) findViewById(R.id.vpIndex);
-        this.adapter = new TabFragmentPagerAdapter(this.views);
-        this.vpIndex.setAdapter(this.adapter);
+        TabFragmentPagerAdapter tabFragmentPagerAdapter = new TabFragmentPagerAdapter(this.views);
+        this.adapter = tabFragmentPagerAdapter;
+        this.vpIndex.setAdapter(tabFragmentPagerAdapter);
         this.img_IndexLeft = (ImageView) findViewById(R.id.img_IndexLeft);
         this.img_IndexRight = (ImageView) findViewById(R.id.img_IndexRight);
         this.img_IndexLeft.setOnClickListener(new View.OnClickListener() {
@@ -197,12 +195,12 @@ public class Id7NewActivity extends BaseActivity {
             }
         });
         McuImpl.getInstance().carInfoMutableLiveData.observe(this, new Observer<CarInfo>() {
-            public void onChanged(@Nullable CarInfo carInfo) {
+            public void onChanged(CarInfo carInfo) {
                 Id7NewActivity.this.id7NewFistFragment.setOils(carInfo);
             }
         });
         MediaImpl.getInstance().mediaInfoMutableLiveData.observe(this, new Observer<MediaInfo>() {
-            public void onChanged(@Nullable MediaInfo mediaInfo) {
+            public void onChanged(MediaInfo mediaInfo) {
                 Log.d("newID7", "ddd:" + mediaInfo.musicName.get());
                 Id7NewActivity.this.id7NewTwoFragment.setMediaInfo(mediaInfo);
             }

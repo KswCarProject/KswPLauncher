@@ -7,11 +7,15 @@ public class Helper extends ConstraintWidget {
     protected int mWidgetsCount = 0;
 
     public void add(ConstraintWidget widget) {
-        if (this.mWidgetsCount + 1 > this.mWidgets.length) {
-            this.mWidgets = (ConstraintWidget[]) Arrays.copyOf(this.mWidgets, this.mWidgets.length * 2);
+        int i = this.mWidgetsCount + 1;
+        ConstraintWidget[] constraintWidgetArr = this.mWidgets;
+        if (i > constraintWidgetArr.length) {
+            this.mWidgets = (ConstraintWidget[]) Arrays.copyOf(constraintWidgetArr, constraintWidgetArr.length * 2);
         }
-        this.mWidgets[this.mWidgetsCount] = widget;
-        this.mWidgetsCount++;
+        ConstraintWidget[] constraintWidgetArr2 = this.mWidgets;
+        int i2 = this.mWidgetsCount;
+        constraintWidgetArr2[i2] = widget;
+        this.mWidgetsCount = i2 + 1;
     }
 
     public void removeAllIds() {

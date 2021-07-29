@@ -1,7 +1,6 @@
 package android.support.v4.app;
 
 import android.graphics.Rect;
-import android.support.annotation.RequiresApi;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(21)
 class FragmentTransitionCompat21 extends FragmentTransitionImpl {
     FragmentTransitionCompat21() {
     }
@@ -63,19 +61,16 @@ class FragmentTransitionCompat21 extends FragmentTransitionImpl {
     public void addTargets(Object transitionObj, ArrayList<View> views) {
         Transition transition = (Transition) transitionObj;
         if (transition != null) {
-            int i = 0;
             if (transition instanceof TransitionSet) {
                 TransitionSet set = (TransitionSet) transition;
                 int numTransitions = set.getTransitionCount();
-                while (i < numTransitions) {
+                for (int i = 0; i < numTransitions; i++) {
                     addTargets(set.getTransitionAt(i), views);
-                    i++;
                 }
             } else if (!hasSimpleTarget(transition) && isNullOrEmpty(transition.getTargets())) {
                 int numViews = views.size();
-                while (i < numViews) {
-                    transition.addTarget(views.get(i));
-                    i++;
+                for (int i2 = 0; i2 < numViews; i2++) {
+                    transition.addTarget(views.get(i2));
                 }
             }
         }
@@ -160,12 +155,15 @@ class FragmentTransitionCompat21 extends FragmentTransitionImpl {
         final ArrayList<View> arrayList3 = sharedElementsIn;
         ((Transition) overallTransitionObj).addListener(new Transition.TransitionListener() {
             public void onTransitionStart(Transition transition) {
+                Object obj = obj;
                 if (obj != null) {
                     FragmentTransitionCompat21.this.replaceTargets(obj, arrayList, (ArrayList<View>) null);
                 }
+                Object obj2 = obj2;
                 if (obj2 != null) {
                     FragmentTransitionCompat21.this.replaceTargets(obj2, arrayList2, (ArrayList<View>) null);
                 }
+                Object obj3 = obj3;
                 if (obj3 != null) {
                     FragmentTransitionCompat21.this.replaceTargets(obj3, arrayList3, (ArrayList<View>) null);
                 }
@@ -197,22 +195,19 @@ class FragmentTransitionCompat21 extends FragmentTransitionImpl {
     public void replaceTargets(Object transitionObj, ArrayList<View> oldTargets, ArrayList<View> newTargets) {
         List<View> targets;
         Transition transition = (Transition) transitionObj;
-        int i = 0;
         if (transition instanceof TransitionSet) {
             TransitionSet set = (TransitionSet) transition;
             int numTransitions = set.getTransitionCount();
-            while (i < numTransitions) {
+            for (int i = 0; i < numTransitions; i++) {
                 replaceTargets(set.getTransitionAt(i), oldTargets, newTargets);
-                i++;
             }
         } else if (!hasSimpleTarget(transition) && (targets = transition.getTargets()) != null && targets.size() == oldTargets.size() && targets.containsAll(oldTargets)) {
             int targetCount = newTargets == null ? 0 : newTargets.size();
-            while (i < targetCount) {
-                transition.addTarget(newTargets.get(i));
-                i++;
+            for (int i2 = 0; i2 < targetCount; i2++) {
+                transition.addTarget(newTargets.get(i2));
             }
-            for (int i2 = oldTargets.size() - 1; i2 >= 0; i2--) {
-                transition.removeTarget(oldTargets.get(i2));
+            for (int i3 = oldTargets.size() - 1; i3 >= 0; i3--) {
+                transition.removeTarget(oldTargets.get(i3));
             }
         }
     }
@@ -233,7 +228,8 @@ class FragmentTransitionCompat21 extends FragmentTransitionImpl {
         if (transitionObj != null) {
             ((Transition) transitionObj).setEpicenterCallback(new Transition.EpicenterCallback() {
                 public Rect onGetEpicenter(Transition transition) {
-                    if (epicenter == null || epicenter.isEmpty()) {
+                    Rect rect = epicenter;
+                    if (rect == null || rect.isEmpty()) {
                         return null;
                     }
                     return epicenter;

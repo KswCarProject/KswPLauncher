@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
-import android.support.v4.internal.view.SupportMenu;
 import android.util.SparseArray;
 import androidx.versionedparcelable.VersionedParcel;
 import java.io.ByteArrayInputStream;
@@ -18,7 +16,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Set;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 class VersionedParcelStream extends VersionedParcel {
     private static final int TYPE_BOOLEAN = 5;
     private static final int TYPE_BOOLEAN_ARRAY = 6;
@@ -46,10 +43,12 @@ class VersionedParcelStream extends VersionedParcel {
 
     public VersionedParcelStream(InputStream input, OutputStream output) {
         DataOutputStream dataOutputStream = null;
-        this.mMasterInput = input != null ? new DataInputStream(input) : null;
-        this.mMasterOutput = output != null ? new DataOutputStream(output) : dataOutputStream;
-        this.mCurrentInput = this.mMasterInput;
-        this.mCurrentOutput = this.mMasterOutput;
+        DataInputStream dataInputStream = input != null ? new DataInputStream(input) : null;
+        this.mMasterInput = dataInputStream;
+        dataOutputStream = output != null ? new DataOutputStream(output) : dataOutputStream;
+        this.mMasterOutput = dataOutputStream;
+        this.mCurrentInput = dataInputStream;
+        this.mCurrentOutput = dataOutputStream;
     }
 
     public boolean isStream() {
@@ -65,9 +64,10 @@ class VersionedParcelStream extends VersionedParcel {
     }
 
     public void closeField() {
-        if (this.mFieldBuffer != null) {
+        FieldBuffer fieldBuffer = this.mFieldBuffer;
+        if (fieldBuffer != null) {
             try {
-                if (this.mFieldBuffer.mOutput.size() != 0) {
+                if (fieldBuffer.mOutput.size() != 0) {
                     this.mFieldBuffer.flushField();
                 }
                 this.mFieldBuffer = null;
@@ -92,7 +92,7 @@ class VersionedParcelStream extends VersionedParcel {
         while (true) {
             try {
                 int fieldInfo = this.mMasterInput.readInt();
-                int size = fieldInfo & SupportMenu.USER_MASK;
+                int size = fieldInfo & 65535;
                 if (size == 65535) {
                     size = this.mMasterInput.readInt();
                 }
@@ -110,8 +110,9 @@ class VersionedParcelStream extends VersionedParcel {
 
     public void setOutputField(int fieldId) {
         closeField();
-        this.mFieldBuffer = new FieldBuffer(fieldId, this.mMasterOutput);
-        this.mCurrentOutput = this.mFieldBuffer.mDataStream;
+        FieldBuffer fieldBuffer = new FieldBuffer(fieldId, this.mMasterOutput);
+        this.mFieldBuffer = fieldBuffer;
+        this.mCurrentOutput = fieldBuffer.mDataStream;
     }
 
     public void writeByteArray(byte[] b) {
@@ -417,12 +418,15 @@ class VersionedParcelStream extends VersionedParcel {
     }
 
     private static class FieldBuffer {
-        final DataOutputStream mDataStream = new DataOutputStream(this.mOutput);
+        final DataOutputStream mDataStream;
         private final int mFieldId;
-        final ByteArrayOutputStream mOutput = new ByteArrayOutputStream();
+        final ByteArrayOutputStream mOutput;
         private final DataOutputStream mTarget;
 
         FieldBuffer(int fieldId, DataOutputStream target) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            this.mOutput = byteArrayOutputStream;
+            this.mDataStream = new DataOutputStream(byteArrayOutputStream);
             this.mFieldId = fieldId;
             this.mTarget = target;
         }
@@ -447,7 +451,7 @@ class VersionedParcelStream extends VersionedParcel {
         InputBuffer(int fieldId, int size, DataInputStream inputStream) throws IOException {
             this.mSize = size;
             this.mFieldId = fieldId;
-            byte[] data = new byte[this.mSize];
+            byte[] data = new byte[size];
             inputStream.readFully(data);
             this.mInputStream = new DataInputStream(new ByteArrayInputStream(data));
         }

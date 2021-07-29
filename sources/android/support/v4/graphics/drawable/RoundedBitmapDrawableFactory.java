@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.graphics.BitmapCompat;
 import android.support.v4.view.GravityCompat;
 import android.util.Log;
@@ -37,16 +35,14 @@ public final class RoundedBitmapDrawableFactory {
         }
     }
 
-    @NonNull
-    public static RoundedBitmapDrawable create(@NonNull Resources res, @Nullable Bitmap bitmap) {
+    public static RoundedBitmapDrawable create(Resources res, Bitmap bitmap) {
         if (Build.VERSION.SDK_INT >= 21) {
             return new RoundedBitmapDrawable21(res, bitmap);
         }
         return new DefaultRoundedBitmapDrawable(res, bitmap);
     }
 
-    @NonNull
-    public static RoundedBitmapDrawable create(@NonNull Resources res, @NonNull String filepath) {
+    public static RoundedBitmapDrawable create(Resources res, String filepath) {
         RoundedBitmapDrawable drawable = create(res, BitmapFactory.decodeFile(filepath));
         if (drawable.getBitmap() == null) {
             Log.w(TAG, "RoundedBitmapDrawable cannot decode " + filepath);
@@ -54,8 +50,7 @@ public final class RoundedBitmapDrawableFactory {
         return drawable;
     }
 
-    @NonNull
-    public static RoundedBitmapDrawable create(@NonNull Resources res, @NonNull InputStream is) {
+    public static RoundedBitmapDrawable create(Resources res, InputStream is) {
         RoundedBitmapDrawable drawable = create(res, BitmapFactory.decodeStream(is));
         if (drawable.getBitmap() == null) {
             Log.w(TAG, "RoundedBitmapDrawable cannot decode " + is);

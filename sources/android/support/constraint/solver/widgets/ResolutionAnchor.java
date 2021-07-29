@@ -30,10 +30,11 @@ public class ResolutionAnchor extends ResolutionNode {
     }
 
     public void remove(ResolutionDimension resolutionDimension) {
-        if (this.dimension == resolutionDimension) {
+        ResolutionDimension resolutionDimension2 = this.dimension;
+        if (resolutionDimension2 == resolutionDimension) {
             this.dimension = null;
             this.offset = (float) this.dimensionMultiplier;
-        } else if (this.dimension == this.oppositeDimension) {
+        } else if (resolutionDimension2 == this.oppositeDimension) {
             this.oppositeDimension = null;
             this.oppositeOffset = (float) this.oppositeDimensionMultiplier;
         }
@@ -43,11 +44,11 @@ public class ResolutionAnchor extends ResolutionNode {
     public String toString() {
         if (this.state != 1) {
             return "{ " + this.myAnchor + " UNRESOLVED} type: " + sType(this.type);
-        } else if (this.resolvedTarget == this) {
-            return "[" + this.myAnchor + ", RESOLVED: " + this.resolvedOffset + "]  type: " + sType(this.type);
-        } else {
-            return "[" + this.myAnchor + ", RESOLVED: " + this.resolvedTarget + ":" + this.resolvedOffset + "] type: " + sType(this.type);
         }
+        if (this.resolvedTarget == this) {
+            return "[" + this.myAnchor + ", RESOLVED: " + this.resolvedOffset + "]  type: " + sType(this.type);
+        }
+        return "[" + this.myAnchor + ", RESOLVED: " + this.resolvedTarget + ":" + this.resolvedOffset + "] type: " + sType(this.type);
     }
 
     public void resolve(ResolutionAnchor target2, float offset2) {
@@ -82,40 +83,51 @@ public class ResolutionAnchor extends ResolutionNode {
     }
 
     public void resolve() {
+        ResolutionAnchor resolutionAnchor;
+        ResolutionAnchor resolutionAnchor2;
+        ResolutionAnchor resolutionAnchor3;
+        ResolutionAnchor resolutionAnchor4;
+        ResolutionAnchor resolutionAnchor5;
+        ResolutionAnchor resolutionAnchor6;
         float distance;
         float distance2;
         float percent;
+        ResolutionAnchor resolutionAnchor7;
         boolean isEndAnchor = true;
         if (this.state != 1 && this.type != 4) {
-            if (this.dimension != null) {
-                if (this.dimension.state == 1) {
+            ResolutionDimension resolutionDimension = this.dimension;
+            if (resolutionDimension != null) {
+                if (resolutionDimension.state == 1) {
                     this.offset = ((float) this.dimensionMultiplier) * this.dimension.value;
                 } else {
                     return;
                 }
             }
-            if (this.oppositeDimension != null) {
-                if (this.oppositeDimension.state == 1) {
+            ResolutionDimension resolutionDimension2 = this.oppositeDimension;
+            if (resolutionDimension2 != null) {
+                if (resolutionDimension2.state == 1) {
                     this.oppositeOffset = ((float) this.oppositeDimensionMultiplier) * this.oppositeDimension.value;
                 } else {
                     return;
                 }
             }
-            if (this.type == 1 && (this.target == null || this.target.state == 1)) {
-                if (this.target == null) {
+            if (this.type == 1 && ((resolutionAnchor7 = this.target) == null || resolutionAnchor7.state == 1)) {
+                ResolutionAnchor resolutionAnchor8 = this.target;
+                if (resolutionAnchor8 == null) {
                     this.resolvedTarget = this;
                     this.resolvedOffset = this.offset;
                 } else {
-                    this.resolvedTarget = this.target.resolvedTarget;
-                    this.resolvedOffset = this.target.resolvedOffset + this.offset;
+                    this.resolvedTarget = resolutionAnchor8.resolvedTarget;
+                    this.resolvedOffset = resolutionAnchor8.resolvedOffset + this.offset;
                 }
                 didResolve();
-            } else if (this.type == 2 && this.target != null && this.target.state == 1 && this.opposite != null && this.opposite.target != null && this.opposite.target.state == 1) {
+            } else if (this.type == 2 && (resolutionAnchor4 = this.target) != null && resolutionAnchor4.state == 1 && (resolutionAnchor5 = this.opposite) != null && (resolutionAnchor6 = resolutionAnchor5.target) != null && resolutionAnchor6.state == 1) {
                 if (LinearSystem.getMetrics() != null) {
                     LinearSystem.getMetrics().centerConnectionResolved++;
                 }
                 this.resolvedTarget = this.target.resolvedTarget;
-                this.opposite.resolvedTarget = this.opposite.target.resolvedTarget;
+                ResolutionAnchor resolutionAnchor9 = this.opposite;
+                resolutionAnchor9.resolvedTarget = resolutionAnchor9.target.resolvedTarget;
                 if (!(this.myAnchor.mType == ConstraintAnchor.Type.RIGHT || this.myAnchor.mType == ConstraintAnchor.Type.BOTTOM)) {
                     isEndAnchor = false;
                 }
@@ -140,22 +152,27 @@ public class ResolutionAnchor extends ResolutionNode {
                 }
                 float distance3 = (distance2 - ((float) margin)) - ((float) oppositeMargin);
                 if (isEndAnchor) {
-                    this.opposite.resolvedOffset = this.opposite.target.resolvedOffset + ((float) oppositeMargin) + (distance3 * percent);
+                    ResolutionAnchor resolutionAnchor10 = this.opposite;
+                    resolutionAnchor10.resolvedOffset = resolutionAnchor10.target.resolvedOffset + ((float) oppositeMargin) + (distance3 * percent);
                     this.resolvedOffset = (this.target.resolvedOffset - ((float) margin)) - ((1.0f - percent) * distance3);
                 } else {
                     this.resolvedOffset = this.target.resolvedOffset + ((float) margin) + (distance3 * percent);
-                    this.opposite.resolvedOffset = (this.opposite.target.resolvedOffset - ((float) oppositeMargin)) - ((1.0f - percent) * distance3);
+                    ResolutionAnchor resolutionAnchor11 = this.opposite;
+                    resolutionAnchor11.resolvedOffset = (resolutionAnchor11.target.resolvedOffset - ((float) oppositeMargin)) - ((1.0f - percent) * distance3);
                 }
                 didResolve();
                 this.opposite.didResolve();
-            } else if (this.type == 3 && this.target != null && this.target.state == 1 && this.opposite != null && this.opposite.target != null && this.opposite.target.state == 1) {
+            } else if (this.type == 3 && (resolutionAnchor = this.target) != null && resolutionAnchor.state == 1 && (resolutionAnchor2 = this.opposite) != null && (resolutionAnchor3 = resolutionAnchor2.target) != null && resolutionAnchor3.state == 1) {
                 if (LinearSystem.getMetrics() != null) {
                     LinearSystem.getMetrics().matchConnectionResolved++;
                 }
-                this.resolvedTarget = this.target.resolvedTarget;
-                this.opposite.resolvedTarget = this.opposite.target.resolvedTarget;
-                this.resolvedOffset = this.target.resolvedOffset + this.offset;
-                this.opposite.resolvedOffset = this.opposite.target.resolvedOffset + this.opposite.offset;
+                ResolutionAnchor resolutionAnchor12 = this.target;
+                this.resolvedTarget = resolutionAnchor12.resolvedTarget;
+                ResolutionAnchor resolutionAnchor13 = this.opposite;
+                ResolutionAnchor resolutionAnchor14 = resolutionAnchor13.target;
+                resolutionAnchor13.resolvedTarget = resolutionAnchor14.resolvedTarget;
+                this.resolvedOffset = resolutionAnchor12.resolvedOffset + this.offset;
+                resolutionAnchor13.resolvedOffset = resolutionAnchor14.resolvedOffset + resolutionAnchor13.offset;
                 didResolve();
                 this.opposite.didResolve();
             } else if (this.type == 5) {
@@ -203,21 +220,21 @@ public class ResolutionAnchor extends ResolutionNode {
         this.type = type2;
         this.target = node;
         this.offset = (float) offset2;
-        this.target.addDependent(this);
+        node.addDependent(this);
     }
 
     public void dependsOn(ResolutionAnchor node, int offset2) {
         this.target = node;
         this.offset = (float) offset2;
-        this.target.addDependent(this);
+        node.addDependent(this);
     }
 
     public void dependsOn(ResolutionAnchor node, int multiplier, ResolutionDimension dimension2) {
         this.target = node;
-        this.target.addDependent(this);
+        node.addDependent(this);
         this.dimension = dimension2;
         this.dimensionMultiplier = multiplier;
-        this.dimension.addDependent(this);
+        dimension2.addDependent(this);
     }
 
     public void setOpposite(ResolutionAnchor opposite2, float oppositeOffset2) {
@@ -234,10 +251,11 @@ public class ResolutionAnchor extends ResolutionNode {
     /* access modifiers changed from: package-private */
     public void addResolvedValue(LinearSystem system) {
         SolverVariable sv = this.myAnchor.getSolverVariable();
-        if (this.resolvedTarget == null) {
+        ResolutionAnchor resolutionAnchor = this.resolvedTarget;
+        if (resolutionAnchor == null) {
             system.addEquality(sv, (int) (this.resolvedOffset + 0.5f));
         } else {
-            system.addEquality(sv, system.createObjectVariable(this.resolvedTarget.myAnchor), (int) (this.resolvedOffset + 0.5f), 6);
+            system.addEquality(sv, system.createObjectVariable(resolutionAnchor.myAnchor), (int) (this.resolvedOffset + 0.5f), 6);
         }
     }
 

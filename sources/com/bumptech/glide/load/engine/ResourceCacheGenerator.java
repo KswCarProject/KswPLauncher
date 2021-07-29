@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -28,7 +27,7 @@ class ResourceCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCa
 
     public boolean startNext() {
         List<Key> sourceIds = this.helper.getCacheKeys();
-        boolean started = false;
+        boolean z = false;
         if (sourceIds.isEmpty()) {
             return false;
         }
@@ -36,35 +35,40 @@ class ResourceCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCa
         if (!resourceClasses.isEmpty()) {
             while (true) {
                 if (this.modelLoaders == null || !hasNextModelLoader()) {
-                    this.resourceClassIndex++;
-                    if (this.resourceClassIndex >= resourceClasses.size()) {
-                        this.sourceIdIndex++;
-                        if (this.sourceIdIndex >= sourceIds.size()) {
-                            return started;
+                    int i = this.resourceClassIndex + 1;
+                    this.resourceClassIndex = i;
+                    if (i >= resourceClasses.size()) {
+                        int i2 = this.sourceIdIndex + 1;
+                        this.sourceIdIndex = i2;
+                        if (i2 >= sourceIds.size()) {
+                            return z;
                         }
-                        this.resourceClassIndex = started ? 1 : 0;
+                        this.resourceClassIndex = z ? 1 : 0;
                     }
                     Key sourceId = sourceIds.get(this.sourceIdIndex);
                     Class<?> resourceClass = resourceClasses.get(this.resourceClassIndex);
+                    Key key = sourceId;
                     ResourceCacheKey resourceCacheKey = r5;
-                    ResourceCacheKey resourceCacheKey2 = new ResourceCacheKey(this.helper.getArrayPool(), sourceId, this.helper.getSignature(), this.helper.getWidth(), this.helper.getHeight(), this.helper.getTransformation(resourceClass), resourceClass, this.helper.getOptions());
+                    ResourceCacheKey resourceCacheKey2 = new ResourceCacheKey(this.helper.getArrayPool(), key, this.helper.getSignature(), this.helper.getWidth(), this.helper.getHeight(), this.helper.getTransformation(resourceClass), resourceClass, this.helper.getOptions());
                     this.currentKey = resourceCacheKey;
-                    this.cacheFile = this.helper.getDiskCache().get(this.currentKey);
-                    if (this.cacheFile != null) {
+                    File file = this.helper.getDiskCache().get(this.currentKey);
+                    this.cacheFile = file;
+                    if (file != null) {
                         this.sourceKey = sourceId;
-                        this.modelLoaders = this.helper.getModelLoaders(this.cacheFile);
-                        started = false;
+                        this.modelLoaders = this.helper.getModelLoaders(file);
+                        z = false;
                         this.modelLoaderIndex = 0;
                     } else {
-                        started = false;
+                        z = false;
                     }
                 } else {
                     this.loadData = null;
+                    boolean started = false;
                     while (!started && hasNextModelLoader()) {
                         List<ModelLoader<File, ?>> list = this.modelLoaders;
-                        int i = this.modelLoaderIndex;
-                        this.modelLoaderIndex = i + 1;
-                        this.loadData = list.get(i).buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
+                        int i3 = this.modelLoaderIndex;
+                        this.modelLoaderIndex = i3 + 1;
+                        this.loadData = list.get(i3).buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
                         if (this.loadData != null && this.helper.hasLoadPath(this.loadData.fetcher.getDataClass())) {
                             started = true;
                             this.loadData.fetcher.loadData(this.helper.getPriority(), this);
@@ -95,7 +99,7 @@ class ResourceCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCa
         this.cb.onDataFetcherReady(this.sourceKey, data, this.loadData.fetcher, DataSource.RESOURCE_DISK_CACHE, this.currentKey);
     }
 
-    public void onLoadFailed(@NonNull Exception e) {
+    public void onLoadFailed(Exception e) {
         this.cb.onDataFetcherFailed(this.currentKey, e, this.loadData.fetcher, DataSource.RESOURCE_DISK_CACHE);
     }
 }

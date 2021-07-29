@@ -3,8 +3,6 @@ package android.support.v4.app;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 public final class AppOpsManagerCompat {
     public static final int MODE_ALLOWED = 0;
@@ -15,36 +13,35 @@ public final class AppOpsManagerCompat {
     private AppOpsManagerCompat() {
     }
 
-    @Nullable
-    public static String permissionToOp(@NonNull String permission) {
+    public static String permissionToOp(String permission) {
         if (Build.VERSION.SDK_INT >= 23) {
             return AppOpsManager.permissionToOp(permission);
         }
         return null;
     }
 
-    public static int noteOp(@NonNull Context context, @NonNull String op, int uid, @NonNull String packageName) {
+    public static int noteOp(Context context, String op, int uid, String packageName) {
         if (Build.VERSION.SDK_INT >= 19) {
             return ((AppOpsManager) context.getSystemService("appops")).noteOp(op, uid, packageName);
         }
         return 1;
     }
 
-    public static int noteOpNoThrow(@NonNull Context context, @NonNull String op, int uid, @NonNull String packageName) {
+    public static int noteOpNoThrow(Context context, String op, int uid, String packageName) {
         if (Build.VERSION.SDK_INT >= 19) {
             return ((AppOpsManager) context.getSystemService("appops")).noteOpNoThrow(op, uid, packageName);
         }
         return 1;
     }
 
-    public static int noteProxyOp(@NonNull Context context, @NonNull String op, @NonNull String proxiedPackageName) {
+    public static int noteProxyOp(Context context, String op, String proxiedPackageName) {
         if (Build.VERSION.SDK_INT >= 23) {
             return ((AppOpsManager) context.getSystemService(AppOpsManager.class)).noteProxyOp(op, proxiedPackageName);
         }
         return 1;
     }
 
-    public static int noteProxyOpNoThrow(@NonNull Context context, @NonNull String op, @NonNull String proxiedPackageName) {
+    public static int noteProxyOpNoThrow(Context context, String op, String proxiedPackageName) {
         if (Build.VERSION.SDK_INT >= 23) {
             return ((AppOpsManager) context.getSystemService(AppOpsManager.class)).noteProxyOpNoThrow(op, proxiedPackageName);
         }

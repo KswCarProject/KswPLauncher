@@ -44,8 +44,9 @@ public class AlsID7SetNaviLayout extends RelativeLayout implements View.OnClickL
     public void resetTextColor() {
         this.tv_navihy.setTextColor(this.context.getColor(R.color.alsid7_text_bule));
         this.tv_naviapp.setTextColor(-1);
-        if (this.updateTwoLayout != null) {
-            this.updateTwoLayout.updateTwoLayout(2, 1);
+        IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+        if (iUpdateTwoLayout != null) {
+            iUpdateTwoLayout.updateTwoLayout(2, 1);
         }
     }
 
@@ -54,16 +55,18 @@ public class AlsID7SetNaviLayout extends RelativeLayout implements View.OnClickL
             case R.id.tv_naviapp:
                 this.tv_naviapp.setTextColor(this.context.getColor(R.color.alsid7_text_bule));
                 this.tv_navihy.setTextColor(-1);
-                if (this.updateTwoLayout != null) {
-                    this.updateTwoLayout.updateTwoLayout(2, 1);
+                IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+                if (iUpdateTwoLayout != null) {
+                    iUpdateTwoLayout.updateTwoLayout(2, 1);
                     return;
                 }
                 return;
             case R.id.tv_navihy:
                 this.tv_navihy.setTextColor(this.context.getColor(R.color.alsid7_text_bule));
                 this.tv_naviapp.setTextColor(-1);
-                if (this.updateTwoLayout != null) {
-                    this.updateTwoLayout.updateTwoLayout(2, 0);
+                IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;
+                if (iUpdateTwoLayout2 != null) {
+                    iUpdateTwoLayout2.updateTwoLayout(2, 0);
                     return;
                 }
                 return;

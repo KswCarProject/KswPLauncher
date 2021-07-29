@@ -1,11 +1,8 @@
 package android.support.v4.util;
 
-import android.support.annotation.RestrictTo;
 import java.io.PrintWriter;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public final class TimeUtils {
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static final int HUNDRED_DAY_FIELD_LEN = 19;
     private static final int SECONDS_PER_DAY = 86400;
     private static final int SECONDS_PER_HOUR = 3600;
@@ -49,8 +46,8 @@ public final class TimeUtils {
         return pos2 + 1;
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:72:0x0132, code lost:
-        if (r9 != r7) goto L_0x0139;
+    /* JADX WARNING: Code restructure failed: missing block: B:72:0x0133, code lost:
+        if (r9 != r7) goto L_0x013a;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     private static int formatDurationLocked(long r27, int r29) {
@@ -83,13 +80,12 @@ public final class TimeUtils {
             int r4 = (r0 > r4 ? 1 : (r0 == r4 ? 0 : -1))
             if (r4 <= 0) goto L_0x002e
             r4 = 43
-        L_0x002c:
             r10 = r4
             goto L_0x0032
         L_0x002e:
             r4 = 45
             long r0 = -r0
-            goto L_0x002c
+            r10 = r4
         L_0x0032:
             r4 = 1000(0x3e8, double:4.94E-321)
             long r8 = r0 % r4
@@ -102,182 +98,185 @@ public final class TimeUtils {
             r6 = 0
             r8 = 0
             r9 = 86400(0x15180, float:1.21072E-40)
-            if (r4 <= r9) goto L_0x004b
+            if (r4 <= r9) goto L_0x004d
             int r5 = r4 / r9
             int r9 = r9 * r5
             int r4 = r4 - r9
-        L_0x004b:
             r12 = r5
+            goto L_0x004e
+        L_0x004d:
+            r12 = r5
+        L_0x004e:
             r5 = 3600(0xe10, float:5.045E-42)
-            if (r4 <= r5) goto L_0x0057
-            int r5 = r4 / 3600
-            int r6 = r5 * 3600
-            int r4 = r4 - r6
-            r13 = r5
-            goto L_0x0058
-        L_0x0057:
+            if (r4 <= r5) goto L_0x0059
+            int r6 = r4 / 3600
+            int r5 = r6 * 3600
+            int r4 = r4 - r5
             r13 = r6
-        L_0x0058:
+            goto L_0x005a
+        L_0x0059:
+            r13 = r6
+        L_0x005a:
             r5 = 60
-            if (r4 <= r5) goto L_0x0064
-            int r5 = r4 / 60
-            int r6 = r5 * 60
-            int r4 = r4 - r6
-            r15 = r4
-            r14 = r5
-            goto L_0x0066
-        L_0x0064:
-            r15 = r4
-            r14 = r8
+            if (r4 <= r5) goto L_0x0066
+            int r8 = r4 / 60
+            int r5 = r8 * 60
+            int r4 = r4 - r5
+            r14 = r4
+            r15 = r8
+            goto L_0x0068
         L_0x0066:
+            r14 = r4
+            r15 = r8
+        L_0x0068:
             r4 = 0
             r16 = 3
             r9 = 2
             r8 = 0
             r6 = 1
-            if (r2 == 0) goto L_0x00a4
+            if (r2 == 0) goto L_0x00a5
             int r5 = accumField(r12, r6, r8, r8)
-            if (r5 <= 0) goto L_0x0076
+            if (r5 <= 0) goto L_0x0077
             r8 = r6
-        L_0x0076:
+        L_0x0077:
             int r8 = accumField(r13, r6, r8, r9)
             int r5 = r5 + r8
-            if (r5 <= 0) goto L_0x007f
+            if (r5 <= 0) goto L_0x0080
             r8 = r6
-            goto L_0x0080
-        L_0x007f:
-            r8 = 0
+            goto L_0x0081
         L_0x0080:
-            int r8 = accumField(r14, r6, r8, r9)
-            int r5 = r5 + r8
-            if (r5 <= 0) goto L_0x0089
-            r8 = r6
-            goto L_0x008a
-        L_0x0089:
             r8 = 0
-        L_0x008a:
+        L_0x0081:
             int r8 = accumField(r15, r6, r8, r9)
             int r5 = r5 + r8
-            if (r5 <= 0) goto L_0x0094
-            r8 = r16
-            goto L_0x0095
-        L_0x0094:
+            if (r5 <= 0) goto L_0x008a
+            r8 = r6
+            goto L_0x008b
+        L_0x008a:
             r8 = 0
+        L_0x008b:
+            int r8 = accumField(r14, r6, r8, r9)
+            int r5 = r5 + r8
+            if (r5 <= 0) goto L_0x0095
+            r8 = r16
+            goto L_0x0096
         L_0x0095:
+            r8 = 0
+        L_0x0096:
             int r8 = accumField(r11, r9, r6, r8)
             int r8 = r8 + r6
             int r5 = r5 + r8
-        L_0x009b:
-            if (r5 >= r2) goto L_0x00a4
+        L_0x009c:
+            if (r5 >= r2) goto L_0x00a5
             r3[r4] = r7
             int r4 = r4 + 1
             int r5 = r5 + 1
-            goto L_0x009b
-        L_0x00a4:
+            goto L_0x009c
+        L_0x00a5:
             r3[r4] = r10
-            int r18 = r4 + 1
-            r8 = r18
-            if (r2 == 0) goto L_0x00ae
+            int r17 = r4 + 1
+            r8 = r17
+            if (r2 == 0) goto L_0x00af
             r4 = r6
-            goto L_0x00af
-        L_0x00ae:
-            r4 = 0
+            goto L_0x00b0
         L_0x00af:
-            r19 = r4
+            r4 = 0
+        L_0x00b0:
+            r18 = r4
             r7 = 100
+            r19 = 0
             r20 = 0
-            r21 = 0
             r4 = r3
             r5 = r12
-            r22 = r6
+            r21 = r6
             r6 = r7
-            r7 = r18
-            r23 = r8
-            r17 = 0
-            r8 = r20
-            r20 = r9
-            r9 = r21
+            r7 = r17
+            r22 = r8
+            r23 = 0
+            r8 = r19
+            r19 = r9
+            r9 = r20
             int r9 = printField(r4, r5, r6, r7, r8, r9)
             r6 = 104(0x68, float:1.46E-43)
-            r8 = r23
-            if (r9 == r8) goto L_0x00d5
-            r18 = r22
-            goto L_0x00d7
-        L_0x00d5:
-            r18 = r17
-        L_0x00d7:
-            if (r19 == 0) goto L_0x00dc
-            r21 = r20
-            goto L_0x00de
-        L_0x00dc:
-            r21 = r17
-        L_0x00de:
+            r8 = r22
+            if (r9 == r8) goto L_0x00d6
+            r17 = r21
+            goto L_0x00d8
+        L_0x00d6:
+            r17 = r23
+        L_0x00d8:
+            if (r18 == 0) goto L_0x00dd
+            r20 = r19
+            goto L_0x00df
+        L_0x00dd:
+            r20 = r23
+        L_0x00df:
             r4 = r3
             r5 = r13
             r7 = r9
             r24 = r8
-            r8 = r18
-            r18 = r9
-            r9 = r21
-            int r9 = printField(r4, r5, r6, r7, r8, r9)
-            r6 = 109(0x6d, float:1.53E-43)
-            r8 = r24
-            if (r9 == r8) goto L_0x00f6
-            r18 = r22
-            goto L_0x00f8
-        L_0x00f6:
-            r18 = r17
-        L_0x00f8:
-            if (r19 == 0) goto L_0x00fd
-            r21 = r20
-            goto L_0x00ff
-        L_0x00fd:
-            r21 = r17
-        L_0x00ff:
-            r4 = r3
-            r5 = r14
-            r7 = r9
-            r25 = r8
-            r8 = r18
-            r18 = r9
-            r9 = r21
-            int r9 = printField(r4, r5, r6, r7, r8, r9)
-            r6 = 115(0x73, float:1.61E-43)
-            r8 = r25
-            if (r9 == r8) goto L_0x0115
-            goto L_0x0117
-        L_0x0115:
-            r22 = r17
-        L_0x0117:
-            if (r19 == 0) goto L_0x011a
-            goto L_0x011c
-        L_0x011a:
-            r20 = r17
-        L_0x011c:
-            r4 = r3
-            r5 = r15
-            r7 = r9
-            r26 = r8
-            r8 = r22
-            r18 = r9
+            r8 = r17
+            r17 = r9
             r9 = r20
             int r9 = printField(r4, r5, r6, r7, r8, r9)
             r6 = 109(0x6d, float:1.53E-43)
+            r8 = r24
+            if (r9 == r8) goto L_0x00f7
+            r17 = r21
+            goto L_0x00f9
+        L_0x00f7:
+            r17 = r23
+        L_0x00f9:
+            if (r18 == 0) goto L_0x00fe
+            r20 = r19
+            goto L_0x0100
+        L_0x00fe:
+            r20 = r23
+        L_0x0100:
+            r4 = r3
+            r5 = r15
+            r7 = r9
+            r25 = r8
+            r8 = r17
+            r17 = r9
+            r9 = r20
+            int r9 = printField(r4, r5, r6, r7, r8, r9)
+            r6 = 115(0x73, float:1.61E-43)
+            r8 = r25
+            if (r9 == r8) goto L_0x0116
+            goto L_0x0118
+        L_0x0116:
+            r21 = r23
+        L_0x0118:
+            if (r18 == 0) goto L_0x011b
+            goto L_0x011d
+        L_0x011b:
+            r19 = r23
+        L_0x011d:
+            r4 = r3
+            r5 = r14
+            r7 = r9
+            r26 = r8
+            r8 = r21
+            r17 = r9
+            r9 = r19
+            int r9 = printField(r4, r5, r6, r7, r8, r9)
+            r6 = 109(0x6d, float:1.53E-43)
             r8 = 1
-            if (r19 == 0) goto L_0x0135
+            if (r18 == 0) goto L_0x0136
             r7 = r26
-            if (r9 == r7) goto L_0x0137
-            goto L_0x0139
-        L_0x0135:
+            if (r9 == r7) goto L_0x0138
+            goto L_0x013a
+        L_0x0136:
             r7 = r26
-        L_0x0137:
-            r16 = r17
-        L_0x0139:
+        L_0x0138:
+            r16 = r23
+        L_0x013a:
             r4 = r3
             r5 = r11
             r17 = r7
             r7 = r9
-            r18 = r9
+            r19 = r9
             r9 = r16
             int r4 = printField(r4, r5, r6, r7, r8, r9)
             r5 = 115(0x73, float:1.61E-43)
@@ -288,26 +287,22 @@ public final class TimeUtils {
         throw new UnsupportedOperationException("Method not decompiled: android.support.v4.util.TimeUtils.formatDurationLocked(long, int):int");
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static void formatDuration(long duration, StringBuilder builder) {
         synchronized (sFormatSync) {
             builder.append(sFormatStr, 0, formatDurationLocked(duration, 0));
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static void formatDuration(long duration, PrintWriter pw, int fieldLen) {
         synchronized (sFormatSync) {
             pw.print(new String(sFormatStr, 0, formatDurationLocked(duration, fieldLen)));
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static void formatDuration(long duration, PrintWriter pw) {
         formatDuration(duration, pw, 0);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static void formatDuration(long time, long now, PrintWriter pw) {
         if (time == 0) {
             pw.print("--");

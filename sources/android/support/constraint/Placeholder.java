@@ -87,9 +87,10 @@ public class Placeholder extends View {
         if (this.mContentId == -1 && !isInEditMode()) {
             setVisibility(this.mEmptyVisibility);
         }
-        this.mContent = container.findViewById(this.mContentId);
-        if (this.mContent != null) {
-            ((ConstraintLayout.LayoutParams) this.mContent.getLayoutParams()).isInPlaceholder = true;
+        View findViewById = container.findViewById(this.mContentId);
+        this.mContent = findViewById;
+        if (findViewById != null) {
+            ((ConstraintLayout.LayoutParams) findViewById.getLayoutParams()).isInPlaceholder = true;
             this.mContent.setVisibility(0);
             setVisibility(0);
         }
@@ -98,8 +99,9 @@ public class Placeholder extends View {
     public void setContentId(int id) {
         View v;
         if (this.mContentId != id) {
-            if (this.mContent != null) {
-                this.mContent.setVisibility(0);
+            View view = this.mContent;
+            if (view != null) {
+                view.setVisibility(0);
                 ((ConstraintLayout.LayoutParams) this.mContent.getLayoutParams()).isInPlaceholder = false;
                 this.mContent = null;
             }

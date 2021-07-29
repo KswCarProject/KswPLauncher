@@ -11,14 +11,10 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.graphics.drawable.WrappedDrawableApi14;
 import android.util.Log;
 import java.lang.reflect.Method;
 
-@RequiresApi(21)
 class WrappedDrawableApi21 extends WrappedDrawableApi14 {
     private static final String TAG = "WrappedDrawableApi21";
     private static Method sIsProjectedDrawableMethod;
@@ -41,11 +37,10 @@ class WrappedDrawableApi21 extends WrappedDrawableApi14 {
         this.mDrawable.setHotspotBounds(left, top, right, bottom);
     }
 
-    public void getOutline(@NonNull Outline outline) {
+    public void getOutline(Outline outline) {
         this.mDrawable.getOutline(outline);
     }
 
-    @NonNull
     public Rect getDirtyBounds() {
         return this.mDrawable.getDirtyBounds();
     }
@@ -74,7 +69,7 @@ class WrappedDrawableApi21 extends WrappedDrawableApi14 {
         }
     }
 
-    public boolean setState(@NonNull int[] stateSet) {
+    public boolean setState(int[] stateSet) {
         if (!super.setState(stateSet)) {
             return false;
         }
@@ -95,9 +90,10 @@ class WrappedDrawableApi21 extends WrappedDrawableApi14 {
     }
 
     public boolean isProjected() {
-        if (!(this.mDrawable == null || sIsProjectedDrawableMethod == null)) {
+        Method method;
+        if (!(this.mDrawable == null || (method = sIsProjectedDrawableMethod) == null)) {
             try {
-                return ((Boolean) sIsProjectedDrawableMethod.invoke(this.mDrawable, new Object[0])).booleanValue();
+                return ((Boolean) method.invoke(this.mDrawable, new Object[0])).booleanValue();
             } catch (Exception ex) {
                 Log.w(TAG, "Error calling Drawable#isProjected() method", ex);
             }
@@ -106,18 +102,16 @@ class WrappedDrawableApi21 extends WrappedDrawableApi14 {
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public WrappedDrawableApi14.DrawableWrapperState mutateConstantState() {
         return new DrawableWrapperStateLollipop(this.mState, (Resources) null);
     }
 
     private static class DrawableWrapperStateLollipop extends WrappedDrawableApi14.DrawableWrapperState {
-        DrawableWrapperStateLollipop(@Nullable WrappedDrawableApi14.DrawableWrapperState orig, @Nullable Resources res) {
+        DrawableWrapperStateLollipop(WrappedDrawableApi14.DrawableWrapperState orig, Resources res) {
             super(orig, res);
         }
 
-        @NonNull
-        public Drawable newDrawable(@Nullable Resources res) {
+        public Drawable newDrawable(Resources res) {
             return new WrappedDrawableApi21(this, res);
         }
     }

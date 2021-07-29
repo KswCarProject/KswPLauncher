@@ -2,13 +2,11 @@ package android.support.v7.widget;
 
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuPresenter;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.Window;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public interface DecorContentParent {
     boolean canShowOverflowMenu();
 

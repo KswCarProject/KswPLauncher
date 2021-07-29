@@ -3,10 +3,6 @@ package android.support.v4.view;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
 import android.support.v4.util.Pools;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -33,17 +29,16 @@ public final class AsyncLayoutInflater {
     LayoutInflater mInflater;
 
     public interface OnInflateFinishedListener {
-        void onInflateFinished(@NonNull View view, @LayoutRes int i, @Nullable ViewGroup viewGroup);
+        void onInflateFinished(View view, int i, ViewGroup viewGroup);
     }
 
-    public AsyncLayoutInflater(@NonNull Context context) {
+    public AsyncLayoutInflater(Context context) {
         this.mInflater = new BasicInflater(context);
         this.mHandler = new Handler(this.mHandlerCallback);
         this.mInflateThread = InflateThread.getInstance();
     }
 
-    @UiThread
-    public void inflate(@LayoutRes int resid, @Nullable ViewGroup parent, @NonNull OnInflateFinishedListener callback) {
+    public void inflate(int resid, ViewGroup parent, OnInflateFinishedListener callback) {
         if (callback != null) {
             InflateRequest request = this.mInflateThread.obtainRequest();
             request.inflater = this;
@@ -98,7 +93,7 @@ public final class AsyncLayoutInflater {
     }
 
     private static class InflateThread extends Thread {
-        private static final InflateThread sInstance = new InflateThread();
+        private static final InflateThread sInstance;
         private ArrayBlockingQueue<InflateRequest> mQueue = new ArrayBlockingQueue<>(10);
         private Pools.SynchronizedPool<InflateRequest> mRequestPool = new Pools.SynchronizedPool<>(10);
 
@@ -106,7 +101,9 @@ public final class AsyncLayoutInflater {
         }
 
         static {
-            sInstance.start();
+            InflateThread inflateThread = new InflateThread();
+            sInstance = inflateThread;
+            inflateThread.start();
         }
 
         public static InflateThread getInstance() {

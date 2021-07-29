@@ -4,7 +4,6 @@ import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.appcompat.R;
 import android.util.AttributeSet;
@@ -48,7 +47,8 @@ class AppCompatBackgroundHelper {
     /* access modifiers changed from: package-private */
     public void onSetBackgroundResource(int resId) {
         this.mBackgroundResId = resId;
-        setInternalBackgroundTint(this.mDrawableManager != null ? this.mDrawableManager.getTintList(this.mView.getContext(), resId) : null);
+        AppCompatDrawableManager appCompatDrawableManager = this.mDrawableManager;
+        setInternalBackgroundTint(appCompatDrawableManager != null ? appCompatDrawableManager.getTintList(this.mView.getContext(), resId) : null);
         applySupportBackgroundTint();
     }
 
@@ -71,8 +71,9 @@ class AppCompatBackgroundHelper {
 
     /* access modifiers changed from: package-private */
     public ColorStateList getSupportBackgroundTintList() {
-        if (this.mBackgroundTint != null) {
-            return this.mBackgroundTint.mTintList;
+        TintInfo tintInfo = this.mBackgroundTint;
+        if (tintInfo != null) {
+            return tintInfo.mTintList;
         }
         return null;
     }
@@ -89,8 +90,9 @@ class AppCompatBackgroundHelper {
 
     /* access modifiers changed from: package-private */
     public PorterDuff.Mode getSupportBackgroundTintMode() {
-        if (this.mBackgroundTint != null) {
-            return this.mBackgroundTint.mTintMode;
+        TintInfo tintInfo = this.mBackgroundTint;
+        if (tintInfo != null) {
+            return tintInfo.mTintMode;
         }
         return null;
     }
@@ -101,13 +103,16 @@ class AppCompatBackgroundHelper {
         if (background == null) {
             return;
         }
-        if (shouldApplyFrameworkTintUsingColorFilter() && applyFrameworkTintUsingColorFilter(background)) {
-            return;
-        }
-        if (this.mBackgroundTint != null) {
-            AppCompatDrawableManager.tintDrawable(background, this.mBackgroundTint, this.mView.getDrawableState());
-        } else if (this.mInternalBackgroundTint != null) {
-            AppCompatDrawableManager.tintDrawable(background, this.mInternalBackgroundTint, this.mView.getDrawableState());
+        if (!shouldApplyFrameworkTintUsingColorFilter() || !applyFrameworkTintUsingColorFilter(background)) {
+            TintInfo tintInfo = this.mBackgroundTint;
+            if (tintInfo != null) {
+                AppCompatDrawableManager.tintDrawable(background, tintInfo, this.mView.getDrawableState());
+                return;
+            }
+            TintInfo tintInfo2 = this.mInternalBackgroundTint;
+            if (tintInfo2 != null) {
+                AppCompatDrawableManager.tintDrawable(background, tintInfo2, this.mView.getDrawableState());
+            }
         }
     }
 
@@ -136,7 +141,7 @@ class AppCompatBackgroundHelper {
         return false;
     }
 
-    private boolean applyFrameworkTintUsingColorFilter(@NonNull Drawable background) {
+    private boolean applyFrameworkTintUsingColorFilter(Drawable background) {
         if (this.mTmpInfo == null) {
             this.mTmpInfo = new TintInfo();
         }

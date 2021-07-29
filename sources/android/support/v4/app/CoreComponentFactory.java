@@ -7,15 +7,10 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentProvider;
 import android.content.Intent;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 
-@RequiresApi(api = 28)
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class CoreComponentFactory extends AppComponentFactory {
     private static final String TAG = "CoreComponentFactory";
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public interface CompatWrapped {
         Object getWrapper();
     }

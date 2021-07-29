@@ -2,12 +2,10 @@ package android.support.v4.internal.view;
 
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ActionProvider;
 import android.view.MenuItem;
 import android.view.View;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public interface SupportMenuItem extends MenuItem {
     public static final int SHOW_AS_ACTION_ALWAYS = 2;
     public static final int SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW = 8;

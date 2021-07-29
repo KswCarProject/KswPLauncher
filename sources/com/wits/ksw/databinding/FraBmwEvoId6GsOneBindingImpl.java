@@ -6,8 +6,6 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -17,27 +15,23 @@ import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
 
 public class FraBmwEvoId6GsOneBindingImpl extends FraBmwEvoId6GsOneBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final LinearLayout mboundView0;
-    @NonNull
     private final ConstraintLayout mboundView2;
-    @NonNull
     private final ConstraintLayout mboundView5;
-    @NonNull
     private final ConstraintLayout mboundView6;
 
     static {
-        sViewsWithIds.put(R.id.bmw_evo_id6_gs_hmoe_navi_hint_textview, 7);
-        sViewsWithIds.put(R.id.textView17, 8);
-        sViewsWithIds.put(R.id.bmw_evo_id6_gs_hmoe_video_hint_textview, 9);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.bmw_evo_id6_gs_hmoe_navi_hint_textview, 7);
+        sparseIntArray.put(R.id.textView17, 8);
+        sparseIntArray.put(R.id.bmw_evo_id6_gs_hmoe_video_hint_textview, 9);
     }
 
-    public FraBmwEvoId6GsOneBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public FraBmwEvoId6GsOneBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 10, sIncludes, sViewsWithIds));
     }
 
@@ -47,14 +41,18 @@ public class FraBmwEvoId6GsOneBindingImpl extends FraBmwEvoId6GsOneBinding {
         this.bmwEvoId6GsHmoeMusicHintTextview.setTag((Object) null);
         this.bmwEvoId6GsHmoeMusicNameTextview.setTag((Object) null);
         this.bmwEvoId6GsHmoeNaviBtn.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView2 = bindings[2];
-        this.mboundView2.setTag((Object) null);
-        this.mboundView5 = bindings[5];
-        this.mboundView5.setTag((Object) null);
-        this.mboundView6 = bindings[6];
-        this.mboundView6.setTag((Object) null);
+        LinearLayout linearLayout = bindings[0];
+        this.mboundView0 = linearLayout;
+        linearLayout.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[2];
+        this.mboundView2 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        ConstraintLayout constraintLayout2 = bindings[5];
+        this.mboundView5 = constraintLayout2;
+        constraintLayout2.setTag((Object) null);
+        ConstraintLayout constraintLayout3 = bindings[6];
+        this.mboundView6 = constraintLayout3;
+        constraintLayout3.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -75,7 +73,7 @@ public class FraBmwEvoId6GsOneBindingImpl extends FraBmwEvoId6GsOneBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -83,7 +81,7 @@ public class FraBmwEvoId6GsOneBindingImpl extends FraBmwEvoId6GsOneBinding {
         return true;
     }
 
-    public void setVm(@Nullable BmwId6gsViewMode Vm) {
+    public void setVm(BmwId6gsViewMode Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 8;
@@ -139,26 +137,26 @@ public class FraBmwEvoId6GsOneBindingImpl extends FraBmwEvoId6GsOneBinding {
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
-        boolean vmIndexInt2;
-        MediaInfo vmMediaInfo;
-        String vmMediaInfoMusicNameJavaLangObjectNullBmwEvoId6GsHmoeMusicNameTextviewAndroidStringKswIdf7UnkonwSoungVmMediaInfoMusicName;
+        boolean vmIndexInt1;
         String str;
+        String vmMediaInfoMusicAtistGet;
+        ObservableField<String> vmMediaInfoMusicAtist;
+        ObservableField<String> vmMediaInfoMusicName;
+        int vmIndexGet;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
+        boolean vmIndexInt2 = false;
+        String vmMediaInfoMusicAtistGet2 = null;
         ObservableInt vmIndex = null;
-        BmwId6gsViewMode vm = this.mVm;
-        ObservableField<String> vmMediaInfoMusicName = null;
-        ObservableField<String> vmMediaInfoMusicAtist = null;
         String vmMediaInfoMusicNameGet = null;
+        boolean vmMediaInfoMusicAtistJavaLangObjectNull = false;
+        BmwId6gsViewMode vm = this.mVm;
         String vmMediaInfoMusicAtistJavaLangObjectNullBmwEvoId6GsHmoeMusicHintTextviewAndroidStringKswIdf7UnknowArtisVmMediaInfoMusicAtist = null;
+        String vmMediaInfoMusicNameJavaLangObjectNullBmwEvoId6GsHmoeMusicNameTextviewAndroidStringKswIdf7UnkonwSoungVmMediaInfoMusicName = null;
         boolean vmIndexInt0 = false;
         boolean vmIndexInt3 = false;
-        String vmMediaInfoMusicAtistGet = null;
-        boolean vmMediaInfoMusicAtistJavaLangObjectNull = false;
-        int vmIndexGet = 0;
-        boolean vmIndexInt1 = false;
         boolean vmMediaInfoMusicNameJavaLangObjectNull = false;
         if ((dirtyFlags & 25) != 0) {
             if (vm != null) {
@@ -167,72 +165,80 @@ public class FraBmwEvoId6GsOneBindingImpl extends FraBmwEvoId6GsOneBinding {
             updateRegistration(0, (Observable) vmIndex);
             if (vmIndex != null) {
                 vmIndexGet = vmIndex.get();
+            } else {
+                vmIndexGet = 0;
             }
-            int vmIndexGet2 = vmIndexGet;
-            boolean vmIndexInt22 = vmIndexGet2 == 2;
-            vmIndexInt0 = vmIndexGet2 == 0;
-            vmIndexInt3 = vmIndexGet2 == 3;
-            vmIndexInt1 = vmIndexGet2 == 1;
-            vmIndexInt2 = vmIndexInt22;
-            int i = vmIndexGet2;
+            vmIndexInt2 = vmIndexGet == 2;
+            vmIndexInt0 = vmIndexGet == 0;
+            vmIndexInt3 = vmIndexGet == 3;
+            vmIndexInt1 = vmIndexGet == 1;
+            int i = vmIndexGet;
         } else {
-            vmIndexInt2 = false;
+            vmIndexInt1 = false;
         }
-        boolean vmIndexInt12 = vmIndexInt1;
         if ((dirtyFlags & 22) != 0) {
-            vmMediaInfo = BmwId6gsViewMode.mediaInfo;
+            MediaInfo vmMediaInfo = BmwId6gsViewMode.mediaInfo;
             if ((dirtyFlags & 18) != 0) {
                 if (vmMediaInfo != null) {
                     vmMediaInfoMusicName = vmMediaInfo.musicName;
+                } else {
+                    vmMediaInfoMusicName = null;
                 }
-                ObservableInt observableInt = vmIndex;
+                vmMediaInfoMusicAtistGet = null;
                 updateRegistration(1, (Observable) vmMediaInfoMusicName);
                 if (vmMediaInfoMusicName != null) {
                     vmMediaInfoMusicNameGet = vmMediaInfoMusicName.get();
                 }
-                boolean vmMediaInfoMusicNameJavaLangObjectNull2 = vmMediaInfoMusicNameGet == null;
-                if ((dirtyFlags & 18) != 0) {
-                    if (vmMediaInfoMusicNameJavaLangObjectNull2) {
-                        dirtyFlags |= 256;
-                    } else {
-                        dirtyFlags |= 128;
-                    }
+                vmMediaInfoMusicNameJavaLangObjectNull = vmMediaInfoMusicNameGet == null;
+                if ((dirtyFlags & 18) == 0) {
+                    ObservableField<String> observableField = vmMediaInfoMusicName;
+                } else if (vmMediaInfoMusicNameJavaLangObjectNull) {
+                    dirtyFlags |= 256;
+                    ObservableField<String> observableField2 = vmMediaInfoMusicName;
+                } else {
+                    dirtyFlags |= 128;
+                    ObservableField<String> observableField3 = vmMediaInfoMusicName;
                 }
-                vmMediaInfoMusicNameJavaLangObjectNull = vmMediaInfoMusicNameJavaLangObjectNull2;
+            } else {
+                vmMediaInfoMusicAtistGet = null;
             }
             if ((dirtyFlags & 20) != 0) {
                 if (vmMediaInfo != null) {
                     vmMediaInfoMusicAtist = vmMediaInfo.musicAtist;
+                } else {
+                    vmMediaInfoMusicAtist = null;
                 }
                 updateRegistration(2, (Observable) vmMediaInfoMusicAtist);
                 if (vmMediaInfoMusicAtist != null) {
-                    vmMediaInfoMusicAtistGet = vmMediaInfoMusicAtist.get();
+                    vmMediaInfoMusicAtistGet2 = vmMediaInfoMusicAtist.get();
+                } else {
+                    vmMediaInfoMusicAtistGet2 = vmMediaInfoMusicAtistGet;
                 }
-                vmMediaInfoMusicAtistJavaLangObjectNull = vmMediaInfoMusicAtistGet == null;
-                if ((dirtyFlags & 20) != 0) {
-                    if (vmMediaInfoMusicAtistJavaLangObjectNull) {
-                        dirtyFlags |= 64;
-                    } else {
-                        dirtyFlags |= 32;
-                    }
+                vmMediaInfoMusicAtistJavaLangObjectNull = vmMediaInfoMusicAtistGet2 == null;
+                if ((dirtyFlags & 20) == 0) {
+                    ObservableField<String> observableField4 = vmMediaInfoMusicAtist;
+                } else if (vmMediaInfoMusicAtistJavaLangObjectNull) {
+                    dirtyFlags |= 64;
+                    ObservableField<String> observableField5 = vmMediaInfoMusicAtist;
+                } else {
+                    dirtyFlags |= 32;
+                    ObservableField<String> observableField6 = vmMediaInfoMusicAtist;
                 }
+            } else {
+                vmMediaInfoMusicAtistGet2 = vmMediaInfoMusicAtistGet;
             }
-        } else {
-            vmMediaInfo = null;
         }
         if ((dirtyFlags & 20) != 0) {
             if (vmMediaInfoMusicAtistJavaLangObjectNull) {
-                MediaInfo mediaInfo = vmMediaInfo;
+                String str2 = vmMediaInfoMusicAtistGet2;
                 str = this.bmwEvoId6GsHmoeMusicHintTextview.getResources().getString(R.string.ksw_idf7_unknow_artis);
             } else {
-                str = vmMediaInfoMusicAtistGet;
+                str = vmMediaInfoMusicAtistGet2;
             }
             vmMediaInfoMusicAtistJavaLangObjectNullBmwEvoId6GsHmoeMusicHintTextviewAndroidStringKswIdf7UnknowArtisVmMediaInfoMusicAtist = str;
         }
         if ((dirtyFlags & 18) != 0) {
             vmMediaInfoMusicNameJavaLangObjectNullBmwEvoId6GsHmoeMusicNameTextviewAndroidStringKswIdf7UnkonwSoungVmMediaInfoMusicName = vmMediaInfoMusicNameJavaLangObjectNull ? this.bmwEvoId6GsHmoeMusicNameTextview.getResources().getString(R.string.ksw_idf7_unkonw_soung) : vmMediaInfoMusicNameGet;
-        } else {
-            vmMediaInfoMusicNameJavaLangObjectNullBmwEvoId6GsHmoeMusicNameTextviewAndroidStringKswIdf7UnkonwSoungVmMediaInfoMusicName = null;
         }
         if ((dirtyFlags & 20) != 0) {
             TextViewBindingAdapter.setText(this.bmwEvoId6GsHmoeMusicHintTextview, vmMediaInfoMusicAtistJavaLangObjectNullBmwEvoId6GsHmoeMusicHintTextviewAndroidStringKswIdf7UnknowArtisVmMediaInfoMusicAtist);
@@ -242,7 +248,7 @@ public class FraBmwEvoId6GsOneBindingImpl extends FraBmwEvoId6GsOneBinding {
         }
         if ((dirtyFlags & 25) != 0) {
             this.bmwEvoId6GsHmoeNaviBtn.setSelected(vmIndexInt0);
-            this.mboundView2.setSelected(vmIndexInt12);
+            this.mboundView2.setSelected(vmIndexInt1);
             this.mboundView5.setSelected(vmIndexInt2);
             this.mboundView6.setSelected(vmIndexInt3);
         }

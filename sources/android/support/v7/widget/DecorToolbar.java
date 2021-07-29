@@ -3,7 +3,6 @@ package android.support.v7.widget;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuPresenter;
@@ -15,7 +14,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.SpinnerAdapter;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public interface DecorToolbar {
     void animateToVisibility(int i);
 

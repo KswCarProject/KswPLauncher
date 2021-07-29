@@ -2,6 +2,7 @@ package com.wits.pms.statuscontrol;
 
 import com.google.gson.Gson;
 import com.wits.pms.statuscontrol.WitsCommand;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,6 +126,13 @@ public class McuStatus {
                 data1 = (byte) ((1 << index) + 0);
             }
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIRCON_CONTROL, data1 + "," + data2);
+        }
+    }
+
+    public static void main(String... arg) {
+        try {
+            new String("yA��".getBytes(), "Unicode");
+        } catch (UnsupportedEncodingException e) {
         }
     }
 
@@ -252,42 +260,12 @@ public class McuStatus {
         }
 
         public static String getModeBinaryString(int mode2) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("");
             int i2 = 0;
-            sb.append((mode2 & 128) != 0 ? 1 : 0);
-            String binaryString = sb.toString();
-            StringBuilder sb2 = new StringBuilder();
-            sb2.append(binaryString);
-            sb2.append((mode2 & 64) != 0 ? 1 : 0);
-            String binaryString2 = sb2.toString();
-            StringBuilder sb3 = new StringBuilder();
-            sb3.append(binaryString2);
-            sb3.append((mode2 & 32) != 0 ? 1 : 0);
-            String binaryString3 = sb3.toString();
-            StringBuilder sb4 = new StringBuilder();
-            sb4.append(binaryString3);
-            sb4.append((mode2 & 16) != 0 ? 1 : 0);
-            String binaryString4 = sb4.toString();
-            StringBuilder sb5 = new StringBuilder();
-            sb5.append(binaryString4);
-            sb5.append((mode2 & 8) != 0 ? 1 : 0);
-            String binaryString5 = sb5.toString();
-            StringBuilder sb6 = new StringBuilder();
-            sb6.append(binaryString5);
-            sb6.append((mode2 & 4) != 0 ? 1 : 0);
-            String binaryString6 = sb6.toString();
-            StringBuilder sb7 = new StringBuilder();
-            sb7.append(binaryString6);
-            sb7.append((mode2 & 2) != 0 ? 1 : 0);
-            String binaryString7 = sb7.toString();
-            StringBuilder sb8 = new StringBuilder();
-            sb8.append(binaryString7);
+            StringBuilder append = new StringBuilder().append((((((("" + ((mode2 & 128) != 0 ? 1 : 0)) + ((mode2 & 64) != 0 ? 1 : 0)) + ((mode2 & 32) != 0 ? 1 : 0)) + ((mode2 & 16) != 0 ? 1 : 0)) + ((mode2 & 8) != 0 ? 1 : 0)) + ((mode2 & 4) != 0 ? 1 : 0)) + ((mode2 & 2) != 0 ? 1 : 0));
             if ((mode2 & 1) != 0) {
                 i2 = 1;
             }
-            sb8.append(i2);
-            return sb8.toString();
+            return append.append(i2).toString();
         }
 
         public static ACData getStatusFromJson(String jsonArg) {
@@ -299,28 +277,52 @@ public class McuStatus {
         }
     }
 
+    public static class CarBluetoothStatus {
+        public int batteryStatus;
+        public int callSignal;
+        public boolean isCalling;
+        public int min;
+        public String name;
+        public boolean playingMusic;
+        public int sec;
+        public String settingsInfo;
+        public int times;
+
+        public static CarBluetoothStatus parseInfoFromJson(String json) {
+            return (CarBluetoothStatus) new Gson().fromJson(json, CarBluetoothStatus.class);
+        }
+    }
+
     public static class MediaData {
-        public static final int TYPE_AUX = 48;
+        public static final int TYPE_AUX = 20;
+        public static final int TYPE_BT = 21;
         public static final int TYPE_DISC = 16;
-        public static final int TYPE_DVD = 33;
         public static final int TYPE_FM = 1;
         public static final int TYPE_MODE = 64;
+        public static final int TYPE_MP3 = 18;
         public static final int TYPE_USB = 17;
-        public Disc disc;
-        public DVD dvd;
-        public Fm fm;
-        public MODE mode;
+        public boolean ALS;
+        public boolean RAND;
+        public boolean RPT;
+        public boolean SCAN;
+        public boolean ST;
+        public Disc disc = new Disc();
+        public DVD dvd = new DVD();
+        public Fm fm = new Fm();
+        public MODE mode = new MODE();
+        public MP3 mp3 = new MP3();
+        public String status;
         public int type;
-        public Usb usb;
+        public Usb usb = new Usb();
 
-        public static class DVD {
+        public static class DVD extends BaseMediaInfo {
             public int chapterNumber;
             public int min;
             public int sec;
             public int totalChapter;
         }
 
-        public static class Disc {
+        public static class Disc extends BaseMediaInfo {
             public int min;
             public int number;
             public int sec;
@@ -333,7 +335,7 @@ public class McuStatus {
             public int preFreq;
         }
 
-        public static class MODE {
+        public static class MODE extends BaseMediaInfo {
             public boolean ASL;
             public boolean PAUSE;
             public boolean RAND;
@@ -342,11 +344,53 @@ public class McuStatus {
             public boolean ST;
         }
 
-        public static class Usb {
+        public static class MP3 extends BaseMediaInfo {
             public int fileNumber;
             public int folderNumber;
             public int min;
             public int sec;
+        }
+
+        public static class Usb extends BaseMediaInfo {
+            public int fileNumber;
+            public int folderNumber;
+            public int min;
+            public int sec;
+        }
+
+        public BaseMediaInfo getCurrentMediaInfo() {
+            int i = this.type;
+            if (i != 0) {
+                switch (i) {
+                    case 1:
+                    case 20:
+                    case 21:
+                        return null;
+                    case 16:
+                        return this.disc;
+                    case 17:
+                        return this.usb;
+                    case 18:
+                        return this.mp3;
+                    case 64:
+                        return this.mode;
+                }
+            }
+            return null;
+        }
+
+        public static class BaseMediaInfo {
+            public String album = "";
+            public String artist = "";
+            public String folderName = "";
+            public String name = "";
+
+            public void reset() {
+                this.name = "";
+                this.artist = "";
+                this.album = "";
+                this.folderName = "";
+            }
         }
 
         public static MediaData parseDataFromJson(String json) {
@@ -395,6 +439,34 @@ public class McuStatus {
 
         public static DiscStatus parseInfoFromJson(String json) {
             return (DiscStatus) new Gson().fromJson(json, DiscStatus.class);
+        }
+    }
+
+    public static class EqData {
+        public int BAL;
+        public int BAS;
+        public int FAD;
+        public int MID;
+        public int TRE;
+        public String changeVol;
+        public int volume;
+
+        public static EqData parseDataFromJson(String jsonArg) {
+            return (EqData) new Gson().fromJson(jsonArg, EqData.class);
+        }
+    }
+
+    public static final class KswMcuMsg {
+        public int cmdType;
+        public byte[] data;
+
+        public KswMcuMsg(int cmdType2, byte... data2) {
+            this.cmdType = cmdType2;
+            this.data = data2;
+        }
+
+        public static KswMcuMsg getMsgFormJson(String jsonArg) {
+            return (KswMcuMsg) new Gson().fromJson(jsonArg, KswMcuMsg.class);
         }
     }
 

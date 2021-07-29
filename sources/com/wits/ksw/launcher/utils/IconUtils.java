@@ -171,8 +171,7 @@ public class IconUtils {
             return PowerManagerApp.getSettingsInt("AppsIcon_Select");
         } catch (Exception e) {
             e.printStackTrace();
-            String str = TAG;
-            Log.e(str, "getClient: " + e.getMessage());
+            Log.e(TAG, "getClient: " + e.getMessage());
             return 0;
         }
     }

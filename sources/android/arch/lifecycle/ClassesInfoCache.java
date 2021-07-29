@@ -1,7 +1,6 @@
 package android.arch.lifecycle;
 
 import android.arch.lifecycle.Lifecycle;
-import android.support.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -56,20 +55,18 @@ class ClassesInfoCache {
     private void verifyAndPutHandler(Map<MethodReference, Lifecycle.Event> handlers, MethodReference newHandler, Lifecycle.Event newEvent, Class klass) {
         Lifecycle.Event event = handlers.get(newHandler);
         if (event != null && newEvent != event) {
-            Method method = newHandler.mMethod;
-            throw new IllegalArgumentException("Method " + method.getName() + " in " + klass.getName() + " already declared with different @OnLifecycleEvent value: previous value " + event + ", new value " + newEvent);
+            throw new IllegalArgumentException("Method " + newHandler.mMethod.getName() + " in " + klass.getName() + " already declared with different @OnLifecycleEvent value: previous value " + event + ", new value " + newEvent);
         } else if (event == null) {
             handlers.put(newHandler, newEvent);
         }
     }
 
-    private CallbackInfo createInfo(Class klass, @Nullable Method[] declaredMethods) {
-        Class superclass;
+    private CallbackInfo createInfo(Class klass, Method[] declaredMethods) {
         CallbackInfo superInfo;
         Class cls = klass;
-        Class superclass2 = klass.getSuperclass();
+        Class superclass = klass.getSuperclass();
         Map<MethodReference, Lifecycle.Event> handlerToEvent = new HashMap<>();
-        if (!(superclass2 == null || (superInfo = getInfo(superclass2)) == null)) {
+        if (!(superclass == null || (superInfo = getInfo(superclass)) == null)) {
             handlerToEvent.putAll(superInfo.mHandlerToEvent);
         }
         char c = 0;
@@ -79,15 +76,13 @@ class ClassesInfoCache {
             }
         }
         Method[] methods = declaredMethods != null ? declaredMethods : getDeclaredMethods(klass);
-        int length = methods.length;
         boolean hasLifecycleMethods = false;
+        int length = methods.length;
         int i = 0;
         while (i < length) {
             Method method = methods[i];
             OnLifecycleEvent annotation = (OnLifecycleEvent) method.getAnnotation(OnLifecycleEvent.class);
-            if (annotation == null) {
-                superclass = superclass2;
-            } else {
+            if (annotation != null) {
                 hasLifecycleMethods = true;
                 Class<?>[] params = method.getParameterTypes();
                 int callType = 0;
@@ -98,7 +93,6 @@ class ClassesInfoCache {
                     }
                 }
                 Lifecycle.Event event = annotation.value();
-                superclass = superclass2;
                 if (params.length > 1) {
                     callType = 2;
                     if (!params[1].isAssignableFrom(Lifecycle.Event.class)) {
@@ -114,7 +108,6 @@ class ClassesInfoCache {
                 }
             }
             i++;
-            superclass2 = superclass;
             c = 0;
         }
         CallbackInfo info = new CallbackInfo(handlerToEvent);
@@ -162,7 +155,7 @@ class ClassesInfoCache {
         MethodReference(int callType, Method method) {
             this.mCallType = callType;
             this.mMethod = method;
-            this.mMethod.setAccessible(true);
+            method.setAccessible(true);
         }
 
         /* access modifiers changed from: package-private */

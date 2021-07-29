@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.Resource;
@@ -24,8 +23,7 @@ public class DrawableTransformation implements Transformation<Drawable> {
         return this;
     }
 
-    @NonNull
-    public Resource<Drawable> transform(@NonNull Context context, @NonNull Resource<Drawable> resource, int outWidth, int outHeight) {
+    public Resource<Drawable> transform(Context context, Resource<Drawable> resource, int outWidth, int outHeight) {
         BitmapPool bitmapPool = Glide.get(context).getBitmapPool();
         Drawable drawable = resource.get();
         Resource<Bitmap> bitmapResourceToTransform = DrawableToBitmapConverter.convert(bitmapPool, drawable, outWidth, outHeight);
@@ -58,7 +56,7 @@ public class DrawableTransformation implements Transformation<Drawable> {
         return this.wrapped.hashCode();
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         this.wrapped.updateDiskCacheKey(messageDigest);
     }
 }

@@ -1,6 +1,5 @@
 package com.bumptech.glide.load;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,15 +8,13 @@ import java.nio.ByteBuffer;
 public interface ImageHeaderParser {
     public static final int UNKNOWN_ORIENTATION = -1;
 
-    int getOrientation(@NonNull InputStream inputStream, @NonNull ArrayPool arrayPool) throws IOException;
+    int getOrientation(InputStream inputStream, ArrayPool arrayPool) throws IOException;
 
-    int getOrientation(@NonNull ByteBuffer byteBuffer, @NonNull ArrayPool arrayPool) throws IOException;
+    int getOrientation(ByteBuffer byteBuffer, ArrayPool arrayPool) throws IOException;
 
-    @NonNull
-    ImageType getType(@NonNull InputStream inputStream) throws IOException;
+    ImageType getType(InputStream inputStream) throws IOException;
 
-    @NonNull
-    ImageType getType(@NonNull ByteBuffer byteBuffer) throws IOException;
+    ImageType getType(ByteBuffer byteBuffer) throws IOException;
 
     public enum ImageType {
         GIF(true),

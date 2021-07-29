@@ -44,6 +44,12 @@
     <string name="audi_set_temp_unit">Unité de température</string>
     <string name="bc_apps_btn_text">Plus d\'APPS</string>
     <string name="benz_gs_home_navi">Navigate</string>
+    <string name="benz_mbux_2021_bg_sel_tip">Couleur du fond</string>
+    <string name="benz_mbux_2021_img_sel_tip">Style de l’icône</string>
+    <string name="benz_mbux_2021_style_classical_tip">classique</string>
+    <string name="benz_mbux_2021_style_modern_tip">Moderne</string>
+    <string name="benz_mbux_2021_theme_settings">Définition des thèmes</string>
+    <string name="benz_ntg6_fy_theme_settings">Le thème</string>
     <string name="boot_record_mode">Rappelez-vous le dernier mode</string>
     <string name="boot_record_mode_radio1">Activer</string>
     <string name="boot_record_mode_radio2">Vers le système OEM</string>
@@ -119,6 +125,7 @@
     <string name="factory_yuyinkey2">Un appui court n\'a pas d\'effet, un appui long permet d\'accéder à la fonction de navigation</string>
     <string name="factory_yuyinkey3">Un appui court permet d\'accéder à la fonction audio, un appui long permet d\'accéder à la fonction de navigation</string>
     <string name="factory_yuyinkey4">Un appui court permet d\'accéder à la fonction de navigation, un appui long n\'a pas d\'effet</string>
+    <string name="fuel_unit">Unità carburante</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>
@@ -167,6 +174,7 @@
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">Système</string>
     <string name="item2">Navigation</string>
     <string name="item3">Volume</string>
@@ -201,8 +209,13 @@
     <string name="ksw_idf7_unknow_artis">Chanteur inconnu</string>
     <string name="ksw_idf7_unkonw_album">Album inconnu</string>
     <string name="ksw_idf7_unkonw_soung">Chanson inconnue</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Erreur!</string>
     <string name="mcu_file_corrupted">Upgrade file corrupted!</string>
+    <string name="music_app_sel">App de musique</string>
     <string name="ntg6_dvr_toast">Pas de dispositif!</string>
     <string name="oil_size">huile: %s</string>
     <string name="raw_car_text1">Affichage en plein écran</string>
@@ -284,6 +297,7 @@
     <string name="update_mcu_file">Mettre à jour le MCU ou pas ?</string>
     <string name="update_reset_all">Restaurer les paramètres d\'usine ou pas?</string>
     <string name="video">Vidéo</string>
+    <string name="video_app_sel">App vidéo</string>
     <string name="voic_1">Volume après l\'installation</string>
     <string name="voic_2">Média</string>
     <string name="voic_3">Appel</string>

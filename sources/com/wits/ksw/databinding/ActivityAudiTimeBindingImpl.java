@@ -5,8 +5,6 @@ import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RadioButton;
@@ -15,28 +13,23 @@ import com.wits.ksw.R;
 import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
 
 public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final RadioButton mboundView2;
-    @NonNull
     private final RadioButton mboundView3;
-    @NonNull
     private final RadioGroup mboundView4;
-    @NonNull
     private final RadioButton mboundView5;
-    @NonNull
     private final RadioButton mboundView6;
 
     static {
-        sViewsWithIds.put(R.id.audi_sync_time, 7);
-        sViewsWithIds.put(R.id.audi_time_zhishi, 8);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.audi_sync_time, 7);
+        sparseIntArray.put(R.id.audi_time_zhishi, 8);
     }
 
-    public ActivityAudiTimeBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityAudiTimeBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
     }
 
@@ -44,16 +37,21 @@ public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
         super(bindingComponent, root, 2, bindings[7], bindings[8], bindings[0], bindings[1]);
         this.mDirtyFlags = -1;
         this.linearLayout4.setTag((Object) null);
-        this.mboundView2 = bindings[2];
-        this.mboundView2.setTag((Object) null);
-        this.mboundView3 = bindings[3];
-        this.mboundView3.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
-        this.mboundView5 = bindings[5];
-        this.mboundView5.setTag((Object) null);
-        this.mboundView6 = bindings[6];
-        this.mboundView6.setTag((Object) null);
+        RadioButton radioButton = bindings[2];
+        this.mboundView2 = radioButton;
+        radioButton.setTag((Object) null);
+        RadioButton radioButton2 = bindings[3];
+        this.mboundView3 = radioButton2;
+        radioButton2.setTag((Object) null);
+        RadioGroup radioGroup = bindings[4];
+        this.mboundView4 = radioGroup;
+        radioGroup.setTag((Object) null);
+        RadioButton radioButton3 = bindings[5];
+        this.mboundView5 = radioButton3;
+        radioButton3.setTag((Object) null);
+        RadioButton radioButton4 = bindings[6];
+        this.mboundView6 = radioButton4;
+        radioButton4.setTag((Object) null);
         this.timeRadioGroup.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
@@ -75,7 +73,7 @@ public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -83,7 +81,7 @@ public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
         return true;
     }
 
-    public void setVm(@Nullable AudiSettingViewModel Vm) {
+    public void setVm(AudiSettingViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 4;
@@ -131,21 +129,20 @@ public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        AudiSettingViewModel vm = this.mVm;
         RadioGroup.OnCheckedChangeListener vmOnTimeMoedlChangeListener = null;
         ObservableBoolean vmIsCarTime = null;
-        boolean vmIs24Hour = false;
-        boolean vmIsCarTimeGet = false;
         boolean VmIsCarTime1 = false;
         boolean vmIs24HourGet = false;
-        ObservableBoolean VmIs24Hour1 = null;
+        AudiSettingViewModel vm = this.mVm;
+        boolean vmIs24Hour = false;
         RadioGroup.OnCheckedChangeListener vmOn24HourChangeListener = null;
+        boolean vmIsCarTimeGet = false;
+        ObservableBoolean VmIs24Hour1 = null;
         if ((15 & dirtyFlags) != 0) {
             if (!((dirtyFlags & 12) == 0 || vm == null)) {
                 vmOnTimeMoedlChangeListener = vm.onTimeMoedlChangeListener;
                 vmOn24HourChangeListener = vm.on24HourChangeListener;
             }
-            boolean z = true;
             if ((dirtyFlags & 13) != 0) {
                 if (vm != null) {
                     vmIsCarTime = vm.isCarTime;
@@ -164,10 +161,7 @@ public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
                 if (VmIs24Hour1 != null) {
                     vmIs24HourGet = VmIs24Hour1.get();
                 }
-                if (vmIs24HourGet) {
-                    z = false;
-                }
-                vmIs24Hour = z;
+                vmIs24Hour = !vmIs24HourGet;
             }
         }
         if ((dirtyFlags & 13) != 0) {

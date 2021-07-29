@@ -25,11 +25,13 @@ public final class JsonTreeReader extends JsonReader {
             throw new AssertionError();
         }
     };
-    private final List<Object> stack = new ArrayList();
+    private final List<Object> stack;
 
     public JsonTreeReader(JsonElement element) {
         super(UNREADABLE_READER);
-        this.stack.add(element);
+        ArrayList arrayList = new ArrayList();
+        this.stack = arrayList;
+        arrayList.add(element);
     }
 
     public void beginArray() throws IOException {
@@ -65,7 +67,8 @@ public final class JsonTreeReader extends JsonReader {
         }
         Object o = peekStack();
         if (o instanceof Iterator) {
-            boolean isObject = this.stack.get(this.stack.size() - 2) instanceof JsonObject;
+            List<Object> list = this.stack;
+            boolean isObject = list.get(list.size() - 2) instanceof JsonObject;
             Iterator<?> iterator = (Iterator) o;
             if (!iterator.hasNext()) {
                 return isObject ? JsonToken.END_OBJECT : JsonToken.END_ARRAY;
@@ -105,11 +108,13 @@ public final class JsonTreeReader extends JsonReader {
     }
 
     private Object peekStack() {
-        return this.stack.get(this.stack.size() - 1);
+        List<Object> list = this.stack;
+        return list.get(list.size() - 1);
     }
 
     private Object popStack() {
-        return this.stack.remove(this.stack.size() - 1);
+        List<Object> list = this.stack;
+        return list.remove(list.size() - 1);
     }
 
     private void expect(JsonToken expected) throws IOException {

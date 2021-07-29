@@ -99,7 +99,8 @@ public class BtPhoneStatus {
         if (this.callStatus != btPhoneStatus.callStatus) {
             keys.add("callStatus");
         }
-        if (this.devAddr != null && !this.devAddr.equals(btPhoneStatus.devAddr)) {
+        String str = this.devAddr;
+        if (str != null && !str.equals(btPhoneStatus.devAddr)) {
             keys.add("devAddr");
         }
         if (this.voiceStatus != btPhoneStatus.voiceStatus) {

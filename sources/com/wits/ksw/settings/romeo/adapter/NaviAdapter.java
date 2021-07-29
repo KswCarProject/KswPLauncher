@@ -1,9 +1,7 @@
 package com.wits.ksw.settings.romeo.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,13 +47,11 @@ public class NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
         this.rbtCheckListener = listener;
     }
 
-    @NonNull
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(this.context).inflate(R.layout.romeo_navi_adpter_layout, viewGroup, false));
     }
 
-    @SuppressLint({"ClickableViewAccessibility"})
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, @SuppressLint({"RecyclerView"}) final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Drawable drawable;
         if (this.mapBanList.get(position).getMapicon() == null) {
             drawable = this.context.getDrawable(R.mipmap.ic_launcher);
@@ -115,16 +111,17 @@ public class NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.mapBanList == null) {
+        List<MapBean> list = this.mapBanList;
+        if (list == null) {
             return 0;
         }
-        return this.mapBanList.size();
+        return list.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         RadioButton rbt_navi;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
             this.rbt_navi = (RadioButton) itemView.findViewById(R.id.rbt_navi);
         }

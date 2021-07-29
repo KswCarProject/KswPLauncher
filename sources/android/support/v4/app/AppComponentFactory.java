@@ -6,12 +6,8 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentProvider;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import java.lang.reflect.InvocationTargetException;
 
-@RequiresApi(28)
 public class AppComponentFactory extends android.app.AppComponentFactory {
     public final Activity instantiateActivity(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         return (Activity) CoreComponentFactory.checkCompatWrapper(instantiateActivityCompat(cl, className, intent));
@@ -33,8 +29,7 @@ public class AppComponentFactory extends android.app.AppComponentFactory {
         return (Service) CoreComponentFactory.checkCompatWrapper(instantiateServiceCompat(cl, className, intent));
     }
 
-    @NonNull
-    public Application instantiateApplicationCompat(@NonNull ClassLoader cl, @NonNull String className) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public Application instantiateApplicationCompat(ClassLoader cl, String className) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             return (Application) cl.loadClass(className).getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
         } catch (NoSuchMethodException | InvocationTargetException e) {
@@ -42,8 +37,7 @@ public class AppComponentFactory extends android.app.AppComponentFactory {
         }
     }
 
-    @NonNull
-    public Activity instantiateActivityCompat(@NonNull ClassLoader cl, @NonNull String className, @Nullable Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public Activity instantiateActivityCompat(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             return (Activity) cl.loadClass(className).getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
         } catch (NoSuchMethodException | InvocationTargetException e) {
@@ -51,8 +45,7 @@ public class AppComponentFactory extends android.app.AppComponentFactory {
         }
     }
 
-    @NonNull
-    public BroadcastReceiver instantiateReceiverCompat(@NonNull ClassLoader cl, @NonNull String className, @Nullable Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public BroadcastReceiver instantiateReceiverCompat(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             return (BroadcastReceiver) cl.loadClass(className).getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
         } catch (NoSuchMethodException | InvocationTargetException e) {
@@ -60,8 +53,7 @@ public class AppComponentFactory extends android.app.AppComponentFactory {
         }
     }
 
-    @NonNull
-    public Service instantiateServiceCompat(@NonNull ClassLoader cl, @NonNull String className, @Nullable Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public Service instantiateServiceCompat(ClassLoader cl, String className, Intent intent) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             return (Service) cl.loadClass(className).getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
         } catch (NoSuchMethodException | InvocationTargetException e) {
@@ -69,8 +61,7 @@ public class AppComponentFactory extends android.app.AppComponentFactory {
         }
     }
 
-    @NonNull
-    public ContentProvider instantiateProviderCompat(@NonNull ClassLoader cl, @NonNull String className) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public ContentProvider instantiateProviderCompat(ClassLoader cl, String className) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         try {
             return (ContentProvider) cl.loadClass(className).getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
         } catch (NoSuchMethodException | InvocationTargetException e) {

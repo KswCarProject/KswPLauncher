@@ -20,14 +20,16 @@ public class BaseListAdpater<T> extends BaseAdapter {
     }
 
     public int getCount() {
-        if (this.mlist == null || this.mlist.isEmpty()) {
+        List<T> list = this.mlist;
+        if (list == null || list.isEmpty()) {
             return 0;
         }
         return this.mlist.size();
     }
 
     public Object getItem(int i) {
-        if (this.mlist == null || this.mlist.isEmpty()) {
+        List<T> list = this.mlist;
+        if (list == null || list.isEmpty()) {
             return null;
         }
         return this.mlist.get(i);
@@ -58,7 +60,7 @@ public class BaseListAdpater<T> extends BaseAdapter {
             r0 = r1
             android.databinding.ViewDataBinding r0 = (android.databinding.ViewDataBinding) r0
         L_0x001b:
-            r1 = 1
+            r1 = 11
             java.util.List<T> r2 = r4.mlist
             java.lang.Object r2 = r2.get(r5)
             r0.setVariable(r1, r2)

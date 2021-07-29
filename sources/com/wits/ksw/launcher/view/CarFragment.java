@@ -3,8 +3,6 @@ package com.wits.ksw.launcher.view;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,31 +20,34 @@ public class CarFragment extends Fragment {
     private HicarCarInfo hicarBinding;
     private LauncherViewModel viewModel;
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("CarFragment", "onCreate: CarFragment");
         this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (UiThemeUtils.isBMW_EVO_ID7_HiCar(getContext())) {
             this.viewModel.hicar.set(true);
-            this.hicarBinding = (HicarCarInfo) DataBindingUtil.inflate(inflater, R.layout.id7_fragment_car_hicar, (ViewGroup) null, false);
-            return this.hicarBinding.getRoot();
+            HicarCarInfo hicarCarInfo = (HicarCarInfo) DataBindingUtil.inflate(inflater, R.layout.id7_fragment_car_hicar, (ViewGroup) null, false);
+            this.hicarBinding = hicarCarInfo;
+            return hicarCarInfo.getRoot();
         }
         this.viewModel.hicar.set(false);
-        this.binding = (CarInfo) DataBindingUtil.inflate(inflater, R.layout.id7_fragment_car, (ViewGroup) null, false);
-        return this.binding.getRoot();
+        CarInfo carInfo = (CarInfo) DataBindingUtil.inflate(inflater, R.layout.id7_fragment_car, (ViewGroup) null, false);
+        this.binding = carInfo;
+        return carInfo.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (this.binding != null) {
-            this.binding.setCarViewModel(this.viewModel);
+        CarInfo carInfo = this.binding;
+        if (carInfo != null) {
+            carInfo.setCarViewModel(this.viewModel);
         }
-        if (this.hicarBinding != null) {
-            this.hicarBinding.setCarViewModel(this.viewModel);
+        HicarCarInfo hicarCarInfo = this.hicarBinding;
+        if (hicarCarInfo != null) {
+            hicarCarInfo.setCarViewModel(this.viewModel);
         }
     }
 

@@ -3,8 +3,6 @@ package com.wits.ksw.launcher.view.bmwevoid6gs;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,21 +21,21 @@ public class Bmwid6gsFragmentOne extends Fragment {
     /* access modifiers changed from: private */
     public BmwId6gsViewMode viewModel;
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.binding = (FraBmwEvoId6GsOneBinding) DataBindingUtil.inflate(inflater, R.layout.fra_bmw_evo_id6_gs_one, (ViewGroup) null, false);
-        View view = this.binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FraBmwEvoId6GsOneBinding fraBmwEvoId6GsOneBinding = (FraBmwEvoId6GsOneBinding) DataBindingUtil.inflate(inflater, R.layout.fra_bmw_evo_id6_gs_one, (ViewGroup) null, false);
+        this.binding = fraBmwEvoId6GsOneBinding;
+        View view = fraBmwEvoId6GsOneBinding.getRoot();
         this.childViews = getAllChildViews(view);
         return view;
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.viewModel = (BmwId6gsViewMode) ViewModelProviders.of(getActivity()).get(BmwId6gsViewMode.class);
-        this.binding.setVm(this.viewModel);
+        BmwId6gsViewMode bmwId6gsViewMode = (BmwId6gsViewMode) ViewModelProviders.of(getActivity()).get(BmwId6gsViewMode.class);
+        this.viewModel = bmwId6gsViewMode;
+        this.binding.setVm(bmwId6gsViewMode);
         for (int i = 0; i < this.childViews.size(); i++) {
-            String str = TAG;
-            Log.i(str, "onActivityCreated: " + i);
+            Log.i(TAG, "onActivityCreated: " + i);
             final int finalI = i;
             this.childViews.get(i).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

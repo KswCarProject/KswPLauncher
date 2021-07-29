@@ -8,27 +8,19 @@ public class McuUtil {
     private static final String TAG = ("KSWLauncher." + KswUtils.class.getSimpleName());
 
     public static String getMcuVersion() {
-        String str;
-        StringBuilder sb;
-        String mcuVerison = "";
         try {
-            mcuVerison = PowerManagerApp.getStatusString("mcuVerison");
-            str = TAG;
-            sb = new StringBuilder();
+            String mcuVerison = PowerManagerApp.getStatusString("mcuVerison");
+            Log.d(TAG, "mcuVersion: " + mcuVerison);
+            return mcuVerison;
         } catch (Exception e) {
             e.getStackTrace();
-            String str2 = TAG;
-            Log.e(str2, "getMcuVersion: Exception " + e.getMessage());
-            str = TAG;
-            sb = new StringBuilder();
+            String str = TAG;
+            Log.e(str, "getMcuVersion: Exception " + e.getMessage());
+            Log.d(str, "mcuVersion: " + "");
+            return "";
         } catch (Throwable th) {
-            String str3 = TAG;
-            Log.d(str3, "mcuVersion: " + mcuVerison);
+            Log.d(TAG, "mcuVersion: " + "");
             throw th;
         }
-        sb.append("mcuVersion: ");
-        sb.append(mcuVerison);
-        Log.d(str, sb.toString());
-        return mcuVerison;
     }
 }

@@ -42,7 +42,8 @@ public final class JsonTreeWriter extends JsonWriter {
     }
 
     private JsonElement peek() {
-        return this.stack.get(this.stack.size() - 1);
+        List<JsonElement> list = this.stack;
+        return list.get(list.size() - 1);
     }
 
     private void put(JsonElement value) {
@@ -74,7 +75,8 @@ public final class JsonTreeWriter extends JsonWriter {
         if (this.stack.isEmpty() || this.pendingName != null) {
             throw new IllegalStateException();
         } else if (peek() instanceof JsonArray) {
-            this.stack.remove(this.stack.size() - 1);
+            List<JsonElement> list = this.stack;
+            list.remove(list.size() - 1);
             return this;
         } else {
             throw new IllegalStateException();
@@ -92,7 +94,8 @@ public final class JsonTreeWriter extends JsonWriter {
         if (this.stack.isEmpty() || this.pendingName != null) {
             throw new IllegalStateException();
         } else if (peek() instanceof JsonObject) {
-            this.stack.remove(this.stack.size() - 1);
+            List<JsonElement> list = this.stack;
+            list.remove(list.size() - 1);
             return this;
         } else {
             throw new IllegalStateException();

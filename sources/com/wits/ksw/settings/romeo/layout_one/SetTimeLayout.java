@@ -88,8 +88,9 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
     public void resetTextColor() {
         this.tv_timeSync.setTextColor(Color.argb(255, 172, 216, 255));
         this.tv_timeZhis.setTextColor(-1);
-        if (this.updateTwoLayout != null) {
-            this.updateTwoLayout.updateTwoLayout(4, 0);
+        IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+        if (iUpdateTwoLayout != null) {
+            iUpdateTwoLayout.updateTwoLayout(4, 0);
         }
     }
 
@@ -98,16 +99,18 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
             case R.id.tv_timeSync:
                 this.tv_timeSync.setTextColor(Color.argb(255, 172, 216, 255));
                 this.tv_timeZhis.setTextColor(-1);
-                if (this.updateTwoLayout != null) {
-                    this.updateTwoLayout.updateTwoLayout(4, 0);
+                IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+                if (iUpdateTwoLayout != null) {
+                    iUpdateTwoLayout.updateTwoLayout(4, 0);
                     return;
                 }
                 return;
             case R.id.tv_timeZhis:
                 this.tv_timeZhis.setTextColor(Color.argb(255, 172, 216, 255));
                 this.tv_timeSync.setTextColor(-1);
-                if (this.updateTwoLayout != null) {
-                    this.updateTwoLayout.updateTwoLayout(4, 1);
+                IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;
+                if (iUpdateTwoLayout2 != null) {
+                    iUpdateTwoLayout2.updateTwoLayout(4, 1);
                     return;
                 }
                 return;

@@ -1,8 +1,6 @@
 package android.support.v4.text;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import java.util.Locale;
 
@@ -11,38 +9,38 @@ public final class TextUtilsCompat {
     private static final String HEBR_SCRIPT_SUBTAG = "Hebr";
     private static final Locale ROOT = new Locale("", "");
 
-    @NonNull
-    public static String htmlEncode(@NonNull String s) {
+    public static String htmlEncode(String s) {
         if (Build.VERSION.SDK_INT >= 17) {
             return TextUtils.htmlEncode(s);
         }
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (c == '\"') {
-                sb.append("&quot;");
-            } else if (c == '<') {
-                sb.append("&lt;");
-            } else if (c != '>') {
-                switch (c) {
-                    case '&':
-                        sb.append("&amp;");
-                        break;
-                    case '\'':
-                        sb.append("&#39;");
-                        break;
-                    default:
-                        sb.append(c);
-                        break;
-                }
-            } else {
-                sb.append("&gt;");
+            switch (c) {
+                case '\"':
+                    sb.append("&quot;");
+                    break;
+                case '&':
+                    sb.append("&amp;");
+                    break;
+                case '\'':
+                    sb.append("&#39;");
+                    break;
+                case '<':
+                    sb.append("&lt;");
+                    break;
+                case '>':
+                    sb.append("&gt;");
+                    break;
+                default:
+                    sb.append(c);
+                    break;
             }
         }
         return sb.toString();
     }
 
-    public static int getLayoutDirectionFromLocale(@Nullable Locale locale) {
+    public static int getLayoutDirectionFromLocale(Locale locale) {
         if (Build.VERSION.SDK_INT >= 17) {
             return TextUtils.getLayoutDirectionFromLocale(locale);
         }
@@ -59,7 +57,7 @@ public final class TextUtilsCompat {
         return 0;
     }
 
-    private static int getLayoutDirectionFromFirstChar(@NonNull Locale locale) {
+    private static int getLayoutDirectionFromFirstChar(Locale locale) {
         switch (Character.getDirectionality(locale.getDisplayName(locale).charAt(0))) {
             case 1:
             case 2:

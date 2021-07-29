@@ -55,57 +55,55 @@ public interface IStatusService extends IInterface {
         }
 
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-            if (code != 1598968902) {
-                switch (code) {
-                    case 1:
-                        data.enforceInterface(DESCRIPTOR);
-                        registerStatusListener(data.readString(), IStatusObserver.Stub.asInterface(data.readStrongBinder()));
-                        reply.writeNoException();
-                        return true;
-                    case 2:
-                        data.enforceInterface(DESCRIPTOR);
-                        unregisterStatusListener(IStatusObserver.Stub.asInterface(data.readStrongBinder()));
-                        reply.writeNoException();
-                        return true;
-                    case 3:
-                        data.enforceInterface(DESCRIPTOR);
-                        addIntStatus(data.readString(), data.readInt());
-                        reply.writeNoException();
-                        return true;
-                    case 4:
-                        data.enforceInterface(DESCRIPTOR);
-                        addBooleanStatus(data.readString(), data.readInt() != 0);
-                        reply.writeNoException();
-                        return true;
-                    case 5:
-                        data.enforceInterface(DESCRIPTOR);
-                        addStringStatus(data.readString(), data.readString());
-                        reply.writeNoException();
-                        return true;
-                    case 6:
-                        data.enforceInterface(DESCRIPTOR);
-                        boolean _result = getStatusBoolean(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result);
-                        return true;
-                    case 7:
-                        data.enforceInterface(DESCRIPTOR);
-                        int _result2 = getStatusInt(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result2);
-                        return true;
-                    case 8:
-                        data.enforceInterface(DESCRIPTOR);
-                        String _result3 = getStatusString(data.readString());
-                        reply.writeNoException();
-                        reply.writeString(_result3);
-                        return true;
-                    default:
-                        return super.onTransact(code, data, reply, flags);
-                }
-            } else {
-                reply.writeString(DESCRIPTOR);
-                return true;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    registerStatusListener(data.readString(), IStatusObserver.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 2:
+                    data.enforceInterface(DESCRIPTOR);
+                    unregisterStatusListener(IStatusObserver.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 3:
+                    data.enforceInterface(DESCRIPTOR);
+                    addIntStatus(data.readString(), data.readInt());
+                    reply.writeNoException();
+                    return true;
+                case 4:
+                    data.enforceInterface(DESCRIPTOR);
+                    addBooleanStatus(data.readString(), data.readInt() != 0);
+                    reply.writeNoException();
+                    return true;
+                case 5:
+                    data.enforceInterface(DESCRIPTOR);
+                    addStringStatus(data.readString(), data.readString());
+                    reply.writeNoException();
+                    return true;
+                case 6:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result = getStatusBoolean(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result);
+                    return true;
+                case 7:
+                    data.enforceInterface(DESCRIPTOR);
+                    int _result2 = getStatusInt(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result2);
+                    return true;
+                case 8:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _result3 = getStatusString(data.readString());
+                    reply.writeNoException();
+                    reply.writeString(_result3);
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
             }
         }
 
@@ -174,7 +172,7 @@ public interface IStatusService extends IInterface {
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
                     _data.writeString(key);
-                    _data.writeInt(value);
+                    _data.writeInt(value ? 1 : 0);
                     this.mRemote.transact(4, _data, _reply, 0);
                     _reply.readException();
                 } finally {

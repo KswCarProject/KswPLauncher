@@ -4,8 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 
 class ActionBarBackgroundDrawable extends Drawable {
     final ActionBarContainer mContainer;
@@ -37,8 +35,7 @@ class ActionBarBackgroundDrawable extends Drawable {
         return 0;
     }
 
-    @RequiresApi(21)
-    public void getOutline(@NonNull Outline outline) {
+    public void getOutline(Outline outline) {
         if (this.mContainer.mIsSplit) {
             if (this.mContainer.mSplitBackground != null) {
                 this.mContainer.mSplitBackground.getOutline(outline);

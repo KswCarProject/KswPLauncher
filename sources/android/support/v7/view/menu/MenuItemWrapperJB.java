@@ -1,8 +1,6 @@
 package android.support.v7.view.menu;
 
 import android.content.Context;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.internal.view.SupportMenuItem;
 import android.support.v4.view.ActionProvider;
 import android.support.v7.view.menu.MenuItemWrapperICS;
@@ -10,8 +8,6 @@ import android.view.ActionProvider;
 import android.view.MenuItem;
 import android.view.View;
 
-@RequiresApi(16)
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class MenuItemWrapperJB extends MenuItemWrapperICS {
     MenuItemWrapperJB(Context context, SupportMenuItem object) {
         super(context, object);
@@ -51,8 +47,9 @@ class MenuItemWrapperJB extends MenuItemWrapperICS {
         }
 
         public void onActionProviderVisibilityChanged(boolean isVisible) {
-            if (this.mListener != null) {
-                this.mListener.onActionProviderVisibilityChanged(isVisible);
+            ActionProvider.VisibilityListener visibilityListener = this.mListener;
+            if (visibilityListener != null) {
+                visibilityListener.onActionProviderVisibilityChanged(isVisible);
             }
         }
     }

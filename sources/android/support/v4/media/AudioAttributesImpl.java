@@ -1,7 +1,6 @@
 package android.support.v4.media;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import androidx.versionedparcelable.VersionedParcelable;
 
 interface AudioAttributesImpl extends VersionedParcelable {
@@ -19,6 +18,5 @@ interface AudioAttributesImpl extends VersionedParcelable {
 
     int getVolumeControlStream();
 
-    @NonNull
     Bundle toBundle();
 }

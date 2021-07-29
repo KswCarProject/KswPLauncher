@@ -2,10 +2,8 @@ package android.support.v7.view.menu;
 
 import android.content.Context;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 import android.view.ViewGroup;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public interface MenuPresenter {
 
     public interface Callback {

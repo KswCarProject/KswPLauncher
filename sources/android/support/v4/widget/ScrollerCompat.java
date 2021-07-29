@@ -19,7 +19,11 @@ public final class ScrollerCompat {
     }
 
     ScrollerCompat(Context context, Interpolator interpolator) {
-        this.mScroller = interpolator != null ? new OverScroller(context, interpolator) : new OverScroller(context);
+        OverScroller overScroller;
+        if (interpolator == null) {
+            overScroller = new OverScroller(context);
+        }
+        this.mScroller = overScroller;
     }
 
     @Deprecated

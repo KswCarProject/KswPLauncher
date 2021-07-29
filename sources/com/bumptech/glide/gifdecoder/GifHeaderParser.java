@@ -1,8 +1,5 @@
 package com.bumptech.glide.gifdecoder;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.ActivityChooserView;
 import android.util.Log;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
@@ -35,15 +32,16 @@ public class GifHeaderParser {
     private GifHeader header;
     private ByteBuffer rawData;
 
-    public GifHeaderParser setData(@NonNull ByteBuffer data) {
+    public GifHeaderParser setData(ByteBuffer data) {
         reset();
-        this.rawData = data.asReadOnlyBuffer();
-        this.rawData.position(0);
+        ByteBuffer asReadOnlyBuffer = data.asReadOnlyBuffer();
+        this.rawData = asReadOnlyBuffer;
+        asReadOnlyBuffer.position(0);
         this.rawData.order(ByteOrder.LITTLE_ENDIAN);
         return this;
     }
 
-    public GifHeaderParser setData(@Nullable byte[] data) {
+    public GifHeaderParser setData(byte[] data) {
         if (data != null) {
             setData(ByteBuffer.wrap(data));
         } else {
@@ -65,7 +63,6 @@ public class GifHeaderParser {
         this.blockSize = 0;
     }
 
-    @NonNull
     public GifHeader parseHeader() {
         if (this.rawData == null) {
             throw new IllegalStateException("You must call setData() before parseHeader()");
@@ -92,20 +89,23 @@ public class GifHeaderParser {
     }
 
     private void readContents() {
-        readContents(ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED);
+        readContents(Integer.MAX_VALUE);
     }
 
     private void readContents(int maxFrames) {
         boolean done = false;
         while (!done && !err() && this.header.frameCount <= maxFrames) {
-            int code = read();
-            if (code == 33) {
-                int extensionLabel = read();
-                if (extensionLabel == 1) {
-                    skip();
-                } else if (extensionLabel != LABEL_GRAPHIC_CONTROL_EXTENSION) {
-                    switch (extensionLabel) {
-                        case LABEL_COMMENT_EXTENSION /*254*/:
+            switch (read()) {
+                case 33:
+                    switch (read()) {
+                        case 1:
+                            skip();
+                            break;
+                        case 249:
+                            this.header.currentFrame = new GifFrame();
+                            readGraphicControlExt();
+                            break;
+                        case 254:
                             skip();
                             break;
                         case 255:
@@ -125,19 +125,18 @@ public class GifHeaderParser {
                             skip();
                             break;
                     }
-                } else {
-                    this.header.currentFrame = new GifFrame();
-                    readGraphicControlExt();
-                }
-            } else if (code == 44) {
-                if (this.header.currentFrame == null) {
-                    this.header.currentFrame = new GifFrame();
-                }
-                readBitmap();
-            } else if (code != 59) {
-                this.header.status = 1;
-            } else {
-                done = true;
+                case 44:
+                    if (this.header.currentFrame == null) {
+                        this.header.currentFrame = new GifFrame();
+                    }
+                    readBitmap();
+                    break;
+                case 59:
+                    done = true;
+                    break;
+                default:
+                    this.header.status = 1;
+                    break;
             }
         }
     }
@@ -200,26 +199,24 @@ public class GifHeaderParser {
             r4.readBlock()
             byte[] r0 = r4.block
             r1 = 0
-            byte r0 = r0[r1]
-            r1 = 1
-            if (r0 != r1) goto L_0x001f
-            byte[] r0 = r4.block
-            byte r0 = r0[r1]
-            r0 = r0 & 255(0xff, float:3.57E-43)
-            byte[] r1 = r4.block
-            r2 = 2
-            byte r1 = r1[r2]
+            byte r1 = r0[r1]
+            r2 = 1
+            if (r1 != r2) goto L_0x001b
+            byte r1 = r0[r2]
             r1 = r1 & 255(0xff, float:3.57E-43)
+            r2 = 2
+            byte r0 = r0[r2]
+            r0 = r0 & 255(0xff, float:3.57E-43)
             com.bumptech.glide.gifdecoder.GifHeader r2 = r4.header
-            int r3 = r1 << 8
-            r3 = r3 | r0
+            int r3 = r0 << 8
+            r3 = r3 | r1
             r2.loopCount = r3
-        L_0x001f:
+        L_0x001b:
             int r0 = r4.blockSize
-            if (r0 <= 0) goto L_0x0029
+            if (r0 <= 0) goto L_0x0025
             boolean r0 = r4.err()
             if (r0 == 0) goto L_0x0000
-        L_0x0029:
+        L_0x0025:
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.gifdecoder.GifHeaderParser.readNetscapeExt():void");
@@ -236,8 +233,10 @@ public class GifHeaderParser {
         }
         readLSD();
         if (this.header.gctFlag && !err()) {
-            this.header.gct = readColorTable(this.header.gctSize);
-            this.header.bgColor = this.header.gct[this.header.bgIndex];
+            GifHeader gifHeader = this.header;
+            gifHeader.gct = readColorTable(gifHeader.gctSize);
+            GifHeader gifHeader2 = this.header;
+            gifHeader2.bgColor = gifHeader2.gct[this.header.bgIndex];
         }
     }
 
@@ -251,7 +250,6 @@ public class GifHeaderParser {
         this.header.pixelAspect = read();
     }
 
-    @Nullable
     private int[] readColorTable(int nColors) {
         int[] tab = null;
         byte[] c = new byte[(nColors * 3)];
@@ -259,14 +257,14 @@ public class GifHeaderParser {
             this.rawData.get(c);
             tab = new int[256];
             int i = 0;
-            int j = 0;
+            int r = 0;
             while (i < nColors) {
+                int j = r + 1;
                 int j2 = j + 1;
                 int j3 = j2 + 1;
-                int j4 = j3 + 1;
                 int i2 = i + 1;
-                tab[i] = -16777216 | ((c[j] & 255) << 16) | ((c[j2] & 255) << 8) | (c[j3] & 255);
-                j = j4;
+                tab[i] = -16777216 | ((c[r] & 255) << 16) | ((c[j] & 255) << 8) | (c[j2] & 255);
+                r = j3;
                 i = i2;
             }
         } catch (BufferUnderflowException e) {
@@ -292,15 +290,21 @@ public class GifHeaderParser {
     }
 
     private void readBlock() {
-        this.blockSize = read();
+        int read = read();
+        this.blockSize = read;
         int n = 0;
-        if (this.blockSize > 0) {
+        if (read > 0) {
             int count = 0;
-            while (n < this.blockSize) {
+            while (true) {
                 try {
-                    count = this.blockSize - n;
-                    this.rawData.get(this.block, n, count);
-                    n += count;
+                    int i = this.blockSize;
+                    if (n < i) {
+                        count = i - n;
+                        this.rawData.get(this.block, n, count);
+                        n += count;
+                    } else {
+                        return;
+                    }
                 } catch (Exception e) {
                     if (Log.isLoggable(TAG, 3)) {
                         Log.d(TAG, "Error Reading Block n: " + n + " count: " + count + " blockSize: " + this.blockSize, e);

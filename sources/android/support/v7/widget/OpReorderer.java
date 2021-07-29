@@ -32,20 +32,18 @@ class OpReorderer {
     private void swapMoveOp(List<AdapterHelper.UpdateOp> list, int badMove, int next) {
         AdapterHelper.UpdateOp moveOp = list.get(badMove);
         AdapterHelper.UpdateOp nextOp = list.get(next);
-        int i = nextOp.cmd;
-        if (i != 4) {
-            switch (i) {
-                case 1:
-                    swapMoveAdd(list, badMove, moveOp, next, nextOp);
-                    return;
-                case 2:
-                    swapMoveRemove(list, badMove, moveOp, next, nextOp);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            swapMoveUpdate(list, badMove, moveOp, next, nextOp);
+        switch (nextOp.cmd) {
+            case 1:
+                swapMoveAdd(list, badMove, moveOp, next, nextOp);
+                return;
+            case 2:
+                swapMoveRemove(list, badMove, moveOp, next, nextOp);
+                return;
+            case 4:
+                swapMoveUpdate(list, badMove, moveOp, next, nextOp);
+                return;
+            default:
+                return;
         }
     }
 

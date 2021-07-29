@@ -1,9 +1,6 @@
 package com.bumptech.glide.gifdecoder;
 
 import android.graphics.Bitmap;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import com.bumptech.glide.gifdecoder.GifDecoder;
 import java.io.ByteArrayOutputStream;
@@ -16,16 +13,13 @@ import java.util.Iterator;
 
 public class StandardGifDecoder implements GifDecoder {
     private static final int BYTES_PER_INTEGER = 4;
-    @ColorInt
     private static final int COLOR_TRANSPARENT_BLACK = 0;
     private static final int INITIAL_FRAME_POINTER = -1;
     private static final int MASK_INT_LOWEST_BYTE = 255;
     private static final int MAX_STACK_SIZE = 4096;
     private static final int NULL_CODE = -1;
     private static final String TAG = StandardGifDecoder.class.getSimpleName();
-    @ColorInt
     private int[] act;
-    @NonNull
     private Bitmap.Config bitmapConfig;
     private final GifDecoder.BitmapProvider bitmapProvider;
     private byte[] block;
@@ -33,13 +27,10 @@ public class StandardGifDecoder implements GifDecoder {
     private int downsampledWidth;
     private int framePointer;
     private GifHeader header;
-    @Nullable
     private Boolean isFirstFrameTransparent;
     private byte[] mainPixels;
-    @ColorInt
     private int[] mainScratch;
     private GifHeaderParser parser;
-    @ColorInt
     private final int[] pct;
     private byte[] pixelStack;
     private short[] prefix;
@@ -50,16 +41,16 @@ public class StandardGifDecoder implements GifDecoder {
     private int status;
     private byte[] suffix;
 
-    public StandardGifDecoder(@NonNull GifDecoder.BitmapProvider provider, GifHeader gifHeader, ByteBuffer rawData2) {
+    public StandardGifDecoder(GifDecoder.BitmapProvider provider, GifHeader gifHeader, ByteBuffer rawData2) {
         this(provider, gifHeader, rawData2, 1);
     }
 
-    public StandardGifDecoder(@NonNull GifDecoder.BitmapProvider provider, GifHeader gifHeader, ByteBuffer rawData2, int sampleSize2) {
+    public StandardGifDecoder(GifDecoder.BitmapProvider provider, GifHeader gifHeader, ByteBuffer rawData2, int sampleSize2) {
         this(provider);
         setData(gifHeader, rawData2, sampleSize2);
     }
 
-    public StandardGifDecoder(@NonNull GifDecoder.BitmapProvider provider) {
+    public StandardGifDecoder(GifDecoder.BitmapProvider provider) {
         this.pct = new int[256];
         this.bitmapConfig = Bitmap.Config.ARGB_8888;
         this.bitmapProvider = provider;
@@ -74,7 +65,6 @@ public class StandardGifDecoder implements GifDecoder {
         return this.header.height;
     }
 
-    @NonNull
     public ByteBuffer getData() {
         return this.rawData;
     }
@@ -95,10 +85,11 @@ public class StandardGifDecoder implements GifDecoder {
     }
 
     public int getNextDelay() {
-        if (this.header.frameCount <= 0 || this.framePointer < 0) {
+        int i;
+        if (this.header.frameCount <= 0 || (i = this.framePointer) < 0) {
             return 0;
         }
-        return getDelay(this.framePointer);
+        return getDelay(i);
     }
 
     public int getFrameCount() {
@@ -139,136 +130,128 @@ public class StandardGifDecoder implements GifDecoder {
         return this.rawData.limit() + this.mainPixels.length + (this.mainScratch.length * 4);
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:45:0x00e9, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:45:0x00e3, code lost:
         return null;
      */
-    @android.support.annotation.Nullable
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public synchronized android.graphics.Bitmap getNextFrame() {
         /*
             r8 = this;
             monitor-enter(r8)
-            com.bumptech.glide.gifdecoder.GifHeader r0 = r8.header     // Catch:{ all -> 0x00ea }
-            int r0 = r0.frameCount     // Catch:{ all -> 0x00ea }
+            com.bumptech.glide.gifdecoder.GifHeader r0 = r8.header     // Catch:{ all -> 0x00e4 }
+            int r0 = r0.frameCount     // Catch:{ all -> 0x00e4 }
             r1 = 3
             r2 = 1
             if (r0 <= 0) goto L_0x000d
-            int r0 = r8.framePointer     // Catch:{ all -> 0x00ea }
-            if (r0 >= 0) goto L_0x003b
+            int r0 = r8.framePointer     // Catch:{ all -> 0x00e4 }
+            if (r0 >= 0) goto L_0x003d
         L_0x000d:
-            java.lang.String r0 = TAG     // Catch:{ all -> 0x00ea }
-            boolean r0 = android.util.Log.isLoggable(r0, r1)     // Catch:{ all -> 0x00ea }
-            if (r0 == 0) goto L_0x0039
-            java.lang.String r0 = TAG     // Catch:{ all -> 0x00ea }
-            java.lang.StringBuilder r3 = new java.lang.StringBuilder     // Catch:{ all -> 0x00ea }
-            r3.<init>()     // Catch:{ all -> 0x00ea }
+            java.lang.String r0 = TAG     // Catch:{ all -> 0x00e4 }
+            boolean r3 = android.util.Log.isLoggable(r0, r1)     // Catch:{ all -> 0x00e4 }
+            if (r3 == 0) goto L_0x003b
+            java.lang.StringBuilder r3 = new java.lang.StringBuilder     // Catch:{ all -> 0x00e4 }
+            r3.<init>()     // Catch:{ all -> 0x00e4 }
             java.lang.String r4 = "Unable to decode frame, frameCount="
-            r3.append(r4)     // Catch:{ all -> 0x00ea }
-            com.bumptech.glide.gifdecoder.GifHeader r4 = r8.header     // Catch:{ all -> 0x00ea }
-            int r4 = r4.frameCount     // Catch:{ all -> 0x00ea }
-            r3.append(r4)     // Catch:{ all -> 0x00ea }
+            java.lang.StringBuilder r3 = r3.append(r4)     // Catch:{ all -> 0x00e4 }
+            com.bumptech.glide.gifdecoder.GifHeader r4 = r8.header     // Catch:{ all -> 0x00e4 }
+            int r4 = r4.frameCount     // Catch:{ all -> 0x00e4 }
+            java.lang.StringBuilder r3 = r3.append(r4)     // Catch:{ all -> 0x00e4 }
             java.lang.String r4 = ", framePointer="
-            r3.append(r4)     // Catch:{ all -> 0x00ea }
-            int r4 = r8.framePointer     // Catch:{ all -> 0x00ea }
-            r3.append(r4)     // Catch:{ all -> 0x00ea }
-            java.lang.String r3 = r3.toString()     // Catch:{ all -> 0x00ea }
-            android.util.Log.d(r0, r3)     // Catch:{ all -> 0x00ea }
-        L_0x0039:
-            r8.status = r2     // Catch:{ all -> 0x00ea }
+            java.lang.StringBuilder r3 = r3.append(r4)     // Catch:{ all -> 0x00e4 }
+            int r4 = r8.framePointer     // Catch:{ all -> 0x00e4 }
+            java.lang.StringBuilder r3 = r3.append(r4)     // Catch:{ all -> 0x00e4 }
+            java.lang.String r3 = r3.toString()     // Catch:{ all -> 0x00e4 }
+            android.util.Log.d(r0, r3)     // Catch:{ all -> 0x00e4 }
         L_0x003b:
-            int r0 = r8.status     // Catch:{ all -> 0x00ea }
+            r8.status = r2     // Catch:{ all -> 0x00e4 }
+        L_0x003d:
+            int r0 = r8.status     // Catch:{ all -> 0x00e4 }
             r3 = 0
-            if (r0 == r2) goto L_0x00c8
-            int r0 = r8.status     // Catch:{ all -> 0x00ea }
+            if (r0 == r2) goto L_0x00c2
             r4 = 2
             if (r0 != r4) goto L_0x0047
-            goto L_0x00c8
+            goto L_0x00c2
         L_0x0047:
             r0 = 0
-            r8.status = r0     // Catch:{ all -> 0x00ea }
-            byte[] r4 = r8.block     // Catch:{ all -> 0x00ea }
+            r8.status = r0     // Catch:{ all -> 0x00e4 }
+            byte[] r4 = r8.block     // Catch:{ all -> 0x00e4 }
             if (r4 != 0) goto L_0x0058
-            com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider r4 = r8.bitmapProvider     // Catch:{ all -> 0x00ea }
+            com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider r4 = r8.bitmapProvider     // Catch:{ all -> 0x00e4 }
             r5 = 255(0xff, float:3.57E-43)
-            byte[] r4 = r4.obtainByteArray(r5)     // Catch:{ all -> 0x00ea }
-            r8.block = r4     // Catch:{ all -> 0x00ea }
+            byte[] r4 = r4.obtainByteArray(r5)     // Catch:{ all -> 0x00e4 }
+            r8.block = r4     // Catch:{ all -> 0x00e4 }
         L_0x0058:
-            com.bumptech.glide.gifdecoder.GifHeader r4 = r8.header     // Catch:{ all -> 0x00ea }
-            java.util.List<com.bumptech.glide.gifdecoder.GifFrame> r4 = r4.frames     // Catch:{ all -> 0x00ea }
-            int r5 = r8.framePointer     // Catch:{ all -> 0x00ea }
-            java.lang.Object r4 = r4.get(r5)     // Catch:{ all -> 0x00ea }
-            com.bumptech.glide.gifdecoder.GifFrame r4 = (com.bumptech.glide.gifdecoder.GifFrame) r4     // Catch:{ all -> 0x00ea }
+            com.bumptech.glide.gifdecoder.GifHeader r4 = r8.header     // Catch:{ all -> 0x00e4 }
+            java.util.List<com.bumptech.glide.gifdecoder.GifFrame> r4 = r4.frames     // Catch:{ all -> 0x00e4 }
+            int r5 = r8.framePointer     // Catch:{ all -> 0x00e4 }
+            java.lang.Object r4 = r4.get(r5)     // Catch:{ all -> 0x00e4 }
+            com.bumptech.glide.gifdecoder.GifFrame r4 = (com.bumptech.glide.gifdecoder.GifFrame) r4     // Catch:{ all -> 0x00e4 }
             r5 = 0
-            int r6 = r8.framePointer     // Catch:{ all -> 0x00ea }
+            int r6 = r8.framePointer     // Catch:{ all -> 0x00e4 }
             int r6 = r6 - r2
             if (r6 < 0) goto L_0x0075
-            com.bumptech.glide.gifdecoder.GifHeader r7 = r8.header     // Catch:{ all -> 0x00ea }
-            java.util.List<com.bumptech.glide.gifdecoder.GifFrame> r7 = r7.frames     // Catch:{ all -> 0x00ea }
-            java.lang.Object r7 = r7.get(r6)     // Catch:{ all -> 0x00ea }
-            com.bumptech.glide.gifdecoder.GifFrame r7 = (com.bumptech.glide.gifdecoder.GifFrame) r7     // Catch:{ all -> 0x00ea }
+            com.bumptech.glide.gifdecoder.GifHeader r7 = r8.header     // Catch:{ all -> 0x00e4 }
+            java.util.List<com.bumptech.glide.gifdecoder.GifFrame> r7 = r7.frames     // Catch:{ all -> 0x00e4 }
+            java.lang.Object r7 = r7.get(r6)     // Catch:{ all -> 0x00e4 }
+            com.bumptech.glide.gifdecoder.GifFrame r7 = (com.bumptech.glide.gifdecoder.GifFrame) r7     // Catch:{ all -> 0x00e4 }
             r5 = r7
         L_0x0075:
-            int[] r7 = r4.lct     // Catch:{ all -> 0x00ea }
+            int[] r7 = r4.lct     // Catch:{ all -> 0x00e4 }
             if (r7 == 0) goto L_0x007c
-            int[] r7 = r4.lct     // Catch:{ all -> 0x00ea }
+            int[] r7 = r4.lct     // Catch:{ all -> 0x00e4 }
             goto L_0x0080
         L_0x007c:
-            com.bumptech.glide.gifdecoder.GifHeader r7 = r8.header     // Catch:{ all -> 0x00ea }
-            int[] r7 = r7.gct     // Catch:{ all -> 0x00ea }
+            com.bumptech.glide.gifdecoder.GifHeader r7 = r8.header     // Catch:{ all -> 0x00e4 }
+            int[] r7 = r7.gct     // Catch:{ all -> 0x00e4 }
         L_0x0080:
-            r8.act = r7     // Catch:{ all -> 0x00ea }
-            int[] r7 = r8.act     // Catch:{ all -> 0x00ea }
-            if (r7 != 0) goto L_0x00aa
-            java.lang.String r0 = TAG     // Catch:{ all -> 0x00ea }
-            boolean r0 = android.util.Log.isLoggable(r0, r1)     // Catch:{ all -> 0x00ea }
-            if (r0 == 0) goto L_0x00a6
-            java.lang.String r0 = TAG     // Catch:{ all -> 0x00ea }
-            java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch:{ all -> 0x00ea }
-            r1.<init>()     // Catch:{ all -> 0x00ea }
+            r8.act = r7     // Catch:{ all -> 0x00e4 }
+            if (r7 != 0) goto L_0x00a8
+            java.lang.String r0 = TAG     // Catch:{ all -> 0x00e4 }
+            boolean r1 = android.util.Log.isLoggable(r0, r1)     // Catch:{ all -> 0x00e4 }
+            if (r1 == 0) goto L_0x00a4
+            java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch:{ all -> 0x00e4 }
+            r1.<init>()     // Catch:{ all -> 0x00e4 }
             java.lang.String r7 = "No valid color table found for frame #"
-            r1.append(r7)     // Catch:{ all -> 0x00ea }
-            int r7 = r8.framePointer     // Catch:{ all -> 0x00ea }
-            r1.append(r7)     // Catch:{ all -> 0x00ea }
-            java.lang.String r1 = r1.toString()     // Catch:{ all -> 0x00ea }
-            android.util.Log.d(r0, r1)     // Catch:{ all -> 0x00ea }
-        L_0x00a6:
-            r8.status = r2     // Catch:{ all -> 0x00ea }
+            java.lang.StringBuilder r1 = r1.append(r7)     // Catch:{ all -> 0x00e4 }
+            int r7 = r8.framePointer     // Catch:{ all -> 0x00e4 }
+            java.lang.StringBuilder r1 = r1.append(r7)     // Catch:{ all -> 0x00e4 }
+            java.lang.String r1 = r1.toString()     // Catch:{ all -> 0x00e4 }
+            android.util.Log.d(r0, r1)     // Catch:{ all -> 0x00e4 }
+        L_0x00a4:
+            r8.status = r2     // Catch:{ all -> 0x00e4 }
             monitor-exit(r8)
             return r3
-        L_0x00aa:
-            boolean r1 = r4.transparency     // Catch:{ all -> 0x00ea }
-            if (r1 == 0) goto L_0x00c2
-            int[] r1 = r8.act     // Catch:{ all -> 0x00ea }
-            int[] r2 = r8.pct     // Catch:{ all -> 0x00ea }
-            int[] r3 = r8.act     // Catch:{ all -> 0x00ea }
-            int r3 = r3.length     // Catch:{ all -> 0x00ea }
-            java.lang.System.arraycopy(r1, r0, r2, r0, r3)     // Catch:{ all -> 0x00ea }
-            int[] r1 = r8.pct     // Catch:{ all -> 0x00ea }
-            r8.act = r1     // Catch:{ all -> 0x00ea }
-            int[] r1 = r8.act     // Catch:{ all -> 0x00ea }
-            int r2 = r4.transIndex     // Catch:{ all -> 0x00ea }
-            r1[r2] = r0     // Catch:{ all -> 0x00ea }
-        L_0x00c2:
-            android.graphics.Bitmap r0 = r8.setPixels(r4, r5)     // Catch:{ all -> 0x00ea }
+        L_0x00a8:
+            boolean r1 = r4.transparency     // Catch:{ all -> 0x00e4 }
+            if (r1 == 0) goto L_0x00bc
+            int[] r1 = r8.act     // Catch:{ all -> 0x00e4 }
+            int[] r2 = r8.pct     // Catch:{ all -> 0x00e4 }
+            int r3 = r1.length     // Catch:{ all -> 0x00e4 }
+            java.lang.System.arraycopy(r1, r0, r2, r0, r3)     // Catch:{ all -> 0x00e4 }
+            int[] r1 = r8.pct     // Catch:{ all -> 0x00e4 }
+            r8.act = r1     // Catch:{ all -> 0x00e4 }
+            int r2 = r4.transIndex     // Catch:{ all -> 0x00e4 }
+            r1[r2] = r0     // Catch:{ all -> 0x00e4 }
+        L_0x00bc:
+            android.graphics.Bitmap r0 = r8.setPixels(r4, r5)     // Catch:{ all -> 0x00e4 }
             monitor-exit(r8)
             return r0
-        L_0x00c8:
-            java.lang.String r0 = TAG     // Catch:{ all -> 0x00ea }
-            boolean r0 = android.util.Log.isLoggable(r0, r1)     // Catch:{ all -> 0x00ea }
-            if (r0 == 0) goto L_0x00e8
-            java.lang.String r0 = TAG     // Catch:{ all -> 0x00ea }
-            java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch:{ all -> 0x00ea }
-            r1.<init>()     // Catch:{ all -> 0x00ea }
+        L_0x00c2:
+            java.lang.String r0 = TAG     // Catch:{ all -> 0x00e4 }
+            boolean r1 = android.util.Log.isLoggable(r0, r1)     // Catch:{ all -> 0x00e4 }
+            if (r1 == 0) goto L_0x00e2
+            java.lang.StringBuilder r1 = new java.lang.StringBuilder     // Catch:{ all -> 0x00e4 }
+            r1.<init>()     // Catch:{ all -> 0x00e4 }
             java.lang.String r2 = "Unable to decode frame, status="
-            r1.append(r2)     // Catch:{ all -> 0x00ea }
-            int r2 = r8.status     // Catch:{ all -> 0x00ea }
-            r1.append(r2)     // Catch:{ all -> 0x00ea }
-            java.lang.String r1 = r1.toString()     // Catch:{ all -> 0x00ea }
-            android.util.Log.d(r0, r1)     // Catch:{ all -> 0x00ea }
-        L_0x00e8:
+            java.lang.StringBuilder r1 = r1.append(r2)     // Catch:{ all -> 0x00e4 }
+            int r2 = r8.status     // Catch:{ all -> 0x00e4 }
+            java.lang.StringBuilder r1 = r1.append(r2)     // Catch:{ all -> 0x00e4 }
+            java.lang.String r1 = r1.toString()     // Catch:{ all -> 0x00e4 }
+            android.util.Log.d(r0, r1)     // Catch:{ all -> 0x00e4 }
+        L_0x00e2:
             monitor-exit(r8)
             return r3
-        L_0x00ea:
+        L_0x00e4:
             r0 = move-exception
             monitor-exit(r8)
             throw r0
@@ -276,7 +259,7 @@ public class StandardGifDecoder implements GifDecoder {
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.gifdecoder.StandardGifDecoder.getNextFrame():android.graphics.Bitmap");
     }
 
-    public int read(@Nullable InputStream is, int contentLength) {
+    public int read(InputStream is, int contentLength) {
         if (is != null) {
             try {
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream(contentLength > 0 ? contentLength + 4096 : 16384);
@@ -309,39 +292,44 @@ public class StandardGifDecoder implements GifDecoder {
 
     public void clear() {
         this.header = null;
-        if (this.mainPixels != null) {
-            this.bitmapProvider.release(this.mainPixels);
+        byte[] bArr = this.mainPixels;
+        if (bArr != null) {
+            this.bitmapProvider.release(bArr);
         }
-        if (this.mainScratch != null) {
-            this.bitmapProvider.release(this.mainScratch);
+        int[] iArr = this.mainScratch;
+        if (iArr != null) {
+            this.bitmapProvider.release(iArr);
         }
-        if (this.previousImage != null) {
-            this.bitmapProvider.release(this.previousImage);
+        Bitmap bitmap = this.previousImage;
+        if (bitmap != null) {
+            this.bitmapProvider.release(bitmap);
         }
         this.previousImage = null;
         this.rawData = null;
         this.isFirstFrameTransparent = null;
-        if (this.block != null) {
-            this.bitmapProvider.release(this.block);
+        byte[] bArr2 = this.block;
+        if (bArr2 != null) {
+            this.bitmapProvider.release(bArr2);
         }
     }
 
-    public synchronized void setData(@NonNull GifHeader header2, @NonNull byte[] data) {
+    public synchronized void setData(GifHeader header2, byte[] data) {
         setData(header2, ByteBuffer.wrap(data));
     }
 
-    public synchronized void setData(@NonNull GifHeader header2, @NonNull ByteBuffer buffer) {
+    public synchronized void setData(GifHeader header2, ByteBuffer buffer) {
         setData(header2, buffer, 1);
     }
 
-    public synchronized void setData(@NonNull GifHeader header2, @NonNull ByteBuffer buffer, int sampleSize2) {
+    public synchronized void setData(GifHeader header2, ByteBuffer buffer, int sampleSize2) {
         if (sampleSize2 > 0) {
             int sampleSize3 = Integer.highestOneBit(sampleSize2);
             this.status = 0;
             this.header = header2;
             this.framePointer = -1;
-            this.rawData = buffer.asReadOnlyBuffer();
-            this.rawData.position(0);
+            ByteBuffer asReadOnlyBuffer = buffer.asReadOnlyBuffer();
+            this.rawData = asReadOnlyBuffer;
+            asReadOnlyBuffer.position(0);
             this.rawData.order(ByteOrder.LITTLE_ENDIAN);
             this.savePrevious = false;
             Iterator<GifFrame> it = header2.frames.iterator();
@@ -363,7 +351,6 @@ public class StandardGifDecoder implements GifDecoder {
         }
     }
 
-    @NonNull
     private GifHeaderParser getHeaderParser() {
         if (this.parser == null) {
             this.parser = new GifHeaderParser();
@@ -371,15 +358,16 @@ public class StandardGifDecoder implements GifDecoder {
         return this.parser;
     }
 
-    public synchronized int read(@Nullable byte[] data) {
-        this.header = getHeaderParser().setData(data).parseHeader();
+    public synchronized int read(byte[] data) {
+        GifHeader parseHeader = getHeaderParser().setData(data).parseHeader();
+        this.header = parseHeader;
         if (data != null) {
-            setData(this.header, data);
+            setData(parseHeader, data);
         }
         return this.status;
     }
 
-    public void setDefaultBitmapConfig(@NonNull Bitmap.Config config) {
+    public void setDefaultBitmapConfig(Bitmap.Config config) {
         if (config == Bitmap.Config.ARGB_8888 || config == Bitmap.Config.RGB_565) {
             this.bitmapConfig = config;
             return;
@@ -388,10 +376,12 @@ public class StandardGifDecoder implements GifDecoder {
     }
 
     private Bitmap setPixels(GifFrame currentFrame, GifFrame previousFrame) {
+        Bitmap bitmap;
         int[] dest = this.mainScratch;
         if (previousFrame == null) {
-            if (this.previousImage != null) {
-                this.bitmapProvider.release(this.previousImage);
+            Bitmap bitmap2 = this.previousImage;
+            if (bitmap2 != null) {
+                this.bitmapProvider.release(bitmap2);
             }
             this.previousImage = null;
             Arrays.fill(dest, 0);
@@ -413,8 +403,10 @@ public class StandardGifDecoder implements GifDecoder {
                 int downsampledIH = previousFrame.ih / this.sampleSize;
                 int downsampledIY = previousFrame.iy / this.sampleSize;
                 int downsampledIW = previousFrame.iw / this.sampleSize;
-                int topLeft = (this.downsampledWidth * downsampledIY) + (previousFrame.ix / this.sampleSize);
-                int bottomLeft = (this.downsampledWidth * downsampledIH) + topLeft;
+                int downsampledIX = previousFrame.ix / this.sampleSize;
+                int i = this.downsampledWidth;
+                int topLeft = (downsampledIY * i) + downsampledIX;
+                int bottomLeft = (i * downsampledIH) + topLeft;
                 int left = topLeft;
                 while (left < bottomLeft) {
                     int right = left + downsampledIW;
@@ -423,8 +415,9 @@ public class StandardGifDecoder implements GifDecoder {
                     }
                     left += this.downsampledWidth;
                 }
-            } else if (previousFrame.dispose == 3 && this.previousImage != null) {
-                this.previousImage.getPixels(dest, 0, this.downsampledWidth, 0, 0, this.downsampledWidth, this.downsampledHeight);
+            } else if (previousFrame.dispose == 3 && (bitmap = this.previousImage) != null) {
+                int i2 = this.downsampledWidth;
+                bitmap.getPixels(dest, 0, i2, 0, 0, i2, this.downsampledHeight);
             }
         }
         decodeBitmapData(currentFrame);
@@ -437,10 +430,13 @@ public class StandardGifDecoder implements GifDecoder {
             if (this.previousImage == null) {
                 this.previousImage = getNextBitmap();
             }
-            this.previousImage.setPixels(dest, 0, this.downsampledWidth, 0, 0, this.downsampledWidth, this.downsampledHeight);
+            Bitmap bitmap3 = this.previousImage;
+            int i3 = this.downsampledWidth;
+            bitmap3.setPixels(dest, 0, i3, 0, 0, i3, this.downsampledHeight);
         }
         Bitmap result = getNextBitmap();
-        result.setPixels(dest, 0, this.downsampledWidth, 0, 0, this.downsampledWidth, this.downsampledHeight);
+        int i4 = this.downsampledWidth;
+        result.setPixels(dest, 0, i4, 0, 0, i4, this.downsampledHeight);
         return result;
     }
 
@@ -465,19 +461,18 @@ public class StandardGifDecoder implements GifDecoder {
                 dlim = k + width;
             }
             int sx = gifFrame.iw * i;
-            byte transparentColorIndex2 = transparentColorIndex;
             int dx2 = dx;
             while (dx2 < dlim) {
                 int downsampledIH2 = downsampledIH;
                 byte byteCurrentColorIndex = mainPixels2[sx];
                 int downsampledIY2 = downsampledIY;
-                byte downsampledIY3 = byteCurrentColorIndex & 255;
-                if (downsampledIY3 != transparentColorIndex2) {
-                    int color = act2[downsampledIY3];
+                byte currentColorIndex = byteCurrentColorIndex & 255;
+                if (currentColorIndex != transparentColorIndex) {
+                    int color = act2[currentColorIndex];
                     if (color != 0) {
                         dest[dx2] = color;
                     } else {
-                        transparentColorIndex2 = byteCurrentColorIndex;
+                        transparentColorIndex = byteCurrentColorIndex;
                     }
                 }
                 sx++;
@@ -487,7 +482,6 @@ public class StandardGifDecoder implements GifDecoder {
             }
             int i2 = downsampledIY;
             i++;
-            transparentColorIndex = transparentColorIndex2;
             gifFrame = currentFrame;
         }
         int i3 = downsampledIY;
@@ -513,8 +507,8 @@ public class StandardGifDecoder implements GifDecoder {
         byte[] mainPixels2 = this.mainPixels;
         int[] act2 = this.act;
         int pass = 1;
-        int inc = 8;
         Boolean isFirstFrameTransparent2 = this.isFirstFrameTransparent;
+        int inc = 8;
         int i = 0;
         while (i < downsampledIH) {
             int line = i;
@@ -554,37 +548,32 @@ public class StandardGifDecoder implements GifDecoder {
                 downsampledIX = downsampledIX2;
                 int sx = i * sampleSize2 * gifFrame.iw;
                 if (isNotDownsampling) {
-                    int sx2 = sx;
                     int dx2 = dx;
                     while (dx2 < dlim) {
                         boolean isNotDownsampling2 = isNotDownsampling;
-                        int averageColor = act2[mainPixels2[sx2] & 255];
+                        int averageColor = act2[mainPixels2[sx] & 255];
                         if (averageColor != 0) {
                             dest[dx2] = averageColor;
                         } else if (isFirstFrame && isFirstFrameTransparent3 == null) {
                             isFirstFrameTransparent3 = true;
                         }
-                        sx2 += sampleSize2;
+                        sx += sampleSize2;
                         dx2++;
                         isNotDownsampling = isNotDownsampling2;
                     }
                     isFirstFrameTransparent2 = isFirstFrameTransparent3;
                 } else {
                     int maxPositionInSource = ((dlim - dx) * sampleSize2) + sx;
-                    int sx3 = sx;
                     int dx3 = dx;
                     while (dx3 < dlim) {
                         int dlim2 = dlim;
-                        int averageColor2 = averageColorsNear(sx3, maxPositionInSource, gifFrame.iw);
+                        int averageColor2 = averageColorsNear(sx, maxPositionInSource, gifFrame.iw);
                         if (averageColor2 != 0) {
                             dest[dx3] = averageColor2;
                         } else if (isFirstFrame && isFirstFrameTransparent3 == null) {
                             isFirstFrameTransparent3 = true;
-                            sx3 += sampleSize2;
-                            dx3++;
-                            dlim = dlim2;
                         }
-                        sx3 += sampleSize2;
+                        sx += sampleSize2;
                         dx3++;
                         dlim = dlim2;
                     }
@@ -616,16 +605,18 @@ public class StandardGifDecoder implements GifDecoder {
         }
     }
 
-    @ColorInt
     private int averageColorsNear(int positionInMainPixels, int maxPositionInMainPixels, int currentFrameIw) {
-        int totalAdded = 0;
-        int blueSum = 0;
-        int greenSum = 0;
-        int redSum = 0;
         int alphaSum = 0;
-        int i = positionInMainPixels;
-        while (i < this.sampleSize + positionInMainPixels && i < this.mainPixels.length && i < maxPositionInMainPixels) {
-            int currentColor = this.act[this.mainPixels[i] & 255];
+        int redSum = 0;
+        int greenSum = 0;
+        int blueSum = 0;
+        int totalAdded = 0;
+        for (int i = positionInMainPixels; i < this.sampleSize + positionInMainPixels; i++) {
+            byte[] bArr = this.mainPixels;
+            if (i >= bArr.length || i >= maxPositionInMainPixels) {
+                break;
+            }
+            int currentColor = this.act[bArr[i] & 255];
             if (currentColor != 0) {
                 alphaSum += (currentColor >> 24) & 255;
                 redSum += (currentColor >> 16) & 255;
@@ -633,11 +624,13 @@ public class StandardGifDecoder implements GifDecoder {
                 blueSum += currentColor & 255;
                 totalAdded++;
             }
-            i++;
         }
-        int i2 = positionInMainPixels + currentFrameIw;
-        while (i2 < positionInMainPixels + currentFrameIw + this.sampleSize && i2 < this.mainPixels.length && i2 < maxPositionInMainPixels) {
-            int currentColor2 = this.act[this.mainPixels[i2] & 255];
+        for (int i2 = positionInMainPixels + currentFrameIw; i2 < positionInMainPixels + currentFrameIw + this.sampleSize; i2++) {
+            byte[] bArr2 = this.mainPixels;
+            if (i2 >= bArr2.length || i2 >= maxPositionInMainPixels) {
+                break;
+            }
+            int currentColor2 = this.act[bArr2[i2] & 255];
             if (currentColor2 != 0) {
                 alphaSum += (currentColor2 >> 24) & 255;
                 redSum += (currentColor2 >> 16) & 255;
@@ -645,7 +638,6 @@ public class StandardGifDecoder implements GifDecoder {
                 blueSum += currentColor2 & 255;
                 totalAdded++;
             }
-            i2++;
         }
         if (totalAdded == 0) {
             return 0;
@@ -653,108 +645,62 @@ public class StandardGifDecoder implements GifDecoder {
         return ((alphaSum / totalAdded) << 24) | ((redSum / totalAdded) << 16) | ((greenSum / totalAdded) << 8) | (blueSum / totalAdded);
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v0, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r16v0, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r16v1, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r17v0, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r9v1, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v0, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r23v0, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r12v1, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r23v1, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r25v1, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r14v4, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v3, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r23v3, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r12v5, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v4, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v4, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r23v4, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v5, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v5, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r12v6, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v6, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r25v2, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r14v7, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v7, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r23v5, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r12v8, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v8, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r21v7, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r23v6, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v9, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v10, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r14v9, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r25v3, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v20, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v21, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v12, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v12, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r14v10, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r25v4, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r14v11, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v13, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v14, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v15, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v16, resolved type: byte} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r16v11, resolved type: byte} */
-    /* JADX WARNING: Multi-variable type inference failed */
+    /* JADX WARNING: type inference failed for: r4v1, types: [short[]] */
+    /* JADX WARNING: type inference failed for: r0v19, types: [short] */
+    /* JADX WARNING: Unknown variable types count: 1 */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private void decodeBitmapData(com.bumptech.glide.gifdecoder.GifFrame r28) {
+    private void decodeBitmapData(com.bumptech.glide.gifdecoder.GifFrame r30) {
         /*
-            r27 = this;
-            r0 = r27
-            r1 = r28
+            r29 = this;
+            r0 = r29
+            r1 = r30
             if (r1 == 0) goto L_0x000d
             java.nio.ByteBuffer r2 = r0.rawData
             int r3 = r1.bufferFrameStart
             r2.position(r3)
         L_0x000d:
-            if (r1 != 0) goto L_0x0019
+            if (r1 != 0) goto L_0x0018
             com.bumptech.glide.gifdecoder.GifHeader r2 = r0.header
             int r2 = r2.width
             com.bumptech.glide.gifdecoder.GifHeader r3 = r0.header
             int r3 = r3.height
-        L_0x0017:
-            int r2 = r2 * r3
-            goto L_0x001e
-        L_0x0019:
+            goto L_0x001c
+        L_0x0018:
             int r2 = r1.iw
             int r3 = r1.ih
-            goto L_0x0017
-        L_0x001e:
+        L_0x001c:
+            int r2 = r2 * r3
             byte[] r3 = r0.mainPixels
-            if (r3 == 0) goto L_0x0027
-            byte[] r3 = r0.mainPixels
+            if (r3 == 0) goto L_0x0024
             int r3 = r3.length
-            if (r3 >= r2) goto L_0x002f
-        L_0x0027:
+            if (r3 >= r2) goto L_0x002c
+        L_0x0024:
             com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider r3 = r0.bitmapProvider
             byte[] r3 = r3.obtainByteArray(r2)
             r0.mainPixels = r3
-        L_0x002f:
+        L_0x002c:
             byte[] r3 = r0.mainPixels
             short[] r4 = r0.prefix
             r5 = 4096(0x1000, float:5.74E-42)
-            if (r4 != 0) goto L_0x003b
+            if (r4 != 0) goto L_0x0038
             short[] r4 = new short[r5]
             r0.prefix = r4
-        L_0x003b:
+        L_0x0038:
             short[] r4 = r0.prefix
             byte[] r6 = r0.suffix
-            if (r6 != 0) goto L_0x0045
+            if (r6 != 0) goto L_0x0042
             byte[] r6 = new byte[r5]
             r0.suffix = r6
-        L_0x0045:
+        L_0x0042:
             byte[] r6 = r0.suffix
             byte[] r7 = r0.pixelStack
-            if (r7 != 0) goto L_0x0051
+            if (r7 != 0) goto L_0x004e
             r7 = 4097(0x1001, float:5.741E-42)
             byte[] r7 = new byte[r7]
             r0.pixelStack = r7
-        L_0x0051:
+        L_0x004e:
             byte[] r7 = r0.pixelStack
-            int r8 = r27.readByte()
+            int r8 = r29.readByte()
             r9 = 1
             int r10 = r9 << r8
             int r11 = r10 + 1
@@ -763,170 +709,171 @@ public class StandardGifDecoder implements GifDecoder {
             int r14 = r8 + 1
             int r15 = r9 << r14
             int r15 = r15 - r9
-            r5 = 0
-            r16 = r5
-        L_0x0067:
-            r17 = r16
-            r9 = r17
-            if (r9 >= r10) goto L_0x0077
-            r4[r9] = r5
-            byte r5 = (byte) r9
-            r6[r9] = r5
-            int r16 = r9 + 1
-            r5 = 0
-            r9 = 1
-            goto L_0x0067
-        L_0x0077:
-            byte[] r5 = r0.block
             r16 = 0
-            r17 = r16
-            r19 = r16
-            r20 = r16
-            r21 = r16
-            r22 = r16
-            r23 = r16
-            r24 = r16
-            r16 = r15
-            r15 = r12
-            r12 = r9
+            r5 = r16
+        L_0x0065:
             r9 = 0
-            r26 = r19
-            r19 = r14
-            r14 = r26
-        L_0x0094:
-            if (r9 >= r2) goto L_0x0165
-            if (r22 != 0) goto L_0x00a5
-            int r22 = r27.readBlock()
-            if (r22 > 0) goto L_0x00a3
-            r1 = 3
-            r0.status = r1
-            goto L_0x0165
-        L_0x00a3:
-            r17 = 0
-        L_0x00a5:
-            byte r1 = r5[r17]
-            r1 = r1 & 255(0xff, float:3.57E-43)
-            int r1 = r1 << r23
-            int r24 = r24 + r1
-            int r23 = r23 + 8
-            r1 = 1
-            int r17 = r17 + 1
-            r1 = -1
-            int r22 = r22 + -1
-            r25 = r21
-            r21 = r14
-            r14 = r13
-            r13 = r12
-            r12 = r19
+            if (r5 >= r10) goto L_0x0071
+            r4[r5] = r9
+            byte r9 = (byte) r5
+            r6[r5] = r9
+            int r5 = r5 + 1
+            r9 = 1
+            goto L_0x0065
+        L_0x0071:
+            byte[] r1 = r0.block
+            r17 = r9
+            r18 = r9
             r19 = r9
-            r9 = r23
-        L_0x00c1:
-            if (r9 < r12) goto L_0x014f
-            r13 = r24 & r16
-            int r24 = r24 >> r12
-            int r9 = r9 - r12
-            if (r13 != r10) goto L_0x00d6
-            int r12 = r8 + 1
-            r18 = 1
-            int r23 = r18 << r12
-            int r16 = r23 + -1
-            int r15 = r10 + 2
-            r14 = -1
-            goto L_0x00c1
-        L_0x00d6:
-            r18 = 1
-            if (r13 != r11) goto L_0x00ea
+            r20 = r9
+            r21 = r9
+            r22 = r9
             r23 = r9
-            r9 = r19
-            r1 = r28
-            r19 = r12
-            r12 = r13
-            r13 = r14
-            r14 = r21
-            r21 = r25
-            goto L_0x0094
-        L_0x00ea:
-            if (r14 != r1) goto L_0x00f8
-            byte r23 = r6[r13]
-            r3[r21] = r23
-            int r21 = r21 + 1
-            int r19 = r19 + 1
-            r14 = r13
-            r25 = r13
-            goto L_0x00c1
-        L_0x00f8:
-            r23 = r13
-            if (r13 < r15) goto L_0x0106
-            r1 = r25
-            byte r0 = (byte) r1
-            r7[r20] = r0
-            int r20 = r20 + 1
-            r0 = r14
-            r13 = r0
-            goto L_0x0108
-        L_0x0106:
-            r1 = r25
-        L_0x0108:
-            if (r13 < r10) goto L_0x0113
-            byte r0 = r6[r13]
-            r7[r20] = r0
-            int r20 = r20 + 1
-            short r13 = r4[r13]
-            goto L_0x0108
-        L_0x0113:
-            byte r0 = r6[r13]
-            r0 = r0 & 255(0xff, float:3.57E-43)
-            byte r1 = (byte) r0
-            r3[r21] = r1
-            int r21 = r21 + 1
-            int r19 = r19 + 1
-        L_0x011e:
-            if (r20 <= 0) goto L_0x012b
-            int r20 = r20 + -1
-            byte r1 = r7[r20]
-            r3[r21] = r1
-            int r21 = r21 + 1
-            int r19 = r19 + 1
-            goto L_0x011e
-        L_0x012b:
-            r1 = 4096(0x1000, float:5.74E-42)
-            if (r15 >= r1) goto L_0x0146
-            short r1 = (short) r14
-            r4[r15] = r1
-            byte r1 = (byte) r0
-            r6[r15] = r1
-            int r15 = r15 + 1
-            r1 = r15 & r16
-            if (r1 != 0) goto L_0x0144
-            r1 = 4096(0x1000, float:5.74E-42)
-            if (r15 >= r1) goto L_0x0146
-            int r12 = r12 + 1
-            int r16 = r16 + r15
-            goto L_0x0146
-        L_0x0144:
-            r1 = 4096(0x1000, float:5.74E-42)
-        L_0x0146:
-            r14 = r23
-            r25 = r0
-            r0 = r27
+            r24 = r9
+            r28 = r24
+            r24 = r5
+            r5 = r28
+        L_0x0089:
+            if (r5 >= r2) goto L_0x0164
+            if (r21 != 0) goto L_0x00a1
+            int r21 = r29.readBlock()
+            if (r21 > 0) goto L_0x009c
+            r25 = r5
+            r5 = 3
+            r0.status = r5
+            r27 = r1
+            goto L_0x0168
+        L_0x009c:
+            r25 = r5
+            r17 = 0
+            goto L_0x00a3
+        L_0x00a1:
+            r25 = r5
+        L_0x00a3:
+            byte r5 = r1[r17]
+            r5 = r5 & 255(0xff, float:3.57E-43)
+            int r5 = r5 << r22
+            int r23 = r23 + r5
+            int r22 = r22 + 8
+            r5 = 1
+            int r17 = r17 + 1
+            r5 = -1
+            int r21 = r21 + -1
+            r26 = r20
+            r5 = r22
+        L_0x00b7:
+            if (r5 < r14) goto L_0x0154
+            r0 = r23 & r15
+            int r23 = r23 >> r14
+            int r5 = r5 - r14
+            if (r0 != r10) goto L_0x00d0
+            int r14 = r8 + 1
+            r16 = 1
+            int r20 = r16 << r14
+            int r15 = r20 + -1
+            int r12 = r10 + 2
+            r13 = -1
+            r24 = r0
+            r0 = r29
+            goto L_0x00b7
+        L_0x00d0:
+            r16 = 1
+            if (r0 != r11) goto L_0x00df
+            r24 = r0
+            r22 = r5
+            r5 = r25
+            r20 = r26
+            r0 = r29
+            goto L_0x0089
+        L_0x00df:
+            r27 = r1
             r1 = -1
-            goto L_0x00c1
-        L_0x014f:
-            r1 = r25
-            r18 = 1
-            r23 = r9
-            r9 = r19
-            r0 = r27
-            r19 = r12
-            r12 = r13
-            r13 = r14
-            r14 = r21
-            r21 = r1
-            r1 = r28
-            goto L_0x0094
-        L_0x0165:
+            if (r13 != r1) goto L_0x00f6
+            byte r20 = r6[r0]
+            r3[r9] = r20
+            int r9 = r9 + 1
+            int r25 = r25 + 1
+            r13 = r0
+            r26 = r0
+            r24 = r0
+            r1 = r27
+            r0 = r29
+            goto L_0x00b7
+        L_0x00f6:
+            r20 = r0
+            if (r0 < r12) goto L_0x0105
+            r24 = r0
+            r1 = r26
+            byte r0 = (byte) r1
+            r7[r19] = r0
+            int r19 = r19 + 1
+            r0 = r13
+            goto L_0x0109
+        L_0x0105:
+            r24 = r0
+            r1 = r26
+        L_0x0109:
+            if (r0 < r10) goto L_0x0114
+            byte r24 = r6[r0]
+            r7[r19] = r24
+            int r19 = r19 + 1
+            short r0 = r4[r0]
+            goto L_0x0109
+        L_0x0114:
+            r26 = r1
+            byte r1 = r6[r0]
+            r1 = r1 & 255(0xff, float:3.57E-43)
+            r24 = r0
+            byte r0 = (byte) r1
+            r3[r9] = r0
+            int r9 = r9 + 1
+            int r25 = r25 + 1
+        L_0x0123:
+            if (r19 <= 0) goto L_0x0130
+            int r19 = r19 + -1
+            byte r0 = r7[r19]
+            r3[r9] = r0
+            int r9 = r9 + 1
+            int r25 = r25 + 1
+            goto L_0x0123
+        L_0x0130:
+            r0 = 4096(0x1000, float:5.74E-42)
+            if (r12 >= r0) goto L_0x014a
+            short r0 = (short) r13
+            r4[r12] = r0
+            byte r0 = (byte) r1
+            r6[r12] = r0
+            int r12 = r12 + 1
+            r0 = r12 & r15
+            if (r0 != 0) goto L_0x0148
+            r0 = 4096(0x1000, float:5.74E-42)
+            if (r12 >= r0) goto L_0x014a
+            int r14 = r14 + 1
+            int r15 = r15 + r12
+            goto L_0x014a
+        L_0x0148:
+            r0 = 4096(0x1000, float:5.74E-42)
+        L_0x014a:
+            r13 = r20
+            r0 = r29
+            r26 = r1
+            r1 = r27
+            goto L_0x00b7
+        L_0x0154:
+            r27 = r1
+            r0 = 4096(0x1000, float:5.74E-42)
+            r16 = 1
+            r0 = r29
+            r22 = r5
+            r5 = r25
+            r20 = r26
+            goto L_0x0089
+        L_0x0164:
+            r27 = r1
+            r25 = r5
+        L_0x0168:
             r0 = 0
-            java.util.Arrays.fill(r3, r14, r2, r0)
+            java.util.Arrays.fill(r3, r9, r2, r0)
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.gifdecoder.StandardGifDecoder.decodeBitmapData(com.bumptech.glide.gifdecoder.GifFrame):void");
@@ -941,12 +888,14 @@ public class StandardGifDecoder implements GifDecoder {
         if (blockSize <= 0) {
             return blockSize;
         }
-        this.rawData.get(this.block, 0, Math.min(blockSize, this.rawData.remaining()));
+        ByteBuffer byteBuffer = this.rawData;
+        byteBuffer.get(this.block, 0, Math.min(blockSize, byteBuffer.remaining()));
         return blockSize;
     }
 
     private Bitmap getNextBitmap() {
-        Bitmap result = this.bitmapProvider.obtain(this.downsampledWidth, this.downsampledHeight, (this.isFirstFrameTransparent == null || this.isFirstFrameTransparent.booleanValue()) ? Bitmap.Config.ARGB_8888 : this.bitmapConfig);
+        Boolean bool = this.isFirstFrameTransparent;
+        Bitmap result = this.bitmapProvider.obtain(this.downsampledWidth, this.downsampledHeight, (bool == null || bool.booleanValue()) ? Bitmap.Config.ARGB_8888 : this.bitmapConfig);
         result.setHasAlpha(true);
         return result;
     }

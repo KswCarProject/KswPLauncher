@@ -1,14 +1,11 @@
 package com.wits.ksw.settings.utlis_view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.RadioButton;
 
-@SuppressLint({"AppCompatCustomView"})
 public class RtlNaviRadioButton extends RadioButton {
     private static final String TAG = "RtlNaviRadioButton";
     Drawable buttonDrawable;
@@ -28,12 +25,13 @@ public class RtlNaviRadioButton extends RadioButton {
         init();
     }
 
-    public void setCompoundDrawables(@Nullable Drawable left, @Nullable Drawable top, @Nullable Drawable right, @Nullable Drawable bottom) {
+    public void setCompoundDrawables(Drawable left, Drawable top, Drawable right, Drawable bottom) {
         String language = getResources().getConfiguration().locale.getLanguage();
         Log.i(TAG, "init: language=" + language);
         if (!language.contains("ar")) {
-            this.buttonDrawable = getButtonDrawable();
-            setButtonDrawable(this.buttonDrawable);
+            Drawable buttonDrawable2 = getButtonDrawable();
+            this.buttonDrawable = buttonDrawable2;
+            setButtonDrawable(buttonDrawable2);
             this.buttonDrawable = null;
         }
         super.setCompoundDrawables(left, top, this.buttonDrawable, bottom);
@@ -41,8 +39,9 @@ public class RtlNaviRadioButton extends RadioButton {
 
     /* access modifiers changed from: protected */
     public void init() {
-        this.buttonDrawable = getButtonDrawable();
-        if (this.buttonDrawable == null) {
+        Drawable buttonDrawable2 = getButtonDrawable();
+        this.buttonDrawable = buttonDrawable2;
+        if (buttonDrawable2 == null) {
             Log.d(TAG, "getButtonDrawable null");
         } else if (getResources().getConfiguration().locale.getLanguage().contains("ar")) {
             Log.i(TAG, "RtlRadioButton: ");
