@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.solver.widgets.ConstraintWidget;
 import android.util.AttributeSet;
 import android.view.View;
 import com.wits.pms.statuscontrol.WitsCommand;
@@ -46,7 +47,7 @@ public class Placeholder extends View {
                 int attr = a.getIndex(i);
                 if (attr == R.styleable.ConstraintLayout_placeholder_content) {
                     this.mContentId = a.getResourceId(attr, this.mContentId);
-                } else if (attr == R.styleable.ConstraintLayout_placeholder_emptyVisibility) {
+                } else if (attr == R.styleable.ConstraintLayout_placeholder_placeholder_emptyVisibility) {
                     this.mEmptyVisibility = a.getInt(attr, this.mEmptyVisibility);
                 }
             }
@@ -87,9 +88,10 @@ public class Placeholder extends View {
         if (this.mContentId == -1 && !isInEditMode()) {
             setVisibility(this.mEmptyVisibility);
         }
-        this.mContent = container.findViewById(this.mContentId);
-        if (this.mContent != null) {
-            ((ConstraintLayout.LayoutParams) this.mContent.getLayoutParams()).isInPlaceholder = true;
+        View findViewById = container.findViewById(this.mContentId);
+        this.mContent = findViewById;
+        if (findViewById != null) {
+            ((ConstraintLayout.LayoutParams) findViewById.getLayoutParams()).isInPlaceholder = true;
             this.mContent.setVisibility(0);
             setVisibility(0);
         }
@@ -98,8 +100,9 @@ public class Placeholder extends View {
     public void setContentId(int id) {
         View v;
         if (this.mContentId != id) {
-            if (this.mContent != null) {
-                this.mContent.setVisibility(0);
+            View view = this.mContent;
+            if (view != null) {
+                view.setVisibility(0);
                 ((ConstraintLayout.LayoutParams) this.mContent.getLayoutParams()).isInPlaceholder = false;
                 this.mContent = null;
             }
@@ -115,8 +118,12 @@ public class Placeholder extends View {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) getLayoutParams();
             ConstraintLayout.LayoutParams layoutParamsContent = (ConstraintLayout.LayoutParams) this.mContent.getLayoutParams();
             layoutParamsContent.widget.setVisibility(0);
-            layoutParams.widget.setWidth(layoutParamsContent.widget.getWidth());
-            layoutParams.widget.setHeight(layoutParamsContent.widget.getHeight());
+            if (layoutParams.widget.getHorizontalDimensionBehaviour() != ConstraintWidget.DimensionBehaviour.FIXED) {
+                layoutParams.widget.setWidth(layoutParamsContent.widget.getWidth());
+            }
+            if (layoutParams.widget.getVerticalDimensionBehaviour() != ConstraintWidget.DimensionBehaviour.FIXED) {
+                layoutParams.widget.setHeight(layoutParamsContent.widget.getHeight());
+            }
             layoutParamsContent.widget.setVisibility(8);
         }
     }

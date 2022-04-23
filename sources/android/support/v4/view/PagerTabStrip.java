@@ -5,11 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -42,19 +37,21 @@ public class PagerTabStrip extends PagerTitleStrip {
     private final Rect mTempRect;
     private int mTouchSlop;
 
-    public PagerTabStrip(@NonNull Context context) {
+    public PagerTabStrip(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public PagerTabStrip(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PagerTabStrip(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.mTabPaint = new Paint();
+        Paint paint = new Paint();
+        this.mTabPaint = paint;
         this.mTempRect = new Rect();
         this.mTabAlpha = 255;
         this.mDrawFullUnderline = false;
         this.mDrawFullUnderlineSet = false;
-        this.mIndicatorColor = this.mTextColor;
-        this.mTabPaint.setColor(this.mIndicatorColor);
+        int i = this.mTextColor;
+        this.mIndicatorColor = i;
+        paint.setColor(i);
         float density = context.getResources().getDisplayMetrics().density;
         this.mIndicatorHeight = (int) ((3.0f * density) + 0.5f);
         this.mMinPaddingBottom = (int) ((6.0f * density) + 0.5f);
@@ -83,17 +80,16 @@ public class PagerTabStrip extends PagerTitleStrip {
         }
     }
 
-    public void setTabIndicatorColor(@ColorInt int color) {
+    public void setTabIndicatorColor(int color) {
         this.mIndicatorColor = color;
-        this.mTabPaint.setColor(this.mIndicatorColor);
+        this.mTabPaint.setColor(color);
         invalidate();
     }
 
-    public void setTabIndicatorColorResource(@ColorRes int resId) {
+    public void setTabIndicatorColorResource(int resId) {
         setTabIndicatorColor(ContextCompat.getColor(getContext(), resId));
     }
 
-    @ColorInt
     public int getTabIndicatorColor() {
         return this.mIndicatorColor;
     }
@@ -119,14 +115,14 @@ public class PagerTabStrip extends PagerTitleStrip {
         }
     }
 
-    public void setBackgroundColor(@ColorInt int color) {
+    public void setBackgroundColor(int color) {
         super.setBackgroundColor(color);
         if (!this.mDrawFullUnderlineSet) {
             this.mDrawFullUnderline = (-16777216 & color) == 0;
         }
     }
 
-    public void setBackgroundResource(@DrawableRes int resId) {
+    public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
         if (!this.mDrawFullUnderlineSet) {
             this.mDrawFullUnderline = resId == 0;

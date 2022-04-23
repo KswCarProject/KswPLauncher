@@ -5,9 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
-import android.support.annotation.RestrictTo;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ReportFragment extends Fragment {
     private static final String REPORT_FRAGMENT_TAG = "android.arch.lifecycle.LifecycleDispatcher.report_fragment_tag";
     private ActivityInitializationListener mProcessListener;

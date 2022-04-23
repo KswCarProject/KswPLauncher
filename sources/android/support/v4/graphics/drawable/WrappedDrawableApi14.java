@@ -8,9 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 
 class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, WrappedDrawable, TintAwareDrawable {
     static final PorterDuff.Mode DEFAULT_TINT_MODE = PorterDuff.Mode.SRC_IN;
@@ -21,18 +18,19 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
     private boolean mMutated;
     DrawableWrapperState mState;
 
-    WrappedDrawableApi14(@NonNull DrawableWrapperState state, @Nullable Resources res) {
+    WrappedDrawableApi14(DrawableWrapperState state, Resources res) {
         this.mState = state;
         updateLocalState(res);
     }
 
-    WrappedDrawableApi14(@Nullable Drawable dr) {
+    WrappedDrawableApi14(Drawable dr) {
         this.mState = mutateConstantState();
         setWrappedDrawable(dr);
     }
 
-    private void updateLocalState(@Nullable Resources res) {
-        if (this.mState != null && this.mState.mDrawableState != null) {
+    private void updateLocalState(Resources res) {
+        DrawableWrapperState drawableWrapperState = this.mState;
+        if (drawableWrapperState != null && drawableWrapperState.mDrawableState != null) {
             setWrappedDrawable(this.mState.mDrawableState.newDrawable(res));
         }
     }
@@ -41,14 +39,15 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
         this.mDrawable.jumpToCurrentState();
     }
 
-    public void draw(@NonNull Canvas canvas) {
+    public void draw(Canvas canvas) {
         this.mDrawable.draw(canvas);
     }
 
     /* access modifiers changed from: protected */
     public void onBoundsChange(Rect bounds) {
-        if (this.mDrawable != null) {
-            this.mDrawable.setBounds(bounds);
+        Drawable drawable = this.mDrawable;
+        if (drawable != null) {
+            drawable.setBounds(bounds);
         }
     }
 
@@ -57,7 +56,9 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
     }
 
     public int getChangingConfigurations() {
-        return super.getChangingConfigurations() | (this.mState != null ? this.mState.getChangingConfigurations() : 0) | this.mDrawable.getChangingConfigurations();
+        int changingConfigurations = super.getChangingConfigurations();
+        DrawableWrapperState drawableWrapperState = this.mState;
+        return changingConfigurations | (drawableWrapperState != null ? drawableWrapperState.getChangingConfigurations() : 0) | this.mDrawable.getChangingConfigurations();
     }
 
     public void setDither(boolean dither) {
@@ -76,21 +77,48 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
         this.mDrawable.setColorFilter(cf);
     }
 
+    /* JADX WARNING: Code restructure failed: missing block: B:2:0x0006, code lost:
+        r0 = r2.mState;
+     */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
     public boolean isStateful() {
-        ColorStateList tintList = (!isCompatTintEnabled() || this.mState == null) ? null : this.mState.mTint;
-        return (tintList != null && tintList.isStateful()) || this.mDrawable.isStateful();
+        /*
+            r2 = this;
+            boolean r0 = r2.isCompatTintEnabled()
+            if (r0 == 0) goto L_0x000d
+            android.support.v4.graphics.drawable.WrappedDrawableApi14$DrawableWrapperState r0 = r2.mState
+            if (r0 == 0) goto L_0x000d
+            android.content.res.ColorStateList r0 = r0.mTint
+            goto L_0x000e
+        L_0x000d:
+            r0 = 0
+        L_0x000e:
+            if (r0 == 0) goto L_0x0016
+            boolean r1 = r0.isStateful()
+            if (r1 != 0) goto L_0x001e
+        L_0x0016:
+            android.graphics.drawable.Drawable r1 = r2.mDrawable
+            boolean r1 = r1.isStateful()
+            if (r1 == 0) goto L_0x0020
+        L_0x001e:
+            r1 = 1
+            goto L_0x0021
+        L_0x0020:
+            r1 = 0
+        L_0x0021:
+            return r1
+        */
+        throw new UnsupportedOperationException("Method not decompiled: android.support.v4.graphics.drawable.WrappedDrawableApi14.isStateful():boolean");
     }
 
-    public boolean setState(@NonNull int[] stateSet) {
+    public boolean setState(int[] stateSet) {
         return updateTint(stateSet) || this.mDrawable.setState(stateSet);
     }
 
-    @NonNull
     public int[] getState() {
         return this.mDrawable.getState();
     }
 
-    @NonNull
     public Drawable getCurrent() {
         return this.mDrawable.getCurrent();
     }
@@ -123,38 +151,38 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
         return this.mDrawable.getMinimumHeight();
     }
 
-    public boolean getPadding(@NonNull Rect padding) {
+    public boolean getPadding(Rect padding) {
         return this.mDrawable.getPadding(padding);
     }
 
-    @RequiresApi(19)
     public void setAutoMirrored(boolean mirrored) {
         this.mDrawable.setAutoMirrored(mirrored);
     }
 
-    @RequiresApi(19)
     public boolean isAutoMirrored() {
         return this.mDrawable.isAutoMirrored();
     }
 
-    @Nullable
     public Drawable.ConstantState getConstantState() {
-        if (this.mState == null || !this.mState.canConstantState()) {
+        DrawableWrapperState drawableWrapperState = this.mState;
+        if (drawableWrapperState == null || !drawableWrapperState.canConstantState()) {
             return null;
         }
         this.mState.mChangingConfigurations = getChangingConfigurations();
         return this.mState;
     }
 
-    @NonNull
     public Drawable mutate() {
         if (!this.mMutated && super.mutate() == this) {
             this.mState = mutateConstantState();
-            if (this.mDrawable != null) {
-                this.mDrawable.mutate();
+            Drawable drawable = this.mDrawable;
+            if (drawable != null) {
+                drawable.mutate();
             }
-            if (this.mState != null) {
-                this.mState.mDrawableState = this.mDrawable != null ? this.mDrawable.getConstantState() : null;
+            DrawableWrapperState drawableWrapperState = this.mState;
+            if (drawableWrapperState != null) {
+                Drawable drawable2 = this.mDrawable;
+                drawableWrapperState.mDrawableState = drawable2 != null ? drawable2.getConstantState() : null;
             }
             this.mMutated = true;
         }
@@ -162,20 +190,19 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public DrawableWrapperState mutateConstantState() {
         return new DrawableWrapperStateBase(this.mState, (Resources) null);
     }
 
-    public void invalidateDrawable(@NonNull Drawable who) {
+    public void invalidateDrawable(Drawable who) {
         invalidateSelf();
     }
 
-    public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+    public void scheduleDrawable(Drawable who, Runnable what, long when) {
         scheduleSelf(what, when);
     }
 
-    public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+    public void unscheduleDrawable(Drawable who, Runnable what) {
         unscheduleSelf(what);
     }
 
@@ -193,7 +220,7 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
         updateTint(getState());
     }
 
-    public void setTintMode(@NonNull PorterDuff.Mode tintMode) {
+    public void setTintMode(PorterDuff.Mode tintMode) {
         this.mState.mTintMode = tintMode;
         updateTint(getState());
     }
@@ -225,8 +252,9 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
     }
 
     public final void setWrappedDrawable(Drawable dr) {
-        if (this.mDrawable != null) {
-            this.mDrawable.setCallback((Drawable.Callback) null);
+        Drawable drawable = this.mDrawable;
+        if (drawable != null) {
+            drawable.setCallback((Drawable.Callback) null);
         }
         this.mDrawable = dr;
         if (dr != null) {
@@ -235,8 +263,9 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
             setState(dr.getState());
             setLevel(dr.getLevel());
             setBounds(dr.getBounds());
-            if (this.mState != null) {
-                this.mState.mDrawableState = dr.getConstantState();
+            DrawableWrapperState drawableWrapperState = this.mState;
+            if (drawableWrapperState != null) {
+                drawableWrapperState.mDrawableState = dr.getConstantState();
             }
         }
         invalidateSelf();
@@ -253,10 +282,9 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
         ColorStateList mTint = null;
         PorterDuff.Mode mTintMode = WrappedDrawableApi14.DEFAULT_TINT_MODE;
 
-        @NonNull
-        public abstract Drawable newDrawable(@Nullable Resources resources);
+        public abstract Drawable newDrawable(Resources resources);
 
-        DrawableWrapperState(@Nullable DrawableWrapperState orig, @Nullable Resources res) {
+        DrawableWrapperState(DrawableWrapperState orig, Resources res) {
             if (orig != null) {
                 this.mChangingConfigurations = orig.mChangingConfigurations;
                 this.mDrawableState = orig.mDrawableState;
@@ -265,13 +293,14 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
             }
         }
 
-        @NonNull
         public Drawable newDrawable() {
             return newDrawable((Resources) null);
         }
 
         public int getChangingConfigurations() {
-            return this.mChangingConfigurations | (this.mDrawableState != null ? this.mDrawableState.getChangingConfigurations() : 0);
+            int i = this.mChangingConfigurations;
+            Drawable.ConstantState constantState = this.mDrawableState;
+            return i | (constantState != null ? constantState.getChangingConfigurations() : 0);
         }
 
         /* access modifiers changed from: package-private */
@@ -281,12 +310,11 @@ class WrappedDrawableApi14 extends Drawable implements Drawable.Callback, Wrappe
     }
 
     private static class DrawableWrapperStateBase extends DrawableWrapperState {
-        DrawableWrapperStateBase(@Nullable DrawableWrapperState orig, @Nullable Resources res) {
+        DrawableWrapperStateBase(DrawableWrapperState orig, Resources res) {
             super(orig, res);
         }
 
-        @NonNull
-        public Drawable newDrawable(@Nullable Resources res) {
+        public Drawable newDrawable(Resources res) {
             return new WrappedDrawableApi14(this, res);
         }
     }

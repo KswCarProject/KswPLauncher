@@ -5,20 +5,16 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.launcher.bean.AppInfo;
 
 public class Id7AppItemBindingSw600dpLandImpl extends Id7AppItemBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
 
-    public Id7AppItemBindingSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public Id7AppItemBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
@@ -48,20 +44,20 @@ public class Id7AppItemBindingSw600dpLandImpl extends Id7AppItemBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (1 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (11 != variableId) {
             return false;
         }
         setListItem((AppInfo) variable);
         return true;
     }
 
-    public void setListItem(@Nullable AppInfo ListItem) {
+    public void setListItem(AppInfo ListItem) {
         this.mListItem = ListItem;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(1);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 

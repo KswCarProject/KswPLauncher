@@ -16,11 +16,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.compat.R;
 import android.support.v4.app.Person;
 import android.support.v4.text.BidiFormatter;
@@ -57,7 +52,6 @@ public class NotificationCompat {
     public static final String CATEGORY_STATUS = "status";
     public static final String CATEGORY_SYSTEM = "sys";
     public static final String CATEGORY_TRANSPORT = "transport";
-    @ColorInt
     public static final int COLOR_DEFAULT = 0;
     public static final int DEFAULT_ALL = -1;
     public static final int DEFAULT_LIGHTS = 4;
@@ -117,7 +111,6 @@ public class NotificationCompat {
     public static final int VISIBILITY_PUBLIC = 1;
     public static final int VISIBILITY_SECRET = -1;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface BadgeIconType {
     }
@@ -126,24 +119,20 @@ public class NotificationCompat {
         Builder extend(Builder builder);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface GroupAlertBehavior {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface NotificationVisibility {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface StreamType {
     }
 
     public static class Builder {
         private static final int MAX_CHARSEQUENCE_LENGTH = 5120;
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public ArrayList<Action> mActions;
         int mBadgeIcon;
         RemoteViews mBigContentView;
@@ -157,7 +146,6 @@ public class NotificationCompat {
         CharSequence mContentText;
         CharSequence mContentTitle;
         RemoteViews mContentView;
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public Context mContext;
         Bundle mExtras;
         PendingIntent mFullScreenIntent;
@@ -188,7 +176,7 @@ public class NotificationCompat {
         boolean mUseChronometer;
         int mVisibility;
 
-        public Builder(@NonNull Context context, @NonNull String channelId) {
+        public Builder(Context context, String channelId) {
             this.mActions = new ArrayList<>();
             this.mInvisibleActions = new ArrayList<>();
             this.mShowWhen = true;
@@ -197,10 +185,11 @@ public class NotificationCompat {
             this.mVisibility = 0;
             this.mBadgeIcon = 0;
             this.mGroupAlertBehavior = 0;
-            this.mNotification = new Notification();
+            Notification notification = new Notification();
+            this.mNotification = notification;
             this.mContext = context;
             this.mChannelId = channelId;
-            this.mNotification.when = System.currentTimeMillis();
+            notification.when = System.currentTimeMillis();
             this.mNotification.audioStreamType = -1;
             this.mPriority = 0;
             this.mPeople = new ArrayList<>();
@@ -348,14 +337,14 @@ public class NotificationCompat {
             return this;
         }
 
-        public Builder setLights(@ColorInt int argb, int onMs, int offMs) {
+        public Builder setLights(int argb, int onMs, int offMs) {
             this.mNotification.ledARGB = argb;
             this.mNotification.ledOnMS = onMs;
             this.mNotification.ledOffMS = offMs;
             int i = 1;
             boolean showLights = (this.mNotification.ledOnMS == 0 || this.mNotification.ledOffMS == 0) ? false : true;
             Notification notification = this.mNotification;
-            int i2 = this.mNotification.flags & -2;
+            int i2 = notification.flags & -2;
             if (!showLights) {
                 i = 0;
             }
@@ -437,10 +426,11 @@ public class NotificationCompat {
 
         public Builder addExtras(Bundle extras) {
             if (extras != null) {
-                if (this.mExtras == null) {
+                Bundle bundle = this.mExtras;
+                if (bundle == null) {
                     this.mExtras = new Bundle(extras);
                 } else {
-                    this.mExtras.putAll(extras);
+                    bundle.putAll(extras);
                 }
             }
             return this;
@@ -468,12 +458,10 @@ public class NotificationCompat {
             return this;
         }
 
-        @RequiresApi(21)
         public Builder addInvisibleAction(int icon, CharSequence title, PendingIntent intent) {
             return addInvisibleAction(new Action(icon, title, intent));
         }
 
-        @RequiresApi(21)
         public Builder addInvisibleAction(Action action) {
             this.mInvisibleActions.add(action);
             return this;
@@ -482,14 +470,14 @@ public class NotificationCompat {
         public Builder setStyle(Style style) {
             if (this.mStyle != style) {
                 this.mStyle = style;
-                if (this.mStyle != null) {
-                    this.mStyle.setBuilder(this);
+                if (style != null) {
+                    style.setBuilder(this);
                 }
             }
             return this;
         }
 
-        public Builder setColor(@ColorInt int argb) {
+        public Builder setColor(int argb) {
             this.mColor = argb;
             return this;
         }
@@ -519,7 +507,7 @@ public class NotificationCompat {
             return this;
         }
 
-        public Builder setChannelId(@NonNull String channelId) {
+        public Builder setChannelId(String channelId) {
             this.mChannelId = channelId;
             return this;
         }
@@ -565,22 +553,18 @@ public class NotificationCompat {
             return cs;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews getContentView() {
             return this.mContentView;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews getBigContentView() {
             return this.mBigContentView;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews getHeadsUpContentView() {
             return this.mHeadsUpContentView;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public long getWhenIfShowing() {
             if (this.mShowWhen) {
                 return this.mNotification.when;
@@ -588,12 +572,10 @@ public class NotificationCompat {
             return 0;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public int getPriority() {
             return this.mPriority;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public int getColor() {
             return this.mColor;
         }
@@ -601,7 +583,6 @@ public class NotificationCompat {
 
     public static abstract class Style {
         CharSequence mBigContentTitle;
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         protected Builder mBuilder;
         CharSequence mSummaryText;
         boolean mSummaryTextSet = false;
@@ -609,54 +590,47 @@ public class NotificationCompat {
         public void setBuilder(Builder builder) {
             if (this.mBuilder != builder) {
                 this.mBuilder = builder;
-                if (this.mBuilder != null) {
-                    this.mBuilder.setStyle(this);
+                if (builder != null) {
+                    builder.setStyle(this);
                 }
             }
         }
 
         public Notification build() {
-            if (this.mBuilder != null) {
-                return this.mBuilder.build();
+            Builder builder = this.mBuilder;
+            if (builder != null) {
+                return builder.build();
             }
             return null;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeContentView(NotificationBuilderWithBuilderAccessor builder) {
             return null;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeBigContentView(NotificationBuilderWithBuilderAccessor builder) {
             return null;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeHeadsUpContentView(NotificationBuilderWithBuilderAccessor builder) {
             return null;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void addCompatExtras(Bundle extras) {
         }
 
         /* access modifiers changed from: protected */
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void restoreFromCompatExtras(Bundle extras) {
         }
 
-        /* JADX WARNING: Removed duplicated region for block: B:69:0x01d6  */
-        /* JADX WARNING: Removed duplicated region for block: B:72:0x01f2  */
-        /* JADX WARNING: Removed duplicated region for block: B:75:0x0200  */
-        /* JADX WARNING: Removed duplicated region for block: B:84:0x0249  */
-        /* JADX WARNING: Removed duplicated region for block: B:85:0x024b  */
-        /* JADX WARNING: Removed duplicated region for block: B:88:0x0255  */
-        @android.support.annotation.RestrictTo({android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP})
+        /* JADX WARNING: Removed duplicated region for block: B:69:0x01c7  */
+        /* JADX WARNING: Removed duplicated region for block: B:73:0x01e9  */
+        /* JADX WARNING: Removed duplicated region for block: B:82:0x0230  */
+        /* JADX WARNING: Removed duplicated region for block: B:83:0x0232  */
+        /* JADX WARNING: Removed duplicated region for block: B:86:0x023b  */
         /* Code decompiled incorrectly, please refer to instructions dump. */
         public android.widget.RemoteViews applyStandardTemplate(boolean r20, int r21, boolean r22) {
             /*
@@ -687,89 +661,86 @@ public class NotificationCompat {
                 int r6 = android.os.Build.VERSION.SDK_INT
                 r8 = 21
                 r14 = 16
-                if (r6 < r14) goto L_0x005c
+                if (r6 < r14) goto L_0x0056
                 int r6 = android.os.Build.VERSION.SDK_INT
-                if (r6 >= r8) goto L_0x005c
-                if (r13 == 0) goto L_0x004a
-                int r6 = android.support.compat.R.id.notification_background
-                java.lang.String r9 = "setBackgroundResource"
+                if (r6 >= r8) goto L_0x0056
+                java.lang.String r6 = "setBackgroundResource"
+                if (r13 == 0) goto L_0x0048
+                int r9 = android.support.compat.R.id.notification_background
                 int r10 = android.support.compat.R.drawable.notification_bg_low
-                r2.setInt(r6, r9, r10)
-                int r6 = android.support.compat.R.id.icon
-                java.lang.String r9 = "setBackgroundResource"
+                r2.setInt(r9, r6, r10)
+                int r9 = android.support.compat.R.id.icon
                 int r10 = android.support.compat.R.drawable.notification_template_icon_low_bg
-                r2.setInt(r6, r9, r10)
-                goto L_0x005c
-            L_0x004a:
-                int r6 = android.support.compat.R.id.notification_background
-                java.lang.String r9 = "setBackgroundResource"
+                r2.setInt(r9, r6, r10)
+                goto L_0x0056
+            L_0x0048:
+                int r9 = android.support.compat.R.id.notification_background
                 int r10 = android.support.compat.R.drawable.notification_bg
-                r2.setInt(r6, r9, r10)
-                int r6 = android.support.compat.R.id.icon
-                java.lang.String r9 = "setBackgroundResource"
+                r2.setInt(r9, r6, r10)
+                int r9 = android.support.compat.R.id.icon
                 int r10 = android.support.compat.R.drawable.notification_template_icon_bg
-                r2.setInt(r6, r9, r10)
-            L_0x005c:
+                r2.setInt(r9, r6, r10)
+            L_0x0056:
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 android.graphics.Bitmap r6 = r6.mLargeIcon
-                r10 = 8
-                if (r6 == 0) goto L_0x00c5
+                r15 = 8
+                if (r6 == 0) goto L_0x00bf
                 int r6 = android.os.Build.VERSION.SDK_INT
-                if (r6 < r14) goto L_0x0077
+                if (r6 < r14) goto L_0x0071
                 int r6 = android.support.compat.R.id.icon
                 r2.setViewVisibility(r6, r12)
                 int r6 = android.support.compat.R.id.icon
                 android.support.v4.app.NotificationCompat$Builder r9 = r0.mBuilder
                 android.graphics.Bitmap r9 = r9.mLargeIcon
                 r2.setImageViewBitmap(r6, r9)
-                goto L_0x007c
-            L_0x0077:
+                goto L_0x0076
+            L_0x0071:
                 int r6 = android.support.compat.R.id.icon
-                r2.setViewVisibility(r6, r10)
-            L_0x007c:
-                if (r20 == 0) goto L_0x0110
+                r2.setViewVisibility(r6, r15)
+            L_0x0076:
+                if (r20 == 0) goto L_0x010a
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 android.app.Notification r6 = r6.mNotification
                 int r6 = r6.icon
-                if (r6 == 0) goto L_0x0110
+                if (r6 == 0) goto L_0x010a
                 int r6 = android.support.compat.R.dimen.notification_right_icon_size
                 int r6 = r1.getDimensionPixelSize(r6)
                 int r9 = android.support.compat.R.dimen.notification_small_icon_background_padding
                 int r9 = r1.getDimensionPixelSize(r9)
                 int r9 = r9 * 2
                 int r9 = r6 - r9
-                int r11 = android.os.Build.VERSION.SDK_INT
-                if (r11 < r8) goto L_0x00b0
+                int r10 = android.os.Build.VERSION.SDK_INT
+                if (r10 < r8) goto L_0x00aa
                 android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
                 android.app.Notification r7 = r7.mNotification
                 int r7 = r7.icon
+                android.support.v4.app.NotificationCompat$Builder r10 = r0.mBuilder
+                int r10 = r10.getColor()
+                android.graphics.Bitmap r7 = r0.createIconWithBackground(r7, r6, r9, r10)
+                int r10 = android.support.compat.R.id.right_icon
+                r2.setImageViewBitmap(r10, r7)
+                goto L_0x00b9
+            L_0x00aa:
+                int r10 = android.support.compat.R.id.right_icon
                 android.support.v4.app.NotificationCompat$Builder r11 = r0.mBuilder
-                int r11 = r11.getColor()
-                android.graphics.Bitmap r7 = r0.createIconWithBackground(r7, r6, r9, r11)
-                int r11 = android.support.compat.R.id.right_icon
-                r2.setImageViewBitmap(r11, r7)
-                goto L_0x00bf
-            L_0x00b0:
-                int r11 = android.support.compat.R.id.right_icon
-                android.support.v4.app.NotificationCompat$Builder r14 = r0.mBuilder
-                android.app.Notification r14 = r14.mNotification
-                int r14 = r14.icon
-                android.graphics.Bitmap r7 = r0.createColoredBitmap(r14, r7)
-                r2.setImageViewBitmap(r11, r7)
-            L_0x00bf:
+                android.app.Notification r11 = r11.mNotification
+                int r11 = r11.icon
+                android.graphics.Bitmap r7 = r0.createColoredBitmap(r11, r7)
+                r2.setImageViewBitmap(r10, r7)
+            L_0x00b9:
                 int r7 = android.support.compat.R.id.right_icon
                 r2.setViewVisibility(r7, r12)
-                goto L_0x0110
-            L_0x00c5:
-                if (r20 == 0) goto L_0x0110
+                goto L_0x010a
+            L_0x00bf:
+                if (r20 == 0) goto L_0x010a
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 android.app.Notification r6 = r6.mNotification
                 int r6 = r6.icon
-                if (r6 == 0) goto L_0x0110
+                if (r6 == 0) goto L_0x010a
                 int r6 = android.support.compat.R.id.icon
                 r2.setViewVisibility(r6, r12)
                 int r6 = android.os.Build.VERSION.SDK_INT
-                if (r6 < r8) goto L_0x0101
+                if (r6 < r8) goto L_0x00fb
                 int r6 = android.support.compat.R.dimen.notification_large_icon_width
                 int r6 = r1.getDimensionPixelSize(r6)
                 int r7 = android.support.compat.R.dimen.notification_big_circle_margin
@@ -780,50 +751,50 @@ public class NotificationCompat {
                 android.support.v4.app.NotificationCompat$Builder r9 = r0.mBuilder
                 android.app.Notification r9 = r9.mNotification
                 int r9 = r9.icon
-                android.support.v4.app.NotificationCompat$Builder r11 = r0.mBuilder
-                int r11 = r11.getColor()
-                android.graphics.Bitmap r9 = r0.createIconWithBackground(r9, r6, r7, r11)
-                int r11 = android.support.compat.R.id.icon
-                r2.setImageViewBitmap(r11, r9)
-                goto L_0x0110
-            L_0x0101:
+                android.support.v4.app.NotificationCompat$Builder r10 = r0.mBuilder
+                int r10 = r10.getColor()
+                android.graphics.Bitmap r9 = r0.createIconWithBackground(r9, r6, r7, r10)
+                int r10 = android.support.compat.R.id.icon
+                r2.setImageViewBitmap(r10, r9)
+                goto L_0x010a
+            L_0x00fb:
                 int r6 = android.support.compat.R.id.icon
                 android.support.v4.app.NotificationCompat$Builder r9 = r0.mBuilder
                 android.app.Notification r9 = r9.mNotification
                 int r9 = r9.icon
                 android.graphics.Bitmap r7 = r0.createColoredBitmap(r9, r7)
                 r2.setImageViewBitmap(r6, r7)
-            L_0x0110:
+            L_0x010a:
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 java.lang.CharSequence r6 = r6.mContentTitle
-                if (r6 == 0) goto L_0x011f
+                if (r6 == 0) goto L_0x0119
                 int r6 = android.support.compat.R.id.title
                 android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
                 java.lang.CharSequence r7 = r7.mContentTitle
                 r2.setTextViewText(r6, r7)
-            L_0x011f:
+            L_0x0119:
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 java.lang.CharSequence r6 = r6.mContentText
-                if (r6 == 0) goto L_0x012f
+                if (r6 == 0) goto L_0x0129
                 int r6 = android.support.compat.R.id.text
                 android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
                 java.lang.CharSequence r7 = r7.mContentText
                 r2.setTextViewText(r6, r7)
                 r3 = 1
-            L_0x012f:
+            L_0x0129:
                 int r6 = android.os.Build.VERSION.SDK_INT
-                if (r6 >= r8) goto L_0x013b
+                if (r6 >= r8) goto L_0x0135
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 android.graphics.Bitmap r6 = r6.mLargeIcon
-                if (r6 == 0) goto L_0x013b
+                if (r6 == 0) goto L_0x0135
                 r6 = 1
-                goto L_0x013c
-            L_0x013b:
+                goto L_0x0136
+            L_0x0135:
                 r6 = r12
-            L_0x013c:
+            L_0x0136:
                 android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
                 java.lang.CharSequence r7 = r7.mContentInfo
-                if (r7 == 0) goto L_0x0155
+                if (r7 == 0) goto L_0x014e
                 int r7 = android.support.compat.R.id.info
                 android.support.v4.app.NotificationCompat$Builder r8 = r0.mBuilder
                 java.lang.CharSequence r8 = r8.mContentInfo
@@ -832,57 +803,54 @@ public class NotificationCompat {
                 r2.setViewVisibility(r7, r12)
                 r3 = 1
                 r6 = 1
-            L_0x0152:
-                r11 = r3
-                r3 = r6
-                goto L_0x0195
-            L_0x0155:
+                r11 = r6
+                goto L_0x018d
+            L_0x014e:
                 android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
                 int r7 = r7.mNumber
-                if (r7 <= 0) goto L_0x018d
+                if (r7 <= 0) goto L_0x0187
                 int r7 = android.support.compat.R.integer.status_bar_notification_info_maxnum
                 int r7 = r1.getInteger(r7)
                 android.support.v4.app.NotificationCompat$Builder r8 = r0.mBuilder
                 int r8 = r8.mNumber
-                if (r8 <= r7) goto L_0x0173
+                if (r8 <= r7) goto L_0x016c
                 int r8 = android.support.compat.R.id.info
                 int r9 = android.support.compat.R.string.status_bar_notification_info_overflow
                 java.lang.String r9 = r1.getString(r9)
                 r2.setTextViewText(r8, r9)
-                goto L_0x0185
-            L_0x0173:
+                goto L_0x017e
+            L_0x016c:
                 java.text.NumberFormat r8 = java.text.NumberFormat.getIntegerInstance()
                 int r9 = android.support.compat.R.id.info
-                android.support.v4.app.NotificationCompat$Builder r11 = r0.mBuilder
-                int r11 = r11.mNumber
-                long r10 = (long) r11
+                android.support.v4.app.NotificationCompat$Builder r10 = r0.mBuilder
+                int r10 = r10.mNumber
+                long r10 = (long) r10
                 java.lang.String r10 = r8.format(r10)
                 r2.setTextViewText(r9, r10)
-            L_0x0185:
+            L_0x017e:
                 int r8 = android.support.compat.R.id.info
                 r2.setViewVisibility(r8, r12)
                 r3 = 1
                 r6 = 1
-                goto L_0x0152
-            L_0x018d:
+                r11 = r6
+                goto L_0x018d
+            L_0x0187:
                 int r7 = android.support.compat.R.id.info
-                r8 = 8
-                r2.setViewVisibility(r7, r8)
-                goto L_0x0152
-            L_0x0195:
+                r2.setViewVisibility(r7, r15)
+                r11 = r6
+            L_0x018d:
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 java.lang.CharSequence r6 = r6.mSubText
-                if (r6 == 0) goto L_0x01cb
+                if (r6 == 0) goto L_0x01bd
                 int r6 = android.os.Build.VERSION.SDK_INT
-                r7 = 16
-                if (r6 < r7) goto L_0x01cb
+                if (r6 < r14) goto L_0x01bd
                 int r6 = android.support.compat.R.id.text
                 android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
                 java.lang.CharSequence r7 = r7.mSubText
                 r2.setTextViewText(r6, r7)
                 android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
                 java.lang.CharSequence r6 = r6.mContentText
-                if (r6 == 0) goto L_0x01c3
+                if (r6 == 0) goto L_0x01b8
                 int r6 = android.support.compat.R.id.text2
                 android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
                 java.lang.CharSequence r7 = r7.mContentText
@@ -890,102 +858,89 @@ public class NotificationCompat {
                 int r6 = android.support.compat.R.id.text2
                 r2.setViewVisibility(r6, r12)
                 r5 = 1
-                r14 = r5
-                r10 = 8
-                goto L_0x01ce
-            L_0x01c3:
+                r16 = r5
+                goto L_0x01bf
+            L_0x01b8:
                 int r6 = android.support.compat.R.id.text2
-                r10 = 8
-                r2.setViewVisibility(r6, r10)
-                goto L_0x01cd
-            L_0x01cb:
-                r10 = 8
-            L_0x01cd:
-                r14 = r5
-            L_0x01ce:
-                if (r14 == 0) goto L_0x01f2
+                r2.setViewVisibility(r6, r15)
+            L_0x01bd:
+                r16 = r5
+            L_0x01bf:
+                if (r16 == 0) goto L_0x01dd
                 int r5 = android.os.Build.VERSION.SDK_INT
-                r6 = 16
-                if (r5 < r6) goto L_0x01f2
-                if (r22 == 0) goto L_0x01e4
+                if (r5 < r14) goto L_0x01dd
+                if (r22 == 0) goto L_0x01d3
                 int r5 = android.support.compat.R.dimen.notification_subtext_size
                 int r5 = r1.getDimensionPixelSize(r5)
                 float r5 = (float) r5
                 int r6 = android.support.compat.R.id.text
                 r2.setTextViewTextSize(r6, r12, r5)
-            L_0x01e4:
+            L_0x01d3:
                 int r6 = android.support.compat.R.id.line1
                 r7 = 0
                 r8 = 0
                 r9 = 0
-                r15 = 0
+                r10 = 0
                 r5 = r2
-                r16 = r10
-                r10 = r15
                 r5.setViewPadding(r6, r7, r8, r9, r10)
-                goto L_0x01f4
-            L_0x01f2:
-                r16 = r10
-            L_0x01f4:
+            L_0x01dd:
                 android.support.v4.app.NotificationCompat$Builder r5 = r0.mBuilder
                 long r5 = r5.getWhenIfShowing()
                 r7 = 0
                 int r5 = (r5 > r7 ? 1 : (r5 == r7 ? 0 : -1))
-                if (r5 == 0) goto L_0x0245
+                if (r5 == 0) goto L_0x022c
                 android.support.v4.app.NotificationCompat$Builder r5 = r0.mBuilder
                 boolean r5 = r5.mUseChronometer
-                if (r5 == 0) goto L_0x0232
+                if (r5 == 0) goto L_0x0219
                 int r5 = android.os.Build.VERSION.SDK_INT
-                r6 = 16
-                if (r5 < r6) goto L_0x0232
+                if (r5 < r14) goto L_0x0219
                 int r5 = android.support.compat.R.id.chronometer
                 r2.setViewVisibility(r5, r12)
                 int r5 = android.support.compat.R.id.chronometer
-                java.lang.String r6 = "setBase"
-                android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
-                long r7 = r7.getWhenIfShowing()
-                long r9 = android.os.SystemClock.elapsedRealtime()
+                android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
+                long r6 = r6.getWhenIfShowing()
+                long r8 = android.os.SystemClock.elapsedRealtime()
                 long r17 = java.lang.System.currentTimeMillis()
-                long r9 = r9 - r17
-                long r7 = r7 + r9
-                r2.setLong(r5, r6, r7)
+                long r8 = r8 - r17
+                long r6 = r6 + r8
+                java.lang.String r8 = "setBase"
+                r2.setLong(r5, r8, r6)
                 int r5 = android.support.compat.R.id.chronometer
                 java.lang.String r6 = "setStarted"
                 r7 = 1
                 r2.setBoolean(r5, r6, r7)
-                goto L_0x0244
-            L_0x0232:
+                goto L_0x022b
+            L_0x0219:
                 int r5 = android.support.compat.R.id.time
                 r2.setViewVisibility(r5, r12)
                 int r5 = android.support.compat.R.id.time
-                java.lang.String r6 = "setTime"
-                android.support.v4.app.NotificationCompat$Builder r7 = r0.mBuilder
-                long r7 = r7.getWhenIfShowing()
-                r2.setLong(r5, r6, r7)
-            L_0x0244:
-                r3 = 1
-            L_0x0245:
+                android.support.v4.app.NotificationCompat$Builder r6 = r0.mBuilder
+                long r6 = r6.getWhenIfShowing()
+                java.lang.String r8 = "setTime"
+                r2.setLong(r5, r8, r6)
+            L_0x022b:
+                r11 = 1
+            L_0x022c:
                 int r5 = android.support.compat.R.id.right_side
-                if (r3 == 0) goto L_0x024b
+                if (r11 == 0) goto L_0x0232
                 r6 = r12
-                goto L_0x024d
-            L_0x024b:
-                r6 = r16
-            L_0x024d:
+                goto L_0x0233
+            L_0x0232:
+                r6 = r15
+            L_0x0233:
                 r2.setViewVisibility(r5, r6)
                 int r5 = android.support.compat.R.id.line3
-                if (r11 == 0) goto L_0x0255
-                goto L_0x0257
-            L_0x0255:
-                r12 = r16
-            L_0x0257:
+                if (r3 == 0) goto L_0x023b
+                goto L_0x023c
+            L_0x023b:
+                r12 = r15
+            L_0x023c:
                 r2.setViewVisibility(r5, r12)
                 return r2
             */
             throw new UnsupportedOperationException("Method not decompiled: android.support.v4.app.NotificationCompat.Style.applyStandardTemplate(boolean, int, boolean):android.widget.RemoteViews");
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public Bitmap createColoredBitmap(int iconId, int color) {
             return createColoredBitmap(iconId, color, 0);
         }
@@ -1015,7 +970,6 @@ public class NotificationCompat {
             return coloredBitmap;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void buildIntoRemoteViews(RemoteViews outerView, RemoteViews innerView) {
             hideNormalContent(outerView);
             outerView.removeAllViews(R.id.notification_main_column);
@@ -1082,7 +1036,6 @@ public class NotificationCompat {
             return this;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 16) {
                 Notification.BigPictureStyle style = new Notification.BigPictureStyle(builder.getBuilder()).setBigContentTitle(this.mBigContentTitle).bigPicture(this.mPicture);
@@ -1122,7 +1075,6 @@ public class NotificationCompat {
             return this;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 16) {
                 Notification.BigTextStyle style = new Notification.BigTextStyle(builder.getBuilder()).setBigContentTitle(this.mBigContentTitle).bigText(this.mBigText);
@@ -1135,9 +1087,7 @@ public class NotificationCompat {
 
     public static class MessagingStyle extends Style {
         public static final int MAXIMUM_RETAINED_MESSAGES = 25;
-        @Nullable
         private CharSequence mConversationTitle;
-        @Nullable
         private Boolean mIsGroupConversation;
         private final List<Message> mMessages = new ArrayList();
         private Person mUser;
@@ -1146,11 +1096,11 @@ public class NotificationCompat {
         }
 
         @Deprecated
-        public MessagingStyle(@NonNull CharSequence userDisplayName) {
+        public MessagingStyle(CharSequence userDisplayName) {
             this.mUser = new Person.Builder().setName(userDisplayName).build();
         }
 
-        public MessagingStyle(@NonNull Person user) {
+        public MessagingStyle(Person user) {
             if (!TextUtils.isEmpty(user.getName())) {
                 this.mUser = user;
                 return;
@@ -1167,12 +1117,11 @@ public class NotificationCompat {
             return this.mUser;
         }
 
-        public MessagingStyle setConversationTitle(@Nullable CharSequence conversationTitle) {
+        public MessagingStyle setConversationTitle(CharSequence conversationTitle) {
             this.mConversationTitle = conversationTitle;
             return this;
         }
 
-        @Nullable
         public CharSequence getConversationTitle() {
             return this.mConversationTitle;
         }
@@ -1210,8 +1159,9 @@ public class NotificationCompat {
 
         public boolean isGroupConversation() {
             if (this.mBuilder == null || this.mBuilder.mContext.getApplicationInfo().targetSdkVersion >= 28 || this.mIsGroupConversation != null) {
-                if (this.mIsGroupConversation != null) {
-                    return this.mIsGroupConversation.booleanValue();
+                Boolean bool = this.mIsGroupConversation;
+                if (bool != null) {
+                    return bool.booleanValue();
                 }
                 return false;
             } else if (this.mConversationTitle != null) {
@@ -1221,7 +1171,6 @@ public class NotificationCompat {
             }
         }
 
-        @Nullable
         public static MessagingStyle extractMessagingStyleFromNotification(Notification notification) {
             Bundle extras = NotificationCompat.getExtras(notification);
             if (extras != null && !extras.containsKey(NotificationCompat.EXTRA_SELF_DISPLAY_NAME) && !extras.containsKey(NotificationCompat.EXTRA_MESSAGING_STYLE_USER)) {
@@ -1236,11 +1185,11 @@ public class NotificationCompat {
             }
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
             CharSequence charSequence;
             Notification.MessagingStyle frameworkStyle;
             Notification.MessagingStyle.Message frameworkMessage;
+            android.app.Person person;
             setGroupConversation(isGroupConversation());
             if (Build.VERSION.SDK_INT >= 24) {
                 if (Build.VERSION.SDK_INT >= 28) {
@@ -1257,7 +1206,14 @@ public class NotificationCompat {
                 for (Message compatMessage : this.mMessages) {
                     if (Build.VERSION.SDK_INT >= 28) {
                         Person compatMessagePerson = compatMessage.getPerson();
-                        frameworkMessage = new Notification.MessagingStyle.Message(compatMessage.getText(), compatMessage.getTimestamp(), compatMessagePerson == null ? null : compatMessagePerson.toAndroidPerson());
+                        CharSequence text = compatMessage.getText();
+                        long timestamp = compatMessage.getTimestamp();
+                        if (compatMessagePerson == null) {
+                            person = null;
+                        } else {
+                            person = compatMessagePerson.toAndroidPerson();
+                        }
+                        frameworkMessage = new Notification.MessagingStyle.Message(text, timestamp, person);
                     } else {
                         CharSequence name = null;
                         if (compatMessage.getPerson() != null) {
@@ -1306,7 +1262,6 @@ public class NotificationCompat {
             }
         }
 
-        @Nullable
         private Message findLatestIncomingMessage() {
             for (int i = this.mMessages.size() - 1; i >= 0; i--) {
                 Message message = this.mMessages.get(i);
@@ -1314,10 +1269,11 @@ public class NotificationCompat {
                     return message;
                 }
             }
-            if (!this.mMessages.isEmpty()) {
-                return this.mMessages.get(this.mMessages.size() - 1);
+            if (this.mMessages.isEmpty()) {
+                return null;
             }
-            return null;
+            List<Message> list = this.mMessages;
+            return list.get(list.size() - 1);
         }
 
         private boolean hasMessagesWithoutSender() {
@@ -1335,7 +1291,8 @@ public class NotificationCompat {
             SpannableStringBuilder sb = new SpannableStringBuilder();
             boolean afterLollipop = Build.VERSION.SDK_INT >= 21;
             int color = afterLollipop ? ViewCompat.MEASURED_STATE_MASK : -1;
-            String replyName = message.getPerson() == null ? "" : message.getPerson().getName();
+            CharSequence text = "";
+            CharSequence replyName = message.getPerson() == null ? text : message.getPerson().getName();
             if (TextUtils.isEmpty(replyName)) {
                 replyName = this.mUser.getName();
                 color = (!afterLollipop || this.mBuilder.getColor() == 0) ? color : this.mBuilder.getColor();
@@ -1343,11 +1300,13 @@ public class NotificationCompat {
             CharSequence senderText = bidi.unicodeWrap(replyName);
             sb.append(senderText);
             sb.setSpan(makeFontColorSpan(color), sb.length() - senderText.length(), sb.length(), 33);
-            sb.append("  ").append(bidi.unicodeWrap(message.getText() == null ? "" : message.getText()));
+            if (message.getText() != null) {
+                text = message.getText();
+            }
+            sb.append("  ").append(bidi.unicodeWrap(text));
             return sb;
         }
 
-        @NonNull
         private TextAppearanceSpan makeFontColorSpan(int color) {
             return new TextAppearanceSpan((String) null, 0, 0, ColorStateList.valueOf(color), (ColorStateList) null);
         }
@@ -1363,13 +1322,13 @@ public class NotificationCompat {
             if (!this.mMessages.isEmpty()) {
                 extras.putParcelableArray(NotificationCompat.EXTRA_MESSAGES, Message.getBundleArrayForMessages(this.mMessages));
             }
-            if (this.mIsGroupConversation != null) {
-                extras.putBoolean(NotificationCompat.EXTRA_IS_GROUP_CONVERSATION, this.mIsGroupConversation.booleanValue());
+            Boolean bool = this.mIsGroupConversation;
+            if (bool != null) {
+                extras.putBoolean(NotificationCompat.EXTRA_IS_GROUP_CONVERSATION, bool.booleanValue());
             }
         }
 
         /* access modifiers changed from: protected */
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void restoreFromCompatExtras(Bundle extras) {
             this.mMessages.clear();
             if (extras.containsKey(NotificationCompat.EXTRA_MESSAGING_STYLE_USER)) {
@@ -1377,8 +1336,9 @@ public class NotificationCompat {
             } else {
                 this.mUser = new Person.Builder().setName(extras.getString(NotificationCompat.EXTRA_SELF_DISPLAY_NAME)).build();
             }
-            this.mConversationTitle = extras.getCharSequence(NotificationCompat.EXTRA_CONVERSATION_TITLE);
-            if (this.mConversationTitle == null) {
+            CharSequence charSequence = extras.getCharSequence(NotificationCompat.EXTRA_CONVERSATION_TITLE);
+            this.mConversationTitle = charSequence;
+            if (charSequence == null) {
                 this.mConversationTitle = extras.getCharSequence(NotificationCompat.EXTRA_HIDDEN_CONVERSATION_TITLE);
             }
             Parcelable[] parcelables = extras.getParcelableArray(NotificationCompat.EXTRA_MESSAGES);
@@ -1399,17 +1359,14 @@ public class NotificationCompat {
             static final String KEY_SENDER = "sender";
             static final String KEY_TEXT = "text";
             static final String KEY_TIMESTAMP = "time";
-            @Nullable
             private String mDataMimeType;
-            @Nullable
             private Uri mDataUri;
             private Bundle mExtras;
-            @Nullable
             private final Person mPerson;
             private final CharSequence mText;
             private final long mTimestamp;
 
-            public Message(CharSequence text, long timestamp, @Nullable Person person) {
+            public Message(CharSequence text, long timestamp, Person person) {
                 this.mExtras = new Bundle();
                 this.mText = text;
                 this.mTimestamp = timestamp;
@@ -1427,7 +1384,6 @@ public class NotificationCompat {
                 return this;
             }
 
-            @NonNull
             public CharSequence getText() {
                 return this.mText;
             }
@@ -1436,62 +1392,62 @@ public class NotificationCompat {
                 return this.mTimestamp;
             }
 
-            @NonNull
             public Bundle getExtras() {
                 return this.mExtras;
             }
 
-            @Nullable
             @Deprecated
             public CharSequence getSender() {
-                if (this.mPerson == null) {
+                Person person = this.mPerson;
+                if (person == null) {
                     return null;
                 }
-                return this.mPerson.getName();
+                return person.getName();
             }
 
-            @Nullable
             public Person getPerson() {
                 return this.mPerson;
             }
 
-            @Nullable
             public String getDataMimeType() {
                 return this.mDataMimeType;
             }
 
-            @Nullable
             public Uri getDataUri() {
                 return this.mDataUri;
             }
 
             private Bundle toBundle() {
                 Bundle bundle = new Bundle();
-                if (this.mText != null) {
-                    bundle.putCharSequence(KEY_TEXT, this.mText);
+                CharSequence charSequence = this.mText;
+                if (charSequence != null) {
+                    bundle.putCharSequence(KEY_TEXT, charSequence);
                 }
                 bundle.putLong(KEY_TIMESTAMP, this.mTimestamp);
-                if (this.mPerson != null) {
-                    bundle.putCharSequence(KEY_SENDER, this.mPerson.getName());
+                Person person = this.mPerson;
+                if (person != null) {
+                    bundle.putCharSequence(KEY_SENDER, person.getName());
                     if (Build.VERSION.SDK_INT >= 28) {
                         bundle.putParcelable(KEY_NOTIFICATION_PERSON, this.mPerson.toAndroidPerson());
                     } else {
                         bundle.putBundle(KEY_PERSON, this.mPerson.toBundle());
                     }
                 }
-                if (this.mDataMimeType != null) {
-                    bundle.putString(KEY_DATA_MIME_TYPE, this.mDataMimeType);
+                String str = this.mDataMimeType;
+                if (str != null) {
+                    bundle.putString(KEY_DATA_MIME_TYPE, str);
                 }
-                if (this.mDataUri != null) {
-                    bundle.putParcelable(KEY_DATA_URI, this.mDataUri);
+                Uri uri = this.mDataUri;
+                if (uri != null) {
+                    bundle.putParcelable(KEY_DATA_URI, uri);
                 }
-                if (this.mExtras != null) {
-                    bundle.putBundle(KEY_EXTRAS_BUNDLE, this.mExtras);
+                Bundle bundle2 = this.mExtras;
+                if (bundle2 != null) {
+                    bundle.putBundle(KEY_EXTRAS_BUNDLE, bundle2);
                 }
                 return bundle;
             }
 
-            @NonNull
             static Bundle[] getBundleArrayForMessages(List<Message> messages) {
                 Bundle[] bundles = new Bundle[messages.size()];
                 int N = messages.size();
@@ -1501,7 +1457,6 @@ public class NotificationCompat {
                 return bundles;
             }
 
-            @NonNull
             static List<Message> getMessagesFromBundleArray(Parcelable[] bundles) {
                 Message message;
                 List<Message> messages = new ArrayList<>(bundles.length);
@@ -1513,7 +1468,6 @@ public class NotificationCompat {
                 return messages;
             }
 
-            @Nullable
             static Message getMessageFromBundle(Bundle bundle) {
                 try {
                     if (bundle.containsKey(KEY_TEXT)) {
@@ -1570,7 +1524,6 @@ public class NotificationCompat {
             return this;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 16) {
                 Notification.InboxStyle style = new Notification.InboxStyle(builder.getBuilder()).setBigContentTitle(this.mBigContentTitle);
@@ -1588,14 +1541,12 @@ public class NotificationCompat {
     public static class DecoratedCustomViewStyle extends Style {
         private static final int MAX_ACTION_BUTTONS = 3;
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public void apply(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 24) {
                 builder.getBuilder().setStyle(new Notification.DecoratedCustomViewStyle());
             }
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeContentView(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT < 24 && this.mBuilder.getContentView() != null) {
                 return createRemoteViews(this.mBuilder.getContentView(), false);
@@ -1603,20 +1554,23 @@ public class NotificationCompat {
             return null;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeBigContentView(NotificationBuilderWithBuilderAccessor builder) {
+            RemoteViews innerView;
             if (Build.VERSION.SDK_INT >= 24) {
                 return null;
             }
             RemoteViews bigContentView = this.mBuilder.getBigContentView();
-            RemoteViews innerView = bigContentView != null ? bigContentView : this.mBuilder.getContentView();
+            if (bigContentView != null) {
+                innerView = bigContentView;
+            } else {
+                innerView = this.mBuilder.getContentView();
+            }
             if (innerView == null) {
                 return null;
             }
             return createRemoteViews(innerView, true);
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public RemoteViews makeHeadsUpContentView(NotificationBuilderWithBuilderAccessor builder) {
             if (Build.VERSION.SDK_INT >= 24) {
                 return null;
@@ -1826,7 +1780,7 @@ public class NotificationCompat {
                 return this;
             }
 
-            /* JADX WARNING: type inference failed for: r2v5, types: [java.lang.Object[]] */
+            /* JADX WARNING: type inference failed for: r2v6, types: [java.lang.Object[]] */
             /* JADX WARNING: Multi-variable type inference failed */
             /* Code decompiled incorrectly, please refer to instructions dump. */
             public android.support.v4.app.NotificationCompat.Action build() {
@@ -1837,48 +1791,46 @@ public class NotificationCompat {
                     java.util.ArrayList r1 = new java.util.ArrayList
                     r1.<init>()
                     java.util.ArrayList<android.support.v4.app.RemoteInput> r2 = r14.mRemoteInputs
-                    if (r2 == 0) goto L_0x002e
-                    java.util.ArrayList<android.support.v4.app.RemoteInput> r2 = r14.mRemoteInputs
+                    if (r2 == 0) goto L_0x002c
                     java.util.Iterator r2 = r2.iterator()
-                L_0x0014:
+                L_0x0012:
                     boolean r3 = r2.hasNext()
-                    if (r3 == 0) goto L_0x002e
+                    if (r3 == 0) goto L_0x002c
                     java.lang.Object r3 = r2.next()
                     android.support.v4.app.RemoteInput r3 = (android.support.v4.app.RemoteInput) r3
                     boolean r4 = r3.isDataOnly()
-                    if (r4 == 0) goto L_0x002a
+                    if (r4 == 0) goto L_0x0028
                     r0.add(r3)
-                    goto L_0x002d
-                L_0x002a:
+                    goto L_0x002b
+                L_0x0028:
                     r1.add(r3)
-                L_0x002d:
-                    goto L_0x0014
-                L_0x002e:
+                L_0x002b:
+                    goto L_0x0012
+                L_0x002c:
                     boolean r2 = r0.isEmpty()
                     r3 = 0
-                    if (r2 == 0) goto L_0x0037
+                    if (r2 == 0) goto L_0x0035
                     r10 = r3
-                    goto L_0x0044
-                L_0x0037:
+                    goto L_0x0042
+                L_0x0035:
                     int r2 = r0.size()
                     android.support.v4.app.RemoteInput[] r2 = new android.support.v4.app.RemoteInput[r2]
                     java.lang.Object[] r2 = r0.toArray(r2)
                     android.support.v4.app.RemoteInput[] r2 = (android.support.v4.app.RemoteInput[]) r2
                     r10 = r2
-                L_0x0044:
+                L_0x0042:
                     boolean r2 = r1.isEmpty()
-                    if (r2 == 0) goto L_0x004c
-                L_0x004a:
+                    if (r2 == 0) goto L_0x004b
                     r9 = r3
-                    goto L_0x005a
-                L_0x004c:
+                    goto L_0x0059
+                L_0x004b:
                     int r2 = r1.size()
                     android.support.v4.app.RemoteInput[] r2 = new android.support.v4.app.RemoteInput[r2]
                     java.lang.Object[] r2 = r1.toArray(r2)
                     r3 = r2
                     android.support.v4.app.RemoteInput[] r3 = (android.support.v4.app.RemoteInput[]) r3
-                    goto L_0x004a
-                L_0x005a:
+                    r9 = r3
+                L_0x0059:
                     android.support.v4.app.NotificationCompat$Action r2 = new android.support.v4.app.NotificationCompat$Action
                     int r5 = r14.mIcon
                     java.lang.CharSequence r6 = r14.mTitle
@@ -1925,17 +1877,21 @@ public class NotificationCompat {
 
             public Builder extend(Builder builder) {
                 Bundle wearableBundle = new Bundle();
-                if (this.mFlags != 1) {
-                    wearableBundle.putInt(KEY_FLAGS, this.mFlags);
+                int i = this.mFlags;
+                if (i != 1) {
+                    wearableBundle.putInt(KEY_FLAGS, i);
                 }
-                if (this.mInProgressLabel != null) {
-                    wearableBundle.putCharSequence(KEY_IN_PROGRESS_LABEL, this.mInProgressLabel);
+                CharSequence charSequence = this.mInProgressLabel;
+                if (charSequence != null) {
+                    wearableBundle.putCharSequence(KEY_IN_PROGRESS_LABEL, charSequence);
                 }
-                if (this.mConfirmLabel != null) {
-                    wearableBundle.putCharSequence(KEY_CONFIRM_LABEL, this.mConfirmLabel);
+                CharSequence charSequence2 = this.mConfirmLabel;
+                if (charSequence2 != null) {
+                    wearableBundle.putCharSequence(KEY_CONFIRM_LABEL, charSequence2);
                 }
-                if (this.mCancelLabel != null) {
-                    wearableBundle.putCharSequence(KEY_CANCEL_LABEL, this.mCancelLabel);
+                CharSequence charSequence3 = this.mCancelLabel;
+                if (charSequence3 != null) {
+                    wearableBundle.putCharSequence(KEY_CANCEL_LABEL, charSequence3);
                 }
                 builder.getExtras().putBundle(EXTRA_WEARABLE_EXTENSIONS, wearableBundle);
                 return builder;
@@ -2127,50 +2083,62 @@ public class NotificationCompat {
                     wearableBundle.putParcelableArrayList(KEY_ACTIONS, (ArrayList) null);
                 }
             }
-            if (this.mFlags != 1) {
-                wearableBundle.putInt(KEY_FLAGS, this.mFlags);
+            int i = this.mFlags;
+            if (i != 1) {
+                wearableBundle.putInt(KEY_FLAGS, i);
             }
-            if (this.mDisplayIntent != null) {
-                wearableBundle.putParcelable(KEY_DISPLAY_INTENT, this.mDisplayIntent);
+            PendingIntent pendingIntent = this.mDisplayIntent;
+            if (pendingIntent != null) {
+                wearableBundle.putParcelable(KEY_DISPLAY_INTENT, pendingIntent);
             }
             if (!this.mPages.isEmpty()) {
-                wearableBundle.putParcelableArray(KEY_PAGES, (Parcelable[]) this.mPages.toArray(new Notification[this.mPages.size()]));
+                ArrayList<Notification> arrayList = this.mPages;
+                wearableBundle.putParcelableArray(KEY_PAGES, (Parcelable[]) arrayList.toArray(new Notification[arrayList.size()]));
             }
-            if (this.mBackground != null) {
-                wearableBundle.putParcelable(KEY_BACKGROUND, this.mBackground);
+            Bitmap bitmap = this.mBackground;
+            if (bitmap != null) {
+                wearableBundle.putParcelable(KEY_BACKGROUND, bitmap);
             }
-            if (this.mContentIcon != 0) {
-                wearableBundle.putInt(KEY_CONTENT_ICON, this.mContentIcon);
+            int i2 = this.mContentIcon;
+            if (i2 != 0) {
+                wearableBundle.putInt(KEY_CONTENT_ICON, i2);
             }
-            if (this.mContentIconGravity != 8388613) {
-                wearableBundle.putInt(KEY_CONTENT_ICON_GRAVITY, this.mContentIconGravity);
+            int i3 = this.mContentIconGravity;
+            if (i3 != 8388613) {
+                wearableBundle.putInt(KEY_CONTENT_ICON_GRAVITY, i3);
             }
-            if (this.mContentActionIndex != -1) {
-                wearableBundle.putInt(KEY_CONTENT_ACTION_INDEX, this.mContentActionIndex);
+            int i4 = this.mContentActionIndex;
+            if (i4 != -1) {
+                wearableBundle.putInt(KEY_CONTENT_ACTION_INDEX, i4);
             }
-            if (this.mCustomSizePreset != 0) {
-                wearableBundle.putInt(KEY_CUSTOM_SIZE_PRESET, this.mCustomSizePreset);
+            int i5 = this.mCustomSizePreset;
+            if (i5 != 0) {
+                wearableBundle.putInt(KEY_CUSTOM_SIZE_PRESET, i5);
             }
-            if (this.mCustomContentHeight != 0) {
-                wearableBundle.putInt(KEY_CUSTOM_CONTENT_HEIGHT, this.mCustomContentHeight);
+            int i6 = this.mCustomContentHeight;
+            if (i6 != 0) {
+                wearableBundle.putInt(KEY_CUSTOM_CONTENT_HEIGHT, i6);
             }
-            if (this.mGravity != 80) {
-                wearableBundle.putInt(KEY_GRAVITY, this.mGravity);
+            int i7 = this.mGravity;
+            if (i7 != 80) {
+                wearableBundle.putInt(KEY_GRAVITY, i7);
             }
-            if (this.mHintScreenTimeout != 0) {
-                wearableBundle.putInt(KEY_HINT_SCREEN_TIMEOUT, this.mHintScreenTimeout);
+            int i8 = this.mHintScreenTimeout;
+            if (i8 != 0) {
+                wearableBundle.putInt(KEY_HINT_SCREEN_TIMEOUT, i8);
             }
-            if (this.mDismissalId != null) {
-                wearableBundle.putString(KEY_DISMISSAL_ID, this.mDismissalId);
+            String str = this.mDismissalId;
+            if (str != null) {
+                wearableBundle.putString(KEY_DISMISSAL_ID, str);
             }
-            if (this.mBridgeTag != null) {
-                wearableBundle.putString(KEY_BRIDGE_TAG, this.mBridgeTag);
+            String str2 = this.mBridgeTag;
+            if (str2 != null) {
+                wearableBundle.putString(KEY_BRIDGE_TAG, str2);
             }
             builder.getExtras().putBundle(EXTRA_WEARABLE_EXTENSIONS, wearableBundle);
             return builder;
         }
 
-        @RequiresApi(20)
         private static Notification.Action getActionFromActionCompat(Action actionCompat) {
             Bundle actionExtras;
             Notification.Action.Builder actionBuilder = new Notification.Action.Builder(actionCompat.getIcon(), actionCompat.getTitle(), actionCompat.getActionIntent());
@@ -2440,11 +2408,9 @@ public class NotificationCompat {
     }
 
     public static final class CarExtender implements Extender {
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         static final String EXTRA_CAR_EXTENDER = "android.car.EXTENSIONS";
         private static final String EXTRA_COLOR = "app_color";
         private static final String EXTRA_CONVERSATION = "car_conversation";
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         static final String EXTRA_INVISIBLE_ACTIONS = "invisible_actions";
         private static final String EXTRA_LARGE_ICON = "large_icon";
         private static final String KEY_AUTHOR = "author";
@@ -2478,8 +2444,7 @@ public class NotificationCompat {
             }
         }
 
-        @RequiresApi(21)
-        private static UnreadConversation getUnreadConversationFromBundle(@Nullable Bundle b) {
+        private static UnreadConversation getUnreadConversationFromBundle(Bundle b) {
             Bundle bundle = b;
             RemoteInput remoteInputCompat = null;
             if (bundle == null) {
@@ -2524,8 +2489,7 @@ public class NotificationCompat {
             return new UnreadConversation(messages, remoteInputCompat, onReply, onRead, participants, bundle.getLong(KEY_TIMESTAMP));
         }
 
-        @RequiresApi(21)
-        private static Bundle getBundleForUnreadConversation(@NonNull UnreadConversation uc) {
+        private static Bundle getBundleForUnreadConversation(UnreadConversation uc) {
             Bundle b = new Bundle();
             String author = null;
             if (uc.getParticipants() != null && uc.getParticipants().length > 1) {
@@ -2555,25 +2519,27 @@ public class NotificationCompat {
                 return builder;
             }
             Bundle carExtensions = new Bundle();
-            if (this.mLargeIcon != null) {
-                carExtensions.putParcelable(EXTRA_LARGE_ICON, this.mLargeIcon);
+            Bitmap bitmap = this.mLargeIcon;
+            if (bitmap != null) {
+                carExtensions.putParcelable(EXTRA_LARGE_ICON, bitmap);
             }
-            if (this.mColor != 0) {
-                carExtensions.putInt(EXTRA_COLOR, this.mColor);
+            int i = this.mColor;
+            if (i != 0) {
+                carExtensions.putInt(EXTRA_COLOR, i);
             }
-            if (this.mUnreadConversation != null) {
-                carExtensions.putBundle(EXTRA_CONVERSATION, getBundleForUnreadConversation(this.mUnreadConversation));
+            UnreadConversation unreadConversation = this.mUnreadConversation;
+            if (unreadConversation != null) {
+                carExtensions.putBundle(EXTRA_CONVERSATION, getBundleForUnreadConversation(unreadConversation));
             }
             builder.getExtras().putBundle(EXTRA_CAR_EXTENDER, carExtensions);
             return builder;
         }
 
-        public CarExtender setColor(@ColorInt int color) {
+        public CarExtender setColor(int color) {
             this.mColor = color;
             return this;
         }
 
-        @ColorInt
         public int getColor() {
             return this.mColor;
         }
@@ -2634,8 +2600,9 @@ public class NotificationCompat {
             }
 
             public String getParticipant() {
-                if (this.mParticipants.length > 0) {
-                    return this.mParticipants[0];
+                String[] strArr = this.mParticipants;
+                if (strArr.length > 0) {
+                    return strArr[0];
                 }
                 return null;
             }
@@ -2678,8 +2645,9 @@ public class NotificationCompat {
                 }
 
                 public UnreadConversation build() {
+                    List<String> list = this.mMessages;
                     String[] participants = {this.mParticipant};
-                    return new UnreadConversation((String[]) this.mMessages.toArray(new String[this.mMessages.size()]), this.mRemoteInput, this.mReplyPendingIntent, this.mReadPendingIntent, participants, this.mLatestTimestamp);
+                    return new UnreadConversation((String[]) list.toArray(new String[list.size()]), this.mRemoteInput, this.mReplyPendingIntent, this.mReadPendingIntent, participants, this.mLatestTimestamp);
                 }
             }
         }
@@ -2698,7 +2666,6 @@ public class NotificationCompat {
         return typedArray;
     }
 
-    @Nullable
     public static Bundle getExtras(Notification notification) {
         if (Build.VERSION.SDK_INT >= 19) {
             return notification.extras;
@@ -2768,11 +2735,11 @@ public class NotificationCompat {
         throw new UnsupportedOperationException("Method not decompiled: android.support.v4.app.NotificationCompat.getAction(android.app.Notification, int):android.support.v4.app.NotificationCompat$Action");
     }
 
-    @RequiresApi(20)
     static Action getActionCompatFromAction(Notification.Action action) {
         RemoteInput[] remoteInputs;
-        boolean z;
+        boolean allowGeneratedReplies;
         int semanticAction;
+        Notification.Action action2 = action;
         RemoteInput[] srcArray = action.getRemoteInputs();
         if (srcArray == null) {
             remoteInputs = null;
@@ -2784,21 +2751,19 @@ public class NotificationCompat {
             }
         }
         if (Build.VERSION.SDK_INT >= 24) {
-            z = action.getExtras().getBoolean("android.support.allowGeneratedReplies") || action.getAllowGeneratedReplies();
+            allowGeneratedReplies = action.getExtras().getBoolean("android.support.allowGeneratedReplies") || action.getAllowGeneratedReplies();
         } else {
-            z = action.getExtras().getBoolean("android.support.allowGeneratedReplies");
+            allowGeneratedReplies = action.getExtras().getBoolean("android.support.allowGeneratedReplies");
         }
-        boolean allowGeneratedReplies = z;
         boolean showsUserInterface = action.getExtras().getBoolean("android.support.action.showsUserInterface", true);
         if (Build.VERSION.SDK_INT >= 28) {
             semanticAction = action.getSemanticAction();
         } else {
             semanticAction = action.getExtras().getInt("android.support.action.semanticAction", 0);
         }
-        return new Action(action.icon, action.title, action.actionIntent, action.getExtras(), remoteInputs, (RemoteInput[]) null, allowGeneratedReplies, semanticAction, showsUserInterface);
+        return new Action(action2.icon, action2.title, action2.actionIntent, action.getExtras(), remoteInputs, (RemoteInput[]) null, allowGeneratedReplies, semanticAction, showsUserInterface);
     }
 
-    @RequiresApi(21)
     public static List<Action> getInvisibleActions(Notification notification) {
         Bundle listBundle;
         ArrayList<Action> result = new ArrayList<>();
@@ -2811,7 +2776,6 @@ public class NotificationCompat {
         return result;
     }
 
-    @RequiresApi(19)
     public static CharSequence getContentTitle(Notification notification) {
         return notification.extras.getCharSequence(EXTRA_TITLE);
     }

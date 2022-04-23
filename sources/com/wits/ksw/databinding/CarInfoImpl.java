@@ -3,8 +3,6 @@ package com.wits.ksw.databinding;
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,35 +10,35 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class CarInfoImpl extends CarInfo {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(3);
-    @Nullable
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @Nullable
     private final Id7SubCarViewBinding mboundView0;
-    @NonNull
     private final ConstraintLayout mboundView01;
-    @Nullable
     private final Id7SubDashboardViewBinding mboundView02;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"id7_sub_car_view", "id7_sub_dashboard_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_car_view, R.layout.id7_sub_dashboard_view});
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"id7_sub_car_view", "id7_sub_dashboard_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_car_view, R.layout.id7_sub_dashboard_view});
     }
 
-    public CarInfoImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public CarInfoImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private CarInfoImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[1];
-        setContainedBinding(this.mboundView0);
-        this.mboundView01 = bindings[0];
-        this.mboundView01.setTag((Object) null);
-        this.mboundView02 = bindings[2];
-        setContainedBinding(this.mboundView02);
+        Id7SubCarViewBinding id7SubCarViewBinding = bindings[1];
+        this.mboundView0 = id7SubCarViewBinding;
+        setContainedBinding(id7SubCarViewBinding);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView01 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        Id7SubDashboardViewBinding id7SubDashboardViewBinding = bindings[2];
+        this.mboundView02 = id7SubDashboardViewBinding;
+        setContainedBinding(id7SubDashboardViewBinding);
         setRootTag(root);
         invalidateAll();
     }
@@ -103,24 +101,24 @@ public class CarInfoImpl extends CarInfo {
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.CarInfoImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (21 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (2 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setCarViewModel(@Nullable LauncherViewModel CarViewModel) {
+    public void setCarViewModel(LauncherViewModel CarViewModel) {
         this.mCarViewModel = CarViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(21);
+        notifyPropertyChanged(2);
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.mboundView0.setLifecycleOwner(lifecycleOwner);
         this.mboundView02.setLifecycleOwner(lifecycleOwner);

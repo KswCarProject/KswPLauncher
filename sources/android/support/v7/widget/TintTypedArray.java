@@ -7,16 +7,11 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleableRes;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class TintTypedArray {
     private final Context mContext;
     private TypedValue mTypedValue;
@@ -55,8 +50,7 @@ public class TintTypedArray {
         return AppCompatDrawableManager.get().getDrawable(this.mContext, resourceId, true);
     }
 
-    @Nullable
-    public Typeface getFont(@StyleableRes int index, int style, @Nullable ResourcesCompat.FontCallback fontCallback) {
+    public Typeface getFont(int index, int style, ResourcesCompat.FontCallback fontCallback) {
         int resourceId = this.mWrapped.getResourceId(index, 0);
         if (resourceId == 0) {
             return null;
@@ -187,7 +181,6 @@ public class TintTypedArray {
         this.mWrapped.recycle();
     }
 
-    @RequiresApi(21)
     public int getChangingConfigurations() {
         return this.mWrapped.getChangingConfigurations();
     }

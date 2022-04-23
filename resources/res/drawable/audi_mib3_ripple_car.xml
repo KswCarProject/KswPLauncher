@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:color="@color/color_car_audi_mib3">
+    <item android:id="@android:id/mask" android:drawable="@drawable/audi_mib3_main_icon_d"/>
+    <item>
+        <selector>
+            <item android:state_focused="true" android:drawable="@drawable/audi_mib3_icon_car_d2"/>
+            <item android:state_selected="true" android:drawable="@drawable/audi_mib3_main_icon_car_sel"/>
+            <item android:state_pressed="true" android:drawable="@drawable/audi_mib3_main_icon_car_n"/>
+            <item android:drawable="@drawable/audi_mib3_main_icon_car_n"/>
+        </selector>
+    </item>
+</ripple>

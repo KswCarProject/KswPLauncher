@@ -2,7 +2,6 @@ package android.databinding;
 
 import android.databinding.CallbackRegistry;
 import android.databinding.ObservableList;
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pools;
 
 public class ListChangeRegistry extends CallbackRegistry<ObservableList.OnListChangedCallback, ObservableList, ListChanges> {
@@ -34,23 +33,23 @@ public class ListChangeRegistry extends CallbackRegistry<ObservableList.OnListCh
     private static final int REMOVED = 4;
     private static final Pools.SynchronizedPool<ListChanges> sListChanges = new Pools.SynchronizedPool<>(10);
 
-    public void notifyChanged(@NonNull ObservableList list) {
+    public void notifyChanged(ObservableList list) {
         notifyCallbacks(list, 0, (ListChanges) null);
     }
 
-    public void notifyChanged(@NonNull ObservableList list, int start, int count) {
+    public void notifyChanged(ObservableList list, int start, int count) {
         notifyCallbacks(list, 1, acquire(start, 0, count));
     }
 
-    public void notifyInserted(@NonNull ObservableList list, int start, int count) {
+    public void notifyInserted(ObservableList list, int start, int count) {
         notifyCallbacks(list, 2, acquire(start, 0, count));
     }
 
-    public void notifyMoved(@NonNull ObservableList list, int from, int to, int count) {
+    public void notifyMoved(ObservableList list, int from, int to, int count) {
         notifyCallbacks(list, 3, acquire(from, to, count));
     }
 
-    public void notifyRemoved(@NonNull ObservableList list, int start, int count) {
+    public void notifyRemoved(ObservableList list, int start, int count) {
         notifyCallbacks(list, 4, acquire(start, 0, count));
     }
 
@@ -65,7 +64,7 @@ public class ListChangeRegistry extends CallbackRegistry<ObservableList.OnListCh
         return listChanges;
     }
 
-    public synchronized void notifyCallbacks(@NonNull ObservableList sender, int notificationType, ListChanges listChanges) {
+    public synchronized void notifyCallbacks(ObservableList sender, int notificationType, ListChanges listChanges) {
         super.notifyCallbacks(sender, notificationType, listChanges);
         if (listChanges != null) {
             sListChanges.release(listChanges);

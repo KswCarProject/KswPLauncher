@@ -2,14 +2,12 @@ package android.support.v7.view.menu;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuBuilder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class SubMenuBuilder extends MenuBuilder implements SubMenu {
     private MenuItemImpl mItem;
     private MenuBuilder mParentMenu;
@@ -96,7 +94,8 @@ public class SubMenuBuilder extends MenuBuilder implements SubMenu {
     }
 
     public String getActionViewStatesKey() {
-        int itemId = this.mItem != null ? this.mItem.getItemId() : 0;
+        MenuItemImpl menuItemImpl = this.mItem;
+        int itemId = menuItemImpl != null ? menuItemImpl.getItemId() : 0;
         if (itemId == 0) {
             return null;
         }

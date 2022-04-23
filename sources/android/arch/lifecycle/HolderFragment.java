@@ -3,9 +3,6 @@ package android.arch.lifecycle;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -13,9 +10,7 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class HolderFragment extends Fragment implements ViewModelStoreOwner {
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static final String HOLDER_TAG = "android.arch.lifecycle.state.StateProviderHolderFragment";
     private static final String LOG_TAG = "ViewModelStores";
     private static final HolderFragmentManager sHolderFragmentManager = new HolderFragmentManager();
@@ -25,7 +20,7 @@ public class HolderFragment extends Fragment implements ViewModelStoreOwner {
         setRetainInstance(true);
     }
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sHolderFragmentManager.holderFragmentCreated(this);
     }
@@ -39,17 +34,14 @@ public class HolderFragment extends Fragment implements ViewModelStoreOwner {
         this.mViewModelStore.clear();
     }
 
-    @NonNull
     public ViewModelStore getViewModelStore() {
         return this.mViewModelStore;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static HolderFragment holderFragmentFor(FragmentActivity activity) {
         return sHolderFragmentManager.holderFragmentFor(activity);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static HolderFragment holderFragmentFor(Fragment fragment) {
         return sHolderFragmentManager.holderFragmentFor(fragment);
     }

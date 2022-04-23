@@ -2,7 +2,6 @@ package android.support.v4.content;
 
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
 
 public final class IntentCompat {
     public static final String CATEGORY_LEANBACK_LAUNCHER = "android.intent.category.LEANBACK_LAUNCHER";
@@ -12,8 +11,7 @@ public final class IntentCompat {
     private IntentCompat() {
     }
 
-    @NonNull
-    public static Intent makeMainSelectorActivity(@NonNull String selectorAction, @NonNull String selectorCategory) {
+    public static Intent makeMainSelectorActivity(String selectorAction, String selectorCategory) {
         if (Build.VERSION.SDK_INT >= 15) {
             return Intent.makeMainSelectorActivity(selectorAction, selectorCategory);
         }

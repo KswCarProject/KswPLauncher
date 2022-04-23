@@ -8,10 +8,15 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,9 +25,13 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.launcher.adpater.VerRecyclerAdapter;
+import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.utils.AppInfoUtils;
 import com.wits.ksw.settings.BrightnessUtils;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
+import com.wits.ksw.settings.utlis_view.RtlRadioButton;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.text.NumberFormat;
 
@@ -41,6 +50,8 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
     public Handler handler;
     private ImageView img_TwoBack;
     private ImageView img_twoDefaul;
+    private RecyclerView listview_music;
+    private RecyclerView listview_video;
     /* access modifiers changed from: private */
     public Handler mBackgroundHandler;
     private BrightnessObserver mBrightnessObserver;
@@ -56,6 +67,12 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
             Ntg6SetSystemTwo.this.setProgress(brightness);
         }
     };
+    /* access modifiers changed from: private */
+    public RtlRadioButton rdb_shext1;
+    /* access modifiers changed from: private */
+    public RtlRadioButton rdb_shext2;
+    /* access modifiers changed from: private */
+    public RtlRadioButton rdb_shext3;
     private RadioGroup rdgTempUnitRadioGroup;
     private RadioGroup rdg_shext;
     private LinearLayout relate_auxweiz;
@@ -84,8 +101,9 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
         view.setLayoutParams(layoutParams);
         addView(view);
         this.mBackgroundHandler = new Handler(Looper.getMainLooper());
-        this.mBrightnessObserver = new BrightnessObserver(new Handler());
-        this.mBrightnessObserver.startObserving();
+        BrightnessObserver brightnessObserver = new BrightnessObserver(new Handler());
+        this.mBrightnessObserver = brightnessObserver;
+        brightnessObserver.startObserving();
     }
 
     private void initData() {
@@ -94,8 +112,7 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
             this.aux_index1 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX1);
             this.aux_index2 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX2);
             this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-            String str = TAG;
-            Log.i(str, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
+            Log.i(TAG, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -109,15 +126,14 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
         this.tv_TwoMsg = (TextView) view.findViewById(R.id.tv_TwoMsg);
         this.relate_auxweiz = (LinearLayout) view.findViewById(R.id.relate_auxweiz);
         this.tv_cauxSize = (TextView) view.findViewById(R.id.tv_cauxSize);
-        this.seekbar_caux = (SeekBar) view.findViewById(R.id.seekbar_caux);
-        this.seekbar_caux.setMax(12);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_caux);
+        this.seekbar_caux = seekBar;
+        seekBar.setMax(12);
         this.seekbar_caux.setProgress(this.aux_index1);
-        TextView textView = this.tv_cauxSize;
-        textView.setText(this.aux_index1 + "");
+        this.tv_cauxSize.setText(this.aux_index1 + "");
         this.seekbar_caux.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$000 = Ntg6SetSystemTwo.this.tv_cauxSize;
-                access$000.setText(progress + "");
+                Ntg6SetSystemTwo.this.tv_cauxSize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX1, progress);
             }
 
@@ -128,15 +144,14 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
             }
         });
         this.tv_cauxSize2 = (TextView) view.findViewById(R.id.tv_cauxSize2);
-        this.seekbar_caux2 = (SeekBar) view.findViewById(R.id.seekbar_caux2);
-        this.seekbar_caux2.setMax(12);
+        SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekbar_caux2);
+        this.seekbar_caux2 = seekBar2;
+        seekBar2.setMax(12);
         this.seekbar_caux2.setProgress(this.aux_index2);
-        TextView textView2 = this.tv_cauxSize2;
-        textView2.setText(this.aux_index2 + "");
+        this.tv_cauxSize2.setText(this.aux_index2 + "");
         this.seekbar_caux2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$100 = Ntg6SetSystemTwo.this.tv_cauxSize2;
-                access$100.setText(progress + "");
+                Ntg6SetSystemTwo.this.tv_cauxSize2.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX2, progress);
             }
 
@@ -151,8 +166,9 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
         this.relate_beigld = (LinearLayout) view.findViewById(R.id.relate_beigld);
         this.tv_beigSize = (TextView) view.findViewById(R.id.tv_beigSize);
         Log.i("SetSystemTwo", "initView: beiguangValue=" + this.beiguangValue);
-        this.seekbar_brightness = (SeekBar) view.findViewById(R.id.seekbar_brightness);
-        this.seekbar_brightness.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
+        SeekBar seekBar3 = (SeekBar) view.findViewById(R.id.seekbar_brightness);
+        this.seekbar_brightness = seekBar3;
+        seekBar3.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
         setProgress(this.beiguangValue);
         setProgressText(this.beiguangValue);
         this.seekbar_brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -160,7 +176,8 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
                 if (fromUser) {
                     int val = BrightnessUtils.convertGammaToLinear(progress, Ntg6SetSystemTwo.this.mMinBrightness, Ntg6SetSystemTwo.this.mMaxBrightness);
                     Log.e("SetSystemTwo", "onProgressChanged: fromUser=" + fromUser + " : progress=" + progress + " : val=" + val);
-                    Ntg6SetSystemTwo.this.setBrightnessValueBg(Ntg6SetSystemTwo.this.context, val);
+                    Ntg6SetSystemTwo ntg6SetSystemTwo = Ntg6SetSystemTwo.this;
+                    ntg6SetSystemTwo.setBrightnessValueBg(ntg6SetSystemTwo.context, val);
                     Ntg6SetSystemTwo.this.setSystemBrightness(val);
                 }
             }
@@ -172,6 +189,9 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
             }
         });
         this.rdg_shext = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        this.rdb_shext1 = (RtlRadioButton) view.findViewById(R.id.rdb_shext1);
+        this.rdb_shext2 = (RtlRadioButton) view.findViewById(R.id.rdb_shext2);
+        this.rdb_shext3 = (RtlRadioButton) view.findViewById(R.id.rdb_shext3);
         switch (this.groupValue) {
             case 0:
                 this.rdg_shext.check(R.id.rdb_shext1);
@@ -183,20 +203,33 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
                 this.rdg_shext.check(R.id.rdb_shext3);
                 break;
         }
-        this.rdg_shext.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rdb_shext1:
-                        FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 0);
-                        return;
-                    case R.id.rdb_shext2:
-                        FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 1);
-                        return;
-                    case R.id.rdb_shext3:
-                        FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 2);
-                        return;
-                    default:
-                        return;
+        this.rdb_shext1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    Ntg6SetSystemTwo.this.rdb_shext2.setChecked(false);
+                    Ntg6SetSystemTwo.this.rdb_shext3.setChecked(false);
+                    Log.d(Ntg6SetSystemTwo.TAG, "onCheckedChanged: 点击shext1");
+                    FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 0);
+                }
+            }
+        });
+        this.rdb_shext2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    Ntg6SetSystemTwo.this.rdb_shext1.setChecked(false);
+                    Ntg6SetSystemTwo.this.rdb_shext3.setChecked(false);
+                    Log.d(Ntg6SetSystemTwo.TAG, "onCheckedChanged: 点击shext2");
+                    FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 1);
+                }
+            }
+        });
+        this.rdb_shext3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    Ntg6SetSystemTwo.this.rdb_shext1.setChecked(false);
+                    Ntg6SetSystemTwo.this.rdb_shext2.setChecked(false);
+                    Log.d(Ntg6SetSystemTwo.TAG, "onCheckedChanged: 点击shext3");
+                    FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 2);
                 }
             }
         });
@@ -208,7 +241,8 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
         this.rdgTempUnitRadioGroup = (RadioGroup) view.findViewById(R.id.rdg_benz_tempUnit_radioGroup);
         for (int i = 0; i < this.rdgTempUnitRadioGroup.getChildCount(); i++) {
             if (this.tempUnit == i) {
-                this.rdgTempUnitRadioGroup.check(this.rdgTempUnitRadioGroup.getChildAt(i).getId());
+                RadioGroup radioGroup = this.rdgTempUnitRadioGroup;
+                radioGroup.check(radioGroup.getChildAt(i).getId());
             }
         }
         this.rdgTempUnitRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -220,6 +254,48 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
                         Log.i(Ntg6SetSystemTwo.TAG, "save tempUnit  : " + i);
                     }
                     group.getChildAt(i).setSelected(checkedId == group.getChildAt(i).getId());
+                }
+            }
+        });
+        this.listview_music = (RecyclerView) view.findViewById(R.id.listview_music);
+        VerRecyclerAdapter adapterMusic = new VerRecyclerAdapter(this.context, AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ATYS_DISMISS_MUSIC, 1, this.context), R.layout.app_third_item_benz_ntg6);
+        this.listview_music.setAdapter(adapterMusic);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.context);
+        layoutManager.setOrientation(1);
+        this.listview_music.setLayoutManager(layoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(this.context, 1);
+        divider.setDrawable(ContextCompat.getDrawable(this.context, R.mipmap.ntg55_right_big_line1));
+        this.listview_music.addItemDecoration(divider);
+        adapterMusic.setAppsCheckListener(new VerRecyclerAdapter.IAppsCheckListener() {
+            public void checkedListener(String pkg, String cls, int pos) {
+                Log.i("liuhao", "music app pkg =  " + pkg + "  cls = " + cls);
+                Settings.System.putString(Ntg6SetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_PKG, pkg);
+                Settings.System.putString(Ntg6SetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS, cls);
+                if (cls.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                    LauncherViewModel.setThirdMusic(false);
+                } else {
+                    LauncherViewModel.setThirdMusic(true);
+                }
+            }
+        });
+        this.listview_video = (RecyclerView) view.findViewById(R.id.listview_video);
+        VerRecyclerAdapter adapterVideo = new VerRecyclerAdapter(this.context, AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ATYS_DISMISS_MUSIC, 2, this.context), R.layout.app_third_item_benz_ntg6);
+        this.listview_video.setAdapter(adapterVideo);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this.context);
+        layoutManager1.setOrientation(1);
+        this.listview_video.setLayoutManager(layoutManager1);
+        DividerItemDecoration divider1 = new DividerItemDecoration(this.context, 1);
+        divider1.setDrawable(ContextCompat.getDrawable(this.context, R.mipmap.ntg55_right_big_line1));
+        this.listview_video.addItemDecoration(divider1);
+        adapterVideo.setAppsCheckListener(new VerRecyclerAdapter.IAppsCheckListener() {
+            public void checkedListener(String pkg, String cls, int pos) {
+                Log.i("liuhao", "video app pkg =  " + pkg + "  cls = " + cls);
+                Settings.System.putString(Ntg6SetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_PKG, pkg);
+                Settings.System.putString(Ntg6SetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS, cls);
+                if (cls.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                    LauncherViewModel.setThirdVideo(false);
+                } else {
+                    LauncherViewModel.setThirdVideo(true);
                 }
             }
         });
@@ -235,24 +311,18 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
     public void setProgressText(int progress) {
         int value = BrightnessUtils.convertLinearToGamma(progress, this.mMinBrightness, this.mMaxBrightness);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
-        int progress2 = (int) Math.round(100.0d * b);
-        TextView textView = this.tv_beigSize;
-        StringBuilder sb = new StringBuilder();
-        sb.append("");
-        sb.append(progress2);
-        textView.setText(sb.toString());
+        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        this.tv_beigSize.setText("" + ((int) Math.round(100.0d * b)));
     }
 
     /* access modifiers changed from: private */
     public void setProgress(int brightness) {
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
-        this.mMaxBrightness = getMaximumScreenBrightnessSetting();
-        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, this.mMaxBrightness);
+        int maximumScreenBrightnessSetting = getMaximumScreenBrightnessSetting();
+        this.mMaxBrightness = maximumScreenBrightnessSetting;
+        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, maximumScreenBrightnessSetting);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
+        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
         this.seekbar_brightness.setProgress(value);
     }
 
@@ -264,6 +334,8 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
                 this.relate_beigld.setVisibility(8);
                 this.relate_auxweiz.setVisibility(8);
                 this.rdgTempUnitRadioGroup.setVisibility(8);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
                 return;
             case 2:
                 this.tv_TwoMsg.setText(this.context.getString(R.string.set_text6));
@@ -271,6 +343,8 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
                 this.relate_auxweiz.setVisibility(8);
                 this.rdgTempUnitRadioGroup.setVisibility(8);
                 this.relate_beigld.setVisibility(0);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
                 return;
             case 3:
                 this.tv_TwoMsg.setText(this.context.getString(R.string.set_caraux));
@@ -278,6 +352,8 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
                 this.relate_beigld.setVisibility(8);
                 this.rdgTempUnitRadioGroup.setVisibility(8);
                 this.relate_auxweiz.setVisibility(0);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
                 return;
             case 4:
                 this.rdgTempUnitRadioGroup.setVisibility(0);
@@ -285,6 +361,26 @@ public class Ntg6SetSystemTwo extends RelativeLayout {
                 this.relate_shext.setVisibility(8);
                 this.relate_beigld.setVisibility(8);
                 this.relate_auxweiz.setVisibility(8);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
+                return;
+            case 5:
+                this.rdgTempUnitRadioGroup.setVisibility(8);
+                this.tv_TwoMsg.setText(this.context.getString(R.string.music_app_sel));
+                this.relate_shext.setVisibility(8);
+                this.relate_beigld.setVisibility(8);
+                this.relate_auxweiz.setVisibility(8);
+                this.listview_music.setVisibility(0);
+                this.listview_video.setVisibility(8);
+                return;
+            case 6:
+                this.rdgTempUnitRadioGroup.setVisibility(8);
+                this.tv_TwoMsg.setText(this.context.getString(R.string.video_app_sel));
+                this.relate_shext.setVisibility(8);
+                this.relate_beigld.setVisibility(8);
+                this.relate_auxweiz.setVisibility(8);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(0);
                 return;
             default:
                 return;

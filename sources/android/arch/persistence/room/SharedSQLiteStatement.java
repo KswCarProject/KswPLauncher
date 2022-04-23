@@ -1,10 +1,8 @@
 package android.arch.persistence.room;
 
 import android.arch.persistence.db.SupportSQLiteStatement;
-import android.support.annotation.RestrictTo;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public abstract class SharedSQLiteStatement {
     private final RoomDatabase mDatabase;
     private final AtomicBoolean mLock = new AtomicBoolean(false);

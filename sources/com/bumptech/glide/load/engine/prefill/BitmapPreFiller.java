@@ -3,7 +3,6 @@ package com.bumptech.glide.load.engine.prefill;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.engine.cache.MemoryCache;
@@ -26,8 +25,9 @@ public final class BitmapPreFiller {
     }
 
     public void preFill(PreFillType.Builder... bitmapAttributeBuilders) {
-        if (this.current != null) {
-            this.current.cancel();
+        BitmapPreFillRunner bitmapPreFillRunner = this.current;
+        if (bitmapPreFillRunner != null) {
+            bitmapPreFillRunner.cancel();
         }
         PreFillType[] bitmapAttributes = new PreFillType[bitmapAttributeBuilders.length];
         for (int i = 0; i < bitmapAttributeBuilders.length; i++) {
@@ -37,12 +37,12 @@ public final class BitmapPreFiller {
             }
             bitmapAttributes[i] = builder.build();
         }
-        this.current = new BitmapPreFillRunner(this.bitmapPool, this.memoryCache, generateAllocationOrder(bitmapAttributes));
-        this.handler.post(this.current);
+        BitmapPreFillRunner bitmapPreFillRunner2 = new BitmapPreFillRunner(this.bitmapPool, this.memoryCache, generateAllocationOrder(bitmapAttributes));
+        this.current = bitmapPreFillRunner2;
+        this.handler.post(bitmapPreFillRunner2);
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public PreFillQueue generateAllocationOrder(PreFillType... preFillSizes) {
         long maxSize = (this.memoryCache.getMaxSize() - this.memoryCache.getCurrentSize()) + this.bitmapPool.getMaxSize();
         int totalWeight = 0;

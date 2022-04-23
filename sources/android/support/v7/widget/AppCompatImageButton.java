@@ -6,9 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.widget.TintableImageSourceView;
 import android.support.v7.appcompat.R;
@@ -29,111 +26,114 @@ public class AppCompatImageButton extends ImageButton implements TintableBackgro
 
     public AppCompatImageButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(TintContextWrapper.wrap(context), attrs, defStyleAttr);
-        this.mBackgroundTintHelper = new AppCompatBackgroundHelper(this);
-        this.mBackgroundTintHelper.loadFromAttributes(attrs, defStyleAttr);
-        this.mImageHelper = new AppCompatImageHelper(this);
-        this.mImageHelper.loadFromAttributes(attrs, defStyleAttr);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = new AppCompatBackgroundHelper(this);
+        this.mBackgroundTintHelper = appCompatBackgroundHelper;
+        appCompatBackgroundHelper.loadFromAttributes(attrs, defStyleAttr);
+        AppCompatImageHelper appCompatImageHelper = new AppCompatImageHelper(this);
+        this.mImageHelper = appCompatImageHelper;
+        appCompatImageHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
-    public void setImageResource(@DrawableRes int resId) {
+    public void setImageResource(int resId) {
         this.mImageHelper.setImageResource(resId);
     }
 
-    public void setImageDrawable(@Nullable Drawable drawable) {
+    public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
-        if (this.mImageHelper != null) {
-            this.mImageHelper.applySupportImageTint();
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            appCompatImageHelper.applySupportImageTint();
         }
     }
 
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        if (this.mImageHelper != null) {
-            this.mImageHelper.applySupportImageTint();
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            appCompatImageHelper.applySupportImageTint();
         }
     }
 
-    public void setImageURI(@Nullable Uri uri) {
+    public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        if (this.mImageHelper != null) {
-            this.mImageHelper.applySupportImageTint();
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            appCompatImageHelper.applySupportImageTint();
         }
     }
 
-    public void setBackgroundResource(@DrawableRes int resId) {
+    public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.onSetBackgroundResource(resId);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundResource(resId);
         }
     }
 
     public void setBackgroundDrawable(Drawable background) {
         super.setBackgroundDrawable(background);
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.onSetBackgroundDrawable(background);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundDrawable(background);
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportBackgroundTintList(@Nullable ColorStateList tint) {
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.setSupportBackgroundTintList(tint);
+    public void setSupportBackgroundTintList(ColorStateList tint) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintList(tint);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public ColorStateList getSupportBackgroundTintList() {
-        if (this.mBackgroundTintHelper != null) {
-            return this.mBackgroundTintHelper.getSupportBackgroundTintList();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintList();
         }
         return null;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.setSupportBackgroundTintMode(tintMode);
+    public void setSupportBackgroundTintMode(PorterDuff.Mode tintMode) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintMode(tintMode);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public PorterDuff.Mode getSupportBackgroundTintMode() {
-        if (this.mBackgroundTintHelper != null) {
-            return this.mBackgroundTintHelper.getSupportBackgroundTintMode();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintMode();
         }
         return null;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportImageTintList(@Nullable ColorStateList tint) {
-        if (this.mImageHelper != null) {
-            this.mImageHelper.setSupportImageTintList(tint);
+    public void setSupportImageTintList(ColorStateList tint) {
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            appCompatImageHelper.setSupportImageTintList(tint);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public ColorStateList getSupportImageTintList() {
-        if (this.mImageHelper != null) {
-            return this.mImageHelper.getSupportImageTintList();
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            return appCompatImageHelper.getSupportImageTintList();
         }
         return null;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportImageTintMode(@Nullable PorterDuff.Mode tintMode) {
-        if (this.mImageHelper != null) {
-            this.mImageHelper.setSupportImageTintMode(tintMode);
+    public void setSupportImageTintMode(PorterDuff.Mode tintMode) {
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            appCompatImageHelper.setSupportImageTintMode(tintMode);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public PorterDuff.Mode getSupportImageTintMode() {
-        if (this.mImageHelper != null) {
-            return this.mImageHelper.getSupportImageTintMode();
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            return appCompatImageHelper.getSupportImageTintMode();
         }
         return null;
     }
@@ -141,11 +141,13 @@ public class AppCompatImageButton extends ImageButton implements TintableBackgro
     /* access modifiers changed from: protected */
     public void drawableStateChanged() {
         super.drawableStateChanged();
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.applySupportBackgroundTint();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.applySupportBackgroundTint();
         }
-        if (this.mImageHelper != null) {
-            this.mImageHelper.applySupportImageTint();
+        AppCompatImageHelper appCompatImageHelper = this.mImageHelper;
+        if (appCompatImageHelper != null) {
+            appCompatImageHelper.applySupportImageTint();
         }
     }
 

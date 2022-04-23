@@ -2,9 +2,11 @@ package com.wits.ksw.launcher.base;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.app.SkinAppCompatDelegateImpl;
 import android.view.Window;
+import android.view.WindowManager;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 
@@ -15,10 +17,19 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initAlsId7UI();
 
     /* access modifiers changed from: protected */
+    public abstract void initAlsId7UiView();
+
+    /* access modifiers changed from: protected */
     public abstract void initAlsView();
 
     /* access modifiers changed from: protected */
+    public abstract void initAudiMbi3View();
+
+    /* access modifiers changed from: protected */
     public abstract void initAudiView();
+
+    /* access modifiers changed from: protected */
+    public abstract void initAudi_mib3_FyUiView();
 
     /* access modifiers changed from: protected */
     public abstract void initBcUiView();
@@ -33,10 +44,22 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initBenzNTG5View();
 
     /* access modifiers changed from: protected */
+    public abstract void initBenz_MBUX_2021_View();
+
+    /* access modifiers changed from: protected */
+    public abstract void initBenz_MBUX_2021_View2();
+
+    /* access modifiers changed from: protected */
+    public abstract void initBenz_NTG6_FY_View();
+
+    /* access modifiers changed from: protected */
     public abstract void initBmwEvoId6GS();
 
     /* access modifiers changed from: protected */
     public abstract void initBmwid5UiView();
+
+    /* access modifiers changed from: protected */
+    public abstract void initBmwid6CuspUiView();
 
     /* access modifiers changed from: protected */
     public abstract void initBmwid6UiView();
@@ -66,16 +89,24 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initLexus();
 
     /* access modifiers changed from: protected */
+    public abstract void initLexusLs();
+
+    /* access modifiers changed from: protected */
+    public abstract void initLexusLsDrag();
+
+    /* access modifiers changed from: protected */
     public abstract void initRomeo();
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         if (UiThemeUtils.isBenz_NTG6(this)) {
             initBcUiView();
         } else if (UiThemeUtils.isBMW_EVO_ID7(this)) {
             initBmwid7UiView();
         } else if (UiThemeUtils.isBMW_EVO_ID6(this)) {
             initBmwid6UiView();
+        } else if (UiThemeUtils.isBMW_EVO_ID6_CUSP(this) && ClientManager.getInstance().isCUSP_210407()) {
+            initBmwid6CuspUiView();
         } else if (UiThemeUtils.isBMW_EVO_ID6_GS(this)) {
             initBmwEvoId6GS();
         } else if (UiThemeUtils.isBMW_EVO_ID5(this)) {
@@ -86,10 +117,16 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initCommonUIGSUGView();
         } else if (UiThemeUtils.isBenz_MBUX(this)) {
             initBenzMBUXView();
+        } else if (UiThemeUtils.isBenz_MBUX_2021(this)) {
+            initBenz_MBUX_2021_View2();
+        } else if (UiThemeUtils.isBenz_NTG6_FY(this) && ClientManager.getInstance().isAls6208Client()) {
+            initBenz_NTG6_FY_View();
         } else if (UiThemeUtils.isBenz_GS(this)) {
             initBenzGSView();
         } else if (UiThemeUtils.isAudi_MMI_4G(this)) {
             initAudiView();
+        } else if (UiThemeUtils.isAudi_mib3(this)) {
+            initAudiMbi3View();
         } else if (UiThemeUtils.isBenz_NTG5(this)) {
             initBenzNTG5View();
         } else if (UiThemeUtils.isALS_ID6(this)) {
@@ -98,6 +135,8 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initBwmNbt();
         } else if (UiThemeUtils.isLEXUS_UI(this)) {
             initLexus();
+        } else if (UiThemeUtils.isLEXUS_LS_UI(this)) {
+            initLexusLsDrag();
         } else if (UiThemeUtils.isROMEO_UI(this)) {
             initRomeo();
         } else if (UiThemeUtils.isLAND_ROVER(this)) {
@@ -105,12 +144,18 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initLandRover();
         } else if (UiThemeUtils.isCommon_UI_GS_UG_1024(this)) {
             initCommonUIGSUG1024View();
-        } else if (!UiThemeUtils.isID7_ALS(this)) {
+        } else if (UiThemeUtils.isID7_ALS(this)) {
+            if (ClientManager.getInstance().isAls6208Client()) {
+                initAlsId7UI();
+            } else {
+                initBmwid7UiView();
+            }
+        } else if (UiThemeUtils.isALS_ID7_UI(this)) {
+            initAlsId7UiView();
+        } else if (!UiThemeUtils.isAudi_mib3_FY(this) || !ClientManager.getInstance().isAls6208Client()) {
             initBmwid7UiView();
-        } else if (ClientManager.getInstance().isAls6208Client()) {
-            initAlsId7UI();
         } else {
-            initBmwid7UiView();
+            initAudi_mib3_FyUiView();
         }
         super.onCreate(savedInstanceState);
     }
@@ -135,5 +180,23 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public void setActivityFull() {
         requestWindowFeature(1);
         getWindow().setFlags(1024, 1024);
+    }
+
+    public void setFullActivity(boolean enable) {
+        if (enable) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.flags |= 1024;
+            getWindow().setAttributes(lp);
+            getWindow().addFlags(512);
+            return;
+        }
+        WindowManager.LayoutParams attr = getWindow().getAttributes();
+        attr.flags &= -1025;
+        getWindow().setAttributes(attr);
+        getWindow().clearFlags(512);
+    }
+
+    public AppCompatDelegate getDelegate() {
+        return SkinAppCompatDelegateImpl.get(this, this);
     }
 }

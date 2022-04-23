@@ -24,8 +24,7 @@ public class MergedDataBinderMapper extends DataBinderMapper {
 
     /* access modifiers changed from: protected */
     public void addMapper(String featureMapper) {
-        List<String> list = this.mFeatureBindingMappers;
-        list.add(featureMapper + ".DataBinderMapperImpl");
+        this.mFeatureBindingMappers.add(featureMapper + ".DataBinderMapperImpl");
     }
 
     public ViewDataBinding getDataBinder(DataBindingComponent bindingComponent, View view, int layoutId) {

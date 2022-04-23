@@ -3,8 +3,6 @@ package com.wits.ksw.databinding;
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,27 +10,29 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 
 public class NaviCarFragmentImpl extends NaviCarFragment {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(3);
-    @Nullable
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"als_id7_sub_navi_view", "als_id7_sub_car_view"}, new int[]{1, 2}, new int[]{R.layout.als_id7_sub_navi_view, R.layout.als_id7_sub_car_view});
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"als_id7_sub_navi_view", "als_id7_sub_car_view"}, new int[]{1, 2}, new int[]{R.layout.als_id7_sub_navi_view, R.layout.als_id7_sub_car_view});
     }
 
-    public NaviCarFragmentImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public NaviCarFragmentImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private NaviCarFragmentImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 2, bindings[2], bindings[1]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        setContainedBinding(this.carinfoLayout);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        setContainedBinding(this.naviLayout);
         setRootTag(root);
         invalidateAll();
     }
@@ -95,24 +95,24 @@ public class NaviCarFragmentImpl extends NaviCarFragment {
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.NaviCarFragmentImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (3 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (8 != variableId) {
             return false;
         }
         setNaviCarViewModel((AlsID7ViewModel) variable);
         return true;
     }
 
-    public void setNaviCarViewModel(@Nullable AlsID7ViewModel NaviCarViewModel) {
+    public void setNaviCarViewModel(AlsID7ViewModel NaviCarViewModel) {
         this.mNaviCarViewModel = NaviCarViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(3);
+        notifyPropertyChanged(8);
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.naviLayout.setLifecycleOwner(lifecycleOwner);
         this.carinfoLayout.setLifecycleOwner(lifecycleOwner);

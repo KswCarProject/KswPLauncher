@@ -73,14 +73,17 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
         this.img_TwoBack = (ImageView) view.findViewById(R.id.img_TwoBack);
         this.rdg_vocmd = (RadioGroup) view.findViewById(R.id.rdg_vocmd);
         this.tv_mdiSize = (TextView) view.findViewById(R.id.tv_mdiSize);
-        this.seekbar_mdi = (SeekBar) view.findViewById(R.id.seekbar_mdi);
-        this.seekbar_mdi.setMax(this.barMax);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_mdi);
+        this.seekbar_mdi = seekBar;
+        seekBar.setMax(this.barMax);
         this.tv_mzhSize = (TextView) view.findViewById(R.id.tv_mzhSize);
-        this.seekbar_mzh = (SeekBar) view.findViewById(R.id.seekbar_mzh);
-        this.seekbar_mzh.setMax(this.barMax);
+        SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekbar_mzh);
+        this.seekbar_mzh = seekBar2;
+        seekBar2.setMax(this.barMax);
         this.tv_mgoSize = (TextView) view.findViewById(R.id.tv_mgoSize);
-        this.seekbar_mgo = (SeekBar) view.findViewById(R.id.seekbar_mgo);
-        this.seekbar_mgo.setMax(this.barMax);
+        SeekBar seekBar3 = (SeekBar) view.findViewById(R.id.seekbar_mgo);
+        this.seekbar_mgo = seekBar3;
+        seekBar3.setMax(this.barMax);
         this.seekbar_mdi.setOnSeekBarChangeListener(this);
         this.seekbar_mzh.setOnSeekBarChangeListener(this);
         this.seekbar_mgo.setOnSeekBarChangeListener(this);
@@ -108,22 +111,22 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
         this.rdg_vocmd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_vocmd1:
+                    case R.id.rdb_vocmd1 /*2131297197*/:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(0);
                         return;
-                    case R.id.rdb_vocmd2:
+                    case R.id.rdb_vocmd2 /*2131297198*/:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(1);
                         return;
-                    case R.id.rdb_vocmd3:
+                    case R.id.rdb_vocmd3 /*2131297199*/:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(2);
                         return;
-                    case R.id.rdb_vocmd4:
+                    case R.id.rdb_vocmd4 /*2131297200*/:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(3);
                         return;
-                    case R.id.rdb_vocmd5:
+                    case R.id.rdb_vocmd5 /*2131297201*/:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(4);
                         return;
-                    case R.id.rdb_vocmd6:
+                    case R.id.rdb_vocmd6 /*2131297202*/:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(5);
                         return;
                     default:
@@ -171,21 +174,9 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
                 this.seekbar_mgo.setProgress(19);
                 break;
         }
-        TextView textView = this.tv_mdiSize;
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.seekbar_mdi.getProgress() - 12);
-        sb.append("");
-        textView.setText(sb.toString());
-        TextView textView2 = this.tv_mzhSize;
-        StringBuilder sb2 = new StringBuilder();
-        sb2.append(this.seekbar_mzh.getProgress() - 12);
-        sb2.append("");
-        textView2.setText(sb2.toString());
-        TextView textView3 = this.tv_mgoSize;
-        StringBuilder sb3 = new StringBuilder();
-        sb3.append(this.seekbar_mgo.getProgress() - 12);
-        sb3.append("");
-        textView3.setText(sb3.toString());
+        this.tv_mdiSize.setText((this.seekbar_mdi.getProgress() - 12) + "");
+        this.tv_mzhSize.setText((this.seekbar_mzh.getProgress() - 12) + "");
+        this.tv_mgoSize.setText((this.seekbar_mgo.getProgress() - 12) + "");
     }
 
     /* access modifiers changed from: private */
@@ -239,12 +230,8 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
 
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
-            case R.id.seekbar_mdi:
-                TextView textView = this.tv_mdiSize;
-                StringBuilder sb = new StringBuilder();
-                sb.append(progress - 12);
-                sb.append("");
-                textView.setText(sb.toString());
+            case R.id.seekbar_mdi /*2131297411*/:
+                this.tv_mdiSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.di = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_BASS, progress);
@@ -252,12 +239,8 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
                     return;
                 }
                 return;
-            case R.id.seekbar_mgo:
-                TextView textView2 = this.tv_mgoSize;
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append(progress - 12);
-                sb2.append("");
-                textView2.setText(sb2.toString());
+            case R.id.seekbar_mgo /*2131297412*/:
+                this.tv_mgoSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.ga = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_TREBLE, progress);
@@ -265,12 +248,8 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
                     return;
                 }
                 return;
-            case R.id.seekbar_mzh:
-                TextView textView3 = this.tv_mzhSize;
-                StringBuilder sb3 = new StringBuilder();
-                sb3.append(progress - 12);
-                sb3.append("");
-                textView3.setText(sb3.toString());
+            case R.id.seekbar_mzh /*2131297413*/:
+                this.tv_mzhSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.zo = progress;
                     FileUtils.savaIntData(KeyConfig.EQ_MIDDLE, progress);

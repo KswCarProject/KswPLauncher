@@ -8,10 +8,6 @@ import android.graphics.fonts.FontVariationAxis;
 import android.net.Uri;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.FontResourcesParserCompat;
 import android.support.v4.provider.FontsContractCompat;
 import android.util.Log;
@@ -23,8 +19,6 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-@RequiresApi(26)
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class TypefaceCompatApi26Impl extends TypefaceCompatApi21Impl {
     private static final String ABORT_CREATION_METHOD = "abortCreation";
     private static final String ADD_FONT_FROM_ASSET_MANAGER_METHOD = "addFontFromAssetManager";
@@ -44,45 +38,38 @@ public class TypefaceCompatApi26Impl extends TypefaceCompatApi21Impl {
     protected final Method mFreeze;
 
     public TypefaceCompatApi26Impl() {
-        Method createFromFamiliesWithDefault;
         Method abortCreation;
         Method freeze;
         Method addFontFromBuffer;
+        Method addFontFromAssetManager;
+        Method addFontFromAssetManager2;
         Constructor fontFamilyCtor;
         Class fontFamily;
-        Method createFromFamiliesWithDefault2;
         try {
-            Class fontFamily2 = obtainFontFamily();
-            Constructor fontFamilyCtor2 = obtainFontFamilyCtor(fontFamily2);
-            Method addFontFromAssetManager = obtainAddFontFromAssetManagerMethod(fontFamily2);
-            Method addFontFromBuffer2 = obtainAddFontFromBufferMethod(fontFamily2);
-            Method freeze2 = obtainFreezeMethod(fontFamily2);
-            Method abortCreation2 = obtainAbortCreationMethod(fontFamily2);
-            Constructor constructor = fontFamilyCtor2;
-            fontFamily = fontFamily2;
-            createFromFamiliesWithDefault2 = obtainCreateFromFamiliesWithDefaultMethod(fontFamily2);
-            createFromFamiliesWithDefault = abortCreation2;
-            abortCreation = freeze2;
-            freeze = addFontFromBuffer2;
-            addFontFromBuffer = addFontFromAssetManager;
-            fontFamilyCtor = constructor;
+            fontFamily = obtainFontFamily();
+            fontFamilyCtor = obtainFontFamilyCtor(fontFamily);
+            addFontFromAssetManager2 = obtainAddFontFromAssetManagerMethod(fontFamily);
+            addFontFromAssetManager = obtainAddFontFromBufferMethod(fontFamily);
+            addFontFromBuffer = obtainFreezeMethod(fontFamily);
+            freeze = obtainAbortCreationMethod(fontFamily);
+            abortCreation = obtainCreateFromFamiliesWithDefaultMethod(fontFamily);
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             Log.e(TAG, "Unable to collect necessary methods for class " + e.getClass().getName(), e);
             fontFamily = null;
             fontFamilyCtor = null;
+            addFontFromAssetManager2 = null;
+            addFontFromAssetManager = null;
             addFontFromBuffer = null;
             freeze = null;
             abortCreation = null;
-            createFromFamiliesWithDefault = null;
-            createFromFamiliesWithDefault2 = null;
         }
         this.mFontFamily = fontFamily;
         this.mFontFamilyCtor = fontFamilyCtor;
-        this.mAddFontFromAssetManager = addFontFromBuffer;
-        this.mAddFontFromBuffer = freeze;
-        this.mFreeze = abortCreation;
-        this.mAbortCreation = createFromFamiliesWithDefault;
-        this.mCreateFromFamiliesWithDefault = createFromFamiliesWithDefault2;
+        this.mAddFontFromAssetManager = addFontFromAssetManager2;
+        this.mAddFontFromBuffer = addFontFromAssetManager;
+        this.mFreeze = addFontFromBuffer;
+        this.mAbortCreation = freeze;
+        this.mCreateFromFamiliesWithDefault = abortCreation;
     }
 
     private boolean isFontFamilyPrivateAPIAvailable() {
@@ -100,7 +87,7 @@ public class TypefaceCompatApi26Impl extends TypefaceCompatApi21Impl {
         }
     }
 
-    private boolean addFontFromAssetManager(Context context, Object family, String fileName, int ttcIndex, int weight, int style, @Nullable FontVariationAxis[] axes) {
+    private boolean addFontFromAssetManager(Context context, Object family, String fileName, int ttcIndex, int weight, int style, FontVariationAxis[] axes) {
         try {
             return ((Boolean) this.mAddFontFromAssetManager.invoke(family, new Object[]{context.getAssets(), fileName, 0, false, Integer.valueOf(ttcIndex), Integer.valueOf(weight), Integer.valueOf(style), axes})).booleanValue();
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -160,21 +147,19 @@ public class TypefaceCompatApi26Impl extends TypefaceCompatApi21Impl {
         return createFromFamiliesWithDefault(fontFamily);
     }
 
-    public Typeface createFromFontInfo(Context context, @Nullable CancellationSignal cancellationSignal, @NonNull FontsContractCompat.FontInfo[] fonts, int style) {
-        ParcelFileDescriptor pfd;
+    public Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fonts, int style) {
+        int i;
         Throwable th;
-        Throwable th2;
-        Throwable th3;
         CancellationSignal cancellationSignal2 = cancellationSignal;
         FontsContractCompat.FontInfo[] fontInfoArr = fonts;
-        int i = style;
+        int i2 = style;
         if (fontInfoArr.length < 1) {
             return null;
         }
         if (!isFontFamilyPrivateAPIAvailable()) {
-            FontsContractCompat.FontInfo bestFont = findBestInfo(fontInfoArr, i);
+            FontsContractCompat.FontInfo bestFont = findBestInfo(fontInfoArr, i2);
             try {
-                pfd = context.getContentResolver().openFileDescriptor(bestFont.getUri(), "r", cancellationSignal2);
+                ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(bestFont.getUri(), "r", cancellationSignal2);
                 if (pfd == null) {
                     if (pfd != null) {
                         pfd.close();
@@ -187,26 +172,42 @@ public class TypefaceCompatApi26Impl extends TypefaceCompatApi21Impl {
                         pfd.close();
                     }
                     return build;
-                } catch (Throwable th4) {
-                    th = th3;
-                    th2 = th4;
+                } catch (Throwable th2) {
+                    Throwable th3 = th2;
+                    if (pfd != null) {
+                        if (th != null) {
+                            pfd.close();
+                        } else {
+                            pfd.close();
+                        }
+                    }
+                    throw th3;
                 }
             } catch (IOException e) {
                 return null;
+            } catch (Throwable th4) {
+                th.addSuppressed(th4);
             }
         } else {
             Map<Uri, ByteBuffer> uriBuffer = FontsContractCompat.prepareFontData(context, fontInfoArr, cancellationSignal2);
             Object fontFamily = newFamily();
+            int length = fontInfoArr.length;
             boolean atLeastOneFont = false;
-            for (FontsContractCompat.FontInfo font : fontInfoArr) {
+            int i3 = 0;
+            while (i3 < length) {
+                FontsContractCompat.FontInfo font = fontInfoArr[i3];
                 ByteBuffer fontBuffer = uriBuffer.get(font.getUri());
-                if (fontBuffer != null) {
+                if (fontBuffer == null) {
+                    i = i3;
+                } else {
+                    i = i3;
                     if (!addFontFromBuffer(fontFamily, fontBuffer, font.getTtcIndex(), font.getWeight(), font.isItalic() ? 1 : 0)) {
                         abortCreation(fontFamily);
                         return null;
                     }
                     atLeastOneFont = true;
                 }
+                i3 = i + 1;
             }
             if (!atLeastOneFont) {
                 abortCreation(fontFamily);
@@ -214,25 +215,11 @@ public class TypefaceCompatApi26Impl extends TypefaceCompatApi21Impl {
             } else if (!freeze(fontFamily)) {
                 return null;
             } else {
-                return Typeface.create(createFromFamiliesWithDefault(fontFamily), i);
+                return Typeface.create(createFromFamiliesWithDefault(fontFamily), i2);
             }
         }
-        if (pfd != null) {
-            if (th != null) {
-                try {
-                    pfd.close();
-                } catch (Throwable th5) {
-                    th.addSuppressed(th5);
-                }
-            } else {
-                pfd.close();
-            }
-        }
-        throw th2;
-        throw th2;
     }
 
-    @Nullable
     public Typeface createFromResourcesFontFile(Context context, Resources resources, int id, String path, int style) {
         if (!isFontFamilyPrivateAPIAvailable()) {
             return super.createFromResourcesFontFile(context, resources, id, path, style);

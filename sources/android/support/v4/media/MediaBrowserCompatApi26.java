@@ -2,19 +2,16 @@ package android.support.v4.media;
 
 import android.media.browse.MediaBrowser;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.media.MediaBrowserCompatApi21;
 import android.support.v4.media.session.MediaSessionCompat;
 import java.util.List;
 
-@RequiresApi(26)
 class MediaBrowserCompatApi26 {
 
     interface SubscriptionCallback extends MediaBrowserCompatApi21.SubscriptionCallback {
-        void onChildrenLoaded(@NonNull String str, List<?> list, @NonNull Bundle bundle);
+        void onChildrenLoaded(String str, List<?> list, Bundle bundle);
 
-        void onError(@NonNull String str, @NonNull Bundle bundle);
+        void onError(String str, Bundle bundle);
     }
 
     static Object createSubscriptionCallback(SubscriptionCallback callback) {
@@ -34,12 +31,12 @@ class MediaBrowserCompatApi26 {
             super(callback);
         }
 
-        public void onChildrenLoaded(@NonNull String parentId, List<MediaBrowser.MediaItem> children, @NonNull Bundle options) {
+        public void onChildrenLoaded(String parentId, List<MediaBrowser.MediaItem> children, Bundle options) {
             MediaSessionCompat.ensureClassLoader(options);
             ((SubscriptionCallback) this.mSubscriptionCallback).onChildrenLoaded(parentId, children, options);
         }
 
-        public void onError(@NonNull String parentId, @NonNull Bundle options) {
+        public void onError(String parentId, Bundle options) {
             MediaSessionCompat.ensureClassLoader(options);
             ((SubscriptionCallback) this.mSubscriptionCallback).onError(parentId, options);
         }

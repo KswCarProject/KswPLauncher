@@ -1,7 +1,6 @@
 package android.support.v4.media;
 
 import android.os.Build;
-import android.support.annotation.RestrictTo;
 import android.support.v4.media.VolumeProviderCompatApi21;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -20,7 +19,6 @@ public abstract class VolumeProviderCompat {
         public abstract void onVolumeChanged(VolumeProviderCompat volumeProviderCompat);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ControlType {
     }
@@ -49,8 +47,9 @@ public abstract class VolumeProviderCompat {
         if (volumeProviderObj != null && Build.VERSION.SDK_INT >= 21) {
             VolumeProviderCompatApi21.setCurrentVolume(volumeProviderObj, currentVolume);
         }
-        if (this.mCallback != null) {
-            this.mCallback.onVolumeChanged(this);
+        Callback callback = this.mCallback;
+        if (callback != null) {
+            callback.onVolumeChanged(this);
         }
     }
 

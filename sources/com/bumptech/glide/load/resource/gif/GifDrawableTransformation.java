@@ -2,7 +2,6 @@ package com.bumptech.glide.load.resource.gif;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.Resource;
@@ -27,8 +26,7 @@ public class GifDrawableTransformation implements Transformation<GifDrawable> {
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.load.resource.gif.GifDrawableTransformation.<init>(com.bumptech.glide.load.Transformation):void");
     }
 
-    @NonNull
-    public Resource<GifDrawable> transform(@NonNull Context context, @NonNull Resource<GifDrawable> resource, int outWidth, int outHeight) {
+    public Resource<GifDrawable> transform(Context context, Resource<GifDrawable> resource, int outWidth, int outHeight) {
         GifDrawable drawable = resource.get();
         BitmapResource bitmapResource = new BitmapResource(drawable.getFirstFrame(), Glide.get(context).getBitmapPool());
         Resource<Bitmap> transformed = this.wrapped.transform(context, bitmapResource, outWidth, outHeight);
@@ -50,7 +48,7 @@ public class GifDrawableTransformation implements Transformation<GifDrawable> {
         return this.wrapped.hashCode();
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         this.wrapped.updateDiskCacheKey(messageDigest);
     }
 }

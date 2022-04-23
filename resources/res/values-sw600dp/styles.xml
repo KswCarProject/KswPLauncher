@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AudiHomeItemWidthHeight">
+        <item name="android:layout_width">280dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
     <style name="audi_set_checkbox">
         <item name="android:background">@drawable/audi_set_item_selector</item>
         <item name="android:paddingLeft">45dp</item>

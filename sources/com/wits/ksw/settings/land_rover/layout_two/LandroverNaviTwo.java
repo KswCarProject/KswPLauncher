@@ -64,8 +64,9 @@ public class LandroverNaviTwo extends RelativeLayout {
         this.relate_naviv = (RelativeLayout) view.findViewById(R.id.relate_naviv);
         this.relate_app = (RelativeLayout) view.findViewById(R.id.relate_app);
         this.navi_recycle = (RecyclerView) view.findViewById(R.id.navi_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.navi_recycle.setLayoutManager(this.layoutManager);
         this.naviAdapter = new LandroverNaviAdapter(this.context, this.mapBanList);
         Log.d("Navi", "init  mapBanList " + this.mapBanList.size());
@@ -81,46 +82,47 @@ public class LandroverNaviTwo extends RelativeLayout {
                 }
             }
         });
-        this.rdg_naviv = (RadioGroup) view.findViewById(R.id.rdg_naviv);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_naviv);
+        this.rdg_naviv = radioGroup;
         switch (this.naviMin) {
             case 0:
-                this.rdg_naviv.check(R.id.rdb_naviv1);
+                radioGroup.check(R.id.rdb_naviv1);
                 break;
             case 1:
-                this.rdg_naviv.check(R.id.rdb_naviv2);
+                radioGroup.check(R.id.rdb_naviv2);
                 break;
             case 2:
-                this.rdg_naviv.check(R.id.rdb_naviv3);
+                radioGroup.check(R.id.rdb_naviv3);
                 break;
             case 3:
-                this.rdg_naviv.check(R.id.rdb_naviv4);
+                radioGroup.check(R.id.rdb_naviv4);
                 break;
             case 4:
-                this.rdg_naviv.check(R.id.rdb_naviv5);
+                radioGroup.check(R.id.rdb_naviv5);
                 break;
             case 5:
-                this.rdg_naviv.check(R.id.rdb_naviv6);
+                radioGroup.check(R.id.rdb_naviv6);
                 break;
         }
         this.rdg_naviv.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_naviv1:
+                    case R.id.rdb_naviv1 /*2131297186*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 0);
                         return;
-                    case R.id.rdb_naviv2:
+                    case R.id.rdb_naviv2 /*2131297187*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 1);
                         return;
-                    case R.id.rdb_naviv3:
+                    case R.id.rdb_naviv3 /*2131297188*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 2);
                         return;
-                    case R.id.rdb_naviv4:
+                    case R.id.rdb_naviv4 /*2131297189*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 3);
                         return;
-                    case R.id.rdb_naviv5:
+                    case R.id.rdb_naviv5 /*2131297190*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 4);
                         return;
-                    case R.id.rdb_naviv6:
+                    case R.id.rdb_naviv6 /*2131297191*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 5);
                         return;
                     default:

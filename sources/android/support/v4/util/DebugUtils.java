@@ -1,8 +1,5 @@
 package android.support.v4.util;
 
-import android.support.annotation.RestrictTo;
-
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class DebugUtils {
     /* JADX WARNING: Code restructure failed: missing block: B:6:0x0018, code lost:
         r0 = r3.getClass().getName();

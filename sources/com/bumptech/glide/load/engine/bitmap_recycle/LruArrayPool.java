@@ -1,7 +1,5 @@
 package com.bumptech.glide.load.engine.bitmap_recycle;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import com.bumptech.glide.util.Preconditions;
 import java.util.HashMap;
@@ -11,7 +9,6 @@ import java.util.TreeMap;
 
 public final class LruArrayPool implements ArrayPool {
     private static final int DEFAULT_SIZE = 4194304;
-    @VisibleForTesting
     static final int MAX_OVER_SIZE_MULTIPLE = 8;
     private static final int SINGLE_ARRAY_MAX_SIZE_DIVISOR = 2;
     private final Map<Class<?>, ArrayAdapterInterface<?>> adapters;
@@ -21,7 +18,6 @@ public final class LruArrayPool implements ArrayPool {
     private final int maxSize;
     private final Map<Class<?>, NavigableMap<Integer, Integer>> sortedSizes;
 
-    @VisibleForTesting
     public LruArrayPool() {
         this.groupedMap = new GroupedLinkedMap<>();
         this.keyPool = new KeyPool();
@@ -95,7 +91,6 @@ public final class LruArrayPool implements ArrayPool {
         return arrayAdapter.newArray(key.size);
     }
 
-    @Nullable
     private <T> T getArrayForKey(Key key) {
         return this.groupedMap.get(key);
     }
@@ -109,7 +104,8 @@ public final class LruArrayPool implements ArrayPool {
     }
 
     private boolean isNoMoreThanHalfFull() {
-        return this.currentSize == 0 || this.maxSize / this.currentSize >= 2;
+        int i = this.currentSize;
+        return i == 0 || this.maxSize / i >= 2;
     }
 
     public synchronized void clearMemory() {
@@ -249,7 +245,9 @@ public final class LruArrayPool implements ArrayPool {
         }
 
         public int hashCode() {
-            return (this.size * 31) + (this.arrayClass != null ? this.arrayClass.hashCode() : 0);
+            int i = this.size * 31;
+            Class<?> cls = this.arrayClass;
+            return i + (cls != null ? cls.hashCode() : 0);
         }
     }
 }

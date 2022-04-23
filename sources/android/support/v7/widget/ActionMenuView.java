@@ -3,9 +3,7 @@ package android.support.v7.widget;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
+import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuItemImpl;
@@ -38,7 +36,6 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
     private ActionMenuPresenter mPresenter;
     private boolean mReserveOverflow;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public interface ActionMenuChildView {
         boolean needsDividerAfter();
 
@@ -63,7 +60,7 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         this.mPopupTheme = 0;
     }
 
-    public void setPopupTheme(@StyleRes int resId) {
+    public void setPopupTheme(int resId) {
         if (this.mPopupTheme != resId) {
             this.mPopupTheme = resId;
             if (resId == 0) {
@@ -78,16 +75,16 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         return this.mPopupTheme;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setPresenter(ActionMenuPresenter presenter) {
         this.mPresenter = presenter;
-        this.mPresenter.setMenuView(this);
+        presenter.setMenuView(this);
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (this.mPresenter != null) {
-            this.mPresenter.updateMenuView(false);
+        ActionMenuPresenter actionMenuPresenter = this.mPresenter;
+        if (actionMenuPresenter != null) {
+            actionMenuPresenter.updateMenuView(false);
             if (this.mPresenter.isOverflowMenuShowing()) {
                 this.mPresenter.hideOverflowMenu();
                 this.mPresenter.showOverflowMenu();
@@ -101,15 +98,17 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
 
     /* access modifiers changed from: protected */
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        MenuBuilder menuBuilder;
         boolean wasFormatted = this.mFormatItems;
-        this.mFormatItems = View.MeasureSpec.getMode(widthMeasureSpec) == 1073741824;
-        if (wasFormatted != this.mFormatItems) {
+        boolean z = View.MeasureSpec.getMode(widthMeasureSpec) == 1073741824;
+        this.mFormatItems = z;
+        if (wasFormatted != z) {
             this.mFormatItemsWidth = 0;
         }
         int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);
-        if (!(!this.mFormatItems || this.mMenu == null || widthSize == this.mFormatItemsWidth)) {
+        if (!(!this.mFormatItems || (menuBuilder = this.mMenu) == null || widthSize == this.mFormatItemsWidth)) {
             this.mFormatItemsWidth = widthSize;
-            this.mMenu.onItemsChanged(true);
+            menuBuilder.onItemsChanged(true);
         }
         int childCount = getChildCount();
         if (!this.mFormatItems || childCount <= 0) {
@@ -124,254 +123,441 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         onMeasureExactFormat(widthMeasureSpec, heightMeasureSpec);
     }
 
-    private void onMeasureExactFormat(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthSize;
-        boolean needsExpansion;
-        int itemHeightSpec;
-        int heightSize;
-        int itemHeightSpec2;
-        int i;
-        int heightPadding;
-        int cellSizeRemaining;
-        int visibleItemCount;
-        boolean z;
-        int heightMode = View.MeasureSpec.getMode(heightMeasureSpec);
-        int widthSize2 = View.MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize2 = View.MeasureSpec.getSize(heightMeasureSpec);
-        int widthPadding = getPaddingLeft() + getPaddingRight();
-        int heightPadding2 = getPaddingTop() + getPaddingBottom();
-        int itemHeightSpec3 = getChildMeasureSpec(heightMeasureSpec, heightPadding2, -2);
-        int widthSize3 = widthSize2 - widthPadding;
-        int cellCount = widthSize3 / this.mMinCellSize;
-        int cellSizeRemaining2 = widthSize3 % this.mMinCellSize;
-        if (cellCount == 0) {
-            setMeasuredDimension(widthSize3, 0);
-            return;
-        }
-        int cellSize = this.mMinCellSize + (cellSizeRemaining2 / cellCount);
-        boolean hasOverflow = false;
-        long smallestItemsAt = 0;
-        int childCount = getChildCount();
-        int heightSize3 = heightSize2;
-        int maxChildHeight = 0;
-        int cellsUsed = 0;
-        int expandableItemCount = 0;
-        int maxCellsUsed = 0;
-        int cellsRemaining = cellCount;
-        int i2 = 0;
-        while (true) {
-            int widthPadding2 = widthPadding;
-            if (i2 >= childCount) {
-                break;
-            }
-            View child = getChildAt(i2);
-            int cellCount2 = cellCount;
-            if (child.getVisibility() == 8) {
-                heightPadding = heightPadding2;
-                cellSizeRemaining = cellSizeRemaining2;
-            } else {
-                boolean isGeneratedItem = child instanceof ActionMenuItemView;
-                int visibleItemCount2 = cellsUsed + 1;
-                if (isGeneratedItem) {
-                    cellSizeRemaining = cellSizeRemaining2;
-                    visibleItemCount = visibleItemCount2;
-                    z = false;
-                    child.setPadding(this.mGeneratedItemPadding, 0, this.mGeneratedItemPadding, 0);
-                } else {
-                    cellSizeRemaining = cellSizeRemaining2;
-                    visibleItemCount = visibleItemCount2;
-                    z = false;
-                }
-                LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                lp.expanded = z;
-                lp.extraPixels = z ? 1 : 0;
-                lp.cellsUsed = z;
-                lp.expandable = z;
-                lp.leftMargin = z;
-                lp.rightMargin = z;
-                lp.preventEdgeOffset = isGeneratedItem && ((ActionMenuItemView) child).hasText();
-                int cellsUsed2 = measureChildForCells(child, cellSize, lp.isOverflowButton ? 1 : cellsRemaining, itemHeightSpec3, heightPadding2);
-                maxCellsUsed = Math.max(maxCellsUsed, cellsUsed2);
-                heightPadding = heightPadding2;
-                if (lp.expandable != 0) {
-                    expandableItemCount++;
-                }
-                if (lp.isOverflowButton) {
-                    hasOverflow = true;
-                }
-                cellsRemaining -= cellsUsed2;
-                maxChildHeight = Math.max(maxChildHeight, child.getMeasuredHeight());
-                if (cellsUsed2 == 1) {
-                    View view = child;
-                    smallestItemsAt |= (long) (1 << i2);
-                    cellsUsed = visibleItemCount;
-                    maxChildHeight = maxChildHeight;
-                } else {
-                    cellsUsed = visibleItemCount;
-                }
-            }
-            i2++;
-            widthPadding = widthPadding2;
-            cellCount = cellCount2;
-            cellSizeRemaining2 = cellSizeRemaining;
-            heightPadding2 = heightPadding;
-            int i3 = heightMeasureSpec;
-        }
-        int i4 = cellCount;
-        int i5 = cellSizeRemaining2;
-        boolean centerSingleExpandedItem = hasOverflow && cellsUsed == 2;
-        boolean needsExpansion2 = false;
-        while (true) {
-            if (expandableItemCount <= 0 || cellsRemaining <= 0) {
-                widthSize = widthSize3;
-                boolean z2 = centerSingleExpandedItem;
-                needsExpansion = needsExpansion2;
-            } else {
-                long minCellsAt = 0;
-                int minCells = Integer.MAX_VALUE;
-                int minCellsItemCount = 0;
-                int minCells2 = 0;
-                while (true) {
-                    int i6 = minCells2;
-                    if (i6 >= childCount) {
-                        break;
-                    }
-                    View child2 = getChildAt(i6);
-                    boolean needsExpansion3 = needsExpansion2;
-                    LayoutParams lp2 = (LayoutParams) child2.getLayoutParams();
-                    View view2 = child2;
-                    if (lp2.expandable) {
-                        if (lp2.cellsUsed < minCells) {
-                            minCells = lp2.cellsUsed;
-                            minCellsAt = 1 << i6;
-                            minCellsItemCount = 1;
-                        } else if (lp2.cellsUsed == minCells) {
-                            minCellsAt |= 1 << i6;
-                            minCellsItemCount++;
-                        }
-                    }
-                    minCells2 = i6 + 1;
-                    needsExpansion2 = needsExpansion3;
-                }
-                needsExpansion = needsExpansion2;
-                smallestItemsAt |= minCellsAt;
-                if (minCellsItemCount > cellsRemaining) {
-                    widthSize = widthSize3;
-                    boolean z3 = centerSingleExpandedItem;
-                    break;
-                }
-                int minCells3 = minCells + 1;
-                int i7 = 0;
-                while (i7 < childCount) {
-                    View child3 = getChildAt(i7);
-                    LayoutParams lp3 = (LayoutParams) child3.getLayoutParams();
-                    int widthSize4 = widthSize3;
-                    int minCellsItemCount2 = minCellsItemCount;
-                    boolean centerSingleExpandedItem2 = centerSingleExpandedItem;
-                    if ((minCellsAt & ((long) (1 << i7))) != 0) {
-                        if (centerSingleExpandedItem2 && lp3.preventEdgeOffset && cellsRemaining == 1) {
-                            child3.setPadding(this.mGeneratedItemPadding + cellSize, 0, this.mGeneratedItemPadding, 0);
-                        }
-                        lp3.cellsUsed++;
-                        lp3.expanded = true;
-                        cellsRemaining--;
-                    } else if (lp3.cellsUsed == minCells3) {
-                        smallestItemsAt |= (long) (1 << i7);
-                    }
-                    i7++;
-                    minCellsItemCount = minCellsItemCount2;
-                    widthSize3 = widthSize4;
-                    centerSingleExpandedItem = centerSingleExpandedItem2;
-                }
-                int i8 = minCellsItemCount;
-                boolean z4 = centerSingleExpandedItem;
-                needsExpansion2 = true;
-            }
-        }
-        boolean singleItem = !hasOverflow && cellsUsed == 1;
-        if (cellsRemaining <= 0 || smallestItemsAt == 0) {
-            itemHeightSpec = itemHeightSpec3;
-        } else if (cellsRemaining < cellsUsed - 1 || singleItem || maxCellsUsed > 1) {
-            float expandCount = (float) Long.bitCount(smallestItemsAt);
-            if (!singleItem) {
-                if ((smallestItemsAt & 1) != 0) {
-                    i = 0;
-                    if (!((LayoutParams) getChildAt(0).getLayoutParams()).preventEdgeOffset) {
-                        expandCount -= 0.5f;
-                    }
-                } else {
-                    i = 0;
-                }
-                if ((smallestItemsAt & ((long) (1 << (childCount - 1)))) != 0 && !((LayoutParams) getChildAt(childCount - 1).getLayoutParams()).preventEdgeOffset) {
-                    expandCount -= 0.5f;
-                }
-            } else {
-                i = 0;
-            }
-            int extraPixels = expandCount > 0.0f ? (int) (((float) (cellsRemaining * cellSize)) / expandCount) : i;
-            int i9 = i;
-            while (i9 < childCount) {
-                int itemHeightSpec4 = itemHeightSpec3;
-                if ((smallestItemsAt & ((long) (1 << i9))) != 0) {
-                    View child4 = getChildAt(i9);
-                    LayoutParams lp4 = (LayoutParams) child4.getLayoutParams();
-                    if (child4 instanceof ActionMenuItemView) {
-                        lp4.extraPixels = extraPixels;
-                        lp4.expanded = true;
-                        if (i9 == 0 && !lp4.preventEdgeOffset) {
-                            lp4.leftMargin = (-extraPixels) / 2;
-                        }
-                        needsExpansion = true;
-                    } else {
-                        if (lp4.isOverflowButton) {
-                            lp4.extraPixels = extraPixels;
-                            lp4.expanded = true;
-                            lp4.rightMargin = (-extraPixels) / 2;
-                            needsExpansion = true;
-                        } else {
-                            if (i9 != 0) {
-                                lp4.leftMargin = extraPixels / 2;
-                            }
-                            if (i9 != childCount - 1) {
-                                lp4.rightMargin = extraPixels / 2;
-                            }
-                        }
-                        i9++;
-                        itemHeightSpec3 = itemHeightSpec4;
-                    }
-                }
-                i9++;
-                itemHeightSpec3 = itemHeightSpec4;
-            }
-            itemHeightSpec = itemHeightSpec3;
-        } else {
-            itemHeightSpec = itemHeightSpec3;
-        }
-        if (needsExpansion) {
-            int i10 = 0;
-            while (true) {
-                int i11 = i10;
-                if (i11 >= childCount) {
-                    break;
-                }
-                View child5 = getChildAt(i11);
-                LayoutParams lp5 = (LayoutParams) child5.getLayoutParams();
-                if (!lp5.expanded) {
-                    itemHeightSpec2 = itemHeightSpec;
-                } else {
-                    itemHeightSpec2 = itemHeightSpec;
-                    child5.measure(View.MeasureSpec.makeMeasureSpec((lp5.cellsUsed * cellSize) + lp5.extraPixels, 1073741824), itemHeightSpec2);
-                }
-                i10 = i11 + 1;
-                itemHeightSpec = itemHeightSpec2;
-            }
-        }
-        if (heightMode != 1073741824) {
-            heightSize = maxChildHeight;
-        } else {
-            heightSize = heightSize3;
-        }
-        setMeasuredDimension(widthSize, heightSize);
+    /* JADX WARNING: Removed duplicated region for block: B:131:0x0282  */
+    /* JADX WARNING: Removed duplicated region for block: B:139:0x02af  */
+    /* JADX WARNING: Removed duplicated region for block: B:142:0x02b7  */
+    /* JADX WARNING: Removed duplicated region for block: B:143:0x02b9  */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
+    private void onMeasureExactFormat(int r41, int r42) {
+        /*
+            r40 = this;
+            r0 = r40
+            int r1 = android.view.View.MeasureSpec.getMode(r42)
+            int r2 = android.view.View.MeasureSpec.getSize(r41)
+            int r3 = android.view.View.MeasureSpec.getSize(r42)
+            int r4 = r40.getPaddingLeft()
+            int r5 = r40.getPaddingRight()
+            int r4 = r4 + r5
+            int r5 = r40.getPaddingTop()
+            int r6 = r40.getPaddingBottom()
+            int r5 = r5 + r6
+            r6 = -2
+            r7 = r42
+            int r6 = getChildMeasureSpec(r7, r5, r6)
+            int r2 = r2 - r4
+            int r8 = r0.mMinCellSize
+            int r9 = r2 / r8
+            int r10 = r2 % r8
+            r11 = 0
+            if (r9 != 0) goto L_0x0035
+            r0.setMeasuredDimension(r2, r11)
+            return
+        L_0x0035:
+            int r12 = r10 / r9
+            int r8 = r8 + r12
+            r12 = r9
+            r13 = 0
+            r14 = 0
+            r15 = 0
+            r16 = 0
+            r17 = 0
+            r18 = 0
+            int r11 = r40.getChildCount()
+            r21 = 0
+            r38 = r16
+            r16 = r3
+            r3 = r38
+            r39 = r21
+            r21 = r4
+            r4 = r39
+        L_0x0054:
+            if (r4 >= r11) goto L_0x00e6
+            android.view.View r7 = r0.getChildAt(r4)
+            r23 = r9
+            int r9 = r7.getVisibility()
+            r24 = r10
+            r10 = 8
+            if (r9 != r10) goto L_0x0068
+            goto L_0x00dc
+        L_0x0068:
+            boolean r9 = r7 instanceof android.support.v7.view.menu.ActionMenuItemView
+            int r3 = r3 + 1
+            if (r9 == 0) goto L_0x0077
+            int r10 = r0.mGeneratedItemPadding
+            r25 = r3
+            r3 = 0
+            r7.setPadding(r10, r3, r10, r3)
+            goto L_0x007a
+        L_0x0077:
+            r25 = r3
+            r3 = 0
+        L_0x007a:
+            android.view.ViewGroup$LayoutParams r10 = r7.getLayoutParams()
+            android.support.v7.widget.ActionMenuView$LayoutParams r10 = (android.support.v7.widget.ActionMenuView.LayoutParams) r10
+            r10.expanded = r3
+            r10.extraPixels = r3
+            r10.cellsUsed = r3
+            r10.expandable = r3
+            r10.leftMargin = r3
+            r10.rightMargin = r3
+            if (r9 == 0) goto L_0x0099
+            r3 = r7
+            android.support.v7.view.menu.ActionMenuItemView r3 = (android.support.v7.view.menu.ActionMenuItemView) r3
+            boolean r3 = r3.hasText()
+            if (r3 == 0) goto L_0x0099
+            r3 = 1
+            goto L_0x009a
+        L_0x0099:
+            r3 = 0
+        L_0x009a:
+            r10.preventEdgeOffset = r3
+            boolean r3 = r10.isOverflowButton
+            if (r3 == 0) goto L_0x00a2
+            r3 = 1
+            goto L_0x00a3
+        L_0x00a2:
+            r3 = r12
+        L_0x00a3:
+            r26 = r9
+            int r9 = measureChildForCells(r7, r8, r3, r6, r5)
+            int r14 = java.lang.Math.max(r14, r9)
+            r27 = r3
+            boolean r3 = r10.expandable
+            if (r3 == 0) goto L_0x00b5
+            int r15 = r15 + 1
+        L_0x00b5:
+            boolean r3 = r10.isOverflowButton
+            if (r3 == 0) goto L_0x00bb
+            r17 = 1
+        L_0x00bb:
+            int r12 = r12 - r9
+            int r3 = r7.getMeasuredHeight()
+            int r3 = java.lang.Math.max(r13, r3)
+            r13 = 1
+            if (r9 != r13) goto L_0x00d5
+            int r13 = r13 << r4
+            r28 = r9
+            r22 = r10
+            long r9 = (long) r13
+            long r9 = r18 | r9
+            r13 = r3
+            r18 = r9
+            r3 = r25
+            goto L_0x00dc
+        L_0x00d5:
+            r28 = r9
+            r22 = r10
+            r13 = r3
+            r3 = r25
+        L_0x00dc:
+            int r4 = r4 + 1
+            r7 = r42
+            r9 = r23
+            r10 = r24
+            goto L_0x0054
+        L_0x00e6:
+            r23 = r9
+            r24 = r10
+            r4 = 2
+            if (r17 == 0) goto L_0x00f1
+            if (r3 != r4) goto L_0x00f1
+            r7 = 1
+            goto L_0x00f2
+        L_0x00f1:
+            r7 = 0
+        L_0x00f2:
+            r9 = 0
+        L_0x00f3:
+            r25 = 1
+            r27 = 0
+            if (r15 <= 0) goto L_0x01a8
+            if (r12 <= 0) goto L_0x01a8
+            r10 = 2147483647(0x7fffffff, float:NaN)
+            r29 = 0
+            r31 = 0
+            r32 = 0
+            r4 = r31
+            r38 = r32
+            r32 = r5
+            r5 = r38
+        L_0x010c:
+            if (r5 >= r11) goto L_0x013e
+            android.view.View r33 = r0.getChildAt(r5)
+            android.view.ViewGroup$LayoutParams r34 = r33.getLayoutParams()
+            r35 = r9
+            r9 = r34
+            android.support.v7.widget.ActionMenuView$LayoutParams r9 = (android.support.v7.widget.ActionMenuView.LayoutParams) r9
+            r34 = r15
+            boolean r15 = r9.expandable
+            if (r15 != 0) goto L_0x0123
+            goto L_0x0137
+        L_0x0123:
+            int r15 = r9.cellsUsed
+            if (r15 >= r10) goto L_0x012d
+            int r10 = r9.cellsUsed
+            long r29 = r25 << r5
+            r4 = 1
+            goto L_0x0137
+        L_0x012d:
+            int r15 = r9.cellsUsed
+            if (r15 != r10) goto L_0x0137
+            long r36 = r25 << r5
+            long r29 = r29 | r36
+            int r4 = r4 + 1
+        L_0x0137:
+            int r5 = r5 + 1
+            r15 = r34
+            r9 = r35
+            goto L_0x010c
+        L_0x013e:
+            r35 = r9
+            r34 = r15
+            long r18 = r18 | r29
+            if (r4 <= r12) goto L_0x014c
+            r36 = r1
+            r37 = r2
+            goto L_0x01b2
+        L_0x014c:
+            int r10 = r10 + 1
+            r5 = 0
+        L_0x014f:
+            if (r5 >= r11) goto L_0x019a
+            android.view.View r9 = r0.getChildAt(r5)
+            android.view.ViewGroup$LayoutParams r15 = r9.getLayoutParams()
+            android.support.v7.widget.ActionMenuView$LayoutParams r15 = (android.support.v7.widget.ActionMenuView.LayoutParams) r15
+            r33 = r4
+            r22 = 1
+            int r4 = r22 << r5
+            r36 = r1
+            r37 = r2
+            long r1 = (long) r4
+            long r1 = r29 & r1
+            int r1 = (r1 > r27 ? 1 : (r1 == r27 ? 0 : -1))
+            if (r1 != 0) goto L_0x0176
+            int r1 = r15.cellsUsed
+            if (r1 != r10) goto L_0x0191
+            int r1 = r22 << r5
+            long r1 = (long) r1
+            long r18 = r18 | r1
+            goto L_0x0191
+        L_0x0176:
+            if (r7 == 0) goto L_0x0187
+            boolean r1 = r15.preventEdgeOffset
+            if (r1 == 0) goto L_0x0187
+            r1 = 1
+            if (r12 != r1) goto L_0x0187
+            int r1 = r0.mGeneratedItemPadding
+            int r2 = r1 + r8
+            r4 = 0
+            r9.setPadding(r2, r4, r1, r4)
+        L_0x0187:
+            int r1 = r15.cellsUsed
+            r2 = 1
+            int r1 = r1 + r2
+            r15.cellsUsed = r1
+            r15.expanded = r2
+            int r12 = r12 + -1
+        L_0x0191:
+            int r5 = r5 + 1
+            r4 = r33
+            r1 = r36
+            r2 = r37
+            goto L_0x014f
+        L_0x019a:
+            r36 = r1
+            r37 = r2
+            r33 = r4
+            r9 = 1
+            r5 = r32
+            r15 = r34
+            r4 = 2
+            goto L_0x00f3
+        L_0x01a8:
+            r36 = r1
+            r37 = r2
+            r32 = r5
+            r35 = r9
+            r34 = r15
+        L_0x01b2:
+            if (r17 != 0) goto L_0x01b9
+            r1 = 1
+            if (r3 != r1) goto L_0x01b9
+            r1 = 1
+            goto L_0x01ba
+        L_0x01b9:
+            r1 = 0
+        L_0x01ba:
+            if (r12 <= 0) goto L_0x027d
+            int r2 = (r18 > r27 ? 1 : (r18 == r27 ? 0 : -1))
+            if (r2 == 0) goto L_0x027d
+            int r2 = r3 + -1
+            if (r12 < r2) goto L_0x01cd
+            if (r1 != 0) goto L_0x01cd
+            r2 = 1
+            if (r14 <= r2) goto L_0x01ca
+            goto L_0x01cd
+        L_0x01ca:
+            r10 = r1
+            goto L_0x027e
+        L_0x01cd:
+            int r2 = java.lang.Long.bitCount(r18)
+            float r2 = (float) r2
+            if (r1 != 0) goto L_0x020c
+            long r4 = r18 & r25
+            int r4 = (r4 > r27 ? 1 : (r4 == r27 ? 0 : -1))
+            r5 = 1056964608(0x3f000000, float:0.5)
+            if (r4 == 0) goto L_0x01ed
+            r4 = 0
+            android.view.View r9 = r0.getChildAt(r4)
+            android.view.ViewGroup$LayoutParams r9 = r9.getLayoutParams()
+            android.support.v7.widget.ActionMenuView$LayoutParams r9 = (android.support.v7.widget.ActionMenuView.LayoutParams) r9
+            boolean r10 = r9.preventEdgeOffset
+            if (r10 != 0) goto L_0x01ee
+            float r2 = r2 - r5
+            goto L_0x01ee
+        L_0x01ed:
+            r4 = 0
+        L_0x01ee:
+            int r9 = r11 + -1
+            r10 = 1
+            int r9 = r10 << r9
+            long r9 = (long) r9
+            long r9 = r18 & r9
+            int r9 = (r9 > r27 ? 1 : (r9 == r27 ? 0 : -1))
+            if (r9 == 0) goto L_0x020d
+            int r9 = r11 + -1
+            android.view.View r9 = r0.getChildAt(r9)
+            android.view.ViewGroup$LayoutParams r9 = r9.getLayoutParams()
+            android.support.v7.widget.ActionMenuView$LayoutParams r9 = (android.support.v7.widget.ActionMenuView.LayoutParams) r9
+            boolean r10 = r9.preventEdgeOffset
+            if (r10 != 0) goto L_0x020d
+            float r2 = r2 - r5
+            goto L_0x020d
+        L_0x020c:
+            r4 = 0
+        L_0x020d:
+            r5 = 0
+            int r5 = (r2 > r5 ? 1 : (r2 == r5 ? 0 : -1))
+            if (r5 <= 0) goto L_0x0217
+            int r4 = r12 * r8
+            float r4 = (float) r4
+            float r4 = r4 / r2
+            int r4 = (int) r4
+        L_0x0217:
+            r5 = 0
+            r9 = r35
+        L_0x021a:
+            if (r5 >= r11) goto L_0x0278
+            r10 = 1
+            int r15 = r10 << r5
+            r10 = r1
+            r20 = r2
+            long r1 = (long) r15
+            long r1 = r18 & r1
+            int r1 = (r1 > r27 ? 1 : (r1 == r27 ? 0 : -1))
+            if (r1 != 0) goto L_0x022c
+            r25 = 2
+            goto L_0x0272
+        L_0x022c:
+            android.view.View r1 = r0.getChildAt(r5)
+            android.view.ViewGroup$LayoutParams r2 = r1.getLayoutParams()
+            android.support.v7.widget.ActionMenuView$LayoutParams r2 = (android.support.v7.widget.ActionMenuView.LayoutParams) r2
+            boolean r15 = r1 instanceof android.support.v7.view.menu.ActionMenuItemView
+            if (r15 == 0) goto L_0x0250
+            r2.extraPixels = r4
+            r15 = 1
+            r2.expanded = r15
+            if (r5 != 0) goto L_0x024c
+            boolean r15 = r2.preventEdgeOffset
+            if (r15 != 0) goto L_0x024c
+            int r15 = -r4
+            r25 = 2
+            int r15 = r15 / 2
+            r2.leftMargin = r15
+        L_0x024c:
+            r9 = 1
+            r25 = 2
+            goto L_0x0272
+        L_0x0250:
+            boolean r15 = r2.isOverflowButton
+            if (r15 == 0) goto L_0x0262
+            r2.extraPixels = r4
+            r15 = 1
+            r2.expanded = r15
+            int r15 = -r4
+            r25 = 2
+            int r15 = r15 / 2
+            r2.rightMargin = r15
+            r9 = 1
+            goto L_0x0272
+        L_0x0262:
+            r25 = 2
+            if (r5 == 0) goto L_0x026a
+            int r15 = r4 / 2
+            r2.leftMargin = r15
+        L_0x026a:
+            int r15 = r11 + -1
+            if (r5 == r15) goto L_0x0272
+            int r15 = r4 / 2
+            r2.rightMargin = r15
+        L_0x0272:
+            int r5 = r5 + 1
+            r1 = r10
+            r2 = r20
+            goto L_0x021a
+        L_0x0278:
+            r10 = r1
+            r20 = r2
+            r12 = 0
+            goto L_0x0280
+        L_0x027d:
+            r10 = r1
+        L_0x027e:
+            r9 = r35
+        L_0x0280:
+            if (r9 == 0) goto L_0x02af
+            r2 = 0
+        L_0x0283:
+            if (r2 >= r11) goto L_0x02ac
+            android.view.View r4 = r0.getChildAt(r2)
+            android.view.ViewGroup$LayoutParams r5 = r4.getLayoutParams()
+            android.support.v7.widget.ActionMenuView$LayoutParams r5 = (android.support.v7.widget.ActionMenuView.LayoutParams) r5
+            boolean r15 = r5.expanded
+            if (r15 != 0) goto L_0x0296
+            r22 = r3
+            goto L_0x02a7
+        L_0x0296:
+            int r15 = r5.cellsUsed
+            int r15 = r15 * r8
+            int r1 = r5.extraPixels
+            int r15 = r15 + r1
+            r22 = r3
+            r1 = 1073741824(0x40000000, float:2.0)
+            int r3 = android.view.View.MeasureSpec.makeMeasureSpec(r15, r1)
+            r4.measure(r3, r6)
+        L_0x02a7:
+            int r2 = r2 + 1
+            r3 = r22
+            goto L_0x0283
+        L_0x02ac:
+            r22 = r3
+            goto L_0x02b1
+        L_0x02af:
+            r22 = r3
+        L_0x02b1:
+            r1 = r36
+            r2 = 1073741824(0x40000000, float:2.0)
+            if (r1 == r2) goto L_0x02b9
+            r3 = r13
+            goto L_0x02bb
+        L_0x02b9:
+            r3 = r16
+        L_0x02bb:
+            r2 = r37
+            r0.setMeasuredDimension(r2, r3)
+            return
+        */
+        throw new UnsupportedOperationException("Method not decompiled: android.support.v7.widget.ActionMenuView.onMeasureExactFormat(int, int):void");
     }
 
     static int measureChildForCells(View child, int cellSize, int cellsRemaining, int parentHeightMeasureSpec, int parentHeightPadding) {
@@ -399,94 +585,92 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         }
         lp.expandable = expandable;
         lp.cellsUsed = cellsUsed;
-        child.measure(View.MeasureSpec.makeMeasureSpec(cellsUsed * cellSize, 1073741824), childHeightSpec);
+        child.measure(View.MeasureSpec.makeMeasureSpec(cellsUsed * cellSize, BasicMeasure.EXACTLY), childHeightSpec);
         return cellsUsed;
     }
 
     /* access modifiers changed from: protected */
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        int i;
         int overflowWidth;
         int dividerWidth;
-        int midVertical;
         boolean isLayoutRtl;
-        int l;
+        int midVertical;
         int r;
-        if (!this.mFormatItems) {
+        int l;
+        ActionMenuView actionMenuView = this;
+        if (!actionMenuView.mFormatItems) {
             super.onLayout(changed, left, top, right, bottom);
             return;
         }
         int childCount = getChildCount();
         int midVertical2 = (bottom - top) / 2;
         int dividerWidth2 = getDividerWidth();
+        int overflowWidth2 = 0;
+        int nonOverflowWidth = 0;
         int nonOverflowCount = 0;
         int widthRemaining = ((right - left) - getPaddingRight()) - getPaddingLeft();
         boolean hasOverflow = false;
         boolean isLayoutRtl2 = ViewUtils.isLayoutRtl(this);
-        int widthRemaining2 = widthRemaining;
-        int nonOverflowWidth = 0;
-        int overflowWidth2 = 0;
-        int i = 0;
-        while (i < childCount) {
-            View v = getChildAt(i);
+        int i2 = 0;
+        while (true) {
+            i = 8;
+            if (i2 >= childCount) {
+                break;
+            }
+            View v = actionMenuView.getChildAt(i2);
             if (v.getVisibility() == 8) {
                 midVertical = midVertical2;
                 isLayoutRtl = isLayoutRtl2;
             } else {
                 LayoutParams p = (LayoutParams) v.getLayoutParams();
                 if (p.isOverflowButton) {
-                    int overflowWidth3 = v.getMeasuredWidth();
-                    if (hasSupportDividerBeforeChildAt(i) != 0) {
-                        overflowWidth3 += dividerWidth2;
+                    overflowWidth2 = v.getMeasuredWidth();
+                    if (actionMenuView.hasSupportDividerBeforeChildAt(i2)) {
+                        overflowWidth2 += dividerWidth2;
                     }
                     int height = v.getMeasuredHeight();
                     if (isLayoutRtl2) {
-                        isLayoutRtl = isLayoutRtl2;
                         l = getPaddingLeft() + p.leftMargin;
-                        r = l + overflowWidth3;
+                        r = l + overflowWidth2;
                     } else {
-                        isLayoutRtl = isLayoutRtl2;
                         r = (getWidth() - getPaddingRight()) - p.rightMargin;
-                        l = r - overflowWidth3;
+                        l = r - overflowWidth2;
                     }
+                    isLayoutRtl = isLayoutRtl2;
                     int t = midVertical2 - (height / 2);
                     midVertical = midVertical2;
                     v.layout(l, t, r, t + height);
-                    widthRemaining2 -= overflowWidth3;
+                    widthRemaining -= overflowWidth2;
                     hasOverflow = true;
-                    overflowWidth2 = overflowWidth3;
                 } else {
                     midVertical = midVertical2;
                     isLayoutRtl = isLayoutRtl2;
                     int size = v.getMeasuredWidth() + p.leftMargin + p.rightMargin;
                     nonOverflowWidth += size;
-                    widthRemaining2 -= size;
-                    if (hasSupportDividerBeforeChildAt(i)) {
+                    widthRemaining -= size;
+                    if (actionMenuView.hasSupportDividerBeforeChildAt(i2)) {
                         nonOverflowWidth += dividerWidth2;
                     }
                     nonOverflowCount++;
                 }
             }
-            i++;
-            isLayoutRtl2 = isLayoutRtl;
+            i2++;
             midVertical2 = midVertical;
+            isLayoutRtl2 = isLayoutRtl;
         }
         int midVertical3 = midVertical2;
         boolean isLayoutRtl3 = isLayoutRtl2;
-        int i2 = 1;
         if (childCount != 1 || hasOverflow) {
-            if (hasOverflow) {
-                i2 = 0;
-            }
-            int spacerCount = nonOverflowCount - i2;
-            int i3 = 0;
-            int spacerSize = Math.max(0, spacerCount > 0 ? widthRemaining2 / spacerCount : 0);
+            int spacerCount = nonOverflowCount - (!hasOverflow);
+            int spacerSize = Math.max(0, spacerCount > 0 ? widthRemaining / spacerCount : 0);
             if (isLayoutRtl3) {
                 int startRight = getWidth() - getPaddingRight();
+                int i3 = 0;
                 while (i3 < childCount) {
-                    View v2 = getChildAt(i3);
+                    View v2 = actionMenuView.getChildAt(i3);
                     LayoutParams lp = (LayoutParams) v2.getLayoutParams();
-                    int spacerCount2 = spacerCount;
-                    if (v2.getVisibility() == 8) {
+                    if (v2.getVisibility() == i) {
                         dividerWidth = dividerWidth2;
                         overflowWidth = overflowWidth2;
                     } else if (lp.isOverflowButton) {
@@ -503,19 +687,18 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
                         startRight = startRight2 - ((lp.leftMargin + width) + spacerSize);
                     }
                     i3++;
-                    spacerCount = spacerCount2;
                     dividerWidth2 = dividerWidth;
                     overflowWidth2 = overflowWidth;
+                    i = 8;
                 }
-                int i4 = dividerWidth2;
-                int i5 = overflowWidth2;
+                int i4 = overflowWidth2;
                 return;
             }
-            int i6 = dividerWidth2;
-            int i7 = overflowWidth2;
+            int i5 = overflowWidth2;
             int startLeft = getPaddingLeft();
-            while (i3 < childCount) {
-                View v3 = getChildAt(i3);
+            int i6 = 0;
+            while (i6 < childCount) {
+                View v3 = actionMenuView.getChildAt(i6);
                 LayoutParams lp2 = (LayoutParams) v3.getLayoutParams();
                 if (v3.getVisibility() != 8 && !lp2.isOverflowButton) {
                     int startLeft2 = startLeft + lp2.leftMargin;
@@ -525,16 +708,16 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
                     v3.layout(startLeft2, t3, startLeft2 + width2, t3 + height3);
                     startLeft = startLeft2 + lp2.rightMargin + width2 + spacerSize;
                 }
-                i3++;
+                i6++;
+                actionMenuView = this;
             }
             return;
         }
-        View v4 = getChildAt(0);
+        View v4 = actionMenuView.getChildAt(0);
         int width3 = v4.getMeasuredWidth();
         int height4 = v4.getMeasuredHeight();
         int l2 = ((right - left) / 2) - (width3 / 2);
         int t4 = midVertical3 - (height4 / 2);
-        int i8 = width3;
         v4.layout(l2, t4, l2 + width3, t4 + height4);
     }
 
@@ -543,23 +726,20 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         dismissPopupMenus();
     }
 
-    public void setOverflowIcon(@Nullable Drawable icon) {
+    public void setOverflowIcon(Drawable icon) {
         getMenu();
         this.mPresenter.setOverflowIcon(icon);
     }
 
-    @Nullable
     public Drawable getOverflowIcon() {
         getMenu();
         return this.mPresenter.getOverflowIcon();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public boolean isOverflowReserved() {
         return this.mReserveOverflow;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setOverflowReserved(boolean reserveOverflow) {
         this.mReserveOverflow = reserveOverflow;
     }
@@ -592,24 +772,20 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         return p != null && (p instanceof LayoutParams);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public LayoutParams generateOverflowButtonLayoutParams() {
         LayoutParams result = generateDefaultLayoutParams();
         result.isOverflowButton = true;
         return result;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public boolean invokeItem(MenuItemImpl item) {
         return this.mMenu.performItemAction(item, 0);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public int getWindowAnimations() {
         return 0;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void initialize(MenuBuilder menu) {
         this.mMenu = menu;
     }
@@ -617,53 +793,61 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
     public Menu getMenu() {
         if (this.mMenu == null) {
             Context context = getContext();
-            this.mMenu = new MenuBuilder(context);
-            this.mMenu.setCallback(new MenuBuilderCallback());
-            this.mPresenter = new ActionMenuPresenter(context);
-            this.mPresenter.setReserveOverflow(true);
-            this.mPresenter.setCallback(this.mActionMenuPresenterCallback != null ? this.mActionMenuPresenterCallback : new ActionMenuPresenterCallback());
+            MenuBuilder menuBuilder = new MenuBuilder(context);
+            this.mMenu = menuBuilder;
+            menuBuilder.setCallback(new MenuBuilderCallback());
+            ActionMenuPresenter actionMenuPresenter = new ActionMenuPresenter(context);
+            this.mPresenter = actionMenuPresenter;
+            actionMenuPresenter.setReserveOverflow(true);
+            ActionMenuPresenter actionMenuPresenter2 = this.mPresenter;
+            MenuPresenter.Callback callback = this.mActionMenuPresenterCallback;
+            if (callback == null) {
+                callback = new ActionMenuPresenterCallback();
+            }
+            actionMenuPresenter2.setCallback(callback);
             this.mMenu.addMenuPresenter(this.mPresenter, this.mPopupContext);
             this.mPresenter.setMenuView(this);
         }
         return this.mMenu;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setMenuCallbacks(MenuPresenter.Callback pcb, MenuBuilder.Callback mcb) {
         this.mActionMenuPresenterCallback = pcb;
         this.mMenuBuilderCallback = mcb;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public MenuBuilder peekMenu() {
         return this.mMenu;
     }
 
     public boolean showOverflowMenu() {
-        return this.mPresenter != null && this.mPresenter.showOverflowMenu();
+        ActionMenuPresenter actionMenuPresenter = this.mPresenter;
+        return actionMenuPresenter != null && actionMenuPresenter.showOverflowMenu();
     }
 
     public boolean hideOverflowMenu() {
-        return this.mPresenter != null && this.mPresenter.hideOverflowMenu();
+        ActionMenuPresenter actionMenuPresenter = this.mPresenter;
+        return actionMenuPresenter != null && actionMenuPresenter.hideOverflowMenu();
     }
 
     public boolean isOverflowMenuShowing() {
-        return this.mPresenter != null && this.mPresenter.isOverflowMenuShowing();
+        ActionMenuPresenter actionMenuPresenter = this.mPresenter;
+        return actionMenuPresenter != null && actionMenuPresenter.isOverflowMenuShowing();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public boolean isOverflowMenuShowPending() {
-        return this.mPresenter != null && this.mPresenter.isOverflowMenuShowPending();
+        ActionMenuPresenter actionMenuPresenter = this.mPresenter;
+        return actionMenuPresenter != null && actionMenuPresenter.isOverflowMenuShowPending();
     }
 
     public void dismissPopupMenus() {
-        if (this.mPresenter != null) {
-            this.mPresenter.dismissPopupMenus();
+        ActionMenuPresenter actionMenuPresenter = this.mPresenter;
+        if (actionMenuPresenter != null) {
+            actionMenuPresenter.dismissPopupMenus();
         }
     }
 
     /* access modifiers changed from: protected */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public boolean hasSupportDividerBeforeChildAt(int childIndex) {
         if (childIndex == 0) {
             return false;
@@ -684,7 +868,6 @@ public class ActionMenuView extends LinearLayoutCompat implements MenuBuilder.It
         return false;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setExpandedActionViewsExclusive(boolean exclusive) {
         this.mPresenter.setExpandedActionViewsExclusive(exclusive);
     }

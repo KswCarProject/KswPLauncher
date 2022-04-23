@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,34 +50,32 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     private boolean first = true;
     private FrameLayout frame_OneLayout;
     private FrameLayout frame_TwoLayout;
+    private TimeSetTwo fuelUnitTwo;
     Handler handler = new Handler() {
-        @RequiresApi(api = 24)
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            int i = msg.what;
-            if (i != 0) {
-                switch (i) {
-                    case 2:
-                        if (TextUtils.equals(ID7SettingsActivity.this.defPwd, (String) msg.obj)) {
-                            ID7SettingsActivity.this.startActivity(new Intent(ID7SettingsActivity.this, FactoryActivity.class));
-                            ID7SettingsActivity.this.finish();
-                            return;
-                        }
-                        ID7SettingsActivity.this.setFactoryLayout.SetTextEEro();
+            switch (msg.what) {
+                case 0:
+                    ID7SettingsActivity.this.initOneLayout();
+                    ID7SettingsActivity.this.initTwoLayout();
+                    return;
+                case 2:
+                    if (TextUtils.equals(ID7SettingsActivity.this.defPwd, (String) msg.obj)) {
+                        ID7SettingsActivity.this.startActivity(new Intent(ID7SettingsActivity.this, FactoryActivity.class));
+                        ID7SettingsActivity.this.finish();
                         return;
-                    case 3:
-                        if (ID7SettingsActivity.this.naviTwo != null) {
-                            Log.d("Navi", "updateList: " + ID7SettingsActivity.this.mapList.size());
-                            ID7SettingsActivity.this.naviTwo.updateMapList(ID7SettingsActivity.this.mapList);
-                            return;
-                        }
+                    }
+                    ID7SettingsActivity.this.setFactoryLayout.SetTextEEro();
+                    return;
+                case 3:
+                    if (ID7SettingsActivity.this.naviTwo != null) {
+                        Log.d("Navi", "updateList: " + ID7SettingsActivity.this.mapList.size());
+                        ID7SettingsActivity.this.naviTwo.updateMapList(ID7SettingsActivity.this.mapList);
                         return;
-                    default:
-                        return;
-                }
-            } else {
-                ID7SettingsActivity.this.initOneLayout();
-                ID7SettingsActivity.this.initTwoLayout();
+                    }
+                    return;
+                default:
+                    return;
             }
         }
     };
@@ -106,15 +102,13 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     private String voiceData;
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_id7_settings);
         initData();
         initView();
     }
 
-    @RequiresApi(api = 24)
     public void skipItem() {
         if (TextUtils.equals("voic", this.voiceData)) {
             initOneLayout();
@@ -124,8 +118,9 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
                 fb.setIscheck(false);
             }
             this.data.get(2).setIscheck(true);
-            if (this.adapter != null) {
-                this.adapter.notifyDataSetChanged();
+            FunctionAdapter functionAdapter = this.adapter;
+            if (functionAdapter != null) {
+                functionAdapter.notifyDataSetChanged();
             }
         } else if (TextUtils.equals("voicFun", this.voiceData)) {
             initOneLayout();
@@ -135,8 +130,9 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
                 fb2.setIscheck(false);
             }
             this.data.get(3).setIscheck(true);
-            if (this.adapter != null) {
-                this.adapter.notifyDataSetChanged();
+            FunctionAdapter functionAdapter2 = this.adapter;
+            if (functionAdapter2 != null) {
+                functionAdapter2.notifyDataSetChanged();
             }
         }
     }
@@ -155,7 +151,6 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
     public void onResume() {
         super.onResume();
         ScanNaviList.getInstance().setMapListScanListener(this);
@@ -171,22 +166,24 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void initOneLayout() {
         if (this.setSystemInfoLayout == null) {
-            this.setSystemLayout = new SetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
+            SetSystemLayout setSystemLayout2 = new SetSystemLayout(this);
+            this.setSystemLayout = setSystemLayout2;
+            setSystemLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setNaviLayout == null) {
-            this.setNaviLayout = new SetNaviLayout(this);
-            this.setNaviLayout.registIUpdateTwoLayout(this);
+            SetNaviLayout setNaviLayout2 = new SetNaviLayout(this);
+            this.setNaviLayout = setNaviLayout2;
+            setNaviLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setVoiceLayout == null) {
             this.setVoiceLayout = new SetVoiceLayout(this);
         }
         if (this.setVocModeLayout == null) {
-            this.setVocModeLayout = new SetVocModeLayout(this);
-            this.setVocModeLayout.registIUpdateTwoLayout(this);
+            SetVocModeLayout setVocModeLayout2 = new SetVocModeLayout(this);
+            this.setVocModeLayout = setVocModeLayout2;
+            setVocModeLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setLanguageLayout == null) {
             this.setLanguageLayout = new SetLanguageLayout(this);
@@ -195,8 +192,9 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
             this.setToAndSysLayout = new SetToAndSysLayout(this);
         }
         if (this.setTimeLayout == null) {
-            this.setTimeLayout = new SetTimeLayout(this);
-            this.setTimeLayout.registIUpdateTwoLayout(this);
+            SetTimeLayout setTimeLayout2 = new SetTimeLayout(this);
+            this.setTimeLayout = setTimeLayout2;
+            setTimeLayout2.registIUpdateTwoLayout(this);
         }
         if (this.setSystemInfoLayout == null) {
             this.setSystemInfoLayout = new SetSystemInfoLayout(this);
@@ -259,16 +257,17 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
 
     private void initView() {
         this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        this.layoutManager = new LinearLayoutManager(this);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
-        this.adapter = new FunctionAdapter(this, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        FunctionAdapter functionAdapter = new FunctionAdapter(this, this.data);
+        this.adapter = functionAdapter;
+        this.recyclerView.setAdapter(functionAdapter);
         DividerItemDecoration divider = new DividerItemDecoration(this, 1);
         divider.setDrawable(ContextCompat.getDrawable(this, R.mipmap.id7_lp_line));
         this.recyclerView.addItemDecoration(divider);
         this.adapter.registOnFunctionClickListener(new FunctionAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 ID7SettingsActivity.this.setOneLayout(pos);
                 for (FunctionBean fb : ID7SettingsActivity.this.data) {
@@ -281,16 +280,18 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
         this.frame_OneLayout = (FrameLayout) findViewById(R.id.frame_OneLayout);
         this.frame_TwoLayout = (FrameLayout) findViewById(R.id.frame_TwoLayout);
         if (this.setSystemLayout == null) {
-            this.setSystemLayout = new SetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
+            SetSystemLayout setSystemLayout2 = new SetSystemLayout(this);
+            this.setSystemLayout = setSystemLayout2;
+            setSystemLayout2.registIUpdateTwoLayout(this);
         }
         this.frame_OneLayout.addView(this.setSystemLayout);
         if (this.setSystemTwo == null) {
             this.setSystemTwo = new SetSystemTwo(this);
         }
         this.frame_TwoLayout.addView(this.setSystemTwo);
-        this.Img_SetBack = (ImageView) findViewById(R.id.Img_SetBack);
-        this.Img_SetBack.setOnClickListener(new View.OnClickListener() {
+        ImageView imageView = (ImageView) findViewById(R.id.Img_SetBack);
+        this.Img_SetBack = imageView;
+        imageView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ID7SettingsActivity.this.onBackPressed();
             }
@@ -298,15 +299,15 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void setOneLayout(int type) {
         this.frame_OneLayout.removeAllViews();
         this.frame_TwoLayout.removeAllViews();
         switch (type) {
             case 0:
                 if (this.setSystemLayout == null) {
-                    this.setSystemLayout = new SetSystemLayout(this);
-                    this.setSystemLayout.registIUpdateTwoLayout(this);
+                    SetSystemLayout setSystemLayout2 = new SetSystemLayout(this);
+                    this.setSystemLayout = setSystemLayout2;
+                    setSystemLayout2.registIUpdateTwoLayout(this);
                 }
                 if (this.setSystemTwo == null) {
                     this.setSystemTwo = new SetSystemTwo(this);
@@ -317,8 +318,9 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
                 break;
             case 1:
                 if (this.setNaviLayout == null) {
-                    this.setNaviLayout = new SetNaviLayout(this);
-                    this.setNaviLayout.registIUpdateTwoLayout(this);
+                    SetNaviLayout setNaviLayout2 = new SetNaviLayout(this);
+                    this.setNaviLayout = setNaviLayout2;
+                    setNaviLayout2.registIUpdateTwoLayout(this);
                 }
                 if (this.naviTwo == null) {
                     this.naviTwo = new NaviTwo(this);
@@ -339,8 +341,9 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
                 break;
             case 3:
                 if (this.setVocModeLayout == null) {
-                    this.setVocModeLayout = new SetVocModeLayout(this);
-                    this.setVocModeLayout.registIUpdateTwoLayout(this);
+                    SetVocModeLayout setVocModeLayout2 = new SetVocModeLayout(this);
+                    this.setVocModeLayout = setVocModeLayout2;
+                    setVocModeLayout2.registIUpdateTwoLayout(this);
                 }
                 if (this.setVocModelTwo == null) {
                     this.setVocModelTwo = new SetVocModelTwo(this);
@@ -360,8 +363,9 @@ public class ID7SettingsActivity extends BaseActivity implements IUpdateTwoLayou
                 break;
             case 5:
                 if (this.setTimeLayout == null) {
-                    this.setTimeLayout = new SetTimeLayout(this);
-                    this.setTimeLayout.registIUpdateTwoLayout(this);
+                    SetTimeLayout setTimeLayout2 = new SetTimeLayout(this);
+                    this.setTimeLayout = setTimeLayout2;
+                    setTimeLayout2.registIUpdateTwoLayout(this);
                 }
                 if (this.timeSetTwo == null) {
                     this.timeSetTwo = new TimeSetTwo(this);

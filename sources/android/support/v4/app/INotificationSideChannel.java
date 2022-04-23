@@ -41,34 +41,32 @@ public interface INotificationSideChannel extends IInterface {
 
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
             Notification _arg3;
-            if (code != 1598968902) {
-                switch (code) {
-                    case 1:
-                        data.enforceInterface(DESCRIPTOR);
-                        String _arg0 = data.readString();
-                        int _arg1 = data.readInt();
-                        String _arg2 = data.readString();
-                        if (data.readInt() != 0) {
-                            _arg3 = (Notification) Notification.CREATOR.createFromParcel(data);
-                        } else {
-                            _arg3 = null;
-                        }
-                        notify(_arg0, _arg1, _arg2, _arg3);
-                        return true;
-                    case 2:
-                        data.enforceInterface(DESCRIPTOR);
-                        cancel(data.readString(), data.readInt(), data.readString());
-                        return true;
-                    case 3:
-                        data.enforceInterface(DESCRIPTOR);
-                        cancelAll(data.readString());
-                        return true;
-                    default:
-                        return super.onTransact(code, data, reply, flags);
-                }
-            } else {
-                reply.writeString(DESCRIPTOR);
-                return true;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg0 = data.readString();
+                    int _arg1 = data.readInt();
+                    String _arg2 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg3 = (Notification) Notification.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg3 = null;
+                    }
+                    notify(_arg0, _arg1, _arg2, _arg3);
+                    return true;
+                case 2:
+                    data.enforceInterface(DESCRIPTOR);
+                    cancel(data.readString(), data.readInt(), data.readString());
+                    return true;
+                case 3:
+                    data.enforceInterface(DESCRIPTOR);
+                    cancelAll(data.readString());
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
             }
         }
 

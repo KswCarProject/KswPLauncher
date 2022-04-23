@@ -1,15 +1,9 @@
 package com.bumptech.glide;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.CheckResult;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RawRes;
 import android.widget.ImageView;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.BaseRequestOptions;
@@ -37,28 +31,21 @@ import java.util.concurrent.Executor;
 public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBuilder<TranscodeType>> implements Cloneable, ModelTypes<RequestBuilder<TranscodeType>> {
     protected static final RequestOptions DOWNLOAD_ONLY_OPTIONS = ((RequestOptions) ((RequestOptions) ((RequestOptions) new RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA)).priority(Priority.LOW)).skipMemoryCache(true));
     private final Context context;
-    @Nullable
     private RequestBuilder<TranscodeType> errorBuilder;
     private final Glide glide;
     private final GlideContext glideContext;
     private boolean isDefaultTransitionOptionsSet;
     private boolean isModelSet;
     private boolean isThumbnailBuilt;
-    @Nullable
     private Object model;
-    @Nullable
     private List<RequestListener<TranscodeType>> requestListeners;
     private final RequestManager requestManager;
-    @Nullable
     private Float thumbSizeMultiplier;
-    @Nullable
     private RequestBuilder<TranscodeType> thumbnailBuilder;
     private final Class<TranscodeType> transcodeClass;
-    @NonNull
     private TransitionOptions<?, ? super TranscodeType> transitionOptions;
 
-    @SuppressLint({"CheckResult"})
-    protected RequestBuilder(@NonNull Glide glide2, RequestManager requestManager2, Class<TranscodeType> transcodeClass2, Context context2) {
+    protected RequestBuilder(Glide glide2, RequestManager requestManager2, Class<TranscodeType> transcodeClass2, Context context2) {
         this.isDefaultTransitionOptionsSet = true;
         this.glide = glide2;
         this.requestManager = requestManager2;
@@ -70,7 +57,6 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         apply((BaseRequestOptions<?>) requestManager2.getDefaultRequestOptions());
     }
 
-    @SuppressLint({"CheckResult"})
     protected RequestBuilder(Class<TranscodeType> transcodeClass2, RequestBuilder<?> other) {
         this(other.glide, other.requestManager, transcodeClass2, other.context);
         this.model = other.model;
@@ -78,38 +64,29 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         apply((BaseRequestOptions<?>) other);
     }
 
-    @SuppressLint({"CheckResult"})
     private void initRequestListeners(List<RequestListener<Object>> requestListeners2) {
         for (RequestListener<Object> listener : requestListeners2) {
             addListener(listener);
         }
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> apply(@NonNull BaseRequestOptions<?> requestOptions) {
+    public RequestBuilder<TranscodeType> apply(BaseRequestOptions<?> requestOptions) {
         Preconditions.checkNotNull(requestOptions);
         return (RequestBuilder) super.apply(requestOptions);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> transition(@NonNull TransitionOptions<?, ? super TranscodeType> transitionOptions2) {
+    public RequestBuilder<TranscodeType> transition(TransitionOptions<?, ? super TranscodeType> transitionOptions2) {
         this.transitionOptions = (TransitionOptions) Preconditions.checkNotNull(transitionOptions2);
         this.isDefaultTransitionOptionsSet = false;
         return this;
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> listener(@Nullable RequestListener<TranscodeType> requestListener) {
+    public RequestBuilder<TranscodeType> listener(RequestListener<TranscodeType> requestListener) {
         this.requestListeners = null;
         return addListener(requestListener);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> addListener(@Nullable RequestListener<TranscodeType> requestListener) {
+    public RequestBuilder<TranscodeType> addListener(RequestListener<TranscodeType> requestListener) {
         if (requestListener != null) {
             if (this.requestListeners == null) {
                 this.requestListeners = new ArrayList();
@@ -119,22 +96,17 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         return this;
     }
 
-    @NonNull
-    public RequestBuilder<TranscodeType> error(@Nullable RequestBuilder<TranscodeType> errorBuilder2) {
+    public RequestBuilder<TranscodeType> error(RequestBuilder<TranscodeType> errorBuilder2) {
         this.errorBuilder = errorBuilder2;
         return this;
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> thumbnail(@Nullable RequestBuilder<TranscodeType> thumbnailRequest) {
+    public RequestBuilder<TranscodeType> thumbnail(RequestBuilder<TranscodeType> thumbnailRequest) {
         this.thumbnailBuilder = thumbnailRequest;
         return this;
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> thumbnail(@Nullable RequestBuilder<TranscodeType>... thumbnails) {
+    public RequestBuilder<TranscodeType> thumbnail(RequestBuilder<TranscodeType>... thumbnails) {
         if (thumbnails == null || thumbnails.length == 0) {
             return thumbnail((RequestBuilder) null);
         }
@@ -152,8 +124,6 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         return thumbnail(previous);
     }
 
-    @CheckResult
-    @NonNull
     public RequestBuilder<TranscodeType> thumbnail(float sizeMultiplier) {
         if (sizeMultiplier < 0.0f || sizeMultiplier > 1.0f) {
             throw new IllegalArgumentException("sizeMultiplier must be between 0 and 1");
@@ -162,64 +132,46 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         return this;
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable Object model2) {
+    public RequestBuilder<TranscodeType> load(Object model2) {
         return loadGeneric(model2);
     }
 
-    @NonNull
-    private RequestBuilder<TranscodeType> loadGeneric(@Nullable Object model2) {
+    private RequestBuilder<TranscodeType> loadGeneric(Object model2) {
         this.model = model2;
         this.isModelSet = true;
         return this;
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable Bitmap bitmap) {
+    public RequestBuilder<TranscodeType> load(Bitmap bitmap) {
         return loadGeneric(bitmap).apply((BaseRequestOptions<?>) RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE));
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable Drawable drawable) {
+    public RequestBuilder<TranscodeType> load(Drawable drawable) {
         return loadGeneric(drawable).apply((BaseRequestOptions<?>) RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE));
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable String string) {
+    public RequestBuilder<TranscodeType> load(String string) {
         return loadGeneric(string);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable Uri uri) {
+    public RequestBuilder<TranscodeType> load(Uri uri) {
         return loadGeneric(uri);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable File file) {
+    public RequestBuilder<TranscodeType> load(File file) {
         return loadGeneric(file);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable @RawRes @DrawableRes Integer resourceId) {
+    public RequestBuilder<TranscodeType> load(Integer resourceId) {
         return loadGeneric(resourceId).apply((BaseRequestOptions<?>) RequestOptions.signatureOf(ApplicationVersionSignature.obtain(this.context)));
     }
 
     @Deprecated
-    @CheckResult
-    public RequestBuilder<TranscodeType> load(@Nullable URL url) {
+    public RequestBuilder<TranscodeType> load(URL url) {
         return loadGeneric(url);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<TranscodeType> load(@Nullable byte[] model2) {
+    public RequestBuilder<TranscodeType> load(byte[] model2) {
         RequestBuilder<TranscodeType> result = loadGeneric(model2);
         if (!result.isDiskCacheStrategySet()) {
             result = result.apply((BaseRequestOptions<?>) RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE));
@@ -230,25 +182,22 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         return result;
     }
 
-    @CheckResult
     public RequestBuilder<TranscodeType> clone() {
         RequestBuilder<TranscodeType> result = (RequestBuilder) super.clone();
         result.transitionOptions = result.transitionOptions.clone();
         return result;
     }
 
-    @NonNull
-    public <Y extends Target<TranscodeType>> Y into(@NonNull Y target) {
+    public <Y extends Target<TranscodeType>> Y into(Y target) {
         return into(target, (RequestListener) null, Executors.mainThreadExecutor());
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
-    public <Y extends Target<TranscodeType>> Y into(@NonNull Y target, @Nullable RequestListener<TranscodeType> targetListener, Executor callbackExecutor) {
+    public <Y extends Target<TranscodeType>> Y into(Y target, RequestListener<TranscodeType> targetListener, Executor callbackExecutor) {
         return into(target, targetListener, this, callbackExecutor);
     }
 
-    private <Y extends Target<TranscodeType>> Y into(@NonNull Y target, @Nullable RequestListener<TranscodeType> targetListener, BaseRequestOptions<?> options, Executor callbackExecutor) {
+    private <Y extends Target<TranscodeType>> Y into(Y target, RequestListener<TranscodeType> targetListener, BaseRequestOptions<?> options, Executor callbackExecutor) {
         Preconditions.checkNotNull(target);
         if (this.isModelSet) {
             Request request = buildRequest(target, targetListener, options, callbackExecutor);
@@ -272,8 +221,7 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         return !options.isMemoryCacheable() && previous.isComplete();
     }
 
-    @NonNull
-    public ViewTarget<ImageView, TranscodeType> into(@NonNull ImageView view) {
+    public ViewTarget<ImageView, TranscodeType> into(ImageView view) {
         Util.assertMainThread();
         Preconditions.checkNotNull(view);
         BaseRequestOptions baseRequestOptions = this;
@@ -303,54 +251,48 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         return submit(width, height);
     }
 
-    @NonNull
     public FutureTarget<TranscodeType> submit() {
         return submit(Integer.MIN_VALUE, Integer.MIN_VALUE);
     }
 
-    @NonNull
     public FutureTarget<TranscodeType> submit(int width, int height) {
         RequestFutureTarget<TranscodeType> target = new RequestFutureTarget<>(width, height);
         return (FutureTarget) into(target, target, Executors.directExecutor());
     }
 
-    @NonNull
     public Target<TranscodeType> preload(int width, int height) {
         return into(PreloadTarget.obtain(this.requestManager, width, height));
     }
 
-    @NonNull
     public Target<TranscodeType> preload() {
         return preload(Integer.MIN_VALUE, Integer.MIN_VALUE);
     }
 
     @Deprecated
-    @CheckResult
-    public <Y extends Target<File>> Y downloadOnly(@NonNull Y target) {
+    public <Y extends Target<File>> Y downloadOnly(Y target) {
         return getDownloadOnlyRequest().into(target);
     }
 
     @Deprecated
-    @CheckResult
     public FutureTarget<File> downloadOnly(int width, int height) {
         return getDownloadOnlyRequest().submit(width, height);
     }
 
     /* access modifiers changed from: protected */
-    @CheckResult
-    @NonNull
     public RequestBuilder<File> getDownloadOnlyRequest() {
         return new RequestBuilder(File.class, this).apply((BaseRequestOptions<?>) DOWNLOAD_ONLY_OPTIONS);
     }
 
     /* renamed from: com.bumptech.glide.RequestBuilder$1  reason: invalid class name */
     static /* synthetic */ class AnonymousClass1 {
-        static final /* synthetic */ int[] $SwitchMap$android$widget$ImageView$ScaleType = new int[ImageView.ScaleType.values().length];
+        static final /* synthetic */ int[] $SwitchMap$android$widget$ImageView$ScaleType;
+        static final /* synthetic */ int[] $SwitchMap$com$bumptech$glide$Priority;
 
         static {
-            $SwitchMap$com$bumptech$glide$Priority = new int[Priority.values().length];
+            int[] iArr = new int[Priority.values().length];
+            $SwitchMap$com$bumptech$glide$Priority = iArr;
             try {
-                $SwitchMap$com$bumptech$glide$Priority[Priority.LOW.ordinal()] = 1;
+                iArr[Priority.LOW.ordinal()] = 1;
             } catch (NoSuchFieldError e) {
             }
             try {
@@ -365,8 +307,10 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
                 $SwitchMap$com$bumptech$glide$Priority[Priority.IMMEDIATE.ordinal()] = 4;
             } catch (NoSuchFieldError e4) {
             }
+            int[] iArr2 = new int[ImageView.ScaleType.values().length];
+            $SwitchMap$android$widget$ImageView$ScaleType = iArr2;
             try {
-                $SwitchMap$android$widget$ImageView$ScaleType[ImageView.ScaleType.CENTER_CROP.ordinal()] = 1;
+                iArr2[ImageView.ScaleType.CENTER_CROP.ordinal()] = 1;
             } catch (NoSuchFieldError e5) {
             }
             try {
@@ -400,28 +344,29 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         }
     }
 
-    @NonNull
-    private Priority getThumbnailPriority(@NonNull Priority current) {
-        switch (current) {
-            case LOW:
+    private Priority getThumbnailPriority(Priority current) {
+        switch (AnonymousClass1.$SwitchMap$com$bumptech$glide$Priority[current.ordinal()]) {
+            case 1:
                 return Priority.NORMAL;
-            case NORMAL:
+            case 2:
                 return Priority.HIGH;
-            case HIGH:
-            case IMMEDIATE:
+            case 3:
+            case 4:
                 return Priority.IMMEDIATE;
             default:
                 throw new IllegalArgumentException("unknown priority: " + getPriority());
         }
     }
 
-    private Request buildRequest(Target<TranscodeType> target, @Nullable RequestListener<TranscodeType> targetListener, BaseRequestOptions<?> requestOptions, Executor callbackExecutor) {
+    private Request buildRequest(Target<TranscodeType> target, RequestListener<TranscodeType> targetListener, BaseRequestOptions<?> requestOptions, Executor callbackExecutor) {
         return buildRequestRecursive(target, targetListener, (RequestCoordinator) null, this.transitionOptions, requestOptions.getPriority(), requestOptions.getOverrideWidth(), requestOptions.getOverrideHeight(), requestOptions, callbackExecutor);
     }
 
-    private Request buildRequestRecursive(Target<TranscodeType> target, @Nullable RequestListener<TranscodeType> targetListener, @Nullable RequestCoordinator parentCoordinator, TransitionOptions<?, ? super TranscodeType> transitionOptions2, Priority priority, int overrideWidth, int overrideHeight, BaseRequestOptions<?> requestOptions, Executor callbackExecutor) {
+    private Request buildRequestRecursive(Target<TranscodeType> target, RequestListener<TranscodeType> targetListener, RequestCoordinator parentCoordinator, TransitionOptions<?, ? super TranscodeType> transitionOptions2, Priority priority, int overrideWidth, int overrideHeight, BaseRequestOptions<?> requestOptions, Executor callbackExecutor) {
         ErrorRequestCoordinator errorRequestCoordinator;
         RequestCoordinator parentCoordinator2;
+        int errorOverrideHeight;
+        int errorOverrideWidth;
         if (this.errorBuilder != null) {
             RequestCoordinator errorRequestCoordinator2 = new ErrorRequestCoordinator(parentCoordinator);
             errorRequestCoordinator = errorRequestCoordinator2;
@@ -434,20 +379,24 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
         if (errorRequestCoordinator == null) {
             return mainRequest;
         }
-        int errorOverrideWidth = this.errorBuilder.getOverrideWidth();
-        int errorOverrideHeight = this.errorBuilder.getOverrideHeight();
-        if (Util.isValidDimensions(overrideWidth, overrideHeight) && !this.errorBuilder.isValidOverride()) {
+        int errorOverrideWidth2 = this.errorBuilder.getOverrideWidth();
+        int errorOverrideHeight2 = this.errorBuilder.getOverrideHeight();
+        if (!Util.isValidDimensions(overrideWidth, overrideHeight) || this.errorBuilder.isValidOverride()) {
+            errorOverrideWidth = errorOverrideWidth2;
+            errorOverrideHeight = errorOverrideHeight2;
+        } else {
             errorOverrideWidth = requestOptions.getOverrideWidth();
             errorOverrideHeight = requestOptions.getOverrideHeight();
         }
-        errorRequestCoordinator.setRequests(mainRequest, this.errorBuilder.buildRequestRecursive(target, targetListener, errorRequestCoordinator, this.errorBuilder.transitionOptions, this.errorBuilder.getPriority(), errorOverrideWidth, errorOverrideHeight, this.errorBuilder, callbackExecutor));
+        RequestBuilder<TranscodeType> requestBuilder = this.errorBuilder;
+        errorRequestCoordinator.setRequests(mainRequest, requestBuilder.buildRequestRecursive(target, targetListener, errorRequestCoordinator, requestBuilder.transitionOptions, requestBuilder.getPriority(), errorOverrideWidth, errorOverrideHeight, this.errorBuilder, callbackExecutor));
         return errorRequestCoordinator;
     }
 
     /* JADX WARNING: type inference failed for: r34v0, types: [com.bumptech.glide.request.BaseRequestOptions<?>, com.bumptech.glide.request.BaseRequestOptions] */
     /* JADX WARNING: Unknown variable types count: 1 */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private com.bumptech.glide.request.Request buildThumbnailRequestRecursive(com.bumptech.glide.request.target.Target<TranscodeType> r27, com.bumptech.glide.request.RequestListener<TranscodeType> r28, @android.support.annotation.Nullable com.bumptech.glide.request.RequestCoordinator r29, com.bumptech.glide.TransitionOptions<?, ? super TranscodeType> r30, com.bumptech.glide.Priority r31, int r32, int r33, com.bumptech.glide.request.BaseRequestOptions<?> r34, java.util.concurrent.Executor r35) {
+    private com.bumptech.glide.request.Request buildThumbnailRequestRecursive(com.bumptech.glide.request.target.Target<TranscodeType> r27, com.bumptech.glide.request.RequestListener<TranscodeType> r28, com.bumptech.glide.request.RequestCoordinator r29, com.bumptech.glide.TransitionOptions<?, ? super TranscodeType> r30, com.bumptech.glide.Priority r31, int r32, int r33, com.bumptech.glide.request.BaseRequestOptions<?> r34, java.util.concurrent.Executor r35) {
         /*
             r26 = this;
             r10 = r26
@@ -455,42 +404,44 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
             r12 = r31
             com.bumptech.glide.RequestBuilder<TranscodeType> r0 = r10.thumbnailBuilder
             if (r0 == 0) goto L_0x00a1
-            boolean r0 = r10.isThumbnailBuilt
-            if (r0 != 0) goto L_0x0099
-            com.bumptech.glide.RequestBuilder<TranscodeType> r0 = r10.thumbnailBuilder
-            com.bumptech.glide.TransitionOptions<?, ? super TranscodeType> r0 = r0.transitionOptions
-            com.bumptech.glide.RequestBuilder<TranscodeType> r1 = r10.thumbnailBuilder
-            boolean r1 = r1.isDefaultTransitionOptionsSet
-            if (r1 == 0) goto L_0x001a
-            r0 = r30
-        L_0x001a:
-            r23 = r0
-            com.bumptech.glide.RequestBuilder<TranscodeType> r0 = r10.thumbnailBuilder
+            boolean r1 = r10.isThumbnailBuilt
+            if (r1 != 0) goto L_0x0099
+            com.bumptech.glide.TransitionOptions<?, ? super TranscodeType> r1 = r0.transitionOptions
+            boolean r2 = r0.isDefaultTransitionOptionsSet
+            if (r2 == 0) goto L_0x0019
+            r1 = r30
+            r23 = r1
+            goto L_0x001b
+        L_0x0019:
+            r23 = r1
+        L_0x001b:
             boolean r0 = r0.isPrioritySet()
-            if (r0 == 0) goto L_0x002d
+            if (r0 == 0) goto L_0x0028
             com.bumptech.glide.RequestBuilder<TranscodeType> r0 = r10.thumbnailBuilder
             com.bumptech.glide.Priority r0 = r0.getPriority()
-        L_0x002a:
-            r18 = r0
-            goto L_0x0032
-        L_0x002d:
+            goto L_0x002c
+        L_0x0028:
             com.bumptech.glide.Priority r0 = r10.getThumbnailPriority(r12)
-            goto L_0x002a
-        L_0x0032:
+        L_0x002c:
+            r18 = r0
             com.bumptech.glide.RequestBuilder<TranscodeType> r0 = r10.thumbnailBuilder
             int r0 = r0.getOverrideWidth()
             com.bumptech.glide.RequestBuilder<TranscodeType> r1 = r10.thumbnailBuilder
             int r1 = r1.getOverrideHeight()
             boolean r2 = com.bumptech.glide.util.Util.isValidDimensions(r32, r33)
-            if (r2 == 0) goto L_0x0054
+            if (r2 == 0) goto L_0x0055
             com.bumptech.glide.RequestBuilder<TranscodeType> r2 = r10.thumbnailBuilder
             boolean r2 = r2.isValidOverride()
-            if (r2 != 0) goto L_0x0054
+            if (r2 != 0) goto L_0x0055
             int r0 = r34.getOverrideWidth()
             int r1 = r34.getOverrideHeight()
-        L_0x0054:
             r24 = r0
             r25 = r1
+            goto L_0x0059
+        L_0x0055:
+            r24 = r0
+            r25 = r1
+        L_0x0059:
             com.bumptech.glide.request.ThumbnailRequestCoordinator r0 = new com.bumptech.glide.request.ThumbnailRequestCoordinator
             r0.<init>(r11)
             r15 = r0
@@ -507,8 +458,8 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
             com.bumptech.glide.request.Request r0 = r0.obtainRequest(r1, r2, r3, r4, r5, r6, r7, r8, r9)
             r1 = 1
             r10.isThumbnailBuilt = r1
-            com.bumptech.glide.RequestBuilder<TranscodeType> r13 = r10.thumbnailBuilder
             com.bumptech.glide.RequestBuilder<TranscodeType> r1 = r10.thumbnailBuilder
+            r13 = r1
             r14 = r27
             r2 = r15
             r15 = r28
@@ -574,6 +525,8 @@ public class RequestBuilder<TranscodeType> extends BaseRequestOptions<RequestBui
     }
 
     private Request obtainRequest(Target<TranscodeType> target, RequestListener<TranscodeType> targetListener, BaseRequestOptions<?> requestOptions, RequestCoordinator requestCoordinator, TransitionOptions<?, ? super TranscodeType> transitionOptions2, Priority priority, int overrideWidth, int overrideHeight, Executor callbackExecutor) {
-        return SingleRequest.obtain(this.context, this.glideContext, this.model, this.transcodeClass, requestOptions, overrideWidth, overrideHeight, priority, target, targetListener, this.requestListeners, requestCoordinator, this.glideContext.getEngine(), transitionOptions2.getTransitionFactory(), callbackExecutor);
+        Context context2 = this.context;
+        GlideContext glideContext2 = this.glideContext;
+        return SingleRequest.obtain(context2, glideContext2, this.model, this.transcodeClass, requestOptions, overrideWidth, overrideHeight, priority, target, targetListener, this.requestListeners, requestCoordinator, glideContext2.getEngine(), transitionOptions2.getTransitionFactory(), callbackExecutor);
     }
 }

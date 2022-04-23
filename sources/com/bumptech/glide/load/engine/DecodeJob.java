@@ -1,7 +1,6 @@
 package com.bumptech.glide.load.engine;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pools;
 import android.util.Log;
 import com.bumptech.glide.GlideContext;
@@ -165,7 +164,7 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
         this.pool.release(this);
     }
 
-    public int compareTo(@NonNull DecodeJob<?> other) {
+    public int compareTo(DecodeJob<?> other) {
         int result = getPriority() - other.getPriority();
         if (result == 0) {
             return this.order - other.order;
@@ -204,26 +203,26 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
             GlideTrace.endSection();
         } catch (CallbackException e) {
             throw e;
-        } catch (Throwable th) {
+        } catch (Throwable e2) {
             if (localFetcher != null) {
                 localFetcher.cleanup();
             }
             GlideTrace.endSection();
-            throw th;
+            throw e2;
         }
     }
 
     private void runWrapped() {
-        switch (this.runReason) {
-            case INITIALIZE:
+        switch (AnonymousClass1.$SwitchMap$com$bumptech$glide$load$engine$DecodeJob$RunReason[this.runReason.ordinal()]) {
+            case 1:
                 this.stage = getNextStage(Stage.INITIALIZE);
                 this.currentGenerator = getNextGenerator();
                 runGenerators();
                 return;
-            case SWITCH_TO_SOURCE_SERVICE:
+            case 2:
                 runGenerators();
                 return;
-            case DECODE_DATA:
+            case 3:
                 decodeFromRetrievedData();
                 return;
             default:
@@ -232,14 +231,14 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
     }
 
     private DataFetcherGenerator getNextGenerator() {
-        switch (this.stage) {
-            case RESOURCE_CACHE:
+        switch (AnonymousClass1.$SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage[this.stage.ordinal()]) {
+            case 1:
                 return new ResourceCacheGenerator(this.decodeHelper, this);
-            case DATA_CACHE:
+            case 2:
                 return new DataCacheGenerator(this.decodeHelper, this);
-            case SOURCE:
+            case 3:
                 return new SourceGenerator(this.decodeHelper, this);
-            case FINISHED:
+            case 4:
                 return null;
             default:
                 throw new IllegalStateException("Unrecognized stage: " + this.stage);
@@ -280,23 +279,30 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
     }
 
     private void setNotifiedOrThrow() {
+        Throwable lastThrown;
         this.stateVerifier.throwIfRecycled();
         if (this.isCallbackNotified) {
-            throw new IllegalStateException("Already notified", this.throwables.isEmpty() ? null : this.throwables.get(this.throwables.size() - 1));
+            if (this.throwables.isEmpty()) {
+                lastThrown = null;
+            } else {
+                List<Throwable> list = this.throwables;
+                lastThrown = list.get(list.size() - 1);
+            }
+            throw new IllegalStateException("Already notified", lastThrown);
         }
         this.isCallbackNotified = true;
     }
 
     private Stage getNextStage(Stage current) {
-        switch (current) {
-            case RESOURCE_CACHE:
+        switch (AnonymousClass1.$SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage[current.ordinal()]) {
+            case 1:
                 return this.diskCacheStrategy.decodeCachedData() ? Stage.DATA_CACHE : getNextStage(Stage.DATA_CACHE);
-            case DATA_CACHE:
+            case 2:
                 return this.onlyRetrieveFromCache ? Stage.FINISHED : Stage.SOURCE;
-            case SOURCE:
-            case FINISHED:
+            case 3:
+            case 4:
                 return Stage.FINISHED;
-            case INITIALIZE:
+            case 5:
                 return this.diskCacheStrategy.decodeCachedResource() ? Stage.RESOURCE_CACHE : getNextStage(Stage.RESOURCE_CACHE);
             default:
                 throw new IllegalArgumentException("Unrecognized stage: " + current);
@@ -342,8 +348,7 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
 
     private void decodeFromRetrievedData() {
         if (Log.isLoggable(TAG, 2)) {
-            long j = this.startFetchTime;
-            logWithTimeAndKey("Retrieved data", j, "data: " + this.currentData + ", cache key: " + this.currentSourceKey + ", fetcher: " + this.currentFetcher);
+            logWithTimeAndKey("Retrieved data", this.startFetchTime, "data: " + this.currentData + ", cache key: " + this.currentSourceKey + ", fetcher: " + this.currentFetcher);
         }
         Resource<R> resource = null;
         try {
@@ -404,7 +409,6 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
         return runLoadPath(data, dataSource, this.decodeHelper.getLoadPath(data.getClass()));
     }
 
-    @NonNull
     private Options getOptionsWithHardwareConfig(DataSource dataSource) {
         Options options2 = this.options;
         if (Build.VERSION.SDK_INT < 26) {
@@ -423,7 +427,7 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
 
     private <Data, ResourceType> Resource<R> runLoadPath(Data data, DataSource dataSource, LoadPath<Data, ResourceType, R> path) throws GlideException {
         Options options2 = getOptionsWithHardwareConfig(dataSource);
-        DataRewinder rewinder = this.glideContext.getRegistry().getRewinder(data);
+        DataRewinder<Data> rewinder = this.glideContext.getRegistry().getRewinder(data);
         try {
             return path.load(rewinder, options2, this.width, this.height, new DecodeCallback(dataSource));
         } finally {
@@ -436,84 +440,124 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
     }
 
     private void logWithTimeAndKey(String message, long startTime, String extraArgs) {
-        String str;
-        StringBuilder sb = new StringBuilder();
-        sb.append(message);
-        sb.append(" in ");
-        sb.append(LogTime.getElapsedMillis(startTime));
-        sb.append(", load key: ");
-        sb.append(this.loadKey);
-        if (extraArgs != null) {
-            str = ", " + extraArgs;
-        } else {
-            str = "";
-        }
-        sb.append(str);
-        sb.append(", thread: ");
-        sb.append(Thread.currentThread().getName());
-        Log.v(TAG, sb.toString());
+        Log.v(TAG, message + " in " + LogTime.getElapsedMillis(startTime) + ", load key: " + this.loadKey + (extraArgs != null ? ", " + extraArgs : "") + ", thread: " + Thread.currentThread().getName());
     }
 
-    @NonNull
     public StateVerifier getVerifier() {
         return this.stateVerifier;
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
-    public <Z> Resource<Z> onResourceDecoded(DataSource dataSource, @NonNull Resource<Z> decoded) {
+    public <Z> Resource<Z> onResourceDecoded(DataSource dataSource, Resource<Z> decoded) {
+        Resource<Z> transformed;
+        Transformation<Z> appliedTransformation;
         ResourceEncoder<Z> encoder;
         EncodeStrategy encodeStrategy;
         Key key;
         DataSource dataSource2 = dataSource;
         Resource<Z> resource = decoded;
         Class<?> cls = decoded.get().getClass();
-        Transformation<Z> appliedTransformation = null;
-        Resource<Z> transformed = decoded;
+        Resource<Z> transformed2 = decoded;
         if (dataSource2 != DataSource.RESOURCE_DISK_CACHE) {
-            appliedTransformation = this.decodeHelper.getTransformation(cls);
-            transformed = appliedTransformation.transform(this.glideContext, resource, this.width, this.height);
+            Transformation<Z> appliedTransformation2 = this.decodeHelper.getTransformation(cls);
+            appliedTransformation = appliedTransformation2;
+            transformed = appliedTransformation2.transform(this.glideContext, resource, this.width, this.height);
+        } else {
+            appliedTransformation = null;
+            transformed = transformed2;
         }
-        Transformation<Z> appliedTransformation2 = appliedTransformation;
-        Resource<Z> transformed2 = transformed;
-        if (!resource.equals(transformed2)) {
+        if (!resource.equals(transformed)) {
             decoded.recycle();
         }
-        if (this.decodeHelper.isResourceEncoderAvailable(transformed2)) {
-            encoder = this.decodeHelper.getResultEncoder(transformed2);
-            encodeStrategy = encoder.getEncodeStrategy(this.options);
+        if (this.decodeHelper.isResourceEncoderAvailable(transformed)) {
+            ResourceEncoder<Z> encoder2 = this.decodeHelper.getResultEncoder(transformed);
+            encoder = encoder2;
+            encodeStrategy = encoder2.getEncodeStrategy(this.options);
         } else {
             encoder = null;
             encodeStrategy = EncodeStrategy.NONE;
         }
-        ResourceEncoder<Z> encoder2 = encoder;
-        EncodeStrategy encodeStrategy2 = encodeStrategy;
-        Resource<Z> result = transformed2;
+        Resource<Z> result = transformed;
         boolean isFromAlternateCacheKey = !this.decodeHelper.isSourceKey(this.currentSourceKey);
-        if (!this.diskCacheStrategy.isResourceCacheable(isFromAlternateCacheKey, dataSource2, encodeStrategy2)) {
-            EncodeStrategy encodeStrategy3 = encodeStrategy2;
+        if (!this.diskCacheStrategy.isResourceCacheable(isFromAlternateCacheKey, dataSource2, encodeStrategy)) {
+            boolean z = isFromAlternateCacheKey;
+            EncodeStrategy encodeStrategy2 = encodeStrategy;
             return result;
-        } else if (encoder2 != null) {
-            switch (encodeStrategy2) {
-                case SOURCE:
-                    EncodeStrategy encodeStrategy4 = encodeStrategy2;
+        } else if (encoder != null) {
+            switch (AnonymousClass1.$SwitchMap$com$bumptech$glide$load$EncodeStrategy[encodeStrategy.ordinal()]) {
+                case 1:
+                    EncodeStrategy encodeStrategy3 = encodeStrategy;
                     key = new DataCacheKey(this.currentSourceKey, this.signature);
                     break;
-                case TRANSFORMED:
-                    boolean z = isFromAlternateCacheKey;
-                    EncodeStrategy encodeStrategy5 = encodeStrategy2;
-                    key = new ResourceCacheKey(this.decodeHelper.getArrayPool(), this.currentSourceKey, this.signature, this.width, this.height, appliedTransformation2, cls, this.options);
+                case 2:
+                    boolean z2 = isFromAlternateCacheKey;
+                    EncodeStrategy encodeStrategy4 = encodeStrategy;
+                    key = new ResourceCacheKey(this.decodeHelper.getArrayPool(), this.currentSourceKey, this.signature, this.width, this.height, appliedTransformation, cls, this.options);
                     break;
                 default:
-                    boolean z2 = isFromAlternateCacheKey;
-                    throw new IllegalArgumentException("Unknown strategy: " + encodeStrategy2);
+                    throw new IllegalArgumentException("Unknown strategy: " + encodeStrategy);
             }
-            LockedResource<Z> lockedResult = LockedResource.obtain(transformed2);
-            this.deferredEncodeManager.init(key, encoder2, lockedResult);
+            LockedResource<Z> lockedResult = LockedResource.obtain(transformed);
+            this.deferredEncodeManager.init(key, encoder, lockedResult);
             return lockedResult;
         } else {
-            EncodeStrategy encodeStrategy6 = encodeStrategy2;
-            throw new Registry.NoResultEncoderAvailableException(transformed2.get().getClass());
+            throw new Registry.NoResultEncoderAvailableException(transformed.get().getClass());
+        }
+    }
+
+    /* renamed from: com.bumptech.glide.load.engine.DecodeJob$1  reason: invalid class name */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$bumptech$glide$load$EncodeStrategy;
+        static final /* synthetic */ int[] $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$RunReason;
+        static final /* synthetic */ int[] $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage;
+
+        static {
+            int[] iArr = new int[EncodeStrategy.values().length];
+            $SwitchMap$com$bumptech$glide$load$EncodeStrategy = iArr;
+            try {
+                iArr[EncodeStrategy.SOURCE.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
+            try {
+                $SwitchMap$com$bumptech$glide$load$EncodeStrategy[EncodeStrategy.TRANSFORMED.ordinal()] = 2;
+            } catch (NoSuchFieldError e2) {
+            }
+            int[] iArr2 = new int[Stage.values().length];
+            $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage = iArr2;
+            try {
+                iArr2[Stage.RESOURCE_CACHE.ordinal()] = 1;
+            } catch (NoSuchFieldError e3) {
+            }
+            try {
+                $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage[Stage.DATA_CACHE.ordinal()] = 2;
+            } catch (NoSuchFieldError e4) {
+            }
+            try {
+                $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage[Stage.SOURCE.ordinal()] = 3;
+            } catch (NoSuchFieldError e5) {
+            }
+            try {
+                $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage[Stage.FINISHED.ordinal()] = 4;
+            } catch (NoSuchFieldError e6) {
+            }
+            try {
+                $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$Stage[Stage.INITIALIZE.ordinal()] = 5;
+            } catch (NoSuchFieldError e7) {
+            }
+            int[] iArr3 = new int[RunReason.values().length];
+            $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$RunReason = iArr3;
+            try {
+                iArr3[RunReason.INITIALIZE.ordinal()] = 1;
+            } catch (NoSuchFieldError e8) {
+            }
+            try {
+                $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$RunReason[RunReason.SWITCH_TO_SOURCE_SERVICE.ordinal()] = 2;
+            } catch (NoSuchFieldError e9) {
+            }
+            try {
+                $SwitchMap$com$bumptech$glide$load$engine$DecodeJob$RunReason[RunReason.DECODE_DATA.ordinal()] = 3;
+            } catch (NoSuchFieldError e10) {
+            }
         }
     }
 
@@ -524,8 +568,7 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback, Runnabl
             this.dataSource = dataSource2;
         }
 
-        @NonNull
-        public Resource<Z> onResourceDecoded(@NonNull Resource<Z> decoded) {
+        public Resource<Z> onResourceDecoded(Resource<Z> decoded) {
             return DecodeJob.this.onResourceDecoded(this.dataSource, decoded);
         }
     }

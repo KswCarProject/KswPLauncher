@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +20,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     public DividerItemDecoration(Context context, int orientation) {
         TypedArray a = context.obtainStyledAttributes(ATTRS);
-        this.mDivider = a.getDrawable(0);
-        if (this.mDivider == null) {
+        Drawable drawable = a.getDrawable(0);
+        this.mDivider = drawable;
+        if (drawable == null) {
             Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this DividerItemDecoration. Please set that attribute all call setDrawable()");
         }
         a.recycle();
@@ -37,7 +37,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         throw new IllegalArgumentException("Invalid orientation. It should be either HORIZONTAL or VERTICAL");
     }
 
-    public void setDrawable(@NonNull Drawable drawable) {
+    public void setDrawable(Drawable drawable) {
         if (drawable != null) {
             this.mDivider = drawable;
             return;
@@ -102,12 +102,13 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (this.mDivider == null) {
+        Drawable drawable = this.mDivider;
+        if (drawable == null) {
             outRect.set(0, 0, 0, 0);
         } else if (this.mOrientation == 1) {
-            outRect.set(0, 0, 0, this.mDivider.getIntrinsicHeight());
+            outRect.set(0, 0, 0, drawable.getIntrinsicHeight());
         } else {
-            outRect.set(0, 0, this.mDivider.getIntrinsicWidth(), 0);
+            outRect.set(0, 0, drawable.getIntrinsicWidth(), 0);
         }
     }
 }

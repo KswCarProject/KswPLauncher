@@ -5,8 +5,6 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
@@ -15,7 +13,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
@@ -26,7 +23,6 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.text.NumberFormat;
 
-@BindingMethods({@BindingMethod(attribute = "OnCheckedChangeListener", method = "setOnCheckedChangeListener", type = AudiSystemViewModel.class), @BindingMethod(attribute = "OnSeekBarChangeListener", method = "setOnSeekBarChangeListener", type = AudiSystemViewModel.class)})
 public class AudiSystemViewModel extends AndroidViewModel {
     /* access modifiers changed from: private */
     public static final String TAG = ("KSWLauncher." + AudiSystemViewModel.class.getSimpleName());
@@ -70,7 +66,8 @@ public class AudiSystemViewModel extends AndroidViewModel {
             if (fromUser) {
                 int val = BrightnessUtils.convertGammaToLinear(progress, AudiSystemViewModel.this.mMinBrightness, AudiSystemViewModel.this.mMaxBrightness);
                 Log.e("SetSystemTwo", "onProgressChanged: fromUser=" + fromUser + " : progress=" + progress + " : val=" + val);
-                AudiSystemViewModel.this.setBrightnessValueBg(AudiSystemViewModel.this.context, val);
+                AudiSystemViewModel audiSystemViewModel = AudiSystemViewModel.this;
+                audiSystemViewModel.setBrightnessValueBg(audiSystemViewModel.context, val);
                 AudiSystemViewModel.this.setSystemBrightness(val);
             }
         }
@@ -114,8 +111,7 @@ public class AudiSystemViewModel extends AndroidViewModel {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             FileUtils.savaIntData(KeyConfig.BACKLIGHT, isChecked ^ true ? 1 : 0);
             AudiSystemViewModel.this.autoBrightness.set(isChecked);
-            String access$000 = AudiSystemViewModel.TAG;
-            Log.i(access$000, "Backlight_auto_set : Backlight_auto_set" + (isChecked ^ true ? 1 : 0));
+            Log.i(AudiSystemViewModel.TAG, "Backlight_auto_set : Backlight_auto_set" + (isChecked ^ true ? 1 : 0));
         }
     };
     public RadioGroup.OnCheckedChangeListener onReverCameraCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -134,29 +130,25 @@ public class AudiSystemViewModel extends AndroidViewModel {
     public CompoundButton.OnCheckedChangeListener onReverMuteChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             FileUtils.savaData(KeyConfig.DAO_CHE_JY, isChecked);
-            String access$000 = AudiSystemViewModel.TAG;
-            Log.i(access$000, "save reverMute: " + (isChecked));
+            Log.i(AudiSystemViewModel.TAG, "save reverMute: " + (isChecked));
         }
     };
     public CompoundButton.OnCheckedChangeListener onReverRadarkChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             FileUtils.savaData(KeyConfig.DAO_CHE_LD, isChecked);
-            String access$000 = AudiSystemViewModel.TAG;
-            Log.i(access$000, "save reverRadar: " + (isChecked));
+            Log.i(AudiSystemViewModel.TAG, "save reverRadar: " + (isChecked));
         }
     };
     public CompoundButton.OnCheckedChangeListener onReverTrackChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             FileUtils.savaData(KeyConfig.DAO_CHE_GJ, isChecked);
-            String access$000 = AudiSystemViewModel.TAG;
-            Log.i(access$000, "save reverTrack: " + (isChecked));
+            Log.i(AudiSystemViewModel.TAG, "save reverTrack: " + (isChecked));
         }
     };
     public CompoundButton.OnCheckedChangeListener onReverViewChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             FileUtils.savaData(KeyConfig.HOU_SHI_SX, isChecked);
-            String access$000 = AudiSystemViewModel.TAG;
-            Log.i(access$000, "save reverView: " + (isChecked));
+            Log.i(AudiSystemViewModel.TAG, "save reverView: " + (isChecked));
         }
     };
     public RadioGroup.OnCheckedChangeListener onSpedUnitChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -188,8 +180,7 @@ public class AudiSystemViewModel extends AndroidViewModel {
     public CompoundButton.OnCheckedChangeListener ondrivingVideoChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
-            String access$000 = AudiSystemViewModel.TAG;
-            Log.i(access$000, "save drivingVideo: " + (isChecked));
+            Log.i(AudiSystemViewModel.TAG, "save drivingVideo: " + (isChecked));
         }
     };
     public ObservableInt reverCamera = new ObservableInt(0);
@@ -202,10 +193,11 @@ public class AudiSystemViewModel extends AndroidViewModel {
     public ObservableInt tempUnit = new ObservableInt(0);
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    public AudiSystemViewModel(@NonNull Application application) {
+    public AudiSystemViewModel(Application application) {
         super(application);
-        this.context = application.getApplicationContext();
-        this.contentResolver = this.context.getContentResolver();
+        Context applicationContext = application.getApplicationContext();
+        this.context = applicationContext;
+        this.contentResolver = applicationContext.getContentResolver();
         try {
             int housi = PowerManagerApp.getSettingsInt(KeyConfig.HOU_SHI_SX);
             int cheVideo = PowerManagerApp.getSettingsInt(KeyConfig.XING_CHE_JZSP);
@@ -219,8 +211,7 @@ public class AudiSystemViewModel extends AndroidViewModel {
             int aux1 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX1);
             int aux2 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX2);
             int wd = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-            String str = TAG;
-            Log.i(str, "AudiSystemViewModel: \nhousi:" + housi + "\ncheVideo:" + cheVideo + "\ndcgj:" + dcgj + "\ndcld:" + dcld + "\ndcjy:" + dcjy + "\nnbauxsw:" + nbauxsw + "\nspeed uint:" + danwei + "\ndcsxt:" + dcsxt + "\nbgkz:" + bgkz + "\naux1:" + aux1 + "\naux2:" + aux2 + "\ntempUnit:" + wd);
+            Log.i(TAG, "AudiSystemViewModel: \nhousi:" + housi + "\ncheVideo:" + cheVideo + "\ndcgj:" + dcgj + "\ndcld:" + dcld + "\ndcjy:" + dcjy + "\nnbauxsw:" + nbauxsw + "\nspeed uint:" + danwei + "\ndcsxt:" + dcsxt + "\nbgkz:" + bgkz + "\naux1:" + aux1 + "\naux2:" + aux2 + "\ntempUnit:" + wd);
             boolean z = true;
             this.reverView.set(housi == 1);
             this.drivingVideo.set(cheVideo == 1);
@@ -243,23 +234,24 @@ public class AudiSystemViewModel extends AndroidViewModel {
         }
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
         this.mMaxBrightness = getMaximumScreenBrightnessSetting();
-        this.beiguangValue = Settings.System.getInt(this.contentResolver, "screen_brightness", 255);
-        setProgress(this.beiguangValue);
+        int i = Settings.System.getInt(this.contentResolver, "screen_brightness", 255);
+        this.beiguangValue = i;
+        setProgress(i);
         setProgressText(this.beiguangValue);
         this.mBackgroundHandler = new Handler(Looper.getMainLooper());
-        this.mBrightnessObserver = new BrightnessObserver(new Handler());
-        this.mBrightnessObserver.startObserving();
+        BrightnessObserver brightnessObserver = new BrightnessObserver(new Handler());
+        this.mBrightnessObserver = brightnessObserver;
+        brightnessObserver.startObserving();
     }
 
     /* access modifiers changed from: private */
     public void setProgress(int brightness) {
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
-        this.mMaxBrightness = getMaximumScreenBrightnessSetting();
-        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, this.mMaxBrightness);
+        int maximumScreenBrightnessSetting = getMaximumScreenBrightnessSetting();
+        this.mMaxBrightness = maximumScreenBrightnessSetting;
+        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, maximumScreenBrightnessSetting);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        String str = TAG;
-        Log.i(str, "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
+        Log.i(TAG, "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
         this.dayBrightness.set(value);
     }
 
@@ -267,22 +259,14 @@ public class AudiSystemViewModel extends AndroidViewModel {
     public void setProgressText(int progress) {
         int value = BrightnessUtils.convertLinearToGamma(progress, this.mMinBrightness, this.mMaxBrightness);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        String str = TAG;
-        Log.i(str, "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
-        int progress2 = (int) Math.round(100.0d * b);
-        ObservableField<String> observableField = this.dayBrightnessStr;
-        StringBuilder sb = new StringBuilder();
-        sb.append("");
-        sb.append(progress2);
-        observableField.set(sb.toString());
+        Log.i(TAG, "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        this.dayBrightnessStr.set("" + ((int) Math.round(100.0d * b)));
     }
 
     public void setBrightnessValueBg(Context context2, int key) {
         try {
             Class.forName("android.hardware.display.DisplayManager").getMethod("setTemporaryBrightness", new Class[]{Integer.TYPE}).invoke((DisplayManager) context2.getSystemService("display"), new Object[]{Integer.valueOf(key)});
-            String str = TAG;
-            Log.i(str, "setBrightness: " + key);
+            Log.i(TAG, "setBrightness: " + key);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -290,8 +274,7 @@ public class AudiSystemViewModel extends AndroidViewModel {
 
     /* access modifiers changed from: private */
     public void setSystemBrightness(int brightness) {
-        String str = TAG;
-        Log.i(str, " setSystemBrightness:" + brightness);
+        Log.i(TAG, " setSystemBrightness:" + brightness);
         Settings.System.putInt(this.contentResolver, "screen_brightness", brightness);
     }
 

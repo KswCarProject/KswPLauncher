@@ -6,7 +6,6 @@ import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.annotation.StyleRes;
 import android.support.v7.appcompat.R;
 import android.view.LayoutInflater;
 
@@ -21,7 +20,7 @@ public class ContextThemeWrapper extends ContextWrapper {
         super((Context) null);
     }
 
-    public ContextThemeWrapper(Context base, @StyleRes int themeResId) {
+    public ContextThemeWrapper(Context base, int themeResId) {
         super(base);
         this.mThemeResource = themeResId;
     }
@@ -73,8 +72,9 @@ public class ContextThemeWrapper extends ContextWrapper {
     }
 
     public Resources.Theme getTheme() {
-        if (this.mTheme != null) {
-            return this.mTheme;
+        Resources.Theme theme = this.mTheme;
+        if (theme != null) {
+            return theme;
         }
         if (this.mThemeResource == 0) {
             this.mThemeResource = R.style.Theme_AppCompat_Light;

@@ -3,13 +3,12 @@ package android.support.v7.widget;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import java.lang.ref.WeakReference;
 
 class TintResources extends ResourcesWrapper {
     private final WeakReference<Context> mContextRef;
 
-    public TintResources(@NonNull Context context, @NonNull Resources res) {
+    public TintResources(Context context, Resources res) {
         super(res);
         this.mContextRef = new WeakReference<>(context);
     }

@@ -2,39 +2,27 @@ package android.arch.persistence.room;
 
 import android.arch.persistence.db.SupportSQLiteProgram;
 import android.arch.persistence.db.SupportSQLiteQuery;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram {
     private static final int BLOB = 5;
-    @VisibleForTesting
     static final int DESIRED_POOL_SIZE = 10;
     private static final int DOUBLE = 3;
     private static final int LONG = 2;
     private static final int NULL = 1;
-    @VisibleForTesting
     static final int POOL_LIMIT = 15;
     private static final int STRING = 4;
-    @VisibleForTesting
     static final TreeMap<Integer, RoomSQLiteQuery> sQueryPool = new TreeMap<>();
-    @VisibleForTesting
     int mArgCount;
     private final int[] mBindingTypes;
-    @VisibleForTesting
     final byte[][] mBlobBindings;
-    @VisibleForTesting
     final int mCapacity;
-    @VisibleForTesting
     final double[] mDoubleBindings;
-    @VisibleForTesting
     final long[] mLongBindings;
     private volatile String mQuery;
-    @VisibleForTesting
     final String[] mStringBindings;
 
     public static RoomSQLiteQuery copyFrom(SupportSQLiteQuery supportSQLiteQuery) {
@@ -77,10 +65,11 @@ public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram
     }
 
     public static RoomSQLiteQuery acquire(String query, int argumentCount) {
-        synchronized (sQueryPool) {
-            Map.Entry<Integer, RoomSQLiteQuery> entry = sQueryPool.ceilingEntry(Integer.valueOf(argumentCount));
+        TreeMap<Integer, RoomSQLiteQuery> treeMap = sQueryPool;
+        synchronized (treeMap) {
+            Map.Entry<Integer, RoomSQLiteQuery> entry = treeMap.ceilingEntry(Integer.valueOf(argumentCount));
             if (entry != null) {
-                sQueryPool.remove(entry.getKey());
+                treeMap.remove(entry.getKey());
                 RoomSQLiteQuery sqliteQuery = entry.getValue();
                 sqliteQuery.init(query, argumentCount);
                 return sqliteQuery;
@@ -108,16 +97,18 @@ public class RoomSQLiteQuery implements SupportSQLiteQuery, SupportSQLiteProgram
     }
 
     public void release() {
-        synchronized (sQueryPool) {
-            sQueryPool.put(Integer.valueOf(this.mCapacity), this);
+        TreeMap<Integer, RoomSQLiteQuery> treeMap = sQueryPool;
+        synchronized (treeMap) {
+            treeMap.put(Integer.valueOf(this.mCapacity), this);
             prunePoolLocked();
         }
     }
 
     private static void prunePoolLocked() {
-        if (sQueryPool.size() > 15) {
-            int toBeRemoved = sQueryPool.size() - 10;
-            Iterator<Integer> iterator = sQueryPool.descendingKeySet().iterator();
+        TreeMap<Integer, RoomSQLiteQuery> treeMap = sQueryPool;
+        if (treeMap.size() > 15) {
+            int toBeRemoved = treeMap.size() - 10;
+            Iterator<Integer> iterator = treeMap.descendingKeySet().iterator();
             while (true) {
                 int toBeRemoved2 = toBeRemoved - 1;
                 if (toBeRemoved > 0) {

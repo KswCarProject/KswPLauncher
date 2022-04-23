@@ -2,7 +2,6 @@ package android.databinding;
 
 import android.databinding.CallbackRegistry;
 import android.databinding.Observable;
-import android.support.annotation.NonNull;
 
 public class PropertyChangeRegistry extends CallbackRegistry<Observable.OnPropertyChangedCallback, Observable, Void> {
     private static final CallbackRegistry.NotifierCallback<Observable.OnPropertyChangedCallback, Observable, Void> NOTIFIER_CALLBACK = new CallbackRegistry.NotifierCallback<Observable.OnPropertyChangedCallback, Observable, Void>() {
@@ -15,7 +14,7 @@ public class PropertyChangeRegistry extends CallbackRegistry<Observable.OnProper
         super(NOTIFIER_CALLBACK);
     }
 
-    public void notifyChange(@NonNull Observable observable, int propertyId) {
+    public void notifyChange(Observable observable, int propertyId) {
         notifyCallbacks(observable, propertyId, null);
     }
 }

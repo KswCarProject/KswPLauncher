@@ -6,6 +6,10 @@ import android.content.Intent;
 import com.wits.ksw.settings.id7.FactoryActivity;
 
 public class StartUtil {
+    public static final String TYPE_SEL = "TYPE_SEL";
+    public static final String VALUE_MUSIC = "VALUE_MUSIC";
+    public static final String VALUE_VIDEO = "VALUE_VIDEO";
+
     public static void AudiLanguageActivity(Activity activity) {
         Intent intent = new Intent();
         intent.setClass(activity, AudiLanguageActivity.class);
@@ -91,6 +95,20 @@ public class StartUtil {
     public static void FactoryActivity(Context activity) {
         Intent intent = new Intent();
         intent.setClass(activity, FactoryActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void toAudiSelMusicApp(Activity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, AudiSelThirdAppActivity.class);
+        intent.putExtra("TYPE_SEL", "VALUE_MUSIC");
+        activity.startActivity(intent);
+    }
+
+    public static void toAudiSelVideoApp(Activity activity) {
+        Intent intent = new Intent();
+        intent.setClass(activity, AudiSelThirdAppActivity.class);
+        intent.putExtra("TYPE_SEL", "VALUE_VIDEO");
         activity.startActivity(intent);
     }
 }

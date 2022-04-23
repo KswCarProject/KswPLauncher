@@ -10,10 +10,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -47,21 +43,19 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
 
     @Deprecated
     public interface Delegate {
-        @Nullable
         Drawable getThemeUpIndicator();
 
-        void setActionBarDescription(@StringRes int i);
+        void setActionBarDescription(int i);
 
-        void setActionBarUpIndicator(Drawable drawable, @StringRes int i);
+        void setActionBarUpIndicator(Drawable drawable, int i);
     }
 
     @Deprecated
     public interface DelegateProvider {
-        @Nullable
         Delegate getDrawerToggleDelegate();
     }
 
-    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, @DrawableRes int drawerImageRes, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
+    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int drawerImageRes, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         this(activity, drawerLayout, !assumeMaterial(activity), drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);
     }
 
@@ -69,7 +63,7 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
         return context.getApplicationInfo().targetSdkVersion >= 21 && Build.VERSION.SDK_INT >= 21;
     }
 
-    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, boolean animate, @DrawableRes int drawerImageRes, @StringRes int openDrawerContentDescRes, @StringRes int closeDrawerContentDescRes) {
+    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, boolean animate, int drawerImageRes, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         this.mDrawerIndicatorEnabled = true;
         this.mActivity = activity;
         if (activity instanceof DelegateProvider) {
@@ -83,8 +77,9 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
         this.mCloseDrawerContentDescRes = closeDrawerContentDescRes;
         this.mHomeAsUpIndicator = getThemeUpIndicator();
         this.mDrawerImage = ContextCompat.getDrawable(activity, drawerImageRes);
-        this.mSlider = new SlideDrawable(this.mDrawerImage);
-        this.mSlider.setOffset(animate ? TOGGLE_DRAWABLE_OFFSET : 0.0f);
+        SlideDrawable slideDrawable = new SlideDrawable(this.mDrawerImage);
+        this.mSlider = slideDrawable;
+        slideDrawable.setOffset(animate ? TOGGLE_DRAWABLE_OFFSET : 0.0f);
     }
 
     public void syncState() {
@@ -184,8 +179,9 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
 
     private Drawable getThemeUpIndicator() {
         Context context;
-        if (this.mActivityImpl != null) {
-            return this.mActivityImpl.getThemeUpIndicator();
+        Delegate delegate = this.mActivityImpl;
+        if (delegate != null) {
+            return delegate.getThemeUpIndicator();
         }
         if (Build.VERSION.SDK_INT >= 18) {
             ActionBar actionBar = this.mActivity.getActionBar();
@@ -206,8 +202,9 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
     }
 
     private void setActionBarUpIndicator(Drawable upDrawable, int contentDescRes) {
-        if (this.mActivityImpl != null) {
-            this.mActivityImpl.setActionBarUpIndicator(upDrawable, contentDescRes);
+        Delegate delegate = this.mActivityImpl;
+        if (delegate != null) {
+            delegate.setActionBarUpIndicator(upDrawable, contentDescRes);
         } else if (Build.VERSION.SDK_INT >= 18) {
             ActionBar actionBar = this.mActivity.getActionBar();
             if (actionBar != null) {
@@ -235,8 +232,9 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
     }
 
     private void setActionBarDescription(int contentDescRes) {
-        if (this.mActivityImpl != null) {
-            this.mActivityImpl.setActionBarDescription(contentDescRes);
+        Delegate delegate = this.mActivityImpl;
+        if (delegate != null) {
+            delegate.setActionBarDescription(contentDescRes);
         } else if (Build.VERSION.SDK_INT >= 18) {
             ActionBar actionBar = this.mActivity.getActionBar();
             if (actionBar != null) {
@@ -311,7 +309,7 @@ public class ActionBarDrawerToggle implements DrawerLayout.DrawerListener {
             invalidateSelf();
         }
 
-        public void draw(@NonNull Canvas canvas) {
+        public void draw(Canvas canvas) {
             copyBounds(this.mTmpRect);
             canvas.save();
             int flipRtl = 1;

@@ -2,8 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -11,32 +9,32 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ID6FragmentFourImpl extends ID6FragmentFour {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
     static {
-        sViewsWithIds.put(R.id.id6_phone_iamge_view, 1);
-        sViewsWithIds.put(R.id.id6_phone_mess, 2);
-        sViewsWithIds.put(R.id.id6_apps_image_view, 3);
-        sViewsWithIds.put(R.id.id6_apps_mess, 4);
-        sViewsWithIds.put(R.id.id6_setting_image_view, 5);
-        sViewsWithIds.put(R.id.id6_setting_mess, 6);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.id6_phone_iamge_view, 1);
+        sparseIntArray.put(R.id.id6_phone_mess, 2);
+        sparseIntArray.put(R.id.id6_apps_image_view, 3);
+        sparseIntArray.put(R.id.id6_apps_mess, 4);
+        sparseIntArray.put(R.id.id6_setting_image_view, 5);
+        sparseIntArray.put(R.id.id6_setting_mess, 6);
     }
 
-    public ID6FragmentFourImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ID6FragmentFourImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 7, sIncludes, sViewsWithIds));
     }
 
     private ID6FragmentFourImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0, bindings[3], bindings[4], bindings[1], bindings[2], bindings[5], bindings[6]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -57,15 +55,15 @@ public class ID6FragmentFourImpl extends ID6FragmentFour {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
     }
 

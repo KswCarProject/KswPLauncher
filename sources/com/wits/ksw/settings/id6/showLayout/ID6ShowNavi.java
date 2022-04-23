@@ -59,11 +59,13 @@ public class ID6ShowNavi extends RelativeLayout {
 
     private void initView(View view2) {
         this.navi_recycle = (RecyclerView) view2.findViewById(R.id.navi_recycle);
-        this.layoutManager = new LinearLayoutManager(this.context);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.context);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.navi_recycle.setLayoutManager(this.layoutManager);
-        this.naviAdapter = new ID6NaviAdapter(this.context, this.mapBanList, true);
-        this.navi_recycle.setAdapter(this.naviAdapter);
+        ID6NaviAdapter iD6NaviAdapter = new ID6NaviAdapter(this.context, this.mapBanList, true);
+        this.naviAdapter = iD6NaviAdapter;
+        this.navi_recycle.setAdapter(iD6NaviAdapter);
         this.navi_recycle.setEnabled(false);
     }
 

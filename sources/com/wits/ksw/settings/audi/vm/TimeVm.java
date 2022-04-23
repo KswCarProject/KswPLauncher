@@ -3,18 +3,14 @@ package com.wits.ksw.settings.audi.vm;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.ObservableBoolean;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.CompoundButton;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
-@BindingMethods({@BindingMethod(attribute = "OnTimeChangedListener", method = "setOnTimeChangedListener", type = TimeVm.class), @BindingMethod(attribute = "OnCheckedChangeListener", method = "setOnCheckedChangeListener", type = TimeVm.class)})
 public class TimeVm extends AndroidViewModel {
     /* access modifiers changed from: private */
     public static final String TAG = ("KSWLauncher." + TimeVm.class.getSimpleName());
@@ -43,8 +39,7 @@ public class TimeVm extends AndroidViewModel {
     };
     public CompoundButton.OnCheckedChangeListener on24HourChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            String access$000 = TimeVm.TAG;
-            Log.i(access$000, "onCheckedChanged: " + isChecked);
+            Log.i(TimeVm.TAG, "onCheckedChanged: " + isChecked);
             if (isChecked) {
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                 TimeVm.this.updata24HourFormat();
@@ -52,7 +47,7 @@ public class TimeVm extends AndroidViewModel {
         }
     };
 
-    public TimeVm(@NonNull Application application) {
+    public TimeVm(Application application) {
         super(application);
         updata24HourFormat();
         updataTime();
@@ -68,8 +63,7 @@ public class TimeVm extends AndroidViewModel {
                 z = false;
             }
             observableBoolean.set(z);
-            String str = TAG;
-            Log.i(str, "updataTime: " + timeSync);
+            Log.i(TAG, "updataTime: " + timeSync);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -85,8 +79,7 @@ public class TimeVm extends AndroidViewModel {
                 z = false;
             }
             observableBoolean.set(z);
-            String str = TAG;
-            Log.i(str, "updata24HourFormat: " + timeZhis);
+            Log.i(TAG, "updata24HourFormat: " + timeZhis);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

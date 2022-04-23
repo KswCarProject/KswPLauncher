@@ -4,10 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.widget.AutoSizeableTextView;
 import android.support.v4.widget.TextViewCompat;
@@ -32,55 +28,57 @@ public class AppCompatButton extends Button implements TintableBackgroundView, A
 
     public AppCompatButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(TintContextWrapper.wrap(context), attrs, defStyleAttr);
-        this.mBackgroundTintHelper = new AppCompatBackgroundHelper(this);
-        this.mBackgroundTintHelper.loadFromAttributes(attrs, defStyleAttr);
-        this.mTextHelper = new AppCompatTextHelper(this);
-        this.mTextHelper.loadFromAttributes(attrs, defStyleAttr);
-        this.mTextHelper.applyCompoundDrawablesTints();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = new AppCompatBackgroundHelper(this);
+        this.mBackgroundTintHelper = appCompatBackgroundHelper;
+        appCompatBackgroundHelper.loadFromAttributes(attrs, defStyleAttr);
+        AppCompatTextHelper appCompatTextHelper = new AppCompatTextHelper(this);
+        this.mTextHelper = appCompatTextHelper;
+        appCompatTextHelper.loadFromAttributes(attrs, defStyleAttr);
+        appCompatTextHelper.applyCompoundDrawablesTints();
     }
 
-    public void setBackgroundResource(@DrawableRes int resId) {
+    public void setBackgroundResource(int resId) {
         super.setBackgroundResource(resId);
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.onSetBackgroundResource(resId);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundResource(resId);
         }
     }
 
     public void setBackgroundDrawable(Drawable background) {
         super.setBackgroundDrawable(background);
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.onSetBackgroundDrawable(background);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundDrawable(background);
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportBackgroundTintList(@Nullable ColorStateList tint) {
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.setSupportBackgroundTintList(tint);
+    public void setSupportBackgroundTintList(ColorStateList tint) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintList(tint);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public ColorStateList getSupportBackgroundTintList() {
-        if (this.mBackgroundTintHelper != null) {
-            return this.mBackgroundTintHelper.getSupportBackgroundTintList();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintList();
         }
         return null;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.setSupportBackgroundTintMode(tintMode);
+    public void setSupportBackgroundTintMode(PorterDuff.Mode tintMode) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintMode(tintMode);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public PorterDuff.Mode getSupportBackgroundTintMode() {
-        if (this.mBackgroundTintHelper != null) {
-            return this.mBackgroundTintHelper.getSupportBackgroundTintMode();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintMode();
         }
         return null;
     }
@@ -88,18 +86,21 @@ public class AppCompatButton extends Button implements TintableBackgroundView, A
     /* access modifiers changed from: protected */
     public void drawableStateChanged() {
         super.drawableStateChanged();
-        if (this.mBackgroundTintHelper != null) {
-            this.mBackgroundTintHelper.applySupportBackgroundTint();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.applySupportBackgroundTint();
         }
-        if (this.mTextHelper != null) {
-            this.mTextHelper.applyCompoundDrawablesTints();
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.applyCompoundDrawablesTints();
         }
     }
 
     public void setTextAppearance(Context context, int resId) {
         super.setTextAppearance(context, resId);
-        if (this.mTextHelper != null) {
-            this.mTextHelper.onSetTextAppearance(context, resId);
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.onSetTextAppearance(context, resId);
         }
     }
 
@@ -116,16 +117,20 @@ public class AppCompatButton extends Button implements TintableBackgroundView, A
     /* access modifiers changed from: protected */
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (this.mTextHelper != null) {
-            this.mTextHelper.onLayout(changed, left, top, right, bottom);
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.onLayout(changed, left, top, right, bottom);
         }
     }
 
     public void setTextSize(int unit, float size) {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             super.setTextSize(unit, size);
-        } else if (this.mTextHelper != null) {
-            this.mTextHelper.setTextSize(unit, size);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setTextSize(unit, size);
         }
     }
 
@@ -137,94 +142,101 @@ public class AppCompatButton extends Button implements TintableBackgroundView, A
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setAutoSizeTextTypeWithDefaults(int autoSizeTextType) {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             super.setAutoSizeTextTypeWithDefaults(autoSizeTextType);
-        } else if (this.mTextHelper != null) {
-            this.mTextHelper.setAutoSizeTextTypeWithDefaults(autoSizeTextType);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAutoSizeTextTypeWithDefaults(autoSizeTextType);
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setAutoSizeTextTypeUniformWithConfiguration(int autoSizeMinTextSize, int autoSizeMaxTextSize, int autoSizeStepGranularity, int unit) throws IllegalArgumentException {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             super.setAutoSizeTextTypeUniformWithConfiguration(autoSizeMinTextSize, autoSizeMaxTextSize, autoSizeStepGranularity, unit);
-        } else if (this.mTextHelper != null) {
-            this.mTextHelper.setAutoSizeTextTypeUniformWithConfiguration(autoSizeMinTextSize, autoSizeMaxTextSize, autoSizeStepGranularity, unit);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAutoSizeTextTypeUniformWithConfiguration(autoSizeMinTextSize, autoSizeMaxTextSize, autoSizeStepGranularity, unit);
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setAutoSizeTextTypeUniformWithPresetSizes(@NonNull int[] presetSizes, int unit) throws IllegalArgumentException {
+    public void setAutoSizeTextTypeUniformWithPresetSizes(int[] presetSizes, int unit) throws IllegalArgumentException {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             super.setAutoSizeTextTypeUniformWithPresetSizes(presetSizes, unit);
-        } else if (this.mTextHelper != null) {
-            this.mTextHelper.setAutoSizeTextTypeUniformWithPresetSizes(presetSizes, unit);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAutoSizeTextTypeUniformWithPresetSizes(presetSizes, unit);
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public int getAutoSizeTextType() {
-        if (PLATFORM_SUPPORTS_AUTOSIZE) {
-            if (super.getAutoSizeTextType() == 1) {
-                return 1;
+        if (!PLATFORM_SUPPORTS_AUTOSIZE) {
+            AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+            if (appCompatTextHelper != null) {
+                return appCompatTextHelper.getAutoSizeTextType();
             }
             return 0;
-        } else if (this.mTextHelper != null) {
-            return this.mTextHelper.getAutoSizeTextType();
+        } else if (super.getAutoSizeTextType() == 1) {
+            return 1;
         } else {
             return 0;
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public int getAutoSizeStepGranularity() {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             return super.getAutoSizeStepGranularity();
         }
-        if (this.mTextHelper != null) {
-            return this.mTextHelper.getAutoSizeStepGranularity();
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeStepGranularity();
         }
         return -1;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public int getAutoSizeMinTextSize() {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             return super.getAutoSizeMinTextSize();
         }
-        if (this.mTextHelper != null) {
-            return this.mTextHelper.getAutoSizeMinTextSize();
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeMinTextSize();
         }
         return -1;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public int getAutoSizeMaxTextSize() {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             return super.getAutoSizeMaxTextSize();
         }
-        if (this.mTextHelper != null) {
-            return this.mTextHelper.getAutoSizeMaxTextSize();
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeMaxTextSize();
         }
         return -1;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public int[] getAutoSizeTextAvailableSizes() {
         if (PLATFORM_SUPPORTS_AUTOSIZE) {
             return super.getAutoSizeTextAvailableSizes();
         }
-        if (this.mTextHelper != null) {
-            return this.mTextHelper.getAutoSizeTextAvailableSizes();
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeTextAvailableSizes();
         }
         return new int[0];
     }
 
     public void setSupportAllCaps(boolean allCaps) {
-        if (this.mTextHelper != null) {
-            this.mTextHelper.setAllCaps(allCaps);
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAllCaps(allCaps);
         }
     }
 

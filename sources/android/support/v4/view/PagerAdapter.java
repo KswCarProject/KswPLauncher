@@ -3,8 +3,6 @@ package android.support.v4.view;
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,78 +14,76 @@ public abstract class PagerAdapter {
 
     public abstract int getCount();
 
-    public abstract boolean isViewFromObject(@NonNull View view, @NonNull Object obj);
+    public abstract boolean isViewFromObject(View view, Object obj);
 
-    public void startUpdate(@NonNull ViewGroup container) {
+    public void startUpdate(ViewGroup container) {
         startUpdate((View) container);
     }
 
-    @NonNull
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, int position) {
         return instantiateItem((View) container, position);
     }
 
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+    public void destroyItem(ViewGroup container, int position, Object object) {
         destroyItem((View) container, position, object);
     }
 
-    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
         setPrimaryItem((View) container, position, object);
     }
 
-    public void finishUpdate(@NonNull ViewGroup container) {
+    public void finishUpdate(ViewGroup container) {
         finishUpdate((View) container);
     }
 
     @Deprecated
-    public void startUpdate(@NonNull View container) {
+    public void startUpdate(View container) {
     }
 
     @Deprecated
-    @NonNull
-    public Object instantiateItem(@NonNull View container, int position) {
+    public Object instantiateItem(View container, int position) {
         throw new UnsupportedOperationException("Required method instantiateItem was not overridden");
     }
 
     @Deprecated
-    public void destroyItem(@NonNull View container, int position, @NonNull Object object) {
+    public void destroyItem(View container, int position, Object object) {
         throw new UnsupportedOperationException("Required method destroyItem was not overridden");
     }
 
     @Deprecated
-    public void setPrimaryItem(@NonNull View container, int position, @NonNull Object object) {
+    public void setPrimaryItem(View container, int position, Object object) {
     }
 
     @Deprecated
-    public void finishUpdate(@NonNull View container) {
+    public void finishUpdate(View container) {
     }
 
-    @Nullable
     public Parcelable saveState() {
         return null;
     }
 
-    public void restoreState(@Nullable Parcelable state, @Nullable ClassLoader loader) {
+    public void restoreState(Parcelable state, ClassLoader loader) {
     }
 
-    public int getItemPosition(@NonNull Object object) {
+    public int getItemPosition(Object object) {
         return -1;
     }
 
     public void notifyDataSetChanged() {
         synchronized (this) {
-            if (this.mViewPagerObserver != null) {
-                this.mViewPagerObserver.onChanged();
+            DataSetObserver dataSetObserver = this.mViewPagerObserver;
+            if (dataSetObserver != null) {
+                dataSetObserver.onChanged();
             }
         }
         this.mObservable.notifyChanged();
     }
 
-    public void registerDataSetObserver(@NonNull DataSetObserver observer) {
+    public void registerDataSetObserver(DataSetObserver observer) {
         this.mObservable.registerObserver(observer);
     }
 
-    public void unregisterDataSetObserver(@NonNull DataSetObserver observer) {
+    public void unregisterDataSetObserver(DataSetObserver observer) {
         this.mObservable.unregisterObserver(observer);
     }
 
@@ -98,7 +94,6 @@ public abstract class PagerAdapter {
         }
     }
 
-    @Nullable
     public CharSequence getPageTitle(int position) {
         return null;
     }

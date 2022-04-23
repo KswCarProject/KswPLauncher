@@ -3,8 +3,6 @@ package com.wits.ksw.databinding;
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,27 +10,29 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class HicarNaviFragmentImpl extends HicarNaviFragment {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(3);
-    @Nullable
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"id7_sub_navi_view", "id7_sub_hicar_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_navi_view, R.layout.id7_sub_hicar_view});
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"id7_sub_navi_view", "id7_sub_hicar_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_navi_view, R.layout.id7_sub_hicar_view});
     }
 
-    public HicarNaviFragmentImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public HicarNaviFragmentImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private HicarNaviFragmentImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 2, bindings[2], bindings[1]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        setContainedBinding(this.hicarLayout);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        setContainedBinding(this.naviLayout);
         setRootTag(root);
         invalidateAll();
     }
@@ -95,24 +95,24 @@ public class HicarNaviFragmentImpl extends HicarNaviFragment {
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.HicarNaviFragmentImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (8 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (9 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setNaviViewModel(@Nullable LauncherViewModel NaviViewModel) {
+    public void setNaviViewModel(LauncherViewModel NaviViewModel) {
         this.mNaviViewModel = NaviViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(9);
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.naviLayout.setLifecycleOwner(lifecycleOwner);
         this.hicarLayout.setLifecycleOwner(lifecycleOwner);

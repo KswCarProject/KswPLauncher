@@ -2,7 +2,6 @@ package android.databinding.adapters;
 
 import android.content.Context;
 import android.databinding.ObservableList;
-import android.support.annotation.RestrictTo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import java.util.List;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 class ObservableListAdapter<T> extends BaseAdapter {
     private final Context mContext;
     private final int mDropDownResourceId;
@@ -36,12 +34,13 @@ class ObservableListAdapter<T> extends BaseAdapter {
     }
 
     public void setList(List<T> list) {
-        if (this.mList != list) {
-            if (this.mList instanceof ObservableList) {
-                ((ObservableList) this.mList).removeOnListChangedCallback(this.mListChangedCallback);
+        List<T> list2 = this.mList;
+        if (list2 != list) {
+            if (list2 instanceof ObservableList) {
+                ((ObservableList) list2).removeOnListChangedCallback(this.mListChangedCallback);
             }
             this.mList = list;
-            if (this.mList instanceof ObservableList) {
+            if (list instanceof ObservableList) {
                 if (this.mListChangedCallback == null) {
                     this.mListChangedCallback = new ObservableList.OnListChangedCallback() {
                         public void onChanged(ObservableList observableList) {
@@ -92,6 +91,7 @@ class ObservableListAdapter<T> extends BaseAdapter {
     }
 
     public View getViewForResource(int resourceId, int position, View convertView, ViewGroup parent) {
+        View view;
         CharSequence value;
         if (convertView == null) {
             if (resourceId == 0) {
@@ -100,7 +100,13 @@ class ObservableListAdapter<T> extends BaseAdapter {
                 convertView = this.mLayoutInflater.inflate(resourceId, parent, false);
             }
         }
-        TextView text = (TextView) (this.mTextViewResourceId == 0 ? convertView : convertView.findViewById(this.mTextViewResourceId));
+        int i = this.mTextViewResourceId;
+        if (i == 0) {
+            view = convertView;
+        } else {
+            view = convertView.findViewById(i);
+        }
+        TextView text = (TextView) view;
         T item = this.mList.get(position);
         if (item instanceof CharSequence) {
             value = (CharSequence) item;

@@ -1,7 +1,6 @@
 package android.support.v4.media;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import java.util.Arrays;
 
 class AudioAttributesImplBase implements AudioAttributesImpl {
@@ -29,8 +28,9 @@ class AudioAttributesImplBase implements AudioAttributesImpl {
     }
 
     public int getLegacyStreamType() {
-        if (this.mLegacyStream != -1) {
-            return this.mLegacyStream;
+        int i = this.mLegacyStream;
+        if (i != -1) {
+            return i;
         }
         return AudioAttributesCompat.toVolumeStreamType(false, this.mFlags, this.mUsage);
     }
@@ -58,14 +58,14 @@ class AudioAttributesImplBase implements AudioAttributesImpl {
         return flags & 273;
     }
 
-    @NonNull
     public Bundle toBundle() {
         Bundle bundle = new Bundle();
         bundle.putInt("android.support.v4.media.audio_attrs.USAGE", this.mUsage);
         bundle.putInt("android.support.v4.media.audio_attrs.CONTENT_TYPE", this.mContentType);
         bundle.putInt("android.support.v4.media.audio_attrs.FLAGS", this.mFlags);
-        if (this.mLegacyStream != -1) {
-            bundle.putInt("android.support.v4.media.audio_attrs.LEGACY_STREAM_TYPE", this.mLegacyStream);
+        int i = this.mLegacyStream;
+        if (i != -1) {
+            bundle.putInt("android.support.v4.media.audio_attrs.LEGACY_STREAM_TYPE", i);
         }
         return bundle;
     }
@@ -88,16 +88,10 @@ class AudioAttributesImplBase implements AudioAttributesImpl {
     public String toString() {
         StringBuilder sb = new StringBuilder("AudioAttributesCompat:");
         if (this.mLegacyStream != -1) {
-            sb.append(" stream=");
-            sb.append(this.mLegacyStream);
+            sb.append(" stream=").append(this.mLegacyStream);
             sb.append(" derived");
         }
-        sb.append(" usage=");
-        sb.append(AudioAttributesCompat.usageToString(this.mUsage));
-        sb.append(" content=");
-        sb.append(this.mContentType);
-        sb.append(" flags=0x");
-        sb.append(Integer.toHexString(this.mFlags).toUpperCase());
+        sb.append(" usage=").append(AudioAttributesCompat.usageToString(this.mUsage)).append(" content=").append(this.mContentType).append(" flags=0x").append(Integer.toHexString(this.mFlags).toUpperCase());
         return sb.toString();
     }
 

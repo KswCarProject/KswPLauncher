@@ -16,128 +16,146 @@ abstract class VectorDrawableCommon extends Drawable implements TintAwareDrawabl
     }
 
     public void setColorFilter(int color, PorterDuff.Mode mode) {
-        if (this.mDelegateDrawable != null) {
-            this.mDelegateDrawable.setColorFilter(color, mode);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            drawable.setColorFilter(color, mode);
         } else {
             super.setColorFilter(color, mode);
         }
     }
 
     public ColorFilter getColorFilter() {
-        if (this.mDelegateDrawable != null) {
-            return DrawableCompat.getColorFilter(this.mDelegateDrawable);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return DrawableCompat.getColorFilter(drawable);
         }
         return null;
     }
 
     /* access modifiers changed from: protected */
     public boolean onLevelChange(int level) {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.setLevel(level);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.setLevel(level);
         }
         return super.onLevelChange(level);
     }
 
     /* access modifiers changed from: protected */
     public void onBoundsChange(Rect bounds) {
-        if (this.mDelegateDrawable != null) {
-            this.mDelegateDrawable.setBounds(bounds);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            drawable.setBounds(bounds);
         } else {
             super.onBoundsChange(bounds);
         }
     }
 
     public void setHotspot(float x, float y) {
-        if (this.mDelegateDrawable != null) {
-            DrawableCompat.setHotspot(this.mDelegateDrawable, x, y);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            DrawableCompat.setHotspot(drawable, x, y);
         }
     }
 
     public void setHotspotBounds(int left, int top, int right, int bottom) {
-        if (this.mDelegateDrawable != null) {
-            DrawableCompat.setHotspotBounds(this.mDelegateDrawable, left, top, right, bottom);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            DrawableCompat.setHotspotBounds(drawable, left, top, right, bottom);
         }
     }
 
     public void setFilterBitmap(boolean filter) {
-        if (this.mDelegateDrawable != null) {
-            this.mDelegateDrawable.setFilterBitmap(filter);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            drawable.setFilterBitmap(filter);
         }
     }
 
     public void jumpToCurrentState() {
-        if (this.mDelegateDrawable != null) {
-            DrawableCompat.jumpToCurrentState(this.mDelegateDrawable);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            DrawableCompat.jumpToCurrentState(drawable);
         }
     }
 
     public void applyTheme(Resources.Theme t) {
-        if (this.mDelegateDrawable != null) {
-            DrawableCompat.applyTheme(this.mDelegateDrawable, t);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            DrawableCompat.applyTheme(drawable, t);
         }
     }
 
     public void clearColorFilter() {
-        if (this.mDelegateDrawable != null) {
-            this.mDelegateDrawable.clearColorFilter();
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            drawable.clearColorFilter();
         } else {
             super.clearColorFilter();
         }
     }
 
     public Drawable getCurrent() {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.getCurrent();
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.getCurrent();
         }
         return super.getCurrent();
     }
 
     public int getMinimumWidth() {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.getMinimumWidth();
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.getMinimumWidth();
         }
         return super.getMinimumWidth();
     }
 
     public int getMinimumHeight() {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.getMinimumHeight();
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.getMinimumHeight();
         }
         return super.getMinimumHeight();
     }
 
     public boolean getPadding(Rect padding) {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.getPadding(padding);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.getPadding(padding);
         }
         return super.getPadding(padding);
     }
 
     public int[] getState() {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.getState();
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.getState();
         }
         return super.getState();
     }
 
     public Region getTransparentRegion() {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.getTransparentRegion();
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.getTransparentRegion();
         }
         return super.getTransparentRegion();
     }
 
     public void setChangingConfigurations(int configs) {
-        if (this.mDelegateDrawable != null) {
-            this.mDelegateDrawable.setChangingConfigurations(configs);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            drawable.setChangingConfigurations(configs);
         } else {
             super.setChangingConfigurations(configs);
         }
     }
 
     public boolean setState(int[] stateSet) {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.setState(stateSet);
+        Drawable drawable = this.mDelegateDrawable;
+        if (drawable != null) {
+            return drawable.setState(stateSet);
         }
         return super.setState(stateSet);
     }

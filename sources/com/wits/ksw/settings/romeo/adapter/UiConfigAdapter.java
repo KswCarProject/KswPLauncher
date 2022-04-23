@@ -1,7 +1,6 @@
 package com.wits.ksw.settings.romeo.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -34,12 +33,11 @@ public class UiConfigAdapter extends RecyclerView.Adapter<MyViewHolder> {
         this.rbtCheckListener = listener;
     }
 
-    @NonNull
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(this.context).inflate(R.layout.list_tv_layout, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_mgs.setText(this.data.get(position).getTitle());
         if (this.data.get(position).isIscheck()) {
             holder.tv_mgs.setTextColor(SupportMenu.CATEGORY_MASK);
@@ -71,17 +69,18 @@ public class UiConfigAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.data == null) {
+        List<FunctionBean> list = this.data;
+        if (list == null) {
             return 0;
         }
-        return this.data.size();
+        return list.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout relat_listTv;
         TextView tv_mgs;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
             this.relat_listTv = (RelativeLayout) itemView.findViewById(R.id.relat_listTv);
             this.tv_mgs = (TextView) itemView.findViewById(R.id.tv_mgs);

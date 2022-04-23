@@ -56,20 +56,23 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
     }
 
     private void textViewOnFocus() {
-        if (this.mTextView != null) {
-            this.mTextView.setTextSize(30.0f);
+        TextView textView = this.mTextView;
+        if (textView != null) {
+            textView.setTextSize(30.0f);
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.mTextView.getLayoutParams();
             lp.setMargins(0, 0, 0, 144);
             this.mTextView.setLayoutParams(lp);
         }
-        if (this.adapter != null) {
-            this.adapter.setFocusPosition(this);
+        BenzNTG5RecyclerViewAdapter benzNTG5RecyclerViewAdapter = this.adapter;
+        if (benzNTG5RecyclerViewAdapter != null) {
+            benzNTG5RecyclerViewAdapter.setFocusPosition(this);
         }
     }
 
     private void textViewUnFocus() {
-        if (this.mTextView != null) {
-            this.mTextView.setTextSize(24.0f);
+        TextView textView = this.mTextView;
+        if (textView != null) {
+            textView.setTextSize(24.0f);
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.mTextView.getLayoutParams();
             lp.setMargins(0, 0, 0, 155);
             this.mTextView.setLayoutParams(lp);

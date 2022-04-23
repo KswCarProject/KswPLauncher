@@ -3,9 +3,6 @@ package android.support.v4.media;
 import android.media.AudioAttributes;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.util.Log;
 import android.util.SparseIntArray;
 import androidx.versionedparcelable.VersionedParcelable;
@@ -39,7 +36,7 @@ public class AudioAttributesCompat implements VersionedParcelable {
     private static final int[] SDK_USAGES = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16};
     private static final int SUPPRESSIBLE_CALL = 2;
     private static final int SUPPRESSIBLE_NOTIFICATION = 1;
-    private static final SparseIntArray SUPPRESSIBLE_USAGES = new SparseIntArray();
+    private static final SparseIntArray SUPPRESSIBLE_USAGES;
     private static final String TAG = "AudioAttributesCompat";
     public static final int USAGE_ALARM = 4;
     public static final int USAGE_ASSISTANCE_ACCESSIBILITY = 11;
@@ -61,23 +58,23 @@ public class AudioAttributesCompat implements VersionedParcelable {
     static boolean sForceLegacyBehavior;
     AudioAttributesImpl mImpl;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface AttributeContentType {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface AttributeUsage {
     }
 
     static {
-        SUPPRESSIBLE_USAGES.put(5, 1);
-        SUPPRESSIBLE_USAGES.put(6, 2);
-        SUPPRESSIBLE_USAGES.put(7, 2);
-        SUPPRESSIBLE_USAGES.put(8, 1);
-        SUPPRESSIBLE_USAGES.put(9, 1);
-        SUPPRESSIBLE_USAGES.put(10, 1);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        SUPPRESSIBLE_USAGES = sparseIntArray;
+        sparseIntArray.put(5, 1);
+        sparseIntArray.put(6, 2);
+        sparseIntArray.put(7, 2);
+        sparseIntArray.put(8, 1);
+        sparseIntArray.put(9, 1);
+        sparseIntArray.put(10, 1);
     }
 
     AudioAttributesCompat() {
@@ -91,7 +88,6 @@ public class AudioAttributesCompat implements VersionedParcelable {
         return this.mImpl.getVolumeControlStream();
     }
 
-    @Nullable
     public Object unwrap() {
         return this.mImpl.getAudioAttributes();
     }
@@ -100,8 +96,7 @@ public class AudioAttributesCompat implements VersionedParcelable {
         return this.mImpl.getLegacyStreamType();
     }
 
-    @Nullable
-    public static AudioAttributesCompat wrap(@NonNull Object aa) {
+    public static AudioAttributesCompat wrap(Object aa) {
         if (Build.VERSION.SDK_INT < 21 || sForceLegacyBehavior) {
             return null;
         }
@@ -123,13 +118,10 @@ public class AudioAttributesCompat implements VersionedParcelable {
         return this.mImpl.getFlags();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    @NonNull
     public Bundle toBundle() {
         return this.mImpl.toBundle();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static AudioAttributesCompat fromBundle(Bundle bundle) {
         AudioAttributesImpl impl;
         if (Build.VERSION.SDK_INT >= 21) {
@@ -165,8 +157,9 @@ public class AudioAttributesCompat implements VersionedParcelable {
                 impl = new AudioAttributesImplBase(this.mContentType, this.mFlags, this.mUsage, this.mLegacyStream);
             } else {
                 AudioAttributes.Builder api21Builder = new AudioAttributes.Builder().setContentType(this.mContentType).setFlags(this.mFlags).setUsage(this.mUsage);
-                if (this.mLegacyStream != -1) {
-                    api21Builder.setLegacyStreamType(this.mLegacyStream);
+                int i = this.mLegacyStream;
+                if (i != -1) {
+                    api21Builder.setLegacyStreamType(i);
                 }
                 impl = new AudioAttributesImplApi21(api21Builder.build(), this.mLegacyStream);
             }
@@ -369,7 +362,6 @@ public class AudioAttributesCompat implements VersionedParcelable {
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static void setForceLegacyBehavior(boolean force) {
         sForceLegacyBehavior = force;
     }
@@ -440,8 +432,9 @@ public class AudioAttributesCompat implements VersionedParcelable {
             return false;
         }
         AudioAttributesCompat that = (AudioAttributesCompat) o;
-        if (this.mImpl != null) {
-            return this.mImpl.equals(that.mImpl);
+        AudioAttributesImpl audioAttributesImpl = this.mImpl;
+        if (audioAttributesImpl != null) {
+            return audioAttributesImpl.equals(that.mImpl);
         }
         if (that.mImpl == null) {
             return true;

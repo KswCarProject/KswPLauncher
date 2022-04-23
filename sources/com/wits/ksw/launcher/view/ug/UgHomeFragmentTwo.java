@@ -5,8 +5,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +15,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.databinding.UgHomeTwo2BindingImpl;
 import com.wits.ksw.databinding.UgHomeTwoBindingImpl;
 import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 
 public class UgHomeFragmentTwo extends Fragment implements View.OnFocusChangeListener {
@@ -27,36 +26,52 @@ public class UgHomeFragmentTwo extends Fragment implements View.OnFocusChangeLis
     public UgHomeTwo2BindingImpl binding2;
     private MainActivity mainActivity;
     private LauncherViewModel viewModel;
+    private int width = 0;
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.mainActivity = (MainActivity) activity;
     }
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("aa", "onCreate: MediaFragment");
+        this.width = getResources().getDisplayMetrics().widthPixels;
         this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
-            this.binding2 = (UgHomeTwo2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_two2, (ViewGroup) null, false);
+            UgHomeTwo2BindingImpl ugHomeTwo2BindingImpl = (UgHomeTwo2BindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_two2, (ViewGroup) null, false);
+            this.binding2 = ugHomeTwo2BindingImpl;
+            setGSClientIcon(ugHomeTwo2BindingImpl.ugHomeHdvideoVaiw, this.binding2.ugHomeEasyVaiw, this.binding2.ugHomeAppVaiw, this.width);
             return this.binding2.getRoot();
         }
-        this.binding = (UgHomeTwoBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_two, (ViewGroup) null, false);
+        UgHomeTwoBindingImpl ugHomeTwoBindingImpl = (UgHomeTwoBindingImpl) DataBindingUtil.inflate(inflater, R.layout.ug_home_two, (ViewGroup) null, false);
+        this.binding = ugHomeTwoBindingImpl;
+        setGSClientIcon(ugHomeTwoBindingImpl.ugHomeHdvideoVaiw, this.binding.ugHomeEasyVaiw, this.binding.ugHomeAppVaiw, this.width);
         return this.binding.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void setGSClientIcon(UgHomeImageView imageView1, UgHomeImageView imageView2, UgHomeImageView imageView3, int width2) {
+        if (ClientManager.getInstance().isGSClient() && (width2 == 1024 || width2 == 1280)) {
+            imageView2.setImageResource(R.drawable.ug_home_easy_gs_selector);
+            imageView3.setImageResource(R.drawable.ug_home_app_gs_selector);
+        } else if (ClientManager.getInstance().isGSClient() && width2 == 1920) {
+            imageView1.setImageResource(R.drawable.ug_home_hdvideo_gs_selector);
+            imageView2.setImageResource(R.drawable.ug_home_easy_gs_selector);
+            imageView3.setImageResource(R.drawable.ug_home_app_gs_selector);
+        }
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (UiThemeUtils.isCommon_UI_GS_UG_1024(getActivity())) {
             this.binding2.setViewModel(this.viewModel);
             this.binding2.ugHomeHdvideoVaiw.setOnFocusChangeListener(this);
             this.binding2.ugHomeAppVaiw.setOnFocusChangeListener(this);
             this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-                public void onChanged(@Nullable UgPager ugPager) {
+                public void onChanged(UgPager ugPager) {
                     if (ugPager.index != 1) {
                         return;
                     }
@@ -73,7 +88,7 @@ public class UgHomeFragmentTwo extends Fragment implements View.OnFocusChangeLis
         this.binding.ugHomeHdvideoVaiw.setOnFocusChangeListener(this);
         this.binding.ugHomeAppVaiw.setOnFocusChangeListener(this);
         this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
-            public void onChanged(@Nullable UgPager ugPager) {
+            public void onChanged(UgPager ugPager) {
                 if (ugPager.index != 1) {
                     return;
                 }

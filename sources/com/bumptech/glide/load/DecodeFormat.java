@@ -7,6 +7,7 @@ public enum DecodeFormat {
     public static final DecodeFormat DEFAULT = null;
 
     static {
-        DEFAULT = PREFER_ARGB_8888;
+        DecodeFormat decodeFormat;
+        DEFAULT = decodeFormat;
     }
 }

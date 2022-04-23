@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pools;
 import android.util.Log;
 import com.bumptech.glide.load.Options;
@@ -21,8 +20,7 @@ public class DecodePath<DataType, ResourceType, Transcode> {
     private final ResourceTranscoder<ResourceType, Transcode> transcoder;
 
     interface DecodeCallback<ResourceType> {
-        @NonNull
-        Resource<ResourceType> onResourceDecoded(@NonNull Resource<ResourceType> resource);
+        Resource<ResourceType> onResourceDecoded(Resource<ResourceType> resource);
     }
 
     public DecodePath(Class<DataType> dataClass2, Class<ResourceType> resourceClass, Class<Transcode> transcodeClass, List<? extends ResourceDecoder<DataType, ResourceType>> decoders2, ResourceTranscoder<ResourceType, Transcode> transcoder2, Pools.Pool<List<Throwable>> listPool2) {
@@ -33,12 +31,11 @@ public class DecodePath<DataType, ResourceType, Transcode> {
         this.failureMessage = "Failed DecodePath{" + dataClass2.getSimpleName() + "->" + resourceClass.getSimpleName() + "->" + transcodeClass.getSimpleName() + "}";
     }
 
-    public Resource<Transcode> decode(DataRewinder<DataType> rewinder, int width, int height, @NonNull Options options, DecodeCallback<ResourceType> callback) throws GlideException {
+    public Resource<Transcode> decode(DataRewinder<DataType> rewinder, int width, int height, Options options, DecodeCallback<ResourceType> callback) throws GlideException {
         return this.transcoder.transcode(callback.onResourceDecoded(decodeResource(rewinder, width, height, options)), options);
     }
 
-    @NonNull
-    private Resource<ResourceType> decodeResource(DataRewinder<DataType> rewinder, int width, int height, @NonNull Options options) throws GlideException {
+    private Resource<ResourceType> decodeResource(DataRewinder<DataType> rewinder, int width, int height, Options options) throws GlideException {
         List<Throwable> exceptions = (List) Preconditions.checkNotNull(this.listPool.acquire());
         try {
             return decodeResourceWithList(rewinder, width, height, options, exceptions);
@@ -47,8 +44,7 @@ public class DecodePath<DataType, ResourceType, Transcode> {
         }
     }
 
-    @NonNull
-    private Resource<ResourceType> decodeResourceWithList(DataRewinder<DataType> rewinder, int width, int height, @NonNull Options options, List<Throwable> exceptions) throws GlideException {
+    private Resource<ResourceType> decodeResourceWithList(DataRewinder<DataType> rewinder, int width, int height, Options options, List<Throwable> exceptions) throws GlideException {
         Resource<ResourceType> result = null;
         int size = this.decoders.size();
         for (int i = 0; i < size; i++) {

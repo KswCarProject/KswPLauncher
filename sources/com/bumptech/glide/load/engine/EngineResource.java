@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.util.Preconditions;
 
@@ -39,12 +38,10 @@ class EngineResource<Z> implements Resource<Z> {
         return this.isCacheable;
     }
 
-    @NonNull
     public Class<Z> getResourceClass() {
         return this.resource.getResourceClass();
     }
 
-    @NonNull
     public Z get() {
         return this.resource.get();
     }
@@ -79,10 +76,11 @@ class EngineResource<Z> implements Resource<Z> {
     public void release() {
         synchronized (this.listener) {
             synchronized (this) {
-                if (this.acquired > 0) {
-                    int i = this.acquired - 1;
-                    this.acquired = i;
-                    if (i == 0) {
+                int i = this.acquired;
+                if (i > 0) {
+                    int i2 = i - 1;
+                    this.acquired = i2;
+                    if (i2 == 0) {
                         this.listener.onResourceReleased(this.key, this);
                     }
                 } else {

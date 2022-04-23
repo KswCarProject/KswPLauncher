@@ -3,8 +3,6 @@ package com.wits.ksw.databinding;
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,35 +10,35 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class MediaFragmentSw600dpLandImpl extends MediaFragment {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(3);
-    @Nullable
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @Nullable
     private final Id7SubMusicViewBinding mboundView0;
-    @NonNull
     private final ConstraintLayout mboundView01;
-    @Nullable
     private final Id7SubVideoViewBinding mboundView02;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"id7_sub_music_view", "id7_sub_video_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_music_view, R.layout.id7_sub_video_view});
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"id7_sub_music_view", "id7_sub_video_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_music_view, R.layout.id7_sub_video_view});
     }
 
-    public MediaFragmentSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public MediaFragmentSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private MediaFragmentSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[1];
-        setContainedBinding(this.mboundView0);
-        this.mboundView01 = bindings[0];
-        this.mboundView01.setTag((Object) null);
-        this.mboundView02 = bindings[2];
-        setContainedBinding(this.mboundView02);
+        Id7SubMusicViewBinding id7SubMusicViewBinding = bindings[1];
+        this.mboundView0 = id7SubMusicViewBinding;
+        setContainedBinding(id7SubMusicViewBinding);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView01 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        Id7SubVideoViewBinding id7SubVideoViewBinding = bindings[2];
+        this.mboundView02 = id7SubVideoViewBinding;
+        setContainedBinding(id7SubVideoViewBinding);
         setRootTag(root);
         invalidateAll();
     }
@@ -103,24 +101,24 @@ public class MediaFragmentSw600dpLandImpl extends MediaFragment {
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.MediaFragmentSw600dpLandImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (22 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (6 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setMediaViewModel(@Nullable LauncherViewModel MediaViewModel) {
+    public void setMediaViewModel(LauncherViewModel MediaViewModel) {
         this.mMediaViewModel = MediaViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(22);
+        notifyPropertyChanged(6);
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.mboundView0.setLifecycleOwner(lifecycleOwner);
         this.mboundView02.setLifecycleOwner(lifecycleOwner);

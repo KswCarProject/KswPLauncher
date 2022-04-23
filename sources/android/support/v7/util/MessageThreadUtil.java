@@ -164,8 +164,9 @@ class MessageThreadUtil<T> implements ThreadUtil<T> {
             this.what = 0;
             this.data = null;
             synchronized (sPoolLock) {
-                if (sPool != null) {
-                    this.next = sPool;
+                SyncQueueItem syncQueueItem = sPool;
+                if (syncQueueItem != null) {
+                    this.next = syncQueueItem;
                 }
                 sPool = this;
             }
@@ -174,12 +175,14 @@ class MessageThreadUtil<T> implements ThreadUtil<T> {
         static SyncQueueItem obtainMessage(int what2, int arg12, int arg22, int arg32, int arg42, int arg52, Object data2) {
             SyncQueueItem item;
             synchronized (sPoolLock) {
-                if (sPool == null) {
+                SyncQueueItem item2 = sPool;
+                if (item2 == null) {
                     item = new SyncQueueItem();
                 } else {
-                    item = sPool;
-                    sPool = sPool.next;
-                    item.next = null;
+                    SyncQueueItem item3 = item2;
+                    sPool = item2.next;
+                    item3.next = null;
+                    item = item3;
                 }
                 item.what = what2;
                 item.arg1 = arg12;
@@ -209,11 +212,12 @@ class MessageThreadUtil<T> implements ThreadUtil<T> {
 
         /* access modifiers changed from: package-private */
         public synchronized SyncQueueItem next() {
-            if (this.mRoot == null) {
+            SyncQueueItem syncQueueItem = this.mRoot;
+            if (syncQueueItem == null) {
                 return null;
             }
-            SyncQueueItem next = this.mRoot;
-            this.mRoot = this.mRoot.next;
+            SyncQueueItem next = syncQueueItem;
+            this.mRoot = syncQueueItem.next;
             return next;
         }
 
@@ -225,11 +229,11 @@ class MessageThreadUtil<T> implements ThreadUtil<T> {
 
         /* access modifiers changed from: package-private */
         public synchronized void sendMessage(SyncQueueItem item) {
-            if (this.mRoot == null) {
+            SyncQueueItem last = this.mRoot;
+            if (last == null) {
                 this.mRoot = item;
                 return;
             }
-            SyncQueueItem last = this.mRoot;
             while (last.next != null) {
                 last = last.next;
             }
@@ -238,21 +242,26 @@ class MessageThreadUtil<T> implements ThreadUtil<T> {
 
         /* access modifiers changed from: package-private */
         public synchronized void removeMessages(int what) {
-            while (this.mRoot != null && this.mRoot.what == what) {
-                SyncQueueItem item = this.mRoot;
-                this.mRoot = this.mRoot.next;
-                item.recycle();
+            while (true) {
+                SyncQueueItem syncQueueItem = this.mRoot;
+                if (syncQueueItem == null || syncQueueItem.what != what) {
+                    SyncQueueItem prev = this.mRoot;
+                } else {
+                    SyncQueueItem item = this.mRoot;
+                    this.mRoot = item.next;
+                    item.recycle();
+                }
             }
-            if (this.mRoot != null) {
-                SyncQueueItem prev = this.mRoot;
-                SyncQueueItem item2 = prev.next;
+            SyncQueueItem prev2 = this.mRoot;
+            if (prev2 != null) {
+                SyncQueueItem item2 = prev2.next;
                 while (item2 != null) {
                     SyncQueueItem next = item2.next;
                     if (item2.what == what) {
-                        prev.next = next;
+                        prev2.next = next;
                         item2.recycle();
                     } else {
-                        prev = item2;
+                        prev2 = item2;
                     }
                     item2 = next;
                 }

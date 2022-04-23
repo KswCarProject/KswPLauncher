@@ -6,15 +6,11 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.FontResourcesParserCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.provider.FontsContractCompat;
 import android.support.v4.util.LruCache;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class TypefaceCompat {
     private static final String TAG = "TypefaceCompat";
     private static final LruCache<String, Typeface> sTypefaceCache = new LruCache<>(16);
@@ -37,8 +33,7 @@ public class TypefaceCompat {
     private TypefaceCompat() {
     }
 
-    @Nullable
-    public static Typeface findFromCache(@NonNull Resources resources, int id, int style) {
+    public static Typeface findFromCache(Resources resources, int id, int style) {
         return sTypefaceCache.get(createResourceUid(resources, id, style));
     }
 
@@ -46,8 +41,7 @@ public class TypefaceCompat {
         return resources.getResourcePackageName(id) + "-" + id + "-" + style;
     }
 
-    @Nullable
-    public static Typeface createFromResourcesFamilyXml(@NonNull Context context, @NonNull FontResourcesParserCompat.FamilyResourceEntry entry, @NonNull Resources resources, int id, int style, @Nullable ResourcesCompat.FontCallback fontCallback, @Nullable Handler handler, boolean isRequestFromLayoutInflator) {
+    public static Typeface createFromResourcesFamilyXml(Context context, FontResourcesParserCompat.FamilyResourceEntry entry, Resources resources, int id, int style, ResourcesCompat.FontCallback fontCallback, Handler handler, boolean isRequestFromLayoutInflator) {
         Typeface typeface;
         FontResourcesParserCompat.FamilyResourceEntry familyResourceEntry = entry;
         ResourcesCompat.FontCallback fontCallback2 = fontCallback;
@@ -77,8 +71,7 @@ public class TypefaceCompat {
         return typeface;
     }
 
-    @Nullable
-    public static Typeface createFromResourcesFontFile(@NonNull Context context, @NonNull Resources resources, int id, String path, int style) {
+    public static Typeface createFromResourcesFontFile(Context context, Resources resources, int id, String path, int style) {
         Typeface typeface = sTypefaceCompatImpl.createFromResourcesFontFile(context, resources, id, path, style);
         if (typeface != null) {
             sTypefaceCache.put(createResourceUid(resources, id, style), typeface);
@@ -86,8 +79,7 @@ public class TypefaceCompat {
         return typeface;
     }
 
-    @Nullable
-    public static Typeface createFromFontInfo(@NonNull Context context, @Nullable CancellationSignal cancellationSignal, @NonNull FontsContractCompat.FontInfo[] fonts, int style) {
+    public static Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fonts, int style) {
         return sTypefaceCompatImpl.createFromFontInfo(context, cancellationSignal, fonts, style);
     }
 }

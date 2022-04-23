@@ -1,32 +1,28 @@
 package android.support.v4.widget;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.util.Pools;
 import android.support.v4.util.SimpleArrayMap;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public final class DirectedAcyclicGraph<T> {
     private final SimpleArrayMap<T, ArrayList<T>> mGraph = new SimpleArrayMap<>();
     private final Pools.Pool<ArrayList<T>> mListPool = new Pools.SimplePool(10);
     private final ArrayList<T> mSortResult = new ArrayList<>();
     private final HashSet<T> mSortTmpMarked = new HashSet<>();
 
-    public void addNode(@NonNull T node) {
+    public void addNode(T node) {
         if (!this.mGraph.containsKey(node)) {
             this.mGraph.put(node, null);
         }
     }
 
-    public boolean contains(@NonNull T node) {
+    public boolean contains(T node) {
         return this.mGraph.containsKey(node);
     }
 
-    public void addEdge(@NonNull T node, @NonNull T incomingEdge) {
+    public void addEdge(T node, T incomingEdge) {
         if (!this.mGraph.containsKey(node) || !this.mGraph.containsKey(incomingEdge)) {
             throw new IllegalArgumentException("All nodes must be present in the graph before being added as an edge");
         }
@@ -38,13 +34,11 @@ public final class DirectedAcyclicGraph<T> {
         edges.add(incomingEdge);
     }
 
-    @Nullable
-    public List getIncomingEdges(@NonNull T node) {
+    public List getIncomingEdges(T node) {
         return this.mGraph.get(node);
     }
 
-    @Nullable
-    public List<T> getOutgoingEdges(@NonNull T node) {
+    public List<T> getOutgoingEdges(T node) {
         ArrayList<T> result = null;
         int size = this.mGraph.size();
         for (int i = 0; i < size; i++) {
@@ -59,7 +53,7 @@ public final class DirectedAcyclicGraph<T> {
         return result;
     }
 
-    public boolean hasOutgoingEdges(@NonNull T node) {
+    public boolean hasOutgoingEdges(T node) {
         int size = this.mGraph.size();
         for (int i = 0; i < size; i++) {
             ArrayList<T> edges = this.mGraph.valueAt(i);
@@ -81,7 +75,6 @@ public final class DirectedAcyclicGraph<T> {
         this.mGraph.clear();
     }
 
-    @NonNull
     public ArrayList<T> getSortedList() {
         this.mSortResult.clear();
         this.mSortTmpMarked.clear();
@@ -116,7 +109,6 @@ public final class DirectedAcyclicGraph<T> {
         return this.mGraph.size();
     }
 
-    @NonNull
     private ArrayList<T> getEmptyList() {
         ArrayList<T> list = this.mListPool.acquire();
         if (list == null) {
@@ -125,7 +117,7 @@ public final class DirectedAcyclicGraph<T> {
         return list;
     }
 
-    private void poolList(@NonNull ArrayList<T> list) {
+    private void poolList(ArrayList<T> list) {
         list.clear();
         this.mListPool.release(list);
     }

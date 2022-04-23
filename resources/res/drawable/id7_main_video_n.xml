@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:height="35dp" android:width="38dp" android:viewportWidth="45" android:viewportHeight="40">
+    <path android:name="形状 5" android:fillColor="#fff" android:pathData="m17.86 19.39c2.69 1.63 5.73 3.48 8.42 5.11c-2.68 1.63 -5.72 3.47 -8.42 5.11c0 -3.26 0 -6.95 0 -10.22zm-1.87 -3.39v17l14 -8.5l-14 -8.5zm28.01 -15.19 -44 3.74 -0.02 5.44h2.02v-0h40.99v28h-41v-25h-1.91v25.26c0 1.03 0.82 1.87 1.83 1.87h41.25c1.01 0 1.83 -0.84 1.83 -1.87v-28.09c0 -1.03 -0.82 -1.87 -1.83 -1.87h-41.15v-2.03l42.15 -3.59l-0.15 -1.87z"/>
+</vector>

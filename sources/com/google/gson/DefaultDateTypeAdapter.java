@@ -33,8 +33,9 @@ final class DefaultDateTypeAdapter implements JsonSerializer<Date>, JsonDeserial
     DefaultDateTypeAdapter(DateFormat enUsFormat2, DateFormat localFormat2) {
         this.enUsFormat = enUsFormat2;
         this.localFormat = localFormat2;
-        this.iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-        this.iso8601Format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        this.iso8601Format = simpleDateFormat;
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
@@ -81,6 +82,9 @@ final class DefaultDateTypeAdapter implements JsonSerializer<Date>, JsonDeserial
     }
 
     public String toString() {
-        return DefaultDateTypeAdapter.class.getSimpleName() + '(' + this.localFormat.getClass().getSimpleName() + ')';
+        StringBuilder sb = new StringBuilder();
+        sb.append(DefaultDateTypeAdapter.class.getSimpleName());
+        sb.append('(').append(this.localFormat.getClass().getSimpleName()).append(')');
+        return sb.toString();
     }
 }

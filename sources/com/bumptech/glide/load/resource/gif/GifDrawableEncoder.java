@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.resource.gif;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.bumptech.glide.load.EncodeStrategy;
 import com.bumptech.glide.load.Options;
@@ -13,12 +12,11 @@ import java.io.IOException;
 public class GifDrawableEncoder implements ResourceEncoder<GifDrawable> {
     private static final String TAG = "GifEncoder";
 
-    @NonNull
-    public EncodeStrategy getEncodeStrategy(@NonNull Options options) {
+    public EncodeStrategy getEncodeStrategy(Options options) {
         return EncodeStrategy.SOURCE;
     }
 
-    public boolean encode(@NonNull Resource<GifDrawable> data, @NonNull File file, @NonNull Options options) {
+    public boolean encode(Resource<GifDrawable> data, File file, Options options) {
         try {
             ByteBufferUtil.toFile(data.get().getBuffer(), file);
             return true;

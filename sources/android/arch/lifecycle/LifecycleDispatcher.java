@@ -5,7 +5,6 @@ import android.app.Application;
 import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +24,6 @@ class LifecycleDispatcher {
         }
     }
 
-    @VisibleForTesting
     static class DispatcherActivityCallback extends EmptyActivityLifecycleCallbacks {
         private final FragmentCallback mFragmentCallback = new FragmentCallback();
 
@@ -107,7 +105,6 @@ class LifecycleDispatcher {
         }
     }
 
-    @VisibleForTesting
     static class FragmentCallback extends FragmentManager.FragmentLifecycleCallbacks {
         FragmentCallback() {
         }

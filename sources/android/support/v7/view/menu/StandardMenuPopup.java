@@ -71,13 +71,13 @@ final class StandardMenuPopup extends MenuPopup implements PopupWindow.OnDismiss
         this.mContext = context;
         this.mMenu = menu;
         this.mOverflowOnly = overflowOnly;
-        this.mAdapter = new MenuAdapter(menu, LayoutInflater.from(context), this.mOverflowOnly, ITEM_LAYOUT);
+        this.mAdapter = new MenuAdapter(menu, LayoutInflater.from(context), overflowOnly, ITEM_LAYOUT);
         this.mPopupStyleAttr = popupStyleAttr;
         this.mPopupStyleRes = popupStyleRes;
         Resources res = context.getResources();
         this.mPopupMaxWidth = Math.max(res.getDisplayMetrics().widthPixels / 2, res.getDimensionPixelSize(R.dimen.abc_config_prefDialogWidth));
         this.mAnchorView = anchorView;
-        this.mPopup = new MenuPopupWindow(this.mContext, (AttributeSet) null, this.mPopupStyleAttr, this.mPopupStyleRes);
+        this.mPopup = new MenuPopupWindow(context, (AttributeSet) null, popupStyleAttr, popupStyleRes);
         menu.addMenuPresenter(this, context);
     }
 
@@ -90,21 +90,23 @@ final class StandardMenuPopup extends MenuPopup implements PopupWindow.OnDismiss
     }
 
     private boolean tryShow() {
+        View view;
         if (isShowing()) {
             return true;
         }
-        if (this.mWasDismissed || this.mAnchorView == null) {
+        if (this.mWasDismissed || (view = this.mAnchorView) == null) {
             return false;
         }
-        this.mShownAnchorView = this.mAnchorView;
+        this.mShownAnchorView = view;
         this.mPopup.setOnDismissListener(this);
         this.mPopup.setOnItemClickListener(this);
         this.mPopup.setModal(true);
         View anchor = this.mShownAnchorView;
         boolean addGlobalListener = this.mTreeObserver == null;
-        this.mTreeObserver = anchor.getViewTreeObserver();
+        ViewTreeObserver viewTreeObserver = anchor.getViewTreeObserver();
+        this.mTreeObserver = viewTreeObserver;
         if (addGlobalListener) {
-            this.mTreeObserver.addOnGlobalLayoutListener(this.mGlobalLayoutListener);
+            viewTreeObserver.addOnGlobalLayoutListener(this.mGlobalLayoutListener);
         }
         anchor.addOnAttachStateChangeListener(this.mAttachStateChangeListener);
         this.mPopup.setAnchorView(anchor);
@@ -155,23 +157,26 @@ final class StandardMenuPopup extends MenuPopup implements PopupWindow.OnDismiss
     public void onDismiss() {
         this.mWasDismissed = true;
         this.mMenu.close();
-        if (this.mTreeObserver != null) {
-            if (!this.mTreeObserver.isAlive()) {
+        ViewTreeObserver viewTreeObserver = this.mTreeObserver;
+        if (viewTreeObserver != null) {
+            if (!viewTreeObserver.isAlive()) {
                 this.mTreeObserver = this.mShownAnchorView.getViewTreeObserver();
             }
             this.mTreeObserver.removeGlobalOnLayoutListener(this.mGlobalLayoutListener);
             this.mTreeObserver = null;
         }
         this.mShownAnchorView.removeOnAttachStateChangeListener(this.mAttachStateChangeListener);
-        if (this.mOnDismissListener != null) {
-            this.mOnDismissListener.onDismiss();
+        PopupWindow.OnDismissListener onDismissListener = this.mOnDismissListener;
+        if (onDismissListener != null) {
+            onDismissListener.onDismiss();
         }
     }
 
     public void updateMenuView(boolean cleared) {
         this.mHasContentWidth = false;
-        if (this.mAdapter != null) {
-            this.mAdapter.notifyDataSetChanged();
+        MenuAdapter menuAdapter = this.mAdapter;
+        if (menuAdapter != null) {
+            menuAdapter.notifyDataSetChanged();
         }
     }
 
@@ -193,10 +198,11 @@ final class StandardMenuPopup extends MenuPopup implements PopupWindow.OnDismiss
                 horizontalOffset += this.mAnchorView.getWidth();
             }
             if (menuPopupHelper.tryShow(horizontalOffset, verticalOffset)) {
-                if (this.mPresenterCallback == null) {
+                MenuPresenter.Callback callback = this.mPresenterCallback;
+                if (callback == null) {
                     return true;
                 }
-                this.mPresenterCallback.onOpenSubMenu(subMenu);
+                callback.onOpenSubMenu(subMenu);
                 return true;
             }
         }
@@ -206,8 +212,9 @@ final class StandardMenuPopup extends MenuPopup implements PopupWindow.OnDismiss
     public void onCloseMenu(MenuBuilder menu, boolean allMenusAreClosing) {
         if (menu == this.mMenu) {
             dismiss();
-            if (this.mPresenterCallback != null) {
-                this.mPresenterCallback.onCloseMenu(menu, allMenusAreClosing);
+            MenuPresenter.Callback callback = this.mPresenterCallback;
+            if (callback != null) {
+                callback.onCloseMenu(menu, allMenusAreClosing);
             }
         }
     }

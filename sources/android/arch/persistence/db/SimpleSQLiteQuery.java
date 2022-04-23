@@ -1,13 +1,10 @@
 package android.arch.persistence.db;
 
-import android.support.annotation.Nullable;
-
 public final class SimpleSQLiteQuery implements SupportSQLiteQuery {
-    @Nullable
     private final Object[] mBindArgs;
     private final String mQuery;
 
-    public SimpleSQLiteQuery(String query, @Nullable Object[] bindArgs) {
+    public SimpleSQLiteQuery(String query, Object[] bindArgs) {
         this.mQuery = query;
         this.mBindArgs = bindArgs;
     }
@@ -25,10 +22,11 @@ public final class SimpleSQLiteQuery implements SupportSQLiteQuery {
     }
 
     public int getArgCount() {
-        if (this.mBindArgs == null) {
+        Object[] objArr = this.mBindArgs;
+        if (objArr == null) {
             return 0;
         }
-        return this.mBindArgs.length;
+        return objArr.length;
     }
 
     public static void bind(SupportSQLiteProgram statement, Object[] bindArgs) {

@@ -1,13 +1,10 @@
 package com.wits.ksw.settings.utlis_view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
 
-@SuppressLint({"AppCompatCustomView"})
 public class RtlTextView extends TextView {
     private static final String TAG = "RtlTextView";
 
@@ -15,17 +12,17 @@ public class RtlTextView extends TextView {
         super(context);
     }
 
-    public RtlTextView(Context context, @Nullable AttributeSet attrs) {
+    public RtlTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public RtlTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RtlTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public RtlTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public RtlTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }

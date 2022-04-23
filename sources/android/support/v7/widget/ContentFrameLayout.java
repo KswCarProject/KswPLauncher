@@ -2,7 +2,7 @@ package android.support.v7.widget;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.RestrictTo;
+import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -10,7 +10,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class ContentFrameLayout extends FrameLayout {
     private OnAttachListener mAttachListener;
     private final Rect mDecorPadding;
@@ -40,7 +39,6 @@ public class ContentFrameLayout extends FrameLayout {
         this.mDecorPadding = new Rect();
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void dispatchFitSystemWindows(Rect insets) {
         fitSystemWindows(insets);
     }
@@ -49,7 +47,6 @@ public class ContentFrameLayout extends FrameLayout {
         this.mAttachListener = attachListener;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setDecorPadding(int left, int top, int right, int bottom) {
         this.mDecorPadding.set(left, top, right, bottom);
         if (ViewCompat.isLaidOut(this)) {
@@ -74,7 +71,7 @@ public class ContentFrameLayout extends FrameLayout {
                     w = (int) tvw.getFraction((float) metrics.widthPixels, (float) metrics.widthPixels);
                 }
                 if (w > 0) {
-                    widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(Math.min(w - (this.mDecorPadding.left + this.mDecorPadding.right), View.MeasureSpec.getSize(widthMeasureSpec)), 1073741824);
+                    widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(Math.min(w - (this.mDecorPadding.left + this.mDecorPadding.right), View.MeasureSpec.getSize(widthMeasureSpec)), BasicMeasure.EXACTLY);
                     fixedWidth = true;
                 }
             }
@@ -89,14 +86,14 @@ public class ContentFrameLayout extends FrameLayout {
                     h = (int) tvh.getFraction((float) metrics.heightPixels, (float) metrics.heightPixels);
                 }
                 if (h > 0) {
-                    heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(Math.min(h - (this.mDecorPadding.top + this.mDecorPadding.bottom), View.MeasureSpec.getSize(heightMeasureSpec)), 1073741824);
+                    heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(Math.min(h - (this.mDecorPadding.top + this.mDecorPadding.bottom), View.MeasureSpec.getSize(heightMeasureSpec)), BasicMeasure.EXACTLY);
                 }
             }
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = getMeasuredWidth();
         boolean measure = false;
-        int widthMeasureSpec2 = View.MeasureSpec.makeMeasureSpec(width, 1073741824);
+        int widthMeasureSpec2 = View.MeasureSpec.makeMeasureSpec(width, BasicMeasure.EXACTLY);
         if (!fixedWidth && widthMode == Integer.MIN_VALUE) {
             TypedValue tv = isPortrait ? this.mMinWidthMinor : this.mMinWidthMajor;
             if (!(tv == null || tv.type == 0)) {
@@ -110,7 +107,7 @@ public class ContentFrameLayout extends FrameLayout {
                     min -= this.mDecorPadding.left + this.mDecorPadding.right;
                 }
                 if (width < min) {
-                    widthMeasureSpec2 = View.MeasureSpec.makeMeasureSpec(min, 1073741824);
+                    widthMeasureSpec2 = View.MeasureSpec.makeMeasureSpec(min, BasicMeasure.EXACTLY);
                     measure = true;
                 }
             }
@@ -165,16 +162,18 @@ public class ContentFrameLayout extends FrameLayout {
     /* access modifiers changed from: protected */
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (this.mAttachListener != null) {
-            this.mAttachListener.onAttachedFromWindow();
+        OnAttachListener onAttachListener = this.mAttachListener;
+        if (onAttachListener != null) {
+            onAttachListener.onAttachedFromWindow();
         }
     }
 
     /* access modifiers changed from: protected */
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (this.mAttachListener != null) {
-            this.mAttachListener.onDetachedFromWindow();
+        OnAttachListener onAttachListener = this.mAttachListener;
+        if (onAttachListener != null) {
+            onAttachListener.onDetachedFromWindow();
         }
     }
 }

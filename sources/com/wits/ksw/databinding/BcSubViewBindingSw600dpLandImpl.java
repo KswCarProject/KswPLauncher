@@ -2,20 +2,16 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.launcher.bean.BcItem;
 
 public class BcSubViewBindingSw600dpLandImpl extends BcSubViewBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
 
-    public BcSubViewBindingSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public BcSubViewBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 1, sIncludes, sViewsWithIds));
     }
 
@@ -43,15 +39,15 @@ public class BcSubViewBindingSw600dpLandImpl extends BcSubViewBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (1 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (11 != variableId) {
             return false;
         }
         setListItem((BcItem) variable);
         return true;
     }
 
-    public void setListItem(@Nullable BcItem ListItem) {
+    public void setListItem(BcItem ListItem) {
         this.mListItem = ListItem;
     }
 

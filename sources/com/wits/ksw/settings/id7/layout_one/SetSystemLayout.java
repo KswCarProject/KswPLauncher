@@ -28,12 +28,15 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
     private int dcgj = 0;
     private int dcjy = 0;
     private int dcld = 0;
+    private TextView fuelUnitView;
     private int housi = 0;
     private int nbauxsw = 0;
     private TextView tempUnitView;
+    private TextView tv_music_app;
     private TextView tv_sysBgld;
     private TextView tv_sysCaux;
     private TextView tv_sysDcsxt;
+    private TextView tv_video_app;
     private IUpdateTwoLayout updateTwoLayout;
 
     public void registIUpdateTwoLayout(IUpdateTwoLayout twoLayout) {
@@ -66,6 +69,7 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
 
     private void initView(View view) {
         this.tempUnitView = (TextView) view.findViewById(R.id.tv_sysTempUnit);
+        this.fuelUnitView = (TextView) view.findViewById(R.id.tv_sysFuelUnit);
         this.tv_sysDcsxt = (TextView) view.findViewById(R.id.tv_sysDcsxt);
         this.tv_sysBgld = (TextView) view.findViewById(R.id.tv_sysBgld);
         this.cbox_sysHjs = (CheckBox) view.findViewById(R.id.cbox_sysHjs);
@@ -88,6 +92,7 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         this.tv_sysBgld.setOnClickListener(this);
         this.tv_sysCaux.setOnClickListener(this);
         this.tempUnitView.setOnClickListener(this);
+        this.fuelUnitView.setOnClickListener(this);
         this.cbox_sysHjs.setOnCheckedChangeListener(this);
         this.cbox_sysXcjz.setOnCheckedChangeListener(this);
         this.cbox_sysDcgj.setOnCheckedChangeListener(this);
@@ -98,14 +103,22 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         } else {
             this.tv_sysCaux.setVisibility(8);
         }
+        this.tv_music_app = (TextView) view.findViewById(R.id.tv_music_app);
+        this.tv_video_app = (TextView) view.findViewById(R.id.tv_video_app);
+        this.tv_music_app.setOnClickListener(this);
+        this.tv_video_app.setOnClickListener(this);
     }
 
     public void resetTextColor() {
         this.tv_sysDcsxt.setTextColor(-1);
         this.tv_sysBgld.setTextColor(-1);
         this.tempUnitView.setTextColor(-1);
-        if (this.updateTwoLayout != null) {
-            this.updateTwoLayout.updateTwoLayout(1, 0);
+        this.fuelUnitView.setTextColor(-1);
+        this.tv_music_app.setTextColor(-1);
+        this.tv_video_app.setTextColor(-1);
+        IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
+        if (iUpdateTwoLayout != null) {
+            iUpdateTwoLayout.updateTwoLayout(1, 0);
         }
     }
 
@@ -116,6 +129,10 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
         }
         resetTextColor();
         switch (v.getId()) {
+            case R.id.tv_music_app:
+                this.tv_music_app.setTextColor(SupportMenu.CATEGORY_MASK);
+                this.updateTwoLayout.updateTwoLayout(1, 6);
+                return;
             case R.id.tv_sysBgld:
                 this.tv_sysBgld.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.updateTwoLayout.updateTwoLayout(1, 2);
@@ -127,9 +144,17 @@ public class SetSystemLayout extends RelativeLayout implements View.OnClickListe
                 this.tv_sysDcsxt.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.updateTwoLayout.updateTwoLayout(1, 1);
                 return;
+            case R.id.tv_sysFuelUnit:
+                this.fuelUnitView.setTextColor(SupportMenu.CATEGORY_MASK);
+                this.updateTwoLayout.updateTwoLayout(1, 5);
+                return;
             case R.id.tv_sysTempUnit:
                 this.tempUnitView.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.updateTwoLayout.updateTwoLayout(1, 4);
+                return;
+            case R.id.tv_video_app:
+                this.tv_video_app.setTextColor(SupportMenu.CATEGORY_MASK);
+                this.updateTwoLayout.updateTwoLayout(1, 7);
                 return;
             default:
                 return;

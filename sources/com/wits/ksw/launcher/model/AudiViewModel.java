@@ -95,49 +95,54 @@ public class AudiViewModel extends LauncherViewModel {
     }
 
     public void initLeftUi() {
-        this.leftUiId = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_LEFT_ID, this.defaultLeftId);
-        if (this.leftUiId >= 0 && this.leftUiId < this.carPic.length) {
-            this.carPicId.set(this.carPic[this.leftUiId]);
+        int i = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_LEFT_ID, this.defaultLeftId);
+        this.leftUiId = i;
+        if (i >= 0) {
+            int[] iArr = this.carPic;
+            if (i < iArr.length) {
+                this.carPicId.set(iArr[i]);
+            }
         }
     }
 
     /* access modifiers changed from: private */
     public void initRightUi() {
-        this.rightUiId = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_RIGHT_ID, this.defaultRightId);
-        setRightUi(this.rightUiId);
+        int i = Settings.System.getInt(this.context.getContentResolver(), KeyConfig.AUDI_UI_RIGHT_ID, this.defaultRightId);
+        this.rightUiId = i;
+        setRightUi(i);
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rl_apps:
+            case R.id.rl_apps /*2131297325*/:
                 openApps(view);
                 break;
-            case R.id.rl_bt:
+            case R.id.rl_bt /*2131297326*/:
                 openBtApp(view);
                 break;
-            case R.id.rl_car:
+            case R.id.rl_car /*2131297327*/:
                 openCar(view);
                 break;
-            case R.id.rl_dashboard:
+            case R.id.rl_dashboard /*2131297329*/:
                 openDashboard(view);
                 break;
-            case R.id.rl_dvr:
+            case R.id.rl_dvr /*2131297330*/:
                 openDvr(view);
                 break;
-            case R.id.rl_easyconnection:
+            case R.id.rl_easyconnection /*2131297331*/:
                 openShouJiHuLian(view);
                 break;
-            case R.id.rl_music:
-                openChoseMusic(view);
+            case R.id.rl_music /*2131297332*/:
+                openMusicMulti(view);
                 break;
-            case R.id.rl_navi:
+            case R.id.rl_navi /*2131297333*/:
                 openNaviApp(view);
                 break;
-            case R.id.rl_settings:
+            case R.id.rl_settings /*2131297334*/:
                 openSettings(view);
                 break;
-            case R.id.rl_video:
-                openVideo(view);
+            case R.id.rl_video /*2131297335*/:
+                openVideoMulti(view);
                 break;
         }
         refreshCarBgPic(view);
@@ -146,32 +151,32 @@ public class AudiViewModel extends LauncherViewModel {
     /* access modifiers changed from: private */
     public void refreshCarBgPic(View view) {
         switch (view.getId()) {
-            case R.id.rl_apps:
+            case R.id.rl_apps /*2131297325*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_app);
                 return;
-            case R.id.rl_bt:
+            case R.id.rl_bt /*2131297326*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_bt);
                 return;
-            case R.id.rl_car:
+            case R.id.rl_car /*2131297327*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_car);
                 return;
-            case R.id.rl_dashboard:
+            case R.id.rl_dashboard /*2131297329*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_dashboard);
                 return;
-            case R.id.rl_dvr:
+            case R.id.rl_dvr /*2131297330*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_dvr);
                 return;
-            case R.id.rl_easyconnection:
+            case R.id.rl_easyconnection /*2131297331*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_easyconnection);
                 return;
-            case R.id.rl_music:
+            case R.id.rl_music /*2131297332*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_music);
                 return;
-            case R.id.rl_navi:
-            case R.id.rl_video:
+            case R.id.rl_navi /*2131297333*/:
+            case R.id.rl_video /*2131297335*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_navi);
                 return;
-            case R.id.rl_settings:
+            case R.id.rl_settings /*2131297334*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_settings);
                 return;
             default:

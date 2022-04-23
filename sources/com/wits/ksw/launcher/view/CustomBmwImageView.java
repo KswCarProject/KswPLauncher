@@ -1,15 +1,12 @@
 package com.wits.ksw.launcher.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import com.wits.ksw.MainActivity;
 
-@SuppressLint({"AppCompatCustomView"})
 public class CustomBmwImageView extends ImageView {
     private static final String TAG = CustomBmwImageView.class.getName();
     private Context mContext;
@@ -18,8 +15,7 @@ public class CustomBmwImageView extends ImageView {
         this(context, (AttributeSet) null);
     }
 
-    @SuppressLint({"NewApi"})
-    public CustomBmwImageView(Context context, @Nullable AttributeSet attrs) {
+    public CustomBmwImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
         setDefaultFocusHighlightEnabled(false);

@@ -2,7 +2,6 @@ package android.support.v7.app;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.RestrictTo;
 import android.support.v4.app.DialogFragment;
 
 public class AppCompatDialogFragment extends DialogFragment {
@@ -10,7 +9,6 @@ public class AppCompatDialogFragment extends DialogFragment {
         return new AppCompatDialog(getContext(), getTheme());
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setupDialog(Dialog dialog, int style) {
         if (dialog instanceof AppCompatDialog) {
             AppCompatDialog acd = (AppCompatDialog) dialog;

@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.util.SparseIntArray;
 import android.view.FrameMetrics;
 import android.view.Window;
@@ -42,7 +38,6 @@ public class FrameMetricsAggregator {
     public static final int TOTAL_INDEX = 0;
     private FrameMetricsBaseImpl mInstance;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface MetricType {
     }
@@ -59,26 +54,22 @@ public class FrameMetricsAggregator {
         }
     }
 
-    public void add(@NonNull Activity activity) {
+    public void add(Activity activity) {
         this.mInstance.add(activity);
     }
 
-    @Nullable
-    public SparseIntArray[] remove(@NonNull Activity activity) {
+    public SparseIntArray[] remove(Activity activity) {
         return this.mInstance.remove(activity);
     }
 
-    @Nullable
     public SparseIntArray[] stop() {
         return this.mInstance.stop();
     }
 
-    @Nullable
     public SparseIntArray[] reset() {
         return this.mInstance.reset();
     }
 
-    @Nullable
     public SparseIntArray[] getMetrics() {
         return this.mInstance.getMetrics();
     }
@@ -107,7 +98,6 @@ public class FrameMetricsAggregator {
         }
     }
 
-    @RequiresApi(24)
     private static class FrameMetricsApi24Impl extends FrameMetricsBaseImpl {
         private static final int NANOS_PER_MS = 1000000;
         private static final int NANOS_ROUNDING_VALUE = 500000;
@@ -117,31 +107,40 @@ public class FrameMetricsAggregator {
         Window.OnFrameMetricsAvailableListener mListener = new Window.OnFrameMetricsAvailableListener() {
             public void onFrameMetricsAvailable(Window window, FrameMetrics frameMetrics, int dropCountSinceLastInvocation) {
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 1) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[0], frameMetrics.getMetric(8));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl.addDurationItem(frameMetricsApi24Impl.mMetrics[0], frameMetrics.getMetric(8));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 2) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[1], frameMetrics.getMetric(1));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl2 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl2.addDurationItem(frameMetricsApi24Impl2.mMetrics[1], frameMetrics.getMetric(1));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 4) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[2], frameMetrics.getMetric(3));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl3 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl3.addDurationItem(frameMetricsApi24Impl3.mMetrics[2], frameMetrics.getMetric(3));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 8) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[3], frameMetrics.getMetric(4));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl4 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl4.addDurationItem(frameMetricsApi24Impl4.mMetrics[3], frameMetrics.getMetric(4));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 16) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[4], frameMetrics.getMetric(5));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl5 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl5.addDurationItem(frameMetricsApi24Impl5.mMetrics[4], frameMetrics.getMetric(5));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 64) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[6], frameMetrics.getMetric(7));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl6 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl6.addDurationItem(frameMetricsApi24Impl6.mMetrics[6], frameMetrics.getMetric(7));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 32) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[5], frameMetrics.getMetric(6));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl7 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl7.addDurationItem(frameMetricsApi24Impl7.mMetrics[5], frameMetrics.getMetric(6));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 128) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[7], frameMetrics.getMetric(0));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl8 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl8.addDurationItem(frameMetricsApi24Impl8.mMetrics[7], frameMetrics.getMetric(0));
                 }
                 if ((FrameMetricsApi24Impl.this.mTrackingFlags & 256) != 0) {
-                    FrameMetricsApi24Impl.this.addDurationItem(FrameMetricsApi24Impl.this.mMetrics[8], frameMetrics.getMetric(2));
+                    FrameMetricsApi24Impl frameMetricsApi24Impl9 = FrameMetricsApi24Impl.this;
+                    frameMetricsApi24Impl9.addDurationItem(frameMetricsApi24Impl9.mMetrics[8], frameMetrics.getMetric(2));
                 }
             }
         };
@@ -164,13 +163,15 @@ public class FrameMetricsAggregator {
 
         public void add(Activity activity) {
             if (sHandlerThread == null) {
-                sHandlerThread = new HandlerThread("FrameMetricsAggregator");
-                sHandlerThread.start();
+                HandlerThread handlerThread = new HandlerThread("FrameMetricsAggregator");
+                sHandlerThread = handlerThread;
+                handlerThread.start();
                 sHandler = new Handler(sHandlerThread.getLooper());
             }
             for (int i = 0; i <= 8; i++) {
-                if (this.mMetrics[i] == null && (this.mTrackingFlags & (1 << i)) != 0) {
-                    this.mMetrics[i] = new SparseIntArray();
+                SparseIntArray[] sparseIntArrayArr = this.mMetrics;
+                if (sparseIntArrayArr[i] == null && (this.mTrackingFlags & (1 << i)) != 0) {
+                    sparseIntArrayArr[i] = new SparseIntArray();
                 }
             }
             activity.getWindow().addOnFrameMetricsAvailableListener(this.mListener, sHandler);

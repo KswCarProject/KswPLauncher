@@ -11,8 +11,7 @@ public class ServiceManager {
             Class<?> serviceManager = Class.forName("android.os.ServiceManager");
             return (IBinder) serviceManager.getMethod("getService", new Class[]{String.class}).invoke(serviceManager, new Object[]{serviceName});
         } catch (Exception e) {
-            String str = TAG;
-            Log.e(str, "error service init - " + serviceName, e);
+            Log.e(TAG, "error service init - " + serviceName, e);
             return null;
         }
     }
@@ -22,8 +21,7 @@ public class ServiceManager {
             Class<?> serviceManager = Class.forName("android.os.ServiceManager");
             serviceManager.getMethod("addService", new Class[]{String.class, IBinder.class}).invoke(serviceManager, new Object[]{serviceName, binder});
         } catch (Exception e) {
-            String str = TAG;
-            Log.e(str, "error service - " + serviceName, e);
+            Log.e(TAG, "error service - " + serviceName, e);
         }
     }
 }

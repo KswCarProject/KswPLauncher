@@ -1,14 +1,10 @@
 package android.support.v4.util;
 
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.text.TextUtils;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class Preconditions {
     public static void checkArgument(boolean expression) {
         if (!expression) {
@@ -22,7 +18,6 @@ public class Preconditions {
         }
     }
 
-    @NonNull
     public static <T extends CharSequence> T checkStringNotEmpty(T string) {
         if (!TextUtils.isEmpty(string)) {
             return string;
@@ -30,7 +25,6 @@ public class Preconditions {
         throw new IllegalArgumentException();
     }
 
-    @NonNull
     public static <T extends CharSequence> T checkStringNotEmpty(T string, Object errorMessage) {
         if (!TextUtils.isEmpty(string)) {
             return string;
@@ -38,7 +32,6 @@ public class Preconditions {
         throw new IllegalArgumentException(String.valueOf(errorMessage));
     }
 
-    @NonNull
     public static <T> T checkNotNull(T reference) {
         if (reference != null) {
             return reference;
@@ -46,7 +39,6 @@ public class Preconditions {
         throw new NullPointerException();
     }
 
-    @NonNull
     public static <T> T checkNotNull(T reference, Object errorMessage) {
         if (reference != null) {
             return reference;
@@ -71,7 +63,6 @@ public class Preconditions {
         throw new IllegalArgumentException("Requested flags 0x" + Integer.toHexString(requestedFlags) + ", but only 0x" + Integer.toHexString(allowedFlags) + " are allowed");
     }
 
-    @IntRange(from = 0)
     public static int checkArgumentNonnegative(int value, String errorMessage) {
         if (value >= 0) {
             return value;
@@ -79,7 +70,6 @@ public class Preconditions {
         throw new IllegalArgumentException(errorMessage);
     }
 
-    @IntRange(from = 0)
     public static int checkArgumentNonnegative(int value) {
         if (value >= 0) {
             return value;
@@ -165,7 +155,6 @@ public class Preconditions {
         throw new NullPointerException(valueName + " must not be null");
     }
 
-    @NonNull
     public static <C extends Collection<T>, T> C checkCollectionElementsNotNull(C value, String valueName) {
         if (value != null) {
             long ctr = 0;

@@ -1,7 +1,5 @@
 package com.bumptech.glide.util.pool;
 
-import android.support.annotation.NonNull;
-
 public abstract class StateVerifier {
     private static final boolean DEBUG = false;
 
@@ -10,7 +8,6 @@ public abstract class StateVerifier {
 
     public abstract void throwIfRecycled();
 
-    @NonNull
     public static StateVerifier newInstance() {
         return new DefaultStateVerifier();
     }

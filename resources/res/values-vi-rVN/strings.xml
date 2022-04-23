@@ -17,6 +17,12 @@
     <string name="audi_set_temp_unit">Đơn vị nhiệt độ</string>
     <string name="bc_apps_btn_text">Ứng dụng khác</string>
     <string name="benz_gs_home_navi">Điều hướng</string>
+    <string name="benz_mbux_2021_bg_sel_tip">Màu nền</string>
+    <string name="benz_mbux_2021_img_sel_tip">Biểu tượng</string>
+    <string name="benz_mbux_2021_style_classical_tip">cổ điển</string>
+    <string name="benz_mbux_2021_style_modern_tip">Hiện đại</string>
+    <string name="benz_mbux_2021_theme_settings">Thiết lập sắc thái</string>
+    <string name="benz_ntg6_fy_theme_settings">Chủ đề</string>
     <string name="boot_record_mode">Ghi nhớ Chế độ cuối cùng</string>
     <string name="boot_record_mode_radio1">Kích hoạt</string>
     <string name="boot_record_mode_radio2">Hệ thống OEM</string>
@@ -68,6 +74,9 @@
     <string name="factory_danwei">Lựa chọn thiết bị</string>
     <string name="factory_danwei1">Tự động</string>
     <string name="factory_danwei2">Hướng dẫn</string>
+    <string name="factory_gears1">Loại bánh răng 1</string>
+    <string name="factory_gears2">Loại bánh răng 2</string>
+    <string name="factory_gears3">Loại bánh răng 3</string>
     <string name="factory_input1">Nhập từ thư mục OEM của bộ lưu trữ ngoài Factory_config.xml</string>
     <string name="factory_input2">Phiên bản hồ sơ</string>
     <string name="factory_input3">Nhập cấu hình</string>
@@ -92,6 +101,8 @@
     <string name="factory_yuyinkey2">Bấm nhanh vô dụng press Bấm dài có nghĩa là NAVI</string>
     <string name="factory_yuyinkey3">Bấm nhanh có nghĩa là VOICE press Bấm dài có nghĩa là NAVI</string>
     <string name="factory_yuyinkey4">Bấm nhanh có nghĩa là NAVI press Bấm lâu vô dụng</string>
+    <string name="factory_yuyinkey5">HiCar giọng nói phím</string>
+    <string name="fuel_unit">Đơn vị nhiên liệu</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>
@@ -134,12 +145,13 @@
     <string name="id6_phone">Điện thoại</string>
     <string name="id6_phone_mess">Thực hiện cuộc gọi</string>
     <string name="id6_setting_mess">Cài đặt chức năng hệ thống</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">Hỗ trợ kết nối điện thoại</string>
     <string name="id6_xingchejily_mess">Quay video lái xe</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">THỂ THAO</string>
     <string name="id7_als_item_two">HOÀN TOÀN</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">Hệ thống</string>
     <string name="item2">Điều hướng</string>
     <string name="item3">Âm lượng</string>
@@ -174,8 +186,14 @@
     <string name="ksw_idf7_unknow_artis">Nghệ sĩ không xác định</string>
     <string name="ksw_idf7_unkonw_album">Album không xác định</string>
     <string name="ksw_idf7_unkonw_soung">Bài hát không xác định</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Lỗi mật khẩu!</string>
     <string name="mcu_file_corrupted">Nâng cấp tệp bị hỏng!</string>
+    <string name="mic_text">MIC Thu được</string>
+    <string name="music_app_sel">Chọn một ứng dụng âm nhạc</string>
     <string name="ntg6_dvr_toast">Không có thiết bị!</string>
     <string name="oil_size">dầu: %s</string>
     <string name="raw_car_text1">hiển thị toàn màn hình</string>
@@ -196,6 +214,7 @@
     <string name="set_text7">Tắt tiếng</string>
     <string name="set_text8">Tỷ lệ trộn điều hướng</string>
     <string name="set_text9">Lựa chọn ứng dụng Navi</string>
+    <string name="set_text99">Lựa chọn ứng dụng Navi</string>
     <string name="seven_color_menu_item_text1">Đỏ</string>
     <string name="seven_color_menu_item_text2">Orange</string>
     <string name="seven_color_menu_item_text3">Vàng</string>
@@ -255,6 +274,7 @@
     <string name="update_mcu_file">Bạn có muốn nâng cấp MCU không?</string>
     <string name="update_reset_all">Bạn có muốn khôi phục cài đặt gốc không?</string>
     <string name="video">Video</string>
+    <string name="video_app_sel">Chọn ứng dụng video</string>
     <string name="voic_1">Âm lượng chế độ Android</string>
     <string name="voic_2">Phương tiện</string>
     <string name="voic_3">Gọi</string>

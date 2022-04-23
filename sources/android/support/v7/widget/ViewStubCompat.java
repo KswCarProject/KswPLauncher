@@ -1,10 +1,8 @@
 package android.support.v7.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.support.annotation.RestrictTo;
 import android.support.v7.appcompat.R;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import java.lang.ref.WeakReference;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public final class ViewStubCompat extends View {
     private OnInflateListener mInflateListener;
     private int mInflatedId;
@@ -70,7 +67,6 @@ public final class ViewStubCompat extends View {
         setMeasuredDimension(0, 0);
     }
 
-    @SuppressLint({"MissingSuperCall"})
     public void draw(Canvas canvas) {
     }
 
@@ -79,8 +75,9 @@ public final class ViewStubCompat extends View {
     }
 
     public void setVisibility(int visibility) {
-        if (this.mInflatedViewRef != null) {
-            View view = (View) this.mInflatedViewRef.get();
+        WeakReference<View> weakReference = this.mInflatedViewRef;
+        if (weakReference != null) {
+            View view = (View) weakReference.get();
             if (view != null) {
                 view.setVisibility(visibility);
                 return;
@@ -106,8 +103,9 @@ public final class ViewStubCompat extends View {
                 factory = LayoutInflater.from(getContext());
             }
             View view = factory.inflate(this.mLayoutResource, parent, false);
-            if (this.mInflatedId != -1) {
-                view.setId(this.mInflatedId);
+            int i = this.mInflatedId;
+            if (i != -1) {
+                view.setId(i);
             }
             int index = parent.indexOfChild(this);
             parent.removeViewInLayout(this);
@@ -118,8 +116,9 @@ public final class ViewStubCompat extends View {
                 parent.addView(view, index);
             }
             this.mInflatedViewRef = new WeakReference<>(view);
-            if (this.mInflateListener != null) {
-                this.mInflateListener.onInflate(this, view);
+            OnInflateListener onInflateListener = this.mInflateListener;
+            if (onInflateListener != null) {
+                onInflateListener.onInflate(this, view);
             }
             return view;
         } else {

@@ -1,7 +1,6 @@
 package com.wits.ksw.settings.id6.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,12 +32,11 @@ public class ID6LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.type = type2;
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.list_id6_settings_language, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tv_functionItem.setText(this.data.get(position).getTitle());
         if (this.type == 0) {
             holder.tv_functionItem.setEnabled(true);
@@ -62,16 +60,17 @@ public class ID6LanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.data == null) {
+        List<FunctionBean> list = this.data;
+        if (list == null) {
             return 0;
         }
-        return this.data.size();
+        return list.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         RadioButton tv_functionItem;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             this.tv_functionItem = (RadioButton) itemView.findViewById(R.id.tv_functionItem);
         }

@@ -1,7 +1,5 @@
 package com.bumptech.glide.load.data;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.Log;
 import com.bumptech.glide.Priority;
@@ -19,7 +17,6 @@ import java.net.URL;
 import java.util.Map;
 
 public class HttpUrlFetcher implements DataFetcher<InputStream> {
-    @VisibleForTesting
     static final HttpUrlConnectionFactory DEFAULT_CONNECTION_FACTORY = new DefaultHttpUrlConnectionFactory();
     private static final int INVALID_STATUS_CODE = -1;
     private static final int MAXIMUM_REDIRECTS = 5;
@@ -39,25 +36,20 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
         this(glideUrl2, timeout2, DEFAULT_CONNECTION_FACTORY);
     }
 
-    @VisibleForTesting
     HttpUrlFetcher(GlideUrl glideUrl2, int timeout2, HttpUrlConnectionFactory connectionFactory2) {
         this.glideUrl = glideUrl2;
         this.timeout = timeout2;
         this.connectionFactory = connectionFactory2;
     }
 
-    public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super InputStream> callback) {
+    public void loadData(Priority priority, DataFetcher.DataCallback<? super InputStream> callback) {
         StringBuilder sb;
-        String str;
         long startTime = LogTime.getLogTime();
         try {
             callback.onDataReady(loadDataWithRedirects(this.glideUrl.toURL(), 0, (URL) null, this.glideUrl.getHeaders()));
             if (Log.isLoggable(TAG, 2)) {
-                str = TAG;
                 sb = new StringBuilder();
-                sb.append("Finished http url fetcher fetch in ");
-                sb.append(LogTime.getElapsedMillis(startTime));
-                Log.v(str, sb.toString());
+                Log.v(TAG, sb.append("Finished http url fetcher fetch in ").append(LogTime.getElapsedMillis(startTime)).toString());
             }
         } catch (IOException e) {
             if (Log.isLoggable(TAG, 3)) {
@@ -65,7 +57,6 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
             }
             callback.onLoadFailed(e);
             if (Log.isLoggable(TAG, 2)) {
-                str = TAG;
                 sb = new StringBuilder();
             }
         } catch (Throwable th) {
@@ -143,14 +134,16 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
     }
 
     public void cleanup() {
-        if (this.stream != null) {
+        InputStream inputStream = this.stream;
+        if (inputStream != null) {
             try {
-                this.stream.close();
+                inputStream.close();
             } catch (IOException e) {
             }
         }
-        if (this.urlConnection != null) {
-            this.urlConnection.disconnect();
+        HttpURLConnection httpURLConnection = this.urlConnection;
+        if (httpURLConnection != null) {
+            httpURLConnection.disconnect();
         }
         this.urlConnection = null;
     }
@@ -159,12 +152,10 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
         this.isCancelled = true;
     }
 
-    @NonNull
     public Class<InputStream> getDataClass() {
         return InputStream.class;
     }
 
-    @NonNull
     public DataSource getDataSource() {
         return DataSource.REMOTE;
     }

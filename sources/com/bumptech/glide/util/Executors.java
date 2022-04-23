@@ -2,22 +2,20 @@ package com.bumptech.glide.util;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public final class Executors {
     private static final Executor DIRECT_EXECUTOR = new Executor() {
-        public void execute(@NonNull Runnable command) {
+        public void execute(Runnable command) {
             command.run();
         }
     };
     private static final Executor MAIN_THREAD_EXECUTOR = new Executor() {
         private final Handler handler = new Handler(Looper.getMainLooper());
 
-        public void execute(@NonNull Runnable command) {
+        public void execute(Runnable command) {
             this.handler.post(command);
         }
     };
@@ -33,7 +31,6 @@ public final class Executors {
         return DIRECT_EXECUTOR;
     }
 
-    @VisibleForTesting
     public static void shutdownAndAwaitTermination(ExecutorService pool) {
         pool.shutdownNow();
         try {

@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -77,7 +75,6 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
         }
     };
     Handler handlerUI = new Handler() {
-        @RequiresApi(api = 24)
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             ID6SettingsActivity.this.initOneLayout();
@@ -119,8 +116,7 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     private String voiceData;
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_id6_settings);
         initData();
@@ -160,9 +156,9 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
         Log.d("id6startAction", "===data====:" + this.voiceData);
         this.data = new ArrayList();
         String[] functions = getResources().getStringArray(R.array.set_id6_function);
-        for (int i = 0; i < functions.length; i++) {
+        for (String title : functions) {
             FunctionBean fcb = new FunctionBean();
-            fcb.setTitle(functions[i]);
+            fcb.setTitle(title);
             this.data.add(fcb);
         }
         this.data.get(0).setIscheck(true);
@@ -178,7 +174,6 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void initShowLayout() {
         if (this.id6ShowSystemSet == null) {
             this.id6ShowSystemSet = new ID6ShowSystemSet(this);
@@ -205,7 +200,6 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void initOneLayout() {
         if (this.id6NaviLayout == null) {
             this.id6NaviLayout = new ID6NaviLayout(this, ScanNaviList.getInstance().getMapList());
@@ -213,8 +207,9 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
         if (this.id6SetSystemLayout == null) {
             this.id6SetSystemLayout = new ID6SetSystemLayout(this);
         }
-        if (this.id6SetSystemLayout != null) {
-            this.id6SetSystemLayout.registIUpdateTwoLayout(this);
+        ID6SetSystemLayout iD6SetSystemLayout = this.id6SetSystemLayout;
+        if (iD6SetSystemLayout != null) {
+            iD6SetSystemLayout.registIUpdateTwoLayout(this);
         }
         if (this.id6SetVoiceLayout == null) {
             this.id6SetVoiceLayout = new ID6SetVoiceLayout(this);
@@ -246,50 +241,52 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
         this.relat_One = (RelativeLayout) findViewById(R.id.relat_One);
         this.img_Back = (ImageView) findViewById(R.id.img_Back);
         this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        this.layoutManager = new LinearLayoutManager(this);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
-        this.adapter = new ID6FunctionAdapter(this, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        ID6FunctionAdapter iD6FunctionAdapter = new ID6FunctionAdapter(this, this.data);
+        this.adapter = iD6FunctionAdapter;
+        this.recyclerView.setAdapter(iD6FunctionAdapter);
         this.adapter.registOnFunctionClickListener(new ID6FunctionAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 ID6SettingsActivity.this.funCheckLayout(pos);
             }
 
-            @RequiresApi(api = 24)
             public void funSwitImage(int pos) {
                 ID6SettingsActivity.this.fousceLayout(pos);
             }
         });
         this.img_Back.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = 24)
             public void onClick(View v) {
                 ID6SettingsActivity.this.onBackPressed();
             }
         });
     }
 
-    @RequiresApi(api = 24)
     private void updateView() {
-        if (this.id6ShowSystemSet != null) {
-            this.id6ShowSystemSet.updateView();
+        ID6ShowSystemSet iD6ShowSystemSet = this.id6ShowSystemSet;
+        if (iD6ShowSystemSet != null) {
+            iD6ShowSystemSet.updateView();
         }
-        if (this.id6ShowVoiceSet != null) {
-            this.id6ShowVoiceSet.updateView();
+        ID6ShowVoiceSet iD6ShowVoiceSet = this.id6ShowVoiceSet;
+        if (iD6ShowVoiceSet != null) {
+            iD6ShowVoiceSet.updateView();
         }
-        if (this.id6ShowVoiceModel != null) {
-            this.id6ShowVoiceModel.updateView();
+        ID6ShowVoiceModel iD6ShowVoiceModel = this.id6ShowVoiceModel;
+        if (iD6ShowVoiceModel != null) {
+            iD6ShowVoiceModel.updateView();
         }
-        if (this.id6ShowLanguageLayout != null) {
-            this.id6ShowLanguageLayout.updateView();
+        ID6ShowLanguageLayout iD6ShowLanguageLayout = this.id6ShowLanguageLayout;
+        if (iD6ShowLanguageLayout != null) {
+            iD6ShowLanguageLayout.updateView();
         }
-        if (this.id6ShowNavi != null) {
-            this.id6ShowNavi.onUpdateView();
+        ID6ShowNavi iD6ShowNavi = this.id6ShowNavi;
+        if (iD6ShowNavi != null) {
+            iD6ShowNavi.onUpdateView();
         }
     }
 
-    @RequiresApi(api = 24)
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == 1 && event.getKeyCode() == 21) {
             Log.d("id6DisPatch", "====send code 21 is back======");
@@ -298,13 +295,13 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
         return super.dispatchKeyEvent(event);
     }
 
-    @RequiresApi(api = 24)
     public void onBackPressed() {
-        if (!this.isCheckTwo && !this.isCheckThree) {
+        boolean z = this.isCheckTwo;
+        if (!z && !this.isCheckThree) {
             super.onBackPressed();
         } else if (this.isCheckThree) {
             checkViewTwo();
-        } else if (this.isCheckTwo) {
+        } else if (z) {
             checkView();
         }
         updateView();
@@ -340,7 +337,6 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void fousceLayout(int pos) {
         this.relat_Show.removeAllViews();
         switch (pos) {
@@ -398,7 +394,6 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void funCheckLayout(int pos) {
         checkView();
         this.relat_One.removeAllViews();
@@ -504,12 +499,16 @@ public class ID6SettingsActivity extends BaseActivity implements IUpdateTwoLayou
     public void updateTwoLayout(int type, int shwoIndex) {
         checkViewTwo();
         this.relat_Two.removeAllViews();
-        if (type == 1) {
-            if (this.id6SetSystemTwo == null) {
-                this.id6SetSystemTwo = new ID6SetSystemTwo(this);
-            }
-            this.relat_Two.addView(this.id6SetSystemTwo);
-            this.id6SetSystemTwo.showLayout(shwoIndex);
+        switch (type) {
+            case 1:
+                if (this.id6SetSystemTwo == null) {
+                    this.id6SetSystemTwo = new ID6SetSystemTwo(this);
+                }
+                this.id6SetSystemTwo.showLayout(shwoIndex);
+                this.relat_Two.addView(this.id6SetSystemTwo);
+                return;
+            default:
+                return;
         }
     }
 

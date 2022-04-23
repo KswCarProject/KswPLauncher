@@ -105,7 +105,8 @@ public class SystemStatus {
         if (this.lastMode != systemStatus.lastMode) {
             keys.add("lastMode");
         }
-        if (systemStatus.topApp != null && !systemStatus.topApp.equals(this.topApp)) {
+        String str = systemStatus.topApp;
+        if (str != null && !str.equals(this.topApp)) {
             keys.add("topApp");
         }
         return keys;
@@ -212,6 +213,7 @@ public class SystemStatus {
     }
 
     public boolean isAcc() {
-        return this.acc == 2 || this.acc == 1;
+        int i = this.acc;
+        return i == 2 || i == 1;
     }
 }

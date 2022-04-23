@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/KSW_A4L_right_show_logo" android:tag="layout/audi_mib3_right_logo_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/KSW_you_audi" android:background="@drawable/audi_right_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="76dp" android:layout_alignParentRight="true" android:layout_centerVertical="true"/>
+</RelativeLayout>

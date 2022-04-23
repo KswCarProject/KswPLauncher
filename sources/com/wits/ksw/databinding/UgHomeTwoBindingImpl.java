@@ -2,27 +2,20 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback168;
-    @Nullable
-    private final View.OnClickListener mCallback169;
-    @Nullable
-    private final View.OnClickListener mCallback170;
+    private final View.OnClickListener mCallback28;
+    private final View.OnClickListener mCallback29;
+    private final View.OnClickListener mCallback30;
     private long mDirtyFlags;
 
-    public UgHomeTwoBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public UgHomeTwoBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -34,9 +27,9 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         this.ugHomeEasyVaiw.setTag((Object) null);
         this.ugHomeHdvideoVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback168 = new OnClickListener(this, 1);
-        this.mCallback169 = new OnClickListener(this, 2);
-        this.mCallback170 = new OnClickListener(this, 3);
+        this.mCallback28 = new OnClickListener(this, 1);
+        this.mCallback30 = new OnClickListener(this, 3);
+        this.mCallback29 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -56,20 +49,20 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(19);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
@@ -87,29 +80,29 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeAppVaiw.setOnClickListener(this.mCallback170);
-            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback169);
-            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback168);
+            this.ugHomeAppVaiw.setOnClickListener(this.mCallback30);
+            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback29);
+            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback28);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = false;
+        boolean viewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
-                    viewModel.openVideo(callbackArg_0);
+                    viewModel.openVideoMulti(callbackArg_0);
                     return;
                 }
                 return;
             case 2:
                 LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel2 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openShouJiHuLian(callbackArg_0);
@@ -118,8 +111,8 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
                 return;
             case 3:
                 LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel3 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openApps(callbackArg_0);

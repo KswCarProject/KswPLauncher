@@ -1,17 +1,9 @@
 package android.support.v4.text;
 
 import android.os.Build;
-import android.support.annotation.GuardedBy;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.UiThread;
 import android.support.v4.os.TraceCompat;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v4.util.Preconditions;
-import android.support.v7.widget.ActivityChooserView;
 import android.text.Layout;
 import android.text.PrecomputedText;
 import android.text.Spannable;
@@ -31,36 +23,27 @@ import java.util.concurrent.FutureTask;
 
 public class PrecomputedTextCompat implements Spannable {
     private static final char LINE_FEED = '\n';
-    @GuardedBy("sLock")
-    @NonNull
     private static Executor sExecutor = null;
     private static final Object sLock = new Object();
-    @NonNull
     private final int[] mParagraphEnds;
-    @NonNull
     private final Params mParams;
-    @NonNull
     private final Spannable mText;
-    @Nullable
     private final PrecomputedText mWrapped;
 
     public static final class Params {
         private final int mBreakStrategy;
         private final int mHyphenationFrequency;
-        @NonNull
         private final TextPaint mPaint;
-        @Nullable
         private final TextDirectionHeuristic mTextDir;
         final PrecomputedText.Params mWrapped;
 
         public static class Builder {
             private int mBreakStrategy;
             private int mHyphenationFrequency;
-            @NonNull
             private final TextPaint mPaint;
             private TextDirectionHeuristic mTextDir;
 
-            public Builder(@NonNull TextPaint paint) {
+            public Builder(TextPaint paint) {
                 this.mPaint = paint;
                 if (Build.VERSION.SDK_INT >= 23) {
                     this.mBreakStrategy = 1;
@@ -76,31 +59,27 @@ public class PrecomputedTextCompat implements Spannable {
                 }
             }
 
-            @RequiresApi(23)
             public Builder setBreakStrategy(int strategy) {
                 this.mBreakStrategy = strategy;
                 return this;
             }
 
-            @RequiresApi(23)
             public Builder setHyphenationFrequency(int frequency) {
                 this.mHyphenationFrequency = frequency;
                 return this;
             }
 
-            @RequiresApi(18)
-            public Builder setTextDirection(@NonNull TextDirectionHeuristic textDir) {
+            public Builder setTextDirection(TextDirectionHeuristic textDir) {
                 this.mTextDir = textDir;
                 return this;
             }
 
-            @NonNull
             public Params build() {
                 return new Params(this.mPaint, this.mTextDir, this.mBreakStrategy, this.mHyphenationFrequency);
             }
         }
 
-        Params(@NonNull TextPaint paint, @NonNull TextDirectionHeuristic textDir, int strategy, int frequency) {
+        Params(TextPaint paint, TextDirectionHeuristic textDir, int strategy, int frequency) {
             if (Build.VERSION.SDK_INT >= 28) {
                 this.mWrapped = new PrecomputedText.Params.Builder(paint).setBreakStrategy(strategy).setHyphenationFrequency(frequency).setTextDirection(textDir).build();
             } else {
@@ -112,8 +91,7 @@ public class PrecomputedTextCompat implements Spannable {
             this.mHyphenationFrequency = frequency;
         }
 
-        @RequiresApi(28)
-        public Params(@NonNull PrecomputedText.Params wrapped) {
+        public Params(PrecomputedText.Params wrapped) {
             this.mPaint = wrapped.getTextPaint();
             this.mTextDir = wrapped.getTextDirection();
             this.mBreakStrategy = wrapped.getBreakStrategy();
@@ -121,28 +99,23 @@ public class PrecomputedTextCompat implements Spannable {
             this.mWrapped = wrapped;
         }
 
-        @NonNull
         public TextPaint getTextPaint() {
             return this.mPaint;
         }
 
-        @Nullable
-        @RequiresApi(18)
         public TextDirectionHeuristic getTextDirection() {
             return this.mTextDir;
         }
 
-        @RequiresApi(23)
         public int getBreakStrategy() {
             return this.mBreakStrategy;
         }
 
-        @RequiresApi(23)
         public int getHyphenationFrequency() {
             return this.mHyphenationFrequency;
         }
 
-        public boolean equals(@Nullable Object o) {
+        public boolean equals(Object o) {
             if (o == this) {
                 return true;
             }
@@ -150,8 +123,9 @@ public class PrecomputedTextCompat implements Spannable {
                 return false;
             }
             Params other = (Params) o;
-            if (this.mWrapped != null) {
-                return this.mWrapped.equals(other.mWrapped);
+            PrecomputedText.Params params = this.mWrapped;
+            if (params != null) {
+                return params.equals(other.mWrapped);
             }
             if (Build.VERSION.SDK_INT >= 23 && (this.mBreakStrategy != other.getBreakStrategy() || this.mHyphenationFrequency != other.getHyphenationFrequency())) {
                 return false;
@@ -219,7 +193,7 @@ public class PrecomputedTextCompat implements Spannable {
         }
     }
 
-    public static PrecomputedTextCompat create(@NonNull CharSequence text, @NonNull Params params) {
+    public static PrecomputedTextCompat create(CharSequence text, Params params) {
         int paraEnd;
         Preconditions.checkNotNull(text);
         Preconditions.checkNotNull(params);
@@ -246,9 +220,9 @@ public class PrecomputedTextCompat implements Spannable {
                 result[i] = ends.get(i).intValue();
             }
             if (Build.VERSION.SDK_INT >= 23) {
-                StaticLayout.Builder.obtain(text, 0, text.length(), params.getTextPaint(), ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED).setBreakStrategy(params.getBreakStrategy()).setHyphenationFrequency(params.getHyphenationFrequency()).setTextDirection(params.getTextDirection()).build();
+                StaticLayout.Builder.obtain(text, 0, text.length(), params.getTextPaint(), Integer.MAX_VALUE).setBreakStrategy(params.getBreakStrategy()).setHyphenationFrequency(params.getHyphenationFrequency()).setTextDirection(params.getTextDirection()).build();
             } else if (Build.VERSION.SDK_INT >= 21) {
-                new StaticLayout(text, params.getTextPaint(), ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+                new StaticLayout(text, params.getTextPaint(), Integer.MAX_VALUE, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
             }
             PrecomputedTextCompat precomputedTextCompat = new PrecomputedTextCompat(text, params, result);
             TraceCompat.endSection();
@@ -258,37 +232,32 @@ public class PrecomputedTextCompat implements Spannable {
         }
     }
 
-    private PrecomputedTextCompat(@NonNull CharSequence text, @NonNull Params params, @NonNull int[] paraEnds) {
+    private PrecomputedTextCompat(CharSequence text, Params params, int[] paraEnds) {
         this.mText = new SpannableString(text);
         this.mParams = params;
         this.mParagraphEnds = paraEnds;
         this.mWrapped = null;
     }
 
-    @RequiresApi(28)
-    private PrecomputedTextCompat(@NonNull PrecomputedText precomputed, @NonNull Params params) {
+    private PrecomputedTextCompat(PrecomputedText precomputed, Params params) {
         this.mText = precomputed;
         this.mParams = params;
         this.mParagraphEnds = null;
         this.mWrapped = precomputed;
     }
 
-    @Nullable
-    @RequiresApi(28)
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public PrecomputedText getPrecomputedText() {
-        if (this.mText instanceof PrecomputedText) {
-            return (PrecomputedText) this.mText;
+        Spannable spannable = this.mText;
+        if (spannable instanceof PrecomputedText) {
+            return (PrecomputedText) spannable;
         }
         return null;
     }
 
-    @NonNull
     public Params getParams() {
         return this.mParams;
     }
 
-    @IntRange(from = 0)
     public int getParagraphCount() {
         if (Build.VERSION.SDK_INT >= 28) {
             return this.mWrapped.getParagraphCount();
@@ -296,8 +265,7 @@ public class PrecomputedTextCompat implements Spannable {
         return this.mParagraphEnds.length;
     }
 
-    @IntRange(from = 0)
-    public int getParagraphStart(@IntRange(from = 0) int paraIndex) {
+    public int getParagraphStart(int paraIndex) {
         Preconditions.checkArgumentInRange(paraIndex, 0, getParagraphCount(), "paraIndex");
         if (Build.VERSION.SDK_INT >= 28) {
             return this.mWrapped.getParagraphStart(paraIndex);
@@ -308,8 +276,7 @@ public class PrecomputedTextCompat implements Spannable {
         return this.mParagraphEnds[paraIndex - 1];
     }
 
-    @IntRange(from = 0)
-    public int getParagraphEnd(@IntRange(from = 0) int paraIndex) {
+    public int getParagraphEnd(int paraIndex) {
         Preconditions.checkArgumentInRange(paraIndex, 0, getParagraphCount(), "paraIndex");
         if (Build.VERSION.SDK_INT >= 28) {
             return this.mWrapped.getParagraphEnd(paraIndex);
@@ -317,13 +284,20 @@ public class PrecomputedTextCompat implements Spannable {
         return this.mParagraphEnds[paraIndex];
     }
 
-    private int findParaIndex(@IntRange(from = 0) int pos) {
-        for (int i = 0; i < this.mParagraphEnds.length; i++) {
-            if (pos < this.mParagraphEnds[i]) {
+    private int findParaIndex(int pos) {
+        int i = 0;
+        while (true) {
+            int[] iArr = this.mParagraphEnds;
+            if (i >= iArr.length) {
+                StringBuilder append = new StringBuilder().append("pos must be less than ");
+                int[] iArr2 = this.mParagraphEnds;
+                throw new IndexOutOfBoundsException(append.append(iArr2[iArr2.length - 1]).append(", gave ").append(pos).toString());
+            } else if (pos < iArr[i]) {
                 return i;
+            } else {
+                i++;
             }
         }
-        throw new IndexOutOfBoundsException("pos must be less than " + this.mParagraphEnds[this.mParagraphEnds.length - 1] + ", gave " + pos);
     }
 
     private static class PrecomputedTextFutureTask extends FutureTask<PrecomputedTextCompat> {
@@ -332,7 +306,7 @@ public class PrecomputedTextCompat implements Spannable {
             private Params mParams;
             private CharSequence mText;
 
-            PrecomputedTextCallback(@NonNull Params params, @NonNull CharSequence cs) {
+            PrecomputedTextCallback(Params params, CharSequence cs) {
                 this.mParams = params;
                 this.mText = cs;
             }
@@ -342,13 +316,12 @@ public class PrecomputedTextCompat implements Spannable {
             }
         }
 
-        PrecomputedTextFutureTask(@NonNull Params params, @NonNull CharSequence text) {
+        PrecomputedTextFutureTask(Params params, CharSequence text) {
             super(new PrecomputedTextCallback(params, text));
         }
     }
 
-    @UiThread
-    public static Future<PrecomputedTextCompat> getTextFuture(@NonNull CharSequence charSequence, @NonNull Params params, @Nullable Executor executor) {
+    public static Future<PrecomputedTextCompat> getTextFuture(CharSequence charSequence, Params params, Executor executor) {
         PrecomputedTextFutureTask task = new PrecomputedTextFutureTask(params, charSequence);
         if (executor == null) {
             synchronized (sLock) {

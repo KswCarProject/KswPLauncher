@@ -1,7 +1,5 @@
 package android.support.v7.widget;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -26,11 +24,11 @@ public abstract class SimpleItemAnimator extends RecyclerView.ItemAnimator {
         this.mSupportsChangeAnimations = supportsChangeAnimations;
     }
 
-    public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
+    public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
         return !this.mSupportsChangeAnimations || viewHolder.isInvalid();
     }
 
-    public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo preLayoutInfo, @Nullable RecyclerView.ItemAnimator.ItemHolderInfo postLayoutInfo) {
+    public boolean animateDisappearance(RecyclerView.ViewHolder viewHolder, RecyclerView.ItemAnimator.ItemHolderInfo preLayoutInfo, RecyclerView.ItemAnimator.ItemHolderInfo postLayoutInfo) {
         int oldLeft = preLayoutInfo.left;
         int oldTop = preLayoutInfo.top;
         View disappearingItemView = viewHolder.itemView;
@@ -43,14 +41,14 @@ public abstract class SimpleItemAnimator extends RecyclerView.ItemAnimator {
         return animateMove(viewHolder, oldLeft, oldTop, newLeft, newTop);
     }
 
-    public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable RecyclerView.ItemAnimator.ItemHolderInfo preLayoutInfo, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo postLayoutInfo) {
+    public boolean animateAppearance(RecyclerView.ViewHolder viewHolder, RecyclerView.ItemAnimator.ItemHolderInfo preLayoutInfo, RecyclerView.ItemAnimator.ItemHolderInfo postLayoutInfo) {
         if (preLayoutInfo == null || (preLayoutInfo.left == postLayoutInfo.left && preLayoutInfo.top == postLayoutInfo.top)) {
             return animateAdd(viewHolder);
         }
         return animateMove(viewHolder, preLayoutInfo.left, preLayoutInfo.top, postLayoutInfo.left, postLayoutInfo.top);
     }
 
-    public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo preInfo, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo postInfo) {
+    public boolean animatePersistence(RecyclerView.ViewHolder viewHolder, RecyclerView.ItemAnimator.ItemHolderInfo preInfo, RecyclerView.ItemAnimator.ItemHolderInfo postInfo) {
         if (preInfo.left == postInfo.left && preInfo.top == postInfo.top) {
             dispatchMoveFinished(viewHolder);
             return false;
@@ -58,9 +56,9 @@ public abstract class SimpleItemAnimator extends RecyclerView.ItemAnimator {
         return animateMove(viewHolder, preInfo.left, preInfo.top, postInfo.left, postInfo.top);
     }
 
-    public boolean animateChange(@NonNull RecyclerView.ViewHolder oldHolder, @NonNull RecyclerView.ViewHolder newHolder, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo preInfo, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo postInfo) {
-        int toLeft;
+    public boolean animateChange(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder, RecyclerView.ItemAnimator.ItemHolderInfo preInfo, RecyclerView.ItemAnimator.ItemHolderInfo postInfo) {
         int toTop;
+        int toLeft;
         int fromLeft = preInfo.left;
         int fromTop = preInfo.top;
         if (newHolder.shouldIgnore()) {

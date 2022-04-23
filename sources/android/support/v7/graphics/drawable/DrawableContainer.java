@@ -1,7 +1,5 @@
 package android.support.v7.graphics.drawable;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -12,14 +10,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.SparseArray;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class DrawableContainer extends Drawable implements Drawable.Callback {
     private static final boolean DEBUG = false;
     private static final boolean DEFAULT_DITHER = true;
@@ -41,12 +34,14 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
     DrawableContainer() {
     }
 
-    public void draw(@NonNull Canvas canvas) {
-        if (this.mCurrDrawable != null) {
-            this.mCurrDrawable.draw(canvas);
+    public void draw(Canvas canvas) {
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            drawable.draw(canvas);
         }
-        if (this.mLastDrawable != null) {
-            this.mLastDrawable.draw(canvas);
+        Drawable drawable2 = this.mLastDrawable;
+        if (drawable2 != null) {
+            drawable2.draw(canvas);
         }
     }
 
@@ -54,8 +49,6 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         return super.getChangingConfigurations() | this.mDrawableContainerState.getChangingConfigurations();
     }
 
-    @SuppressLint({"WrongConstant"})
-    @TargetApi(23)
     private boolean needsMirroring() {
         if (!isAutoMirrored() || getLayoutDirection() != 1) {
             return false;
@@ -63,16 +56,19 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         return DEFAULT_DITHER;
     }
 
-    public boolean getPadding(@NonNull Rect padding) {
+    public boolean getPadding(Rect padding) {
         boolean result;
         Rect r = this.mDrawableContainerState.getConstantPadding();
         if (r != null) {
             padding.set(r);
             result = (((r.left | r.top) | r.bottom) | r.right) != 0 ? DEFAULT_DITHER : false;
-        } else if (this.mCurrDrawable != null) {
-            result = this.mCurrDrawable.getPadding(padding);
         } else {
-            result = super.getPadding(padding);
+            Drawable drawable = this.mCurrDrawable;
+            if (drawable != null) {
+                result = drawable.getPadding(padding);
+            } else {
+                result = super.getPadding(padding);
+            }
         }
         if (needsMirroring()) {
             int left = padding.left;
@@ -82,10 +78,10 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         return result;
     }
 
-    @RequiresApi(21)
-    public void getOutline(@NonNull Outline outline) {
-        if (this.mCurrDrawable != null) {
-            this.mCurrDrawable.getOutline(outline);
+    public void getOutline(Outline outline) {
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            drawable.getOutline(outline);
         }
     }
 
@@ -93,11 +89,12 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         if (!this.mHasAlpha || this.mAlpha != alpha) {
             this.mHasAlpha = DEFAULT_DITHER;
             this.mAlpha = alpha;
-            if (this.mCurrDrawable == null) {
+            Drawable drawable = this.mCurrDrawable;
+            if (drawable == null) {
                 return;
             }
             if (this.mEnterAnimationEnd == 0) {
-                this.mCurrDrawable.setAlpha(alpha);
+                drawable.setAlpha(alpha);
             } else {
                 animate(false);
             }
@@ -111,8 +108,9 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
     public void setDither(boolean dither) {
         if (this.mDrawableContainerState.mDither != dither) {
             this.mDrawableContainerState.mDither = dither;
-            if (this.mCurrDrawable != null) {
-                this.mCurrDrawable.setDither(this.mDrawableContainerState.mDither);
+            Drawable drawable = this.mCurrDrawable;
+            if (drawable != null) {
+                drawable.setDither(this.mDrawableContainerState.mDither);
             }
         }
     }
@@ -121,8 +119,9 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         this.mDrawableContainerState.mHasColorFilter = DEFAULT_DITHER;
         if (this.mDrawableContainerState.mColorFilter != colorFilter) {
             this.mDrawableContainerState.mColorFilter = colorFilter;
-            if (this.mCurrDrawable != null) {
-                this.mCurrDrawable.setColorFilter(colorFilter);
+            Drawable drawable = this.mCurrDrawable;
+            if (drawable != null) {
+                drawable.setColorFilter(colorFilter);
             }
         }
     }
@@ -135,7 +134,7 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         }
     }
 
-    public void setTintMode(@NonNull PorterDuff.Mode tintMode) {
+    public void setTintMode(PorterDuff.Mode tintMode) {
         this.mDrawableContainerState.mHasTintMode = DEFAULT_DITHER;
         if (this.mDrawableContainerState.mTintMode != tintMode) {
             this.mDrawableContainerState.mTintMode = tintMode;
@@ -153,11 +152,13 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
 
     /* access modifiers changed from: protected */
     public void onBoundsChange(Rect bounds) {
-        if (this.mLastDrawable != null) {
-            this.mLastDrawable.setBounds(bounds);
+        Drawable drawable = this.mLastDrawable;
+        if (drawable != null) {
+            drawable.setBounds(bounds);
         }
-        if (this.mCurrDrawable != null) {
-            this.mCurrDrawable.setBounds(bounds);
+        Drawable drawable2 = this.mCurrDrawable;
+        if (drawable2 != null) {
+            drawable2.setBounds(bounds);
         }
     }
 
@@ -168,8 +169,9 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
     public void setAutoMirrored(boolean mirrored) {
         if (this.mDrawableContainerState.mAutoMirrored != mirrored) {
             this.mDrawableContainerState.mAutoMirrored = mirrored;
-            if (this.mCurrDrawable != null) {
-                DrawableCompat.setAutoMirrored(this.mCurrDrawable, this.mDrawableContainerState.mAutoMirrored);
+            Drawable drawable = this.mCurrDrawable;
+            if (drawable != null) {
+                DrawableCompat.setAutoMirrored(drawable, this.mDrawableContainerState.mAutoMirrored);
             }
         }
     }
@@ -180,14 +182,16 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
 
     public void jumpToCurrentState() {
         boolean changed = false;
-        if (this.mLastDrawable != null) {
-            this.mLastDrawable.jumpToCurrentState();
+        Drawable drawable = this.mLastDrawable;
+        if (drawable != null) {
+            drawable.jumpToCurrentState();
             this.mLastDrawable = null;
             this.mLastIndex = -1;
             changed = DEFAULT_DITHER;
         }
-        if (this.mCurrDrawable != null) {
-            this.mCurrDrawable.jumpToCurrentState();
+        Drawable drawable2 = this.mCurrDrawable;
+        if (drawable2 != null) {
+            drawable2.jumpToCurrentState();
             if (this.mHasAlpha) {
                 this.mCurrDrawable.setAlpha(this.mAlpha);
             }
@@ -206,25 +210,29 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
     }
 
     public void setHotspot(float x, float y) {
-        if (this.mCurrDrawable != null) {
-            DrawableCompat.setHotspot(this.mCurrDrawable, x, y);
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            DrawableCompat.setHotspot(drawable, x, y);
         }
     }
 
     public void setHotspotBounds(int left, int top, int right, int bottom) {
-        if (this.mHotspotBounds == null) {
+        Rect rect = this.mHotspotBounds;
+        if (rect == null) {
             this.mHotspotBounds = new Rect(left, top, right, bottom);
         } else {
-            this.mHotspotBounds.set(left, top, right, bottom);
+            rect.set(left, top, right, bottom);
         }
-        if (this.mCurrDrawable != null) {
-            DrawableCompat.setHotspotBounds(this.mCurrDrawable, left, top, right, bottom);
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            DrawableCompat.setHotspotBounds(drawable, left, top, right, bottom);
         }
     }
 
-    public void getHotspotBounds(@NonNull Rect outRect) {
-        if (this.mHotspotBounds != null) {
-            outRect.set(this.mHotspotBounds);
+    public void getHotspotBounds(Rect outRect) {
+        Rect rect = this.mHotspotBounds;
+        if (rect != null) {
+            outRect.set(rect);
         } else {
             super.getHotspotBounds(outRect);
         }
@@ -232,22 +240,26 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
 
     /* access modifiers changed from: protected */
     public boolean onStateChange(int[] state) {
-        if (this.mLastDrawable != null) {
-            return this.mLastDrawable.setState(state);
+        Drawable drawable = this.mLastDrawable;
+        if (drawable != null) {
+            return drawable.setState(state);
         }
-        if (this.mCurrDrawable != null) {
-            return this.mCurrDrawable.setState(state);
+        Drawable drawable2 = this.mCurrDrawable;
+        if (drawable2 != null) {
+            return drawable2.setState(state);
         }
         return false;
     }
 
     /* access modifiers changed from: protected */
     public boolean onLevelChange(int level) {
-        if (this.mLastDrawable != null) {
-            return this.mLastDrawable.setLevel(level);
+        Drawable drawable = this.mLastDrawable;
+        if (drawable != null) {
+            return drawable.setLevel(level);
         }
-        if (this.mCurrDrawable != null) {
-            return this.mCurrDrawable.setLevel(level);
+        Drawable drawable2 = this.mCurrDrawable;
+        if (drawable2 != null) {
+            return drawable2.setLevel(level);
         }
         return false;
     }
@@ -260,8 +272,9 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         if (this.mDrawableContainerState.isConstantSize()) {
             return this.mDrawableContainerState.getConstantWidth();
         }
-        if (this.mCurrDrawable != null) {
-            return this.mCurrDrawable.getIntrinsicWidth();
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            return drawable.getIntrinsicWidth();
         }
         return -1;
     }
@@ -270,8 +283,9 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         if (this.mDrawableContainerState.isConstantSize()) {
             return this.mDrawableContainerState.getConstantHeight();
         }
-        if (this.mCurrDrawable != null) {
-            return this.mCurrDrawable.getIntrinsicHeight();
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            return drawable.getIntrinsicHeight();
         }
         return -1;
     }
@@ -280,8 +294,9 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         if (this.mDrawableContainerState.isConstantSize()) {
             return this.mDrawableContainerState.getConstantMinimumWidth();
         }
-        if (this.mCurrDrawable != null) {
-            return this.mCurrDrawable.getMinimumWidth();
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            return drawable.getMinimumWidth();
         }
         return 0;
     }
@@ -290,28 +305,30 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         if (this.mDrawableContainerState.isConstantSize()) {
             return this.mDrawableContainerState.getConstantMinimumHeight();
         }
-        if (this.mCurrDrawable != null) {
-            return this.mCurrDrawable.getMinimumHeight();
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            return drawable.getMinimumHeight();
         }
         return 0;
     }
 
-    public void invalidateDrawable(@NonNull Drawable who) {
-        if (this.mDrawableContainerState != null) {
-            this.mDrawableContainerState.invalidateCache();
+    public void invalidateDrawable(Drawable who) {
+        DrawableContainerState drawableContainerState = this.mDrawableContainerState;
+        if (drawableContainerState != null) {
+            drawableContainerState.invalidateCache();
         }
         if (who == this.mCurrDrawable && getCallback() != null) {
             getCallback().invalidateDrawable(this);
         }
     }
 
-    public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+    public void scheduleDrawable(Drawable who, Runnable what, long when) {
         if (who == this.mCurrDrawable && getCallback() != null) {
             getCallback().scheduleDrawable(this, what, when);
         }
     }
 
-    public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+    public void unscheduleDrawable(Drawable who, Runnable what) {
         if (who == this.mCurrDrawable && getCallback() != null) {
             getCallback().unscheduleDrawable(this, what);
         }
@@ -319,17 +336,20 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
 
     public boolean setVisible(boolean visible, boolean restart) {
         boolean changed = super.setVisible(visible, restart);
-        if (this.mLastDrawable != null) {
-            this.mLastDrawable.setVisible(visible, restart);
+        Drawable drawable = this.mLastDrawable;
+        if (drawable != null) {
+            drawable.setVisible(visible, restart);
         }
-        if (this.mCurrDrawable != null) {
-            this.mCurrDrawable.setVisible(visible, restart);
+        Drawable drawable2 = this.mCurrDrawable;
+        if (drawable2 != null) {
+            drawable2.setVisible(visible, restart);
         }
         return changed;
     }
 
     public int getOpacity() {
-        if (this.mCurrDrawable == null || !this.mCurrDrawable.isVisible()) {
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable == null || !drawable.isVisible()) {
             return -2;
         }
         return this.mDrawableContainerState.getOpacity();
@@ -352,11 +372,13 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         }
         long now = SystemClock.uptimeMillis();
         if (this.mDrawableContainerState.mExitFadeDuration > 0) {
-            if (this.mLastDrawable != null) {
-                this.mLastDrawable.setVisible(false, false);
+            Drawable drawable = this.mLastDrawable;
+            if (drawable != null) {
+                drawable.setVisible(false, false);
             }
-            if (this.mCurrDrawable != null) {
-                this.mLastDrawable = this.mCurrDrawable;
+            Drawable drawable2 = this.mCurrDrawable;
+            if (drawable2 != null) {
+                this.mLastDrawable = drawable2;
                 this.mLastIndex = this.mCurIndex;
                 this.mExitAnimationEnd = ((long) this.mDrawableContainerState.mExitFadeDuration) + now;
             } else {
@@ -364,8 +386,11 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
                 this.mLastIndex = -1;
                 this.mExitAnimationEnd = 0;
             }
-        } else if (this.mCurrDrawable != null) {
-            this.mCurrDrawable.setVisible(false, false);
+        } else {
+            Drawable drawable3 = this.mCurrDrawable;
+            if (drawable3 != null) {
+                drawable3.setVisible(false, false);
+            }
         }
         if (index < 0 || index >= this.mDrawableContainerState.mNumChildren) {
             this.mCurrDrawable = null;
@@ -382,7 +407,8 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
             }
         }
         if (!(this.mEnterAnimationEnd == 0 && this.mExitAnimationEnd == 0)) {
-            if (this.mAnimationRunnable == null) {
+            Runnable runnable = this.mAnimationRunnable;
+            if (runnable == null) {
                 this.mAnimationRunnable = new Runnable() {
                     public void run() {
                         DrawableContainer.this.animate(DrawableContainer.DEFAULT_DITHER);
@@ -390,7 +416,7 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
                     }
                 };
             } else {
-                unscheduleSelf(this.mAnimationRunnable);
+                unscheduleSelf(runnable);
             }
             animate(DEFAULT_DITHER);
         }
@@ -442,36 +468,43 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         this.mHasAlpha = DEFAULT_DITHER;
         long now = SystemClock.uptimeMillis();
         boolean animating = false;
-        if (this.mCurrDrawable == null) {
+        Drawable drawable = this.mCurrDrawable;
+        if (drawable != null) {
+            long j = this.mEnterAnimationEnd;
+            if (j != 0) {
+                if (j <= now) {
+                    drawable.setAlpha(this.mAlpha);
+                    this.mEnterAnimationEnd = 0;
+                } else {
+                    this.mCurrDrawable.setAlpha(((255 - (((int) ((j - now) * 255)) / this.mDrawableContainerState.mEnterFadeDuration)) * this.mAlpha) / 255);
+                    animating = DEFAULT_DITHER;
+                }
+            }
+        } else {
             this.mEnterAnimationEnd = 0;
-        } else if (this.mEnterAnimationEnd != 0) {
-            if (this.mEnterAnimationEnd <= now) {
-                this.mCurrDrawable.setAlpha(this.mAlpha);
-                this.mEnterAnimationEnd = 0;
-            } else {
-                this.mCurrDrawable.setAlpha(((255 - (((int) ((this.mEnterAnimationEnd - now) * 255)) / this.mDrawableContainerState.mEnterFadeDuration)) * this.mAlpha) / 255);
-                animating = DEFAULT_DITHER;
-            }
         }
-        if (this.mLastDrawable == null) {
-            this.mExitAnimationEnd = 0;
-        } else if (this.mExitAnimationEnd != 0) {
-            if (this.mExitAnimationEnd <= now) {
-                this.mLastDrawable.setVisible(false, false);
-                this.mLastDrawable = null;
-                this.mLastIndex = -1;
-                this.mExitAnimationEnd = 0;
-            } else {
-                this.mLastDrawable.setAlpha((this.mAlpha * (((int) ((this.mExitAnimationEnd - now) * 255)) / this.mDrawableContainerState.mExitFadeDuration)) / 255);
-                animating = DEFAULT_DITHER;
+        Drawable drawable2 = this.mLastDrawable;
+        if (drawable2 != null) {
+            long j2 = this.mExitAnimationEnd;
+            if (j2 != 0) {
+                if (j2 <= now) {
+                    drawable2.setVisible(false, false);
+                    this.mLastDrawable = null;
+                    this.mLastIndex = -1;
+                    this.mExitAnimationEnd = 0;
+                } else {
+                    this.mLastDrawable.setAlpha((this.mAlpha * (((int) ((j2 - now) * 255)) / this.mDrawableContainerState.mExitFadeDuration)) / 255);
+                    animating = DEFAULT_DITHER;
+                }
             }
+        } else {
+            this.mExitAnimationEnd = 0;
         }
         if (schedule && animating) {
             scheduleSelf(this.mAnimationRunnable, 16 + now);
         }
     }
 
-    @NonNull
     public Drawable getCurrent() {
         return this.mCurrDrawable;
     }
@@ -481,12 +514,10 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         this.mDrawableContainerState.updateDensity(res);
     }
 
-    @RequiresApi(21)
-    public void applyTheme(@NonNull Resources.Theme theme) {
+    public void applyTheme(Resources.Theme theme) {
         this.mDrawableContainerState.applyTheme(theme);
     }
 
-    @RequiresApi(21)
     public boolean canApplyTheme() {
         return this.mDrawableContainerState.canApplyTheme();
     }
@@ -499,7 +530,6 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         return this.mDrawableContainerState;
     }
 
-    @NonNull
     public Drawable mutate() {
         if (!this.mMutated && super.mutate() == this) {
             DrawableContainerState clone = cloneConstantState();
@@ -536,14 +566,14 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         int mConstantMinimumHeight;
         int mConstantMinimumWidth;
         Rect mConstantPadding;
-        boolean mConstantSize;
+        boolean mConstantSize = false;
         int mConstantWidth;
         int mDensity = 160;
-        boolean mDither;
+        boolean mDither = DrawableContainer.DEFAULT_DITHER;
         SparseArray<Drawable.ConstantState> mDrawableFutures;
         Drawable[] mDrawables;
-        int mEnterFadeDuration;
-        int mExitFadeDuration;
+        int mEnterFadeDuration = 0;
+        int mExitFadeDuration = 0;
         boolean mHasColorFilter;
         boolean mHasTintList;
         boolean mHasTintMode;
@@ -556,17 +586,13 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         boolean mStateful;
         ColorStateList mTintList;
         PorterDuff.Mode mTintMode;
-        boolean mVariablePadding;
+        boolean mVariablePadding = false;
 
         DrawableContainerState(DrawableContainerState orig, DrawableContainer owner, Resources res) {
-            this.mVariablePadding = false;
-            this.mConstantSize = false;
-            this.mDither = DrawableContainer.DEFAULT_DITHER;
-            this.mEnterFadeDuration = 0;
-            this.mExitFadeDuration = 0;
             this.mOwner = owner;
             this.mSourceRes = res != null ? res : orig != null ? orig.mSourceRes : null;
-            this.mDensity = DrawableContainer.resolveDensity(res, orig != null ? orig.mDensity : 0);
+            int resolveDensity = DrawableContainer.resolveDensity(res, orig != null ? orig.mDensity : 0);
+            this.mDensity = resolveDensity;
             if (orig != null) {
                 this.mChangingConfigurations = orig.mChangingConfigurations;
                 this.mChildrenChangingConfigurations = orig.mChildrenChangingConfigurations;
@@ -586,7 +612,7 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
                 this.mTintMode = orig.mTintMode;
                 this.mHasTintList = orig.mHasTintList;
                 this.mHasTintMode = orig.mHasTintMode;
-                if (orig.mDensity == this.mDensity) {
+                if (orig.mDensity == resolveDensity) {
                     if (orig.mCheckedPadding) {
                         this.mConstantPadding = new Rect(orig.mConstantPadding);
                         this.mCheckedPadding = DrawableContainer.DEFAULT_DITHER;
@@ -668,8 +694,9 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         }
 
         private void createAllFutures() {
-            if (this.mDrawableFutures != null) {
-                int futureCount = this.mDrawableFutures.size();
+            SparseArray<Drawable.ConstantState> sparseArray = this.mDrawableFutures;
+            if (sparseArray != null) {
+                int futureCount = sparseArray.size();
                 for (int keyIndex = 0; keyIndex < futureCount; keyIndex++) {
                     this.mDrawables[this.mDrawableFutures.keyAt(keyIndex)] = prepareDrawable(this.mDrawableFutures.valueAt(keyIndex).newDrawable(this.mSourceRes));
                 }
@@ -696,7 +723,8 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
             if (result != null) {
                 return result;
             }
-            if (this.mDrawableFutures == null || (keyIndex = this.mDrawableFutures.indexOfKey(index)) < 0) {
+            SparseArray<Drawable.ConstantState> sparseArray = this.mDrawableFutures;
+            if (sparseArray == null || (keyIndex = sparseArray.indexOfKey(index)) < 0) {
                 return null;
             }
             Drawable prepared = prepareDrawable(this.mDrawableFutures.valueAt(keyIndex).newDrawable(this.mSourceRes));
@@ -743,7 +771,6 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
         }
 
         /* access modifiers changed from: package-private */
-        @RequiresApi(21)
         public final void applyTheme(Resources.Theme theme) {
             if (theme != null) {
                 createAllFutures();
@@ -759,7 +786,6 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
             }
         }
 
-        @RequiresApi(21)
         public boolean canApplyTheme() {
             int count = this.mNumChildren;
             Drawable[] drawables = this.mDrawables;
@@ -802,36 +828,37 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
             if (this.mVariablePadding) {
                 return null;
             }
-            if (this.mConstantPadding != null || this.mCheckedPadding) {
-                return this.mConstantPadding;
+            Rect r = this.mConstantPadding;
+            if (r != null || this.mCheckedPadding) {
+                return r;
             }
             createAllFutures();
+            Rect r2 = null;
             Rect t = new Rect();
             int count = this.mNumChildren;
             Drawable[] drawables = this.mDrawables;
-            Rect r = null;
             for (int i = 0; i < count; i++) {
                 if (drawables[i].getPadding(t)) {
-                    if (r == null) {
-                        r = new Rect(0, 0, 0, 0);
+                    if (r2 == null) {
+                        r2 = new Rect(0, 0, 0, 0);
                     }
-                    if (t.left > r.left) {
-                        r.left = t.left;
+                    if (t.left > r2.left) {
+                        r2.left = t.left;
                     }
-                    if (t.top > r.top) {
-                        r.top = t.top;
+                    if (t.top > r2.top) {
+                        r2.top = t.top;
                     }
-                    if (t.right > r.right) {
-                        r.right = t.right;
+                    if (t.right > r2.right) {
+                        r2.right = t.right;
                     }
-                    if (t.bottom > r.bottom) {
-                        r.bottom = t.bottom;
+                    if (t.bottom > r2.bottom) {
+                        r2.bottom = t.bottom;
                     }
                 }
             }
             this.mCheckedPadding = DrawableContainer.DEFAULT_DITHER;
-            this.mConstantPadding = r;
-            return r;
+            this.mConstantPadding = r2;
+            return r2;
         }
 
         public final void setConstantSize(boolean constant) {
@@ -985,10 +1012,12 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
     /* access modifiers changed from: protected */
     public void setConstantState(DrawableContainerState state) {
         this.mDrawableContainerState = state;
-        if (this.mCurIndex >= 0) {
-            this.mCurrDrawable = state.getChild(this.mCurIndex);
-            if (this.mCurrDrawable != null) {
-                initializeDrawableForDisplay(this.mCurrDrawable);
+        int i = this.mCurIndex;
+        if (i >= 0) {
+            Drawable child = state.getChild(i);
+            this.mCurrDrawable = child;
+            if (child != null) {
+                initializeDrawableForDisplay(child);
             }
         }
         this.mLastIndex = -1;
@@ -1012,23 +1041,25 @@ class DrawableContainer extends Drawable implements Drawable.Callback {
             return callback;
         }
 
-        public void invalidateDrawable(@NonNull Drawable who) {
+        public void invalidateDrawable(Drawable who) {
         }
 
-        public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
-            if (this.mCallback != null) {
-                this.mCallback.scheduleDrawable(who, what, when);
+        public void scheduleDrawable(Drawable who, Runnable what, long when) {
+            Drawable.Callback callback = this.mCallback;
+            if (callback != null) {
+                callback.scheduleDrawable(who, what, when);
             }
         }
 
-        public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
-            if (this.mCallback != null) {
-                this.mCallback.unscheduleDrawable(who, what);
+        public void unscheduleDrawable(Drawable who, Runnable what) {
+            Drawable.Callback callback = this.mCallback;
+            if (callback != null) {
+                callback.unscheduleDrawable(who, what);
             }
         }
     }
 
-    static int resolveDensity(@Nullable Resources r, int parentDensity) {
+    static int resolveDensity(Resources r, int parentDensity) {
         int densityDpi = r == null ? parentDensity : r.getDisplayMetrics().densityDpi;
         if (densityDpi == 0) {
             return 160;

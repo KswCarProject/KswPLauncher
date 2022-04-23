@@ -1,12 +1,8 @@
 package android.arch.persistence.room.util;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.ColumnInfo;
 import android.database.Cursor;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,11 +13,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class TableInfo {
     public final Map<String, Column> columns;
     public final Set<ForeignKey> foreignKeys;
-    @Nullable
     public final Set<Index> indices;
     public final String name;
 
@@ -37,6 +31,7 @@ public class TableInfo {
     }
 
     public boolean equals(Object o) {
+        Set<Index> set;
         if (this == o) {
             return true;
         }
@@ -44,26 +39,34 @@ public class TableInfo {
             return false;
         }
         TableInfo tableInfo = (TableInfo) o;
-        if (this.name == null ? tableInfo.name != null : !this.name.equals(tableInfo.name)) {
+        String str = this.name;
+        if (str == null ? tableInfo.name != null : !str.equals(tableInfo.name)) {
             return false;
         }
-        if (this.columns == null ? tableInfo.columns != null : !this.columns.equals(tableInfo.columns)) {
+        Map<String, Column> map = this.columns;
+        if (map == null ? tableInfo.columns != null : !map.equals(tableInfo.columns)) {
             return false;
         }
-        if (this.foreignKeys == null ? tableInfo.foreignKeys != null : !this.foreignKeys.equals(tableInfo.foreignKeys)) {
+        Set<ForeignKey> set2 = this.foreignKeys;
+        if (set2 == null ? tableInfo.foreignKeys != null : !set2.equals(tableInfo.foreignKeys)) {
             return false;
         }
-        if (this.indices == null || tableInfo.indices == null) {
+        Set<Index> set3 = this.indices;
+        if (set3 == null || (set = tableInfo.indices) == null) {
             return true;
         }
-        return this.indices.equals(tableInfo.indices);
+        return set3.equals(set);
     }
 
     public int hashCode() {
+        String str = this.name;
         int i = 0;
-        int result = (((this.name != null ? this.name.hashCode() : 0) * 31) + (this.columns != null ? this.columns.hashCode() : 0)) * 31;
-        if (this.foreignKeys != null) {
-            i = this.foreignKeys.hashCode();
+        int hashCode = (str != null ? str.hashCode() : 0) * 31;
+        Map<String, Column> map = this.columns;
+        int result = (hashCode + (map != null ? map.hashCode() : 0)) * 31;
+        Set<ForeignKey> set = this.foreignKeys;
+        if (set != null) {
+            i = set.hashCode();
         }
         return result + i;
     }
@@ -103,15 +106,15 @@ public class TableInfo {
                             myColumns.add(key.mFrom);
                             refColumns.add(key.mTo);
                         }
-                        idColumnIndex2 = idColumnIndex3;
                         String str = tableName;
+                        idColumnIndex2 = idColumnIndex3;
                     }
                     idColumnIndex = idColumnIndex2;
                     foreignKeys2.add(new ForeignKey(cursor.getString(tableColumnIndex), cursor.getString(onDeleteColumnIndex), cursor.getString(onUpdateColumnIndex), myColumns, refColumns));
                 }
                 position++;
-                idColumnIndex2 = idColumnIndex;
                 String str2 = tableName;
+                idColumnIndex2 = idColumnIndex;
             }
             return foreignKeys2;
         } finally {
@@ -154,7 +157,6 @@ public class TableInfo {
         }
     }
 
-    @Nullable
     private static Set<Index> readIndices(SupportSQLiteDatabase database, String tableName) {
         Cursor cursor = database.query("PRAGMA index_list(`" + tableName + "`)");
         try {
@@ -172,9 +174,11 @@ public class TableInfo {
                                 unique = false;
                             }
                             Index index = readIndex(database, name2, unique);
-                            if (index != null) {
-                                indices2.add(index);
+                            if (index == null) {
+                                cursor.close();
+                                return null;
                             }
+                            indices2.add(index);
                         }
                     }
                     cursor.close();
@@ -187,7 +191,6 @@ public class TableInfo {
         }
     }
 
-    @Nullable
     private static Index readIndex(SupportSQLiteDatabase database, String name2, boolean unique) {
         Cursor cursor = database.query("PRAGMA index_xinfo(`" + name2 + "`)");
         try {
@@ -217,7 +220,6 @@ public class TableInfo {
     }
 
     public static class Column {
-        @ColumnInfo.SQLiteTypeAffinity
         public final int affinity;
         public final String name;
         public final boolean notNull;
@@ -232,8 +234,7 @@ public class TableInfo {
             this.affinity = findAffinity(type2);
         }
 
-        @ColumnInfo.SQLiteTypeAffinity
-        private static int findAffinity(@Nullable String type2) {
+        private static int findAffinity(String type2) {
             if (type2 == null) {
                 return 5;
             }
@@ -290,20 +291,14 @@ public class TableInfo {
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static class ForeignKey {
-        @NonNull
         public final List<String> columnNames;
-        @NonNull
         public final String onDelete;
-        @NonNull
         public final String onUpdate;
-        @NonNull
         public final List<String> referenceColumnNames;
-        @NonNull
         public final String referenceTable;
 
-        public ForeignKey(@NonNull String referenceTable2, @NonNull String onDelete2, @NonNull String onUpdate2, @NonNull List<String> columnNames2, @NonNull List<String> referenceColumnNames2) {
+        public ForeignKey(String referenceTable2, String onDelete2, String onUpdate2, List<String> columnNames2, List<String> referenceColumnNames2) {
             this.referenceTable = referenceTable2;
             this.onDelete = onDelete2;
             this.onUpdate = onUpdate2;
@@ -334,7 +329,6 @@ public class TableInfo {
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     static class ForeignKeyWithSequence implements Comparable<ForeignKeyWithSequence> {
         final String mFrom;
         final int mId;
@@ -348,7 +342,7 @@ public class TableInfo {
             this.mTo = to;
         }
 
-        public int compareTo(@NonNull ForeignKeyWithSequence o) {
+        public int compareTo(ForeignKeyWithSequence o) {
             int idCmp = this.mId - o.mId;
             if (idCmp == 0) {
                 return this.mSequence - o.mSequence;
@@ -357,7 +351,6 @@ public class TableInfo {
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static class Index {
         public static final String DEFAULT_PREFIX = "index_";
         public final List<String> columns;

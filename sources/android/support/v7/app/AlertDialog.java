@@ -6,14 +6,6 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.annotation.ArrayRes;
-import android.support.annotation.AttrRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StringRes;
-import android.support.annotation.StyleRes;
 import android.support.v7.app.AlertController;
 import android.support.v7.appcompat.R;
 import android.util.TypedValue;
@@ -30,22 +22,22 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
     static final int LAYOUT_HINT_SIDE = 1;
     final AlertController mAlert;
 
-    protected AlertDialog(@NonNull Context context) {
+    protected AlertDialog(Context context) {
         this(context, 0);
     }
 
-    protected AlertDialog(@NonNull Context context, @StyleRes int themeResId) {
+    protected AlertDialog(Context context, int themeResId) {
         super(context, resolveDialogTheme(context, themeResId));
         this.mAlert = new AlertController(getContext(), this, getWindow());
     }
 
-    protected AlertDialog(@NonNull Context context, boolean cancelable, @Nullable DialogInterface.OnCancelListener cancelListener) {
+    protected AlertDialog(Context context, boolean cancelable, DialogInterface.OnCancelListener cancelListener) {
         this(context, 0);
         setCancelable(cancelable);
         setOnCancelListener(cancelListener);
     }
 
-    static int resolveDialogTheme(@NonNull Context context, @StyleRes int resid) {
+    static int resolveDialogTheme(Context context, int resid) {
         if (((resid >>> 24) & 255) >= 1) {
             return resid;
         }
@@ -84,7 +76,6 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
     }
 
     /* access modifiers changed from: package-private */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void setButtonPanelLayoutHint(int layoutHint) {
         this.mAlert.setButtonPanelLayoutHint(layoutHint);
     }
@@ -139,64 +130,66 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
         private final AlertController.AlertParams P;
         private final int mTheme;
 
-        public Builder(@NonNull Context context) {
+        public Builder(Context context) {
             this(context, AlertDialog.resolveDialogTheme(context, 0));
         }
 
-        public Builder(@NonNull Context context, @StyleRes int themeResId) {
+        public Builder(Context context, int themeResId) {
             this.P = new AlertController.AlertParams(new ContextThemeWrapper(context, AlertDialog.resolveDialogTheme(context, themeResId)));
             this.mTheme = themeResId;
         }
 
-        @NonNull
         public Context getContext() {
             return this.P.mContext;
         }
 
-        public Builder setTitle(@StringRes int titleId) {
-            this.P.mTitle = this.P.mContext.getText(titleId);
+        public Builder setTitle(int titleId) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mTitle = alertParams.mContext.getText(titleId);
             return this;
         }
 
-        public Builder setTitle(@Nullable CharSequence title) {
+        public Builder setTitle(CharSequence title) {
             this.P.mTitle = title;
             return this;
         }
 
-        public Builder setCustomTitle(@Nullable View customTitleView) {
+        public Builder setCustomTitle(View customTitleView) {
             this.P.mCustomTitleView = customTitleView;
             return this;
         }
 
-        public Builder setMessage(@StringRes int messageId) {
-            this.P.mMessage = this.P.mContext.getText(messageId);
+        public Builder setMessage(int messageId) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mMessage = alertParams.mContext.getText(messageId);
             return this;
         }
 
-        public Builder setMessage(@Nullable CharSequence message) {
+        public Builder setMessage(CharSequence message) {
             this.P.mMessage = message;
             return this;
         }
 
-        public Builder setIcon(@DrawableRes int iconId) {
+        public Builder setIcon(int iconId) {
             this.P.mIconId = iconId;
             return this;
         }
 
-        public Builder setIcon(@Nullable Drawable icon) {
+        public Builder setIcon(Drawable icon) {
             this.P.mIcon = icon;
             return this;
         }
 
-        public Builder setIconAttribute(@AttrRes int attrId) {
+        public Builder setIconAttribute(int attrId) {
             TypedValue out = new TypedValue();
             this.P.mContext.getTheme().resolveAttribute(attrId, out, true);
             this.P.mIconId = out.resourceId;
             return this;
         }
 
-        public Builder setPositiveButton(@StringRes int textId, DialogInterface.OnClickListener listener) {
-            this.P.mPositiveButtonText = this.P.mContext.getText(textId);
+        public Builder setPositiveButton(int textId, DialogInterface.OnClickListener listener) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mPositiveButtonText = alertParams.mContext.getText(textId);
             this.P.mPositiveButtonListener = listener;
             return this;
         }
@@ -212,8 +205,9 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             return this;
         }
 
-        public Builder setNegativeButton(@StringRes int textId, DialogInterface.OnClickListener listener) {
-            this.P.mNegativeButtonText = this.P.mContext.getText(textId);
+        public Builder setNegativeButton(int textId, DialogInterface.OnClickListener listener) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mNegativeButtonText = alertParams.mContext.getText(textId);
             this.P.mNegativeButtonListener = listener;
             return this;
         }
@@ -229,8 +223,9 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             return this;
         }
 
-        public Builder setNeutralButton(@StringRes int textId, DialogInterface.OnClickListener listener) {
-            this.P.mNeutralButtonText = this.P.mContext.getText(textId);
+        public Builder setNeutralButton(int textId, DialogInterface.OnClickListener listener) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mNeutralButtonText = alertParams.mContext.getText(textId);
             this.P.mNeutralButtonListener = listener;
             return this;
         }
@@ -266,8 +261,9 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             return this;
         }
 
-        public Builder setItems(@ArrayRes int itemsId, DialogInterface.OnClickListener listener) {
-            this.P.mItems = this.P.mContext.getResources().getTextArray(itemsId);
+        public Builder setItems(int itemsId, DialogInterface.OnClickListener listener) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mItems = alertParams.mContext.getResources().getTextArray(itemsId);
             this.P.mOnClickListener = listener;
             return this;
         }
@@ -291,8 +287,9 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             return this;
         }
 
-        public Builder setMultiChoiceItems(@ArrayRes int itemsId, boolean[] checkedItems, DialogInterface.OnMultiChoiceClickListener listener) {
-            this.P.mItems = this.P.mContext.getResources().getTextArray(itemsId);
+        public Builder setMultiChoiceItems(int itemsId, boolean[] checkedItems, DialogInterface.OnMultiChoiceClickListener listener) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mItems = alertParams.mContext.getResources().getTextArray(itemsId);
             this.P.mOnCheckboxClickListener = listener;
             this.P.mCheckedItems = checkedItems;
             this.P.mIsMultiChoice = true;
@@ -316,8 +313,9 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             return this;
         }
 
-        public Builder setSingleChoiceItems(@ArrayRes int itemsId, int checkedItem, DialogInterface.OnClickListener listener) {
-            this.P.mItems = this.P.mContext.getResources().getTextArray(itemsId);
+        public Builder setSingleChoiceItems(int itemsId, int checkedItem, DialogInterface.OnClickListener listener) {
+            AlertController.AlertParams alertParams = this.P;
+            alertParams.mItems = alertParams.mContext.getResources().getTextArray(itemsId);
             this.P.mOnClickListener = listener;
             this.P.mCheckedItem = checkedItem;
             this.P.mIsSingleChoice = true;
@@ -368,7 +366,6 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             return this;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         @Deprecated
         public Builder setView(View view, int viewSpacingLeft, int viewSpacingTop, int viewSpacingRight, int viewSpacingBottom) {
             this.P.mView = view;
@@ -387,7 +384,6 @@ public class AlertDialog extends AppCompatDialog implements DialogInterface {
             return this;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
         public Builder setRecycleOnMeasureEnabled(boolean enabled) {
             this.P.mRecycleOnMeasure = enabled;
             return this;

@@ -26,10 +26,12 @@ public class UsbUtil {
 
     public static void updateUsbMode(boolean isHost) {
         mCurrentUsbMode = isHost;
-        if (usbIoThread != null) {
-            usbIoThread.interrupt();
+        Thread thread = usbIoThread;
+        if (thread != null) {
+            thread.interrupt();
         }
-        usbIoThread = new Thread(usbMobeRunnable);
-        usbIoThread.start();
+        Thread thread2 = new Thread(usbMobeRunnable);
+        usbIoThread = thread2;
+        thread2.start();
     }
 }

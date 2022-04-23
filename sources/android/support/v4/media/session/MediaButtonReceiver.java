@@ -10,7 +10,6 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.RestrictTo;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.util.Log;
@@ -118,7 +117,6 @@ public class MediaButtonReceiver extends BroadcastReceiver {
         return PendingIntent.getBroadcast(context, keyCode, intent, 0);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY})
     public static ComponentName getMediaButtonReceiverComponent(Context context) {
         Intent queryIntent = new Intent("android.intent.action.MEDIA_BUTTON");
         queryIntent.setPackage(context.getPackageName());

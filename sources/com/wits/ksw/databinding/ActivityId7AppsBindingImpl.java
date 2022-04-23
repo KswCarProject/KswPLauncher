@@ -4,8 +4,6 @@ import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -17,15 +15,12 @@ import com.wits.ksw.launcher.model.AppViewModel;
 import com.wits.ksw.launcher.view.DragGridView;
 
 public class ActivityId7AppsBindingImpl extends ActivityId7AppsBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
-    public ActivityId7AppsBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityId7AppsBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 2, sIncludes, sViewsWithIds));
     }
 
@@ -33,8 +28,9 @@ public class ActivityId7AppsBindingImpl extends ActivityId7AppsBinding {
         super(bindingComponent, root, 1, bindings[1]);
         this.mDirtyFlags = -1;
         this.appGridView.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -55,29 +51,31 @@ public class ActivityId7AppsBindingImpl extends ActivityId7AppsBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (20 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (1 != variableId) {
             return false;
         }
         setAppViewModel((AppViewModel) variable);
         return true;
     }
 
-    public void setAppViewModel(@Nullable AppViewModel AppViewModel) {
+    public void setAppViewModel(AppViewModel AppViewModel) {
         this.mAppViewModel = AppViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(20);
+        notifyPropertyChanged(1);
         super.requestRebind();
     }
 
     /* access modifiers changed from: protected */
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-        if (localFieldId != 0) {
-            return false;
+        switch (localFieldId) {
+            case 0:
+                return onChangeAppViewModelListAdpater((ObservableField) object, fieldId);
+            default:
+                return false;
         }
-        return onChangeAppViewModelListAdpater((ObservableField) object, fieldId);
     }
 
     private boolean onChangeAppViewModelListAdpater(ObservableField<BaseListAdpater<AppInfo>> observableField, int fieldId) {
@@ -97,12 +95,12 @@ public class ActivityId7AppsBindingImpl extends ActivityId7AppsBinding {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        AppViewModel appViewModel = this.mAppViewModel;
         DragGridView.onItemChangerListener appViewModelOnItemChangerListener = null;
-        ObservableField<BaseListAdpater<AppInfo>> appViewModelListAdpater = null;
-        BaseListAdpater<AppInfo> appViewModelListAdpaterGet = null;
         AdapterView.OnItemClickListener appViewModelOnItemClickListener = null;
+        BaseListAdpater<AppInfo> appViewModelListAdpaterGet = null;
+        AppViewModel appViewModel = this.mAppViewModel;
         AdapterView.OnItemLongClickListener appViewModelOnItemLongClickListener = null;
+        ObservableField<BaseListAdpater<AppInfo>> appViewModelListAdpater = null;
         if ((dirtyFlags & 7) != 0) {
             if (!((dirtyFlags & 6) == 0 || appViewModel == null)) {
                 appViewModelOnItemChangerListener = appViewModel.onItemChangerListener;

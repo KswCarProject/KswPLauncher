@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="vertical" android:id="@+id/layoutLL_app_main" android:background="@drawable/lexus_ls_deskyop_app_sel" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="15dp">
+    <ImageView android:id="@+id/iv_lexus_main_appicon" android:layout_width="78dp" android:layout_height="78dp" android:scaleType="fitCenter"/>
+    <TextView android:textSize="23sp" android:textColor="@android:color/white" android:gravity="center" android:id="@+id/tv_lexus_main_appname" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:singleLine="true"/>
+</LinearLayout>

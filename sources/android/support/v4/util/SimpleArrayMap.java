@@ -1,7 +1,5 @@
 package android.support.v4.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
 
@@ -11,10 +9,8 @@ public class SimpleArrayMap<K, V> {
     private static final boolean CONCURRENT_MODIFICATION_EXCEPTIONS = true;
     private static final boolean DEBUG = false;
     private static final String TAG = "ArrayMap";
-    @Nullable
     static Object[] mBaseCache;
     static int mBaseCacheSize;
-    @Nullable
     static Object[] mTwiceBaseCache;
     static int mTwiceBaseCacheSize;
     Object[] mArray;
@@ -86,8 +82,8 @@ public class SimpleArrayMap<K, V> {
     private void allocArrays(int size) {
         if (size == 8) {
             synchronized (ArrayMap.class) {
-                if (mTwiceBaseCache != null) {
-                    Object[] array = mTwiceBaseCache;
+                Object[] array = mTwiceBaseCache;
+                if (array != null) {
                     this.mArray = array;
                     mTwiceBaseCache = (Object[]) array[0];
                     this.mHashes = (int[]) array[1];
@@ -99,8 +95,8 @@ public class SimpleArrayMap<K, V> {
             }
         } else if (size == 4) {
             synchronized (ArrayMap.class) {
-                if (mBaseCache != null) {
-                    Object[] array2 = mBaseCache;
+                Object[] array2 = mBaseCache;
+                if (array2 != null) {
                     this.mArray = array2;
                     mBaseCache = (Object[]) array2[0];
                     this.mHashes = (int[]) array2[1];
@@ -198,14 +194,14 @@ public class SimpleArrayMap<K, V> {
         }
     }
 
-    public boolean containsKey(@Nullable Object key) {
+    public boolean containsKey(Object key) {
         if (indexOfKey(key) >= 0) {
             return CONCURRENT_MODIFICATION_EXCEPTIONS;
         }
         return false;
     }
 
-    public int indexOfKey(@Nullable Object key) {
+    public int indexOfKey(Object key) {
         return key == null ? indexOfNull() : indexOf(key, key.hashCode());
     }
 
@@ -213,21 +209,18 @@ public class SimpleArrayMap<K, V> {
     public int indexOfValue(Object value) {
         int N = this.mSize * 2;
         Object[] array = this.mArray;
-        int i = 1;
         if (value == null) {
-            while (i < N) {
+            for (int i = 1; i < N; i += 2) {
                 if (array[i] == null) {
                     return i >> 1;
                 }
-                i += 2;
             }
             return -1;
         }
-        while (i < N) {
-            if (value.equals(array[i])) {
-                return i >> 1;
+        for (int i2 = 1; i2 < N; i2 += 2) {
+            if (value.equals(array[i2])) {
+                return i2 >> 1;
             }
-            i += 2;
         }
         return -1;
     }
@@ -239,7 +232,6 @@ public class SimpleArrayMap<K, V> {
         return false;
     }
 
-    @Nullable
     public V get(Object key) {
         int index = indexOfKey(key);
         if (index >= 0) {
@@ -258,8 +250,9 @@ public class SimpleArrayMap<K, V> {
 
     public V setValueAt(int index, V value) {
         int index2 = (index << 1) + 1;
-        V old = this.mArray[index2];
-        this.mArray[index2] = value;
+        V[] vArr = this.mArray;
+        V old = vArr[index2];
+        vArr[index2] = value;
         return old;
     }
 
@@ -270,7 +263,6 @@ public class SimpleArrayMap<K, V> {
         return false;
     }
 
-    @Nullable
     public V put(K key, V value) {
         int index;
         int hash;
@@ -284,8 +276,9 @@ public class SimpleArrayMap<K, V> {
         }
         if (index >= 0) {
             int index2 = (index << 1) + 1;
-            V old = this.mArray[index2];
-            this.mArray[index2] = value;
+            V[] vArr = this.mArray;
+            V old = vArr[index2];
+            vArr[index2] = value;
             return old;
         }
         int index3 = ~index;
@@ -300,8 +293,9 @@ public class SimpleArrayMap<K, V> {
             Object[] oarray = this.mArray;
             allocArrays(n);
             if (osize == this.mSize) {
-                if (this.mHashes.length > 0) {
-                    System.arraycopy(ohashes, 0, this.mHashes, 0, ohashes.length);
+                int[] iArr = this.mHashes;
+                if (iArr.length > 0) {
+                    System.arraycopy(ohashes, 0, iArr, 0, ohashes.length);
                     System.arraycopy(oarray, 0, this.mArray, 0, oarray.length);
                 }
                 freeArrays(ohashes, oarray, osize);
@@ -310,32 +304,32 @@ public class SimpleArrayMap<K, V> {
             }
         }
         if (index3 < osize) {
-            System.arraycopy(this.mHashes, index3, this.mHashes, index3 + 1, osize - index3);
-            System.arraycopy(this.mArray, index3 << 1, this.mArray, (index3 + 1) << 1, (this.mSize - index3) << 1);
+            int[] iArr2 = this.mHashes;
+            System.arraycopy(iArr2, index3, iArr2, index3 + 1, osize - index3);
+            Object[] objArr = this.mArray;
+            System.arraycopy(objArr, index3 << 1, objArr, (index3 + 1) << 1, (this.mSize - index3) << 1);
         }
-        if (osize != this.mSize || index3 >= this.mHashes.length) {
-            throw new ConcurrentModificationException();
+        int i = this.mSize;
+        if (osize == i) {
+            int[] iArr3 = this.mHashes;
+            if (index3 < iArr3.length) {
+                iArr3[index3] = hash;
+                Object[] objArr2 = this.mArray;
+                objArr2[index3 << 1] = key;
+                objArr2[(index3 << 1) + 1] = value;
+                this.mSize = i + 1;
+                return null;
+            }
         }
-        this.mHashes[index3] = hash;
-        this.mArray[index3 << 1] = key;
-        this.mArray[(index3 << 1) + 1] = value;
-        this.mSize++;
-        return null;
+        throw new ConcurrentModificationException();
     }
 
-    public void putAll(@NonNull SimpleArrayMap<? extends K, ? extends V> array) {
+    public void putAll(SimpleArrayMap<? extends K, ? extends V> array) {
         int N = array.mSize;
         ensureCapacity(this.mSize + N);
-        int i = 0;
         if (this.mSize != 0) {
-            while (true) {
-                int i2 = i;
-                if (i2 < N) {
-                    put(array.keyAt(i2), array.valueAt(i2));
-                    i = i2 + 1;
-                } else {
-                    return;
-                }
+            for (int i = 0; i < N; i++) {
+                put(array.keyAt(i), array.valueAt(i));
             }
         } else if (N > 0) {
             System.arraycopy(array.mHashes, 0, this.mHashes, 0, N);
@@ -344,7 +338,6 @@ public class SimpleArrayMap<K, V> {
         }
     }
 
-    @Nullable
     public V remove(Object key) {
         int index = indexOfKey(key);
         if (index >= 0) {
@@ -355,23 +348,27 @@ public class SimpleArrayMap<K, V> {
 
     public V removeAt(int index) {
         int nsize;
-        Object old = this.mArray[(index << 1) + 1];
+        Object[] objArr = this.mArray;
+        Object old = objArr[(index << 1) + 1];
         int osize = this.mSize;
         if (osize <= 1) {
-            freeArrays(this.mHashes, this.mArray, osize);
+            freeArrays(this.mHashes, objArr, osize);
             this.mHashes = ContainerHelpers.EMPTY_INTS;
             this.mArray = ContainerHelpers.EMPTY_OBJECTS;
             nsize = 0;
         } else {
-            int nsize2 = osize - 1;
+            nsize = osize - 1;
+            int[] iArr = this.mHashes;
             int i = 8;
-            if (this.mHashes.length <= 8 || this.mSize >= this.mHashes.length / 3) {
-                if (index < nsize2) {
-                    System.arraycopy(this.mHashes, index + 1, this.mHashes, index, nsize2 - index);
-                    System.arraycopy(this.mArray, (index + 1) << 1, this.mArray, index << 1, (nsize2 - index) << 1);
+            if (iArr.length <= 8 || this.mSize >= iArr.length / 3) {
+                if (index < nsize) {
+                    System.arraycopy(iArr, index + 1, iArr, index, nsize - index);
+                    Object[] objArr2 = this.mArray;
+                    System.arraycopy(objArr2, (index + 1) << 1, objArr2, index << 1, (nsize - index) << 1);
                 }
-                this.mArray[nsize2 << 1] = null;
-                this.mArray[(nsize2 << 1) + 1] = null;
+                Object[] objArr3 = this.mArray;
+                objArr3[nsize << 1] = null;
+                objArr3[(nsize << 1) + 1] = null;
             } else {
                 if (osize > 8) {
                     i = osize + (osize >> 1);
@@ -385,15 +382,14 @@ public class SimpleArrayMap<K, V> {
                         System.arraycopy(ohashes, 0, this.mHashes, 0, index);
                         System.arraycopy(oarray, 0, this.mArray, 0, index << 1);
                     }
-                    if (index < nsize2) {
-                        System.arraycopy(ohashes, index + 1, this.mHashes, index, nsize2 - index);
-                        System.arraycopy(oarray, (index + 1) << 1, this.mArray, index << 1, (nsize2 - index) << 1);
+                    if (index < nsize) {
+                        System.arraycopy(ohashes, index + 1, this.mHashes, index, nsize - index);
+                        System.arraycopy(oarray, (index + 1) << 1, this.mArray, index << 1, (nsize - index) << 1);
                     }
                 } else {
                     throw new ConcurrentModificationException();
                 }
             }
-            nsize = nsize2;
         }
         if (osize == this.mSize) {
             this.mSize = nsize;

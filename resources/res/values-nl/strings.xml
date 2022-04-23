@@ -44,6 +44,12 @@
     <string name="audi_set_temp_unit">Temperatuureenheid</string>
     <string name="bc_apps_btn_text">Meer Apps</string>
     <string name="benz_gs_home_navi">Navigatie</string>
+    <string name="benz_mbux_2021_bg_sel_tip">achtergrond</string>
+    <string name="benz_mbux_2021_img_sel_tip">Stijl van het icoon</string>
+    <string name="benz_mbux_2021_style_classical_tip">klassiek</string>
+    <string name="benz_mbux_2021_style_modern_tip">modern</string>
+    <string name="benz_mbux_2021_theme_settings">onderwerp</string>
+    <string name="benz_ntg6_fy_theme_settings">onderwerp</string>
     <string name="boot_record_mode">Onthoud de laatste modus</string>
     <string name="boot_record_mode_radio1">Inschakelen</string>
     <string name="boot_record_mode_radio2">Naar OEM-systeem</string>
@@ -95,6 +101,9 @@
     <string name="factory_danwei">Gear selectie</string>
     <string name="factory_danwei1">Automatische versnelling</string>
     <string name="factory_danwei2">Handmatige versnelling</string>
+    <string name="factory_gears1">Type versnelling 1</string>
+    <string name="factory_gears2">Type versnelling 2</string>
+    <string name="factory_gears3">Type versnelling 3</string>
     <string name="factory_input1">Importeer factory_config.xml uit de OEM-map van de externe opslag</string>
     <string name="factory_input2">Profiel versienummer：</string>
     <string name="factory_input3">Configuratie importeren</string>
@@ -119,6 +128,8 @@
     <string name="factory_yuyinkey2">Kort indrukken doet niets,lang indrukken opent NAVI</string>
     <string name="factory_yuyinkey3">Kort indrukken opent spraakopdracht,lang indrukken opent NAVI</string>
     <string name="factory_yuyinkey4">Kort indrukken opent NAVI, lang indrukken doet niets</string>
+    <string name="factory_yuyinkey5">HiCar stemfunctie sleutel</string>
+    <string name="fuel_unit">Brandstofeenheid</string>
     <string name="function_text1">USB Host</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>
@@ -161,12 +172,13 @@
     <string name="id6_phone">Telefoon</string>
     <string name="id6_phone_mess">Telefoon</string>
     <string name="id6_setting_mess">Instellingen van de systeemfunctie</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">Ondersteuning telefoonverbinding</string>
     <string name="id6_xingchejily_mess">Record rijden video</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">Systeem</string>
     <string name="item2">Navigatie</string>
     <string name="item3">Volume</string>
@@ -201,8 +213,14 @@
     <string name="ksw_idf7_unknow_artis">Onbekende zanger</string>
     <string name="ksw_idf7_unkonw_album">Onbekend album</string>
     <string name="ksw_idf7_unkonw_soung">Onbekend liedje</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Verkeerd wachtwoord!</string>
     <string name="mcu_file_corrupted">Upgrade bestand beschadigd!</string>
+    <string name="mic_text">MIC winst</string>
+    <string name="music_app_sel">Kies muziek App</string>
     <string name="ntg6_dvr_toast">Geen apparaten!</string>
     <string name="oil_size">olie: %s</string>
     <string name="raw_car_text1">Volledig scherm</string>
@@ -224,6 +242,7 @@
     <string name="set_text7">Stil dempen</string>
     <string name="set_text8">Navigatie-mengverhouding</string>
     <string name="set_text9">Navigatie-app-selectie</string>
+    <string name="set_text99">Navigatie-app-selectie</string>
     <string name="seven_color_menu_item_text1">Rood</string>
     <string name="seven_color_menu_item_text2">Oranje</string>
     <string name="seven_color_menu_item_text3">Geel</string>
@@ -284,6 +303,7 @@
     <string name="update_mcu_file">Wilt u MCU upgraden?</string>
     <string name="update_reset_all">Wilt u de fabrieksinstellingen herstellen?</string>
     <string name="video">Video</string>
+    <string name="video_app_sel">Kies Video App</string>
     <string name="voic_1">Android-volume</string>
     <string name="voic_2">Media</string>
     <string name="voic_3">Roeping</string>

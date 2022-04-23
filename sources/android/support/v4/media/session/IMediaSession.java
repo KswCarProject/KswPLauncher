@@ -11,6 +11,7 @@ import android.os.RemoteException;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
+import android.support.v4.media.session.IMediaControllerCallback;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -186,642 +187,427 @@ public interface IMediaSession extends IInterface {
             return this;
         }
 
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v1, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v5, resolved type: android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v19, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v23, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v27, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v34, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v46, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v50, resolved type: android.os.Bundle} */
-        /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r1v54, resolved type: android.os.Bundle} */
-        /* JADX WARNING: type inference failed for: r1v0 */
-        /* JADX WARNING: type inference failed for: r1v9 */
-        /* JADX WARNING: type inference failed for: r1v31 */
-        /* JADX WARNING: type inference failed for: r1v60 */
-        /* JADX WARNING: type inference failed for: r1v63 */
-        /* JADX WARNING: type inference failed for: r1v67 */
-        /* JADX WARNING: type inference failed for: r1v72 */
-        /* JADX WARNING: type inference failed for: r1v73 */
-        /* JADX WARNING: type inference failed for: r1v74 */
-        /* JADX WARNING: type inference failed for: r1v75 */
-        /* JADX WARNING: type inference failed for: r1v76 */
-        /* JADX WARNING: type inference failed for: r1v77 */
-        /* JADX WARNING: type inference failed for: r1v78 */
-        /* JADX WARNING: type inference failed for: r1v79 */
-        /* JADX WARNING: type inference failed for: r1v80 */
-        /* JADX WARNING: type inference failed for: r1v81 */
-        /* JADX WARNING: type inference failed for: r1v82 */
-        /* JADX WARNING: type inference failed for: r1v83 */
-        /* JADX WARNING: type inference failed for: r1v84 */
-        /* JADX WARNING: type inference failed for: r1v85 */
-        /* JADX WARNING: Multi-variable type inference failed */
-        /* Code decompiled incorrectly, please refer to instructions dump. */
-        public boolean onTransact(int r6, android.os.Parcel r7, android.os.Parcel r8, int r9) throws android.os.RemoteException {
-            /*
-                r5 = this;
-                r0 = 51
-                r1 = 0
-                r2 = 1
-                if (r6 == r0) goto L_0x0446
-                r0 = 1598968902(0x5f4e5446, float:1.4867585E19)
-                if (r6 == r0) goto L_0x0440
-                r0 = 0
-                switch(r6) {
-                    case 1: goto L_0x0410;
-                    case 2: goto L_0x03ee;
-                    case 3: goto L_0x03da;
-                    case 4: goto L_0x03c6;
-                    case 5: goto L_0x03b6;
-                    case 6: goto L_0x03a6;
-                    case 7: goto L_0x0396;
-                    case 8: goto L_0x037d;
-                    case 9: goto L_0x036d;
-                    case 10: goto L_0x0354;
-                    case 11: goto L_0x033c;
-                    case 12: goto L_0x0324;
-                    case 13: goto L_0x0318;
-                    case 14: goto L_0x02f8;
-                    case 15: goto L_0x02d8;
-                    case 16: goto L_0x02ac;
-                    case 17: goto L_0x029c;
-                    case 18: goto L_0x0290;
-                    case 19: goto L_0x0284;
-                    case 20: goto L_0x0278;
-                    case 21: goto L_0x026c;
-                    case 22: goto L_0x0260;
-                    case 23: goto L_0x0254;
-                    case 24: goto L_0x0244;
-                    case 25: goto L_0x0226;
-                    case 26: goto L_0x0206;
-                    case 27: goto L_0x01ed;
-                    case 28: goto L_0x01d4;
-                    case 29: goto L_0x01c4;
-                    case 30: goto L_0x01ab;
-                    case 31: goto L_0x0192;
-                    case 32: goto L_0x0182;
-                    case 33: goto L_0x0176;
-                    case 34: goto L_0x0156;
-                    case 35: goto L_0x0136;
-                    case 36: goto L_0x010a;
-                    case 37: goto L_0x00fa;
-                    case 38: goto L_0x00ea;
-                    case 39: goto L_0x00da;
-                    case 40: goto L_0x00c6;
-                    case 41: goto L_0x00a8;
-                    case 42: goto L_0x0086;
-                    case 43: goto L_0x0068;
-                    case 44: goto L_0x0058;
-                    case 45: goto L_0x0048;
-                    case 46: goto L_0x0034;
-                    case 47: goto L_0x0024;
-                    case 48: goto L_0x0014;
-                    default: goto L_0x000f;
-                }
-            L_0x000f:
-                boolean r0 = super.onTransact(r6, r7, r8, r9)
-                return r0
-            L_0x0014:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                r5.setShuffleMode(r0)
-                r8.writeNoException()
-                return r2
-            L_0x0024:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r5.getShuffleMode()
-                r8.writeNoException()
-                r8.writeInt(r0)
-                return r2
-            L_0x0034:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                int r1 = r7.readInt()
-                if (r1 == 0) goto L_0x0041
-                r0 = r2
-            L_0x0041:
-                r5.setCaptioningEnabled(r0)
-                r8.writeNoException()
-                return r2
-            L_0x0048:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                boolean r0 = r5.isCaptioningEnabled()
-                r8.writeNoException()
-                r8.writeInt(r0)
-                return r2
-            L_0x0058:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                r5.removeQueueItemAt(r0)
-                r8.writeNoException()
-                return r2
-            L_0x0068:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x007d
-                android.os.Parcelable$Creator<android.support.v4.media.MediaDescriptionCompat> r0 = android.support.v4.media.MediaDescriptionCompat.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                r1 = r0
-                android.support.v4.media.MediaDescriptionCompat r1 = (android.support.v4.media.MediaDescriptionCompat) r1
-                goto L_0x007e
-            L_0x007d:
-            L_0x007e:
-                r0 = r1
-                r5.removeQueueItem(r0)
-                r8.writeNoException()
-                return r2
-            L_0x0086:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x009b
-                android.os.Parcelable$Creator<android.support.v4.media.MediaDescriptionCompat> r0 = android.support.v4.media.MediaDescriptionCompat.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                r1 = r0
-                android.support.v4.media.MediaDescriptionCompat r1 = (android.support.v4.media.MediaDescriptionCompat) r1
-                goto L_0x009c
-            L_0x009b:
-            L_0x009c:
-                r0 = r1
-                int r1 = r7.readInt()
-                r5.addQueueItemAt(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x00a8:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x00bd
-                android.os.Parcelable$Creator<android.support.v4.media.MediaDescriptionCompat> r0 = android.support.v4.media.MediaDescriptionCompat.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                r1 = r0
-                android.support.v4.media.MediaDescriptionCompat r1 = (android.support.v4.media.MediaDescriptionCompat) r1
-                goto L_0x00be
-            L_0x00bd:
-            L_0x00be:
-                r0 = r1
-                r5.addQueueItem(r0)
-                r8.writeNoException()
-                return r2
-            L_0x00c6:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                int r1 = r7.readInt()
-                if (r1 == 0) goto L_0x00d3
-                r0 = r2
-            L_0x00d3:
-                r5.setShuffleModeEnabledRemoved(r0)
-                r8.writeNoException()
-                return r2
-            L_0x00da:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                r5.setRepeatMode(r0)
-                r8.writeNoException()
-                return r2
-            L_0x00ea:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                boolean r0 = r5.isShuffleModeEnabledRemoved()
-                r8.writeNoException()
-                r8.writeInt(r0)
-                return r2
-            L_0x00fa:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r5.getRepeatMode()
-                r8.writeNoException()
-                r8.writeInt(r0)
-                return r2
-            L_0x010a:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x011e
-                android.os.Parcelable$Creator r0 = android.net.Uri.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                android.net.Uri r0 = (android.net.Uri) r0
-                goto L_0x011f
-            L_0x011e:
-                r0 = r1
-            L_0x011f:
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x012e
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x012f
-            L_0x012e:
-            L_0x012f:
-                r5.prepareFromUri(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x0136:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r7.readString()
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x014e
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x014f
-            L_0x014e:
-            L_0x014f:
-                r5.prepareFromSearch(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x0156:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r7.readString()
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x016e
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x016f
-            L_0x016e:
-            L_0x016f:
-                r5.prepareFromMediaId(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x0176:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.prepare()
-                r8.writeNoException()
-                return r2
-            L_0x0182:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r5.getRatingType()
-                r8.writeNoException()
-                r8.writeInt(r0)
-                return r2
-            L_0x0192:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                android.os.Bundle r1 = r5.getExtras()
-                r8.writeNoException()
-                if (r1 == 0) goto L_0x01a7
-                r8.writeInt(r2)
-                r1.writeToParcel(r8, r2)
-                goto L_0x01aa
-            L_0x01a7:
-                r8.writeInt(r0)
-            L_0x01aa:
-                return r2
-            L_0x01ab:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                java.lang.CharSequence r1 = r5.getQueueTitle()
-                r8.writeNoException()
-                if (r1 == 0) goto L_0x01c0
-                r8.writeInt(r2)
-                android.text.TextUtils.writeToParcel(r1, r8, r2)
-                goto L_0x01c3
-            L_0x01c0:
-                r8.writeInt(r0)
-            L_0x01c3:
-                return r2
-            L_0x01c4:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.util.List r0 = r5.getQueue()
-                r8.writeNoException()
-                r8.writeTypedList(r0)
-                return r2
-            L_0x01d4:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                android.support.v4.media.session.PlaybackStateCompat r1 = r5.getPlaybackState()
-                r8.writeNoException()
-                if (r1 == 0) goto L_0x01e9
-                r8.writeInt(r2)
-                r1.writeToParcel(r8, r2)
-                goto L_0x01ec
-            L_0x01e9:
-                r8.writeInt(r0)
-            L_0x01ec:
-                return r2
-            L_0x01ed:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                android.support.v4.media.MediaMetadataCompat r1 = r5.getMetadata()
-                r8.writeNoException()
-                if (r1 == 0) goto L_0x0202
-                r8.writeInt(r2)
-                r1.writeToParcel(r8, r2)
-                goto L_0x0205
-            L_0x0202:
-                r8.writeInt(r0)
-            L_0x0205:
-                return r2
-            L_0x0206:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r7.readString()
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x021e
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x021f
-            L_0x021e:
-            L_0x021f:
-                r5.sendCustomAction(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x0226:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x023b
-                android.os.Parcelable$Creator<android.support.v4.media.RatingCompat> r0 = android.support.v4.media.RatingCompat.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                r1 = r0
-                android.support.v4.media.RatingCompat r1 = (android.support.v4.media.RatingCompat) r1
-                goto L_0x023c
-            L_0x023b:
-            L_0x023c:
-                r0 = r1
-                r5.rate(r0)
-                r8.writeNoException()
-                return r2
-            L_0x0244:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                long r0 = r7.readLong()
-                r5.seekTo(r0)
-                r8.writeNoException()
-                return r2
-            L_0x0254:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.rewind()
-                r8.writeNoException()
-                return r2
-            L_0x0260:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.fastForward()
-                r8.writeNoException()
-                return r2
-            L_0x026c:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.previous()
-                r8.writeNoException()
-                return r2
-            L_0x0278:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.next()
-                r8.writeNoException()
-                return r2
-            L_0x0284:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.stop()
-                r8.writeNoException()
-                return r2
-            L_0x0290:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.pause()
-                r8.writeNoException()
-                return r2
-            L_0x029c:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                long r0 = r7.readLong()
-                r5.skipToQueueItem(r0)
-                r8.writeNoException()
-                return r2
-            L_0x02ac:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x02c0
-                android.os.Parcelable$Creator r0 = android.net.Uri.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                android.net.Uri r0 = (android.net.Uri) r0
-                goto L_0x02c1
-            L_0x02c0:
-                r0 = r1
-            L_0x02c1:
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x02d0
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x02d1
-            L_0x02d0:
-            L_0x02d1:
-                r5.playFromUri(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x02d8:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r7.readString()
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x02f0
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x02f1
-            L_0x02f0:
-            L_0x02f1:
-                r5.playFromSearch(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x02f8:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r7.readString()
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x0310
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x0311
-            L_0x0310:
-            L_0x0311:
-                r5.playFromMediaId(r0, r1)
-                r8.writeNoException()
-                return r2
-            L_0x0318:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                r5.play()
-                r8.writeNoException()
-                return r2
-            L_0x0324:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                int r1 = r7.readInt()
-                java.lang.String r3 = r7.readString()
-                r5.setVolumeTo(r0, r1, r3)
-                r8.writeNoException()
-                return r2
-            L_0x033c:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                int r1 = r7.readInt()
-                java.lang.String r3 = r7.readString()
-                r5.adjustVolume(r0, r1, r3)
-                r8.writeNoException()
-                return r2
-            L_0x0354:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                android.support.v4.media.session.ParcelableVolumeInfo r1 = r5.getVolumeAttributes()
-                r8.writeNoException()
-                if (r1 == 0) goto L_0x0369
-                r8.writeInt(r2)
-                r1.writeToParcel(r8, r2)
-                goto L_0x036c
-            L_0x0369:
-                r8.writeInt(r0)
-            L_0x036c:
-                return r2
-            L_0x036d:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                long r0 = r5.getFlags()
-                r8.writeNoException()
-                r8.writeLong(r0)
-                return r2
-            L_0x037d:
-                java.lang.String r1 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r1)
-                android.app.PendingIntent r1 = r5.getLaunchPendingIntent()
-                r8.writeNoException()
-                if (r1 == 0) goto L_0x0392
-                r8.writeInt(r2)
-                r1.writeToParcel(r8, r2)
-                goto L_0x0395
-            L_0x0392:
-                r8.writeInt(r0)
-            L_0x0395:
-                return r2
-            L_0x0396:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r5.getTag()
-                r8.writeNoException()
-                r8.writeString(r0)
-                return r2
-            L_0x03a6:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r5.getPackageName()
-                r8.writeNoException()
-                r8.writeString(r0)
-                return r2
-            L_0x03b6:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                boolean r0 = r5.isTransportControlEnabled()
-                r8.writeNoException()
-                r8.writeInt(r0)
-                return r2
-            L_0x03c6:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                android.os.IBinder r0 = r7.readStrongBinder()
-                android.support.v4.media.session.IMediaControllerCallback r0 = android.support.v4.media.session.IMediaControllerCallback.Stub.asInterface(r0)
-                r5.unregisterCallbackListener(r0)
-                r8.writeNoException()
-                return r2
-            L_0x03da:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                android.os.IBinder r0 = r7.readStrongBinder()
-                android.support.v4.media.session.IMediaControllerCallback r0 = android.support.v4.media.session.IMediaControllerCallback.Stub.asInterface(r0)
-                r5.registerCallbackListener(r0)
-                r8.writeNoException()
-                return r2
-            L_0x03ee:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x0403
-                android.os.Parcelable$Creator r0 = android.view.KeyEvent.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                r1 = r0
-                android.view.KeyEvent r1 = (android.view.KeyEvent) r1
-                goto L_0x0404
-            L_0x0403:
-            L_0x0404:
-                r0 = r1
-                boolean r1 = r5.sendMediaButton(r0)
-                r8.writeNoException()
-                r8.writeInt(r1)
-                return r2
-            L_0x0410:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                java.lang.String r0 = r7.readString()
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x0428
-                android.os.Parcelable$Creator r3 = android.os.Bundle.CREATOR
-                java.lang.Object r3 = r3.createFromParcel(r7)
-                android.os.Bundle r3 = (android.os.Bundle) r3
-                goto L_0x0429
-            L_0x0428:
-                r3 = r1
-            L_0x0429:
-                int r4 = r7.readInt()
-                if (r4 == 0) goto L_0x0438
-                android.os.Parcelable$Creator<android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper> r1 = android.support.v4.media.session.MediaSessionCompat.ResultReceiverWrapper.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper r1 = (android.support.v4.media.session.MediaSessionCompat.ResultReceiverWrapper) r1
-                goto L_0x0439
-            L_0x0438:
-            L_0x0439:
-                r5.sendCommand(r0, r3, r1)
-                r8.writeNoException()
-                return r2
-            L_0x0440:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r8.writeString(r0)
-                return r2
-            L_0x0446:
-                java.lang.String r0 = "android.support.v4.media.session.IMediaSession"
-                r7.enforceInterface(r0)
-                int r0 = r7.readInt()
-                if (r0 == 0) goto L_0x045a
-                android.os.Parcelable$Creator<android.support.v4.media.RatingCompat> r0 = android.support.v4.media.RatingCompat.CREATOR
-                java.lang.Object r0 = r0.createFromParcel(r7)
-                android.support.v4.media.RatingCompat r0 = (android.support.v4.media.RatingCompat) r0
-                goto L_0x045b
-            L_0x045a:
-                r0 = r1
-            L_0x045b:
-                int r3 = r7.readInt()
-                if (r3 == 0) goto L_0x046a
-                android.os.Parcelable$Creator r1 = android.os.Bundle.CREATOR
-                java.lang.Object r1 = r1.createFromParcel(r7)
-                android.os.Bundle r1 = (android.os.Bundle) r1
-                goto L_0x046b
-            L_0x046a:
-            L_0x046b:
-                r5.rateWithExtras(r0, r1)
-                r8.writeNoException()
-                return r2
-            */
-            throw new UnsupportedOperationException("Method not decompiled: android.support.v4.media.session.IMediaSession.Stub.onTransact(int, android.os.Parcel, android.os.Parcel, int):boolean");
+        public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
+            Bundle _arg1;
+            MediaSessionCompat.ResultReceiverWrapper _arg2;
+            KeyEvent _arg0;
+            Bundle _arg12;
+            Bundle _arg13;
+            Uri _arg02;
+            Bundle _arg14;
+            RatingCompat _arg03;
+            Bundle _arg15;
+            Bundle _arg16;
+            Bundle _arg17;
+            Uri _arg04;
+            Bundle _arg18;
+            MediaDescriptionCompat _arg05;
+            MediaDescriptionCompat _arg06;
+            MediaDescriptionCompat _arg07;
+            RatingCompat _arg08;
+            Bundle _arg19;
+            boolean _arg09 = false;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg010 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg1 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg1 = null;
+                    }
+                    if (data.readInt() != 0) {
+                        _arg2 = MediaSessionCompat.ResultReceiverWrapper.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg2 = null;
+                    }
+                    sendCommand(_arg010, _arg1, _arg2);
+                    reply.writeNoException();
+                    return true;
+                case 2:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg0 = (KeyEvent) KeyEvent.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg0 = null;
+                    }
+                    boolean _result = sendMediaButton(_arg0);
+                    reply.writeNoException();
+                    reply.writeInt(_result);
+                    return true;
+                case 3:
+                    data.enforceInterface(DESCRIPTOR);
+                    registerCallbackListener(IMediaControllerCallback.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 4:
+                    data.enforceInterface(DESCRIPTOR);
+                    unregisterCallbackListener(IMediaControllerCallback.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 5:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result2 = isTransportControlEnabled();
+                    reply.writeNoException();
+                    reply.writeInt(_result2);
+                    return true;
+                case 6:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _result3 = getPackageName();
+                    reply.writeNoException();
+                    reply.writeString(_result3);
+                    return true;
+                case 7:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _result4 = getTag();
+                    reply.writeNoException();
+                    reply.writeString(_result4);
+                    return true;
+                case 8:
+                    data.enforceInterface(DESCRIPTOR);
+                    PendingIntent _result5 = getLaunchPendingIntent();
+                    reply.writeNoException();
+                    if (_result5 != null) {
+                        reply.writeInt(1);
+                        _result5.writeToParcel(reply, 1);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    return true;
+                case 9:
+                    data.enforceInterface(DESCRIPTOR);
+                    long _result6 = getFlags();
+                    reply.writeNoException();
+                    reply.writeLong(_result6);
+                    return true;
+                case 10:
+                    data.enforceInterface(DESCRIPTOR);
+                    ParcelableVolumeInfo _result7 = getVolumeAttributes();
+                    reply.writeNoException();
+                    if (_result7 != null) {
+                        reply.writeInt(1);
+                        _result7.writeToParcel(reply, 1);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    return true;
+                case 11:
+                    data.enforceInterface(DESCRIPTOR);
+                    adjustVolume(data.readInt(), data.readInt(), data.readString());
+                    reply.writeNoException();
+                    return true;
+                case 12:
+                    data.enforceInterface(DESCRIPTOR);
+                    setVolumeTo(data.readInt(), data.readInt(), data.readString());
+                    reply.writeNoException();
+                    return true;
+                case 13:
+                    data.enforceInterface(DESCRIPTOR);
+                    play();
+                    reply.writeNoException();
+                    return true;
+                case 14:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg011 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg12 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg12 = null;
+                    }
+                    playFromMediaId(_arg011, _arg12);
+                    reply.writeNoException();
+                    return true;
+                case 15:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg012 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg13 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg13 = null;
+                    }
+                    playFromSearch(_arg012, _arg13);
+                    reply.writeNoException();
+                    return true;
+                case 16:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg02 = (Uri) Uri.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg02 = null;
+                    }
+                    if (data.readInt() != 0) {
+                        _arg14 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg14 = null;
+                    }
+                    playFromUri(_arg02, _arg14);
+                    reply.writeNoException();
+                    return true;
+                case 17:
+                    data.enforceInterface(DESCRIPTOR);
+                    skipToQueueItem(data.readLong());
+                    reply.writeNoException();
+                    return true;
+                case 18:
+                    data.enforceInterface(DESCRIPTOR);
+                    pause();
+                    reply.writeNoException();
+                    return true;
+                case 19:
+                    data.enforceInterface(DESCRIPTOR);
+                    stop();
+                    reply.writeNoException();
+                    return true;
+                case 20:
+                    data.enforceInterface(DESCRIPTOR);
+                    next();
+                    reply.writeNoException();
+                    return true;
+                case 21:
+                    data.enforceInterface(DESCRIPTOR);
+                    previous();
+                    reply.writeNoException();
+                    return true;
+                case 22:
+                    data.enforceInterface(DESCRIPTOR);
+                    fastForward();
+                    reply.writeNoException();
+                    return true;
+                case 23:
+                    data.enforceInterface(DESCRIPTOR);
+                    rewind();
+                    reply.writeNoException();
+                    return true;
+                case 24:
+                    data.enforceInterface(DESCRIPTOR);
+                    seekTo(data.readLong());
+                    reply.writeNoException();
+                    return true;
+                case 25:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg03 = RatingCompat.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg03 = null;
+                    }
+                    rate(_arg03);
+                    reply.writeNoException();
+                    return true;
+                case 26:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg013 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg15 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg15 = null;
+                    }
+                    sendCustomAction(_arg013, _arg15);
+                    reply.writeNoException();
+                    return true;
+                case 27:
+                    data.enforceInterface(DESCRIPTOR);
+                    MediaMetadataCompat _result8 = getMetadata();
+                    reply.writeNoException();
+                    if (_result8 != null) {
+                        reply.writeInt(1);
+                        _result8.writeToParcel(reply, 1);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    return true;
+                case 28:
+                    data.enforceInterface(DESCRIPTOR);
+                    PlaybackStateCompat _result9 = getPlaybackState();
+                    reply.writeNoException();
+                    if (_result9 != null) {
+                        reply.writeInt(1);
+                        _result9.writeToParcel(reply, 1);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    return true;
+                case 29:
+                    data.enforceInterface(DESCRIPTOR);
+                    List<MediaSessionCompat.QueueItem> _result10 = getQueue();
+                    reply.writeNoException();
+                    reply.writeTypedList(_result10);
+                    return true;
+                case 30:
+                    data.enforceInterface(DESCRIPTOR);
+                    CharSequence _result11 = getQueueTitle();
+                    reply.writeNoException();
+                    if (_result11 != null) {
+                        reply.writeInt(1);
+                        TextUtils.writeToParcel(_result11, reply, 1);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    return true;
+                case 31:
+                    data.enforceInterface(DESCRIPTOR);
+                    Bundle _result12 = getExtras();
+                    reply.writeNoException();
+                    if (_result12 != null) {
+                        reply.writeInt(1);
+                        _result12.writeToParcel(reply, 1);
+                    } else {
+                        reply.writeInt(0);
+                    }
+                    return true;
+                case 32:
+                    data.enforceInterface(DESCRIPTOR);
+                    int _result13 = getRatingType();
+                    reply.writeNoException();
+                    reply.writeInt(_result13);
+                    return true;
+                case 33:
+                    data.enforceInterface(DESCRIPTOR);
+                    prepare();
+                    reply.writeNoException();
+                    return true;
+                case 34:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg014 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg16 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg16 = null;
+                    }
+                    prepareFromMediaId(_arg014, _arg16);
+                    reply.writeNoException();
+                    return true;
+                case 35:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _arg015 = data.readString();
+                    if (data.readInt() != 0) {
+                        _arg17 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg17 = null;
+                    }
+                    prepareFromSearch(_arg015, _arg17);
+                    reply.writeNoException();
+                    return true;
+                case 36:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg04 = (Uri) Uri.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg04 = null;
+                    }
+                    if (data.readInt() != 0) {
+                        _arg18 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg18 = null;
+                    }
+                    prepareFromUri(_arg04, _arg18);
+                    reply.writeNoException();
+                    return true;
+                case 37:
+                    data.enforceInterface(DESCRIPTOR);
+                    int _result14 = getRepeatMode();
+                    reply.writeNoException();
+                    reply.writeInt(_result14);
+                    return true;
+                case 38:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result15 = isShuffleModeEnabledRemoved();
+                    reply.writeNoException();
+                    reply.writeInt(_result15);
+                    return true;
+                case 39:
+                    data.enforceInterface(DESCRIPTOR);
+                    setRepeatMode(data.readInt());
+                    reply.writeNoException();
+                    return true;
+                case 40:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg09 = true;
+                    }
+                    setShuffleModeEnabledRemoved(_arg09);
+                    reply.writeNoException();
+                    return true;
+                case 41:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg05 = MediaDescriptionCompat.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg05 = null;
+                    }
+                    addQueueItem(_arg05);
+                    reply.writeNoException();
+                    return true;
+                case 42:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg06 = MediaDescriptionCompat.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg06 = null;
+                    }
+                    addQueueItemAt(_arg06, data.readInt());
+                    reply.writeNoException();
+                    return true;
+                case 43:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg07 = MediaDescriptionCompat.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg07 = null;
+                    }
+                    removeQueueItem(_arg07);
+                    reply.writeNoException();
+                    return true;
+                case 44:
+                    data.enforceInterface(DESCRIPTOR);
+                    removeQueueItemAt(data.readInt());
+                    reply.writeNoException();
+                    return true;
+                case 45:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result16 = isCaptioningEnabled();
+                    reply.writeNoException();
+                    reply.writeInt(_result16);
+                    return true;
+                case 46:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg09 = true;
+                    }
+                    setCaptioningEnabled(_arg09);
+                    reply.writeNoException();
+                    return true;
+                case 47:
+                    data.enforceInterface(DESCRIPTOR);
+                    int _result17 = getShuffleMode();
+                    reply.writeNoException();
+                    reply.writeInt(_result17);
+                    return true;
+                case 48:
+                    data.enforceInterface(DESCRIPTOR);
+                    setShuffleMode(data.readInt());
+                    reply.writeNoException();
+                    return true;
+                case 51:
+                    data.enforceInterface(DESCRIPTOR);
+                    if (data.readInt() != 0) {
+                        _arg08 = RatingCompat.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg08 = null;
+                    }
+                    if (data.readInt() != 0) {
+                        _arg19 = (Bundle) Bundle.CREATOR.createFromParcel(data);
+                    } else {
+                        _arg19 = null;
+                    }
+                    rateWithExtras(_arg08, _arg19);
+                    reply.writeNoException();
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
+            }
         }
 
         private static class Proxy implements IMediaSession {
@@ -868,9 +654,9 @@ public interface IMediaSession extends IInterface {
             public boolean sendMediaButton(KeyEvent mediaButton) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
+                boolean _result = false;
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    boolean _result = true;
                     if (mediaButton != null) {
                         _data.writeInt(1);
                         mediaButton.writeToParcel(_data, 0);
@@ -879,8 +665,8 @@ public interface IMediaSession extends IInterface {
                     }
                     this.mRemote.transact(2, _data, _reply, 0);
                     _reply.readException();
-                    if (_reply.readInt() == 0) {
-                        _result = false;
+                    if (_reply.readInt() != 0) {
+                        _result = true;
                     }
                     return _result;
                 } finally {
@@ -920,9 +706,9 @@ public interface IMediaSession extends IInterface {
             public boolean isTransportControlEnabled() throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
+                boolean _result = false;
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    boolean _result = false;
                     this.mRemote.transact(5, _data, _reply, 0);
                     _reply.readException();
                     if (_reply.readInt() != 0) {
@@ -1160,9 +946,9 @@ public interface IMediaSession extends IInterface {
             public boolean isCaptioningEnabled() throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
+                boolean _result = false;
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    boolean _result = false;
                     this.mRemote.transact(45, _data, _reply, 0);
                     _reply.readException();
                     if (_reply.readInt() != 0) {
@@ -1192,9 +978,9 @@ public interface IMediaSession extends IInterface {
             public boolean isShuffleModeEnabledRemoved() throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
+                boolean _result = false;
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    boolean _result = false;
                     this.mRemote.transact(38, _data, _reply, 0);
                     _reply.readException();
                     if (_reply.readInt() != 0) {
@@ -1604,7 +1390,7 @@ public interface IMediaSession extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(enabled);
+                    _data.writeInt(enabled ? 1 : 0);
                     this.mRemote.transact(46, _data, _reply, 0);
                     _reply.readException();
                 } finally {
@@ -1632,7 +1418,7 @@ public interface IMediaSession extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(shuffleMode);
+                    _data.writeInt(shuffleMode ? 1 : 0);
                     this.mRemote.transact(40, _data, _reply, 0);
                     _reply.readException();
                 } finally {

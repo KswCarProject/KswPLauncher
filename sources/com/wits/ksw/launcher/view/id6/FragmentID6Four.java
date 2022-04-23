@@ -2,8 +2,6 @@ package com.wits.ksw.launcher.view.id6;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +13,13 @@ import com.wits.ksw.databinding.ID6FragmentFour;
 public class FragmentID6Four extends ID6BaseFragment implements View.OnKeyListener {
     private ID6FragmentFour binding;
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.binding = (ID6FragmentFour) DataBindingUtil.inflate(inflater, R.layout.id6_fragment_four, (ViewGroup) null, false);
-        return this.binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ID6FragmentFour iD6FragmentFour = (ID6FragmentFour) DataBindingUtil.inflate(inflater, R.layout.id6_fragment_four, (ViewGroup) null, false);
+        this.binding = iD6FragmentFour;
+        return iD6FragmentFour.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.binding.setViewModel(this.viewModel);
         this.binding.id6PhoneIamgeView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -57,12 +55,12 @@ public class FragmentID6Four extends ID6BaseFragment implements View.OnKeyListen
     }
 
     public void setItemSelected(View view) {
-        boolean z = false;
+        boolean z = true;
         this.binding.id6PhoneIamgeView.setSelected(this.binding.id6PhoneIamgeView == view);
         this.binding.id6AppsImageView.setSelected(this.binding.id6AppsImageView == view);
         ImageView imageView = this.binding.id6SettingImageView;
-        if (this.binding.id6SettingImageView == view) {
-            z = true;
+        if (this.binding.id6SettingImageView != view) {
+            z = false;
         }
         imageView.setSelected(z);
     }

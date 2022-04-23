@@ -44,6 +44,12 @@
     <string name="audi_set_temp_unit">溫度單位</string>
     <string name="bc_apps_btn_text">更多應用</string>
     <string name="benz_gs_home_navi">導航</string>
+    <string name="benz_mbux_2021_bg_sel_tip">背景色</string>
+    <string name="benz_mbux_2021_img_sel_tip">圖標風格</string>
+    <string name="benz_mbux_2021_style_classical_tip">經典</string>
+    <string name="benz_mbux_2021_style_modern_tip">現代</string>
+    <string name="benz_mbux_2021_theme_settings">主題設置</string>
+    <string name="benz_ntg6_fy_theme_settings">主題</string>
     <string name="boot_record_mode">開機模式記憶</string>
     <string name="boot_record_mode_radio1">使能</string>
     <string name="boot_record_mode_radio2">原車界面</string>
@@ -96,6 +102,9 @@
     <string name="factory_danwei">檔位選擇</string>
     <string name="factory_danwei1">自動擋</string>
     <string name="factory_danwei2">手動擋</string>
+    <string name="factory_gears1">擋位類型1</string>
+    <string name="factory_gears2">擋位類型2</string>
+    <string name="factory_gears3">擋位類型3</string>
     <string name="factory_input1">從外部存儲器的OEM文件夾中導入factory_config.xml</string>
     <string name="factory_input2">配置文件版本號：</string>
     <string name="factory_input3">導入配寘</string>
@@ -120,6 +129,8 @@
     <string name="factory_yuyinkey2">短按無作用，長按是導航功能</string>
     <string name="factory_yuyinkey3">短按是語音功能，長按是導航功能</string>
     <string name="factory_yuyinkey4">短按是導航功能，長按無作用</string>
+    <string name="factory_yuyinkey5">HiCar語音功能按鍵</string>
+    <string name="fuel_unit">油量單位</string>
     <string name="function_text1">USB 主机模式</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>
@@ -168,6 +179,7 @@
     <string name="id7_als_item_one">節能模式</string>
     <string name="id7_als_item_three">運動模式</string>
     <string name="id7_als_item_two">舒適模式</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">系統設置</string>
     <string name="item2">導航設置</string>
     <string name="item3">音量設置</string>
@@ -202,8 +214,14 @@
     <string name="ksw_idf7_unknow_artis">未知歌手</string>
     <string name="ksw_idf7_unkonw_album">未知專輯</string>
     <string name="ksw_idf7_unkonw_soung">未知歌曲</string>
+    <string name="land_rover_dvr">行車記錄</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">行車電腦</string>
+    <string name="langover_bt">藍牙通訊</string>
     <string name="lb_password_error">密碼錯誤!</string>
     <string name="mcu_file_corrupted">升級檔已損壞!</string>
+    <string name="mic_text">MIC增益</string>
+    <string name="music_app_sel">選擇音樂App</string>
     <string name="navigete_slogan">實时為您導航</string>
     <string name="ntg6_dvr_toast">無設備!</string>
     <string name="oem_fm">原車FM</string>
@@ -229,6 +247,7 @@
     <string name="set_text7">倒車靜音</string>
     <string name="set_text8">導航混音比例</string>
     <string name="set_text9">導航APP選擇</string>
+    <string name="set_text99">導航APP選擇</string>
     <string name="seven_color_menu_item_text1">紅 色</string>
     <string name="seven_color_menu_item_text2">橙 色</string>
     <string name="seven_color_menu_item_text3">黃 色</string>
@@ -289,6 +308,7 @@
     <string name="update_mcu_file">是否升級MCU？</string>
     <string name="update_reset_all">是否恢復出廠設置？</string>
     <string name="video">視頻</string>
+    <string name="video_app_sel">選擇視頻App</string>
     <string name="voic_1">後裝音量</string>
     <string name="voic_2">媒體音量</string>
     <string name="voic_3">通話音量</string>

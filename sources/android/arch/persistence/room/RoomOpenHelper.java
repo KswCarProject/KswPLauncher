@@ -6,23 +6,15 @@ import android.arch.persistence.db.SupportSQLiteOpenHelper;
 import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.room.migration.Migration;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import java.util.List;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
-    @Nullable
     private DatabaseConfiguration mConfiguration;
-    @NonNull
     private final Delegate mDelegate;
-    @NonNull
     private final String mIdentityHash;
-    @NonNull
     private final String mLegacyHash;
 
-    public RoomOpenHelper(@NonNull DatabaseConfiguration configuration, @NonNull Delegate delegate, @NonNull String identityHash, @NonNull String legacyHash) {
+    public RoomOpenHelper(DatabaseConfiguration configuration, Delegate delegate, String identityHash, String legacyHash) {
         super(delegate.version);
         this.mConfiguration = configuration;
         this.mDelegate = delegate;
@@ -30,7 +22,7 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
         this.mLegacyHash = legacyHash;
     }
 
-    public RoomOpenHelper(@NonNull DatabaseConfiguration configuration, @NonNull Delegate delegate, @NonNull String legacyHash) {
+    public RoomOpenHelper(DatabaseConfiguration configuration, Delegate delegate, String legacyHash) {
         this(configuration, delegate, "", legacyHash);
     }
 
@@ -47,7 +39,8 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
     public void onUpgrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
         List<Migration> migrations;
         boolean migrated = false;
-        if (!(this.mConfiguration == null || (migrations = this.mConfiguration.migrationContainer.findMigrationPath(oldVersion, newVersion)) == null)) {
+        DatabaseConfiguration databaseConfiguration = this.mConfiguration;
+        if (!(databaseConfiguration == null || (migrations = databaseConfiguration.migrationContainer.findMigrationPath(oldVersion, newVersion)) == null)) {
             for (Migration migration : migrations) {
                 migration.migrate(db);
             }
@@ -55,14 +48,14 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
             updateIdentity(db);
             migrated = true;
         }
-        if (migrated) {
-            return;
+        if (!migrated) {
+            DatabaseConfiguration databaseConfiguration2 = this.mConfiguration;
+            if (databaseConfiguration2 == null || databaseConfiguration2.isMigrationRequiredFrom(oldVersion)) {
+                throw new IllegalStateException("A migration from " + oldVersion + " to " + newVersion + " was required but not found. Please provide the " + "necessary Migration path via " + "RoomDatabase.Builder.addMigration(Migration ...) or allow for " + "destructive migrations via one of the " + "RoomDatabase.Builder.fallbackToDestructiveMigration* methods.");
+            }
+            this.mDelegate.dropAllTables(db);
+            this.mDelegate.createAllTables(db);
         }
-        if (this.mConfiguration == null || this.mConfiguration.isMigrationRequiredFrom(oldVersion)) {
-            throw new IllegalStateException("A migration from " + oldVersion + " to " + newVersion + " was required but not found. Please provide the " + "necessary Migration path via " + "RoomDatabase.Builder.addMigration(Migration ...) or allow for " + "destructive migrations via one of the " + "RoomDatabase.Builder.fallbackToDestructiveMigration* methods.");
-        }
-        this.mDelegate.dropAllTables(db);
-        this.mDelegate.createAllTables(db);
     }
 
     public void onDowngrade(SupportSQLiteDatabase db, int oldVersion, int newVersion) {
@@ -115,7 +108,6 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static abstract class Delegate {
         public final int version;
 

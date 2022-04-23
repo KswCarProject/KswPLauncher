@@ -1,8 +1,6 @@
 package android.databinding;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +12,19 @@ public class DataBindingUtil {
     private DataBindingUtil() {
     }
 
-    public static void setDefaultComponent(@Nullable DataBindingComponent bindingComponent) {
+    public static void setDefaultComponent(DataBindingComponent bindingComponent) {
         sDefaultComponent = bindingComponent;
     }
 
-    @Nullable
     public static DataBindingComponent getDefaultComponent() {
         return sDefaultComponent;
     }
 
-    public static <T extends ViewDataBinding> T inflate(@NonNull LayoutInflater inflater, int layoutId, @Nullable ViewGroup parent, boolean attachToParent) {
+    public static <T extends ViewDataBinding> T inflate(LayoutInflater inflater, int layoutId, ViewGroup parent, boolean attachToParent) {
         return inflate(inflater, layoutId, parent, attachToParent, sDefaultComponent);
     }
 
-    public static <T extends ViewDataBinding> T inflate(@NonNull LayoutInflater inflater, int layoutId, @Nullable ViewGroup parent, boolean attachToParent, @Nullable DataBindingComponent bindingComponent) {
+    public static <T extends ViewDataBinding> T inflate(LayoutInflater inflater, int layoutId, ViewGroup parent, boolean attachToParent, DataBindingComponent bindingComponent) {
         int startChildren = 0;
         boolean useChildren = parent != null && attachToParent;
         if (useChildren) {
@@ -40,13 +37,11 @@ public class DataBindingUtil {
         return bind(bindingComponent, view, layoutId);
     }
 
-    @Nullable
-    public static <T extends ViewDataBinding> T bind(@NonNull View root) {
+    public static <T extends ViewDataBinding> T bind(View root) {
         return bind(root, sDefaultComponent);
     }
 
-    @Nullable
-    public static <T extends ViewDataBinding> T bind(@NonNull View root, DataBindingComponent bindingComponent) {
+    public static <T extends ViewDataBinding> T bind(View root, DataBindingComponent bindingComponent) {
         T binding = getBinding(root);
         if (binding != null) {
             return binding;
@@ -73,28 +68,27 @@ public class DataBindingUtil {
     /* JADX WARNING: type inference failed for: r0v1, types: [android.view.ViewParent] */
     /* JADX WARNING: Multi-variable type inference failed */
     /* JADX WARNING: Unknown variable types count: 1 */
-    @android.support.annotation.Nullable
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public static <T extends android.databinding.ViewDataBinding> T findBinding(@android.support.annotation.NonNull android.view.View r12) {
+    public static <T extends android.databinding.ViewDataBinding> T findBinding(android.view.View r12) {
         /*
         L_0x0000:
             r0 = 0
-            if (r12 == 0) goto L_0x005f
+            if (r12 == 0) goto L_0x005d
             android.databinding.ViewDataBinding r1 = android.databinding.ViewDataBinding.getBinding(r12)
             if (r1 == 0) goto L_0x000a
             return r1
         L_0x000a:
             java.lang.Object r2 = r12.getTag()
             boolean r3 = r2 instanceof java.lang.String
-            if (r3 == 0) goto L_0x0051
+            if (r3 == 0) goto L_0x004f
             r3 = r2
             java.lang.String r3 = (java.lang.String) r3
             java.lang.String r4 = "layout"
             boolean r4 = r3.startsWith(r4)
-            if (r4 == 0) goto L_0x0051
+            if (r4 == 0) goto L_0x004f
             java.lang.String r4 = "_0"
             boolean r4 = r3.endsWith(r4)
-            if (r4 == 0) goto L_0x0051
+            if (r4 == 0) goto L_0x004f
             r4 = 6
             char r4 = r3.charAt(r4)
             r5 = 7
@@ -104,57 +98,55 @@ public class DataBindingUtil {
             r8 = 0
             r9 = 1
             r10 = -1
-            if (r4 != r6) goto L_0x003d
-            if (r5 != r10) goto L_0x003b
+            if (r4 != r6) goto L_0x003c
+            if (r5 != r10) goto L_0x003a
             r8 = r9
-        L_0x003b:
+        L_0x003a:
             r7 = r8
-            goto L_0x004e
-        L_0x003d:
+            goto L_0x004c
+        L_0x003c:
             r11 = 45
-            if (r4 != r11) goto L_0x004e
-            if (r5 == r10) goto L_0x004e
+            if (r4 != r11) goto L_0x004c
+            if (r5 == r10) goto L_0x004c
             int r11 = r5 + 1
             int r6 = r3.indexOf(r6, r11)
-            if (r6 != r10) goto L_0x004d
+            if (r6 != r10) goto L_0x004b
             r8 = r9
-        L_0x004d:
+        L_0x004b:
             r7 = r8
-        L_0x004e:
-            if (r7 == 0) goto L_0x0051
+        L_0x004c:
+            if (r7 == 0) goto L_0x004f
             return r0
-        L_0x0051:
+        L_0x004f:
             android.view.ViewParent r0 = r12.getParent()
             boolean r3 = r0 instanceof android.view.View
-            if (r3 == 0) goto L_0x005d
+            if (r3 == 0) goto L_0x005b
             r12 = r0
             android.view.View r12 = (android.view.View) r12
-            goto L_0x005e
-        L_0x005d:
+            goto L_0x005c
+        L_0x005b:
             r12 = 0
-        L_0x005e:
+        L_0x005c:
             goto L_0x0000
-        L_0x005f:
+        L_0x005d:
             return r0
         */
         throw new UnsupportedOperationException("Method not decompiled: android.databinding.DataBindingUtil.findBinding(android.view.View):android.databinding.ViewDataBinding");
     }
 
-    @Nullable
-    public static <T extends ViewDataBinding> T getBinding(@NonNull View view) {
+    public static <T extends ViewDataBinding> T getBinding(View view) {
         return ViewDataBinding.getBinding(view);
     }
 
-    public static <T extends ViewDataBinding> T setContentView(@NonNull Activity activity, int layoutId) {
+    public static <T extends ViewDataBinding> T setContentView(Activity activity, int layoutId) {
         return setContentView(activity, layoutId, sDefaultComponent);
     }
 
-    public static <T extends ViewDataBinding> T setContentView(@NonNull Activity activity, int layoutId, @Nullable DataBindingComponent bindingComponent) {
+    public static <T extends ViewDataBinding> T setContentView(Activity activity, int layoutId, DataBindingComponent bindingComponent) {
         activity.setContentView(layoutId);
         return bindToAddedViews(bindingComponent, (ViewGroup) activity.getWindow().getDecorView().findViewById(16908290), 0, layoutId);
     }
 
-    @Nullable
     public static String convertBrIdToString(int id) {
         return sMapper.convertBrIdToString(id);
     }

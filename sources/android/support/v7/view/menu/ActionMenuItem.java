@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.internal.view.SupportMenuItem;
@@ -17,7 +15,6 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ActionMenuItem implements SupportMenuItem {
     private static final int CHECKABLE = 1;
     private static final int CHECKED = 2;
@@ -106,7 +103,8 @@ public class ActionMenuItem implements SupportMenuItem {
     }
 
     public CharSequence getTitleCondensed() {
-        return this.mTitleCondensed != null ? this.mTitleCondensed : this.mTitle;
+        CharSequence charSequence = this.mTitleCondensed;
+        return charSequence != null ? charSequence : this.mTitle;
     }
 
     public boolean hasSubMenu() {
@@ -235,13 +233,15 @@ public class ActionMenuItem implements SupportMenuItem {
     }
 
     public boolean invoke() {
-        if (this.mClickListener != null && this.mClickListener.onMenuItemClick(this)) {
+        MenuItem.OnMenuItemClickListener onMenuItemClickListener = this.mClickListener;
+        if (onMenuItemClickListener != null && onMenuItemClickListener.onMenuItemClick(this)) {
             return true;
         }
-        if (this.mIntent == null) {
+        Intent intent = this.mIntent;
+        if (intent == null) {
             return false;
         }
-        this.mContext.startActivity(this.mIntent);
+        this.mContext.startActivity(intent);
         return true;
     }
 
@@ -315,7 +315,7 @@ public class ActionMenuItem implements SupportMenuItem {
         return this.mTooltipText;
     }
 
-    public MenuItem setIconTintList(@Nullable ColorStateList iconTintList) {
+    public MenuItem setIconTintList(ColorStateList iconTintList) {
         this.mIconTintList = iconTintList;
         this.mHasIconTint = true;
         applyIconTint();
@@ -338,14 +338,17 @@ public class ActionMenuItem implements SupportMenuItem {
     }
 
     private void applyIconTint() {
-        if (this.mIconDrawable == null) {
+        Drawable drawable = this.mIconDrawable;
+        if (drawable == null) {
             return;
         }
         if (this.mHasIconTint || this.mHasIconTintMode) {
-            this.mIconDrawable = DrawableCompat.wrap(this.mIconDrawable);
-            this.mIconDrawable = this.mIconDrawable.mutate();
+            Drawable wrap = DrawableCompat.wrap(drawable);
+            this.mIconDrawable = wrap;
+            Drawable mutate = wrap.mutate();
+            this.mIconDrawable = mutate;
             if (this.mHasIconTint) {
-                DrawableCompat.setTintList(this.mIconDrawable, this.mIconTintList);
+                DrawableCompat.setTintList(mutate, this.mIconTintList);
             }
             if (this.mHasIconTintMode) {
                 DrawableCompat.setTintMode(this.mIconDrawable, this.mIconTintMode);

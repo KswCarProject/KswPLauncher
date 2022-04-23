@@ -1,8 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.util.LruCache;
 import com.bumptech.glide.util.Util;
 import java.util.Queue;
@@ -18,13 +15,12 @@ public class ModelCache<A, B> {
     public ModelCache(long size) {
         this.cache = new LruCache<ModelKey<A>, B>(size) {
             /* access modifiers changed from: protected */
-            public void onItemEvicted(@NonNull ModelKey<A> key, @Nullable B b) {
+            public void onItemEvicted(ModelKey<A> key, B b) {
                 key.release();
             }
         };
     }
 
-    @Nullable
     public B get(A model, int width, int height) {
         ModelKey<A> key = ModelKey.get(model, width, height);
         B result = this.cache.get(key);
@@ -40,7 +36,6 @@ public class ModelCache<A, B> {
         this.cache.clearMemory();
     }
 
-    @VisibleForTesting
     static final class ModelKey<A> {
         private static final Queue<ModelKey<?>> KEY_QUEUE = Util.createQueue(0);
         private int height;
@@ -49,8 +44,9 @@ public class ModelCache<A, B> {
 
         static <A> ModelKey<A> get(A model2, int width2, int height2) {
             ModelKey<A> modelKey;
-            synchronized (KEY_QUEUE) {
-                modelKey = KEY_QUEUE.poll();
+            Queue<ModelKey<?>> queue = KEY_QUEUE;
+            synchronized (queue) {
+                modelKey = queue.poll();
             }
             if (modelKey == null) {
                 modelKey = new ModelKey<>();
@@ -69,8 +65,9 @@ public class ModelCache<A, B> {
         }
 
         public void release() {
-            synchronized (KEY_QUEUE) {
-                KEY_QUEUE.offer(this);
+            Queue<ModelKey<?>> queue = KEY_QUEUE;
+            synchronized (queue) {
+                queue.offer(this);
             }
         }
 

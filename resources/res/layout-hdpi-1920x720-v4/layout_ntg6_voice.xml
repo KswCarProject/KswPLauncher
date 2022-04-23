@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/layout_ntg6_voice_bg" android:background="@mipmap/ntg55_right_big_bk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true"/>
+    <TextView android:textSize="30sp" android:textColor="#001222" android:gravity="center" android:id="@+id/tv_TwoMsg" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10dp" android:text="@string/item3" android:layout_toLeftOf="@+id/img_TwoBack" android:layout_alignLeft="@+id/layout_ntg6_voice_bg"/>
+    <ImageView android:id="@+id/img_TwoBack" android:background="@drawable/ntg6_two_back" android:padding="20dp" android:focusable="true" android:nextFocusUp="@+id/img_TwoBack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:layout_alignParentRight="true"/>
+    <ImageView android:background="@mipmap/ntg55_hk_bk" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="61dp" android:layout_marginBottom="70dp" android:layout_alignParentRight="true"/>
+    <ImageView android:background="@mipmap/ntg55_hk_bk1" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="61dp" android:layout_marginRight="5dp" android:layout_marginBottom="70dp" android:layout_alignParentRight="true"/>
+    <LinearLayout android:orientation="vertical" android:focusable="false" android:layout_width="450dp" android:layout_height="wrap_content" android:layout_marginTop="61dp" android:layout_alignParentRight="true">
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_houzvoc" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/voic_1"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5dp">
+            <TextView android:textSize="20sp" android:textColor="#c7c7c7" android:ellipsize="end" android:id="@+id/tv_mtvoc" android:focusable="false" android:layout_width="160dp" android:layout_height="wrap_content" android:text="@string/voic_2" android:lines="1" android:drawableRight="@mipmap/ntg55_audio"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/ntg55_audio_seekbar_bk" android:layout_width="185dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_mtb" android:background="@null" android:focusable="false" android:layout_width="217dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_ntg6_voice_progress" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_mtsize" android:padding="5dp" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5dp">
+            <TextView android:textSize="20sp" android:textColor="#c7c7c7" android:ellipsize="end" android:id="@+id/tv_tonghvoc" android:focusable="false" android:layout_width="160dp" android:layout_height="wrap_content" android:text="@string/voic_3" android:lines="1" android:drawableRight="@mipmap/ntg55_audio"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/ntg55_audio_seekbar_bk" android:layout_width="185dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_tonghb" android:background="@null" android:focusable="false" android:layout_width="217dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_ntg6_voice_progress" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_tonghsize" android:padding="5dp" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"/>
+        </LinearLayout>
+        <ImageView android:background="@mipmap/ntg55_right_big_line1" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:layout_marginRight="30dp"/>
+        <TextView android:textSize="25sp" android:textColor="@color/color1" android:id="@+id/tv_yuancvoc" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/voic_4"/>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5dp">
+            <TextView android:textSize="20sp" android:textColor="#c7c7c7" android:ellipsize="end" android:id="@+id/tv_yuancthvoc" android:focusable="false" android:layout_width="160dp" android:layout_height="wrap_content" android:text="@string/voic_3" android:lines="1" android:drawableRight="@mipmap/ntg55_audio"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/ntg55_audio_seekbar_bk" android:layout_width="185dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_yuancthb" android:background="@null" android:focusable="false" android:layout_width="217dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_ntg6_voice_progress" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="#c7c7c7" android:id="@+id/tv_yuancthsize" android:padding="5dp" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"/>
+        </LinearLayout>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5dp">
+            <TextView android:textSize="20sp" android:textColor="#c7c7c7" android:ellipsize="end" android:id="@+id/tv_daohvoic" android:focusable="false" android:layout_width="160dp" android:layout_height="wrap_content" android:text="@string/voic_5" android:lines="1" android:drawableRight="@mipmap/ntg55_audio"/>
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:background="@mipmap/ntg55_audio_seekbar_bk" android:layout_width="185dp" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+                <SeekBar android:id="@+id/seek_daohvoicb" android:background="@null" android:focusable="false" android:layout_width="217dp" android:layout_height="40dp" android:maxHeight="20dp" android:progressDrawable="@drawable/layer_ntg6_voice_progress" android:minHeight="20dp" android:thumb="@null"/>
+            </RelativeLayout>
+            <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_daohvoicsize" android:padding="5dp" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

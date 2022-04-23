@@ -16,10 +16,8 @@ public @interface ForeignKey {
 
     Class entity();
 
-    @Action
     int onDelete() default 1;
 
-    @Action
     int onUpdate() default 1;
 
     String[] parentColumns();

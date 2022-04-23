@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.resource.gif;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.bumptech.glide.load.ImageHeaderParser;
 import com.bumptech.glide.load.ImageHeaderParserUtils;
@@ -26,11 +25,11 @@ public class StreamGifDecoder implements ResourceDecoder<InputStream, GifDrawabl
         this.byteArrayPool = byteArrayPool2;
     }
 
-    public boolean handles(@NonNull InputStream source, @NonNull Options options) throws IOException {
+    public boolean handles(InputStream source, Options options) throws IOException {
         return !((Boolean) options.get(GifOptions.DISABLE_ANIMATION)).booleanValue() && ImageHeaderParserUtils.getType(this.parsers, source, this.byteArrayPool) == ImageHeaderParser.ImageType.GIF;
     }
 
-    public Resource<GifDrawable> decode(@NonNull InputStream source, int width, int height, @NonNull Options options) throws IOException {
+    public Resource<GifDrawable> decode(InputStream source, int width, int height, Options options) throws IOException {
         byte[] data = inputStreamToBytes(source);
         if (data == null) {
             return null;

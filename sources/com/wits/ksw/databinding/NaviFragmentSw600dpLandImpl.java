@@ -3,8 +3,6 @@ package com.wits.ksw.databinding;
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,27 +10,29 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class NaviFragmentSw600dpLandImpl extends NaviFragment {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(3);
-    @Nullable
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"id7_sub_navi_view", "id7_sub_phone_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_navi_view, R.layout.id7_sub_phone_view});
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"id7_sub_navi_view", "id7_sub_phone_view"}, new int[]{1, 2}, new int[]{R.layout.id7_sub_navi_view, R.layout.id7_sub_phone_view});
     }
 
-    public NaviFragmentSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public NaviFragmentSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private NaviFragmentSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 2, bindings[1], bindings[2]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        setContainedBinding(this.naviLayout);
+        setContainedBinding(this.phoneLayout);
         setRootTag(root);
         invalidateAll();
     }
@@ -95,24 +95,24 @@ public class NaviFragmentSw600dpLandImpl extends NaviFragment {
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.NaviFragmentSw600dpLandImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (8 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (9 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setNaviViewModel(@Nullable LauncherViewModel NaviViewModel) {
+    public void setNaviViewModel(LauncherViewModel NaviViewModel) {
         this.mNaviViewModel = NaviViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(9);
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.naviLayout.setLifecycleOwner(lifecycleOwner);
         this.phoneLayout.setLifecycleOwner(lifecycleOwner);
@@ -122,15 +122,15 @@ public class NaviFragmentSw600dpLandImpl extends NaviFragment {
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangePhoneLayout((Id7SubPhoneViewBinding) object, fieldId);
-            case 1:
                 return onChangeNaviLayout((NaviSubView) object, fieldId);
+            case 1:
+                return onChangePhoneLayout((Id7SubPhoneViewBinding) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangePhoneLayout(Id7SubPhoneViewBinding PhoneLayout, int fieldId) {
+    private boolean onChangeNaviLayout(NaviSubView NaviLayout, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -140,7 +140,7 @@ public class NaviFragmentSw600dpLandImpl extends NaviFragment {
         return true;
     }
 
-    private boolean onChangeNaviLayout(NaviSubView NaviLayout, int fieldId) {
+    private boolean onChangePhoneLayout(Id7SubPhoneViewBinding PhoneLayout, int fieldId) {
         if (fieldId != 0) {
             return false;
         }

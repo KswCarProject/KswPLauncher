@@ -1,7 +1,6 @@
 package com.bumptech.glide.request.target;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -19,7 +18,7 @@ public abstract class ThumbnailImageViewTarget<T> extends ImageViewTarget<T> {
     }
 
     /* access modifiers changed from: protected */
-    public void setResource(@Nullable T resource) {
+    public void setResource(T resource) {
         ViewGroup.LayoutParams layoutParams = ((ImageView) this.view).getLayoutParams();
         Drawable result = getDrawable(resource);
         if (layoutParams != null && layoutParams.width > 0 && layoutParams.height > 0) {

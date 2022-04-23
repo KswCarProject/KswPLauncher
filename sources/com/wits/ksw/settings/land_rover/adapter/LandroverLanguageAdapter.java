@@ -1,7 +1,6 @@
 package com.wits.ksw.settings.land_rover.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +30,11 @@ public class LandroverLanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.data = appInfoList;
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.land_rover_list_settings_language, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tv_functionItem.setText(this.data.get(position).getTitle());
         if (this.data.get(position).isIscheck()) {
             holder.tv_functionItem.setChecked(true);
@@ -59,20 +57,22 @@ public class LandroverLanguageAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.data == null) {
+        List<FunctionBean> list = this.data;
+        if (list == null) {
             return 0;
         }
-        return this.data.size();
+        return list.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_functionItem;
         RadioButton tv_functionItem;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_functionItem = (RadioButton) itemView.findViewById(R.id.tv_functionItem);
-            this.tv_functionItem.setEnabled(false);
+            RadioButton radioButton = (RadioButton) itemView.findViewById(R.id.tv_functionItem);
+            this.tv_functionItem = radioButton;
+            radioButton.setEnabled(false);
             this.img_functionItem = (ImageView) itemView.findViewById(R.id.img_functionItem);
         }
     }

@@ -6,14 +6,10 @@ import android.arch.persistence.room.InvalidationTracker;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.RoomSQLiteQuery;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public abstract class LimitOffsetDataSource<T> extends PositionalDataSource<T> {
     private final String mCountQuery;
     private final RoomDatabase mDb;
@@ -33,14 +29,15 @@ public abstract class LimitOffsetDataSource<T> extends PositionalDataSource<T> {
         this.mDb = db;
         this.mSourceQuery = query;
         this.mInTransaction = inTransaction;
-        this.mCountQuery = "SELECT COUNT(*) FROM ( " + this.mSourceQuery.getSql() + " )";
-        this.mLimitOffsetQuery = "SELECT * FROM ( " + this.mSourceQuery.getSql() + " ) LIMIT ? OFFSET ?";
-        this.mObserver = new InvalidationTracker.Observer(tables) {
-            public void onInvalidated(@NonNull Set<String> set) {
+        this.mCountQuery = "SELECT COUNT(*) FROM ( " + query.getSql() + " )";
+        this.mLimitOffsetQuery = "SELECT * FROM ( " + query.getSql() + " ) LIMIT ? OFFSET ?";
+        AnonymousClass1 r0 = new InvalidationTracker.Observer(tables) {
+            public void onInvalidated(Set<String> set) {
                 LimitOffsetDataSource.this.invalidate();
             }
         };
-        db.getInvalidationTracker().addWeakObserver(this.mObserver);
+        this.mObserver = r0;
+        db.getInvalidationTracker().addWeakObserver(r0);
     }
 
     public int countItems() {
@@ -65,7 +62,7 @@ public abstract class LimitOffsetDataSource<T> extends PositionalDataSource<T> {
         return LimitOffsetDataSource.super.isInvalid();
     }
 
-    public void loadInitial(@NonNull PositionalDataSource.LoadInitialParams params, @NonNull PositionalDataSource.LoadInitialCallback<T> callback) {
+    public void loadInitial(PositionalDataSource.LoadInitialParams params, PositionalDataSource.LoadInitialCallback<T> callback) {
         int totalCount = countItems();
         if (totalCount == 0) {
             callback.onResult(Collections.emptyList(), 0, 0);
@@ -81,7 +78,7 @@ public abstract class LimitOffsetDataSource<T> extends PositionalDataSource<T> {
         }
     }
 
-    public void loadRange(@NonNull PositionalDataSource.LoadRangeParams params, @NonNull PositionalDataSource.LoadRangeCallback<T> callback) {
+    public void loadRange(PositionalDataSource.LoadRangeParams params, PositionalDataSource.LoadRangeCallback<T> callback) {
         List<T> list = loadRange(params.startPosition, params.loadSize);
         if (list != null) {
             callback.onResult(list);
@@ -90,7 +87,6 @@ public abstract class LimitOffsetDataSource<T> extends PositionalDataSource<T> {
         }
     }
 
-    @Nullable
     public List<T> loadRange(int startPosition, int loadCount) {
         RoomSQLiteQuery sqLiteQuery = RoomSQLiteQuery.acquire(this.mLimitOffsetQuery, this.mSourceQuery.getArgCount() + 2);
         sqLiteQuery.copyArgumentsFrom(this.mSourceQuery);

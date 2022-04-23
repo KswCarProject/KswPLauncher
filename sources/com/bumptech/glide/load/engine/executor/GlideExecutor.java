@@ -2,9 +2,6 @@ package com.bumptech.glide.load.engine.executor;
 
 import android.os.Process;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
-import android.support.v7.widget.ActivityChooserView;
 import android.util.Log;
 import java.util.Collection;
 import java.util.List;
@@ -31,30 +28,6 @@ public final class GlideExecutor implements ExecutorService {
     private static volatile int bestThreadCount;
     private final ExecutorService delegate;
 
-    public interface UncaughtThrowableStrategy {
-        public static final UncaughtThrowableStrategy DEFAULT = LOG;
-        public static final UncaughtThrowableStrategy IGNORE = new UncaughtThrowableStrategy() {
-            public void handle(Throwable t) {
-            }
-        };
-        public static final UncaughtThrowableStrategy LOG = new UncaughtThrowableStrategy() {
-            public void handle(Throwable t) {
-                if (t != null && Log.isLoggable(GlideExecutor.TAG, 6)) {
-                    Log.e(GlideExecutor.TAG, "Request threw uncaught throwable", t);
-                }
-            }
-        };
-        public static final UncaughtThrowableStrategy THROW = new UncaughtThrowableStrategy() {
-            public void handle(Throwable t) {
-                if (t != null) {
-                    throw new RuntimeException("Request threw uncaught throwable", t);
-                }
-            }
-        };
-
-        void handle(Throwable th);
-    }
-
     public static GlideExecutor newDiskCacheExecutor() {
         return newDiskCacheExecutor(1, DEFAULT_DISK_CACHE_EXECUTOR_NAME, UncaughtThrowableStrategy.DEFAULT);
     }
@@ -80,7 +53,7 @@ public final class GlideExecutor implements ExecutorService {
     }
 
     public static GlideExecutor newUnlimitedSourceExecutor() {
-        return new GlideExecutor(new ThreadPoolExecutor(0, ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED, KEEP_ALIVE_TIME_MS, TimeUnit.MILLISECONDS, new SynchronousQueue(), new DefaultThreadFactory(SOURCE_UNLIMITED_EXECUTOR_NAME, UncaughtThrowableStrategy.DEFAULT, false)));
+        return new GlideExecutor(new ThreadPoolExecutor(0, Integer.MAX_VALUE, KEEP_ALIVE_TIME_MS, TimeUnit.MILLISECONDS, new SynchronousQueue(), new DefaultThreadFactory(SOURCE_UNLIMITED_EXECUTOR_NAME, UncaughtThrowableStrategy.DEFAULT, false)));
     }
 
     public static GlideExecutor newAnimationExecutor() {
@@ -91,45 +64,39 @@ public final class GlideExecutor implements ExecutorService {
         return new GlideExecutor(new ThreadPoolExecutor(0, threadCount, KEEP_ALIVE_TIME_MS, TimeUnit.MILLISECONDS, new PriorityBlockingQueue(), new DefaultThreadFactory(ANIMATION_EXECUTOR_NAME, uncaughtThrowableStrategy, true)));
     }
 
-    @VisibleForTesting
     GlideExecutor(ExecutorService delegate2) {
         this.delegate = delegate2;
     }
 
-    public void execute(@NonNull Runnable command) {
+    public void execute(Runnable command) {
         this.delegate.execute(command);
     }
 
-    @NonNull
-    public Future<?> submit(@NonNull Runnable task) {
+    public Future<?> submit(Runnable task) {
         return this.delegate.submit(task);
     }
 
-    @NonNull
-    public <T> List<Future<T>> invokeAll(@NonNull Collection<? extends Callable<T>> tasks) throws InterruptedException {
+    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException {
         return this.delegate.invokeAll(tasks);
     }
 
-    @NonNull
-    public <T> List<Future<T>> invokeAll(@NonNull Collection<? extends Callable<T>> tasks, long timeout, @NonNull TimeUnit unit) throws InterruptedException {
+    public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException {
         return this.delegate.invokeAll(tasks, timeout, unit);
     }
 
-    @NonNull
-    public <T> T invokeAny(@NonNull Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
+    public <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
         return this.delegate.invokeAny(tasks);
     }
 
-    public <T> T invokeAny(@NonNull Collection<? extends Callable<T>> tasks, long timeout, @NonNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+    public <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         return this.delegate.invokeAny(tasks, timeout, unit);
     }
 
-    @NonNull
-    public <T> Future<T> submit(@NonNull Runnable task, T result) {
+    public <T> Future<T> submit(Runnable task, T result) {
         return this.delegate.submit(task, result);
     }
 
-    public <T> Future<T> submit(@NonNull Callable<T> task) {
+    public <T> Future<T> submit(Callable<T> task) {
         return this.delegate.submit(task);
     }
 
@@ -137,7 +104,6 @@ public final class GlideExecutor implements ExecutorService {
         this.delegate.shutdown();
     }
 
-    @NonNull
     public List<Runnable> shutdownNow() {
         return this.delegate.shutdownNow();
     }
@@ -150,7 +116,7 @@ public final class GlideExecutor implements ExecutorService {
         return this.delegate.isTerminated();
     }
 
-    public boolean awaitTermination(long timeout, @NonNull TimeUnit unit) throws InterruptedException {
+    public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return this.delegate.awaitTermination(timeout, unit);
     }
 
@@ -163,6 +129,36 @@ public final class GlideExecutor implements ExecutorService {
             bestThreadCount = Math.min(4, RuntimeCompat.availableProcessors());
         }
         return bestThreadCount;
+    }
+
+    public interface UncaughtThrowableStrategy {
+        public static final UncaughtThrowableStrategy DEFAULT;
+        public static final UncaughtThrowableStrategy IGNORE = new UncaughtThrowableStrategy() {
+            public void handle(Throwable t) {
+            }
+        };
+        public static final UncaughtThrowableStrategy LOG;
+        public static final UncaughtThrowableStrategy THROW = new UncaughtThrowableStrategy() {
+            public void handle(Throwable t) {
+                if (t != null) {
+                    throw new RuntimeException("Request threw uncaught throwable", t);
+                }
+            }
+        };
+
+        void handle(Throwable th);
+
+        static {
+            AnonymousClass2 r0 = new UncaughtThrowableStrategy() {
+                public void handle(Throwable t) {
+                    if (t != null && Log.isLoggable(GlideExecutor.TAG, 6)) {
+                        Log.e(GlideExecutor.TAG, "Request threw uncaught throwable", t);
+                    }
+                }
+            };
+            LOG = r0;
+            DEFAULT = r0;
+        }
     }
 
     private static final class DefaultThreadFactory implements ThreadFactory {
@@ -178,7 +174,7 @@ public final class GlideExecutor implements ExecutorService {
             this.preventNetworkOperations = preventNetworkOperations2;
         }
 
-        public synchronized Thread newThread(@NonNull Runnable runnable) {
+        public synchronized Thread newThread(Runnable runnable) {
             Thread result;
             result = new Thread(runnable, "glide-" + this.name + "-thread-" + this.threadNum) {
                 public void run() {
@@ -193,7 +189,7 @@ public final class GlideExecutor implements ExecutorService {
                     }
                 }
             };
-            this.threadNum = this.threadNum + 1;
+            this.threadNum++;
             return result;
         }
     }

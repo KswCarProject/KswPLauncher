@@ -11,6 +11,7 @@ import android.databinding.ObservableField;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,9 +29,11 @@ import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.IconUtils;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.view.DragGridView;
+import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class AppViewModel extends LauncherViewModel {
@@ -40,9 +43,13 @@ public final class AppViewModel extends LauncherViewModel {
     public static final String DVR_TYPE = "DVR_Type";
     public static final String F_CAM_Type = "Front_view_camera";
     private static final String GAODE_MAP_PKG = "com.autonavi.amapauto";
+    private static final String GN_TXZ = "com.txznet.adapter";
     private static final String GOOGLE_SEARCH_PKG = "com.google.android.googlequicksearchbox";
+    private static final String HY_TXZ = "com.txznet.smartadapter";
     private static final String IFLYTEK_PKG = "com.iflytek.inputmethod.google";
     private static final String SPEEDPLAY_PKG = "com.suding.speedplay";
+    private static final String TS_TXZ = "com.txznet.aipal";
+    private static final String WITS_LOG_PKG = "com.wits.log";
     private static final String ZLINK_PKG = "com.zjinnova.zlink";
     /* access modifiers changed from: private */
     public static Drawable auxIcon = KswApplication.appContext.getDrawable(R.drawable.ic_aux);
@@ -82,8 +89,7 @@ public final class AppViewModel extends LauncherViewModel {
             Log.i(LauncherViewModel.TAG, "onStartMoving: ");
             try {
                 String topApp = PowerManagerApp.getManager().getStatusString("topApp");
-                String str = LauncherViewModel.TAG;
-                Log.i(str, "onStartMoving: topApp=" + topApp);
+                Log.i(LauncherViewModel.TAG, "onStartMoving: topApp=" + topApp);
                 if (!"com.google.android.packageinstaller".equals(topApp)) {
                     Log.i(LauncherViewModel.TAG, "onStartMoving: return");
                     return;
@@ -157,7 +163,8 @@ public final class AppViewModel extends LauncherViewModel {
             if (resolveInfoList != null || !resolveInfoList.isEmpty()) {
                 for (ResolveInfo resolveInfo : resolveInfoList) {
                     String packageName = resolveInfo.activityInfo.packageName;
-                    if (!AppViewModel.this.filterAppDisplay(packageName)) {
+                    Log.d("AppViewModel", resolveInfo.activityInfo.loadLabel(AppViewModel.this.activity.getPackageManager()) + "  " + packageName + "  " + resolveInfo.activityInfo.name);
+                    if (!AppViewModel.this.isOutTXZ(packageName) && !AppViewModel.this.filterAppDisplay(packageName)) {
                         AppInfo appInfo = new AppInfo();
                         Drawable iconDrawable = resolveInfo.loadIcon(pm);
                         appInfo.setAppIcon(iconDrawable);
@@ -165,7 +172,6 @@ public final class AppViewModel extends LauncherViewModel {
                         appInfo.setAppLable(label);
                         appInfo.setApppkg(packageName);
                         appInfo.setClassName(resolveInfo.activityInfo.name);
-                        Log.d("AAAAA", packageName + "  " + label);
                         if (ClientManager.getInstance().isAls6208Client() && IconUtils.getInstance().isRoundStyle()) {
                             AppViewModel.this.loadRoundRectIcon(packageName, appInfo, iconDrawable, label);
                         }
@@ -228,18 +234,37 @@ public final class AppViewModel extends LauncherViewModel {
         appInfo.setAppIcon(IconUtils.getInstance().getIcon(packageName, appInfo, drawable, label));
     }
 
+    public boolean isOutTXZ(String packageName) {
+        try {
+            if (PowerManagerApp.getSettingsInt(KeyConfig.TXZ) != 0) {
+                return false;
+            }
+            if (packageName.contains(HY_TXZ) || packageName.contains(GN_TXZ) || packageName.contains(TS_TXZ)) {
+                return true;
+            }
+            return false;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     /* access modifiers changed from: private */
     public boolean filterAppDisplay(String packageName) {
-        if (packageName.contains(KswApplication.appContext.getPackageName()) || packageName.contains(getClass().getPackage().toString()) || packageName.contains(IFLYTEK_PKG) || packageName.contains(DESKCLOCK_PKG)) {
+        if (packageName.contains(KswApplication.appContext.getPackageName()) || packageName.contains(getClass().getPackage().toString()) || packageName.contains(IFLYTEK_PKG) || packageName.contains(DESKCLOCK_PKG) || packageName.contains(WITS_LOG_PKG)) {
             return true;
         }
         int speed_play_switch = Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1);
         if (speed_play_switch != 2 && packageName.contains(SPEEDPLAY_PKG)) {
             return true;
         }
-        if (speed_play_switch != 2 || !packageName.contains(ZLINK_PKG)) {
+        if (speed_play_switch == 2 && packageName.contains(ZLINK_PKG)) {
+            return true;
+        }
+        if (!Arrays.asList(this.context.getResources().getStringArray(R.array.exclude_class_list)).contains(packageName)) {
             return false;
         }
+        Log.d(TAG, "filterAppDisplay: excludeClassArray packagename =" + packageName);
         return true;
     }
 
@@ -273,8 +298,7 @@ public final class AppViewModel extends LauncherViewModel {
             appList.setClassName(appInfo.getClassName());
             newAppList.add(appList);
             if (TextUtils.isEmpty(appInfo.getClassName())) {
-                String str = TAG;
-                Log.e(str, "SaveAppList: appinfo ClassName isEmpty AppLable = " + appInfo.getAppLable());
+                Log.e(TAG, "SaveAppList: appinfo ClassName isEmpty AppLable = " + appInfo.getAppLable());
                 return;
             }
         }

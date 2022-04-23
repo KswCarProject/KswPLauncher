@@ -1,6 +1,5 @@
 package com.wits.pms.statuscontrol;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
@@ -79,8 +78,9 @@ public class PowerManagerApp {
         synchronized (lock) {
             try {
                 for (String key : maps.keySet()) {
-                    if (maps.get(key) == contentObserver) {
-                        maps.remove(key, contentObserver);
+                    HashMap<String, IContentObserver> hashMap = maps;
+                    if (hashMap.get(key) == contentObserver) {
+                        hashMap.remove(key, contentObserver);
                     }
                 }
                 if (getManager() != null) {
@@ -92,14 +92,12 @@ public class PowerManagerApp {
         }
     }
 
-    @SuppressLint({"PrivateApi"})
     public static IBinder getService(String serviceName) {
         try {
             Class<?> serviceManager = Class.forName("android.os.ServiceManager");
             return (IBinder) serviceManager.getMethod("getService", new Class[]{String.class}).invoke(serviceManager, new Object[]{serviceName});
         } catch (Exception e) {
-            String name = PowerManagerApp.class.getName();
-            Log.e(name, "error service init - " + serviceName, e);
+            Log.e(PowerManagerApp.class.getName(), "error service init - " + serviceName, e);
             return null;
         }
     }
@@ -264,8 +262,9 @@ public class PowerManagerApp {
             synchronized (PowerManagerApp.lock) {
                 try {
                     for (String key : maps.keySet()) {
-                        if (maps.get(key) == statusObserver) {
-                            maps.remove(key, statusObserver);
+                        HashMap<String, IStatusObserver> hashMap = maps;
+                        if (hashMap.get(key) == statusObserver) {
+                            hashMap.remove(key, statusObserver);
                         }
                     }
                     if (getManager() != null) {

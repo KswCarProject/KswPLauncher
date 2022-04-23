@@ -1,6 +1,5 @@
 package com.bumptech.glide.util;
 
-import android.support.annotation.NonNull;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +9,7 @@ public class MarkEnforcingInputStream extends FilterInputStream {
     private static final int UNSET = Integer.MIN_VALUE;
     private int availableBytes = Integer.MIN_VALUE;
 
-    public MarkEnforcingInputStream(@NonNull InputStream in) {
+    public MarkEnforcingInputStream(InputStream in) {
         super(in);
     }
 
@@ -28,7 +27,7 @@ public class MarkEnforcingInputStream extends FilterInputStream {
         return result;
     }
 
-    public int read(@NonNull byte[] buffer, int byteOffset, int byteCount) throws IOException {
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         int toRead = (int) getBytesToRead((long) byteCount);
         if (toRead == -1) {
             return -1;
@@ -54,25 +53,28 @@ public class MarkEnforcingInputStream extends FilterInputStream {
     }
 
     public int available() throws IOException {
-        if (this.availableBytes == Integer.MIN_VALUE) {
+        int i = this.availableBytes;
+        if (i == Integer.MIN_VALUE) {
             return super.available();
         }
-        return Math.min(this.availableBytes, super.available());
+        return Math.min(i, super.available());
     }
 
     private long getBytesToRead(long targetByteCount) {
-        if (this.availableBytes == 0) {
+        int i = this.availableBytes;
+        if (i == 0) {
             return -1;
         }
-        if (this.availableBytes == Integer.MIN_VALUE || targetByteCount <= ((long) this.availableBytes)) {
+        if (i == Integer.MIN_VALUE || targetByteCount <= ((long) i)) {
             return targetByteCount;
         }
-        return (long) this.availableBytes;
+        return (long) i;
     }
 
     private void updateAvailableBytesAfterRead(long bytesRead) {
-        if (this.availableBytes != Integer.MIN_VALUE && bytesRead != -1) {
-            this.availableBytes = (int) (((long) this.availableBytes) - bytesRead);
+        int i = this.availableBytes;
+        if (i != Integer.MIN_VALUE && bytesRead != -1) {
+            this.availableBytes = (int) (((long) i) - bytesRead);
         }
     }
 }

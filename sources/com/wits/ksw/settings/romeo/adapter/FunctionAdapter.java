@@ -1,9 +1,7 @@
 package com.wits.ksw.settings.romeo.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,12 +55,11 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         Log.i(TAG, "FunctionAdapter: ");
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new ViewHolder(LayoutInflater.from(this.context).inflate(R.layout.romeo_list_settings_function, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint({"RecyclerView"}) final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (this.data.get(position).getIcon() != 0) {
             Drawable drawable = ContextCompat.getDrawable(this.context, this.data.get(position).getIcon());
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
@@ -71,16 +68,14 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.data.get(position).isIscheck();
         holder.tv_functionItem.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String access$000 = FunctionAdapter.TAG;
-                Log.d(access$000, "tv_functionItem onClick position=" + position);
+                Log.d(FunctionAdapter.TAG, "tv_functionItem onClick position=" + position);
                 OnFunctionClickListener unused = FunctionAdapter.this.functionClickListener;
             }
         });
         holder.tv_functionItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    String access$000 = FunctionAdapter.TAG;
-                    Log.d(access$000, "onFocusChange " + position);
+                    Log.d(FunctionAdapter.TAG, "onFocusChange " + position);
                     if (FunctionAdapter.this.itemBgChangeListener != null) {
                         FunctionAdapter.this.itemBgChangeListener.onChangeItemSelect(holder.itemView.getTop(), 1, position);
                         if (position == FunctionAdapter.this.downPosition) {
@@ -94,8 +89,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         });
         holder.tv_functionItem.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
-                String access$000 = FunctionAdapter.TAG;
-                Log.d(access$000, "onTouch " + position + " action " + event.getAction());
+                Log.d(FunctionAdapter.TAG, "onTouch " + position + " action " + event.getAction());
                 if (event.getAction() == 0) {
                     if (FunctionAdapter.this.itemBgChangeListener == null) {
                         return false;
@@ -113,8 +107,7 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
         });
         holder.tv_functionItem.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String access$000 = FunctionAdapter.TAG;
-                Log.i(access$000, "onKey: position=" + position + " action=" + event.getAction() + " keyCode =" + keyCode + " isFinish=" + FunctionAdapter.this.isFinish);
+                Log.i(FunctionAdapter.TAG, "onKey: position=" + position + " action=" + event.getAction() + " keyCode =" + keyCode + " isFinish=" + FunctionAdapter.this.isFinish);
                 if (event.getKeyCode() == 20) {
                     if (FunctionAdapter.this.data.size() - 1 == position) {
                         return true;
@@ -150,16 +143,17 @@ public class FunctionAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.data == null) {
+        List<FunctionBean> list = this.data;
+        if (list == null) {
             return 0;
         }
-        return this.data.size();
+        return list.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView tv_functionItem;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             this.tv_functionItem = (ImageView) itemView.findViewById(R.id.tv_functionItem);
         }

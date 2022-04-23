@@ -2,7 +2,6 @@ package com.wits.ksw.settings.ntg6.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import com.wits.ksw.R;
+import com.wits.ksw.launcher.view.MarqueeTextView;
 import com.wits.ksw.settings.id7.bean.MapBean;
 import java.util.List;
 
@@ -34,16 +34,20 @@ public class Ntg6NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
         this.mapBanList = data;
     }
 
+    public void setDatas(List<MapBean> data) {
+        this.mapBanList = data;
+        notifyDataSetChanged();
+    }
+
     public void registCheckListener(IrbtCheckListener listener) {
         this.rbtCheckListener = listener;
     }
 
-    @NonNull
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(this.context).inflate(R.layout.navi_ntg6_adpter_layout, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         Drawable drawable;
         if (this.mapBanList.get(position).getMapicon() == null) {
             drawable = this.context.getDrawable(R.mipmap.ic_launcher);
@@ -52,7 +56,7 @@ public class Ntg6NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
         }
         drawable.setBounds(0, 0, 40, 40);
         holder.rbt_navi.setCompoundDrawables(drawable, (Drawable) null, (Drawable) null, (Drawable) null);
-        holder.rbt_navi.setText(this.mapBanList.get(position).getName());
+        holder.mtv_tv.setText(this.mapBanList.get(position).getName());
         Log.d("NaviAdapter", "appName: " + this.mapBanList.get(position).getName());
         holder.rbt_navi.setCompoundDrawablePadding(10);
         holder.rbt_navi.setEnabled(true);
@@ -73,18 +77,21 @@ public class Ntg6NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.mapBanList == null) {
+        List<MapBean> list = this.mapBanList;
+        if (list == null) {
             return 0;
         }
-        return this.mapBanList.size();
+        return list.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
+        MarqueeTextView mtv_tv;
         RadioButton rbt_navi;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
             this.rbt_navi = (RadioButton) itemView.findViewById(R.id.rbt_navi);
+            this.mtv_tv = (MarqueeTextView) itemView.findViewById(R.id.mtv_tv);
         }
     }
 }

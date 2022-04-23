@@ -1,12 +1,10 @@
 package android.arch.persistence.room;
 
 import android.arch.persistence.db.SupportSQLiteStatement;
-import android.support.annotation.RestrictTo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public abstract class EntityInsertionAdapter<T> extends SharedSQLiteStatement {
     /* access modifiers changed from: protected */
     public abstract void bind(SupportSQLiteStatement supportSQLiteStatement, T t);

@@ -2,14 +2,12 @@ package android.support.v7.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.appcompat.R;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ButtonBarLayout extends LinearLayout {
     private static final int PEEK_BUTTON_DP = 16;
     private boolean mAllowStacking;
@@ -26,7 +24,7 @@ public class ButtonBarLayout extends LinearLayout {
     public void setAllowStacking(boolean allowStacking) {
         if (this.mAllowStacking != allowStacking) {
             this.mAllowStacking = allowStacking;
-            if (!this.mAllowStacking && getOrientation() == 1) {
+            if (!allowStacking && getOrientation() == 1) {
                 setStacked(false);
             }
             requestLayout();

@@ -7,24 +7,20 @@ import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
-import android.widget.ImageView;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.ControlBean;
 
 public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
     private OnClickListenerImpl mVieModelOnControlClickAndroidViewViewOnClickListener;
 
-    public ActivityMainBenzMbuxBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainBenzMbuxBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
@@ -54,20 +50,20 @@ public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (14 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (15 != variableId) {
             return false;
         }
         setVieModel((BcVieModel) variable);
         return true;
     }
 
-    public void setVieModel(@Nullable BcVieModel VieModel) {
+    public void setVieModel(BcVieModel VieModel) {
         this.mVieModel = VieModel;
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(14);
+        notifyPropertyChanged(15);
         super.requestRebind();
     }
 
@@ -118,31 +114,27 @@ public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
-        ImageView imageView;
-        int i;
-        OnClickListenerImpl onClickListenerImpl;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
         ObservableBoolean vieModelControlBeanControlPanelClose = null;
         View.OnClickListener vieModelOnControlClickAndroidViewViewOnClickListener = null;
-        ObservableInt vieModelBcPagePosition = null;
-        boolean vieModelControlBeanControlPanelCloseGet = false;
-        ControlBean vieModelControlBean = null;
-        int vieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = 0;
         BcVieModel vieModel = this.mVieModel;
+        ObservableInt vieModelBcPagePosition = null;
+        int vieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = 0;
+        Drawable vieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = null;
+        boolean vieModelControlBeanControlPanelCloseGet = false;
         ObservableBoolean vieModelControlBeanBenzControlPanelState = null;
         int vieModelBcPagePositionGet = 0;
-        Drawable vieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = null;
         boolean vieModelControlBeanBenzControlPanelStateGet = false;
+        ControlBean vieModelControlBean = null;
         if ((dirtyFlags & 31) != 0) {
             if (!((dirtyFlags & 24) == 0 || vieModel == null)) {
-                if (this.mVieModelOnControlClickAndroidViewViewOnClickListener == null) {
+                OnClickListenerImpl onClickListenerImpl = this.mVieModelOnControlClickAndroidViewViewOnClickListener;
+                if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
                     this.mVieModelOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl;
-                } else {
-                    onClickListenerImpl = this.mVieModelOnControlClickAndroidViewViewOnClickListener;
                 }
                 vieModelOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl.setValue(vieModel);
             }
@@ -163,7 +155,7 @@ public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding
                     if (vieModelControlBean != null) {
                         vieModelControlBeanControlPanelClose = vieModelControlBean.controlPanelClose;
                     }
-                    int i2 = 0;
+                    int i = 0;
                     updateRegistration(0, (Observable) vieModelControlBeanControlPanelClose);
                     if (vieModelControlBeanControlPanelClose != null) {
                         vieModelControlBeanControlPanelCloseGet = vieModelControlBeanControlPanelClose.get();
@@ -176,9 +168,9 @@ public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding
                         }
                     }
                     if (vieModelControlBeanControlPanelCloseGet) {
-                        i2 = 8;
+                        i = 8;
                     }
-                    vieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = i2;
+                    vieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = i;
                 }
                 if ((dirtyFlags & 28) != 0) {
                     if (vieModelControlBean != null) {
@@ -195,14 +187,7 @@ public class ActivityMainBenzMbuxBindingImpl extends ActivityMainBenzMbuxBinding
                             dirtyFlags |= 128;
                         }
                     }
-                    if (vieModelControlBeanBenzControlPanelStateGet) {
-                        imageView = this.controlBtn;
-                        i = R.drawable.ntg55_ctrlpanel_down_selector;
-                    } else {
-                        imageView = this.controlBtn;
-                        i = R.drawable.ntg55_ctrlpanel_up_selector;
-                    }
-                    vieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = getDrawableFromResource(imageView, i);
+                    vieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = AppCompatResources.getDrawable(this.controlBtn.getContext(), vieModelControlBeanBenzControlPanelStateGet ? R.drawable.ntg55_ctrlpanel_down_selector : R.drawable.ntg55_ctrlpanel_up_selector);
                 }
             }
         }

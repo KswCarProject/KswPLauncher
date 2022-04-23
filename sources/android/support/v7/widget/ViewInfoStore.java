@@ -1,8 +1,5 @@
 package android.support.v7.widget;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.LongSparseArray;
 import android.support.v4.util.Pools;
@@ -10,17 +7,15 @@ import android.support.v7.widget.RecyclerView;
 
 class ViewInfoStore {
     private static final boolean DEBUG = false;
-    @VisibleForTesting
     final ArrayMap<RecyclerView.ViewHolder, InfoRecord> mLayoutHolderMap = new ArrayMap<>();
-    @VisibleForTesting
     final LongSparseArray<RecyclerView.ViewHolder> mOldChangedHolders = new LongSparseArray<>();
 
     interface ProcessCallback {
-        void processAppeared(RecyclerView.ViewHolder viewHolder, @Nullable RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo, RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo2);
+        void processAppeared(RecyclerView.ViewHolder viewHolder, RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo, RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo2);
 
-        void processDisappeared(RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo, @Nullable RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo2);
+        void processDisappeared(RecyclerView.ViewHolder viewHolder, RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo, RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo2);
 
-        void processPersistent(RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo, @NonNull RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo2);
+        void processPersistent(RecyclerView.ViewHolder viewHolder, RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo, RecyclerView.ItemAnimator.ItemHolderInfo itemHolderInfo2);
 
         void unused(RecyclerView.ViewHolder viewHolder);
     }
@@ -52,13 +47,11 @@ class ViewInfoStore {
     }
 
     /* access modifiers changed from: package-private */
-    @Nullable
     public RecyclerView.ItemAnimator.ItemHolderInfo popFromPreLayout(RecyclerView.ViewHolder vh) {
         return popFromLayoutStep(vh, 4);
     }
 
     /* access modifiers changed from: package-private */
-    @Nullable
     public RecyclerView.ItemAnimator.ItemHolderInfo popFromPostLayout(RecyclerView.ViewHolder vh) {
         return popFromLayoutStep(vh, 8);
     }
@@ -207,9 +200,7 @@ class ViewInfoStore {
         static final int FLAG_PRE_AND_POST = 12;
         static Pools.Pool<InfoRecord> sPool = new Pools.SimplePool(20);
         int flags;
-        @Nullable
         RecyclerView.ItemAnimator.ItemHolderInfo postInfo;
-        @Nullable
         RecyclerView.ItemAnimator.ItemHolderInfo preInfo;
 
         private InfoRecord() {

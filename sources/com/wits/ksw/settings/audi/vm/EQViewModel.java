@@ -4,14 +4,10 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
 import android.database.ContentObserver;
-import android.databinding.BindingAdapter;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -20,7 +16,6 @@ import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
-@BindingMethods({@BindingMethod(attribute = "EQModelChange", method = "setEQModelChange", type = EQViewModel.class)})
 public class EQViewModel extends AndroidViewModel {
     /* access modifiers changed from: private */
     public static final String TAG = ("KSWLauncher." + EQViewModel.class.getSimpleName());
@@ -30,8 +25,7 @@ public class EQViewModel extends AndroidViewModel {
         public void onChange(boolean selfChange) {
             try {
                 int eq = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MODE);
-                String access$000 = EQViewModel.TAG;
-                Log.i(access$000, "onChange: " + eq);
+                Log.i(EQViewModel.TAG, "onChange: " + eq);
                 if (eq == 0) {
                     EQViewModel.this.setProgress(eq, PowerManagerApp.getSettingsInt(KeyConfig.EQ_BASS), PowerManagerApp.getSettingsInt(KeyConfig.EQ_MIDDLE), PowerManagerApp.getSettingsInt(KeyConfig.EQ_TREBLE));
                 } else {
@@ -50,7 +44,7 @@ public class EQViewModel extends AndroidViewModel {
     public ObservableInt trebleProgress = new ObservableInt();
     public ObservableField<String> trebleStr = new ObservableField<>();
 
-    public EQViewModel(@NonNull Application application) {
+    public EQViewModel(Application application) {
         super(application);
         this.context = application.getApplicationContext();
         try {
@@ -58,8 +52,7 @@ public class EQViewModel extends AndroidViewModel {
             int mezzoValue = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MIDDLE);
             int trebleValue = PowerManagerApp.getSettingsInt(KeyConfig.EQ_TREBLE);
             int eq = PowerManagerApp.getSettingsInt(KeyConfig.EQ_MODE);
-            String str = TAG;
-            Log.d(str, "\teqModel:" + eq + "\tbassValue:" + bassValue + "\tmezzoValue:" + mezzoValue + "\ttrebleValue:" + trebleValue);
+            Log.d(TAG, "\teqModel:" + eq + "\tbassValue:" + bassValue + "\tmezzoValue:" + mezzoValue + "\ttrebleValue:" + trebleValue);
             this.eqModel.set(eq);
             if (eq == 0) {
                 setProgress(eq, bassValue, mezzoValue, trebleValue);
@@ -74,8 +67,7 @@ public class EQViewModel extends AndroidViewModel {
 
     /* access modifiers changed from: private */
     public void setProgress(int model, int bassValue, int mezzoValue, int trebleValue) {
-        String str = TAG;
-        Log.i(str, "setProgress: \tbassValue:" + bassValue + "\tmezzoValue:" + mezzoValue + "\ttrebleValue:" + trebleValue);
+        Log.i(TAG, "setProgress: \tbassValue:" + bassValue + "\tmezzoValue:" + mezzoValue + "\ttrebleValue:" + trebleValue);
         switch (model) {
             case 0:
                 this.bassProgress.set(bassValue);
@@ -113,7 +105,6 @@ public class EQViewModel extends AndroidViewModel {
         this.trebleStr.set(String.valueOf(this.trebleProgress.get() - 12));
     }
 
-    @BindingAdapter({"setEQModelChangeListener"})
     public static void setEQModelChangeListener(RadioButton radioButton, final int index) {
         radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -135,20 +126,14 @@ public class EQViewModel extends AndroidViewModel {
         });
     }
 
-    @BindingAdapter({"setBassSeekBarChangeListener"})
     public static void setBassSeekBarChangeListener(SeekBar seekbar, EQViewModel viewModel) {
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(viewModel) {
-            final /* synthetic */ EQViewModel val$viewModel;
-
-            {
-                this.val$viewModel = r1;
-            }
-
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     FileUtils.savaIntData(KeyConfig.EQ_BASS, progress);
-                    if (this.val$viewModel != null) {
-                        this.val$viewModel.bassStr.set(String.valueOf(progress - 12));
+                    EQViewModel eQViewModel = EQViewModel.this;
+                    if (eQViewModel != null) {
+                        eQViewModel.bassStr.set(String.valueOf(progress - 12));
                     }
                 }
             }
@@ -161,20 +146,14 @@ public class EQViewModel extends AndroidViewModel {
         });
     }
 
-    @BindingAdapter({"setmezzoSeekBarChangeListener"})
     public static void setmezzoSeekBarChangeListener(SeekBar seekbar, EQViewModel viewModel) {
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(viewModel) {
-            final /* synthetic */ EQViewModel val$viewModel;
-
-            {
-                this.val$viewModel = r1;
-            }
-
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     FileUtils.savaIntData(KeyConfig.EQ_MIDDLE, progress);
-                    if (this.val$viewModel != null) {
-                        this.val$viewModel.mezzoStr.set(String.valueOf(progress - 12));
+                    EQViewModel eQViewModel = EQViewModel.this;
+                    if (eQViewModel != null) {
+                        eQViewModel.mezzoStr.set(String.valueOf(progress - 12));
                     }
                 }
             }
@@ -187,20 +166,14 @@ public class EQViewModel extends AndroidViewModel {
         });
     }
 
-    @BindingAdapter({"setTrebleSeekBarChangeListener"})
     public static void setTrebleSeekBarChangeListener(SeekBar seekbar, EQViewModel viewModel) {
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(viewModel) {
-            final /* synthetic */ EQViewModel val$viewModel;
-
-            {
-                this.val$viewModel = r1;
-            }
-
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     FileUtils.savaIntData(KeyConfig.EQ_TREBLE, progress);
-                    if (this.val$viewModel != null) {
-                        this.val$viewModel.trebleStr.set(String.valueOf(progress - 12));
+                    EQViewModel eQViewModel = EQViewModel.this;
+                    if (eQViewModel != null) {
+                        eQViewModel.trebleStr.set(String.valueOf(progress - 12));
                     }
                 }
             }

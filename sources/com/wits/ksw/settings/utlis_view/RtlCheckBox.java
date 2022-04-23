@@ -1,13 +1,11 @@
 package com.wits.ksw.settings.utlis_view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.CheckBox;
 
-@SuppressLint({"AppCompatCustomView"})
 public class RtlCheckBox extends CheckBox {
     private static final String TAG = "RtlCheckBox";
 

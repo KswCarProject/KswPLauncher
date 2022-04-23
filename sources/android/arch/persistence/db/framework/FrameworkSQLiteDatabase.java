@@ -13,7 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteTransactionListener;
 import android.os.CancellationSignal;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Pair;
 import java.io.IOException;
@@ -114,7 +113,6 @@ class FrameworkSQLiteDatabase implements SupportSQLiteDatabase {
         }, supportQuery.getSql(), EMPTY_STRING_ARRAY, (String) null);
     }
 
-    @RequiresApi(api = 16)
     public Cursor query(final SupportSQLiteQuery supportQuery, CancellationSignal cancellationSignal) {
         return this.mDelegate.rawQueryWithFactory(new SQLiteDatabase.CursorFactory() {
             public Cursor newCursor(SQLiteDatabase db, SQLiteCursorDriver masterQuery, String editTable, SQLiteQuery query) {
@@ -129,17 +127,7 @@ class FrameworkSQLiteDatabase implements SupportSQLiteDatabase {
     }
 
     public int delete(String table, String whereClause, Object[] whereArgs) {
-        String str;
-        StringBuilder sb = new StringBuilder();
-        sb.append("DELETE FROM ");
-        sb.append(table);
-        if (TextUtils.isEmpty(whereClause)) {
-            str = "";
-        } else {
-            str = " WHERE " + whereClause;
-        }
-        sb.append(str);
-        SupportSQLiteStatement statement = compileStatement(sb.toString());
+        SupportSQLiteStatement statement = compileStatement("DELETE FROM " + table + (TextUtils.isEmpty(whereClause) ? "" : " WHERE " + whereClause));
         SimpleSQLiteQuery.bind(statement, whereArgs);
         return statement.executeUpdateDelete();
     }
@@ -210,7 +198,6 @@ class FrameworkSQLiteDatabase implements SupportSQLiteDatabase {
         this.mDelegate.setMaxSqlCacheSize(cacheSize);
     }
 
-    @RequiresApi(api = 16)
     public void setForeignKeyConstraintsEnabled(boolean enable) {
         this.mDelegate.setForeignKeyConstraintsEnabled(enable);
     }
@@ -219,12 +206,10 @@ class FrameworkSQLiteDatabase implements SupportSQLiteDatabase {
         return this.mDelegate.enableWriteAheadLogging();
     }
 
-    @RequiresApi(api = 16)
     public void disableWriteAheadLogging() {
         this.mDelegate.disableWriteAheadLogging();
     }
 
-    @RequiresApi(api = 16)
     public boolean isWriteAheadLoggingEnabled() {
         return this.mDelegate.isWriteAheadLoggingEnabled();
     }

@@ -24,1063 +24,1099 @@ class Chain {
         for (int i = 0; i < chainsSize; i++) {
             ChainHead first = chainsArray[i];
             first.define();
-            if (!constraintWidgetContainer.optimizeFor(4)) {
-                applyChainConstraints(constraintWidgetContainer, system, orientation, offset, first);
-            } else if (!Optimizer.applyChainOptimized(constraintWidgetContainer, system, orientation, offset, first)) {
-                applyChainConstraints(constraintWidgetContainer, system, orientation, offset, first);
-            }
+            applyChainConstraints(constraintWidgetContainer, system, orientation, offset, first);
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:285:0x0616 A[ADDED_TO_REGION] */
-    /* JADX WARNING: Removed duplicated region for block: B:288:0x0621  */
-    /* JADX WARNING: Removed duplicated region for block: B:314:0x06a4  */
+    /* JADX WARNING: Removed duplicated region for block: B:299:0x0666 A[ADDED_TO_REGION] */
+    /* JADX WARNING: Removed duplicated region for block: B:304:0x067a  */
+    /* JADX WARNING: Removed duplicated region for block: B:305:0x067f  */
+    /* JADX WARNING: Removed duplicated region for block: B:308:0x0686  */
+    /* JADX WARNING: Removed duplicated region for block: B:309:0x068b  */
+    /* JADX WARNING: Removed duplicated region for block: B:311:0x068e  */
+    /* JADX WARNING: Removed duplicated region for block: B:316:0x06a6  */
+    /* JADX WARNING: Removed duplicated region for block: B:318:0x06aa  */
+    /* JADX WARNING: Removed duplicated region for block: B:319:0x06b6  */
+    /* JADX WARNING: Removed duplicated region for block: B:321:0x06b9 A[ADDED_TO_REGION] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    static void applyChainConstraints(android.support.constraint.solver.widgets.ConstraintWidgetContainer r60, android.support.constraint.solver.LinearSystem r61, int r62, int r63, android.support.constraint.solver.widgets.ChainHead r64) {
+    static void applyChainConstraints(android.support.constraint.solver.widgets.ConstraintWidgetContainer r45, android.support.constraint.solver.LinearSystem r46, int r47, int r48, android.support.constraint.solver.widgets.ChainHead r49) {
         /*
-            r0 = r60
-            r10 = r61
-            r12 = r64
-            android.support.constraint.solver.widgets.ConstraintWidget r13 = r12.mFirst
-            android.support.constraint.solver.widgets.ConstraintWidget r14 = r12.mLast
-            android.support.constraint.solver.widgets.ConstraintWidget r9 = r12.mFirstVisibleWidget
-            android.support.constraint.solver.widgets.ConstraintWidget r8 = r12.mLastVisibleWidget
-            android.support.constraint.solver.widgets.ConstraintWidget r7 = r12.mHead
-            r1 = r13
+            r0 = r45
+            r10 = r46
+            r11 = r49
+            android.support.constraint.solver.widgets.ConstraintWidget r12 = r11.mFirst
+            android.support.constraint.solver.widgets.ConstraintWidget r13 = r11.mLast
+            android.support.constraint.solver.widgets.ConstraintWidget r14 = r11.mFirstVisibleWidget
+            android.support.constraint.solver.widgets.ConstraintWidget r15 = r11.mLastVisibleWidget
+            android.support.constraint.solver.widgets.ConstraintWidget r9 = r11.mHead
+            r1 = r12
             r2 = 0
             r3 = 0
-            float r4 = r12.mTotalWeight
-            android.support.constraint.solver.widgets.ConstraintWidget r6 = r12.mFirstMatchConstraintWidget
-            android.support.constraint.solver.widgets.ConstraintWidget r5 = r12.mLastMatchConstraintWidget
-            r15 = r1
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r1 = r0.mListDimensionBehaviors
-            r1 = r1[r62]
-            r16 = r2
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r2 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
-            r17 = r3
-            if (r1 != r2) goto L_0x0028
-            r1 = 1
-            goto L_0x0029
-        L_0x0028:
-            r1 = 0
-        L_0x0029:
-            r19 = r1
-            r1 = 0
-            r2 = 0
-            r20 = 0
-            if (r62 != 0) goto L_0x0052
-            int r3 = r7.mHorizontalChainStyle
-            if (r3 != 0) goto L_0x0037
-            r3 = 1
-            goto L_0x0038
-        L_0x0037:
-            r3 = 0
-        L_0x0038:
-            r1 = r3
-            int r3 = r7.mHorizontalChainStyle
-            r23 = r1
-            r1 = 1
-            if (r3 != r1) goto L_0x0042
-            r1 = 1
-            goto L_0x0043
-        L_0x0042:
-            r1 = 0
-        L_0x0043:
-            int r2 = r7.mHorizontalChainStyle
-            r3 = 2
-            if (r2 != r3) goto L_0x004a
-            r2 = 1
-            goto L_0x004b
-        L_0x004a:
-            r2 = 0
-        L_0x004b:
-            r3 = r15
-            r20 = r16
-        L_0x004e:
+            float r4 = r11.mTotalWeight
+            android.support.constraint.solver.widgets.ConstraintWidget r8 = r11.mFirstMatchConstraintWidget
+            android.support.constraint.solver.widgets.ConstraintWidget r7 = r11.mLastMatchConstraintWidget
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r5 = r0.mListDimensionBehaviors
+            r5 = r5[r47]
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r6 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
             r16 = r1
-            r15 = r2
-            goto L_0x0072
+            if (r5 != r6) goto L_0x0025
+            r5 = 1
+            goto L_0x0026
+        L_0x0025:
+            r5 = 0
+        L_0x0026:
+            r18 = r5
+            r5 = 0
+            r6 = 0
+            r19 = 0
+            if (r47 != 0) goto L_0x0052
+            int r1 = r9.mHorizontalChainStyle
+            if (r1 != 0) goto L_0x0034
+            r1 = 1
+            goto L_0x0035
+        L_0x0034:
+            r1 = 0
+        L_0x0035:
+            int r5 = r9.mHorizontalChainStyle
+            r22 = r1
+            r1 = 1
+            if (r5 != r1) goto L_0x003e
+            r1 = 1
+            goto L_0x003f
+        L_0x003e:
+            r1 = 0
+        L_0x003f:
+            int r5 = r9.mHorizontalChainStyle
+            r6 = 2
+            if (r5 != r6) goto L_0x0046
+            r5 = 1
+            goto L_0x0047
+        L_0x0046:
+            r5 = 0
+        L_0x0047:
+            r19 = r2
+            r21 = r3
+            r23 = r5
+            r6 = r16
+            r16 = r1
+            goto L_0x0075
         L_0x0052:
-            int r3 = r7.mVerticalChainStyle
-            if (r3 != 0) goto L_0x0058
-            r3 = 1
+            int r1 = r9.mVerticalChainStyle
+            if (r1 != 0) goto L_0x0058
+            r1 = 1
             goto L_0x0059
         L_0x0058:
-            r3 = 0
+            r1 = 0
         L_0x0059:
-            r1 = r3
-            int r3 = r7.mVerticalChainStyle
-            r24 = r1
+            int r5 = r9.mVerticalChainStyle
+            r22 = r1
             r1 = 1
-            if (r3 != r1) goto L_0x0063
+            if (r5 != r1) goto L_0x0062
             r1 = 1
-            goto L_0x0064
+            goto L_0x0063
+        L_0x0062:
+            r1 = 0
         L_0x0063:
-            r1 = 0
-        L_0x0064:
-            int r2 = r7.mVerticalChainStyle
-            r3 = 2
-            if (r2 != r3) goto L_0x006b
-            r2 = 1
-            goto L_0x006c
+            int r5 = r9.mVerticalChainStyle
+            r6 = 2
+            if (r5 != r6) goto L_0x006a
+            r5 = 1
+            goto L_0x006b
+        L_0x006a:
+            r5 = 0
         L_0x006b:
-            r2 = 0
-        L_0x006c:
-            r3 = r15
-            r20 = r16
-            r23 = r24
-            goto L_0x004e
-        L_0x0072:
-            r25 = r5
-            if (r17 != 0) goto L_0x0154
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r3.mListAnchors
-            r2 = r2[r63]
-            r22 = 4
-            if (r19 != 0) goto L_0x0080
-            if (r15 == 0) goto L_0x0082
-        L_0x0080:
-            r22 = 1
-        L_0x0082:
-            int r24 = r2.getMargin()
-            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r2.mTarget
-            if (r1 == 0) goto L_0x0094
-            if (r3 == r13) goto L_0x0094
-            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r2.mTarget
-            int r1 = r1.getMargin()
-            int r24 = r24 + r1
-        L_0x0094:
-            r1 = r24
-            if (r15 == 0) goto L_0x009f
-            if (r3 == r13) goto L_0x009f
-            if (r3 == r9) goto L_0x009f
-            r22 = 6
-            goto L_0x00a5
-        L_0x009f:
-            if (r23 == 0) goto L_0x00a5
-            if (r19 == 0) goto L_0x00a5
-            r22 = 4
-        L_0x00a5:
-            r28 = r22
-            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r2.mTarget
-            if (r5 == 0) goto L_0x00d6
-            if (r3 != r9) goto L_0x00bc
-            android.support.constraint.solver.SolverVariable r5 = r2.mSolverVariable
-            r30 = r4
-            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r2.mTarget
-            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
-            r31 = r6
-            r6 = 5
-            r10.addGreaterThan(r5, r4, r1, r6)
-            goto L_0x00ca
-        L_0x00bc:
-            r30 = r4
-            r31 = r6
-            android.support.constraint.solver.SolverVariable r4 = r2.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r2.mTarget
-            android.support.constraint.solver.SolverVariable r5 = r5.mSolverVariable
-            r6 = 6
-            r10.addGreaterThan(r4, r5, r1, r6)
-        L_0x00ca:
-            android.support.constraint.solver.SolverVariable r4 = r2.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r2.mTarget
-            android.support.constraint.solver.SolverVariable r5 = r5.mSolverVariable
-            r6 = r28
-            r10.addEquality(r4, r5, r1, r6)
-            goto L_0x00dc
-        L_0x00d6:
-            r30 = r4
-            r31 = r6
-            r6 = r28
-        L_0x00dc:
-            if (r19 == 0) goto L_0x011c
-            int r4 = r3.getVisibility()
-            r5 = 8
-            if (r4 == r5) goto L_0x0106
-            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r4 = r3.mListDimensionBehaviors
-            r4 = r4[r62]
+            r19 = r2
+            r21 = r3
+            r23 = r5
+            r6 = r16
+            r16 = r1
+        L_0x0075:
+            if (r21 != 0) goto L_0x0164
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r6.mListAnchors
+            r3 = r3[r48]
+            r24 = 4
+            if (r23 == 0) goto L_0x0081
+            r24 = 1
+        L_0x0081:
+            int r25 = r3.getMargin()
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r1 = r6.mListDimensionBehaviors
+            r1 = r1[r47]
             android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r5 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
-            if (r4 != r5) goto L_0x0106
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r3.mListAnchors
-            int r5 = r63 + 1
-            r4 = r4[r5]
-            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r5 = r3.mListAnchors
-            r5 = r5[r63]
-            android.support.constraint.solver.SolverVariable r5 = r5.mSolverVariable
-            r32 = r1
-            r33 = r2
-            r1 = 0
-            r2 = 5
-            r10.addGreaterThan(r4, r5, r1, r2)
-            goto L_0x010b
-        L_0x0106:
-            r32 = r1
-            r33 = r2
-            r1 = 0
-        L_0x010b:
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r3.mListAnchors
-            r2 = r2[r63]
-            android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r0.mListAnchors
-            r4 = r4[r63]
-            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
-            r5 = 6
-            r10.addGreaterThan(r2, r4, r1, r5)
-            goto L_0x0120
-        L_0x011c:
-            r32 = r1
-            r33 = r2
-        L_0x0120:
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r3.mListAnchors
-            int r2 = r63 + 1
-            r1 = r1[r2]
-            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r1.mTarget
-            if (r1 == 0) goto L_0x0140
-            android.support.constraint.solver.widgets.ConstraintWidget r2 = r1.mOwner
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r2.mListAnchors
-            r4 = r4[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r4.mTarget
-            if (r4 == 0) goto L_0x013e
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r2.mListAnchors
-            r4 = r4[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r4.mTarget
-            android.support.constraint.solver.widgets.ConstraintWidget r4 = r4.mOwner
-            if (r4 == r3) goto L_0x0141
-        L_0x013e:
-            r2 = 0
-            goto L_0x0141
-        L_0x0140:
-            r2 = 0
-        L_0x0141:
-            r20 = r2
-            if (r20 == 0) goto L_0x0149
-            r2 = r20
-            r3 = r2
-            goto L_0x014c
-        L_0x0149:
+            if (r1 != r5) goto L_0x0095
+            int[] r1 = r6.mResolvedMatchConstraintDefault
+            r1 = r1[r47]
+            if (r1 != 0) goto L_0x0095
             r1 = 1
-            r17 = r1
-        L_0x014c:
+            goto L_0x0096
+        L_0x0095:
+            r1 = 0
+        L_0x0096:
+            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r3.mTarget
+            if (r5 == 0) goto L_0x00a7
+            if (r6 == r12) goto L_0x00a7
+            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r3.mTarget
+            int r5 = r5.getMargin()
+            int r25 = r25 + r5
             r5 = r25
-            r4 = r30
-            r6 = r31
-            goto L_0x0072
-        L_0x0154:
-            r30 = r4
-            r31 = r6
-            if (r8 == 0) goto L_0x0180
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r14.mListAnchors
-            int r2 = r63 + 1
-            r1 = r1[r2]
-            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r1.mTarget
-            if (r1 == 0) goto L_0x0180
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r8.mListAnchors
-            int r2 = r63 + 1
-            r1 = r1[r2]
-            android.support.constraint.solver.SolverVariable r2 = r1.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r14.mListAnchors
-            int r5 = r63 + 1
-            r4 = r4[r5]
-            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r4.mTarget
+            goto L_0x00a9
+        L_0x00a7:
+            r5 = r25
+        L_0x00a9:
+            if (r23 == 0) goto L_0x00b1
+            if (r6 == r12) goto L_0x00b1
+            if (r6 == r14) goto L_0x00b1
+            r24 = 5
+        L_0x00b1:
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r3.mTarget
+            if (r2 == 0) goto L_0x00e9
+            if (r6 != r14) goto L_0x00c6
+            android.support.constraint.solver.SolverVariable r2 = r3.mSolverVariable
+            r28 = r4
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r3.mTarget
             android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
-            int r5 = r1.getMargin()
-            int r5 = -r5
-            r6 = 5
-            r10.addLowerThan(r2, r4, r5, r6)
-            goto L_0x0181
-        L_0x0180:
-            r6 = 5
-        L_0x0181:
-            if (r19 == 0) goto L_0x01a1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r0.mListAnchors
-            int r2 = r63 + 1
-            r1 = r1[r2]
-            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r14.mListAnchors
-            int r4 = r63 + 1
+            r29 = r7
+            r7 = 6
+            r10.addGreaterThan(r2, r4, r5, r7)
+            goto L_0x00d5
+        L_0x00c6:
+            r28 = r4
+            r29 = r7
+            android.support.constraint.solver.SolverVariable r2 = r3.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r3.mTarget
+            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
+            r7 = 8
+            r10.addGreaterThan(r2, r4, r5, r7)
+        L_0x00d5:
+            if (r1 == 0) goto L_0x00db
+            if (r23 != 0) goto L_0x00db
+            r2 = 5
+            goto L_0x00dd
+        L_0x00db:
+            r2 = r24
+        L_0x00dd:
+            android.support.constraint.solver.SolverVariable r4 = r3.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor r7 = r3.mTarget
+            android.support.constraint.solver.SolverVariable r7 = r7.mSolverVariable
+            r10.addEquality(r4, r7, r5, r2)
+            r24 = r2
+            goto L_0x00ed
+        L_0x00e9:
+            r28 = r4
+            r29 = r7
+        L_0x00ed:
+            if (r18 == 0) goto L_0x012a
+            int r2 = r6.getVisibility()
+            r4 = 8
+            if (r2 == r4) goto L_0x0115
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r2 = r6.mListDimensionBehaviors
+            r2 = r2[r47]
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r4 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
+            if (r2 != r4) goto L_0x0115
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r6.mListAnchors
+            int r4 = r48 + 1
             r2 = r2[r4]
             android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r14.mListAnchors
-            int r5 = r63 + 1
-            r4 = r4[r5]
-            int r4 = r4.getMargin()
-            r5 = 6
-            r10.addGreaterThan(r1, r2, r4, r5)
-        L_0x01a1:
-            java.util.ArrayList<android.support.constraint.solver.widgets.ConstraintWidget> r5 = r12.mWeightedMatchConstraintsWidgets
-            if (r5 == 0) goto L_0x0272
-            int r1 = r5.size()
-            r2 = 1
-            if (r1 <= r2) goto L_0x0272
-            r4 = 0
-            r21 = 0
-            boolean r2 = r12.mHasUndefinedWeights
-            if (r2 == 0) goto L_0x01bc
-            boolean r2 = r12.mHasComplexMatchWeights
-            if (r2 != 0) goto L_0x01bc
-            int r2 = r12.mWidgetsMatchCount
-            float r2 = (float) r2
-            r30 = r2
-        L_0x01bc:
-            r2 = 0
-        L_0x01bd:
-            if (r2 >= r1) goto L_0x0272
-            java.lang.Object r22 = r5.get(r2)
-            r6 = r22
-            android.support.constraint.solver.widgets.ConstraintWidget r6 = (android.support.constraint.solver.widgets.ConstraintWidget) r6
-            float[] r0 = r6.mWeight
-            r0 = r0[r62]
-            r22 = 0
-            int r24 = (r0 > r22 ? 1 : (r0 == r22 ? 0 : -1))
-            if (r24 >= 0) goto L_0x0200
-            r43 = r0
-            boolean r0 = r12.mHasComplexMatchWeights
-            if (r0 == 0) goto L_0x01f5
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r6.mListAnchors
-            int r22 = r63 + 1
-            r0 = r0[r22]
-            android.support.constraint.solver.SolverVariable r0 = r0.mSolverVariable
-            r44 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r6.mListAnchors
-            r1 = r1[r63]
-            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            r45 = r3
-            r3 = 4
-            r46 = r5
-            r5 = 0
-            r10.addEquality(r0, r1, r5, r3)
-            r3 = 0
-            r5 = 6
-            goto L_0x0265
-        L_0x01f5:
-            r44 = r1
-            r45 = r3
-            r46 = r5
-            r0 = 1065353216(0x3f800000, float:1.0)
-            r43 = r0
-            goto L_0x0208
-        L_0x0200:
-            r43 = r0
-            r44 = r1
-            r45 = r3
-            r46 = r5
-        L_0x0208:
-            int r0 = (r43 > r22 ? 1 : (r43 == r22 ? 0 : -1))
-            if (r0 != 0) goto L_0x0220
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r6.mListAnchors
-            int r1 = r63 + 1
-            r0 = r0[r1]
-            android.support.constraint.solver.SolverVariable r0 = r0.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r6.mListAnchors
-            r1 = r1[r63]
-            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            r3 = 0
-            r5 = 6
-            r10.addEquality(r0, r1, r3, r5)
-            goto L_0x0265
-        L_0x0220:
-            r3 = 0
-            r5 = 6
-            if (r4 == 0) goto L_0x025d
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r4.mListAnchors
-            r0 = r0[r63]
-            android.support.constraint.solver.SolverVariable r0 = r0.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r4.mListAnchors
-            int r18 = r63 + 1
-            r1 = r1[r18]
-            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r6.mListAnchors
-            r3 = r3[r63]
-            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r5 = r6.mListAnchors
-            int r18 = r63 + 1
-            r5 = r5[r18]
-            android.support.constraint.solver.SolverVariable r5 = r5.mSolverVariable
-            r48 = r4
-            android.support.constraint.solver.ArrayRow r4 = r61.createRow()
-            r35 = r4
-            r36 = r21
-            r37 = r30
-            r38 = r43
-            r39 = r0
-            r40 = r1
-            r41 = r3
-            r42 = r5
-            r35.createRowEqualMatchDimensions(r36, r37, r38, r39, r40, r41, r42)
-            r10.addConstraint(r4)
-            goto L_0x025f
-        L_0x025d:
-            r48 = r4
-        L_0x025f:
-            r0 = r6
-            r1 = r43
-            r4 = r0
-            r21 = r1
-        L_0x0265:
-            int r2 = r2 + 1
-            r1 = r44
-            r3 = r45
-            r5 = r46
-            r0 = r60
-            r6 = 5
-            goto L_0x01bd
-        L_0x0272:
-            r45 = r3
-            r46 = r5
-            if (r9 == 0) goto L_0x0318
-            if (r9 == r8) goto L_0x0287
-            if (r15 == 0) goto L_0x027d
-            goto L_0x0287
-        L_0x027d:
-            r35 = r7
-            r0 = r8
-            r10 = r9
-            r28 = r45
-            r32 = r46
-            goto L_0x0320
-        L_0x0287:
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r13.mListAnchors
-            r1 = r1[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r14.mListAnchors
-            int r3 = r63 + 1
-            r2 = r2[r3]
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r13.mListAnchors
-            r3 = r3[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r3.mTarget
-            if (r3 == 0) goto L_0x02a2
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r13.mListAnchors
-            r3 = r3[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r3.mTarget
-            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
-            goto L_0x02a3
-        L_0x02a2:
-            r3 = 0
-        L_0x02a3:
-            r18 = r3
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r14.mListAnchors
-            int r4 = r63 + 1
-            r3 = r3[r4]
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r3.mTarget
-            if (r3 == 0) goto L_0x02ba
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r14.mListAnchors
-            int r4 = r63 + 1
-            r3 = r3[r4]
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r3.mTarget
-            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
-            goto L_0x02bb
-        L_0x02ba:
-            r3 = 0
-        L_0x02bb:
-            r21 = r3
-            if (r9 != r8) goto L_0x02c9
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r9.mListAnchors
-            r1 = r3[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r9.mListAnchors
-            int r4 = r63 + 1
-            r2 = r3[r4]
-        L_0x02c9:
-            r6 = r1
-            r5 = r2
-            if (r18 == 0) goto L_0x030b
-            if (r21 == 0) goto L_0x030b
-            r1 = 1056964608(0x3f000000, float:0.5)
-            if (r62 != 0) goto L_0x02d8
-            float r1 = r7.mHorizontalBiasPercent
-        L_0x02d5:
-            r22 = r1
-            goto L_0x02db
-        L_0x02d8:
-            float r1 = r7.mVerticalBiasPercent
-            goto L_0x02d5
-        L_0x02db:
-            int r24 = r6.getMargin()
-            int r26 = r5.getMargin()
-            android.support.constraint.solver.SolverVariable r2 = r6.mSolverVariable
-            android.support.constraint.solver.SolverVariable r4 = r5.mSolverVariable
-            r27 = 5
-            r1 = r61
-            r28 = r45
-            r3 = r18
-            r29 = r4
-            r4 = r24
-            r33 = r5
-            r32 = r46
-            r5 = r22
-            r34 = r6
-            r6 = r21
-            r35 = r7
-            r7 = r29
-            r0 = r8
-            r8 = r26
-            r10 = r9
-            r9 = r27
-            r1.addCentering(r2, r3, r4, r5, r6, r7, r8, r9)
-            goto L_0x0313
-        L_0x030b:
-            r35 = r7
-            r0 = r8
-            r10 = r9
-            r28 = r45
-            r32 = r46
-        L_0x0313:
-            r9 = r10
-            r59 = r14
-            goto L_0x046c
-        L_0x0318:
-            r35 = r7
-            r0 = r8
-            r10 = r9
-            r28 = r45
-            r32 = r46
-        L_0x0320:
-            if (r23 == 0) goto L_0x0470
-            if (r10 == 0) goto L_0x0470
-            r1 = r10
-            r2 = r10
-            int r3 = r12.mWidgetsMatchCount
-            if (r3 <= 0) goto L_0x0333
-            int r3 = r12.mWidgetsCount
-            int r4 = r12.mWidgetsMatchCount
-            if (r3 != r4) goto L_0x0333
-            r47 = 1
-            goto L_0x0335
-        L_0x0333:
-            r47 = 0
-        L_0x0335:
-            r9 = r1
-            r8 = r2
-        L_0x0337:
-            if (r9 == 0) goto L_0x0463
-            android.support.constraint.solver.widgets.ConstraintWidget[] r1 = r9.mNextChainWidget
-            r1 = r1[r62]
-            r7 = r1
-        L_0x033e:
-            if (r7 == 0) goto L_0x034d
-            int r1 = r7.getVisibility()
-            r2 = 8
-            if (r1 != r2) goto L_0x034f
-            android.support.constraint.solver.widgets.ConstraintWidget[] r1 = r7.mNextChainWidget
-            r7 = r1[r62]
-            goto L_0x033e
-        L_0x034d:
-            r2 = 8
-        L_0x034f:
-            if (r7 != 0) goto L_0x035f
-            if (r9 != r0) goto L_0x0354
-            goto L_0x035f
-        L_0x0354:
-            r34 = r7
-            r36 = r8
-            r37 = r9
-            r53 = r14
-            r14 = r2
-            goto L_0x044f
-        L_0x035f:
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
-            r6 = r1[r63]
-            android.support.constraint.solver.SolverVariable r5 = r6.mSolverVariable
-            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r6.mTarget
-            if (r1 == 0) goto L_0x036e
-            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r6.mTarget
-            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            goto L_0x036f
-        L_0x036e:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r6.mListAnchors
+            r4 = r4[r48]
+            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
+            r25 = r1
             r1 = 0
-        L_0x036f:
-            if (r8 == r9) goto L_0x037c
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r8.mListAnchors
-            int r4 = r63 + 1
-            r3 = r3[r4]
-            android.support.constraint.solver.SolverVariable r1 = r3.mSolverVariable
-        L_0x0379:
-            r18 = r1
-            goto L_0x0394
-        L_0x037c:
-            if (r9 != r10) goto L_0x0379
-            if (r8 != r9) goto L_0x0379
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r13.mListAnchors
-            r3 = r3[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r3.mTarget
-            if (r3 == 0) goto L_0x0391
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r13.mListAnchors
-            r3 = r3[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r3.mTarget
-            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
-            goto L_0x0392
-        L_0x0391:
-            r3 = 0
-        L_0x0392:
-            r1 = r3
-            goto L_0x0379
-        L_0x0394:
-            r1 = 0
-            r3 = 0
-            r4 = 0
-            int r20 = r6.getMargin()
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r9.mListAnchors
-            int r21 = r63 + 1
-            r2 = r2[r21]
-            int r2 = r2.getMargin()
-            if (r7 == 0) goto L_0x03be
-            r50 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r7.mListAnchors
-            r1 = r1[r63]
-            android.support.constraint.solver.SolverVariable r3 = r1.mSolverVariable
-            r51 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
-            int r21 = r63 + 1
-            r1 = r1[r21]
+            r7 = 5
+            r10.addGreaterThan(r2, r4, r1, r7)
+            goto L_0x0117
+        L_0x0115:
+            r25 = r1
+        L_0x0117:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r6.mListAnchors
+            r1 = r1[r48]
             android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            r22 = r1
-            r21 = r3
-            goto L_0x03dc
-        L_0x03be:
-            r50 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r14.mListAnchors
-            int r21 = r63 + 1
-            r1 = r1[r21]
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r0.mListAnchors
+            r2 = r2[r48]
+            android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
+            r4 = 8
+            r7 = 0
+            r10.addGreaterThan(r1, r2, r7, r4)
+            goto L_0x012c
+        L_0x012a:
+            r25 = r1
+        L_0x012c:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r6.mListAnchors
+            int r2 = r48 + 1
+            r1 = r1[r2]
             android.support.constraint.solver.widgets.ConstraintAnchor r1 = r1.mTarget
-            if (r1 == 0) goto L_0x03cc
-            android.support.constraint.solver.SolverVariable r3 = r1.mSolverVariable
-        L_0x03cc:
-            r52 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
-            int r21 = r63 + 1
-            r1 = r1[r21]
+            if (r1 == 0) goto L_0x0152
+            android.support.constraint.solver.widgets.ConstraintWidget r2 = r1.mOwner
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r2.mListAnchors
+            r4 = r4[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r4.mTarget
+            if (r4 == 0) goto L_0x014e
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r2.mListAnchors
+            r4 = r4[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r4.mTarget
+            android.support.constraint.solver.widgets.ConstraintWidget r4 = r4.mOwner
+            if (r4 == r6) goto L_0x014b
+            goto L_0x014e
+        L_0x014b:
+            r19 = r2
+            goto L_0x0155
+        L_0x014e:
+            r2 = 0
+            r19 = r2
+            goto L_0x0155
+        L_0x0152:
+            r2 = 0
+            r19 = r2
+        L_0x0155:
+            if (r19 == 0) goto L_0x015b
+            r2 = r19
+            r6 = r2
+            goto L_0x015e
+        L_0x015b:
+            r2 = 1
+            r21 = r2
+        L_0x015e:
+            r4 = r28
+            r7 = r29
+            goto L_0x0075
+        L_0x0164:
+            r28 = r4
+            r29 = r7
+            if (r15 == 0) goto L_0x01d1
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r13.mListAnchors
+            int r3 = r48 + 1
+            r2 = r2[r3]
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r2.mTarget
+            if (r2 == 0) goto L_0x01d1
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r15.mListAnchors
+            int r3 = r48 + 1
+            r2 = r2[r3]
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour[] r3 = r15.mListDimensionBehaviors
+            r3 = r3[r47]
+            android.support.constraint.solver.widgets.ConstraintWidget$DimensionBehaviour r4 = android.support.constraint.solver.widgets.ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
+            if (r3 != r4) goto L_0x018a
+            int[] r3 = r15.mResolvedMatchConstraintDefault
+            r3 = r3[r47]
+            if (r3 != 0) goto L_0x018a
+            r3 = 1
+            goto L_0x018b
+        L_0x018a:
+            r3 = 0
+        L_0x018b:
+            if (r3 == 0) goto L_0x01a5
+            if (r23 != 0) goto L_0x01a5
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r2.mTarget
+            android.support.constraint.solver.widgets.ConstraintWidget r4 = r4.mOwner
+            if (r4 != r0) goto L_0x01a5
+            android.support.constraint.solver.SolverVariable r4 = r2.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r2.mTarget
+            android.support.constraint.solver.SolverVariable r5 = r5.mSolverVariable
+            int r7 = r2.getMargin()
+            int r7 = -r7
+            r1 = 5
+            r10.addEquality(r4, r5, r7, r1)
+            goto L_0x01bc
+        L_0x01a5:
+            if (r23 == 0) goto L_0x01bc
+            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r2.mTarget
+            android.support.constraint.solver.widgets.ConstraintWidget r1 = r1.mOwner
+            if (r1 != r0) goto L_0x01bc
+            android.support.constraint.solver.SolverVariable r1 = r2.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r2.mTarget
+            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
+            int r5 = r2.getMargin()
+            int r5 = -r5
+            r7 = 4
+            r10.addEquality(r1, r4, r5, r7)
+        L_0x01bc:
+            android.support.constraint.solver.SolverVariable r1 = r2.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r13.mListAnchors
+            int r5 = r48 + 1
+            r4 = r4[r5]
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r4.mTarget
+            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
+            int r5 = r2.getMargin()
+            int r5 = -r5
+            r7 = 6
+            r10.addLowerThan(r1, r4, r5, r7)
+        L_0x01d1:
+            if (r18 == 0) goto L_0x01f2
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r0.mListAnchors
+            int r2 = r48 + 1
+            r1 = r1[r2]
             android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            r22 = r1
-            r21 = r3
-            r51 = r52
-        L_0x03dc:
-            if (r51 == 0) goto L_0x03e3
-            int r1 = r51.getMargin()
-            int r2 = r2 + r1
-        L_0x03e3:
-            r24 = r2
-            if (r8 == 0) goto L_0x03f3
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r13.mListAnchors
+            int r3 = r48 + 1
+            r2 = r2[r3]
+            android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r13.mListAnchors
+            int r4 = r48 + 1
+            r3 = r3[r4]
+            int r3 = r3.getMargin()
+            r4 = 8
+            r10.addGreaterThan(r1, r2, r3, r4)
+        L_0x01f2:
+            java.util.ArrayList<android.support.constraint.solver.widgets.ConstraintWidget> r7 = r11.mWeightedMatchConstraintsWidgets
+            if (r7 == 0) goto L_0x02da
+            int r1 = r7.size()
+            r2 = 1
+            if (r1 <= r2) goto L_0x02d1
+            r3 = 0
+            r4 = 0
+            boolean r5 = r11.mHasUndefinedWeights
+            if (r5 == 0) goto L_0x020c
+            boolean r5 = r11.mHasComplexMatchWeights
+            if (r5 != 0) goto L_0x020c
+            int r5 = r11.mWidgetsMatchCount
+            float r5 = (float) r5
+            r28 = r5
+        L_0x020c:
+            r5 = 0
+        L_0x020d:
+            if (r5 >= r1) goto L_0x02c6
+            java.lang.Object r20 = r7.get(r5)
+            r2 = r20
+            android.support.constraint.solver.widgets.ConstraintWidget r2 = (android.support.constraint.solver.widgets.ConstraintWidget) r2
+            float[] r0 = r2.mWeight
+            r0 = r0[r47]
+            r20 = 0
+            int r26 = (r0 > r20 ? 1 : (r0 == r20 ? 0 : -1))
+            if (r26 >= 0) goto L_0x024f
+            r26 = r0
+            boolean r0 = r11.mHasComplexMatchWeights
+            if (r0 == 0) goto L_0x0245
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r2.mListAnchors
+            int r20 = r48 + 1
+            r0 = r0[r20]
+            android.support.constraint.solver.SolverVariable r0 = r0.mSolverVariable
+            r38 = r1
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r2.mListAnchors
+            r1 = r1[r48]
+            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
+            r39 = r6
+            r24 = r7
+            r6 = 4
+            r7 = 0
+            r10.addEquality(r0, r1, r7, r6)
+            r17 = r8
+            r8 = 0
+            goto L_0x02b7
+        L_0x0245:
+            r38 = r1
+            r39 = r6
+            r24 = r7
+            r6 = 4
+            r0 = 1065353216(0x3f800000, float:1.0)
+            goto L_0x0258
+        L_0x024f:
+            r26 = r0
+            r38 = r1
+            r39 = r6
+            r24 = r7
+            r6 = 4
+        L_0x0258:
+            int r1 = (r0 > r20 ? 1 : (r0 == r20 ? 0 : -1))
+            if (r1 != 0) goto L_0x0273
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r2.mListAnchors
+            int r7 = r48 + 1
+            r1 = r1[r7]
+            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r7 = r2.mListAnchors
+            r7 = r7[r48]
+            android.support.constraint.solver.SolverVariable r7 = r7.mSolverVariable
+            r17 = r8
+            r6 = 8
+            r8 = 0
+            r10.addEquality(r1, r7, r8, r6)
+            goto L_0x02b7
+        L_0x0273:
+            r17 = r8
+            r8 = 0
+            if (r3 == 0) goto L_0x02b1
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r3.mListAnchors
+            r1 = r1[r48]
+            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r6 = r3.mListAnchors
+            int r7 = r48 + 1
+            r6 = r6[r7]
+            android.support.constraint.solver.SolverVariable r6 = r6.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r7 = r2.mListAnchors
+            r7 = r7[r48]
+            android.support.constraint.solver.SolverVariable r7 = r7.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r8 = r2.mListAnchors
+            int r30 = r48 + 1
+            r8 = r8[r30]
+            android.support.constraint.solver.SolverVariable r8 = r8.mSolverVariable
+            r40 = r3
+            android.support.constraint.solver.ArrayRow r3 = r46.createRow()
+            r30 = r3
+            r31 = r4
+            r32 = r28
+            r33 = r0
+            r34 = r1
+            r35 = r6
+            r36 = r7
+            r37 = r8
+            r30.createRowEqualMatchDimensions(r31, r32, r33, r34, r35, r36, r37)
+            r10.addConstraint(r3)
+            goto L_0x02b3
+        L_0x02b1:
+            r40 = r3
+        L_0x02b3:
+            r1 = r2
+            r3 = r0
+            r4 = r3
+            r3 = r1
+        L_0x02b7:
+            int r5 = r5 + 1
+            r0 = r45
+            r8 = r17
+            r7 = r24
+            r1 = r38
+            r6 = r39
+            r2 = 1
+            goto L_0x020d
+        L_0x02c6:
+            r38 = r1
+            r40 = r3
+            r39 = r6
+            r24 = r7
+            r17 = r8
+            goto L_0x02e0
+        L_0x02d1:
+            r38 = r1
+            r39 = r6
+            r24 = r7
+            r17 = r8
+            goto L_0x02e0
+        L_0x02da:
+            r39 = r6
+            r24 = r7
+            r17 = r8
+        L_0x02e0:
+            if (r14 == 0) goto L_0x0372
+            if (r14 == r15) goto L_0x02f3
+            if (r23 == 0) goto L_0x02e7
+            goto L_0x02f3
+        L_0x02e7:
+            r35 = r9
+            r32 = r39
+            r44 = r29
+            r29 = r24
+            r24 = r44
+            goto L_0x037c
+        L_0x02f3:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r12.mListAnchors
+            r1 = r1[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r13.mListAnchors
+            int r3 = r48 + 1
+            r2 = r2[r3]
+            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r1.mTarget
+            if (r3 == 0) goto L_0x0306
+            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r1.mTarget
+            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
+            goto L_0x0307
+        L_0x0306:
+            r3 = 0
+        L_0x0307:
+            r20 = r3
+            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r2.mTarget
+            if (r3 == 0) goto L_0x0312
+            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r2.mTarget
+            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
+            goto L_0x0313
+        L_0x0312:
+            r3 = 0
+        L_0x0313:
+            r25 = r3
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r14.mListAnchors
+            r8 = r3[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r15.mListAnchors
+            int r3 = r48 + 1
+            r7 = r1[r3]
+            if (r20 == 0) goto L_0x0362
+            if (r25 == 0) goto L_0x0362
+            r1 = 1056964608(0x3f000000, float:0.5)
+            if (r47 != 0) goto L_0x032c
+            float r1 = r9.mHorizontalBiasPercent
+            r26 = r1
+            goto L_0x0330
+        L_0x032c:
+            float r1 = r9.mVerticalBiasPercent
+            r26 = r1
+        L_0x0330:
+            int r27 = r8.getMargin()
+            int r30 = r7.getMargin()
+            android.support.constraint.solver.SolverVariable r2 = r8.mSolverVariable
+            android.support.constraint.solver.SolverVariable r6 = r7.mSolverVariable
+            r31 = 7
+            r1 = r46
+            r3 = r20
+            r4 = r27
+            r5 = r26
+            r33 = r6
+            r32 = r39
+            r6 = r25
+            r34 = r7
+            r44 = r29
+            r29 = r24
+            r24 = r44
+            r7 = r33
+            r33 = r8
+            r8 = r30
+            r35 = r9
+            r9 = r31
+            r1.addCentering(r2, r3, r4, r5, r6, r7, r8, r9)
+            goto L_0x0370
+        L_0x0362:
+            r34 = r7
+            r33 = r8
+            r35 = r9
+            r32 = r39
+            r44 = r29
+            r29 = r24
+            r24 = r44
+        L_0x0370:
+            goto L_0x0664
+        L_0x0372:
+            r35 = r9
+            r32 = r39
+            r44 = r29
+            r29 = r24
+            r24 = r44
+        L_0x037c:
+            if (r22 == 0) goto L_0x04cb
+            if (r14 == 0) goto L_0x04cb
+            r1 = r14
+            r2 = r14
+            int r3 = r11.mWidgetsMatchCount
+            if (r3 <= 0) goto L_0x038f
+            int r3 = r11.mWidgetsCount
+            int r4 = r11.mWidgetsMatchCount
+            if (r3 != r4) goto L_0x038f
+            r25 = 1
+            goto L_0x0391
+        L_0x038f:
+            r25 = 0
+        L_0x0391:
+            r20 = r25
+            r8 = r1
+            r9 = r2
+        L_0x0395:
+            if (r8 == 0) goto L_0x04c3
+            android.support.constraint.solver.widgets.ConstraintWidget[] r1 = r8.mNextChainWidget
+            r1 = r1[r47]
+            r7 = r1
+        L_0x039c:
+            if (r7 == 0) goto L_0x03ab
+            int r1 = r7.getVisibility()
+            r5 = 8
+            if (r1 != r5) goto L_0x03ad
+            android.support.constraint.solver.widgets.ConstraintWidget[] r1 = r7.mNextChainWidget
+            r7 = r1[r47]
+            goto L_0x039c
+        L_0x03ab:
+            r5 = 8
+        L_0x03ad:
+            if (r7 != 0) goto L_0x03bb
+            if (r8 != r15) goto L_0x03b2
+            goto L_0x03bb
+        L_0x03b2:
+            r0 = r5
+            r39 = r7
+            r40 = r8
+            r41 = r9
+            goto L_0x04b1
+        L_0x03bb:
             android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r8.mListAnchors
-            int r2 = r63 + 1
+            r6 = r1[r48]
+            android.support.constraint.solver.SolverVariable r4 = r6.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r6.mTarget
+            if (r1 == 0) goto L_0x03ca
+            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r6.mTarget
+            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
+            goto L_0x03cb
+        L_0x03ca:
+            r1 = 0
+        L_0x03cb:
+            if (r9 == r8) goto L_0x03d8
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r9.mListAnchors
+            int r3 = r48 + 1
+            r2 = r2[r3]
+            android.support.constraint.solver.SolverVariable r1 = r2.mSolverVariable
+            r19 = r1
+            goto L_0x03f4
+        L_0x03d8:
+            if (r8 != r14) goto L_0x03f2
+            if (r9 != r8) goto L_0x03f2
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r12.mListAnchors
+            r2 = r2[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r2.mTarget
+            if (r2 == 0) goto L_0x03ed
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r12.mListAnchors
+            r2 = r2[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r2.mTarget
+            android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
+            goto L_0x03ee
+        L_0x03ed:
+            r2 = 0
+        L_0x03ee:
+            r1 = r2
+            r19 = r1
+            goto L_0x03f4
+        L_0x03f2:
+            r19 = r1
+        L_0x03f4:
+            r1 = 0
+            r2 = 0
+            r3 = 0
+            int r25 = r6.getMargin()
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r8.mListAnchors
+            int r26 = r48 + 1
+            r0 = r0[r26]
+            int r0 = r0.getMargin()
+            if (r7 == 0) goto L_0x041c
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r5 = r7.mListAnchors
+            r1 = r5[r48]
+            android.support.constraint.solver.SolverVariable r2 = r1.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r5 = r8.mListAnchors
+            int r30 = r48 + 1
+            r5 = r5[r30]
+            android.support.constraint.solver.SolverVariable r3 = r5.mSolverVariable
+            r30 = r1
+            r31 = r2
+            r32 = r3
+            goto L_0x0436
+        L_0x041c:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r5 = r13.mListAnchors
+            int r30 = r48 + 1
+            r5 = r5[r30]
+            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r5.mTarget
+            if (r1 == 0) goto L_0x0428
+            android.support.constraint.solver.SolverVariable r2 = r1.mSolverVariable
+        L_0x0428:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r5 = r8.mListAnchors
+            int r30 = r48 + 1
+            r5 = r5[r30]
+            android.support.constraint.solver.SolverVariable r3 = r5.mSolverVariable
+            r30 = r1
+            r31 = r2
+            r32 = r3
+        L_0x0436:
+            if (r30 == 0) goto L_0x043d
+            int r1 = r30.getMargin()
+            int r0 = r0 + r1
+        L_0x043d:
+            if (r9 == 0) goto L_0x044b
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
+            int r2 = r48 + 1
             r1 = r1[r2]
             int r1 = r1.getMargin()
-            int r20 = r20 + r1
-        L_0x03f3:
-            if (r5 == 0) goto L_0x0445
-            if (r18 == 0) goto L_0x0445
-            if (r21 == 0) goto L_0x0445
-            if (r22 == 0) goto L_0x0445
-            r1 = r20
-            if (r9 != r10) goto L_0x0407
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r10.mListAnchors
-            r2 = r2[r63]
+            int r25 = r25 + r1
+        L_0x044b:
+            if (r4 == 0) goto L_0x04a3
+            if (r19 == 0) goto L_0x04a3
+            if (r31 == 0) goto L_0x04a3
+            if (r32 == 0) goto L_0x04a3
+            r1 = r25
+            if (r8 != r14) goto L_0x0462
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r14.mListAnchors
+            r2 = r2[r48]
             int r1 = r2.getMargin()
-        L_0x0407:
-            r26 = r1
-            r1 = r24
-            if (r9 != r0) goto L_0x0417
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r0.mListAnchors
-            int r3 = r63 + 1
+            r33 = r1
+            goto L_0x0464
+        L_0x0462:
+            r33 = r1
+        L_0x0464:
+            r1 = r0
+            if (r8 != r15) goto L_0x0474
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r15.mListAnchors
+            int r3 = r48 + 1
             r2 = r2[r3]
             int r1 = r2.getMargin()
-        L_0x0417:
-            r27 = r1
-            r1 = 4
-            if (r47 == 0) goto L_0x041d
-            r1 = 6
-        L_0x041d:
-            r28 = r1
-            r29 = 1056964608(0x3f000000, float:0.5)
-            r1 = r61
-            r4 = 8
-            r2 = r5
-            r3 = r18
-            r53 = r14
-            r14 = r4
-            r4 = r26
-            r33 = r5
-            r5 = r29
-            r29 = r6
-            r6 = r21
-            r34 = r7
-            r7 = r22
-            r36 = r8
-            r8 = r27
-            r37 = r9
-            r9 = r28
+            r34 = r1
+            goto L_0x0476
+        L_0x0474:
+            r34 = r1
+        L_0x0476:
+            r1 = 5
+            if (r20 == 0) goto L_0x047e
+            r1 = 8
+            r36 = r1
+            goto L_0x0480
+        L_0x047e:
+            r36 = r1
+        L_0x0480:
+            r5 = 1056964608(0x3f000000, float:0.5)
+            r1 = r46
+            r2 = r4
+            r3 = r19
+            r37 = r4
+            r4 = r33
+            r38 = r0
+            r0 = 8
+            r26 = r6
+            r6 = r31
+            r39 = r7
+            r7 = r32
+            r40 = r8
+            r8 = r34
+            r41 = r9
+            r9 = r36
             r1.addCentering(r2, r3, r4, r5, r6, r7, r8, r9)
-            goto L_0x044f
-        L_0x0445:
-            r34 = r7
-            r36 = r8
-            r37 = r9
-            r53 = r14
-            r14 = 8
-        L_0x044f:
-            int r1 = r37.getVisibility()
-            if (r1 == r14) goto L_0x0459
-            r1 = r37
-            r8 = r1
-            goto L_0x045b
-        L_0x0459:
-            r8 = r36
-        L_0x045b:
-            r9 = r34
-            r20 = r34
-            r14 = r53
-            goto L_0x0337
-        L_0x0463:
-            r37 = r9
-            r53 = r14
-            r9 = r10
-            r28 = r37
-            r59 = r53
-        L_0x046c:
-            r10 = r61
-            goto L_0x0614
-        L_0x0470:
-            r53 = r14
-            r14 = 8
-            if (r16 == 0) goto L_0x060f
-            if (r10 == 0) goto L_0x060f
-            r1 = r10
-            r2 = r10
-            int r3 = r12.mWidgetsMatchCount
-            if (r3 <= 0) goto L_0x0487
-            int r3 = r12.mWidgetsCount
-            int r4 = r12.mWidgetsMatchCount
-            if (r3 != r4) goto L_0x0487
-            r47 = 1
-            goto L_0x0489
-        L_0x0487:
-            r47 = 0
-        L_0x0489:
+            goto L_0x04b1
+        L_0x04a3:
+            r38 = r0
+            r37 = r4
+            r26 = r6
+            r39 = r7
+            r40 = r8
+            r41 = r9
+            r0 = 8
+        L_0x04b1:
+            int r1 = r40.getVisibility()
+            if (r1 == r0) goto L_0x04bb
+            r1 = r40
             r9 = r1
-            r8 = r2
-        L_0x048b:
-            if (r9 == 0) goto L_0x0571
-            android.support.constraint.solver.widgets.ConstraintWidget[] r1 = r9.mNextChainWidget
-            r1 = r1[r62]
-        L_0x0491:
-            if (r1 == 0) goto L_0x049e
+            goto L_0x04bd
+        L_0x04bb:
+            r9 = r41
+        L_0x04bd:
+            r8 = r39
+            r19 = r39
+            goto L_0x0395
+        L_0x04c3:
+            r40 = r8
+            r41 = r9
+            r32 = r40
+            goto L_0x0664
+        L_0x04cb:
+            r0 = 8
+            if (r16 == 0) goto L_0x0664
+            if (r14 == 0) goto L_0x0664
+            r1 = r14
+            r2 = r14
+            int r3 = r11.mWidgetsMatchCount
+            if (r3 <= 0) goto L_0x04e0
+            int r3 = r11.mWidgetsCount
+            int r4 = r11.mWidgetsMatchCount
+            if (r3 != r4) goto L_0x04e0
+            r25 = 1
+            goto L_0x04e2
+        L_0x04e0:
+            r25 = 0
+        L_0x04e2:
+            r20 = r25
+            r8 = r1
+            r9 = r2
+        L_0x04e6:
+            if (r8 == 0) goto L_0x05d3
+            android.support.constraint.solver.widgets.ConstraintWidget[] r1 = r8.mNextChainWidget
+            r1 = r1[r47]
+        L_0x04ec:
+            if (r1 == 0) goto L_0x04f9
             int r2 = r1.getVisibility()
-            if (r2 != r14) goto L_0x049e
+            if (r2 != r0) goto L_0x04f9
             android.support.constraint.solver.widgets.ConstraintWidget[] r2 = r1.mNextChainWidget
-            r1 = r2[r62]
-            goto L_0x0491
-        L_0x049e:
-            if (r9 == r10) goto L_0x0557
-            if (r9 == r0) goto L_0x0557
-            if (r1 == 0) goto L_0x0557
-            if (r1 != r0) goto L_0x04a7
+            r1 = r2[r47]
+            goto L_0x04ec
+        L_0x04f9:
+            if (r8 == r14) goto L_0x05ba
+            if (r8 == r15) goto L_0x05ba
+            if (r1 == 0) goto L_0x05ba
+            if (r1 != r15) goto L_0x0504
             r1 = 0
-        L_0x04a7:
             r7 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
-            r6 = r1[r63]
+            goto L_0x0505
+        L_0x0504:
+            r7 = r1
+        L_0x0505:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r8.mListAnchors
+            r6 = r1[r48]
             android.support.constraint.solver.SolverVariable r5 = r6.mSolverVariable
             android.support.constraint.solver.widgets.ConstraintAnchor r1 = r6.mTarget
-            if (r1 == 0) goto L_0x04b7
+            if (r1 == 0) goto L_0x0514
             android.support.constraint.solver.widgets.ConstraintAnchor r1 = r6.mTarget
             android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            goto L_0x04b8
-        L_0x04b7:
+            goto L_0x0515
+        L_0x0514:
             r1 = 0
-        L_0x04b8:
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r8.mListAnchors
-            int r3 = r63 + 1
+        L_0x0515:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r9.mListAnchors
+            int r3 = r48 + 1
             r2 = r2[r3]
             android.support.constraint.solver.SolverVariable r4 = r2.mSolverVariable
             r1 = 0
             r2 = 0
             r3 = 0
-            int r18 = r6.getMargin()
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r14 = r9.mListAnchors
-            int r20 = r63 + 1
-            r14 = r14[r20]
-            int r14 = r14.getMargin()
-            if (r7 == 0) goto L_0x04ec
-            r54 = r1
+            int r19 = r6.getMargin()
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r8.mListAnchors
+            int r25 = r48 + 1
+            r0 = r0[r25]
+            int r0 = r0.getMargin()
+            if (r7 == 0) goto L_0x054b
+            r25 = r1
             android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r7.mListAnchors
-            r1 = r1[r63]
+            r1 = r1[r48]
             android.support.constraint.solver.SolverVariable r2 = r1.mSolverVariable
-            r55 = r2
+            r25 = r2
             android.support.constraint.solver.widgets.ConstraintAnchor r2 = r1.mTarget
-            if (r2 == 0) goto L_0x04e6
+            if (r2 == 0) goto L_0x0543
             android.support.constraint.solver.widgets.ConstraintAnchor r2 = r1.mTarget
             android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
-            goto L_0x04e7
-        L_0x04e6:
+            goto L_0x0544
+        L_0x0543:
             r2 = 0
-        L_0x04e7:
-            r56 = r1
-            r20 = r2
-            goto L_0x0508
-        L_0x04ec:
-            r54 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
-            int r20 = r63 + 1
-            r1 = r1[r20]
-            android.support.constraint.solver.widgets.ConstraintAnchor r1 = r1.mTarget
-            if (r1 == 0) goto L_0x04fa
+        L_0x0544:
+            r30 = r2
+            r31 = r25
+            r25 = r1
+            goto L_0x0563
+        L_0x054b:
+            r25 = r1
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r15.mListAnchors
+            r1 = r1[r48]
+            if (r1 == 0) goto L_0x0555
             android.support.constraint.solver.SolverVariable r2 = r1.mSolverVariable
-        L_0x04fa:
-            r56 = r1
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
-            int r20 = r63 + 1
-            r1 = r1[r20]
-            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
-            r20 = r1
-            r55 = r2
-        L_0x0508:
-            if (r56 == 0) goto L_0x050f
-            int r1 = r56.getMargin()
-            int r14 = r14 + r1
-        L_0x050f:
-            if (r8 == 0) goto L_0x051d
+        L_0x0555:
+            r25 = r1
             android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r8.mListAnchors
-            int r2 = r63 + 1
+            int r30 = r48 + 1
+            r1 = r1[r30]
+            android.support.constraint.solver.SolverVariable r1 = r1.mSolverVariable
+            r30 = r1
+            r31 = r2
+        L_0x0563:
+            if (r25 == 0) goto L_0x056a
+            int r1 = r25.getMargin()
+            int r0 = r0 + r1
+        L_0x056a:
+            if (r9 == 0) goto L_0x0578
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
+            int r2 = r48 + 1
             r1 = r1[r2]
             int r1 = r1.getMargin()
-            int r18 = r18 + r1
-        L_0x051d:
+            int r19 = r19 + r1
+        L_0x0578:
             r1 = 4
-            if (r47 == 0) goto L_0x0521
-            r1 = 6
-        L_0x0521:
-            r21 = r1
-            if (r5 == 0) goto L_0x054d
-            if (r4 == 0) goto L_0x054d
-            if (r55 == 0) goto L_0x054d
-            if (r20 == 0) goto L_0x054d
-            r22 = 1056964608(0x3f000000, float:0.5)
-            r1 = r61
+            if (r20 == 0) goto L_0x0580
+            r1 = 8
+            r32 = r1
+            goto L_0x0582
+        L_0x0580:
+            r32 = r1
+        L_0x0582:
+            if (r5 == 0) goto L_0x05ab
+            if (r4 == 0) goto L_0x05ab
+            if (r31 == 0) goto L_0x05ab
+            if (r30 == 0) goto L_0x05ab
+            r33 = 1056964608(0x3f000000, float:0.5)
+            r1 = r46
             r2 = r5
             r3 = r4
-            r24 = r4
-            r4 = r18
-            r26 = r5
-            r11 = 5
-            r5 = r22
-            r22 = r6
-            r6 = r55
-            r27 = r7
-            r7 = r20
-            r28 = r8
-            r8 = r14
-            r29 = r9
-            r9 = r21
+            r34 = r4
+            r4 = r19
+            r36 = r5
+            r5 = r33
+            r33 = r6
+            r6 = r31
+            r37 = r7
+            r7 = r30
+            r38 = r8
+            r8 = r0
+            r39 = r9
+            r9 = r32
             r1.addCentering(r2, r3, r4, r5, r6, r7, r8, r9)
-            goto L_0x0554
-        L_0x054d:
-            r27 = r7
-            r28 = r8
-            r29 = r9
-            r11 = 5
-        L_0x0554:
-            r20 = r27
-            goto L_0x055e
-        L_0x0557:
-            r28 = r8
-            r29 = r9
-            r11 = 5
-            r20 = r1
-        L_0x055e:
-            int r1 = r29.getVisibility()
-            r2 = 8
-            if (r1 == r2) goto L_0x056a
-            r1 = r29
-            r8 = r1
-            goto L_0x056c
-        L_0x056a:
-            r8 = r28
-        L_0x056c:
-            r9 = r20
-            r14 = r2
-            goto L_0x048b
-        L_0x0571:
-            r28 = r8
-            r29 = r9
-            r11 = 5
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r10.mListAnchors
-            r14 = r1[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r13.mListAnchors
-            r1 = r1[r63]
+            goto L_0x05b7
+        L_0x05ab:
+            r34 = r4
+            r36 = r5
+            r33 = r6
+            r37 = r7
+            r38 = r8
+            r39 = r9
+        L_0x05b7:
+            r19 = r37
+            goto L_0x05c0
+        L_0x05ba:
+            r38 = r8
+            r39 = r9
+            r19 = r1
+        L_0x05c0:
+            int r0 = r38.getVisibility()
+            r1 = 8
+            if (r0 == r1) goto L_0x05cc
+            r0 = r38
+            r9 = r0
+            goto L_0x05ce
+        L_0x05cc:
+            r9 = r39
+        L_0x05ce:
+            r8 = r19
+            r0 = r1
+            goto L_0x04e6
+        L_0x05d3:
+            r38 = r8
+            r39 = r9
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r14.mListAnchors
+            r0 = r0[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r12.mListAnchors
+            r1 = r1[r48]
             android.support.constraint.solver.widgets.ConstraintAnchor r9 = r1.mTarget
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r0.mListAnchors
-            int r2 = r63 + 1
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r15.mListAnchors
+            int r2 = r48 + 1
             r8 = r1[r2]
-            r7 = r53
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r7.mListAnchors
-            int r2 = r63 + 1
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r13.mListAnchors
+            int r2 = r48 + 1
             r1 = r1[r2]
-            android.support.constraint.solver.widgets.ConstraintAnchor r6 = r1.mTarget
-            if (r9 == 0) goto L_0x05e9
-            if (r10 == r0) goto L_0x05ac
-            android.support.constraint.solver.SolverVariable r1 = r14.mSolverVariable
+            android.support.constraint.solver.widgets.ConstraintAnchor r7 = r1.mTarget
+            r6 = 5
+            if (r9 == 0) goto L_0x063f
+            if (r14 == r15) goto L_0x0608
+            android.support.constraint.solver.SolverVariable r1 = r0.mSolverVariable
             android.support.constraint.solver.SolverVariable r2 = r9.mSolverVariable
-            int r3 = r14.getMargin()
-            r5 = r10
-            r10 = r61
-            r10.addEquality(r1, r2, r3, r11)
-            r57 = r5
-            r58 = r6
-            r59 = r7
-            r11 = r8
-            r18 = r9
-            goto L_0x05f4
-        L_0x05ac:
-            r5 = r10
-            r10 = r61
-            if (r6 == 0) goto L_0x05df
-            android.support.constraint.solver.SolverVariable r2 = r14.mSolverVariable
+            int r3 = r0.getMargin()
+            r10.addEquality(r1, r2, r3, r6)
+            r31 = r6
+            r42 = r7
+            r43 = r8
+            r25 = r9
+            goto L_0x0647
+        L_0x0608:
+            if (r7 == 0) goto L_0x0636
+            android.support.constraint.solver.SolverVariable r2 = r0.mSolverVariable
             android.support.constraint.solver.SolverVariable r3 = r9.mSolverVariable
-            int r4 = r14.getMargin()
-            r18 = 1056964608(0x3f000000, float:0.5)
+            int r4 = r0.getMargin()
             android.support.constraint.solver.SolverVariable r1 = r8.mSolverVariable
-            android.support.constraint.solver.SolverVariable r11 = r6.mSolverVariable
-            int r21 = r8.getMargin()
-            r22 = 5
-            r24 = r1
-            r1 = r61
-            r57 = r5
-            r5 = r18
-            r58 = r6
-            r6 = r24
-            r59 = r7
-            r7 = r11
-            r11 = r8
-            r8 = r21
-            r18 = r9
-            r9 = r22
+            android.support.constraint.solver.SolverVariable r5 = r7.mSolverVariable
+            int r26 = r8.getMargin()
+            r30 = r1
+            r1 = r46
+            r25 = r5
+            r5 = 1056964608(0x3f000000, float:0.5)
+            r31 = r6
+            r6 = r30
+            r42 = r7
+            r7 = r25
+            r43 = r8
+            r8 = r26
+            r25 = r9
+            r9 = r31
             r1.addCentering(r2, r3, r4, r5, r6, r7, r8, r9)
-            goto L_0x05f4
-        L_0x05df:
-            r57 = r5
-            r58 = r6
-            r59 = r7
-            r11 = r8
-            r18 = r9
-            goto L_0x05f4
-        L_0x05e9:
-            r58 = r6
-            r59 = r7
-            r11 = r8
-            r18 = r9
-            r57 = r10
-            r10 = r61
-        L_0x05f4:
-            r1 = r58
-            if (r1 == 0) goto L_0x060a
-            r9 = r57
-            if (r9 == r0) goto L_0x060c
-            android.support.constraint.solver.SolverVariable r2 = r11.mSolverVariable
-            android.support.constraint.solver.SolverVariable r3 = r1.mSolverVariable
-            int r4 = r11.getMargin()
-            int r4 = -r4
-            r5 = 5
-            r10.addEquality(r2, r3, r4, r5)
-            goto L_0x060c
-        L_0x060a:
-            r9 = r57
-        L_0x060c:
-            r28 = r29
-            goto L_0x0614
-        L_0x060f:
-            r9 = r10
-            r59 = r53
-            r10 = r61
-        L_0x0614:
-            if (r23 != 0) goto L_0x061f
-            if (r16 == 0) goto L_0x0619
-            goto L_0x061f
-        L_0x0619:
-            r33 = r9
-            r14 = r59
-            goto L_0x06a8
-        L_0x061f:
-            if (r9 == 0) goto L_0x06a4
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r9.mListAnchors
-            r1 = r1[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r0.mListAnchors
-            int r3 = r63 + 1
-            r2 = r2[r3]
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r1.mTarget
-            if (r3 == 0) goto L_0x0634
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r1.mTarget
-            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
-            goto L_0x0635
-        L_0x0634:
-            r3 = 0
-        L_0x0635:
-            r11 = r3
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r2.mTarget
-            if (r3 == 0) goto L_0x063f
-            android.support.constraint.solver.widgets.ConstraintAnchor r3 = r2.mTarget
-            android.support.constraint.solver.SolverVariable r3 = r3.mSolverVariable
-            goto L_0x0640
+            goto L_0x0647
+        L_0x0636:
+            r31 = r6
+            r42 = r7
+            r43 = r8
+            r25 = r9
+            goto L_0x0647
         L_0x063f:
-            r3 = 0
-        L_0x0640:
-            r14 = r59
-            if (r14 == r0) goto L_0x0659
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r4 = r14.mListAnchors
-            int r5 = r63 + 1
-            r4 = r4[r5]
-            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r4.mTarget
-            if (r5 == 0) goto L_0x0655
-            android.support.constraint.solver.widgets.ConstraintAnchor r5 = r4.mTarget
-            android.support.constraint.solver.SolverVariable r5 = r5.mSolverVariable
-            r49 = r5
-            goto L_0x0657
-        L_0x0655:
-            r49 = 0
-        L_0x0657:
-            r3 = r49
-        L_0x0659:
-            r18 = r3
-            if (r9 != r0) goto L_0x0667
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r9.mListAnchors
-            r1 = r3[r63]
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r9.mListAnchors
-            int r4 = r63 + 1
-            r2 = r3[r4]
-        L_0x0667:
-            r8 = r1
-            r7 = r2
-            if (r11 == 0) goto L_0x06a1
-            if (r18 == 0) goto L_0x06a1
-            r21 = 1056964608(0x3f000000, float:0.5)
-            int r22 = r8.getMargin()
-            if (r0 != 0) goto L_0x0676
-            r0 = r14
-        L_0x0676:
-            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r0.mListAnchors
-            int r2 = r63 + 1
+            r31 = r6
+            r42 = r7
+            r43 = r8
+            r25 = r9
+        L_0x0647:
+            r1 = r42
+            if (r1 == 0) goto L_0x065e
+            if (r14 == r15) goto L_0x065e
+            r2 = r43
+            android.support.constraint.solver.SolverVariable r3 = r2.mSolverVariable
+            android.support.constraint.solver.SolverVariable r4 = r1.mSolverVariable
+            int r5 = r2.getMargin()
+            int r5 = -r5
+            r6 = r31
+            r10.addEquality(r3, r4, r5, r6)
+            goto L_0x0662
+        L_0x065e:
+            r6 = r31
+            r2 = r43
+        L_0x0662:
+            r32 = r38
+        L_0x0664:
+            if (r22 != 0) goto L_0x0668
+            if (r16 == 0) goto L_0x06eb
+        L_0x0668:
+            if (r14 == 0) goto L_0x06eb
+            if (r14 == r15) goto L_0x06eb
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r0 = r14.mListAnchors
+            r0 = r0[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r15.mListAnchors
+            int r2 = r48 + 1
             r1 = r1[r2]
-            int r24 = r1.getMargin()
-            android.support.constraint.solver.SolverVariable r2 = r8.mSolverVariable
-            android.support.constraint.solver.SolverVariable r6 = r7.mSolverVariable
-            r26 = 5
-            r1 = r61
-            r3 = r11
-            r4 = r22
-            r5 = r21
-            r27 = r6
-            r6 = r18
-            r29 = r7
-            r7 = r27
-            r27 = r8
-            r8 = r24
-            r33 = r9
-            r9 = r26
-            r1.addCentering(r2, r3, r4, r5, r6, r7, r8, r9)
-            goto L_0x06a8
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r0.mTarget
+            if (r2 == 0) goto L_0x067f
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r0.mTarget
+            android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
+            goto L_0x0680
+        L_0x067f:
+            r2 = 0
+        L_0x0680:
+            r20 = r2
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r1.mTarget
+            if (r2 == 0) goto L_0x068b
+            android.support.constraint.solver.widgets.ConstraintAnchor r2 = r1.mTarget
+            android.support.constraint.solver.SolverVariable r2 = r2.mSolverVariable
+            goto L_0x068c
+        L_0x068b:
+            r2 = 0
+        L_0x068c:
+            if (r13 == r15) goto L_0x06a6
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r3 = r13.mListAnchors
+            int r4 = r48 + 1
+            r3 = r3[r4]
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r3.mTarget
+            if (r4 == 0) goto L_0x069f
+            android.support.constraint.solver.widgets.ConstraintAnchor r4 = r3.mTarget
+            android.support.constraint.solver.SolverVariable r4 = r4.mSolverVariable
+            r27 = r4
+            goto L_0x06a1
+        L_0x069f:
+            r27 = 0
         L_0x06a1:
-            r33 = r9
+            r2 = r27
+            r25 = r2
             goto L_0x06a8
-        L_0x06a4:
-            r33 = r9
-            r14 = r59
+        L_0x06a6:
+            r25 = r2
         L_0x06a8:
+            if (r14 != r15) goto L_0x06b6
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r14.mListAnchors
+            r0 = r2[r48]
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r2 = r14.mListAnchors
+            int r3 = r48 + 1
+            r1 = r2[r3]
+            r9 = r1
+            goto L_0x06b7
+        L_0x06b6:
+            r9 = r1
+        L_0x06b7:
+            if (r20 == 0) goto L_0x06e9
+            if (r25 == 0) goto L_0x06e9
+            r26 = 1056964608(0x3f000000, float:0.5)
+            int r27 = r0.getMargin()
+            if (r15 != 0) goto L_0x06c5
+            r1 = r13
+            r15 = r1
+        L_0x06c5:
+            android.support.constraint.solver.widgets.ConstraintAnchor[] r1 = r15.mListAnchors
+            int r2 = r48 + 1
+            r1 = r1[r2]
+            int r30 = r1.getMargin()
+            android.support.constraint.solver.SolverVariable r2 = r0.mSolverVariable
+            android.support.constraint.solver.SolverVariable r7 = r9.mSolverVariable
+            r31 = 5
+            r1 = r46
+            r3 = r20
+            r4 = r27
+            r5 = r26
+            r6 = r25
+            r8 = r30
+            r33 = r9
+            r9 = r31
+            r1.addCentering(r2, r3, r4, r5, r6, r7, r8, r9)
+            goto L_0x06eb
+        L_0x06e9:
+            r33 = r9
+        L_0x06eb:
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.solver.widgets.Chain.applyChainConstraints(android.support.constraint.solver.widgets.ConstraintWidgetContainer, android.support.constraint.solver.LinearSystem, int, int, android.support.constraint.solver.widgets.ChainHead):void");

@@ -1,8 +1,6 @@
 package com.bumptech.glide.load.model;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.util.Preconditions;
@@ -13,17 +11,12 @@ import java.util.Map;
 
 public class GlideUrl implements Key {
     private static final String ALLOWED_URI_CHARS = "@#&=*+-_.,:!?()/~'%;$";
-    @Nullable
     private volatile byte[] cacheKeyBytes;
     private int hashCode;
     private final Headers headers;
-    @Nullable
     private String safeStringUrl;
-    @Nullable
     private URL safeUrl;
-    @Nullable
     private final String stringUrl;
-    @Nullable
     private final URL url;
 
     public GlideUrl(URL url2) {
@@ -77,14 +70,15 @@ public class GlideUrl implements Key {
     }
 
     public String getCacheKey() {
-        return this.stringUrl != null ? this.stringUrl : ((URL) Preconditions.checkNotNull(this.url)).toString();
+        String str = this.stringUrl;
+        return str != null ? str : ((URL) Preconditions.checkNotNull(this.url)).toString();
     }
 
     public String toString() {
         return getCacheKey();
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         messageDigest.update(getCacheKeyBytes());
     }
 
@@ -108,8 +102,9 @@ public class GlideUrl implements Key {
 
     public int hashCode() {
         if (this.hashCode == 0) {
-            this.hashCode = getCacheKey().hashCode();
-            this.hashCode = (this.hashCode * 31) + this.headers.hashCode();
+            int hashCode2 = getCacheKey().hashCode();
+            this.hashCode = hashCode2;
+            this.hashCode = (hashCode2 * 31) + this.headers.hashCode();
         }
         return this.hashCode;
     }

@@ -44,6 +44,12 @@
     <string name="audi_set_temp_unit">Unidad de temperatura</string>
     <string name="bc_apps_btn_text">Mas aplicaciones</string>
     <string name="benz_gs_home_navi">Navegacion</string>
+    <string name="benz_mbux_2021_bg_sel_tip">Color de fondo</string>
+    <string name="benz_mbux_2021_img_sel_tip">Estilo del icono</string>
+    <string name="benz_mbux_2021_style_classical_tip">clásico</string>
+    <string name="benz_mbux_2021_style_modern_tip">Moderno</string>
+    <string name="benz_mbux_2021_theme_settings">El tema</string>
+    <string name="benz_ntg6_fy_theme_settings">El tema</string>
     <string name="boot_record_mode">Recuerda el último modo</string>
     <string name="boot_record_mode_radio1">Habilitar</string>
     <string name="boot_record_mode_radio2">Al sistema OEM</string>
@@ -95,6 +101,9 @@
     <string name="factory_danwei">Selección de engranaje</string>
     <string name="factory_danwei1">Automático</string>
     <string name="factory_danwei2">Manual</string>
+    <string name="factory_gears1">Tipo de engranaje 1</string>
+    <string name="factory_gears2">Tipo de engranaje 2</string>
+    <string name="factory_gears3">Tipo de engranaje 3</string>
     <string name="factory_input1">Importar desde la carpeta OEM de almacenamiento externo factory_config.xml</string>
     <string name="factory_input2">Versión:</string>
     <string name="factory_input3">Importación</string>
@@ -119,6 +128,8 @@
     <string name="factory_yuyinkey2">Short press useless，Long press means NAVI</string>
     <string name="factory_yuyinkey3">Short press means VOICE，Long press means NAVI</string>
     <string name="factory_yuyinkey4">Short press means NAVI，Long press useless</string>
+    <string name="factory_yuyinkey5">HiCar voice function key</string>
+    <string name="fuel_unit">Unidad de combustible</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">CVBS DVR</string>
     <string name="function_text11">USB DVR</string>
@@ -161,12 +172,13 @@
     <string name="id6_phone">Teléfono</string>
     <string name="id6_phone_mess">Haz una llamada</string>
     <string name="id6_setting_mess">Ajustes de la función del sistema</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">Soporte de conexion telefonica</string>
     <string name="id6_xingchejily_mess">Grabar video de conducción</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">Sistema</string>
     <string name="item2">Navegacion</string>
     <string name="item3">Volumen</string>
@@ -201,8 +213,14 @@
     <string name="ksw_idf7_unknow_artis">Cantante desconocido</string>
     <string name="ksw_idf7_unkonw_album">Album desconocido</string>
     <string name="ksw_idf7_unkonw_soung">Canción desconocida</string>
+    <string name="land_rover_dvr">DVR</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_dashboard_lable</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">Contraseña incorrecta!</string>
     <string name="mcu_file_corrupted">Archivo de actualización dañado!</string>
+    <string name="mic_text">MIC Ganar</string>
+    <string name="music_app_sel">Elige una aplicación de música</string>
     <string name="ntg6_dvr_toast">No hay dispositivos!</string>
     <string name="oil_size">óleo: %s</string>
     <string name="raw_car_text1">Pantalla completa</string>
@@ -224,6 +242,7 @@
     <string name="set_text7">Invertir en silencio</string>
     <string name="set_text8">Mezcla de navegación</string>
     <string name="set_text9">Navegación APP</string>
+    <string name="set_text99">Navegación APP</string>
     <string name="seven_color_menu_item_text1">Rojo</string>
     <string name="seven_color_menu_item_text2">Naranja</string>
     <string name="seven_color_menu_item_text3">Amarillo</string>
@@ -284,6 +303,7 @@
     <string name="update_mcu_file">¿Actualizas tu MCU?</string>
     <string name="update_reset_all">¿Necesito restaurar la configuración de fábrica?</string>
     <string name="video">Video</string>
+    <string name="video_app_sel">Elija la aplicación de video</string>
     <string name="voic_1">Volumen Android</string>
     <string name="voic_2">Medios</string>
     <string name="voic_3">llamadas</string>

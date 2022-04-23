@@ -3,7 +3,6 @@ package android.support.v4.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.widget.EdgeEffect;
 
 public final class EdgeEffectCompat {
@@ -41,7 +40,7 @@ public final class EdgeEffectCompat {
         return true;
     }
 
-    public static void onPull(@NonNull EdgeEffect edgeEffect, float deltaDistance, float displacement) {
+    public static void onPull(EdgeEffect edgeEffect, float deltaDistance, float displacement) {
         if (Build.VERSION.SDK_INT >= 21) {
             edgeEffect.onPull(deltaDistance, displacement);
         } else {

@@ -2,36 +2,25 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RelativeLayout;
 import com.wits.ksw.generated.callback.OnClickListener;
-import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
 public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback56;
-    @Nullable
-    private final View.OnClickListener mCallback57;
-    @Nullable
-    private final View.OnClickListener mCallback58;
-    @Nullable
-    private final View.OnClickListener mCallback59;
-    @Nullable
-    private final View.OnClickListener mCallback60;
-    @Nullable
-    private final View.OnClickListener mCallback61;
+    private final View.OnClickListener mCallback31;
+    private final View.OnClickListener mCallback32;
+    private final View.OnClickListener mCallback33;
+    private final View.OnClickListener mCallback34;
+    private final View.OnClickListener mCallback35;
+    private final View.OnClickListener mCallback36;
     private long mDirtyFlags;
-    @NonNull
     private final RelativeLayout mboundView0;
 
-    public LandroverTwoFragmentImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public LandroverTwoFragmentImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 7, sIncludes, sViewsWithIds));
     }
 
@@ -45,15 +34,16 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
         this.landroverMainIconDashboard.setTag((Object) null);
         this.landroverMainIconFile.setTag((Object) null);
         this.landroverMainIconPhonelink.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        RelativeLayout relativeLayout = bindings[0];
+        this.mboundView0 = relativeLayout;
+        relativeLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback56 = new OnClickListener(this, 1);
-        this.mCallback59 = new OnClickListener(this, 4);
-        this.mCallback57 = new OnClickListener(this, 2);
-        this.mCallback60 = new OnClickListener(this, 5);
-        this.mCallback58 = new OnClickListener(this, 3);
-        this.mCallback61 = new OnClickListener(this, 6);
+        this.mCallback36 = new OnClickListener(this, 6);
+        this.mCallback34 = new OnClickListener(this, 4);
+        this.mCallback35 = new OnClickListener(this, 5);
+        this.mCallback32 = new OnClickListener(this, 2);
+        this.mCallback33 = new OnClickListener(this, 3);
+        this.mCallback31 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -73,20 +63,20 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (9 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (10 != variableId) {
             return false;
         }
-        setViewModel((LauncherViewModel) variable);
+        setViewModel((LandroverViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LandroverViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 
@@ -102,24 +92,31 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        LauncherViewModel launcherViewModel = this.mViewModel;
+        LandroverViewModel viewModel = this.mViewModel;
+        View.OnFocusChangeListener viewModelBtViewFocusChangeListener = null;
+        if (!((dirtyFlags & 3) == 0 || viewModel == null)) {
+            viewModelBtViewFocusChangeListener = viewModel.btViewFocusChangeListener;
+        }
         if ((2 & dirtyFlags) != 0) {
-            this.landroverMainIconApp.setOnClickListener(this.mCallback60);
-            this.landroverMainIconBrowser.setOnClickListener(this.mCallback61);
-            this.landroverMainIconBt.setOnClickListener(this.mCallback56);
-            this.landroverMainIconDashboard.setOnClickListener(this.mCallback58);
-            this.landroverMainIconFile.setOnClickListener(this.mCallback57);
-            this.landroverMainIconPhonelink.setOnClickListener(this.mCallback59);
+            this.landroverMainIconApp.setOnClickListener(this.mCallback35);
+            this.landroverMainIconBrowser.setOnClickListener(this.mCallback36);
+            this.landroverMainIconBt.setOnClickListener(this.mCallback31);
+            this.landroverMainIconDashboard.setOnClickListener(this.mCallback33);
+            this.landroverMainIconFile.setOnClickListener(this.mCallback32);
+            this.landroverMainIconPhonelink.setOnClickListener(this.mCallback34);
+        }
+        if ((3 & dirtyFlags) != 0) {
+            this.landroverMainIconBt.setOnFocusChangeListener(viewModelBtViewFocusChangeListener);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = false;
+        boolean viewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
-                LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel != null) {
-                    viewModelJavaLangObjectNull = true;
+                LandroverViewModel viewModel = this.mViewModel;
+                if (viewModel == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openBtApp(callbackArg_0);
@@ -127,9 +124,9 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
                 }
                 return;
             case 2:
-                LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull = true;
+                LandroverViewModel viewModel2 = this.mViewModel;
+                if (viewModel2 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openFileManager(callbackArg_0);
@@ -137,9 +134,9 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
                 }
                 return;
             case 3:
-                LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 != null) {
-                    viewModelJavaLangObjectNull = true;
+                LandroverViewModel viewModel3 = this.mViewModel;
+                if (viewModel3 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openDashboard(callbackArg_0);
@@ -147,9 +144,9 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
                 }
                 return;
             case 4:
-                LauncherViewModel viewModel4 = this.mViewModel;
-                if (viewModel4 != null) {
-                    viewModelJavaLangObjectNull = true;
+                LandroverViewModel viewModel4 = this.mViewModel;
+                if (viewModel4 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel4.openShouJiHuLian(callbackArg_0);
@@ -157,9 +154,9 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
                 }
                 return;
             case 5:
-                LauncherViewModel viewModel5 = this.mViewModel;
-                if (viewModel5 != null) {
-                    viewModelJavaLangObjectNull = true;
+                LandroverViewModel viewModel5 = this.mViewModel;
+                if (viewModel5 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel5.openAllApp(callbackArg_0);
@@ -167,9 +164,9 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
                 }
                 return;
             case 6:
-                LauncherViewModel viewModel6 = this.mViewModel;
-                if (viewModel6 != null) {
-                    viewModelJavaLangObjectNull = true;
+                LandroverViewModel viewModel6 = this.mViewModel;
+                if (viewModel6 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel6.openBrowser(callbackArg_0);

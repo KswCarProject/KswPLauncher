@@ -1,7 +1,6 @@
 package com.bumptech.glide.load.resource.bitmap;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.util.Util;
 import java.nio.ByteBuffer;
@@ -17,7 +16,7 @@ public class Rotate extends BitmapTransformation {
     }
 
     /* access modifiers changed from: protected */
-    public Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+    public Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
         return TransformationUtils.rotateImage(toTransform, this.degreesToRotate);
     }
 
@@ -32,7 +31,7 @@ public class Rotate extends BitmapTransformation {
         return Util.hashCode(ID.hashCode(), Util.hashCode(this.degreesToRotate));
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         messageDigest.update(ID_BYTES);
         messageDigest.update(ByteBuffer.allocate(4).putInt(this.degreesToRotate).array());
     }

@@ -12,12 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.internal.view.SupportMenu;
 import android.support.v4.util.SparseArrayCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -41,12 +36,15 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
     final FragmentController mFragments = FragmentController.createController(new HostCallbacks());
     final Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
-            if (msg.what != 2) {
-                super.handleMessage(msg);
-                return;
+            switch (msg.what) {
+                case 2:
+                    FragmentActivity.this.onResumeFragments();
+                    FragmentActivity.this.mFragments.execPendingActions();
+                    return;
+                default:
+                    super.handleMessage(msg);
+                    return;
             }
-            FragmentActivity.this.onResumeFragments();
-            FragmentActivity.this.mFragments.execPendingActions();
         }
     };
     int mNextCandidateRequestIndex;
@@ -68,7 +66,7 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
     }
 
     /* access modifiers changed from: protected */
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         this.mFragments.noteStateNotSaved();
         int requestIndex = requestCode >> 16;
         if (requestIndex != 0) {
@@ -82,14 +80,14 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
             Fragment targetFragment = this.mFragments.findFragmentByWho(who);
             if (targetFragment == null) {
                 Log.w(TAG, "Activity result no fragment exists for who: " + who);
-                return;
+            } else {
+                targetFragment.onActivityResult(65535 & requestCode, resultCode, data);
             }
-            targetFragment.onActivityResult(65535 & requestCode, resultCode, data);
-            return;
-        }
-        ActivityCompat.PermissionCompatDelegate delegate = ActivityCompat.getPermissionCompatDelegate();
-        if (delegate == null || !delegate.onActivityResult(this, requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
+        } else {
+            ActivityCompat.PermissionCompatDelegate delegate = ActivityCompat.getPermissionCompatDelegate();
+            if (delegate == null || !delegate.onActivityResult(this, requestCode, resultCode, data)) {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 
@@ -124,12 +122,10 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
         ActivityCompat.startPostponedEnterTransition(this);
     }
 
-    @CallSuper
     public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
         this.mFragments.dispatchMultiWindowModeChanged(isInMultiWindowMode);
     }
 
-    @CallSuper
     public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
         this.mFragments.dispatchPictureInPictureModeChanged(isInPictureInPictureMode);
     }
@@ -140,7 +136,6 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
         this.mFragments.dispatchConfigurationChanged(newConfig);
     }
 
-    @NonNull
     public ViewModelStore getViewModelStore() {
         if (getApplication() != null) {
             if (this.mViewModelStore == null) {
@@ -162,7 +157,7 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
     }
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         FragmentManagerNonConfig fragmentManagerNonConfig = null;
         this.mFragments.attachHost((Fragment) null);
         super.onCreate(savedInstanceState);
@@ -244,18 +239,21 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
         if (super.onMenuItemSelected(featureId, item)) {
             return true;
         }
-        if (featureId == 0) {
-            return this.mFragments.dispatchOptionsItemSelected(item);
+        switch (featureId) {
+            case 0:
+                return this.mFragments.dispatchOptionsItemSelected(item);
+            case 6:
+                return this.mFragments.dispatchContextItemSelected(item);
+            default:
+                return false;
         }
-        if (featureId != 6) {
-            return false;
-        }
-        return this.mFragments.dispatchContextItemSelected(item);
     }
 
     public void onPanelClosed(int featureId, Menu menu) {
-        if (featureId == 0) {
-            this.mFragments.dispatchOptionsMenuClosed(menu);
+        switch (featureId) {
+            case 0:
+                this.mFragments.dispatchOptionsMenuClosed(menu);
+                break;
         }
         super.onPanelClosed(featureId, menu);
     }
@@ -310,7 +308,6 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
     }
 
     /* access modifiers changed from: protected */
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public boolean onPrepareOptionsPanel(View view, Menu menu) {
         return super.onPreparePanel(0, view, menu);
     }
@@ -426,21 +423,21 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
         super.startActivityForResult(intent, requestCode);
     }
 
-    public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
+    public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         if (!this.mStartedActivityFromFragment && requestCode != -1) {
             checkForValidRequestCode(requestCode);
         }
         super.startActivityForResult(intent, requestCode, options);
     }
 
-    public void startIntentSenderForResult(IntentSender intent, int requestCode, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags) throws IntentSender.SendIntentException {
+    public void startIntentSenderForResult(IntentSender intent, int requestCode, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags) throws IntentSender.SendIntentException {
         if (!this.mStartedIntentSenderFromFragment && requestCode != -1) {
             checkForValidRequestCode(requestCode);
         }
         super.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags);
     }
 
-    public void startIntentSenderForResult(IntentSender intent, int requestCode, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
+    public void startIntentSenderForResult(IntentSender intent, int requestCode, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
         if (!this.mStartedIntentSenderFromFragment && requestCode != -1) {
             checkForValidRequestCode(requestCode);
         }
@@ -459,9 +456,9 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         this.mFragments.noteStateNotSaved();
-        int index = (requestCode >> 16) & SupportMenu.USER_MASK;
+        int index = (requestCode >> 16) & 65535;
         if (index != 0) {
             int index2 = index - 1;
             String who = this.mPendingFragmentActivityResults.get(index2);
@@ -473,9 +470,9 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
             Fragment frag = this.mFragments.findFragmentByWho(who);
             if (frag == null) {
                 Log.w(TAG, "Activity result no fragment exists for who: " + who);
-                return;
+            } else {
+                frag.onRequestPermissionsResult(65535 & requestCode, permissions, grantResults);
             }
-            frag.onRequestPermissionsResult(65535 & requestCode, permissions, grantResults);
         }
     }
 
@@ -483,7 +480,7 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
         startActivityFromFragment(fragment, intent, requestCode, (Bundle) null);
     }
 
-    public void startActivityFromFragment(Fragment fragment, Intent intent, int requestCode, @Nullable Bundle options) {
+    public void startActivityFromFragment(Fragment fragment, Intent intent, int requestCode, Bundle options) {
         this.mStartedActivityFromFragment = true;
         if (requestCode == -1) {
             try {
@@ -498,7 +495,7 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
         }
     }
 
-    public void startIntentSenderFromFragment(Fragment fragment, IntentSender intent, int requestCode, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
+    public void startIntentSenderFromFragment(Fragment fragment, IntentSender intent, int requestCode, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
         int i = requestCode;
         this.mStartedIntentSenderFromFragment = true;
         if (i == -1) {
@@ -574,19 +571,19 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
             FragmentActivity.this.startActivityFromFragment(fragment, intent, requestCode);
         }
 
-        public void onStartActivityFromFragment(Fragment fragment, Intent intent, int requestCode, @Nullable Bundle options) {
+        public void onStartActivityFromFragment(Fragment fragment, Intent intent, int requestCode, Bundle options) {
             FragmentActivity.this.startActivityFromFragment(fragment, intent, requestCode, options);
         }
 
-        public void onStartIntentSenderFromFragment(Fragment fragment, IntentSender intent, int requestCode, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
+        public void onStartIntentSenderFromFragment(Fragment fragment, IntentSender intent, int requestCode, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
             FragmentActivity.this.startIntentSenderFromFragment(fragment, intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options);
         }
 
-        public void onRequestPermissionsFromFragment(@NonNull Fragment fragment, @NonNull String[] permissions, int requestCode) {
+        public void onRequestPermissionsFromFragment(Fragment fragment, String[] permissions, int requestCode) {
             FragmentActivity.this.requestPermissionsFromFragment(fragment, permissions, requestCode);
         }
 
-        public boolean onShouldShowRequestPermissionRationale(@NonNull String permission) {
+        public boolean onShouldShowRequestPermissionRationale(String permission) {
             return ActivityCompat.shouldShowRequestPermissionRationale(FragmentActivity.this, permission);
         }
 
@@ -606,7 +603,6 @@ public class FragmentActivity extends SupportActivity implements ViewModelStoreO
             FragmentActivity.this.onAttachFragment(fragment);
         }
 
-        @Nullable
         public View onFindViewById(int id) {
             return FragmentActivity.this.findViewById(id);
         }

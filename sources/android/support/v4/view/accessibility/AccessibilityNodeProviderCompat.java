@@ -2,8 +2,6 @@ package android.support.v4.view.accessibility;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityNodeProvider;
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ public class AccessibilityNodeProviderCompat {
     public static final int HOST_VIEW_ID = -1;
     private final Object mProvider;
 
-    @RequiresApi(16)
     static class AccessibilityNodeProviderApi16 extends AccessibilityNodeProvider {
         final AccessibilityNodeProviderCompat mCompat;
 
@@ -47,7 +44,6 @@ public class AccessibilityNodeProviderCompat {
         }
     }
 
-    @RequiresApi(19)
     static class AccessibilityNodeProviderApi19 extends AccessibilityNodeProviderApi16 {
         AccessibilityNodeProviderApi19(AccessibilityNodeProviderCompat compat) {
             super(compat);
@@ -80,7 +76,6 @@ public class AccessibilityNodeProviderCompat {
         return this.mProvider;
     }
 
-    @Nullable
     public AccessibilityNodeInfoCompat createAccessibilityNodeInfo(int virtualViewId) {
         return null;
     }
@@ -89,12 +84,10 @@ public class AccessibilityNodeProviderCompat {
         return false;
     }
 
-    @Nullable
     public List<AccessibilityNodeInfoCompat> findAccessibilityNodeInfosByText(String text, int virtualViewId) {
         return null;
     }
 
-    @Nullable
     public AccessibilityNodeInfoCompat findFocus(int focus) {
         return null;
     }

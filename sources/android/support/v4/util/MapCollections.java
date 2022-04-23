@@ -1,6 +1,5 @@
 package android.support.v4.util;
 
-import android.support.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,11 +8,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 abstract class MapCollections<K, V> {
-    @Nullable
     MapCollections<K, V>.EntrySet mEntrySet;
-    @Nullable
     MapCollections<K, V>.KeySet mKeySet;
-    @Nullable
     MapCollections<K, V>.ValuesCollection mValues;
 
     /* access modifiers changed from: protected */
@@ -73,10 +69,11 @@ abstract class MapCollections<K, V> {
 
         public void remove() {
             if (this.mCanRemove) {
-                this.mIndex--;
+                int i = this.mIndex - 1;
+                this.mIndex = i;
                 this.mSize--;
                 this.mCanRemove = false;
-                MapCollections.this.colRemoveAt(this.mIndex);
+                MapCollections.this.colRemoveAt(i);
                 return;
             }
             throw new IllegalStateException();

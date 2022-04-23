@@ -3,7 +3,6 @@ package com.bumptech.glide.load.model;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.data.FileDescriptorAssetPathFetcher;
@@ -28,11 +27,11 @@ public class AssetUriLoader<Data> implements ModelLoader<Uri, Data> {
         this.factory = factory2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull Uri model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(Uri model, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(model), this.factory.buildFetcher(this.assetManager, model.toString().substring(ASSET_PREFIX_LENGTH)));
     }
 
-    public boolean handles(@NonNull Uri model) {
+    public boolean handles(Uri model) {
         if (!"file".equals(model.getScheme()) || model.getPathSegments().isEmpty() || !ASSET_PATH_SEGMENT.equals(model.getPathSegments().get(0))) {
             return false;
         }
@@ -46,7 +45,6 @@ public class AssetUriLoader<Data> implements ModelLoader<Uri, Data> {
             this.assetManager = assetManager2;
         }
 
-        @NonNull
         public ModelLoader<Uri, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new AssetUriLoader(this.assetManager, this);
         }
@@ -66,7 +64,6 @@ public class AssetUriLoader<Data> implements ModelLoader<Uri, Data> {
             this.assetManager = assetManager2;
         }
 
-        @NonNull
         public ModelLoader<Uri, ParcelFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new AssetUriLoader(this.assetManager, this);
         }

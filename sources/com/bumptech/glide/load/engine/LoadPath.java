@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pools;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.data.DataRewinder;
@@ -23,7 +22,7 @@ public class LoadPath<Data, ResourceType, Transcode> {
         this.failureMessage = "Failed LoadPath{" + dataClass2.getSimpleName() + "->" + resourceClass.getSimpleName() + "->" + transcodeClass.getSimpleName() + "}";
     }
 
-    public Resource<Transcode> load(DataRewinder<Data> rewinder, @NonNull Options options, int width, int height, DecodePath.DecodeCallback<ResourceType> decodeCallback) throws GlideException {
+    public Resource<Transcode> load(DataRewinder<Data> rewinder, Options options, int width, int height, DecodePath.DecodeCallback<ResourceType> decodeCallback) throws GlideException {
         List<Throwable> throwables = (List) Preconditions.checkNotNull(this.listPool.acquire());
         try {
             return loadWithExceptionList(rewinder, options, width, height, decodeCallback, throwables);
@@ -32,7 +31,7 @@ public class LoadPath<Data, ResourceType, Transcode> {
         }
     }
 
-    private Resource<Transcode> loadWithExceptionList(DataRewinder<Data> rewinder, @NonNull Options options, int width, int height, DecodePath.DecodeCallback<ResourceType> decodeCallback, List<Throwable> exceptions) throws GlideException {
+    private Resource<Transcode> loadWithExceptionList(DataRewinder<Data> rewinder, Options options, int width, int height, DecodePath.DecodeCallback<ResourceType> decodeCallback, List<Throwable> exceptions) throws GlideException {
         List<Throwable> list = exceptions;
         int size = this.decodePaths.size();
         Resource<Transcode> result = null;

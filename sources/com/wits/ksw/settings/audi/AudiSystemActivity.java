@@ -3,7 +3,6 @@ package com.wits.ksw.settings.audi;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +16,14 @@ public class AudiSystemActivity extends AudiSubActivity {
     private AudiSystemViewModel viewModel;
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.binding = (AudiSystemSetBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_system_set, (ViewGroup) null, false);
-        this.contentLayout.addView(this.binding.getRoot(), -1, -1);
-        this.viewModel = (AudiSystemViewModel) ViewModelProviders.of((FragmentActivity) AudiSettingMainActivity.getInstance).get(AudiSystemViewModel.class);
-        this.binding.setVm(this.viewModel);
+        AudiSystemSetBinding audiSystemSetBinding = (AudiSystemSetBinding) DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.audi_system_set, (ViewGroup) null, false);
+        this.binding = audiSystemSetBinding;
+        this.contentLayout.addView(audiSystemSetBinding.getRoot(), -1, -1);
+        AudiSystemViewModel audiSystemViewModel = (AudiSystemViewModel) ViewModelProviders.of((FragmentActivity) AudiSettingMainActivity.getInstance).get(AudiSystemViewModel.class);
+        this.viewModel = audiSystemViewModel;
+        this.binding.setVm(audiSystemViewModel);
         int childView = this.binding.audiSystemSetParentPanel.getChildCount();
         for (int i = 0; i < childView; i++) {
             this.binding.audiSystemSetParentPanel.getChildAt(i).setOnClickListener(new View.OnClickListener() {
@@ -31,6 +32,7 @@ public class AudiSystemActivity extends AudiSubActivity {
                 }
             });
         }
+        this.tv_title_set.setText(getResources().getString(R.string.item1));
     }
 
     /* access modifiers changed from: private */
@@ -51,6 +53,12 @@ public class AudiSystemActivity extends AudiSubActivity {
                 return;
             case R.id.audi_system_temp_unit:
                 StartUtil.AudiTempActivity(this);
+                return;
+            case R.id.tv_music_app:
+                StartUtil.toAudiSelMusicApp(this);
+                return;
+            case R.id.tv_video_app:
+                StartUtil.toAudiSelVideoApp(this);
                 return;
             default:
                 return;

@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,11 +16,11 @@ public class LexusViewPager extends ViewPager {
     private boolean isUp;
     private float lastX;
 
-    public LexusViewPager(@NonNull Context context) {
+    public LexusViewPager(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public LexusViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public LexusViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.canScroll = true;
         this.isUp = true;
@@ -47,8 +45,7 @@ public class LexusViewPager extends ViewPager {
                     break;
                 }
         }
-        String str = TAG;
-        Log.i(str, "dispatchTouchEvent//: isUp=" + this.isUp + " direction=" + direction + " getCurrentItem=" + getCurrentItem() + " action=" + event.getAction() + " lastX=" + this.lastX + " getX=" + event.getX());
+        Log.i(TAG, "dispatchTouchEvent//: isUp=" + this.isUp + " direction=" + direction + " getCurrentItem=" + getCurrentItem() + " action=" + event.getAction() + " lastX=" + this.lastX + " getX=" + event.getX());
         if (this.isUp) {
             this.canScroll = true;
             return super.dispatchTouchEvent(event);
@@ -62,8 +59,7 @@ public class LexusViewPager extends ViewPager {
     }
 
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        String str = TAG;
-        Log.d(str, "onInterceptTouchEvent action=" + event.getAction());
+        Log.d(TAG, "onInterceptTouchEvent action=" + event.getAction());
         if (this.canScroll) {
             return super.onInterceptTouchEvent(event);
         }
@@ -71,8 +67,7 @@ public class LexusViewPager extends ViewPager {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        String str = TAG;
-        Log.d(str, "onTouchEvent action=" + event.getAction() + " direction=" + direction + " getCurrentItem=" + getCurrentItem());
+        Log.d(TAG, "onTouchEvent action=" + event.getAction() + " direction=" + direction + " getCurrentItem=" + getCurrentItem());
         if (!this.canScroll) {
             return false;
         }

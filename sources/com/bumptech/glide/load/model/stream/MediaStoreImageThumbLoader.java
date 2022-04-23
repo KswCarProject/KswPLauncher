@@ -2,7 +2,6 @@ package com.bumptech.glide.load.model.stream;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.data.mediastore.MediaStoreUtil;
 import com.bumptech.glide.load.data.mediastore.ThumbFetcher;
@@ -19,14 +18,14 @@ public class MediaStoreImageThumbLoader implements ModelLoader<Uri, InputStream>
         this.context = context2.getApplicationContext();
     }
 
-    public ModelLoader.LoadData<InputStream> buildLoadData(@NonNull Uri model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<InputStream> buildLoadData(Uri model, int width, int height, Options options) {
         if (MediaStoreUtil.isThumbnailSize(width, height)) {
             return new ModelLoader.LoadData<>(new ObjectKey(model), ThumbFetcher.buildImageFetcher(this.context, model));
         }
         return null;
     }
 
-    public boolean handles(@NonNull Uri model) {
+    public boolean handles(Uri model) {
         return MediaStoreUtil.isMediaStoreImageUri(model);
     }
 
@@ -37,7 +36,6 @@ public class MediaStoreImageThumbLoader implements ModelLoader<Uri, InputStream>
             this.context = context2;
         }
 
-        @NonNull
         public ModelLoader<Uri, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new MediaStoreImageThumbLoader(this.context);
         }

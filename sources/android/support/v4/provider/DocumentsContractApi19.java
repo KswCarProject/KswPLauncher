@@ -4,12 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.DocumentsContract;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 
-@RequiresApi(19)
 class DocumentsContractApi19 {
     private static final int FLAG_VIRTUAL_DOCUMENT = 512;
     private static final String TAG = "DocumentFile";
@@ -21,17 +18,14 @@ class DocumentsContractApi19 {
         return false;
     }
 
-    @Nullable
     public static String getName(Context context, Uri self) {
         return queryForString(context, self, "_display_name", (String) null);
     }
 
-    @Nullable
     private static String getRawType(Context context, Uri self) {
         return queryForString(context, self, "mime_type", (String) null);
     }
 
-    @Nullable
     public static String getType(Context context, Uri self) {
         String rawType = getRawType(context, self);
         if ("vnd.android.document/directory".equals(rawType)) {
@@ -97,34 +91,30 @@ class DocumentsContractApi19 {
             if (c.getCount() > 0) {
                 z = true;
             }
+            return z;
         } catch (Exception e) {
             Log.w(TAG, "Failed query: " + e);
-        } catch (Throwable th) {
-            closeQuietly((AutoCloseable) null);
-            throw th;
+            return false;
+        } finally {
+            closeQuietly(c);
         }
-        closeQuietly(c);
-        return z;
     }
 
-    @Nullable
-    private static String queryForString(Context context, Uri self, String column, @Nullable String defaultValue) {
+    private static String queryForString(Context context, Uri self, String column, String defaultValue) {
         Cursor c = null;
         try {
             c = context.getContentResolver().query(self, new String[]{column}, (String) null, (String[]) null, (String) null);
             if (c.moveToFirst() && !c.isNull(0)) {
-                String string = c.getString(0);
-                closeQuietly(c);
-                return string;
+                return c.getString(0);
             }
+            closeQuietly(c);
+            return defaultValue;
         } catch (Exception e) {
             Log.w(TAG, "Failed query: " + e);
-        } catch (Throwable th) {
-            closeQuietly((AutoCloseable) null);
-            throw th;
+            return defaultValue;
+        } finally {
+            closeQuietly(c);
         }
-        closeQuietly(c);
-        return defaultValue;
     }
 
     private static int queryForInt(Context context, Uri self, String column, int defaultValue) {
@@ -136,21 +126,19 @@ class DocumentsContractApi19 {
         try {
             c = context.getContentResolver().query(self, new String[]{column}, (String) null, (String[]) null, (String) null);
             if (c.moveToFirst() && !c.isNull(0)) {
-                long j = c.getLong(0);
-                closeQuietly(c);
-                return j;
+                return c.getLong(0);
             }
+            closeQuietly(c);
+            return defaultValue;
         } catch (Exception e) {
             Log.w(TAG, "Failed query: " + e);
-        } catch (Throwable th) {
-            closeQuietly((AutoCloseable) null);
-            throw th;
+            return defaultValue;
+        } finally {
+            closeQuietly(c);
         }
-        closeQuietly(c);
-        return defaultValue;
     }
 
-    private static void closeQuietly(@Nullable AutoCloseable closeable) {
+    private static void closeQuietly(AutoCloseable closeable) {
         if (closeable != null) {
             try {
                 closeable.close();

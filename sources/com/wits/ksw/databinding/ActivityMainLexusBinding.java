@@ -1,11 +1,8 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.Bindable;
-import android.databinding.DataBindingComponent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,43 +13,28 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public abstract class ActivityMainLexusBinding extends ViewDataBinding {
-    @NonNull
     public final LinearLayout idGallery;
-    @NonNull
     public final Button lexusAir;
-    @NonNull
     public final Button lexusBtApp;
-    @NonNull
     public final Button lexusBtCar;
-    @NonNull
     public final Button lexusBtDash;
-    @NonNull
     public final Button lexusBtDvr;
-    @NonNull
     public final Button lexusBtFile;
-    @NonNull
     public final Button lexusBtLink;
-    @NonNull
     public final Button lexusBtMusic;
-    @NonNull
     public final Button lexusBtNavi;
-    @NonNull
     public final Button lexusBtPhone;
-    @NonNull
     public final Button lexusBtSet;
-    @NonNull
     public final Button lexusBtVedio;
-    @NonNull
     public final HorizontalScrollView lexusMainSv;
     @Bindable
     protected LauncherViewModel mViewModel;
-    @NonNull
     public final LinearLayout mainMenu;
 
-    public abstract void setViewModel(@Nullable LauncherViewModel launcherViewModel);
+    public abstract void setViewModel(LauncherViewModel launcherViewModel);
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    protected ActivityMainLexusBinding(DataBindingComponent _bindingComponent, View _root, int _localFieldCount, LinearLayout idGallery2, Button lexusAir2, Button lexusBtApp2, Button lexusBtCar2, Button lexusBtDash2, Button lexusBtDvr2, Button lexusBtFile2, Button lexusBtLink2, Button lexusBtMusic2, Button lexusBtNavi2, Button lexusBtPhone2, Button lexusBtSet2, Button lexusBtVedio2, HorizontalScrollView lexusMainSv2, LinearLayout mainMenu2) {
+    protected ActivityMainLexusBinding(Object _bindingComponent, View _root, int _localFieldCount, LinearLayout idGallery2, Button lexusAir2, Button lexusBtApp2, Button lexusBtCar2, Button lexusBtDash2, Button lexusBtDvr2, Button lexusBtFile2, Button lexusBtLink2, Button lexusBtMusic2, Button lexusBtNavi2, Button lexusBtPhone2, Button lexusBtSet2, Button lexusBtVedio2, HorizontalScrollView lexusMainSv2, LinearLayout mainMenu2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.idGallery = idGallery2;
         this.lexusAir = lexusAir2;
@@ -71,36 +53,34 @@ public abstract class ActivityMainLexusBinding extends ViewDataBinding {
         this.mainMenu = mainMenu2;
     }
 
-    @Nullable
     public LauncherViewModel getViewModel() {
         return this.mViewModel;
     }
 
-    @NonNull
-    public static ActivityMainLexusBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot) {
+    public static ActivityMainLexusBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {
         return inflate(inflater, root, attachToRoot, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ActivityMainLexusBinding inflate(@NonNull LayoutInflater inflater, @Nullable ViewGroup root, boolean attachToRoot, @Nullable DataBindingComponent component) {
-        return (ActivityMainLexusBinding) DataBindingUtil.inflate(inflater, R.layout.activity_main_lexus, root, attachToRoot, component);
+    @Deprecated
+    public static ActivityMainLexusBinding inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot, Object component) {
+        return (ActivityMainLexusBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_lexus, root, attachToRoot, component);
     }
 
-    @NonNull
-    public static ActivityMainLexusBinding inflate(@NonNull LayoutInflater inflater) {
+    public static ActivityMainLexusBinding inflate(LayoutInflater inflater) {
         return inflate(inflater, DataBindingUtil.getDefaultComponent());
     }
 
-    @NonNull
-    public static ActivityMainLexusBinding inflate(@NonNull LayoutInflater inflater, @Nullable DataBindingComponent component) {
-        return (ActivityMainLexusBinding) DataBindingUtil.inflate(inflater, R.layout.activity_main_lexus, (ViewGroup) null, false, component);
+    @Deprecated
+    public static ActivityMainLexusBinding inflate(LayoutInflater inflater, Object component) {
+        return (ActivityMainLexusBinding) ViewDataBinding.inflateInternal(inflater, R.layout.activity_main_lexus, (ViewGroup) null, false, component);
     }
 
-    public static ActivityMainLexusBinding bind(@NonNull View view) {
+    public static ActivityMainLexusBinding bind(View view) {
         return bind(view, DataBindingUtil.getDefaultComponent());
     }
 
-    public static ActivityMainLexusBinding bind(@NonNull View view, @Nullable DataBindingComponent component) {
+    @Deprecated
+    public static ActivityMainLexusBinding bind(View view, Object component) {
         return (ActivityMainLexusBinding) bind(component, view, R.layout.activity_main_lexus);
     }
 }

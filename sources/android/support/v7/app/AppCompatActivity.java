@@ -6,12 +6,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -34,7 +28,7 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
     private int mThemeId = 0;
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate delegate = getDelegate();
         delegate.installViewFactory();
         delegate.onCreate(savedInstanceState);
@@ -48,23 +42,22 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         super.onCreate(savedInstanceState);
     }
 
-    public void setTheme(@StyleRes int resid) {
+    public void setTheme(int resid) {
         super.setTheme(resid);
         this.mThemeId = resid;
     }
 
     /* access modifiers changed from: protected */
-    public void onPostCreate(@Nullable Bundle savedInstanceState) {
+    public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         getDelegate().onPostCreate(savedInstanceState);
     }
 
-    @Nullable
     public ActionBar getSupportActionBar() {
         return getDelegate().getSupportActionBar();
     }
 
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+    public void setSupportActionBar(Toolbar toolbar) {
         getDelegate().setSupportActionBar(toolbar);
     }
 
@@ -72,7 +65,7 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         return getDelegate().getMenuInflater();
     }
 
-    public void setContentView(@LayoutRes int layoutResID) {
+    public void setContentView(int layoutResID) {
         getDelegate().setContentView(layoutResID);
     }
 
@@ -114,7 +107,7 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         getDelegate().onStop();
     }
 
-    public <T extends View> T findViewById(@IdRes int id) {
+    public <T extends View> T findViewById(int id) {
         return getDelegate().findViewById(id);
     }
 
@@ -153,21 +146,17 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         getDelegate().invalidateOptionsMenu();
     }
 
-    @CallSuper
-    public void onSupportActionModeStarted(@NonNull ActionMode mode) {
+    public void onSupportActionModeStarted(ActionMode mode) {
     }
 
-    @CallSuper
-    public void onSupportActionModeFinished(@NonNull ActionMode mode) {
+    public void onSupportActionModeFinished(ActionMode mode) {
     }
 
-    @Nullable
-    public ActionMode onWindowStartingSupportActionMode(@NonNull ActionMode.Callback callback) {
+    public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
         return null;
     }
 
-    @Nullable
-    public ActionMode startSupportActionMode(@NonNull ActionMode.Callback callback) {
+    public ActionMode startSupportActionMode(ActionMode.Callback callback) {
         return getDelegate().startSupportActionMode(callback);
     }
 
@@ -187,11 +176,11 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
     public void setSupportProgress(int progress) {
     }
 
-    public void onCreateSupportNavigateUpTaskStack(@NonNull TaskStackBuilder builder) {
+    public void onCreateSupportNavigateUpTaskStack(TaskStackBuilder builder) {
         builder.addParentStack((Activity) this);
     }
 
-    public void onPrepareSupportNavigateUpTaskStack(@NonNull TaskStackBuilder builder) {
+    public void onPrepareSupportNavigateUpTaskStack(TaskStackBuilder builder) {
     }
 
     public boolean onSupportNavigateUp() {
@@ -217,16 +206,15 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         }
     }
 
-    @Nullable
     public Intent getSupportParentActivityIntent() {
         return NavUtils.getParentActivityIntent(this);
     }
 
-    public boolean supportShouldUpRecreateTask(@NonNull Intent targetIntent) {
+    public boolean supportShouldUpRecreateTask(Intent targetIntent) {
         return NavUtils.shouldUpRecreateTask(this, targetIntent);
     }
 
-    public void supportNavigateUpTo(@NonNull Intent upIntent) {
+    public void supportNavigateUpTo(Intent upIntent) {
         NavUtils.navigateUpTo(this, upIntent);
     }
 
@@ -238,7 +226,6 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
     public void onSupportContentChanged() {
     }
 
-    @Nullable
     public ActionBarDrawerToggle.Delegate getDrawerToggleDelegate() {
         return getDelegate().getDrawerToggleDelegate();
     }
@@ -257,7 +244,6 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         getDelegate().onSaveInstanceState(outState);
     }
 
-    @NonNull
     public AppCompatDelegate getDelegate() {
         if (this.mDelegate == null) {
             this.mDelegate = AppCompatDelegate.create((Activity) this, (AppCompatCallback) this);
@@ -278,7 +264,8 @@ public class AppCompatActivity extends FragmentActivity implements AppCompatCall
         if (this.mResources == null && VectorEnabledTintResources.shouldBeUsed()) {
             this.mResources = new VectorEnabledTintResources(this, super.getResources());
         }
-        return this.mResources == null ? super.getResources() : this.mResources;
+        Resources resources = this.mResources;
+        return resources == null ? super.getResources() : resources;
     }
 
     private boolean performMenuItemShortcut(int keycode, KeyEvent event) {

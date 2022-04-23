@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.CancellationSignal;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.FontResourcesParserCompat;
 import android.support.v4.provider.FontsContractCompat;
 import com.wits.pms.statuscontrol.WitsCommand;
@@ -14,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class TypefaceCompatBaseImpl {
     private static final String CACHE_FILE_PREFIX = "cached_font_";
     private static final String TAG = "TypefaceCompatBaseImpl";
@@ -31,8 +27,8 @@ class TypefaceCompatBaseImpl {
     private static <T> T findBestFont(T[] fonts, int style, StyleExtractor<T> extractor) {
         int targetWeight = (style & 1) == 0 ? 400 : WitsCommand.SystemCommand.MCU_UPDATE;
         boolean isTargetItalic = (style & 2) != 0;
-        int bestScore = Integer.MAX_VALUE;
         T best = null;
+        int bestScore = Integer.MAX_VALUE;
         for (T font : fonts) {
             int score = (Math.abs(extractor.getWeight(font) - targetWeight) * 2) + (extractor.isItalic(font) == isTargetItalic ? 0 : 1);
             if (best == null || bestScore > score) {
@@ -56,7 +52,6 @@ class TypefaceCompatBaseImpl {
         });
     }
 
-    /* Debug info: failed to restart local var, previous not found, register: 3 */
     /* access modifiers changed from: protected */
     public Typeface createFromInputStream(Context context, InputStream is) {
         File tmpFile = TypefaceCompatUtil.getTempFile(context);
@@ -64,21 +59,20 @@ class TypefaceCompatBaseImpl {
             return null;
         }
         try {
-            if (TypefaceCompatUtil.copyToFile(tmpFile, is)) {
-                Typeface createFromFile = Typeface.createFromFile(tmpFile.getPath());
-                tmpFile.delete();
-                return createFromFile;
+            if (!TypefaceCompatUtil.copyToFile(tmpFile, is)) {
+                return null;
             }
-        } catch (RuntimeException e) {
-        } catch (Throwable th) {
+            Typeface createFromFile = Typeface.createFromFile(tmpFile.getPath());
             tmpFile.delete();
-            throw th;
+            return createFromFile;
+        } catch (RuntimeException e) {
+            return null;
+        } finally {
+            tmpFile.delete();
         }
-        tmpFile.delete();
-        return null;
     }
 
-    public Typeface createFromFontInfo(Context context, @Nullable CancellationSignal cancellationSignal, @NonNull FontsContractCompat.FontInfo[] fonts, int style) {
+    public Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fonts, int style) {
         if (fonts.length < 1) {
             return null;
         }
@@ -105,7 +99,6 @@ class TypefaceCompatBaseImpl {
         });
     }
 
-    @Nullable
     public Typeface createFromFontFamilyFilesResourceEntry(Context context, FontResourcesParserCompat.FontFamilyFilesResourceEntry entry, Resources resources, int style) {
         FontResourcesParserCompat.FontFileResourceEntry best = findBestEntry(entry, style);
         if (best == null) {
@@ -114,25 +107,22 @@ class TypefaceCompatBaseImpl {
         return TypefaceCompat.createFromResourcesFontFile(context, resources, best.getResourceId(), best.getFileName(), style);
     }
 
-    /* Debug info: failed to restart local var, previous not found, register: 3 */
-    @Nullable
     public Typeface createFromResourcesFontFile(Context context, Resources resources, int id, String path, int style) {
         File tmpFile = TypefaceCompatUtil.getTempFile(context);
         if (tmpFile == null) {
             return null;
         }
         try {
-            if (TypefaceCompatUtil.copyToFile(tmpFile, resources, id)) {
-                Typeface createFromFile = Typeface.createFromFile(tmpFile.getPath());
-                tmpFile.delete();
-                return createFromFile;
+            if (!TypefaceCompatUtil.copyToFile(tmpFile, resources, id)) {
+                return null;
             }
-        } catch (RuntimeException e) {
-        } catch (Throwable th) {
+            Typeface createFromFile = Typeface.createFromFile(tmpFile.getPath());
             tmpFile.delete();
-            throw th;
+            return createFromFile;
+        } catch (RuntimeException e) {
+            return null;
+        } finally {
+            tmpFile.delete();
         }
-        tmpFile.delete();
-        return null;
     }
 }

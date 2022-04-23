@@ -21,6 +21,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
     /* access modifiers changed from: private */
     public Handler handler;
     private ImageView img_TwoBack;
+    public onTimeListener listener;
     private RadioGroup rdg_timeSy;
     private RadioGroup rdg_timeZhis;
     private int timeSync;
@@ -29,6 +30,10 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
     private TextView tv_timeZhis;
     private IUpdateTwoLayout updateTwoLayout;
     private View view;
+
+    public interface onTimeListener {
+        void getTieType();
+    }
 
     public void registIUpdateTwoLayout(IUpdateTwoLayout twoLayout) {
         this.updateTwoLayout = twoLayout;
@@ -97,20 +102,44 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_sync1:
+            case R.id.rdb_sync1 /*2131297195*/:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
+                onTimeListener ontimelistener = this.listener;
+                if (ontimelistener != null) {
+                    ontimelistener.getTieType();
+                    return;
+                }
                 return;
-            case R.id.rdb_sync2:
+            case R.id.rdb_sync2 /*2131297196*/:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
+                onTimeListener ontimelistener2 = this.listener;
+                if (ontimelistener2 != null) {
+                    ontimelistener2.getTieType();
+                    return;
+                }
                 return;
-            case R.id.rdb_zhis1:
+            case R.id.rdb_zhis1 /*2131297203*/:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
+                onTimeListener ontimelistener3 = this.listener;
+                if (ontimelistener3 != null) {
+                    ontimelistener3.getTieType();
+                    return;
+                }
                 return;
-            case R.id.rdb_zhis2:
+            case R.id.rdb_zhis2 /*2131297204*/:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
+                onTimeListener ontimelistener4 = this.listener;
+                if (ontimelistener4 != null) {
+                    ontimelistener4.getTieType();
+                    return;
+                }
                 return;
             default:
                 return;
         }
+    }
+
+    public void setOnTimeListener(onTimeListener listener2) {
+        this.listener = listener2;
     }
 }

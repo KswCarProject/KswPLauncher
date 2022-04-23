@@ -1,7 +1,6 @@
 package com.bumptech.glide.load.engine.bitmap_recycle;
 
 import android.graphics.Bitmap;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.util.Util;
 
 class AttributeStrategy implements LruPoolStrategy {
@@ -47,7 +46,6 @@ class AttributeStrategy implements LruPoolStrategy {
         return "[" + width + "x" + height + "], " + config;
     }
 
-    @VisibleForTesting
     static class KeyPool extends BaseKeyPool<Key> {
         KeyPool() {
         }
@@ -65,7 +63,6 @@ class AttributeStrategy implements LruPoolStrategy {
         }
     }
 
-    @VisibleForTesting
     static class Key implements Poolable {
         private Bitmap.Config config;
         private int height;
@@ -94,7 +91,9 @@ class AttributeStrategy implements LruPoolStrategy {
         }
 
         public int hashCode() {
-            return (((this.width * 31) + this.height) * 31) + (this.config != null ? this.config.hashCode() : 0);
+            int result = ((this.width * 31) + this.height) * 31;
+            Bitmap.Config config2 = this.config;
+            return result + (config2 != null ? config2.hashCode() : 0);
         }
 
         public String toString() {

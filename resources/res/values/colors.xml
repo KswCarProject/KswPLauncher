@@ -6,6 +6,9 @@
     <color name="abc_search_url_text_selected">@android:color/black</color>
     <color name="accent_material_dark">@color/material_deep_teal_200</color>
     <color name="accent_material_light">@color/material_deep_teal_500</color>
+    <color name="als_id7_ui_status_red_text_color">#e23a00</color>
+    <color name="als_id7_ui_status_yellow_text_color">#f39d3e</color>
+    <color name="als_id7_ui_text_color">#5ac0ff</color>
     <color name="alsid7_text_bule">#5ac0ff</color>
     <color name="background_floating_material_dark">@color/material_grey_800</color>
     <color name="background_floating_material_light">@android:color/white</color>
@@ -19,10 +22,27 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
+    <color name="cardview_dark_background">#ff424242</color>
+    <color name="cardview_light_background">#ffffffff</color>
+    <color name="cardview_shadow_end_color">#03000000</color>
+    <color name="cardview_shadow_start_color">#37000000</color>
     <color name="color1">#ffffff</color>
     <color name="colorAccent">#d81b60</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#000000</color>
+    <color name="color_222222">#222222</color>
+    <color name="color_app_audi_mib3">#39fffd</color>
+    <color name="color_browser_audi_mib3">#3f99ff</color>
+    <color name="color_bt_audi_mib3">#b8f93a</color>
+    <color name="color_car_audi_mib3">#ff483d</color>
+    <color name="color_dashboard_audi_mib3">#77e336</color>
+    <color name="color_dvr_audi_mib3">#dc51a3</color>
+    <color name="color_file_audi_mib3">#ff8124</color>
+    <color name="color_music_audi_mib3">#ffa424</color>
+    <color name="color_navi_audi_mib3">#3fcbff</color>
+    <color name="color_phonelink_audi_mib3">#eaff39</color>
+    <color name="color_set_audi_mib3">#fff000</color>
+    <color name="color_video_audi_mib3">#ff7139</color>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>
@@ -52,6 +72,7 @@
     <color name="notification_action_color_filter">@color/secondary_text_default_material_light</color>
     <color name="notification_icon_bg_color">#ff9e9e9e</color>
     <color name="notification_material_background_media_default_color">#ff424242</color>
+    <color name="orange_ff6633">#ff6633</color>
     <color name="primary_dark_material_dark">@android:color/black</color>
     <color name="primary_dark_material_light">@color/material_grey_600</color>
     <color name="primary_material_dark">@color/material_grey_900</color>
@@ -60,6 +81,7 @@
     <color name="primary_text_default_material_light">#de000000</color>
     <color name="primary_text_disabled_material_dark">#4dffffff</color>
     <color name="primary_text_disabled_material_light">#39000000</color>
+    <color name="rb_text_color">#00a8ff</color>
     <color name="ripple_material_dark">#33ffffff</color>
     <color name="ripple_material_light">#1f000000</color>
     <color name="secondary_text_default_material_dark">#b3ffffff</color>
@@ -75,4 +97,5 @@
     <color name="tooltip_background_dark">#e6616161</color>
     <color name="tooltip_background_light">#e6ffffff</color>
     <color name="transparent">@android:color/transparent</color>
+    <color name="transparent_half">#58000000</color>
 </resources>

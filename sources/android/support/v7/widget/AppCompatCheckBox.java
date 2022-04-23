@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.widget.TintableCompoundButton;
 import android.support.v7.appcompat.R;
 import android.support.v7.content.res.AppCompatResources;
@@ -26,54 +23,55 @@ public class AppCompatCheckBox extends CheckBox implements TintableCompoundButto
 
     public AppCompatCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
         super(TintContextWrapper.wrap(context), attrs, defStyleAttr);
-        this.mCompoundButtonHelper = new AppCompatCompoundButtonHelper(this);
-        this.mCompoundButtonHelper.loadFromAttributes(attrs, defStyleAttr);
+        AppCompatCompoundButtonHelper appCompatCompoundButtonHelper = new AppCompatCompoundButtonHelper(this);
+        this.mCompoundButtonHelper = appCompatCompoundButtonHelper;
+        appCompatCompoundButtonHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
     public void setButtonDrawable(Drawable buttonDrawable) {
         super.setButtonDrawable(buttonDrawable);
-        if (this.mCompoundButtonHelper != null) {
-            this.mCompoundButtonHelper.onSetButtonDrawable();
+        AppCompatCompoundButtonHelper appCompatCompoundButtonHelper = this.mCompoundButtonHelper;
+        if (appCompatCompoundButtonHelper != null) {
+            appCompatCompoundButtonHelper.onSetButtonDrawable();
         }
     }
 
-    public void setButtonDrawable(@DrawableRes int resId) {
+    public void setButtonDrawable(int resId) {
         setButtonDrawable(AppCompatResources.getDrawable(getContext(), resId));
     }
 
     public int getCompoundPaddingLeft() {
         int value = super.getCompoundPaddingLeft();
-        return this.mCompoundButtonHelper != null ? this.mCompoundButtonHelper.getCompoundPaddingLeft(value) : value;
+        AppCompatCompoundButtonHelper appCompatCompoundButtonHelper = this.mCompoundButtonHelper;
+        return appCompatCompoundButtonHelper != null ? appCompatCompoundButtonHelper.getCompoundPaddingLeft(value) : value;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportButtonTintList(@Nullable ColorStateList tint) {
-        if (this.mCompoundButtonHelper != null) {
-            this.mCompoundButtonHelper.setSupportButtonTintList(tint);
+    public void setSupportButtonTintList(ColorStateList tint) {
+        AppCompatCompoundButtonHelper appCompatCompoundButtonHelper = this.mCompoundButtonHelper;
+        if (appCompatCompoundButtonHelper != null) {
+            appCompatCompoundButtonHelper.setSupportButtonTintList(tint);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public ColorStateList getSupportButtonTintList() {
-        if (this.mCompoundButtonHelper != null) {
-            return this.mCompoundButtonHelper.getSupportButtonTintList();
+        AppCompatCompoundButtonHelper appCompatCompoundButtonHelper = this.mCompoundButtonHelper;
+        if (appCompatCompoundButtonHelper != null) {
+            return appCompatCompoundButtonHelper.getSupportButtonTintList();
         }
         return null;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    public void setSupportButtonTintMode(@Nullable PorterDuff.Mode tintMode) {
-        if (this.mCompoundButtonHelper != null) {
-            this.mCompoundButtonHelper.setSupportButtonTintMode(tintMode);
+    public void setSupportButtonTintMode(PorterDuff.Mode tintMode) {
+        AppCompatCompoundButtonHelper appCompatCompoundButtonHelper = this.mCompoundButtonHelper;
+        if (appCompatCompoundButtonHelper != null) {
+            appCompatCompoundButtonHelper.setSupportButtonTintMode(tintMode);
         }
     }
 
-    @Nullable
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public PorterDuff.Mode getSupportButtonTintMode() {
-        if (this.mCompoundButtonHelper != null) {
-            return this.mCompoundButtonHelper.getSupportButtonTintMode();
+        AppCompatCompoundButtonHelper appCompatCompoundButtonHelper = this.mCompoundButtonHelper;
+        if (appCompatCompoundButtonHelper != null) {
+            return appCompatCompoundButtonHelper.getSupportButtonTintMode();
         }
         return null;
     }

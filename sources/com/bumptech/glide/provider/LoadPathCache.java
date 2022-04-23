@@ -1,6 +1,5 @@
 package com.bumptech.glide.provider;
 
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.Pools;
 import com.bumptech.glide.load.engine.DecodePath;
@@ -16,11 +15,10 @@ public class LoadPathCache {
     private final ArrayMap<MultiClassKey, LoadPath<?, ?, ?>> cache = new ArrayMap<>();
     private final AtomicReference<MultiClassKey> keyRef = new AtomicReference<>();
 
-    public boolean isEmptyLoadPath(@Nullable LoadPath<?, ?, ?> path) {
+    public boolean isEmptyLoadPath(LoadPath<?, ?, ?> path) {
         return NO_PATHS_SIGNAL.equals(path);
     }
 
-    @Nullable
     public <Data, TResource, Transcode> LoadPath<Data, TResource, Transcode> get(Class<Data> dataClass, Class<TResource> resourceClass, Class<Transcode> transcodeClass) {
         LoadPath<?, ?, ?> result;
         MultiClassKey key = getKey(dataClass, resourceClass, transcodeClass);
@@ -31,17 +29,9 @@ public class LoadPathCache {
         return result;
     }
 
-    public void put(Class<?> dataClass, Class<?> resourceClass, Class<?> transcodeClass, @Nullable LoadPath<?, ?, ?> loadPath) {
-        LoadPath<?, ?, ?> loadPath2;
+    public void put(Class<?> dataClass, Class<?> resourceClass, Class<?> transcodeClass, LoadPath<?, ?, ?> loadPath) {
         synchronized (this.cache) {
-            ArrayMap<MultiClassKey, LoadPath<?, ?, ?>> arrayMap = this.cache;
-            MultiClassKey multiClassKey = new MultiClassKey(dataClass, resourceClass, transcodeClass);
-            if (loadPath != null) {
-                loadPath2 = loadPath;
-            } else {
-                loadPath2 = NO_PATHS_SIGNAL;
-            }
-            arrayMap.put(multiClassKey, loadPath2);
+            this.cache.put(new MultiClassKey(dataClass, resourceClass, transcodeClass), loadPath != null ? loadPath : NO_PATHS_SIGNAL);
         }
     }
 

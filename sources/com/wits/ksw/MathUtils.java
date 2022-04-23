@@ -1,7 +1,5 @@
 package com.wits.ksw;
 
-import android.support.v7.widget.ActivityChooserView;
-
 public final class MathUtils {
     private static final float DEG_TO_RAD = 0.017453292f;
     private static final float RAD_TO_DEG = 57.295784f;
@@ -197,7 +195,7 @@ public final class MathUtils {
         if (b == 0) {
             return a;
         }
-        if (b > 0 && a <= ActivityChooserView.ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED - b) {
+        if (b > 0 && a <= Integer.MAX_VALUE - b) {
             return a + b;
         }
         if (b < 0 && a >= Integer.MIN_VALUE - b) {

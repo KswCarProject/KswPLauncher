@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/relat_functionItem" android:background="@drawable/ksw_land_rover_seting_lp_bg" android:focusable="true" android:layout_width="246dp" android:layout_height="110dp" android:paddingStart="10dp" android:paddingEnd="10dp">
+    <TextView android:textSize="24sp" android:textColor="@color/land_rover_settings_main_text_color" android:ellipsize="end" android:gravity="center_vertical" android:id="@+id/tv_functionItem" android:padding="10dp" android:focusable="false" android:layout_width="220dp" android:layout_height="wrap_content" android:lines="1" android:drawablePadding="20dp" android:layout_centerInParent="true"/>
+</RelativeLayout>

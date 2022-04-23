@@ -3,8 +3,6 @@ package com.wits.ksw.databinding;
 import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,35 +10,35 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 
 public class MusicPhoneFragmentImpl extends MusicPhoneFragment {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(3);
-    @Nullable
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    @Nullable
     private final AlsId7SubPhoneViewBinding mboundView0;
-    @NonNull
     private final ConstraintLayout mboundView01;
-    @Nullable
     private final AlsId7SubMusicViewBinding mboundView02;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"als_id7_sub_phone_view", "als_id7_sub_music_view"}, new int[]{1, 2}, new int[]{R.layout.als_id7_sub_phone_view, R.layout.als_id7_sub_music_view});
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(3);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"als_id7_sub_phone_view", "als_id7_sub_music_view"}, new int[]{1, 2}, new int[]{R.layout.als_id7_sub_phone_view, R.layout.als_id7_sub_music_view});
     }
 
-    public MusicPhoneFragmentImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public MusicPhoneFragmentImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 3, sIncludes, sViewsWithIds));
     }
 
     private MusicPhoneFragmentImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[1];
-        setContainedBinding(this.mboundView0);
-        this.mboundView01 = bindings[0];
-        this.mboundView01.setTag((Object) null);
-        this.mboundView02 = bindings[2];
-        setContainedBinding(this.mboundView02);
+        AlsId7SubPhoneViewBinding alsId7SubPhoneViewBinding = bindings[1];
+        this.mboundView0 = alsId7SubPhoneViewBinding;
+        setContainedBinding(alsId7SubPhoneViewBinding);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView01 = constraintLayout;
+        constraintLayout.setTag((Object) null);
+        AlsId7SubMusicViewBinding alsId7SubMusicViewBinding = bindings[2];
+        this.mboundView02 = alsId7SubMusicViewBinding;
+        setContainedBinding(alsId7SubMusicViewBinding);
         setRootTag(root);
         invalidateAll();
     }
@@ -103,24 +101,24 @@ public class MusicPhoneFragmentImpl extends MusicPhoneFragment {
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.MusicPhoneFragmentImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (24 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (7 != variableId) {
             return false;
         }
         setMusicPhoneViewModel((AlsID7ViewModel) variable);
         return true;
     }
 
-    public void setMusicPhoneViewModel(@Nullable AlsID7ViewModel MusicPhoneViewModel) {
+    public void setMusicPhoneViewModel(AlsID7ViewModel MusicPhoneViewModel) {
         this.mMusicPhoneViewModel = MusicPhoneViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(24);
+        notifyPropertyChanged(7);
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.mboundView0.setLifecycleOwner(lifecycleOwner);
         this.mboundView02.setLifecycleOwner(lifecycleOwner);

@@ -1,8 +1,6 @@
 package com.bumptech.glide;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import com.bumptech.glide.load.engine.Engine;
 import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
@@ -31,7 +29,6 @@ public final class GlideBuilder {
     private ArrayPool arrayPool;
     private BitmapPool bitmapPool;
     private ConnectivityMonitorFactory connectivityMonitorFactory;
-    @Nullable
     private List<RequestListener<Object>> defaultRequestListeners;
     private RequestOptions defaultRequestOptions = new RequestOptions();
     private final Map<Class<?>, TransitionOptions<?, ?>> defaultTransitionOptions = new ArrayMap();
@@ -43,87 +40,73 @@ public final class GlideBuilder {
     private int logLevel = 4;
     private MemoryCache memoryCache;
     private MemorySizeCalculator memorySizeCalculator;
-    @Nullable
     private RequestManagerRetriever.RequestManagerFactory requestManagerFactory;
     private GlideExecutor sourceExecutor;
 
-    @NonNull
-    public GlideBuilder setBitmapPool(@Nullable BitmapPool bitmapPool2) {
+    public GlideBuilder setBitmapPool(BitmapPool bitmapPool2) {
         this.bitmapPool = bitmapPool2;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setArrayPool(@Nullable ArrayPool arrayPool2) {
+    public GlideBuilder setArrayPool(ArrayPool arrayPool2) {
         this.arrayPool = arrayPool2;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setMemoryCache(@Nullable MemoryCache memoryCache2) {
+    public GlideBuilder setMemoryCache(MemoryCache memoryCache2) {
         this.memoryCache = memoryCache2;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setDiskCache(@Nullable DiskCache.Factory diskCacheFactory2) {
+    public GlideBuilder setDiskCache(DiskCache.Factory diskCacheFactory2) {
         this.diskCacheFactory = diskCacheFactory2;
         return this;
     }
 
     @Deprecated
-    public GlideBuilder setResizeExecutor(@Nullable GlideExecutor service) {
+    public GlideBuilder setResizeExecutor(GlideExecutor service) {
         return setSourceExecutor(service);
     }
 
-    @NonNull
-    public GlideBuilder setSourceExecutor(@Nullable GlideExecutor service) {
+    public GlideBuilder setSourceExecutor(GlideExecutor service) {
         this.sourceExecutor = service;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setDiskCacheExecutor(@Nullable GlideExecutor service) {
+    public GlideBuilder setDiskCacheExecutor(GlideExecutor service) {
         this.diskCacheExecutor = service;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setAnimationExecutor(@Nullable GlideExecutor service) {
+    public GlideBuilder setAnimationExecutor(GlideExecutor service) {
         this.animationExecutor = service;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setDefaultRequestOptions(@Nullable RequestOptions requestOptions) {
+    public GlideBuilder setDefaultRequestOptions(RequestOptions requestOptions) {
         this.defaultRequestOptions = requestOptions;
         return this;
     }
 
-    @NonNull
-    public <T> GlideBuilder setDefaultTransitionOptions(@NonNull Class<T> clazz, @Nullable TransitionOptions<?, T> options) {
+    public <T> GlideBuilder setDefaultTransitionOptions(Class<T> clazz, TransitionOptions<?, T> options) {
         this.defaultTransitionOptions.put(clazz, options);
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setMemorySizeCalculator(@NonNull MemorySizeCalculator.Builder builder) {
+    public GlideBuilder setMemorySizeCalculator(MemorySizeCalculator.Builder builder) {
         return setMemorySizeCalculator(builder.build());
     }
 
-    @NonNull
-    public GlideBuilder setMemorySizeCalculator(@Nullable MemorySizeCalculator calculator) {
+    public GlideBuilder setMemorySizeCalculator(MemorySizeCalculator calculator) {
         this.memorySizeCalculator = calculator;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder setConnectivityMonitorFactory(@Nullable ConnectivityMonitorFactory factory) {
+    public GlideBuilder setConnectivityMonitorFactory(ConnectivityMonitorFactory factory) {
         this.connectivityMonitorFactory = factory;
         return this;
     }
 
-    @NonNull
     public GlideBuilder setLogLevel(int logLevel2) {
         if (logLevel2 < 2 || logLevel2 > 6) {
             throw new IllegalArgumentException("Log level must be one of Log.VERBOSE, Log.DEBUG, Log.INFO, Log.WARN, or Log.ERROR");
@@ -132,14 +115,12 @@ public final class GlideBuilder {
         return this;
     }
 
-    @NonNull
     public GlideBuilder setIsActiveResourceRetentionAllowed(boolean isActiveResourceRetentionAllowed2) {
         this.isActiveResourceRetentionAllowed = isActiveResourceRetentionAllowed2;
         return this;
     }
 
-    @NonNull
-    public GlideBuilder addGlobalRequestListener(@NonNull RequestListener<Object> listener) {
+    public GlideBuilder addGlobalRequestListener(RequestListener<Object> listener) {
         if (this.defaultRequestListeners == null) {
             this.defaultRequestListeners = new ArrayList();
         }
@@ -153,7 +134,7 @@ public final class GlideBuilder {
     }
 
     /* access modifiers changed from: package-private */
-    public void setRequestManagerFactory(@Nullable RequestManagerRetriever.RequestManagerFactory factory) {
+    public void setRequestManagerFactory(RequestManagerRetriever.RequestManagerFactory factory) {
         this.requestManagerFactory = factory;
     }
 
@@ -164,8 +145,7 @@ public final class GlideBuilder {
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
-    public Glide build(@NonNull Context context) {
+    public Glide build(Context context) {
         if (this.sourceExecutor == null) {
             this.sourceExecutor = GlideExecutor.newSourceExecutor();
         }
@@ -201,10 +181,11 @@ public final class GlideBuilder {
         if (this.engine == null) {
             this.engine = new Engine(this.memoryCache, this.diskCacheFactory, this.diskCacheExecutor, this.sourceExecutor, GlideExecutor.newUnlimitedSourceExecutor(), GlideExecutor.newAnimationExecutor(), this.isActiveResourceRetentionAllowed);
         }
-        if (this.defaultRequestListeners == null) {
+        List<RequestListener<Object>> list = this.defaultRequestListeners;
+        if (list == null) {
             this.defaultRequestListeners = Collections.emptyList();
         } else {
-            this.defaultRequestListeners = Collections.unmodifiableList(this.defaultRequestListeners);
+            this.defaultRequestListeners = Collections.unmodifiableList(list);
         }
         return new Glide(context, this.engine, this.memoryCache, this.bitmapPool, this.arrayPool, new RequestManagerRetriever(this.requestManagerFactory), this.connectivityMonitorFactory, this.logLevel, (RequestOptions) this.defaultRequestOptions.lock(), this.defaultTransitionOptions, this.defaultRequestListeners, this.isLoggingRequestOriginsEnabled);
     }

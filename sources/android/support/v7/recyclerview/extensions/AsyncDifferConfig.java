@@ -1,37 +1,28 @@
 package android.support.v7.recyclerview.extensions;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.support.v7.util.DiffUtil;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public final class AsyncDifferConfig<T> {
-    @NonNull
     private final Executor mBackgroundThreadExecutor;
-    @NonNull
     private final DiffUtil.ItemCallback<T> mDiffCallback;
-    @NonNull
     private final Executor mMainThreadExecutor;
 
-    AsyncDifferConfig(@NonNull Executor mainThreadExecutor, @NonNull Executor backgroundThreadExecutor, @NonNull DiffUtil.ItemCallback<T> diffCallback) {
+    AsyncDifferConfig(Executor mainThreadExecutor, Executor backgroundThreadExecutor, DiffUtil.ItemCallback<T> diffCallback) {
         this.mMainThreadExecutor = mainThreadExecutor;
         this.mBackgroundThreadExecutor = backgroundThreadExecutor;
         this.mDiffCallback = diffCallback;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-    @NonNull
     public Executor getMainThreadExecutor() {
         return this.mMainThreadExecutor;
     }
 
-    @NonNull
     public Executor getBackgroundThreadExecutor() {
         return this.mBackgroundThreadExecutor;
     }
 
-    @NonNull
     public DiffUtil.ItemCallback<T> getDiffCallback() {
         return this.mDiffCallback;
     }
@@ -43,24 +34,20 @@ public final class AsyncDifferConfig<T> {
         private final DiffUtil.ItemCallback<T> mDiffCallback;
         private Executor mMainThreadExecutor;
 
-        public Builder(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
+        public Builder(DiffUtil.ItemCallback<T> diffCallback) {
             this.mDiffCallback = diffCallback;
         }
 
-        @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
-        @NonNull
         public Builder<T> setMainThreadExecutor(Executor executor) {
             this.mMainThreadExecutor = executor;
             return this;
         }
 
-        @NonNull
         public Builder<T> setBackgroundThreadExecutor(Executor executor) {
             this.mBackgroundThreadExecutor = executor;
             return this;
         }
 
-        @NonNull
         public AsyncDifferConfig<T> build() {
             if (this.mBackgroundThreadExecutor == null) {
                 synchronized (sExecutorLock) {

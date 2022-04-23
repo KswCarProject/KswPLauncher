@@ -15,10 +15,13 @@ public abstract class WakefulBroadcastReceiver extends BroadcastReceiver {
     private static final SparseArray<PowerManager.WakeLock> sActiveWakeLocks = new SparseArray<>();
 
     public static ComponentName startWakefulService(Context context, Intent intent) {
-        synchronized (sActiveWakeLocks) {
-            int id = mNextId;
-            mNextId++;
-            if (mNextId <= 0) {
+        SparseArray<PowerManager.WakeLock> sparseArray = sActiveWakeLocks;
+        synchronized (sparseArray) {
+            int i = mNextId;
+            int id = i;
+            int i2 = i + 1;
+            mNextId = i2;
+            if (i2 <= 0) {
                 mNextId = 1;
             }
             intent.putExtra(EXTRA_WAKE_LOCK_ID, id);
@@ -29,7 +32,7 @@ public abstract class WakefulBroadcastReceiver extends BroadcastReceiver {
             PowerManager.WakeLock wl = ((PowerManager) context.getSystemService("power")).newWakeLock(1, "androidx.core:wake:" + comp.flattenToShortString());
             wl.setReferenceCounted(false);
             wl.acquire(60000);
-            sActiveWakeLocks.put(id, wl);
+            sparseArray.put(id, wl);
             return comp;
         }
     }
@@ -39,11 +42,12 @@ public abstract class WakefulBroadcastReceiver extends BroadcastReceiver {
         if (id == 0) {
             return false;
         }
-        synchronized (sActiveWakeLocks) {
-            PowerManager.WakeLock wl = sActiveWakeLocks.get(id);
+        SparseArray<PowerManager.WakeLock> sparseArray = sActiveWakeLocks;
+        synchronized (sparseArray) {
+            PowerManager.WakeLock wl = sparseArray.get(id);
             if (wl != null) {
                 wl.release();
-                sActiveWakeLocks.remove(id);
+                sparseArray.remove(id);
                 return true;
             }
             Log.w("WakefulBroadcastReceiv.", "No active wake lock id #" + id);

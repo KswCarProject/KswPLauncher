@@ -1,65 +1,75 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
+import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.databinding.adapters.ImageViewBindingAdapter;
+import android.databinding.adapters.TextViewBindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.view.lexus.LexusOEMFMViewModel;
 import com.wits.ksw.launcher.view.lexus.LexusUiParams;
 
-public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
-    @Nullable
+public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback240;
     private long mDirtyFlags;
     private long mDirtyFlags_1;
-    @NonNull
     private final RelativeLayout mboundView0;
-    @NonNull
     private final TextView mboundView1;
-    @NonNull
-    private final TextView mboundView14;
-    @NonNull
-    private final TextView mboundView15;
-    @NonNull
-    private final TextView mboundView16;
-    @NonNull
-    private final TextView mboundView17;
-    @NonNull
-    private final TextView mboundView30;
-    @NonNull
-    private final TextView mboundView31;
-    @NonNull
+    private final TextView mboundView18;
+    private final TextView mboundView19;
+    private final TextView mboundView20;
+    private final TextView mboundView21;
     private final TextView mboundView32;
-    @NonNull
     private final TextView mboundView33;
-    @NonNull
     private final TextView mboundView34;
+    private final TextView mboundView35;
+    private final TextView mboundView36;
+    private final TextView mboundView43;
+    private final TextView mboundView44;
+    private final TextView mboundView45;
+    private final TextView mboundView46;
+    private final TextView mboundView47;
+    private final RelativeLayout mboundView53;
+    private final TextView mboundView54;
+    private final TextView mboundView55;
+    private final ImageView mboundView56;
+    private final TextView mboundView57;
+    private final ImageView mboundView60;
+    private final TextView mboundView61;
+    private final TextView mboundView8;
 
     static {
-        sViewsWithIds.put(R.id.ac_layout, 40);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.mode_bt, 62);
+        sparseIntArray.put(R.id.volume_bar, 63);
     }
 
-    public ActivityLexusOemFmBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 41, sIncludes, sViewsWithIds));
+    public ActivityLexusOemFmBindingImpl(DataBindingComponent bindingComponent, View root) {
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 64, sIncludes, sViewsWithIds));
     }
 
     private ActivityLexusOemFmBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 33, bindings[40], bindings[22], bindings[5], bindings[7], bindings[8], bindings[9], bindings[10], bindings[11], bindings[12], bindings[13], bindings[6], bindings[18], bindings[23], bindings[24], bindings[27], bindings[21], bindings[25], bindings[26], bindings[20], bindings[19], bindings[2], bindings[3], bindings[29], bindings[39], bindings[28], bindings[37], bindings[36], bindings[35], bindings[38], bindings[4]);
+        super(bindingComponent, root, 46, bindings[2], bindings[6], bindings[7], bindings[10], bindings[11], bindings[12], bindings[13], bindings[14], bindings[15], bindings[17], bindings[9], bindings[22], bindings[16], bindings[27], bindings[28], bindings[30], bindings[25], bindings[59], bindings[58], bindings[62], bindings[29], bindings[52], bindings[42], bindings[50], bindings[49], bindings[48], bindings[51], bindings[26], bindings[24], bindings[23], bindings[3], bindings[4], bindings[41], bindings[31], bindings[39], bindings[38], bindings[37], bindings[40], bindings[63], bindings[5]);
         this.mDirtyFlags = -1;
         this.mDirtyFlags_1 = -1;
-        this.asl.setTag((Object) null);
+        this.acLayout.setTag((Object) null);
         this.blowMode.setTag((Object) null);
+        this.btSignal.setTag((Object) null);
         this.cd1.setTag((Object) null);
         this.cd2.setTag((Object) null);
         this.cd3.setTag((Object) null);
@@ -69,39 +79,97 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         this.cdLayout.setTag((Object) null);
         this.discMode.setTag((Object) null);
         this.discNum.setTag((Object) null);
+        this.eqMode.setTag((Object) null);
         this.fmBand.setTag((Object) null);
         this.fmCh.setTag((Object) null);
         this.fmFrequency.setTag((Object) null);
         this.fmLayout.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView1 = bindings[1];
-        this.mboundView1.setTag((Object) null);
-        this.mboundView14 = bindings[14];
-        this.mboundView14.setTag((Object) null);
-        this.mboundView15 = bindings[15];
-        this.mboundView15.setTag((Object) null);
-        this.mboundView16 = bindings[16];
-        this.mboundView16.setTag((Object) null);
-        this.mboundView17 = bindings[17];
-        this.mboundView17.setTag((Object) null);
-        this.mboundView30 = bindings[30];
-        this.mboundView30.setTag((Object) null);
-        this.mboundView31 = bindings[31];
-        this.mboundView31.setTag((Object) null);
-        this.mboundView32 = bindings[32];
-        this.mboundView32.setTag((Object) null);
-        this.mboundView33 = bindings[33];
-        this.mboundView33.setTag((Object) null);
-        this.mboundView34 = bindings[34];
-        this.mboundView34.setTag((Object) null);
+        this.layoutVolume.setTag((Object) null);
+        RelativeLayout relativeLayout = bindings[0];
+        this.mboundView0 = relativeLayout;
+        relativeLayout.setTag((Object) null);
+        TextView textView = bindings[1];
+        this.mboundView1 = textView;
+        textView.setTag((Object) null);
+        TextView textView2 = bindings[18];
+        this.mboundView18 = textView2;
+        textView2.setTag((Object) null);
+        TextView textView3 = bindings[19];
+        this.mboundView19 = textView3;
+        textView3.setTag((Object) null);
+        TextView textView4 = bindings[20];
+        this.mboundView20 = textView4;
+        textView4.setTag((Object) null);
+        TextView textView5 = bindings[21];
+        this.mboundView21 = textView5;
+        textView5.setTag((Object) null);
+        TextView textView6 = bindings[32];
+        this.mboundView32 = textView6;
+        textView6.setTag((Object) null);
+        TextView textView7 = bindings[33];
+        this.mboundView33 = textView7;
+        textView7.setTag((Object) null);
+        TextView textView8 = bindings[34];
+        this.mboundView34 = textView8;
+        textView8.setTag((Object) null);
+        TextView textView9 = bindings[35];
+        this.mboundView35 = textView9;
+        textView9.setTag((Object) null);
+        TextView textView10 = bindings[36];
+        this.mboundView36 = textView10;
+        textView10.setTag((Object) null);
+        TextView textView11 = bindings[43];
+        this.mboundView43 = textView11;
+        textView11.setTag((Object) null);
+        TextView textView12 = bindings[44];
+        this.mboundView44 = textView12;
+        textView12.setTag((Object) null);
+        TextView textView13 = bindings[45];
+        this.mboundView45 = textView13;
+        textView13.setTag((Object) null);
+        TextView textView14 = bindings[46];
+        this.mboundView46 = textView14;
+        textView14.setTag((Object) null);
+        TextView textView15 = bindings[47];
+        this.mboundView47 = textView15;
+        textView15.setTag((Object) null);
+        RelativeLayout relativeLayout2 = bindings[53];
+        this.mboundView53 = relativeLayout2;
+        relativeLayout2.setTag((Object) null);
+        TextView textView16 = bindings[54];
+        this.mboundView54 = textView16;
+        textView16.setTag((Object) null);
+        TextView textView17 = bindings[55];
+        this.mboundView55 = textView17;
+        textView17.setTag((Object) null);
+        ImageView imageView = bindings[56];
+        this.mboundView56 = imageView;
+        imageView.setTag((Object) null);
+        TextView textView18 = bindings[57];
+        this.mboundView57 = textView18;
+        textView18.setTag((Object) null);
+        ImageView imageView2 = bindings[60];
+        this.mboundView60 = imageView2;
+        imageView2.setTag((Object) null);
+        TextView textView19 = bindings[61];
+        this.mboundView61 = textView19;
+        textView19.setTag((Object) null);
+        TextView textView20 = bindings[8];
+        this.mboundView8 = textView20;
+        textView20.setTag((Object) null);
+        this.modeAux.setTag((Object) null);
         this.modeFm.setTag((Object) null);
+        this.mp3Index.setTag((Object) null);
+        this.mp3Layout.setTag((Object) null);
+        this.mp3MusicAlbum.setTag((Object) null);
+        this.mp3MusicArtist.setTag((Object) null);
+        this.mp3MusicName.setTag((Object) null);
+        this.mp3MusicTime.setTag((Object) null);
         this.st.setTag((Object) null);
         this.time.setTag((Object) null);
         this.trackNum.setTag((Object) null);
         this.tvLeftTemperature.setTag((Object) null);
         this.tvRightTemperature.setTag((Object) null);
-        this.usbAsl.setTag((Object) null);
         this.usbIndex.setTag((Object) null);
         this.usbLayout.setTag((Object) null);
         this.usbMusicAlbum.setTag((Object) null);
@@ -110,12 +178,13 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         this.usbMusicTime.setTag((Object) null);
         this.windSpeedLevel.setTag((Object) null);
         setRootTag(root);
+        this.mCallback240 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = 34359738368L;
+            this.mDirtyFlags = 281474976710656L;
             this.mDirtyFlags_1 = 0;
         }
         requestRebind();
@@ -132,8 +201,8 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (4 == variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (13 == variableId) {
             setMUiParams((LexusUiParams) variable);
             return true;
         } else if (17 != variableId) {
@@ -144,19 +213,19 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         }
     }
 
-    public void setMUiParams(@Nullable LexusUiParams MUiParams) {
+    public void setMUiParams(LexusUiParams MUiParams) {
         this.mMUiParams = MUiParams;
         synchronized (this) {
-            this.mDirtyFlags |= 8589934592L;
+            this.mDirtyFlags |= 70368744177664L;
         }
-        notifyPropertyChanged(4);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 
-    public void setVm(@Nullable LexusOEMFMViewModel Vm) {
+    public void setVm(LexusOEMFMViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
-            this.mDirtyFlags |= 17179869184L;
+            this.mDirtyFlags |= 140737488355328L;
         }
         notifyPropertyChanged(17);
         super.requestRebind();
@@ -168,47 +237,47 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
             case 0:
                 return onChangeVmRand((ObservableField) object, fieldId);
             case 1:
-                return onChangeVmIndex((ObservableField) object, fieldId);
+                return onChangeVmBtSetUp((ObservableField) object, fieldId);
             case 2:
-                return onChangeVmCd6((ObservableField) object, fieldId);
-            case 3:
-                return onChangeVmMode((ObservableField) object, fieldId);
-            case 4:
-                return onChangeVmMusicName((ObservableField) object, fieldId);
-            case 5:
-                return onChangeVmFmFrequency((ObservableField) object, fieldId);
-            case 6:
-                return onChangeVmCd5((ObservableField) object, fieldId);
-            case 7:
-                return onChangeVmFmBand((ObservableField) object, fieldId);
-            case 8:
-                return onChangeVmArtist((ObservableField) object, fieldId);
-            case 9:
-                return onChangeVmCh((ObservableField) object, fieldId);
-            case 10:
-                return onChangeVmCd4((ObservableField) object, fieldId);
-            case 11:
-                return onChangeVmCdMode((ObservableField) object, fieldId);
-            case 12:
-                return onChangeVmFm((ObservableBoolean) object, fieldId);
-            case 13:
                 return onChangeVmCd3((ObservableField) object, fieldId);
-            case 14:
+            case 3:
+                return onChangeVmEq((ObservableBoolean) object, fieldId);
+            case 4:
                 return onChangeVmAlbum((ObservableField) object, fieldId);
-            case 15:
+            case 5:
+                return onChangeVmIndex((ObservableField) object, fieldId);
+            case 6:
+                return onChangeVmBtSignal((ObservableInt) object, fieldId);
+            case 7:
                 return onChangeVmUsbStatus((ObservableField) object, fieldId);
-            case 16:
+            case 8:
                 return onChangeVmDisc((ObservableField) object, fieldId);
-            case 17:
+            case 9:
                 return onChangeVmTime((ObservableField) object, fieldId);
-            case 18:
+            case 10:
                 return onChangeVmRpt((ObservableField) object, fieldId);
-            case 19:
+            case 11:
+                return onChangeVmCd6((ObservableField) object, fieldId);
+            case 12:
+                return onChangeVmMode((ObservableField) object, fieldId);
+            case 13:
                 return onChangeVmCd2((ObservableField) object, fieldId);
-            case 20:
+            case 14:
                 return onChangeVmUsbMusicTime((ObservableField) object, fieldId);
-            case 21:
+            case 15:
+                return onChangeVmMusicName((ObservableField) object, fieldId);
+            case 16:
+                return onChangeVmEqMode((ObservableField) object, fieldId);
+            case 17:
+                return onChangeVmMp3((ObservableBoolean) object, fieldId);
+            case 18:
                 return onChangeVmUsb((ObservableBoolean) object, fieldId);
+            case 19:
+                return onChangeVmFmFrequency((ObservableField) object, fieldId);
+            case 20:
+                return onChangeVmBtTime((ObservableField) object, fieldId);
+            case 21:
+                return onChangeVmCd5((ObservableField) object, fieldId);
             case 22:
                 return onChangeVmCd1((ObservableField) object, fieldId);
             case 23:
@@ -216,21 +285,47 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
             case 24:
                 return onChangeVmScan((ObservableField) object, fieldId);
             case 25:
-                return onChangeVmAsl((ObservableField) object, fieldId);
+                return onChangeVmFmBand((ObservableField) object, fieldId);
             case 26:
-                return onChangeMUiParamsBlowingMode((ObservableInt) object, fieldId);
+                return onChangeVmAsl((ObservableField) object, fieldId);
             case 27:
-                return onChangeVmCd((ObservableBoolean) object, fieldId);
+                return onChangeVmArtist((ObservableField) object, fieldId);
             case 28:
-                return onChangeVmSt((ObservableField) object, fieldId);
+                return onChangeVmBtConnect((ObservableField) object, fieldId);
             case 29:
-                return onChangeMUiParamsWindSpeed((ObservableInt) object, fieldId);
+                return onChangeVmMute((ObservableBoolean) object, fieldId);
             case 30:
-                return onChangeVmAudioOff((ObservableBoolean) object, fieldId);
+                return onChangeMUiParamsBlowingMode((ObservableInt) object, fieldId);
             case 31:
-                return onChangeVmTrack((ObservableField) object, fieldId);
+                return onChangeVmAux((ObservableBoolean) object, fieldId);
             case 32:
+                return onChangeVmCd((ObservableBoolean) object, fieldId);
+            case 33:
+                return onChangeVmSt((ObservableField) object, fieldId);
+            case 34:
+                return onChangeVmCh((ObservableField) object, fieldId);
+            case 35:
+                return onChangeVmCd4((ObservableField) object, fieldId);
+            case 36:
+                return onChangeVmShowVolume((ObservableBoolean) object, fieldId);
+            case 37:
+                return onChangeVmFm((ObservableBoolean) object, fieldId);
+            case 38:
+                return onChangeVmBtPlay((ObservableField) object, fieldId);
+            case 39:
+                return onChangeVmBt((ObservableBoolean) object, fieldId);
+            case 40:
+                return onChangeMUiParamsWindSpeed((ObservableInt) object, fieldId);
+            case 41:
+                return onChangeVmMediaVolume((ObservableField) object, fieldId);
+            case 42:
+                return onChangeVmAudioOff((ObservableBoolean) object, fieldId);
+            case 43:
+                return onChangeVmTrack((ObservableField) object, fieldId);
+            case 44:
                 return onChangeMUiParamsLeftTempStr((ObservableField) object, fieldId);
+            case 45:
+                return onChangeVmBtConnectInfo((ObservableField) object, fieldId);
             default:
                 return false;
         }
@@ -246,7 +341,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmIndex(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmBtSetUp(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -256,7 +351,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCd6(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmCd3(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -266,7 +361,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmMode(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmEq(ObservableBoolean VmEq, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -276,7 +371,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmMusicName(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmAlbum(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -286,7 +381,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmFmFrequency(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmIndex(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -296,7 +391,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCd5(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmBtSignal(ObservableInt VmBtSignal, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -306,7 +401,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmFmBand(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmUsbStatus(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -316,7 +411,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmArtist(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmDisc(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -326,7 +421,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCh(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmTime(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -336,7 +431,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCd4(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmRpt(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -346,7 +441,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCdMode(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmCd6(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -356,7 +451,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmFm(ObservableBoolean VmFm, int fieldId) {
+    private boolean onChangeVmMode(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -366,7 +461,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCd3(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmCd2(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -376,7 +471,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmAlbum(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmUsbMusicTime(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -386,7 +481,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmUsbStatus(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmMusicName(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -396,7 +491,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmDisc(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmEqMode(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -406,7 +501,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmTime(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmMp3(ObservableBoolean VmMp3, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -416,7 +511,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmRpt(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmUsb(ObservableBoolean VmUsb, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -426,7 +521,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCd2(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmFmFrequency(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -436,7 +531,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmUsbMusicTime(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmBtTime(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -446,7 +541,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmUsb(ObservableBoolean VmUsb, int fieldId) {
+    private boolean onChangeVmCd5(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -486,7 +581,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmAsl(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmFmBand(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -496,7 +591,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeMUiParamsBlowingMode(ObservableInt MUiParamsBlowingMode, int fieldId) {
+    private boolean onChangeVmAsl(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -506,7 +601,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmCd(ObservableBoolean VmCd, int fieldId) {
+    private boolean onChangeVmArtist(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -516,7 +611,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmSt(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeVmBtConnect(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -526,7 +621,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeMUiParamsWindSpeed(ObservableInt MUiParamsWindSpeed, int fieldId) {
+    private boolean onChangeVmMute(ObservableBoolean VmMute, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -536,7 +631,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmAudioOff(ObservableBoolean VmAudioOff, int fieldId) {
+    private boolean onChangeMUiParamsBlowingMode(ObservableInt MUiParamsBlowingMode, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -546,7 +641,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeVmTrack(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmAux(ObservableBoolean VmAux, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -556,7 +651,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
-    private boolean onChangeMUiParamsLeftTempStr(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmCd(ObservableBoolean VmCd, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -566,1649 +661,1791 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding {
         return true;
     }
 
+    private boolean onChangeVmSt(ObservableField<Boolean> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 8589934592L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmCh(ObservableField<String> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 17179869184L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmCd4(ObservableField<Boolean> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 34359738368L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmShowVolume(ObservableBoolean VmShowVolume, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 68719476736L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmFm(ObservableBoolean VmFm, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 137438953472L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmBtPlay(ObservableField<Boolean> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 274877906944L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmBt(ObservableBoolean VmBt, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 549755813888L;
+        }
+        return true;
+    }
+
+    private boolean onChangeMUiParamsWindSpeed(ObservableInt MUiParamsWindSpeed, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 1099511627776L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmMediaVolume(ObservableField<String> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 2199023255552L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmAudioOff(ObservableBoolean VmAudioOff, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 4398046511104L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmTrack(ObservableField<String> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 8796093022208L;
+        }
+        return true;
+    }
+
+    private boolean onChangeMUiParamsLeftTempStr(ObservableField<String> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 17592186044416L;
+        }
+        return true;
+    }
+
+    private boolean onChangeVmBtConnectInfo(ObservableField<String> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= 35184372088832L;
+        }
+        return true;
+    }
+
     /* access modifiers changed from: protected */
-    /* JADX WARNING: Removed duplicated region for block: B:432:0x081f  */
-    /* JADX WARNING: Removed duplicated region for block: B:435:0x0877  */
-    /* JADX WARNING: Removed duplicated region for block: B:436:0x0884  */
-    /* JADX WARNING: Removed duplicated region for block: B:439:0x0893  */
-    /* JADX WARNING: Removed duplicated region for block: B:442:0x089e  */
-    /* JADX WARNING: Removed duplicated region for block: B:445:0x08a9  */
-    /* JADX WARNING: Removed duplicated region for block: B:448:0x08b4  */
-    /* JADX WARNING: Removed duplicated region for block: B:451:0x08bf  */
-    /* JADX WARNING: Removed duplicated region for block: B:454:0x08ca  */
-    /* JADX WARNING: Removed duplicated region for block: B:457:0x08d5  */
-    /* JADX WARNING: Removed duplicated region for block: B:460:0x08e0  */
-    /* JADX WARNING: Removed duplicated region for block: B:463:0x08f0  */
-    /* JADX WARNING: Removed duplicated region for block: B:466:0x0900  */
-    /* JADX WARNING: Removed duplicated region for block: B:469:0x0910  */
-    /* JADX WARNING: Removed duplicated region for block: B:46:0x01c0  */
-    /* JADX WARNING: Removed duplicated region for block: B:472:0x0920  */
-    /* JADX WARNING: Removed duplicated region for block: B:473:0x092a  */
-    /* JADX WARNING: Removed duplicated region for block: B:476:0x0939  */
-    /* JADX WARNING: Removed duplicated region for block: B:477:0x0943  */
-    /* JADX WARNING: Removed duplicated region for block: B:480:0x094d  */
-    /* JADX WARNING: Removed duplicated region for block: B:481:0x0957  */
-    /* JADX WARNING: Removed duplicated region for block: B:484:0x0961  */
-    /* JADX WARNING: Removed duplicated region for block: B:485:0x096b  */
-    /* JADX WARNING: Removed duplicated region for block: B:488:0x0975  */
-    /* JADX WARNING: Removed duplicated region for block: B:489:0x0984  */
-    /* JADX WARNING: Removed duplicated region for block: B:492:0x0990  */
-    /* JADX WARNING: Removed duplicated region for block: B:493:0x099f  */
-    /* JADX WARNING: Removed duplicated region for block: B:496:0x09b0  */
-    /* JADX WARNING: Removed duplicated region for block: B:497:0x09bf  */
-    /* JADX WARNING: Removed duplicated region for block: B:500:0x09d0  */
-    /* JADX WARNING: Removed duplicated region for block: B:501:0x09df  */
-    /* JADX WARNING: Removed duplicated region for block: B:504:0x09f0  */
-    /* JADX WARNING: Removed duplicated region for block: B:505:0x09ff  */
-    /* JADX WARNING: Removed duplicated region for block: B:508:0x0a10  */
-    /* JADX WARNING: Removed duplicated region for block: B:509:0x0a1a  */
-    /* JADX WARNING: Removed duplicated region for block: B:512:0x0a29  */
-    /* JADX WARNING: Removed duplicated region for block: B:513:0x0a33  */
-    /* JADX WARNING: Removed duplicated region for block: B:516:0x0a42  */
-    /* JADX WARNING: Removed duplicated region for block: B:517:0x0a4c  */
-    /* JADX WARNING: Removed duplicated region for block: B:520:0x0a5b  */
-    /* JADX WARNING: Removed duplicated region for block: B:521:0x0a65  */
-    /* JADX WARNING: Removed duplicated region for block: B:524:0x0a74  */
-    /* JADX WARNING: Removed duplicated region for block: B:525:0x0a7e  */
-    /* JADX WARNING: Removed duplicated region for block: B:528:0x0a8d  */
-    /* JADX WARNING: Removed duplicated region for block: B:529:0x0a97  */
-    /* JADX WARNING: Removed duplicated region for block: B:532:0x0aa6  */
-    /* JADX WARNING: Removed duplicated region for block: B:533:0x0ab0  */
-    /* JADX WARNING: Removed duplicated region for block: B:536:0x0abf  */
-    /* JADX WARNING: Removed duplicated region for block: B:537:0x0ac9  */
-    /* JADX WARNING: Removed duplicated region for block: B:540:0x0ad8  */
-    /* JADX WARNING: Removed duplicated region for block: B:541:0x0ae2  */
-    /* JADX WARNING: Removed duplicated region for block: B:544:0x0af1  */
-    /* JADX WARNING: Removed duplicated region for block: B:545:0x0afb  */
-    /* JADX WARNING: Removed duplicated region for block: B:548:0x0b0a  */
-    /* JADX WARNING: Removed duplicated region for block: B:549:0x0b14  */
-    /* JADX WARNING: Removed duplicated region for block: B:552:0x0b23  */
-    /* JADX WARNING: Removed duplicated region for block: B:553:0x0b2d  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
     public void executeBindings() {
-        /*
-            r180 = this;
-            r1 = r180
-            r2 = 0
-            r4 = 0
-            monitor-enter(r180)
-            long r6 = r1.mDirtyFlags     // Catch:{ all -> 0x0b32 }
-            r2 = r6
-            r6 = 0
-            r1.mDirtyFlags = r6     // Catch:{ all -> 0x0b32 }
-            long r8 = r1.mDirtyFlags_1     // Catch:{ all -> 0x0b32 }
-            r4 = r8
-            r1.mDirtyFlags_1 = r6     // Catch:{ all -> 0x0b32 }
-            monitor-exit(r180)     // Catch:{ all -> 0x0b32 }
-            r0 = 0
-            r8 = 0
-            r9 = 0
-            r10 = 0
-            r11 = 0
-            com.wits.ksw.launcher.view.lexus.LexusUiParams r12 = r1.mMUiParams
-            r13 = 0
-            com.wits.ksw.launcher.view.lexus.LexusOEMFMViewModel r14 = r1.mVm
-            r15 = 0
-            r16 = 0
-            r17 = 0
-            r18 = 0
-            r19 = 0
-            r20 = 0
-            r21 = 0
-            r22 = 0
-            r23 = 0
-            r24 = 0
-            r25 = 0
-            r26 = 0
-            r27 = 0
-            r28 = 0
-            r29 = 0
-            r30 = 0
-            r31 = 0
-            r32 = 0
-            r33 = 0
-            r34 = 0
-            r35 = 0
-            r36 = 0
-            r37 = 0
-            r38 = 0
-            r39 = 0
-            r40 = 0
-            r41 = 0
-            r42 = 0
-            r43 = 0
-            r44 = 0
-            r45 = 0
-            r46 = 0
-            r47 = 0
-            r48 = 0
-            r49 = 0
-            r50 = 0
-            r51 = 0
-            r52 = 0
-            r53 = 0
-            r54 = 0
-            r55 = 0
-            r56 = 0
-            r57 = 0
-            r58 = 0
-            r59 = 0
-            r60 = 0
-            r61 = 0
-            r62 = 0
-            r63 = 0
-            r64 = 0
-            r65 = 0
-            r66 = 0
-            r67 = 0
-            r68 = 0
-            r69 = 0
-            r70 = 0
-            r71 = 0
-            r72 = 0
-            r73 = 0
-            r74 = 0
-            r75 = 0
-            r76 = 0
-            r77 = 0
-            r78 = 0
-            r79 = 0
-            r80 = 0
-            r81 = 0
-            r82 = 0
-            r83 = 0
-            r84 = 0
-            r85 = 0
-            r86 = 0
-            r87 = 0
-            r88 = 0
-            r89 = 0
-            r90 = 0
-            r91 = 0
-            r92 = 0
-            r93 = 0
-            r94 = 0
-            r95 = 0
-            r96 = 0
-            r97 = 0
-            r98 = 0
-            r99 = 0
-            r100 = 0
-            r101 = 47857008640(0xb24800000, double:2.36445038818E-313)
-            long r101 = r2 & r101
-            int r101 = (r101 > r6 ? 1 : (r101 == r6 ? 0 : -1))
-            if (r101 == 0) goto L_0x016b
-            r101 = 42958061568(0xa00800000, double:2.12241024327E-313)
-            long r101 = r2 & r101
-            int r101 = (r101 > r6 ? 1 : (r101 == r6 ? 0 : -1))
-            if (r101 == 0) goto L_0x00fa
-            if (r12 == 0) goto L_0x00e4
-            android.databinding.ObservableField<java.lang.String> r6 = r12.rightTempStr
-            goto L_0x00e6
-        L_0x00e4:
-            r6 = r83
-        L_0x00e6:
-            r7 = 23
-            r1.updateRegistration((int) r7, (android.databinding.Observable) r6)
-            if (r6 == 0) goto L_0x00f8
-            java.lang.Object r7 = r6.get()
-            java.lang.String r7 = (java.lang.String) r7
-            r83 = r6
-            r31 = r7
-            goto L_0x00fa
-        L_0x00f8:
-            r83 = r6
-        L_0x00fa:
-            r6 = 43016781824(0xa04000000, double:2.1253114094E-313)
-            long r6 = r6 & r2
-            r101 = 0
-            int r6 = (r6 > r101 ? 1 : (r6 == r101 ? 0 : -1))
-            if (r6 == 0) goto L_0x011f
-            if (r12 == 0) goto L_0x010b
-            android.databinding.ObservableInt r6 = r12.blowingMode
-            goto L_0x010d
-        L_0x010b:
-            r6 = r87
-        L_0x010d:
-            r7 = 26
-            r1.updateRegistration((int) r7, (android.databinding.Observable) r6)
-            if (r6 == 0) goto L_0x011d
-            int r7 = r6.get()
-            r87 = r6
-            r49 = r7
-            goto L_0x011f
-        L_0x011d:
-            r87 = r6
-        L_0x011f:
-            r6 = 43486543872(0xa20000000, double:2.14852073835E-313)
-            long r6 = r6 & r2
-            r101 = 0
-            int r6 = (r6 > r101 ? 1 : (r6 == r101 ? 0 : -1))
-            if (r6 == 0) goto L_0x0144
-            if (r12 == 0) goto L_0x0130
-            android.databinding.ObservableInt r6 = r12.windSpeed
-            goto L_0x0132
-        L_0x0130:
-            r6 = r96
-        L_0x0132:
-            r7 = 29
-            r1.updateRegistration((int) r7, (android.databinding.Observable) r6)
-            if (r6 == 0) goto L_0x0142
-            int r7 = r6.get()
-            r96 = r6
-            r37 = r7
-            goto L_0x0144
-        L_0x0142:
-            r96 = r6
-        L_0x0144:
-            r6 = 47244640256(0xb00000000, double:2.33419537006E-313)
-            long r6 = r6 & r2
-            r101 = 0
-            int r6 = (r6 > r101 ? 1 : (r6 == r101 ? 0 : -1))
-            if (r6 == 0) goto L_0x016b
-            if (r12 == 0) goto L_0x0155
-            android.databinding.ObservableField<java.lang.String> r6 = r12.leftTempStr
-            goto L_0x0157
-        L_0x0155:
-            r6 = r100
-        L_0x0157:
-            r7 = 32
-            r1.updateRegistration((int) r7, (android.databinding.Observable) r6)
-            if (r6 == 0) goto L_0x0166
-            java.lang.Object r7 = r6.get()
-            r82 = r7
-            java.lang.String r82 = (java.lang.String) r82
-        L_0x0166:
-            r105 = r0
-            r100 = r6
-            goto L_0x016d
-        L_0x016b:
-            r105 = r0
-        L_0x016d:
-            r106 = r8
-            r0 = r31
-            r8 = r37
-            r7 = r49
-            r6 = r82
-            r101 = 55222206463(0xcdb7fffff, double:2.7283395101E-313)
-            long r101 = r2 & r101
-            r103 = 0
-            int r31 = (r101 > r103 ? 1 : (r101 == r103 ? 0 : -1))
-            r101 = 51539869696(0xc00040000, double:2.5464079008E-313)
-            r107 = 52613349376(0xc40000000, double:2.59944484393E-313)
-            r109 = 51539611648(0xc00001000, double:2.54639515153E-313)
-            r111 = 51673825280(0xc08000000, double:2.553026186E-313)
-            r113 = 51539607616(0xc00000040, double:2.5463949523E-313)
-            r115 = 51539608576(0xc00000400, double:2.54639499975E-313)
-            r117 = 51539615744(0xc00002000, double:2.5463953539E-313)
-            r119 = 51540131840(0xc00080000, double:2.54642085243E-313)
-            r121 = 51543801856(0xc00400000, double:2.5466021753E-313)
-            r123 = 51539607556(0xc00000004, double:2.54639494936E-313)
-            r125 = 51573161984(0xc02000000, double:2.54805275837E-313)
-            r127 = 51539607553(0xc00000001, double:2.5463949492E-313)
-            if (r31 == 0) goto L_0x081f
-            long r129 = r2 & r127
-            r103 = 0
-            int r31 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            r131 = r9
-            if (r31 == 0) goto L_0x0204
-            if (r14 == 0) goto L_0x01cf
-            android.databinding.ObservableField<java.lang.Boolean> r9 = r14.rand
-            goto L_0x01d1
-        L_0x01cf:
-            r9 = r105
-        L_0x01d1:
-            r132 = r10
-            r10 = 0
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x01e1
-            java.lang.Object r31 = r9.get()
-            r16 = r31
-            java.lang.Boolean r16 = (java.lang.Boolean) r16
-        L_0x01e1:
-            boolean r13 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r16)
-            long r129 = r2 & r127
-            r103 = 0
-            int r31 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r31 == 0) goto L_0x01f8
-            if (r13 == 0) goto L_0x01f4
-            r129 = 2
-            long r4 = r4 | r129
-            goto L_0x01f8
-        L_0x01f4:
-            r129 = 1
-            long r4 = r4 | r129
-        L_0x01f8:
-            if (r13 == 0) goto L_0x01fd
-            r31 = r10
-            goto L_0x01ff
-        L_0x01fd:
-            r31 = 8
-        L_0x01ff:
-            r105 = r9
-            r93 = r31
-            goto L_0x0207
-        L_0x0204:
-            r132 = r10
-            r10 = 0
-        L_0x0207:
-            r129 = 51539607554(0xc00000002, double:2.54639494926E-313)
-            long r129 = r2 & r129
-            r103 = 0
-            int r9 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x0226
-            if (r14 == 0) goto L_0x0218
-            android.databinding.ObservableField<java.lang.String> r11 = r14.index
-        L_0x0218:
-            r9 = 1
-            r1.updateRegistration((int) r9, (android.databinding.Observable) r11)
-            if (r11 == 0) goto L_0x0226
-            java.lang.Object r9 = r11.get()
-            java.lang.String r9 = (java.lang.String) r9
-            r91 = r9
-        L_0x0226:
-            long r129 = r2 & r123
-            r103 = 0
-            int r9 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x0267
-            if (r14 == 0) goto L_0x0233
-            android.databinding.ObservableField<java.lang.Boolean> r9 = r14.cd6
-            goto L_0x0235
-        L_0x0233:
-            r9 = r19
-        L_0x0235:
-            r10 = 2
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x0243
-            java.lang.Object r10 = r9.get()
-            java.lang.Boolean r10 = (java.lang.Boolean) r10
-            r106 = r10
-        L_0x0243:
-            boolean r10 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r106)
-            long r129 = r2 & r123
-            r103 = 0
-            int r19 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r19 == 0) goto L_0x025a
-            if (r10 == 0) goto L_0x0256
-            r129 = 36028797018963968(0x80000000000000, double:2.8480945388892178E-306)
-            long r2 = r2 | r129
-            goto L_0x025a
-        L_0x0256:
-            r129 = 18014398509481984(0x40000000000000, double:1.7800590868057611E-307)
-            long r2 = r2 | r129
-        L_0x025a:
-            if (r10 == 0) goto L_0x025f
-            r19 = 0
-            goto L_0x0261
-        L_0x025f:
-            r19 = 8
-        L_0x0261:
-            r68 = r10
-            r52 = r19
-            r19 = r9
-        L_0x0267:
-            r9 = 51539607560(0xc00000008, double:2.54639494955E-313)
-            long r9 = r9 & r2
-            r103 = 0
-            int r9 = (r9 > r103 ? 1 : (r9 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x028d
-            if (r14 == 0) goto L_0x0278
-            android.databinding.ObservableField<java.lang.String> r9 = r14.mode
-            goto L_0x027a
-        L_0x0278:
-            r9 = r20
-        L_0x027a:
-            r10 = 3
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x028b
-            java.lang.Object r10 = r9.get()
-            java.lang.String r10 = (java.lang.String) r10
-            r20 = r9
-            r81 = r10
-            goto L_0x028d
-        L_0x028b:
-            r20 = r9
-        L_0x028d:
-            r9 = 51539607568(0xc00000010, double:2.54639494995E-313)
-            long r9 = r9 & r2
-            r103 = 0
-            int r9 = (r9 > r103 ? 1 : (r9 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x02b3
-            if (r14 == 0) goto L_0x029e
-            android.databinding.ObservableField<java.lang.String> r9 = r14.musicName
-            goto L_0x02a0
-        L_0x029e:
-            r9 = r23
-        L_0x02a0:
-            r10 = 4
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x02b1
-            java.lang.Object r10 = r9.get()
-            java.lang.String r10 = (java.lang.String) r10
-            r23 = r9
-            r28 = r10
-            goto L_0x02b3
-        L_0x02b1:
-            r23 = r9
-        L_0x02b3:
-            r9 = 51539607584(0xc00000020, double:2.54639495074E-313)
-            long r9 = r9 & r2
-            r103 = 0
-            int r9 = (r9 > r103 ? 1 : (r9 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x02d9
-            if (r14 == 0) goto L_0x02c4
-            android.databinding.ObservableField<java.lang.String> r9 = r14.fmFrequency
-            goto L_0x02c6
-        L_0x02c4:
-            r9 = r26
-        L_0x02c6:
-            r10 = 5
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x02d7
-            java.lang.Object r10 = r9.get()
-            java.lang.String r10 = (java.lang.String) r10
-            r26 = r9
-            r48 = r10
-            goto L_0x02d9
-        L_0x02d7:
-            r26 = r9
-        L_0x02d9:
-            long r9 = r2 & r113
-            r103 = 0
-            int r9 = (r9 > r103 ? 1 : (r9 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x0320
-            if (r14 == 0) goto L_0x02e6
-            android.databinding.ObservableField<java.lang.Boolean> r9 = r14.cd5
-            goto L_0x02e8
-        L_0x02e6:
-            r9 = r27
-        L_0x02e8:
-            r10 = 6
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x02f6
-            java.lang.Object r10 = r9.get()
-            r21 = r10
-            java.lang.Boolean r21 = (java.lang.Boolean) r21
-        L_0x02f6:
-            boolean r10 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r21)
-            long r129 = r2 & r113
-            r103 = 0
-            int r27 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r27 == 0) goto L_0x0313
-            if (r10 == 0) goto L_0x030c
-            r129 = 8796093022208(0x80000000000, double:4.345847379897E-311)
-            long r2 = r2 | r129
-            goto L_0x0313
-        L_0x030c:
-            r129 = 4398046511104(0x40000000000, double:2.1729236899484E-311)
-            long r2 = r2 | r129
-        L_0x0313:
-            if (r10 == 0) goto L_0x0318
-            r27 = 0
-            goto L_0x031a
-        L_0x0318:
-            r27 = 8
-        L_0x031a:
-            r17 = r27
-            r27 = r9
-            r63 = r10
-        L_0x0320:
-            r9 = 51539607680(0xc00000080, double:2.5463949555E-313)
-            long r9 = r9 & r2
-            r103 = 0
-            int r9 = (r9 > r103 ? 1 : (r9 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x0346
-            if (r14 == 0) goto L_0x0331
-            android.databinding.ObservableField<java.lang.String> r9 = r14.fmBand
-            goto L_0x0333
-        L_0x0331:
-            r9 = r32
-        L_0x0333:
-            r10 = 7
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x0344
-            java.lang.Object r10 = r9.get()
-            java.lang.String r10 = (java.lang.String) r10
-            r32 = r9
-            r30 = r10
-            goto L_0x0346
-        L_0x0344:
-            r32 = r9
-        L_0x0346:
-            r9 = 51539607808(0xc00000100, double:2.5463949618E-313)
-            long r9 = r9 & r2
-            r103 = 0
-            int r9 = (r9 > r103 ? 1 : (r9 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x036e
-            if (r14 == 0) goto L_0x0357
-            android.databinding.ObservableField<java.lang.String> r9 = r14.artist
-            goto L_0x0359
-        L_0x0357:
-            r9 = r36
-        L_0x0359:
-            r10 = 8
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x036b
-            java.lang.Object r31 = r9.get()
-            java.lang.String r31 = (java.lang.String) r31
-            r36 = r9
-            r62 = r31
-            goto L_0x0370
-        L_0x036b:
-            r36 = r9
-            goto L_0x0370
-        L_0x036e:
-            r10 = 8
-        L_0x0370:
-            r129 = 51539608064(0xc00000200, double:2.54639497445E-313)
-            long r129 = r2 & r129
-            r103 = 0
-            int r9 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x0398
-            if (r14 == 0) goto L_0x0382
-            android.databinding.ObservableField<java.lang.String> r9 = r14.ch
-            goto L_0x0384
-        L_0x0382:
-            r9 = r40
-        L_0x0384:
-            r10 = 9
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x0396
-            java.lang.Object r10 = r9.get()
-            java.lang.String r10 = (java.lang.String) r10
-            r40 = r9
-            r55 = r10
-            goto L_0x0398
-        L_0x0396:
-            r40 = r9
-        L_0x0398:
-            long r9 = r2 & r115
-            r103 = 0
-            int r9 = (r9 > r103 ? 1 : (r9 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x03e1
-            if (r14 == 0) goto L_0x03a5
-            android.databinding.ObservableField<java.lang.Boolean> r9 = r14.cd4
-            goto L_0x03a7
-        L_0x03a5:
-            r9 = r42
-        L_0x03a7:
-            r10 = 10
-            r1.updateRegistration((int) r10, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x03b6
-            java.lang.Object r10 = r9.get()
-            r73 = r10
-            java.lang.Boolean r73 = (java.lang.Boolean) r73
-        L_0x03b6:
-            boolean r10 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r73)
-            long r129 = r2 & r115
-            r103 = 0
-            int r31 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r31 == 0) goto L_0x03d3
-            if (r10 == 0) goto L_0x03cc
-            r129 = 549755813888(0x8000000000, double:2.716154612436E-312)
-            long r2 = r2 | r129
-            goto L_0x03d3
-        L_0x03cc:
-            r129 = 274877906944(0x4000000000, double:1.358077306218E-312)
-            long r2 = r2 | r129
-        L_0x03d3:
-            if (r10 == 0) goto L_0x03d8
-            r31 = 0
-            goto L_0x03da
-        L_0x03d8:
-            r31 = 8
-        L_0x03da:
-            r42 = r9
-            r33 = r10
-            r10 = r31
-            goto L_0x03e3
-        L_0x03e1:
-            r10 = r132
-        L_0x03e3:
-            r129 = 51539609600(0xc00000800, double:2.54639505034E-313)
-            long r129 = r2 & r129
-            r103 = 0
-            int r9 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x040b
-            if (r14 == 0) goto L_0x03f5
-            android.databinding.ObservableField<java.lang.String> r9 = r14.cdMode
-            goto L_0x03f7
-        L_0x03f5:
-            r9 = r44
-        L_0x03f7:
-            r134 = r4
-            r4 = 11
-            r1.updateRegistration((int) r4, (android.databinding.Observable) r9)
-            if (r9 == 0) goto L_0x0408
-            java.lang.Object r4 = r9.get()
-            java.lang.String r4 = (java.lang.String) r4
-            r35 = r4
-        L_0x0408:
-            r44 = r9
-            goto L_0x040d
-        L_0x040b:
-            r134 = r4
-        L_0x040d:
-            long r4 = r2 & r109
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x0444
-            if (r14 == 0) goto L_0x041a
-            android.databinding.ObservableBoolean r4 = r14.fm
-            goto L_0x041c
-        L_0x041a:
-            r4 = r46
-        L_0x041c:
-            r5 = 12
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0427
-            boolean r39 = r4.get()
-        L_0x0427:
-            long r129 = r2 & r109
-            r103 = 0
-            int r5 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r5 == 0) goto L_0x043a
-            if (r39 == 0) goto L_0x0436
-            r129 = 576460752303423488(0x800000000000000, double:3.785766995733679E-270)
-            long r2 = r2 | r129
-            goto L_0x043a
-        L_0x0436:
-            r129 = 288230376151711744(0x400000000000000, double:2.0522684006491881E-289)
-            long r2 = r2 | r129
-        L_0x043a:
-            if (r39 == 0) goto L_0x043e
-            r5 = 0
-            goto L_0x0440
-        L_0x043e:
-            r5 = 8
-        L_0x0440:
-            r46 = r4
-            r58 = r5
-        L_0x0444:
-            long r4 = r2 & r117
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x048a
-            if (r14 == 0) goto L_0x0451
-            android.databinding.ObservableField<java.lang.Boolean> r4 = r14.cd3
-            goto L_0x0453
-        L_0x0451:
-            r4 = r53
-        L_0x0453:
-            r5 = 13
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0462
-            java.lang.Object r5 = r4.get()
-            r76 = r5
-            java.lang.Boolean r76 = (java.lang.Boolean) r76
-        L_0x0462:
-            boolean r5 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r76)
-            long r129 = r2 & r117
-            r103 = 0
-            int r9 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r9 == 0) goto L_0x047f
-            if (r5 == 0) goto L_0x0478
-            r129 = 137438953472(0x2000000000, double:6.7903865311E-313)
-            long r2 = r2 | r129
-            goto L_0x047f
-        L_0x0478:
-            r129 = 68719476736(0x1000000000, double:3.39519326554E-313)
-            long r2 = r2 | r129
-        L_0x047f:
-            if (r5 == 0) goto L_0x0483
-            r9 = 0
-            goto L_0x0485
-        L_0x0483:
-            r9 = 8
-        L_0x0485:
-            r53 = r4
-            r51 = r5
-            goto L_0x048c
-        L_0x048a:
-            r9 = r131
-        L_0x048c:
-            r4 = 51539623936(0xc00004000, double:2.54639575864E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x04b3
-            if (r14 == 0) goto L_0x049d
-            android.databinding.ObservableField<java.lang.String> r4 = r14.album
-            goto L_0x049f
-        L_0x049d:
-            r4 = r54
-        L_0x049f:
-            r5 = 14
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x04b1
-            java.lang.Object r5 = r4.get()
-            java.lang.String r5 = (java.lang.String) r5
-            r54 = r4
-            r97 = r5
-            goto L_0x04b3
-        L_0x04b1:
-            r54 = r4
-        L_0x04b3:
-            r4 = 51539640320(0xc00008000, double:2.5463965681E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x04da
-            if (r14 == 0) goto L_0x04c4
-            android.databinding.ObservableField<java.lang.String> r4 = r14.usbStatus
-            goto L_0x04c6
-        L_0x04c4:
-            r4 = r57
-        L_0x04c6:
-            r5 = 15
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x04d8
-            java.lang.Object r5 = r4.get()
-            java.lang.String r5 = (java.lang.String) r5
-            r57 = r4
-            r70 = r5
-            goto L_0x04da
-        L_0x04d8:
-            r57 = r4
-        L_0x04da:
-            r4 = 51539673088(0xc00010000, double:2.54639818707E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x0501
-            if (r14 == 0) goto L_0x04eb
-            android.databinding.ObservableField<java.lang.String> r4 = r14.disc
-            goto L_0x04ed
-        L_0x04eb:
-            r4 = r60
-        L_0x04ed:
-            r5 = 16
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x04ff
-            java.lang.Object r5 = r4.get()
-            java.lang.String r5 = (java.lang.String) r5
-            r60 = r4
-            r61 = r5
-            goto L_0x0501
-        L_0x04ff:
-            r60 = r4
-        L_0x0501:
-            r4 = 51539738624(0xc00020000, double:2.546401425E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x0528
-            if (r14 == 0) goto L_0x0512
-            android.databinding.ObservableField<java.lang.String> r4 = r14.time
-            goto L_0x0514
-        L_0x0512:
-            r4 = r65
-        L_0x0514:
-            r5 = 17
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0526
-            java.lang.Object r5 = r4.get()
-            java.lang.String r5 = (java.lang.String) r5
-            r65 = r4
-            r47 = r5
-            goto L_0x0528
-        L_0x0526:
-            r65 = r4
-        L_0x0528:
-            long r4 = r2 & r101
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x056a
-            if (r14 == 0) goto L_0x0535
-            android.databinding.ObservableField<java.lang.Boolean> r4 = r14.rpt
-            goto L_0x0537
-        L_0x0535:
-            r4 = r66
-        L_0x0537:
-            r5 = 18
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0546
-            java.lang.Object r5 = r4.get()
-            r94 = r5
-            java.lang.Boolean r94 = (java.lang.Boolean) r94
-        L_0x0546:
-            boolean r5 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r94)
-            long r129 = r2 & r101
-            r103 = 0
-            int r25 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r25 == 0) goto L_0x055d
-            if (r5 == 0) goto L_0x0559
-            r129 = 2251799813685248(0x8000000000000, double:1.1125369292536007E-308)
-            long r2 = r2 | r129
-            goto L_0x055d
-        L_0x0559:
-            r129 = 1125899906842624(0x4000000000000, double:5.562684646268003E-309)
-            long r2 = r2 | r129
-        L_0x055d:
-            if (r5 == 0) goto L_0x0562
-            r25 = 0
-            goto L_0x0564
-        L_0x0562:
-            r25 = 8
-        L_0x0564:
-            r66 = r4
-            r34 = r25
-            r25 = r5
-        L_0x056a:
-            long r4 = r2 & r119
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x05b2
-            if (r14 == 0) goto L_0x0577
-            android.databinding.ObservableField<java.lang.Boolean> r4 = r14.cd2
-            goto L_0x0579
-        L_0x0577:
-            r4 = r69
-        L_0x0579:
-            r5 = 19
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0588
-            java.lang.Object r5 = r4.get()
-            r72 = r5
-            java.lang.Boolean r72 = (java.lang.Boolean) r72
-        L_0x0588:
-            boolean r5 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r72)
-            long r129 = r2 & r119
-            r103 = 0
-            int r31 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r31 == 0) goto L_0x05a5
-            if (r5 == 0) goto L_0x059e
-            r129 = 140737488355328(0x800000000000, double:6.953355807835E-310)
-            long r2 = r2 | r129
-            goto L_0x05a5
-        L_0x059e:
-            r129 = 70368744177664(0x400000000000, double:3.4766779039175E-310)
-            long r2 = r2 | r129
-        L_0x05a5:
-            if (r5 == 0) goto L_0x05aa
-            r31 = 0
-            goto L_0x05ac
-        L_0x05aa:
-            r31 = 8
-        L_0x05ac:
-            r24 = r31
-            r69 = r4
-            r45 = r5
-        L_0x05b2:
-            r4 = 51540656128(0xc00100000, double:2.5464467557E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x05d9
-            if (r14 == 0) goto L_0x05c3
-            android.databinding.ObservableField<java.lang.String> r4 = r14.usbMusicTime
-            goto L_0x05c5
-        L_0x05c3:
-            r4 = r71
-        L_0x05c5:
-            r5 = 20
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x05d7
-            java.lang.Object r5 = r4.get()
-            java.lang.String r5 = (java.lang.String) r5
-            r71 = r4
-            r59 = r5
-            goto L_0x05d9
-        L_0x05d7:
-            r71 = r4
-        L_0x05d9:
-            r4 = 51541704704(0xc00200000, double:2.54649856223E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x0619
-            if (r14 == 0) goto L_0x05ea
-            android.databinding.ObservableBoolean r4 = r14.usb
-            goto L_0x05ec
-        L_0x05ea:
-            r4 = r78
-        L_0x05ec:
-            r5 = 21
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x05f7
-            boolean r67 = r4.get()
-        L_0x05f7:
-            r129 = 51541704704(0xc00200000, double:2.54649856223E-313)
-            long r129 = r2 & r129
-            r103 = 0
-            int r5 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r5 == 0) goto L_0x060f
-            if (r67 == 0) goto L_0x060b
-            r129 = 144115188075855872(0x200000000000000, double:4.7783097267364807E-299)
-            long r2 = r2 | r129
-            goto L_0x060f
-        L_0x060b:
-            r129 = 72057594037927936(0x100000000000000, double:7.2911220195563975E-304)
-            long r2 = r2 | r129
-        L_0x060f:
-            if (r67 == 0) goto L_0x0613
-            r5 = 0
-            goto L_0x0615
-        L_0x0613:
-            r5 = 8
-        L_0x0615:
-            r78 = r4
-            r56 = r5
-        L_0x0619:
-            long r4 = r2 & r121
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x0661
-            if (r14 == 0) goto L_0x0626
-            android.databinding.ObservableField<java.lang.Boolean> r4 = r14.cd1
-            goto L_0x0628
-        L_0x0626:
-            r4 = r79
-        L_0x0628:
-            r5 = 22
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0637
-            java.lang.Object r5 = r4.get()
-            r88 = r5
-            java.lang.Boolean r88 = (java.lang.Boolean) r88
-        L_0x0637:
-            boolean r5 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r88)
-            long r129 = r2 & r121
-            r103 = 0
-            int r31 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r31 == 0) goto L_0x0654
-            if (r5 == 0) goto L_0x064d
-            r129 = 35184372088832(0x200000000000, double:1.73833895195875E-310)
-            long r2 = r2 | r129
-            goto L_0x0654
-        L_0x064d:
-            r129 = 17592186044416(0x100000000000, double:8.6916947597938E-311)
-            long r2 = r2 | r129
-        L_0x0654:
-            if (r5 == 0) goto L_0x0659
-            r31 = 0
-            goto L_0x065b
-        L_0x0659:
-            r31 = 8
-        L_0x065b:
-            r18 = r31
-            r79 = r4
-            r41 = r5
-        L_0x0661:
-            r4 = 51556384768(0xc01000000, double:2.54722385376E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x06ac
-            if (r14 == 0) goto L_0x0672
-            android.databinding.ObservableField<java.lang.Boolean> r4 = r14.scan
-            goto L_0x0674
-        L_0x0672:
-            r4 = r84
-        L_0x0674:
-            r5 = 24
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0683
-            java.lang.Object r5 = r4.get()
-            r74 = r5
-            java.lang.Boolean r74 = (java.lang.Boolean) r74
-        L_0x0683:
-            boolean r5 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r74)
-            r129 = 51556384768(0xc01000000, double:2.54722385376E-313)
-            long r129 = r2 & r129
-            r103 = 0
-            int r31 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r31 == 0) goto L_0x069f
-            if (r5 == 0) goto L_0x069b
-            r129 = 9007199254740992(0x20000000000000, double:4.450147717014403E-308)
-            long r2 = r2 | r129
-            goto L_0x069f
-        L_0x069b:
-            r129 = 4503599627370496(0x10000000000000, double:2.2250738585072014E-308)
-            long r2 = r2 | r129
-        L_0x069f:
-            if (r5 == 0) goto L_0x06a4
-            r31 = 0
-            goto L_0x06a6
-        L_0x06a4:
-            r31 = 8
-        L_0x06a6:
-            r84 = r4
-            r43 = r5
-            r38 = r31
-        L_0x06ac:
-            long r4 = r2 & r125
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x06ee
-            if (r14 == 0) goto L_0x06b9
-            android.databinding.ObservableField<java.lang.Boolean> r4 = r14.asl
-            goto L_0x06bb
-        L_0x06b9:
-            r4 = r85
-        L_0x06bb:
-            r5 = 25
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x06ca
-            java.lang.Object r5 = r4.get()
-            r75 = r5
-            java.lang.Boolean r75 = (java.lang.Boolean) r75
-        L_0x06ca:
-            boolean r5 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r75)
-            long r129 = r2 & r125
-            r103 = 0
-            int r31 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r31 == 0) goto L_0x06e1
-            if (r5 == 0) goto L_0x06dd
-            r129 = -9223372036854775808
-            long r2 = r2 | r129
-            goto L_0x06e1
-        L_0x06dd:
-            r129 = 4611686018427387904(0x4000000000000000, double:2.0)
-            long r2 = r2 | r129
-        L_0x06e1:
-            if (r5 == 0) goto L_0x06e6
-            r31 = 0
-            goto L_0x06e8
-        L_0x06e6:
-            r31 = 8
-        L_0x06e8:
-            r85 = r4
-            r80 = r5
-            r86 = r31
-        L_0x06ee:
-            long r4 = r2 & r111
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x0725
-            if (r14 == 0) goto L_0x06fb
-            android.databinding.ObservableBoolean r4 = r14.cd
-            goto L_0x06fd
-        L_0x06fb:
-            r4 = r90
-        L_0x06fd:
-            r5 = 27
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0708
-            boolean r89 = r4.get()
-        L_0x0708:
-            long r129 = r2 & r111
-            r103 = 0
-            int r5 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r5 == 0) goto L_0x071b
-            if (r89 == 0) goto L_0x0717
-            r129 = 2305843009213693952(0x2000000000000000, double:1.4916681462400413E-154)
-            long r2 = r2 | r129
-            goto L_0x071b
-        L_0x0717:
-            r129 = 1152921504606846976(0x1000000000000000, double:1.2882297539194267E-231)
-            long r2 = r2 | r129
-        L_0x071b:
-            if (r89 == 0) goto L_0x071f
-            r5 = 0
-            goto L_0x0721
-        L_0x071f:
-            r5 = 8
-        L_0x0721:
-            r90 = r4
-            r64 = r5
-        L_0x0725:
-            r4 = 51808043008(0xc10000000, double:2.55965742285E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x0770
-            if (r14 == 0) goto L_0x0736
-            android.databinding.ObservableField<java.lang.Boolean> r4 = r14.st
-            goto L_0x0738
-        L_0x0736:
-            r4 = r92
-        L_0x0738:
-            r5 = 28
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x0747
-            java.lang.Object r5 = r4.get()
-            r77 = r5
-            java.lang.Boolean r77 = (java.lang.Boolean) r77
-        L_0x0747:
-            boolean r5 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r77)
-            r49 = 51808043008(0xc10000000, double:2.55965742285E-313)
-            long r49 = r2 & r49
-            r103 = 0
-            int r31 = (r49 > r103 ? 1 : (r49 == r103 ? 0 : -1))
-            if (r31 == 0) goto L_0x0763
-            if (r5 == 0) goto L_0x075f
-            r49 = 562949953421312(0x2000000000000, double:2.781342323134002E-309)
-            long r2 = r2 | r49
-            goto L_0x0763
-        L_0x075f:
-            r49 = 281474976710656(0x1000000000000, double:1.390671161567E-309)
-            long r2 = r2 | r49
-        L_0x0763:
-            if (r5 == 0) goto L_0x0768
-            r31 = 0
-            goto L_0x076a
-        L_0x0768:
-            r31 = 8
-        L_0x076a:
-            r29 = r31
-            r92 = r4
-            r50 = r5
-        L_0x0770:
-            long r4 = r2 & r107
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x07af
-            if (r14 == 0) goto L_0x077d
-            android.databinding.ObservableBoolean r4 = r14.audioOff
-            goto L_0x077f
-        L_0x077d:
-            r4 = r98
-        L_0x077f:
-            r5 = 30
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x078a
-            boolean r22 = r4.get()
-        L_0x078a:
-            long r129 = r2 & r107
-            r103 = 0
-            int r5 = (r129 > r103 ? 1 : (r129 == r103 ? 0 : -1))
-            if (r5 == 0) goto L_0x07a3
-            if (r22 == 0) goto L_0x079c
-            r129 = 2199023255552(0x20000000000, double:1.0864618449742E-311)
-            long r2 = r2 | r129
-            goto L_0x07a3
-        L_0x079c:
-            r129 = 1099511627776(0x10000000000, double:5.43230922487E-312)
-            long r2 = r2 | r129
-        L_0x07a3:
-            if (r22 == 0) goto L_0x07a8
-            r133 = 0
-            goto L_0x07aa
-        L_0x07a8:
-            r133 = 8
-        L_0x07aa:
-            r5 = r133
-            r98 = r4
-            r15 = r5
-        L_0x07af:
-            r4 = 53687091200(0xc80000000, double:2.6524947387E-313)
-            long r4 = r4 & r2
-            r103 = 0
-            int r4 = (r4 > r103 ? 1 : (r4 == r103 ? 0 : -1))
-            if (r4 == 0) goto L_0x07d6
-            if (r14 == 0) goto L_0x07c0
-            android.databinding.ObservableField<java.lang.String> r4 = r14.track
-            goto L_0x07c2
-        L_0x07c0:
-            r4 = r99
-        L_0x07c2:
-            r5 = 31
-            r1.updateRegistration((int) r5, (android.databinding.Observable) r4)
-            if (r4 == 0) goto L_0x07d1
-            java.lang.Object r5 = r4.get()
-            r95 = r5
-            java.lang.String r95 = (java.lang.String) r95
-        L_0x07d1:
-            r139 = r0
-            r99 = r4
-            goto L_0x07d8
-        L_0x07d6:
-            r139 = r0
-        L_0x07d8:
-            r140 = r6
-            r138 = r8
-            r136 = r12
-            r137 = r14
-            r143 = r15
-            r5 = r18
-            r156 = r28
-            r148 = r29
-            r0 = r30
-            r145 = r34
-            r14 = r35
-            r147 = r38
-            r150 = r47
-            r141 = r48
-            r15 = r52
-            r6 = r55
-            r153 = r56
-            r142 = r58
-            r157 = r59
-            r8 = r61
-            r155 = r62
-            r12 = r64
-            r146 = r70
-            r149 = r81
-            r4 = r86
-            r152 = r91
-            r144 = r93
-            r151 = r95
-            r154 = r97
-            r18 = r13
-            r13 = r17
-            r17 = r16
-            r16 = r11
-            r11 = r10
-            r10 = r9
-            r9 = r24
-            goto L_0x086f
-        L_0x081f:
-            r131 = r9
-            r132 = r10
-            r139 = r0
-            r134 = r4
-            r140 = r6
-            r138 = r8
-            r136 = r12
-            r137 = r14
-            r143 = r15
-            r5 = r18
-            r9 = r24
-            r156 = r28
-            r148 = r29
-            r0 = r30
-            r145 = r34
-            r14 = r35
-            r147 = r38
-            r150 = r47
-            r141 = r48
-            r15 = r52
-            r6 = r55
-            r153 = r56
-            r142 = r58
-            r157 = r59
-            r8 = r61
-            r155 = r62
-            r12 = r64
-            r146 = r70
-            r149 = r81
-            r4 = r86
-            r152 = r91
-            r144 = r93
-            r151 = r95
-            r154 = r97
-            r10 = r131
-            r18 = r13
-            r13 = r17
-            r17 = r16
-            r16 = r11
-            r11 = r132
-        L_0x086f:
-            long r28 = r2 & r125
-            r30 = 0
-            int r24 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r24 == 0) goto L_0x0884
-            r158 = r6
-            android.widget.TextView r6 = r1.asl
-            r6.setVisibility(r4)
-            android.widget.TextView r6 = r1.usbAsl
-            r6.setVisibility(r4)
-            goto L_0x0886
-        L_0x0884:
-            r158 = r6
-        L_0x0886:
-            r28 = 43016781824(0xa04000000, double:2.1253114094E-313)
-            long r28 = r2 & r28
-            r30 = 0
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0898
-            android.widget.ImageView r6 = r1.blowMode
-            r6.setImageLevel(r7)
-        L_0x0898:
-            long r28 = r2 & r121
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08a3
-            android.widget.ImageView r6 = r1.cd1
-            r6.setVisibility(r5)
-        L_0x08a3:
-            long r28 = r2 & r119
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08ae
-            android.widget.ImageView r6 = r1.cd2
-            r6.setVisibility(r9)
-        L_0x08ae:
-            long r28 = r2 & r117
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08b9
-            android.widget.ImageView r6 = r1.cd3
-            r6.setVisibility(r10)
-        L_0x08b9:
-            long r28 = r2 & r115
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08c4
-            android.widget.ImageView r6 = r1.cd4
-            r6.setVisibility(r11)
-        L_0x08c4:
-            long r28 = r2 & r113
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08cf
-            android.widget.ImageView r6 = r1.cd5
-            r6.setVisibility(r13)
-        L_0x08cf:
-            long r28 = r2 & r123
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08da
-            android.widget.ImageView r6 = r1.cd6
-            r6.setVisibility(r15)
-        L_0x08da:
-            long r28 = r2 & r111
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08e5
-            android.widget.RelativeLayout r6 = r1.cdLayout
-            r6.setVisibility(r12)
-        L_0x08e5:
-            r28 = 51539609600(0xc00000800, double:2.54639505034E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x08f5
-            android.widget.TextView r6 = r1.discMode
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r14)
-        L_0x08f5:
-            r28 = 51539673088(0xc00010000, double:2.54639818707E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0905
-            android.widget.TextView r6 = r1.discNum
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r8)
-        L_0x0905:
-            r28 = 51539607680(0xc00000080, double:2.5463949555E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0915
-            android.widget.TextView r6 = r1.fmBand
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-        L_0x0915:
-            r28 = 51539608064(0xc00000200, double:2.54639497445E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x092a
-            android.widget.TextView r6 = r1.fmCh
-            r159 = r0
-            r0 = r158
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x092e
-        L_0x092a:
-            r159 = r0
-            r0 = r158
-        L_0x092e:
-            r28 = 51539607584(0xc00000020, double:2.54639495074E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0943
-            android.widget.TextView r6 = r1.fmFrequency
-            r160 = r0
-            r0 = r141
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0947
-        L_0x0943:
-            r160 = r0
-            r0 = r141
-        L_0x0947:
-            long r28 = r2 & r109
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0957
-            android.widget.RelativeLayout r6 = r1.fmLayout
-            r161 = r0
-            r0 = r142
-            r6.setVisibility(r0)
-            goto L_0x095b
-        L_0x0957:
-            r161 = r0
-            r0 = r142
-        L_0x095b:
-            long r28 = r2 & r107
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x096b
-            android.widget.TextView r6 = r1.mboundView1
-            r162 = r0
-            r0 = r143
-            r6.setVisibility(r0)
-            goto L_0x096f
-        L_0x096b:
-            r162 = r0
-            r0 = r143
-        L_0x096f:
-            long r28 = r2 & r127
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0984
-            android.widget.TextView r6 = r1.mboundView14
-            r163 = r0
-            r0 = r144
-            r6.setVisibility(r0)
-            android.widget.TextView r6 = r1.mboundView30
-            r6.setVisibility(r0)
-            goto L_0x0988
-        L_0x0984:
-            r163 = r0
-            r0 = r144
-        L_0x0988:
-            long r28 = r2 & r101
-            r30 = 0
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x099f
-            android.widget.TextView r6 = r1.mboundView15
-            r164 = r0
-            r0 = r145
-            r6.setVisibility(r0)
-            android.widget.TextView r6 = r1.mboundView31
-            r6.setVisibility(r0)
-            goto L_0x09a3
-        L_0x099f:
-            r164 = r0
-            r0 = r145
-        L_0x09a3:
-            r28 = 51539640320(0xc00008000, double:2.5463965681E-313)
-            long r28 = r2 & r28
-            r30 = 0
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x09bf
-            android.widget.TextView r6 = r1.mboundView16
-            r165 = r0
-            r0 = r146
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            android.widget.TextView r6 = r1.mboundView32
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x09c3
-        L_0x09bf:
-            r165 = r0
-            r0 = r146
-        L_0x09c3:
-            r28 = 51556384768(0xc01000000, double:2.54722385376E-313)
-            long r28 = r2 & r28
-            r30 = 0
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x09df
-            android.widget.TextView r6 = r1.mboundView17
-            r166 = r0
-            r0 = r147
-            r6.setVisibility(r0)
-            android.widget.TextView r6 = r1.mboundView33
-            r6.setVisibility(r0)
-            goto L_0x09e3
-        L_0x09df:
-            r166 = r0
-            r0 = r147
-        L_0x09e3:
-            r28 = 51808043008(0xc10000000, double:2.55965742285E-313)
-            long r28 = r2 & r28
-            r30 = 0
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x09ff
-            android.widget.TextView r6 = r1.mboundView34
-            r167 = r0
-            r0 = r148
-            r6.setVisibility(r0)
-            android.widget.TextView r6 = r1.st
-            r6.setVisibility(r0)
-            goto L_0x0a03
-        L_0x09ff:
-            r167 = r0
-            r0 = r148
-        L_0x0a03:
-            r28 = 51539607560(0xc00000008, double:2.54639494955E-313)
-            long r28 = r2 & r28
-            r30 = 0
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0a1a
-            android.widget.TextView r6 = r1.modeFm
-            r168 = r0
-            r0 = r149
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0a1e
-        L_0x0a1a:
-            r168 = r0
-            r0 = r149
-        L_0x0a1e:
-            r28 = 51539738624(0xc00020000, double:2.546401425E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0a33
-            android.widget.TextView r6 = r1.time
-            r169 = r0
-            r0 = r150
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0a37
-        L_0x0a33:
-            r169 = r0
-            r0 = r150
-        L_0x0a37:
-            r28 = 53687091200(0xc80000000, double:2.6524947387E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0a4c
-            android.widget.TextView r6 = r1.trackNum
-            r170 = r0
-            r0 = r151
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0a50
-        L_0x0a4c:
-            r170 = r0
-            r0 = r151
-        L_0x0a50:
-            r28 = 47244640256(0xb00000000, double:2.33419537006E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0a65
-            android.widget.TextView r6 = r1.tvLeftTemperature
-            r171 = r0
-            r0 = r140
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0a69
-        L_0x0a65:
-            r171 = r0
-            r0 = r140
-        L_0x0a69:
-            r28 = 42958061568(0xa00800000, double:2.12241024327E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0a7e
-            android.widget.TextView r6 = r1.tvRightTemperature
-            r172 = r0
-            r0 = r139
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0a82
-        L_0x0a7e:
-            r172 = r0
-            r0 = r139
-        L_0x0a82:
-            r28 = 51539607554(0xc00000002, double:2.54639494926E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0a97
-            android.widget.TextView r6 = r1.usbIndex
-            r173 = r0
-            r0 = r152
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0a9b
-        L_0x0a97:
-            r173 = r0
-            r0 = r152
-        L_0x0a9b:
-            r28 = 51541704704(0xc00200000, double:2.54649856223E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0ab0
-            android.widget.RelativeLayout r6 = r1.usbLayout
-            r174 = r0
-            r0 = r153
-            r6.setVisibility(r0)
-            goto L_0x0ab4
-        L_0x0ab0:
-            r174 = r0
-            r0 = r153
-        L_0x0ab4:
-            r28 = 51539623936(0xc00004000, double:2.54639575864E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0ac9
-            android.widget.TextView r6 = r1.usbMusicAlbum
-            r175 = r0
-            r0 = r154
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0acd
-        L_0x0ac9:
-            r175 = r0
-            r0 = r154
-        L_0x0acd:
-            r28 = 51539607808(0xc00000100, double:2.5463949618E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0ae2
-            android.widget.TextView r6 = r1.usbMusicArtist
-            r176 = r0
-            r0 = r155
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0ae6
-        L_0x0ae2:
-            r176 = r0
-            r0 = r155
-        L_0x0ae6:
-            r28 = 51539607568(0xc00000010, double:2.54639494995E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0afb
-            android.widget.TextView r6 = r1.usbMusicName
-            r177 = r0
-            r0 = r156
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0aff
-        L_0x0afb:
-            r177 = r0
-            r0 = r156
-        L_0x0aff:
-            r28 = 51540656128(0xc00100000, double:2.5464467557E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0b14
-            android.widget.TextView r6 = r1.usbMusicTime
-            r178 = r0
-            r0 = r157
-            android.databinding.adapters.TextViewBindingAdapter.setText(r6, r0)
-            goto L_0x0b18
-        L_0x0b14:
-            r178 = r0
-            r0 = r157
-        L_0x0b18:
-            r28 = 43486543872(0xa20000000, double:2.14852073835E-313)
-            long r28 = r2 & r28
-            int r6 = (r28 > r30 ? 1 : (r28 == r30 ? 0 : -1))
-            if (r6 == 0) goto L_0x0b2d
-            android.widget.ImageView r6 = r1.windSpeedLevel
-            r179 = r0
-            r0 = r138
-            r6.setImageLevel(r0)
-            goto L_0x0b31
-        L_0x0b2d:
-            r179 = r0
-            r0 = r138
-        L_0x0b31:
-            return
-        L_0x0b32:
-            r0 = move-exception
-            monitor-exit(r180)     // Catch:{ all -> 0x0b32 }
-            throw r0
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.ActivityLexusOemFmBindingImpl.executeBindings():void");
+        long dirtyFlags;
+        long dirtyFlags_1;
+        ObservableField<String> vmBtSetUp;
+        String vmChGet;
+        ObservableField<Boolean> vmCd3;
+        int mUiParamsBlowingModeGet;
+        String mUiParamsRightTempStrGet;
+        String vmChGet2;
+        int mUiParamsWindSpeedGet;
+        String vmAlbumGet;
+        String vmFmFrequencyGet;
+        String vmTimeGet;
+        String vmTrackGet;
+        String vmBtSetUpGet;
+        int vmShowVolumeViewVISIBLEViewGONE;
+        int vmRandViewVISIBLEViewGONE;
+        String vmIndexGet;
+        int vmBtPlayViewVISIBLEViewVISIBLE;
+        int vmScanViewVISIBLEViewGONE;
+        int vmBtViewVISIBLEViewGONE;
+        int vmRptViewVISIBLEViewGONE;
+        int vmAslViewVISIBLEViewGONE;
+        int vmAuxViewVISIBLEViewGONE;
+        int vmStViewVISIBLEViewGONE;
+        String vmMusicNameGet;
+        String vmModeGet;
+        int vmMp3ViewVISIBLEViewGONE;
+        String vmBtConnectInfoGet;
+        Drawable vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol;
+        Boolean vmCd6Get;
+        int i;
+        String vmBtConnectInfoGet2;
+        int vmFmViewVISIBLEViewGONE;
+        int vmBtSignalGet;
+        String vmBtTimeGet;
+        String vmBtTimeGet2;
+        String vmArtistGet;
+        String vmUsbMusicTimeGet;
+        String vmArtistGet2;
+        String vmDiscGet;
+        int vmUsbViewVISIBLEViewGONE;
+        int vmFmViewVISIBLEViewGONE2;
+        int vmUsbViewVISIBLEViewGONE2;
+        int vmCd3ViewVISIBLEViewGONE;
+        int vmAudioOffViewGONEViewVISIBLE;
+        int vmCd4ViewVISIBLEViewGONE;
+        String vmDiscGet2;
+        String vmFmBandGet;
+        String vmEqModeGet;
+        int vmEqViewVISIBLEViewGONE;
+        int vmBtSignalGet2;
+        int vmBtConnectViewVISIBLEViewGONE;
+        int mUiParamsWindSpeedGet2;
+        int vmEqViewVISIBLEViewGONE2;
+        String vmFmBandGet2;
+        int vmAudioOffViewGONEVmCd5ViewVISIBLEViewGONE;
+        int vmAudioOffViewGONEVmCd4ViewVISIBLEViewGONE;
+        int vmAudioOffViewGONEVmCd6ViewVISIBLEViewGONE;
+        int vmAudioOffViewGONEVmCd1ViewVISIBLEViewGONE;
+        int vmAudioOffViewGONEVmCd2ViewVISIBLEViewGONE;
+        String vmEqModeGet2;
+        int vmAudioOffViewGONEVmCd3ViewVISIBLEViewGONE;
+        int vmAudioOffViewVISIBLEViewGONE;
+        String vmDiscGet3;
+        String vmDiscGet4;
+        String vmDiscGet5;
+        int vmEqViewVISIBLEViewGONE3;
+        String vmFmBandGet3;
+        String vmFmBandGet4;
+        String vmChGet3;
+        int vmFmViewVISIBLEViewGONE3;
+        int vmShowVolumeViewVISIBLEViewGONE2;
+        int vmShowVolumeViewVISIBLEViewGONE3;
+        int vmRptViewVISIBLEViewGONE2;
+        String vmUsbStatusGet;
+        int vmScanViewVISIBLEViewGONE2;
+        int vmScanViewVISIBLEViewGONE3;
+        int vmBtViewVISIBLEViewGONE2;
+        String vmBtConnectInfoGet3;
+        String vmBtConnectInfoGet4;
+        int vmBtPlayViewVISIBLEViewGONE;
+        String vmBtTimeGet3;
+        Drawable vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol2;
+        String vmMediaVolumeGet;
+        int vmAslViewVISIBLEViewGONE2;
+        int vmAslViewVISIBLEViewGONE3;
+        String vmModeGet2;
+        String vmIndexGet2;
+        int vmMp3ViewVISIBLEViewGONE2;
+        String vmAlbumGet2;
+        String vmAlbumGet3;
+        String vmMusicNameGet2;
+        String vmUsbMusicTimeGet2;
+        String vmTimeGet2;
+        String vmTimeGet3;
+        String mUiParamsLeftTempStrGet;
+        String mUiParamsRightTempStrGet2;
+        int vmUsbViewVISIBLEViewGONE3;
+        ObservableField<Boolean> vmCd4;
+        ObservableField<Boolean> vmCd1;
+        ObservableField<Boolean> vmCd5;
+        ObservableField<Boolean> vmCd2;
+        ObservableField<Boolean> vmCd6;
+        ObservableField<Boolean> vmCd32;
+        ObservableField<String> vmBtSetUp2;
+        ObservableBoolean vmEq;
+        ObservableField<String> vmBtConnectInfo;
+        ObservableField<String> vmTrack;
+        ObservableBoolean vmAudioOff;
+        ObservableField<String> vmMediaVolume;
+        ObservableBoolean vmBt;
+        ObservableField<Boolean> vmBtPlay;
+        ObservableBoolean vmFm;
+        ObservableBoolean vmShowVolume;
+        ObservableField<String> vmCh;
+        ObservableField<Boolean> vmSt;
+        ObservableBoolean vmCd;
+        ObservableBoolean vmAux;
+        ObservableBoolean vmMute;
+        long dirtyFlags_12;
+        Drawable drawable;
+        ObservableField<Boolean> vmBtConnect;
+        ObservableField<String> vmArtist;
+        ObservableField<Boolean> vmAsl;
+        ObservableField<String> vmFmBand;
+        ObservableField<Boolean> vmScan;
+        ObservableField<String> vmBtTime;
+        ObservableField<String> vmFmFrequency;
+        ObservableBoolean vmUsb;
+        ObservableBoolean vmMp3;
+        ObservableField<String> vmEqMode;
+        ObservableField<String> vmMusicName;
+        ObservableField<String> vmUsbMusicTime;
+        ObservableField<String> vmMode;
+        ObservableField<Boolean> vmRpt;
+        ObservableField<String> vmTime;
+        ObservableField<String> vmDisc;
+        ObservableField<String> vmUsbStatus;
+        ObservableInt vmBtSignal;
+        ObservableBoolean vmEq2;
+        ObservableField<Boolean> vmRand;
+        ObservableField<String> mUiParamsLeftTempStr;
+        ObservableInt mUiParamsWindSpeed;
+        ObservableInt mUiParamsBlowingMode;
+        ObservableField<String> mUiParamsRightTempStr;
+        synchronized (this) {
+            dirtyFlags = this.mDirtyFlags;
+            this.mDirtyFlags = 0;
+            dirtyFlags_1 = this.mDirtyFlags_1;
+            this.mDirtyFlags_1 = 0;
+        }
+        ObservableField<String> vmAlbum = null;
+        ObservableField<String> vmIndex = null;
+        String vmEqModeGet3 = null;
+        LexusUiParams mUiParams = this.mMUiParams;
+        String vmMediaVolumeGet2 = null;
+        LexusOEMFMViewModel vm = this.mVm;
+        int vmUsbViewVISIBLEViewGONE4 = 0;
+        int vmAudioOffViewVISIBLEViewGONE2 = 0;
+        int vmFmViewVISIBLEViewGONE4 = 0;
+        String vmUsbMusicTimeGet3 = null;
+        Boolean vmRandGet = null;
+        int vmCd5ViewVISIBLEViewGONE = 0;
+        String vmDiscGet6 = null;
+        boolean vmMuteGet = false;
+        boolean vmShowVolumeGet = false;
+        String vmArtistGet3 = null;
+        int vmBtConnectViewVISIBLEViewGONE2 = 0;
+        int vmCdViewVISIBLEViewGONE = 0;
+        boolean vmBtGet = false;
+        int vmCd1ViewVISIBLEViewGONE = 0;
+        Boolean vmBtConnectGet = null;
+        String vmBtTimeGet4 = null;
+        boolean vmAuxGet = false;
+        boolean vmUsbGet = false;
+        int vmBtPlayViewVISIBLEViewGONE2 = 0;
+        int vmBtSignalGet3 = 0;
+        Boolean vmCd5Get = null;
+        String vmUsbStatusGet2 = null;
+        Drawable vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol3 = null;
+        Boolean vmCd2Get = null;
+        int vmMp3ViewVISIBLEViewGONE3 = 0;
+        boolean vmAudioOffGet = false;
+        Boolean vmBtPlayGet = null;
+        int vmCd2ViewVISIBLEViewGONE = 0;
+        Boolean vmCd4Get = null;
+        Boolean vmScanGet = null;
+        Boolean vmAslGet = null;
+        Boolean vmCd3Get = null;
+        Boolean vmStGet = null;
+        boolean vmMp3Get = false;
+        String vmModeGet3 = null;
+        String vmMusicNameGet3 = null;
+        int vmStViewVISIBLEViewGONE2 = 0;
+        String vmFmBandGet5 = null;
+        String mUiParamsRightTempStrGet3 = null;
+        int vmAuxViewVISIBLEViewGONE2 = 0;
+        int vmAslViewVISIBLEViewGONE4 = 0;
+        int vmRptViewVISIBLEViewGONE3 = 0;
+        int vmBtViewVISIBLEViewGONE3 = 0;
+        int mUiParamsWindSpeedGet3 = 0;
+        int vmScanViewVISIBLEViewGONE4 = 0;
+        Boolean vmCd1Get = null;
+        boolean vmCdGet = false;
+        boolean vmFmGet = false;
+        int vmBtPlayViewVISIBLEViewVISIBLE2 = 0;
+        String vmIndexGet3 = null;
+        int vmRandViewVISIBLEViewGONE2 = 0;
+        int vmShowVolumeViewVISIBLEViewGONE4 = 0;
+        int vmAudioOffViewGONEViewVISIBLE2 = 0;
+        String vmBtSetUpGet2 = null;
+        Boolean vmRptGet = null;
+        String vmTrackGet2 = null;
+        String vmTimeGet4 = null;
+        String vmFmFrequencyGet2 = null;
+        int mUiParamsBlowingModeGet2 = 0;
+        String vmAlbumGet4 = null;
+        boolean vmEqGet = false;
+        int vmCd6ViewVISIBLEViewGONE = 0;
+        int vmEqViewVISIBLEViewGONE4 = 0;
+        if ((dirtyFlags & 370536500690944L) != 0) {
+            if ((dirtyFlags & 351843729276928L) != 0) {
+                if (mUiParams != null) {
+                    vmChGet = null;
+                    mUiParamsRightTempStr = mUiParams.rightTempStr;
+                } else {
+                    vmChGet = null;
+                    mUiParamsRightTempStr = null;
+                }
+                vmBtSetUp = null;
+                updateRegistration(23, (Observable) mUiParamsRightTempStr);
+                if (mUiParamsRightTempStr != null) {
+                    mUiParamsRightTempStrGet3 = mUiParamsRightTempStr.get();
+                    ObservableField<String> observableField = mUiParamsRightTempStr;
+                } else {
+                    ObservableField<String> observableField2 = mUiParamsRightTempStr;
+                }
+            } else {
+                vmChGet = null;
+                vmBtSetUp = null;
+            }
+            if ((351844794630144L & dirtyFlags) != 0) {
+                if (mUiParams != null) {
+                    mUiParamsBlowingMode = mUiParams.blowingMode;
+                } else {
+                    mUiParamsBlowingMode = null;
+                }
+                updateRegistration(30, (Observable) mUiParamsBlowingMode);
+                if (mUiParamsBlowingMode != null) {
+                    mUiParamsBlowingModeGet2 = mUiParamsBlowingMode.get();
+                    ObservableInt observableInt = mUiParamsBlowingMode;
+                } else {
+                    ObservableInt observableInt2 = mUiParamsBlowingMode;
+                }
+            }
+            if ((352943232516096L & dirtyFlags) != 0) {
+                if (mUiParams != null) {
+                    mUiParamsWindSpeed = mUiParams.windSpeed;
+                } else {
+                    mUiParamsWindSpeed = null;
+                }
+                updateRegistration(40, (Observable) mUiParamsWindSpeed);
+                if (mUiParamsWindSpeed != null) {
+                    mUiParamsWindSpeedGet3 = mUiParamsWindSpeed.get();
+                    ObservableInt observableInt3 = mUiParamsWindSpeed;
+                } else {
+                    ObservableInt observableInt4 = mUiParamsWindSpeed;
+                }
+            }
+            if ((369435906932736L & dirtyFlags) != 0) {
+                if (mUiParams != null) {
+                    mUiParamsLeftTempStr = mUiParams.leftTempStr;
+                } else {
+                    mUiParamsLeftTempStr = null;
+                }
+                updateRegistration(44, (Observable) mUiParamsLeftTempStr);
+                if (mUiParamsLeftTempStr != null) {
+                    ObservableField<String> observableField3 = mUiParamsLeftTempStr;
+                    vmChGet2 = mUiParamsLeftTempStr.get();
+                    mUiParamsRightTempStrGet = mUiParamsRightTempStrGet3;
+                    LexusUiParams lexusUiParams = mUiParams;
+                    vmCd3 = null;
+                    mUiParamsWindSpeedGet = mUiParamsWindSpeedGet3;
+                    mUiParamsBlowingModeGet = mUiParamsBlowingModeGet2;
+                } else {
+                    ObservableField<String> observableField4 = mUiParamsLeftTempStr;
+                    vmChGet2 = null;
+                    mUiParamsRightTempStrGet = mUiParamsRightTempStrGet3;
+                    LexusUiParams lexusUiParams2 = mUiParams;
+                    vmCd3 = null;
+                    mUiParamsWindSpeedGet = mUiParamsWindSpeedGet3;
+                    mUiParamsBlowingModeGet = mUiParamsBlowingModeGet2;
+                }
+            } else {
+                vmChGet2 = null;
+                mUiParamsRightTempStrGet = mUiParamsRightTempStrGet3;
+                LexusUiParams lexusUiParams3 = mUiParams;
+                vmCd3 = null;
+                mUiParamsWindSpeedGet = mUiParamsWindSpeedGet3;
+                mUiParamsBlowingModeGet = mUiParamsBlowingModeGet2;
+            }
+        } else {
+            vmChGet = null;
+            vmBtSetUp = null;
+            vmChGet2 = null;
+            mUiParamsRightTempStrGet = null;
+            LexusUiParams lexusUiParams4 = mUiParams;
+            vmCd3 = null;
+            mUiParamsWindSpeedGet = 0;
+            mUiParamsBlowingModeGet = 0;
+        }
+        if ((dirtyFlags & 473888429441023L) != 0) {
+            if ((dirtyFlags & 422212465065985L) != 0) {
+                if (vm != null) {
+                    vmRand = vm.rand;
+                } else {
+                    vmRand = null;
+                }
+                vmCd6Get = null;
+                updateRegistration(0, (Observable) vmRand);
+                if (vmRand != null) {
+                    vmRandGet = vmRand.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxVmRandGet = ViewDataBinding.safeUnbox(vmRandGet);
+                if ((dirtyFlags & 422212465065985L) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmRandGet) {
+                        dirtyFlags_1 |= 17179869184L;
+                    } else {
+                        dirtyFlags_1 |= 8589934592L;
+                    }
+                }
+                ObservableField<Boolean> observableField5 = vmRand;
+                vmRandViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxVmRandGet ? 0 : 8;
+            } else {
+                vmCd6Get = null;
+            }
+            if ((422212465065986L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmBtSetUp2 = vm.btSetUp;
+                } else {
+                    vmBtSetUp2 = vmBtSetUp;
+                }
+                updateRegistration(1, (Observable) vmBtSetUp2);
+                if (vmBtSetUp2 != null) {
+                    vmBtSetUpGet2 = vmBtSetUp2.get();
+                }
+            } else {
+                vmBtSetUp2 = vmBtSetUp;
+            }
+            if ((dirtyFlags & 422212465065992L) != 0) {
+                if (vm != null) {
+                    vmEq2 = vm.eq;
+                } else {
+                    vmEq2 = null;
+                }
+                ObservableField<String> observableField6 = vmBtSetUp2;
+                updateRegistration(3, (Observable) vmEq2);
+                if (vmEq2 != null) {
+                    vmEqGet = vmEq2.get();
+                }
+                if ((dirtyFlags & 422212465065992L) != 0) {
+                    if (vmEqGet) {
+                        dirtyFlags_1 |= 70368744177664L;
+                    } else {
+                        dirtyFlags_1 |= 35184372088832L;
+                    }
+                }
+                vmEqViewVISIBLEViewGONE4 = vmEqGet ? 0 : 8;
+                vmEq = vmEq2;
+            } else {
+                vmEq = null;
+            }
+            if ((dirtyFlags & 422212465066000L) != 0) {
+                if (vm != null) {
+                    vmAlbum = vm.album;
+                }
+                updateRegistration(4, (Observable) vmAlbum);
+                if (vmAlbum != null) {
+                    vmAlbumGet4 = vmAlbum.get();
+                }
+            }
+            if ((dirtyFlags & 422212465066016L) != 0) {
+                if (vm != null) {
+                    vmIndex = vm.index;
+                }
+                updateRegistration(5, (Observable) vmIndex);
+                if (vmIndex != null) {
+                    vmIndexGet3 = vmIndex.get();
+                }
+            }
+            if ((dirtyFlags & 422212465066048L) != 0) {
+                if (vm != null) {
+                    vmBtSignal = vm.btSignal;
+                } else {
+                    vmBtSignal = null;
+                }
+                ObservableBoolean observableBoolean = vmEq;
+                updateRegistration(6, (Observable) vmBtSignal);
+                if (vmBtSignal != null) {
+                    vmBtSignalGet3 = vmBtSignal.get();
+                    ObservableInt observableInt5 = vmBtSignal;
+                } else {
+                    ObservableInt observableInt6 = vmBtSignal;
+                }
+            }
+            if ((422212465066112L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmUsbStatus = vm.usbStatus;
+                } else {
+                    vmUsbStatus = null;
+                }
+                updateRegistration(7, (Observable) vmUsbStatus);
+                if (vmUsbStatus != null) {
+                    ObservableField<String> observableField7 = vmUsbStatus;
+                    vmUsbStatusGet2 = vmUsbStatus.get();
+                } else {
+                    ObservableField<String> observableField8 = vmUsbStatus;
+                }
+            }
+            if ((422212465066240L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmDisc = vm.disc;
+                } else {
+                    vmDisc = null;
+                }
+                updateRegistration(8, (Observable) vmDisc);
+                if (vmDisc != null) {
+                    vmDiscGet6 = vmDisc.get();
+                    ObservableField<String> observableField9 = vmDisc;
+                } else {
+                    ObservableField<String> observableField10 = vmDisc;
+                }
+            }
+            if ((dirtyFlags & 422212465066496L) != 0) {
+                if (vm != null) {
+                    vmTime = vm.time;
+                } else {
+                    vmTime = null;
+                }
+                updateRegistration(9, (Observable) vmTime);
+                if (vmTime != null) {
+                    vmTimeGet4 = vmTime.get();
+                    ObservableField<String> observableField11 = vmTime;
+                } else {
+                    ObservableField<String> observableField12 = vmTime;
+                }
+            }
+            if ((dirtyFlags & 422212465067008L) != 0) {
+                if (vm != null) {
+                    vmRpt = vm.rpt;
+                } else {
+                    vmRpt = null;
+                }
+                updateRegistration(10, (Observable) vmRpt);
+                if (vmRpt != null) {
+                    vmRptGet = vmRpt.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxVmRptGet = ViewDataBinding.safeUnbox(vmRptGet);
+                if ((dirtyFlags & 422212465067008L) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmRptGet) {
+                        dirtyFlags_1 |= 16777216;
+                    } else {
+                        dirtyFlags_1 |= 8388608;
+                    }
+                }
+                ObservableField<Boolean> observableField13 = vmRpt;
+                vmRptViewVISIBLEViewGONE3 = androidDatabindingViewDataBindingSafeUnboxVmRptGet ? 0 : 8;
+            }
+            if ((422212465070080L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmMode = vm.mode;
+                } else {
+                    vmMode = null;
+                }
+                updateRegistration(12, (Observable) vmMode);
+                if (vmMode != null) {
+                    ObservableField<String> observableField14 = vmMode;
+                    vmModeGet3 = vmMode.get();
+                } else {
+                    ObservableField<String> observableField15 = vmMode;
+                }
+            }
+            if ((422212465082368L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmUsbMusicTime = vm.usbMusicTime;
+                } else {
+                    vmUsbMusicTime = null;
+                }
+                updateRegistration(14, (Observable) vmUsbMusicTime);
+                if (vmUsbMusicTime != null) {
+                    vmUsbMusicTimeGet3 = vmUsbMusicTime.get();
+                    ObservableField<String> observableField16 = vmUsbMusicTime;
+                } else {
+                    ObservableField<String> observableField17 = vmUsbMusicTime;
+                }
+            }
+            if ((422212465098752L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmMusicName = vm.musicName;
+                } else {
+                    vmMusicName = null;
+                }
+                updateRegistration(15, (Observable) vmMusicName);
+                if (vmMusicName != null) {
+                    vmMusicNameGet3 = vmMusicName.get();
+                    ObservableField<String> observableField18 = vmMusicName;
+                } else {
+                    ObservableField<String> observableField19 = vmMusicName;
+                }
+            }
+            if ((422212465131520L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmEqMode = vm.eqMode;
+                } else {
+                    vmEqMode = null;
+                }
+                updateRegistration(16, (Observable) vmEqMode);
+                if (vmEqMode != null) {
+                    ObservableField<String> observableField20 = vmEqMode;
+                    vmEqModeGet3 = vmEqMode.get();
+                } else {
+                    ObservableField<String> observableField21 = vmEqMode;
+                }
+            }
+            if ((dirtyFlags & 422212465197056L) != 0) {
+                if (vm != null) {
+                    vmMp3 = vm.mp3;
+                } else {
+                    vmMp3 = null;
+                }
+                updateRegistration(17, (Observable) vmMp3);
+                if (vmMp3 != null) {
+                    vmMp3Get = vmMp3.get();
+                }
+                if ((dirtyFlags & 422212465197056L) != 0) {
+                    if (vmMp3Get) {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+                    } else {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+                    }
+                }
+                vmMp3ViewVISIBLEViewGONE3 = vmMp3Get ? 0 : 8;
+                ObservableBoolean observableBoolean2 = vmMp3;
+            }
+            if ((dirtyFlags & 422212465328128L) != 0) {
+                if (vm != null) {
+                    vmUsb = vm.usb;
+                } else {
+                    vmUsb = null;
+                }
+                updateRegistration(18, (Observable) vmUsb);
+                if (vmUsb != null) {
+                    vmUsbGet = vmUsb.get();
+                }
+                if ((dirtyFlags & 422212465328128L) != 0) {
+                    if (vmUsbGet) {
+                        dirtyFlags |= 18014398509481984L;
+                    } else {
+                        dirtyFlags |= 9007199254740992L;
+                    }
+                }
+                vmUsbViewVISIBLEViewGONE4 = vmUsbGet ? 0 : 8;
+                ObservableBoolean observableBoolean3 = vmUsb;
+            }
+            if ((422212465590272L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmFmFrequency = vm.fmFrequency;
+                } else {
+                    vmFmFrequency = null;
+                }
+                updateRegistration(19, (Observable) vmFmFrequency);
+                if (vmFmFrequency != null) {
+                    ObservableField<String> observableField22 = vmFmFrequency;
+                    vmFmFrequencyGet2 = vmFmFrequency.get();
+                } else {
+                    ObservableField<String> observableField23 = vmFmFrequency;
+                }
+            }
+            if ((422212466114560L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmBtTime = vm.btTime;
+                } else {
+                    vmBtTime = null;
+                }
+                updateRegistration(20, (Observable) vmBtTime);
+                if (vmBtTime != null) {
+                    ObservableField<String> observableField24 = vmBtTime;
+                    vmBtTimeGet4 = vmBtTime.get();
+                } else {
+                    ObservableField<String> observableField25 = vmBtTime;
+                }
+            }
+            if ((dirtyFlags & 422212481843200L) != 0) {
+                if (vm != null) {
+                    vmScan = vm.scan;
+                } else {
+                    vmScan = null;
+                }
+                updateRegistration(24, (Observable) vmScan);
+                if (vmScan != null) {
+                    vmScanGet = vmScan.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxVmScanGet = ViewDataBinding.safeUnbox(vmScanGet);
+                if ((dirtyFlags & 422212481843200L) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmScanGet) {
+                        dirtyFlags_1 |= 268435456;
+                    } else {
+                        dirtyFlags_1 |= 134217728;
+                    }
+                }
+                ObservableField<Boolean> observableField26 = vmScan;
+                vmScanViewVISIBLEViewGONE4 = androidDatabindingViewDataBindingSafeUnboxVmScanGet ? 0 : 8;
+            }
+            if ((422212498620416L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmFmBand = vm.fmBand;
+                } else {
+                    vmFmBand = null;
+                }
+                updateRegistration(25, (Observable) vmFmBand);
+                if (vmFmBand != null) {
+                    ObservableField<String> observableField27 = vmFmBand;
+                    vmFmBandGet5 = vmFmBand.get();
+                } else {
+                    ObservableField<String> observableField28 = vmFmBand;
+                }
+            }
+            if ((422212532174848L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmAsl = vm.asl;
+                } else {
+                    vmAsl = null;
+                }
+                updateRegistration(26, (Observable) vmAsl);
+                if (vmAsl != null) {
+                    vmAslGet = vmAsl.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxVmAslGet = ViewDataBinding.safeUnbox(vmAslGet);
+                if ((dirtyFlags & 422212532174848L) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmAslGet) {
+                        dirtyFlags_1 |= 4194304;
+                    } else {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE;
+                    }
+                }
+                ObservableField<Boolean> observableField29 = vmAsl;
+                vmAslViewVISIBLEViewGONE4 = androidDatabindingViewDataBindingSafeUnboxVmAslGet ? 0 : 8;
+            }
+            if ((422212599283712L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmArtist = vm.artist;
+                } else {
+                    vmArtist = null;
+                }
+                updateRegistration(27, (Observable) vmArtist);
+                if (vmArtist != null) {
+                    vmArtistGet3 = vmArtist.get();
+                    ObservableField<String> observableField30 = vmArtist;
+                } else {
+                    ObservableField<String> observableField31 = vmArtist;
+                }
+            }
+            if ((dirtyFlags & 422212733501440L) != 0) {
+                if (vm != null) {
+                    vmBtConnect = vm.btConnect;
+                } else {
+                    vmBtConnect = null;
+                }
+                updateRegistration(28, (Observable) vmBtConnect);
+                if (vmBtConnect != null) {
+                    vmBtConnectGet = vmBtConnect.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxVmBtConnectGet = ViewDataBinding.safeUnbox(vmBtConnectGet);
+                if ((dirtyFlags & 422212733501440L) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmBtConnectGet) {
+                        dirtyFlags_1 |= 1;
+                    } else {
+                        dirtyFlags |= Long.MIN_VALUE;
+                    }
+                }
+                ObservableField<Boolean> observableField32 = vmBtConnect;
+                vmBtConnectViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxVmBtConnectGet ? 0 : 8;
+            }
+            if ((422213001936896L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmMute = vm.mute;
+                } else {
+                    vmMute = null;
+                }
+                updateRegistration(29, (Observable) vmMute);
+                if (vmMute != null) {
+                    vmMuteGet = vmMute.get();
+                }
+                if ((dirtyFlags & 422213001936896L) != 0) {
+                    if (vmMuteGet) {
+                        dirtyFlags_1 |= 256;
+                    } else {
+                        dirtyFlags_1 |= 128;
+                    }
+                }
+                if (vmMuteGet) {
+                    dirtyFlags_12 = dirtyFlags_1;
+                    drawable = AppCompatResources.getDrawable(this.mboundView60.getContext(), R.drawable.lexus_cd_progress_bar_mute);
+                } else {
+                    dirtyFlags_12 = dirtyFlags_1;
+                    drawable = AppCompatResources.getDrawable(this.mboundView60.getContext(), R.drawable.lexus_cd_progress_bar_vol);
+                }
+                vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol3 = drawable;
+                ObservableBoolean observableBoolean4 = vmMute;
+                dirtyFlags_1 = dirtyFlags_12;
+            }
+            if ((422214612549632L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmAux = vm.aux;
+                } else {
+                    vmAux = null;
+                }
+                updateRegistration(31, (Observable) vmAux);
+                if (vmAux != null) {
+                    vmAuxGet = vmAux.get();
+                }
+                if ((dirtyFlags & 422214612549632L) != 0) {
+                    if (vmAuxGet) {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED;
+                    } else {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
+                    }
+                }
+                ObservableBoolean observableBoolean5 = vmAux;
+                vmAuxViewVISIBLEViewGONE2 = vmAuxGet ? 0 : 8;
+            }
+            if ((422216760033280L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmCd = vm.cd;
+                } else {
+                    vmCd = null;
+                }
+                updateRegistration(32, (Observable) vmCd);
+                if (vmCd != null) {
+                    vmCdGet = vmCd.get();
+                }
+                if ((dirtyFlags & 422216760033280L) != 0) {
+                    if (vmCdGet) {
+                        dirtyFlags_1 |= 4;
+                    } else {
+                        dirtyFlags_1 |= 2;
+                    }
+                }
+                ObservableBoolean observableBoolean6 = vmCd;
+                vmCdViewVISIBLEViewGONE = vmCdGet ? 0 : 8;
+            }
+            if ((422221055000576L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmSt = vm.st;
+                } else {
+                    vmSt = null;
+                }
+                updateRegistration(33, (Observable) vmSt);
+                if (vmSt != null) {
+                    vmStGet = vmSt.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxVmStGet = ViewDataBinding.safeUnbox(vmStGet);
+                if ((dirtyFlags & 422221055000576L) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmStGet) {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
+                    } else {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
+                    }
+                }
+                ObservableField<Boolean> observableField33 = vmSt;
+                vmStViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxVmStGet ? 0 : 8;
+            }
+            if ((422229644935168L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmCh = vm.ch;
+                } else {
+                    vmCh = null;
+                }
+                updateRegistration(34, (Observable) vmCh);
+                if (vmCh != null) {
+                    ObservableField<String> observableField34 = vmCh;
+                    vmChGet = vmCh.get();
+                } else {
+                    ObservableField<String> observableField35 = vmCh;
+                }
+            }
+            if ((422281184542720L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmShowVolume = vm.showVolume;
+                } else {
+                    vmShowVolume = null;
+                }
+                updateRegistration(36, (Observable) vmShowVolume);
+                if (vmShowVolume != null) {
+                    vmShowVolumeGet = vmShowVolume.get();
+                }
+                if ((dirtyFlags & 422281184542720L) != 0) {
+                    if (vmShowVolumeGet) {
+                        dirtyFlags_1 |= 68719476736L;
+                    } else {
+                        dirtyFlags_1 |= 34359738368L;
+                    }
+                }
+                ObservableBoolean observableBoolean7 = vmShowVolume;
+                vmShowVolumeViewVISIBLEViewGONE4 = vmShowVolumeGet ? 0 : 8;
+            }
+            if ((422349904019456L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmFm = vm.fm;
+                } else {
+                    vmFm = null;
+                }
+                updateRegistration(37, (Observable) vmFm);
+                if (vmFm != null) {
+                    vmFmGet = vmFm.get();
+                }
+                if ((dirtyFlags & 422349904019456L) != 0) {
+                    if (vmFmGet) {
+                        dirtyFlags |= 1152921504606846976L;
+                    } else {
+                        dirtyFlags |= 576460752303423488L;
+                    }
+                }
+                ObservableBoolean observableBoolean8 = vmFm;
+                vmFmViewVISIBLEViewGONE4 = vmFmGet ? 0 : 8;
+            }
+            if ((422487342972928L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmBtPlay = vm.btPlay;
+                } else {
+                    vmBtPlay = null;
+                }
+                updateRegistration(38, (Observable) vmBtPlay);
+                if (vmBtPlay != null) {
+                    vmBtPlayGet = vmBtPlay.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxVmBtPlayGet = ViewDataBinding.safeUnbox(vmBtPlayGet);
+                if ((dirtyFlags & 422487342972928L) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxVmBtPlayGet) {
+                        dirtyFlags_1 = dirtyFlags_1 | 64 | 1073741824;
+                    } else {
+                        dirtyFlags_1 = dirtyFlags_1 | 32 | 536870912;
+                    }
+                }
+                i = 0;
+                ObservableField<Boolean> observableField36 = vmBtPlay;
+                vmBtPlayViewVISIBLEViewVISIBLE2 = 0;
+                vmBtPlayViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxVmBtPlayGet ? 0 : 8;
+            } else {
+                i = 0;
+            }
+            if ((422762220879872L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmBt = vm.bt;
+                } else {
+                    vmBt = null;
+                }
+                updateRegistration(39, (Observable) vmBt);
+                if (vmBt != null) {
+                    vmBtGet = vmBt.get();
+                }
+                if ((dirtyFlags & 422762220879872L) != 0) {
+                    if (vmBtGet) {
+                        dirtyFlags_1 |= 67108864;
+                    } else {
+                        dirtyFlags_1 |= 33554432;
+                    }
+                }
+                ObservableBoolean observableBoolean9 = vmBt;
+                vmBtViewVISIBLEViewGONE3 = vmBtGet ? i : 8;
+            }
+            if ((424411488321536L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmMediaVolume = vm.mediaVolume;
+                } else {
+                    vmMediaVolume = null;
+                }
+                updateRegistration(41, (Observable) vmMediaVolume);
+                if (vmMediaVolume != null) {
+                    ObservableField<String> observableField37 = vmMediaVolume;
+                    vmMediaVolumeGet2 = vmMediaVolume.get();
+                } else {
+                    ObservableField<String> observableField38 = vmMediaVolume;
+                }
+            }
+            if ((426644877617156L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmAudioOff = vm.audioOff;
+                } else {
+                    vmAudioOff = null;
+                }
+                updateRegistration(42, (Observable) vmAudioOff);
+                if (vmAudioOff != null) {
+                    vmAudioOffGet = vmAudioOff.get();
+                }
+                if ((dirtyFlags & 426610513674240L) != 0) {
+                    if (vmAudioOffGet) {
+                        dirtyFlags |= 72057594037927936L;
+                    } else {
+                        dirtyFlags |= 36028797018963968L;
+                    }
+                }
+                if ((dirtyFlags & 426610511577088L) != 0) {
+                    if (vmAudioOffGet) {
+                        dirtyFlags |= 288230376151711744L;
+                        dirtyFlags_1 |= 274877906944L;
+                    } else {
+                        dirtyFlags |= 144115188075855872L;
+                        dirtyFlags_1 |= 137438953472L;
+                    }
+                }
+                if ((dirtyFlags & 426644871315456L) != 0) {
+                    if (vmAudioOffGet) {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+                    } else {
+                        dirtyFlags_1 |= 512;
+                    }
+                }
+                if ((dirtyFlags & 426610511579136L) != 0) {
+                    if (vmAudioOffGet) {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
+                    } else {
+                        dirtyFlags_1 |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
+                    }
+                }
+                if ((dirtyFlags & 426610515771392L) != 0) {
+                    if (vmAudioOffGet) {
+                        dirtyFlags_1 |= 4294967296L;
+                    } else {
+                        dirtyFlags_1 |= 2147483648L;
+                    }
+                }
+                if ((dirtyFlags & 426610511585280L) != 0) {
+                    if (vmAudioOffGet) {
+                        dirtyFlags_1 |= 1099511627776L;
+                    } else {
+                        dirtyFlags_1 |= 549755813888L;
+                    }
+                }
+                if ((dirtyFlags & 426610511577092L) != 0) {
+                    if (vmAudioOffGet) {
+                        dirtyFlags_1 |= 4398046511104L;
+                    } else {
+                        dirtyFlags_1 |= 2199023255552L;
+                    }
+                }
+                if ((dirtyFlags & 426610511577088L) != 0) {
+                    int vmAudioOffViewVISIBLEViewGONE3 = vmAudioOffGet ? i : 8;
+                    ObservableBoolean observableBoolean10 = vmAudioOff;
+                    vmAudioOffViewGONEViewVISIBLE2 = vmAudioOffGet ? 8 : i;
+                    vmAudioOffViewVISIBLEViewGONE2 = vmAudioOffViewVISIBLEViewGONE3;
+                } else {
+                    ObservableBoolean observableBoolean11 = vmAudioOff;
+                }
+            }
+            if ((431008558088192L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmTrack = vm.track;
+                } else {
+                    vmTrack = null;
+                }
+                updateRegistration(43, (Observable) vmTrack);
+                if (vmTrack != null) {
+                    vmTrackGet2 = vmTrack.get();
+                    ObservableField<String> observableField39 = vmTrack;
+                } else {
+                    ObservableField<String> observableField40 = vmTrack;
+                }
+            }
+            if ((457396837154816L & dirtyFlags) != 0) {
+                if (vm != null) {
+                    vmBtConnectInfo = vm.btConnectInfo;
+                } else {
+                    vmBtConnectInfo = null;
+                }
+                updateRegistration(45, (Observable) vmBtConnectInfo);
+                if (vmBtConnectInfo != null) {
+                    ObservableField<String> observableField41 = vmBtConnectInfo;
+                    vmEqModeGet = vmEqModeGet3;
+                    vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol = vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol3;
+                    vmBtConnectInfoGet = vmBtConnectInfo.get();
+                    vmMp3ViewVISIBLEViewGONE = vmMp3ViewVISIBLEViewGONE3;
+                    vmModeGet = vmModeGet3;
+                    vmMusicNameGet = vmMusicNameGet3;
+                    vmStViewVISIBLEViewGONE = vmStViewVISIBLEViewGONE2;
+                    vmAuxViewVISIBLEViewGONE = vmAuxViewVISIBLEViewGONE2;
+                    vmAslViewVISIBLEViewGONE = vmAslViewVISIBLEViewGONE4;
+                    vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE3;
+                    vmBtViewVISIBLEViewGONE = vmBtViewVISIBLEViewGONE3;
+                    vmScanViewVISIBLEViewGONE = vmScanViewVISIBLEViewGONE4;
+                    vmBtPlayViewVISIBLEViewVISIBLE = vmBtPlayViewVISIBLEViewVISIBLE2;
+                    vmIndexGet = vmIndexGet3;
+                    vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE2;
+                    vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE4;
+                    vmBtSetUpGet = vmBtSetUpGet2;
+                    vmTrackGet = vmTrackGet2;
+                    vmTimeGet = vmTimeGet4;
+                    vmFmFrequencyGet = vmFmFrequencyGet2;
+                    vmAlbumGet = vmAlbumGet4;
+                    vmEqViewVISIBLEViewGONE = vmEqViewVISIBLEViewGONE4;
+                    vmBtConnectInfoGet2 = vmChGet;
+                    ObservableField<String> observableField42 = vmAlbum;
+                    vmFmViewVISIBLEViewGONE = vmFmViewVISIBLEViewGONE4;
+                    vmFmBandGet = vmFmBandGet5;
+                    vmFmViewVISIBLEViewGONE2 = mUiParamsWindSpeedGet;
+                    mUiParamsWindSpeedGet2 = vmCdViewVISIBLEViewGONE;
+                    vmArtistGet = vmArtistGet3;
+                    vmArtistGet2 = vmChGet2;
+                    vmBtConnectViewVISIBLEViewGONE = vmBtConnectViewVISIBLEViewGONE2;
+                    vmUsbMusicTimeGet = vmUsbMusicTimeGet3;
+                    vmUsbViewVISIBLEViewGONE = vmUsbViewVISIBLEViewGONE4;
+                    vmUsbViewVISIBLEViewGONE2 = 0;
+                    vmCd4ViewVISIBLEViewGONE = vmAudioOffViewVISIBLEViewGONE2;
+                    ObservableField<String> observableField43 = vmIndex;
+                    vmAudioOffViewGONEViewVISIBLE = vmAudioOffViewGONEViewVISIBLE2;
+                    String str = vmDiscGet6;
+                    vmDiscGet = mUiParamsRightTempStrGet;
+                    vmBtSignalGet2 = vmBtSignalGet3;
+                    vmBtSignalGet = vmBtPlayViewVISIBLEViewGONE2;
+                    vmBtTimeGet = vmBtTimeGet4;
+                    vmBtTimeGet2 = vmMediaVolumeGet2;
+                    vmCd3ViewVISIBLEViewGONE = 0;
+                    vmDiscGet2 = str;
+                } else {
+                    ObservableField<String> observableField44 = vmBtConnectInfo;
+                    vmEqModeGet = vmEqModeGet3;
+                    vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol = vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol3;
+                    vmBtConnectInfoGet = null;
+                    vmMp3ViewVISIBLEViewGONE = vmMp3ViewVISIBLEViewGONE3;
+                    vmModeGet = vmModeGet3;
+                    vmMusicNameGet = vmMusicNameGet3;
+                    vmStViewVISIBLEViewGONE = vmStViewVISIBLEViewGONE2;
+                    vmAuxViewVISIBLEViewGONE = vmAuxViewVISIBLEViewGONE2;
+                    vmAslViewVISIBLEViewGONE = vmAslViewVISIBLEViewGONE4;
+                    vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE3;
+                    vmBtViewVISIBLEViewGONE = vmBtViewVISIBLEViewGONE3;
+                    vmScanViewVISIBLEViewGONE = vmScanViewVISIBLEViewGONE4;
+                    vmBtPlayViewVISIBLEViewVISIBLE = vmBtPlayViewVISIBLEViewVISIBLE2;
+                    vmIndexGet = vmIndexGet3;
+                    vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE2;
+                    vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE4;
+                    vmBtSetUpGet = vmBtSetUpGet2;
+                    vmTrackGet = vmTrackGet2;
+                    vmTimeGet = vmTimeGet4;
+                    vmFmFrequencyGet = vmFmFrequencyGet2;
+                    vmAlbumGet = vmAlbumGet4;
+                    vmEqViewVISIBLEViewGONE = vmEqViewVISIBLEViewGONE4;
+                    vmBtConnectInfoGet2 = vmChGet;
+                    ObservableField<String> observableField45 = vmAlbum;
+                    vmFmViewVISIBLEViewGONE = vmFmViewVISIBLEViewGONE4;
+                    vmFmBandGet = vmFmBandGet5;
+                    vmFmViewVISIBLEViewGONE2 = mUiParamsWindSpeedGet;
+                    mUiParamsWindSpeedGet2 = vmCdViewVISIBLEViewGONE;
+                    vmArtistGet = vmArtistGet3;
+                    vmArtistGet2 = vmChGet2;
+                    vmBtConnectViewVISIBLEViewGONE = vmBtConnectViewVISIBLEViewGONE2;
+                    vmUsbMusicTimeGet = vmUsbMusicTimeGet3;
+                    vmUsbViewVISIBLEViewGONE = vmUsbViewVISIBLEViewGONE4;
+                    vmUsbViewVISIBLEViewGONE2 = 0;
+                    vmCd4ViewVISIBLEViewGONE = vmAudioOffViewVISIBLEViewGONE2;
+                    ObservableField<String> observableField46 = vmIndex;
+                    vmAudioOffViewGONEViewVISIBLE = vmAudioOffViewGONEViewVISIBLE2;
+                    String str2 = vmDiscGet6;
+                    vmDiscGet = mUiParamsRightTempStrGet;
+                    vmBtSignalGet2 = vmBtSignalGet3;
+                    vmBtSignalGet = vmBtPlayViewVISIBLEViewGONE2;
+                    vmBtTimeGet = vmBtTimeGet4;
+                    vmBtTimeGet2 = vmMediaVolumeGet2;
+                    vmCd3ViewVISIBLEViewGONE = 0;
+                    vmDiscGet2 = str2;
+                }
+            } else {
+                vmEqModeGet = vmEqModeGet3;
+                vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol = vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol3;
+                vmBtConnectInfoGet = null;
+                vmMp3ViewVISIBLEViewGONE = vmMp3ViewVISIBLEViewGONE3;
+                vmModeGet = vmModeGet3;
+                vmMusicNameGet = vmMusicNameGet3;
+                vmStViewVISIBLEViewGONE = vmStViewVISIBLEViewGONE2;
+                vmAuxViewVISIBLEViewGONE = vmAuxViewVISIBLEViewGONE2;
+                vmAslViewVISIBLEViewGONE = vmAslViewVISIBLEViewGONE4;
+                vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE3;
+                vmBtViewVISIBLEViewGONE = vmBtViewVISIBLEViewGONE3;
+                vmScanViewVISIBLEViewGONE = vmScanViewVISIBLEViewGONE4;
+                vmBtPlayViewVISIBLEViewVISIBLE = vmBtPlayViewVISIBLEViewVISIBLE2;
+                vmIndexGet = vmIndexGet3;
+                vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE2;
+                vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE4;
+                vmBtSetUpGet = vmBtSetUpGet2;
+                vmTrackGet = vmTrackGet2;
+                vmTimeGet = vmTimeGet4;
+                vmFmFrequencyGet = vmFmFrequencyGet2;
+                vmAlbumGet = vmAlbumGet4;
+                vmEqViewVISIBLEViewGONE = vmEqViewVISIBLEViewGONE4;
+                vmBtConnectInfoGet2 = vmChGet;
+                ObservableField<String> observableField47 = vmAlbum;
+                vmFmViewVISIBLEViewGONE = vmFmViewVISIBLEViewGONE4;
+                vmFmBandGet = vmFmBandGet5;
+                vmFmViewVISIBLEViewGONE2 = mUiParamsWindSpeedGet;
+                mUiParamsWindSpeedGet2 = vmCdViewVISIBLEViewGONE;
+                vmArtistGet = vmArtistGet3;
+                vmArtistGet2 = vmChGet2;
+                vmBtConnectViewVISIBLEViewGONE = vmBtConnectViewVISIBLEViewGONE2;
+                vmUsbMusicTimeGet = vmUsbMusicTimeGet3;
+                vmUsbViewVISIBLEViewGONE = vmUsbViewVISIBLEViewGONE4;
+                vmUsbViewVISIBLEViewGONE2 = 0;
+                vmCd4ViewVISIBLEViewGONE = vmAudioOffViewVISIBLEViewGONE2;
+                ObservableField<String> observableField48 = vmIndex;
+                vmAudioOffViewGONEViewVISIBLE = vmAudioOffViewGONEViewVISIBLE2;
+                String str3 = vmDiscGet6;
+                vmDiscGet = mUiParamsRightTempStrGet;
+                vmBtSignalGet2 = vmBtSignalGet3;
+                vmBtSignalGet = vmBtPlayViewVISIBLEViewGONE2;
+                vmBtTimeGet = vmBtTimeGet4;
+                vmBtTimeGet2 = vmMediaVolumeGet2;
+                vmCd3ViewVISIBLEViewGONE = 0;
+                vmDiscGet2 = str3;
+            }
+        } else {
+            vmCd6Get = null;
+            i = 0;
+            vmEqModeGet = null;
+            vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol = null;
+            vmBtConnectInfoGet = null;
+            vmMp3ViewVISIBLEViewGONE = 0;
+            vmModeGet = null;
+            vmMusicNameGet = null;
+            vmStViewVISIBLEViewGONE = 0;
+            vmAuxViewVISIBLEViewGONE = 0;
+            vmAslViewVISIBLEViewGONE = 0;
+            vmRptViewVISIBLEViewGONE = 0;
+            vmBtViewVISIBLEViewGONE = 0;
+            vmScanViewVISIBLEViewGONE = 0;
+            vmBtPlayViewVISIBLEViewVISIBLE = 0;
+            vmIndexGet = null;
+            vmRandViewVISIBLEViewGONE = 0;
+            vmShowVolumeViewVISIBLEViewGONE = 0;
+            vmBtSetUpGet = null;
+            vmTrackGet = null;
+            vmTimeGet = null;
+            vmFmFrequencyGet = null;
+            vmAlbumGet = null;
+            vmEqViewVISIBLEViewGONE = 0;
+            vmBtConnectInfoGet2 = vmChGet;
+            vmFmViewVISIBLEViewGONE = 0;
+            vmFmBandGet = null;
+            vmFmViewVISIBLEViewGONE2 = mUiParamsWindSpeedGet;
+            mUiParamsWindSpeedGet2 = 0;
+            vmArtistGet = null;
+            vmArtistGet2 = vmChGet2;
+            vmBtConnectViewVISIBLEViewGONE = 0;
+            vmUsbMusicTimeGet = null;
+            vmUsbViewVISIBLEViewGONE = 0;
+            vmUsbViewVISIBLEViewGONE2 = 0;
+            vmCd4ViewVISIBLEViewGONE = 0;
+            vmAudioOffViewGONEViewVISIBLE = 0;
+            vmDiscGet = mUiParamsRightTempStrGet;
+            vmBtSignalGet2 = 0;
+            vmBtSignalGet = 0;
+            vmBtTimeGet = null;
+            vmBtTimeGet2 = null;
+            vmCd3ViewVISIBLEViewGONE = 0;
+            vmDiscGet2 = null;
+        }
+        if ((dirtyFlags_1 & 2199023255552L) != 0) {
+            if (vm != null) {
+                vmFmBandGet2 = vmFmBandGet;
+                vmCd32 = vm.cd3;
+            } else {
+                vmFmBandGet2 = vmFmBandGet;
+                vmCd32 = vmCd3;
+            }
+            vmEqViewVISIBLEViewGONE2 = vmEqViewVISIBLEViewGONE;
+            updateRegistration(2, (Observable) vmCd32);
+            if (vmCd32 != null) {
+                vmCd3Get = vmCd32.get();
+            }
+            boolean androidDatabindingViewDataBindingSafeUnboxVmCd3Get = ViewDataBinding.safeUnbox(vmCd3Get);
+            if ((dirtyFlags_1 & 2199023255552L) != 0) {
+                if (androidDatabindingViewDataBindingSafeUnboxVmCd3Get) {
+                    dirtyFlags |= 1125899906842624L;
+                } else {
+                    dirtyFlags |= 562949953421312L;
+                }
+            }
+            vmCd3ViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxVmCd3Get ? i : 8;
+            ObservableField<Boolean> observableField49 = vmCd32;
+        } else {
+            vmEqViewVISIBLEViewGONE2 = vmEqViewVISIBLEViewGONE;
+            vmFmBandGet2 = vmFmBandGet;
+        }
+        if ((dirtyFlags_1 & PlaybackStateCompat.ACTION_PREPARE_FROM_URI) != 0) {
+            if (vm != null) {
+                vmCd6 = vm.cd6;
+            } else {
+                vmCd6 = null;
+            }
+            updateRegistration(11, (Observable) vmCd6);
+            if (vmCd6 != null) {
+                vmCd6Get = vmCd6.get();
+            }
+            boolean androidDatabindingViewDataBindingSafeUnboxVmCd6Get = ViewDataBinding.safeUnbox(vmCd6Get);
+            if ((dirtyFlags_1 & PlaybackStateCompat.ACTION_PREPARE_FROM_URI) != 0) {
+                if (androidDatabindingViewDataBindingSafeUnboxVmCd6Get) {
+                    dirtyFlags_1 |= 17592186044416L;
+                } else {
+                    dirtyFlags_1 |= 8796093022208L;
+                }
+            }
+            vmCd6ViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxVmCd6Get ? i : 8;
+            ObservableField<Boolean> observableField50 = vmCd6;
+        }
+        if ((dirtyFlags_1 & 549755813888L) != 0) {
+            if (vm != null) {
+                vmCd2 = vm.cd2;
+            } else {
+                vmCd2 = null;
+            }
+            updateRegistration(13, (Observable) vmCd2);
+            if (vmCd2 != null) {
+                vmCd2Get = vmCd2.get();
+            }
+            boolean androidDatabindingViewDataBindingSafeUnboxVmCd2Get = ViewDataBinding.safeUnbox(vmCd2Get);
+            if ((dirtyFlags_1 & 549755813888L) != 0) {
+                if (androidDatabindingViewDataBindingSafeUnboxVmCd2Get) {
+                    dirtyFlags_1 |= PlaybackStateCompat.ACTION_PREPARE;
+                } else {
+                    dirtyFlags_1 |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+                }
+            }
+            vmCd2ViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxVmCd2Get ? i : 8;
+            ObservableField<Boolean> observableField51 = vmCd2;
+        }
+        if ((dirtyFlags & 36028797018963968L) != 0) {
+            if (vm != null) {
+                vmCd5 = vm.cd5;
+            } else {
+                vmCd5 = null;
+            }
+            updateRegistration(21, (Observable) vmCd5);
+            if (vmCd5 != null) {
+                vmCd5Get = vmCd5.get();
+            }
+            boolean androidDatabindingViewDataBindingSafeUnboxVmCd5Get = ViewDataBinding.safeUnbox(vmCd5Get);
+            if ((dirtyFlags & 36028797018963968L) != 0) {
+                if (androidDatabindingViewDataBindingSafeUnboxVmCd5Get) {
+                    dirtyFlags |= 4611686018427387904L;
+                } else {
+                    dirtyFlags |= 2305843009213693952L;
+                }
+            }
+            vmCd5ViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxVmCd5Get ? i : 8;
+            ObservableField<Boolean> observableField52 = vmCd5;
+        }
+        if ((dirtyFlags_1 & 2147483648L) != 0) {
+            if (vm != null) {
+                vmCd1 = vm.cd1;
+            } else {
+                vmCd1 = null;
+            }
+            updateRegistration(22, (Observable) vmCd1);
+            if (vmCd1 != null) {
+                vmCd1Get = vmCd1.get();
+            }
+            boolean androidDatabindingViewDataBindingSafeUnboxVmCd1Get = ViewDataBinding.safeUnbox(vmCd1Get);
+            if ((dirtyFlags_1 & 2147483648L) != 0) {
+                if (androidDatabindingViewDataBindingSafeUnboxVmCd1Get) {
+                    dirtyFlags_1 |= 16;
+                } else {
+                    dirtyFlags_1 |= 8;
+                }
+            }
+            vmCd1ViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxVmCd1Get ? i : 8;
+            ObservableField<Boolean> observableField53 = vmCd1;
+        }
+        if ((dirtyFlags_1 & 512) != 0) {
+            if (vm != null) {
+                vmCd4 = vm.cd4;
+            } else {
+                vmCd4 = null;
+            }
+            updateRegistration(35, (Observable) vmCd4);
+            if (vmCd4 != null) {
+                vmCd4Get = vmCd4.get();
+            }
+            boolean androidDatabindingViewDataBindingSafeUnboxVmCd4Get = ViewDataBinding.safeUnbox(vmCd4Get);
+            if ((dirtyFlags_1 & 512) != 0) {
+                if (androidDatabindingViewDataBindingSafeUnboxVmCd4Get) {
+                    dirtyFlags |= 4503599627370496L;
+                } else {
+                    dirtyFlags |= 2251799813685248L;
+                }
+            }
+            if (!androidDatabindingViewDataBindingSafeUnboxVmCd4Get) {
+                i = 8;
+            }
+            ObservableField<Boolean> observableField54 = vmCd4;
+            vmUsbViewVISIBLEViewGONE2 = i;
+        }
+        if ((dirtyFlags & 426610513674240L) != 0) {
+            vmAudioOffViewGONEVmCd5ViewVISIBLEViewGONE = vmAudioOffGet ? 8 : vmCd5ViewVISIBLEViewGONE;
+        } else {
+            vmAudioOffViewGONEVmCd5ViewVISIBLEViewGONE = 0;
+        }
+        if ((dirtyFlags & 426644871315456L) != 0) {
+            vmAudioOffViewGONEVmCd4ViewVISIBLEViewGONE = vmAudioOffGet ? 8 : vmUsbViewVISIBLEViewGONE2;
+        } else {
+            vmAudioOffViewGONEVmCd4ViewVISIBLEViewGONE = 0;
+        }
+        if ((dirtyFlags & 426610511579136L) != 0) {
+            LexusOEMFMViewModel lexusOEMFMViewModel = vm;
+            vmAudioOffViewGONEVmCd6ViewVISIBLEViewGONE = vmAudioOffGet ? 8 : vmCd6ViewVISIBLEViewGONE;
+        } else {
+            LexusOEMFMViewModel lexusOEMFMViewModel2 = vm;
+            vmAudioOffViewGONEVmCd6ViewVISIBLEViewGONE = 0;
+        }
+        if ((dirtyFlags & 426610515771392L) != 0) {
+            long j = dirtyFlags_1;
+            vmAudioOffViewGONEVmCd1ViewVISIBLEViewGONE = vmAudioOffGet ? 8 : vmCd1ViewVISIBLEViewGONE;
+        } else {
+            long j2 = dirtyFlags_1;
+            vmAudioOffViewGONEVmCd1ViewVISIBLEViewGONE = 0;
+        }
+        if ((dirtyFlags & 426610511585280L) != 0) {
+            vmAudioOffViewGONEVmCd2ViewVISIBLEViewGONE = vmAudioOffGet ? 8 : vmCd2ViewVISIBLEViewGONE;
+        } else {
+            vmAudioOffViewGONEVmCd2ViewVISIBLEViewGONE = 0;
+        }
+        if ((dirtyFlags & 426610511577092L) != 0) {
+            vmEqModeGet2 = vmEqModeGet;
+            vmAudioOffViewGONEVmCd3ViewVISIBLEViewGONE = vmAudioOffGet ? 8 : vmCd3ViewVISIBLEViewGONE;
+        } else {
+            vmEqModeGet2 = vmEqModeGet;
+            vmAudioOffViewGONEVmCd3ViewVISIBLEViewGONE = 0;
+        }
+        if ((dirtyFlags & 281474976710656L) != 0) {
+            vmDiscGet3 = vmDiscGet2;
+            vmAudioOffViewVISIBLEViewGONE = vmCd4ViewVISIBLEViewGONE;
+            this.acLayout.setOnClickListener(this.mCallback240);
+        } else {
+            vmDiscGet3 = vmDiscGet2;
+            vmAudioOffViewVISIBLEViewGONE = vmCd4ViewVISIBLEViewGONE;
+        }
+        if ((351844794630144L & dirtyFlags) != 0) {
+            this.blowMode.setImageLevel(mUiParamsBlowingModeGet);
+        }
+        if ((dirtyFlags & 422212733501440L) != 0) {
+            this.btSignal.setVisibility(vmBtConnectViewVISIBLEViewGONE);
+        }
+        if ((422212465066048L & dirtyFlags) != 0) {
+            this.btSignal.setImageLevel(vmBtSignalGet2);
+        }
+        if ((dirtyFlags & 426610515771392L) != 0) {
+            this.cd1.setVisibility(vmAudioOffViewGONEVmCd1ViewVISIBLEViewGONE);
+        }
+        if ((dirtyFlags & 426610511585280L) != 0) {
+            this.cd2.setVisibility(vmAudioOffViewGONEVmCd2ViewVISIBLEViewGONE);
+        }
+        if ((dirtyFlags & 426610511577092L) != 0) {
+            this.cd3.setVisibility(vmAudioOffViewGONEVmCd3ViewVISIBLEViewGONE);
+        }
+        if ((dirtyFlags & 426644871315456L) != 0) {
+            this.cd4.setVisibility(vmAudioOffViewGONEVmCd4ViewVISIBLEViewGONE);
+        }
+        if ((dirtyFlags & 426610513674240L) != 0) {
+            this.cd5.setVisibility(vmAudioOffViewGONEVmCd5ViewVISIBLEViewGONE);
+        }
+        if ((dirtyFlags & 426610511579136L) != 0) {
+            this.cd6.setVisibility(vmAudioOffViewGONEVmCd6ViewVISIBLEViewGONE);
+        }
+        if ((422216760033280L & dirtyFlags) != 0) {
+            this.cdLayout.setVisibility(mUiParamsWindSpeedGet2);
+        }
+        if ((426610511577088L & dirtyFlags) != 0) {
+            this.discMode.setVisibility(vmAudioOffViewGONEViewVISIBLE);
+            this.mboundView1.setVisibility(vmAudioOffViewVISIBLEViewGONE);
+        }
+        if ((dirtyFlags & 422212465066240L) != 0) {
+            int i2 = vmAudioOffViewGONEVmCd6ViewVISIBLEViewGONE;
+            vmDiscGet4 = vmDiscGet3;
+            TextViewBindingAdapter.setText(this.discNum, vmDiscGet4);
+        } else {
+            vmDiscGet4 = vmDiscGet3;
+        }
+        if ((dirtyFlags & 422212465131520L) != 0) {
+            String str4 = vmDiscGet4;
+            vmDiscGet5 = vmEqModeGet2;
+            TextViewBindingAdapter.setText(this.eqMode, vmDiscGet5);
+        } else {
+            vmDiscGet5 = vmEqModeGet2;
+        }
+        if ((dirtyFlags & 422212465065992L) != 0) {
+            String str5 = vmDiscGet5;
+            vmEqViewVISIBLEViewGONE3 = vmEqViewVISIBLEViewGONE2;
+            this.eqMode.setVisibility(vmEqViewVISIBLEViewGONE3);
+        } else {
+            String vmEqModeGet4 = vmDiscGet5;
+            vmEqViewVISIBLEViewGONE3 = vmEqViewVISIBLEViewGONE2;
+        }
+        if ((dirtyFlags & 422212498620416L) != 0) {
+            int i3 = vmEqViewVISIBLEViewGONE3;
+            vmFmBandGet3 = vmFmBandGet2;
+            TextViewBindingAdapter.setText(this.fmBand, vmFmBandGet3);
+        } else {
+            vmFmBandGet3 = vmFmBandGet2;
+        }
+        if ((dirtyFlags & 422229644935168L) != 0) {
+            String str6 = vmFmBandGet3;
+            vmFmBandGet4 = vmBtConnectInfoGet2;
+            TextViewBindingAdapter.setText(this.fmCh, vmFmBandGet4);
+        } else {
+            vmFmBandGet4 = vmBtConnectInfoGet2;
+        }
+        if ((dirtyFlags & 422212465590272L) != 0) {
+            String str7 = vmFmBandGet4;
+            vmChGet3 = vmFmFrequencyGet;
+            TextViewBindingAdapter.setText(this.fmFrequency, vmChGet3);
+        } else {
+            String vmChGet4 = vmFmBandGet4;
+            vmChGet3 = vmFmFrequencyGet;
+        }
+        if ((dirtyFlags & 422349904019456L) != 0) {
+            String str8 = vmChGet3;
+            vmFmViewVISIBLEViewGONE3 = vmFmViewVISIBLEViewGONE;
+            this.fmLayout.setVisibility(vmFmViewVISIBLEViewGONE3);
+        } else {
+            String vmFmFrequencyGet3 = vmChGet3;
+            vmFmViewVISIBLEViewGONE3 = vmFmViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422281184542720L) != 0) {
+            int i4 = vmFmViewVISIBLEViewGONE3;
+            vmShowVolumeViewVISIBLEViewGONE2 = vmShowVolumeViewVISIBLEViewGONE;
+            this.layoutVolume.setVisibility(vmShowVolumeViewVISIBLEViewGONE2);
+        } else {
+            vmShowVolumeViewVISIBLEViewGONE2 = vmShowVolumeViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422212465065985L) != 0) {
+            int i5 = vmShowVolumeViewVISIBLEViewGONE2;
+            vmShowVolumeViewVISIBLEViewGONE3 = vmRandViewVISIBLEViewGONE;
+            this.mboundView18.setVisibility(vmShowVolumeViewVISIBLEViewGONE3);
+            this.mboundView32.setVisibility(vmShowVolumeViewVISIBLEViewGONE3);
+            this.mboundView43.setVisibility(vmShowVolumeViewVISIBLEViewGONE3);
+        } else {
+            vmShowVolumeViewVISIBLEViewGONE3 = vmRandViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422212465067008L) != 0) {
+            int i6 = vmShowVolumeViewVISIBLEViewGONE3;
+            vmRptViewVISIBLEViewGONE2 = vmRptViewVISIBLEViewGONE;
+            this.mboundView19.setVisibility(vmRptViewVISIBLEViewGONE2);
+            this.mboundView33.setVisibility(vmRptViewVISIBLEViewGONE2);
+            this.mboundView44.setVisibility(vmRptViewVISIBLEViewGONE2);
+        } else {
+            int vmRandViewVISIBLEViewGONE3 = vmShowVolumeViewVISIBLEViewGONE3;
+            vmRptViewVISIBLEViewGONE2 = vmRptViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422212465066112L) != 0) {
+            int i7 = vmRptViewVISIBLEViewGONE2;
+            vmUsbStatusGet = vmUsbStatusGet2;
+            TextViewBindingAdapter.setText(this.mboundView20, vmUsbStatusGet);
+            TextViewBindingAdapter.setText(this.mboundView34, vmUsbStatusGet);
+            TextViewBindingAdapter.setText(this.mboundView45, vmUsbStatusGet);
+        } else {
+            vmUsbStatusGet = vmUsbStatusGet2;
+        }
+        if ((dirtyFlags & 422212481843200L) != 0) {
+            String str9 = vmUsbStatusGet;
+            vmScanViewVISIBLEViewGONE2 = vmScanViewVISIBLEViewGONE;
+            this.mboundView21.setVisibility(vmScanViewVISIBLEViewGONE2);
+            this.mboundView35.setVisibility(vmScanViewVISIBLEViewGONE2);
+            this.mboundView46.setVisibility(vmScanViewVISIBLEViewGONE2);
+        } else {
+            vmScanViewVISIBLEViewGONE2 = vmScanViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422221055000576L) != 0) {
+            int i8 = vmScanViewVISIBLEViewGONE2;
+            vmScanViewVISIBLEViewGONE3 = vmStViewVISIBLEViewGONE;
+            this.mboundView36.setVisibility(vmScanViewVISIBLEViewGONE3);
+            this.mboundView47.setVisibility(vmScanViewVISIBLEViewGONE3);
+            this.st.setVisibility(vmScanViewVISIBLEViewGONE3);
+        } else {
+            vmScanViewVISIBLEViewGONE3 = vmStViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422762220879872L) != 0) {
+            int i9 = vmScanViewVISIBLEViewGONE3;
+            vmBtViewVISIBLEViewGONE2 = vmBtViewVISIBLEViewGONE;
+            this.mboundView53.setVisibility(vmBtViewVISIBLEViewGONE2);
+        } else {
+            int vmStViewVISIBLEViewGONE3 = vmScanViewVISIBLEViewGONE3;
+            vmBtViewVISIBLEViewGONE2 = vmBtViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 457396837154816L) != 0) {
+            int i10 = vmBtViewVISIBLEViewGONE2;
+            vmBtConnectInfoGet3 = vmBtConnectInfoGet;
+            TextViewBindingAdapter.setText(this.mboundView54, vmBtConnectInfoGet3);
+        } else {
+            vmBtConnectInfoGet3 = vmBtConnectInfoGet;
+        }
+        if ((dirtyFlags & 422212465065986L) != 0) {
+            String str10 = vmBtConnectInfoGet3;
+            vmBtConnectInfoGet4 = vmBtSetUpGet;
+            TextViewBindingAdapter.setText(this.mboundView55, vmBtConnectInfoGet4);
+        } else {
+            vmBtConnectInfoGet4 = vmBtSetUpGet;
+        }
+        if ((dirtyFlags & 422487342972928L) != 0) {
+            String str11 = vmBtConnectInfoGet4;
+            this.mboundView56.setVisibility(vmBtSignalGet);
+            vmBtPlayViewVISIBLEViewGONE = vmBtPlayViewVISIBLEViewVISIBLE;
+            this.mboundView57.setVisibility(vmBtPlayViewVISIBLEViewGONE);
+        } else {
+            String vmBtSetUpGet3 = vmBtConnectInfoGet4;
+            vmBtPlayViewVISIBLEViewGONE = vmBtPlayViewVISIBLEViewVISIBLE;
+        }
+        if ((dirtyFlags & 422212466114560L) != 0) {
+            int i11 = vmBtPlayViewVISIBLEViewGONE;
+            vmBtTimeGet3 = vmBtTimeGet;
+            TextViewBindingAdapter.setText(this.mboundView57, vmBtTimeGet3);
+        } else {
+            int vmBtPlayViewVISIBLEViewVISIBLE3 = vmBtPlayViewVISIBLEViewGONE;
+            vmBtTimeGet3 = vmBtTimeGet;
+        }
+        if ((dirtyFlags & 422213001936896L) != 0) {
+            String str12 = vmBtTimeGet3;
+            vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol2 = vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol;
+            ImageViewBindingAdapter.setImageDrawable(this.mboundView60, vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol2);
+        } else {
+            vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol2 = vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol;
+        }
+        if ((dirtyFlags & 424411488321536L) != 0) {
+            Drawable drawable2 = vmMuteMboundView60AndroidDrawableLexusCdProgressBarMuteMboundView60AndroidDrawableLexusCdProgressBarVol2;
+            vmMediaVolumeGet = vmBtTimeGet2;
+            TextViewBindingAdapter.setText(this.mboundView61, vmMediaVolumeGet);
+        } else {
+            vmMediaVolumeGet = vmBtTimeGet2;
+        }
+        if ((dirtyFlags & 422212532174848L) != 0) {
+            String str13 = vmMediaVolumeGet;
+            vmAslViewVISIBLEViewGONE2 = vmAslViewVISIBLEViewGONE;
+            this.mboundView8.setVisibility(vmAslViewVISIBLEViewGONE2);
+        } else {
+            vmAslViewVISIBLEViewGONE2 = vmAslViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422214612549632L) != 0) {
+            int i12 = vmAslViewVISIBLEViewGONE2;
+            vmAslViewVISIBLEViewGONE3 = vmAuxViewVISIBLEViewGONE;
+            this.modeAux.setVisibility(vmAslViewVISIBLEViewGONE3);
+        } else {
+            vmAslViewVISIBLEViewGONE3 = vmAuxViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422212465070080L) != 0) {
+            int i13 = vmAslViewVISIBLEViewGONE3;
+            vmModeGet2 = vmModeGet;
+            TextViewBindingAdapter.setText(this.modeFm, vmModeGet2);
+        } else {
+            int vmAuxViewVISIBLEViewGONE3 = vmAslViewVISIBLEViewGONE3;
+            vmModeGet2 = vmModeGet;
+        }
+        if ((dirtyFlags & 422212465066016L) != 0) {
+            String str14 = vmModeGet2;
+            vmIndexGet2 = vmIndexGet;
+            TextViewBindingAdapter.setText(this.mp3Index, vmIndexGet2);
+            TextViewBindingAdapter.setText(this.usbIndex, vmIndexGet2);
+        } else {
+            vmIndexGet2 = vmIndexGet;
+        }
+        if ((dirtyFlags & 422212465197056L) != 0) {
+            String str15 = vmIndexGet2;
+            vmMp3ViewVISIBLEViewGONE2 = vmMp3ViewVISIBLEViewGONE;
+            this.mp3Layout.setVisibility(vmMp3ViewVISIBLEViewGONE2);
+        } else {
+            vmMp3ViewVISIBLEViewGONE2 = vmMp3ViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 422212465066000L) != 0) {
+            int i14 = vmMp3ViewVISIBLEViewGONE2;
+            vmAlbumGet2 = vmAlbumGet;
+            TextViewBindingAdapter.setText(this.mp3MusicAlbum, vmAlbumGet2);
+            TextViewBindingAdapter.setText(this.usbMusicAlbum, vmAlbumGet2);
+        } else {
+            vmAlbumGet2 = vmAlbumGet;
+        }
+        if ((dirtyFlags & 422212599283712L) != 0) {
+            String str16 = vmAlbumGet2;
+            vmAlbumGet3 = vmArtistGet;
+            TextViewBindingAdapter.setText(this.mp3MusicArtist, vmAlbumGet3);
+            TextViewBindingAdapter.setText(this.usbMusicArtist, vmAlbumGet3);
+        } else {
+            vmAlbumGet3 = vmArtistGet;
+        }
+        if ((dirtyFlags & 422212465098752L) != 0) {
+            String str17 = vmAlbumGet3;
+            vmMusicNameGet2 = vmMusicNameGet;
+            TextViewBindingAdapter.setText(this.mp3MusicName, vmMusicNameGet2);
+            TextViewBindingAdapter.setText(this.usbMusicName, vmMusicNameGet2);
+        } else {
+            String vmArtistGet4 = vmAlbumGet3;
+            vmMusicNameGet2 = vmMusicNameGet;
+        }
+        if ((dirtyFlags & 422212465082368L) != 0) {
+            String str18 = vmMusicNameGet2;
+            vmUsbMusicTimeGet2 = vmUsbMusicTimeGet;
+            TextViewBindingAdapter.setText(this.mp3MusicTime, vmUsbMusicTimeGet2);
+            TextViewBindingAdapter.setText(this.usbMusicTime, vmUsbMusicTimeGet2);
+        } else {
+            vmUsbMusicTimeGet2 = vmUsbMusicTimeGet;
+        }
+        if ((dirtyFlags & 422212465066496L) != 0) {
+            String str19 = vmUsbMusicTimeGet2;
+            vmTimeGet2 = vmTimeGet;
+            TextViewBindingAdapter.setText(this.time, vmTimeGet2);
+        } else {
+            vmTimeGet2 = vmTimeGet;
+        }
+        if ((dirtyFlags & 431008558088192L) != 0) {
+            String str20 = vmTimeGet2;
+            vmTimeGet3 = vmTrackGet;
+            TextViewBindingAdapter.setText(this.trackNum, vmTimeGet3);
+        } else {
+            vmTimeGet3 = vmTrackGet;
+        }
+        if ((dirtyFlags & 369435906932736L) != 0) {
+            String str21 = vmTimeGet3;
+            mUiParamsLeftTempStrGet = vmArtistGet2;
+            TextViewBindingAdapter.setText(this.tvLeftTemperature, mUiParamsLeftTempStrGet);
+        } else {
+            String vmTrackGet3 = vmTimeGet3;
+            mUiParamsLeftTempStrGet = vmArtistGet2;
+        }
+        if ((dirtyFlags & 351843729276928L) != 0) {
+            String str22 = mUiParamsLeftTempStrGet;
+            mUiParamsRightTempStrGet2 = vmDiscGet;
+            TextViewBindingAdapter.setText(this.tvRightTemperature, mUiParamsRightTempStrGet2);
+        } else {
+            mUiParamsRightTempStrGet2 = vmDiscGet;
+        }
+        if ((dirtyFlags & 422212465328128L) != 0) {
+            String str23 = mUiParamsRightTempStrGet2;
+            vmUsbViewVISIBLEViewGONE3 = vmUsbViewVISIBLEViewGONE;
+            this.usbLayout.setVisibility(vmUsbViewVISIBLEViewGONE3);
+        } else {
+            vmUsbViewVISIBLEViewGONE3 = vmUsbViewVISIBLEViewGONE;
+        }
+        if ((dirtyFlags & 352943232516096L) != 0) {
+            int i15 = vmUsbViewVISIBLEViewGONE3;
+            this.windSpeedLevel.setImageLevel(vmFmViewVISIBLEViewGONE2);
+            return;
+        }
+        int vmUsbViewVISIBLEViewGONE5 = vmFmViewVISIBLEViewGONE2;
+    }
+
+    public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
+        LexusOEMFMViewModel vm = this.mVm;
+        if (vm != null) {
+            vm.openAir(callbackArg_0);
+        }
     }
 }

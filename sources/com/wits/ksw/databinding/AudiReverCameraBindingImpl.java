@@ -5,21 +5,17 @@ import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.CompoundButtonBindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RadioGroup;
 import com.wits.ksw.settings.audi.vm.AudiSystemViewModel;
 
 public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
 
-    public AudiReverCameraBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public AudiReverCameraBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -50,7 +46,7 @@ public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -58,7 +54,7 @@ public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
         return true;
     }
 
-    public void setVm(@Nullable AudiSystemViewModel Vm) {
+    public void setVm(AudiSystemViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 2;
@@ -69,10 +65,12 @@ public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
 
     /* access modifiers changed from: protected */
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-        if (localFieldId != 0) {
-            return false;
+        switch (localFieldId) {
+            case 0:
+                return onChangeVmReverCamera((ObservableInt) object, fieldId);
+            default:
+                return false;
         }
-        return onChangeVmReverCamera((ObservableInt) object, fieldId);
     }
 
     private boolean onChangeVmReverCamera(ObservableInt VmReverCamera, int fieldId) {
@@ -92,14 +90,17 @@ public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        AudiSystemViewModel vm = this.mVm;
-        ObservableInt vmReverCamera = null;
+        RadioGroup.OnCheckedChangeListener vmOnReverCameraCheckedChangeListener = null;
+        int vmReverCameraGet = 0;
         boolean vmReverCameraInt2 = false;
         boolean vmReverCameraInt0 = false;
-        int vmReverCameraGet = 0;
         boolean vmReverCameraInt1 = false;
-        RadioGroup.OnCheckedChangeListener vmOnReverCameraCheckedChangeListener = null;
+        AudiSystemViewModel vm = this.mVm;
+        ObservableInt vmReverCamera = null;
         if ((dirtyFlags & 7) != 0) {
+            if (!((dirtyFlags & 6) == 0 || vm == null)) {
+                vmOnReverCameraCheckedChangeListener = vm.onReverCameraCheckedChangeListener;
+            }
             if (vm != null) {
                 vmReverCamera = vm.reverCamera;
             }
@@ -110,16 +111,13 @@ public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
             vmReverCameraInt2 = vmReverCameraGet == 2;
             vmReverCameraInt0 = vmReverCameraGet == 0;
             vmReverCameraInt1 = vmReverCameraGet == 1;
-            if (!((dirtyFlags & 6) == 0 || vm == null)) {
-                vmOnReverCameraCheckedChangeListener = vm.onReverCameraCheckedChangeListener;
-            }
         }
         if ((7 & dirtyFlags) != 0) {
             CompoundButtonBindingAdapter.setChecked(this.RadioButton1, vmReverCameraInt0);
             CompoundButtonBindingAdapter.setChecked(this.RadioButton2, vmReverCameraInt1);
             CompoundButtonBindingAdapter.setChecked(this.RadioButton3, vmReverCameraInt2);
         }
-        if ((dirtyFlags & 6) != 0) {
+        if ((6 & dirtyFlags) != 0) {
             this.timeRadioGroup.setOnCheckedChangeListener(vmOnReverCameraCheckedChangeListener);
         }
     }

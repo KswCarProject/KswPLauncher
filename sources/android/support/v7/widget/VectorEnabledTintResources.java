@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import java.lang.ref.WeakReference;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class VectorEnabledTintResources extends Resources {
     public static final int MAX_SDK_WHERE_REQUIRED = 20;
     private static boolean sCompatVectorFromResourcesEnabled = false;
@@ -18,7 +15,7 @@ public class VectorEnabledTintResources extends Resources {
         return isCompatVectorFromResourcesEnabled() && Build.VERSION.SDK_INT <= 20;
     }
 
-    public VectorEnabledTintResources(@NonNull Context context, @NonNull Resources res) {
+    public VectorEnabledTintResources(Context context, Resources res) {
         super(res.getAssets(), res.getDisplayMetrics(), res.getConfiguration());
         this.mContextRef = new WeakReference<>(context);
     }

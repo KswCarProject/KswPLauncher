@@ -2,8 +2,6 @@ package com.wits.ksw.launcher.view.id6;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,13 +15,13 @@ public class FragmentID6Two extends ID6BaseFragment implements View.OnKeyListene
     private static final String TAG = "KSWLauncher";
     private ID6FragmentTow binding;
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.binding = (ID6FragmentTow) DataBindingUtil.inflate(inflater, R.layout.id6_fragment_tow, (ViewGroup) null, false);
-        return this.binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ID6FragmentTow iD6FragmentTow = (ID6FragmentTow) DataBindingUtil.inflate(inflater, R.layout.id6_fragment_tow, (ViewGroup) null, false);
+        this.binding = iD6FragmentTow;
+        return iD6FragmentTow.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.binding.setViewModel(this.viewModel);
         this.binding.id6VideoIamgeView.setOnKeyListener(this);
@@ -47,7 +45,7 @@ public class FragmentID6Two extends ID6BaseFragment implements View.OnKeyListene
         });
         this.binding.id6VideoIamgeView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FragmentID6Two.this.viewModel.openVideo(v);
+                FragmentID6Two.this.viewModel.openVideoMulti(v);
                 FragmentID6Two.this.setItemSelected(v);
             }
         });
@@ -67,12 +65,12 @@ public class FragmentID6Two extends ID6BaseFragment implements View.OnKeyListene
     }
 
     public void setItemSelected(View view) {
-        boolean z = false;
+        boolean z = true;
         this.binding.id6VideoIamgeView.setSelected(this.binding.id6VideoIamgeView == view);
         this.binding.id6CarImageView.setSelected(this.binding.id6CarImageView == view);
         ImageView imageView = this.binding.id6BrowserImageView;
-        if (this.binding.id6BrowserImageView == view) {
-            z = true;
+        if (this.binding.id6BrowserImageView != view) {
+            z = false;
         }
         imageView.setSelected(z);
     }

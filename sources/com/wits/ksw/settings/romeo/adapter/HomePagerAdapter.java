@@ -30,11 +30,12 @@ public class HomePagerAdapter extends PagerAdapter {
             childViews.get(i).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Log.d("HomePagerAdapter", "onClick position=" + position + " finalI=" + finalI);
-                    if (position == 0) {
+                    int i = position;
+                    if (i == 0) {
                         HomePagerAdapter.this.onItemClickPage1(finalI, v);
-                    } else if (position == 1) {
+                    } else if (i == 1) {
                         HomePagerAdapter.this.onItemClickPage2(finalI, v);
-                    } else if (position == 2) {
+                    } else if (i == 2) {
                         HomePagerAdapter.this.onItemClickPage3(finalI, v);
                     }
                 }

@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.data.AssetFileDescriptorLocalUriFetcher;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -30,11 +29,11 @@ public class UriLoader<Data> implements ModelLoader<Uri, Data> {
         this.factory = factory2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull Uri model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(Uri model, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(model), this.factory.build(model));
     }
 
-    public boolean handles(@NonNull Uri model) {
+    public boolean handles(Uri model) {
         return SCHEMES.contains(model.getScheme());
     }
 
@@ -49,7 +48,6 @@ public class UriLoader<Data> implements ModelLoader<Uri, Data> {
             return new StreamLocalUriFetcher(this.contentResolver, uri);
         }
 
-        @NonNull
         public ModelLoader<Uri, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new UriLoader(this);
         }
@@ -69,7 +67,6 @@ public class UriLoader<Data> implements ModelLoader<Uri, Data> {
             return new FileDescriptorLocalUriFetcher(this.contentResolver, uri);
         }
 
-        @NonNull
         public ModelLoader<Uri, ParcelFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new UriLoader(this);
         }

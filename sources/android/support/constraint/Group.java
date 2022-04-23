@@ -1,10 +1,8 @@
 package android.support.constraint;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.view.View;
 
 public class Group extends ConstraintHelper {
     public Group(Context context) {
@@ -25,21 +23,19 @@ public class Group extends ConstraintHelper {
         this.mUseViewMeasure = false;
     }
 
-    public void updatePreLayout(ConstraintLayout container) {
-        int visibility = getVisibility();
-        float elevation = 0.0f;
-        if (Build.VERSION.SDK_INT >= 21) {
-            elevation = getElevation();
-        }
-        for (int i = 0; i < this.mCount; i++) {
-            View view = container.getViewById(this.mIds[i]);
-            if (view != null) {
-                view.setVisibility(visibility);
-                if (elevation > 0.0f && Build.VERSION.SDK_INT >= 21) {
-                    view.setElevation(elevation);
-                }
-            }
-        }
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        applyLayoutFeatures();
+    }
+
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        applyLayoutFeatures();
+    }
+
+    public void setElevation(float elevation) {
+        super.setElevation(elevation);
+        applyLayoutFeatures();
     }
 
     public void updatePostLayout(ConstraintLayout container) {

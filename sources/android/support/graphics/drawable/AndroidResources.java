@@ -1,7 +1,5 @@
 package android.support.graphics.drawable;
 
-import android.support.annotation.StyleableRes;
-
 class AndroidResources {
     public static final int FAST_OUT_LINEAR_IN = 17563663;
     public static final int FAST_OUT_SLOW_IN = 17563661;
@@ -9,9 +7,7 @@ class AndroidResources {
     static final int[] STYLEABLE_ANIMATED_VECTOR_DRAWABLE = {16843161};
     static final int STYLEABLE_ANIMATED_VECTOR_DRAWABLE_DRAWABLE = 0;
     static final int[] STYLEABLE_ANIMATED_VECTOR_DRAWABLE_TARGET = {16842755, 16843213};
-    @StyleableRes
     static final int STYLEABLE_ANIMATED_VECTOR_DRAWABLE_TARGET_ANIMATION = 1;
-    @StyleableRes
     static final int STYLEABLE_ANIMATED_VECTOR_DRAWABLE_TARGET_NAME = 0;
     public static final int[] STYLEABLE_ANIMATOR = {16843073, 16843160, 16843198, 16843199, 16843200, 16843486, 16843487, 16843488};
     public static final int STYLEABLE_ANIMATOR_DURATION = 1;

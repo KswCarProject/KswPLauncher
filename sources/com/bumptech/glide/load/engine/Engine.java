@@ -1,8 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pools;
 import android.util.Log;
 import com.bumptech.glide.GlideContext;
@@ -40,7 +37,6 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         this(memoryCache, diskCacheFactory, diskCacheExecutor, sourceExecutor, sourceUnlimitedExecutor, animationExecutor, (Jobs) null, (EngineKeyFactory) null, (ActiveResources) null, (EngineJobFactory) null, (DecodeJobFactory) null, (ResourceRecycler) null, isActiveResourceRetentionAllowed);
     }
 
-    @VisibleForTesting
     Engine(MemoryCache cache2, DiskCache.Factory diskCacheFactory, GlideExecutor diskCacheExecutor, GlideExecutor sourceExecutor, GlideExecutor sourceUnlimitedExecutor, GlideExecutor animationExecutor, Jobs jobs2, EngineKeyFactory keyFactory2, ActiveResources activeResources2, EngineJobFactory engineJobFactory2, DecodeJobFactory decodeJobFactory2, ResourceRecycler resourceRecycler2, boolean isActiveResourceRetentionAllowed) {
         ActiveResources activeResources3;
         EngineKeyFactory keyFactory3;
@@ -50,7 +46,8 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         ResourceRecycler resourceRecycler3;
         MemoryCache memoryCache = cache2;
         this.cache = memoryCache;
-        this.diskCacheProvider = new LazyDiskCacheProvider(diskCacheFactory);
+        LazyDiskCacheProvider lazyDiskCacheProvider = new LazyDiskCacheProvider(diskCacheFactory);
+        this.diskCacheProvider = lazyDiskCacheProvider;
         if (activeResources2 == null) {
             activeResources3 = new ActiveResources(isActiveResourceRetentionAllowed);
         } else {
@@ -78,7 +75,7 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         }
         this.engineJobFactory = engineJobFactory3;
         if (decodeJobFactory2 == null) {
-            decodeJobFactory3 = new DecodeJobFactory(this.diskCacheProvider);
+            decodeJobFactory3 = new DecodeJobFactory(lazyDiskCacheProvider);
         } else {
             decodeJobFactory3 = decodeJobFactory2;
         }
@@ -92,99 +89,96 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         memoryCache.setResourceRemovedListener(this);
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:13:0x0043, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:13:0x0041, code lost:
         return null;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:21:0x005a, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:21:0x0056, code lost:
         return null;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public synchronized <R> com.bumptech.glide.load.engine.Engine.LoadStatus load(com.bumptech.glide.GlideContext r31, java.lang.Object r32, com.bumptech.glide.load.Key r33, int r34, int r35, java.lang.Class<?> r36, java.lang.Class<R> r37, com.bumptech.glide.Priority r38, com.bumptech.glide.load.engine.DiskCacheStrategy r39, java.util.Map<java.lang.Class<?>, com.bumptech.glide.load.Transformation<?>> r40, boolean r41, boolean r42, com.bumptech.glide.load.Options r43, boolean r44, boolean r45, boolean r46, boolean r47, com.bumptech.glide.request.ResourceCallback r48, java.util.concurrent.Executor r49) {
+    public synchronized <R> com.bumptech.glide.load.engine.Engine.LoadStatus load(com.bumptech.glide.GlideContext r32, java.lang.Object r33, com.bumptech.glide.load.Key r34, int r35, int r36, java.lang.Class<?> r37, java.lang.Class<R> r38, com.bumptech.glide.Priority r39, com.bumptech.glide.load.engine.DiskCacheStrategy r40, java.util.Map<java.lang.Class<?>, com.bumptech.glide.load.Transformation<?>> r41, boolean r42, boolean r43, com.bumptech.glide.load.Options r44, boolean r45, boolean r46, boolean r47, boolean r48, com.bumptech.glide.request.ResourceCallback r49, java.util.concurrent.Executor r50) {
         /*
-            r30 = this;
-            r1 = r30
-            r0 = r44
-            r8 = r48
-            r9 = r49
-            monitor-enter(r30)
-            boolean r2 = VERBOSE_IS_LOGGABLE     // Catch:{ all -> 0x00cd }
-            if (r2 == 0) goto L_0x0012
-            long r2 = com.bumptech.glide.util.LogTime.getLogTime()     // Catch:{ all -> 0x00cd }
+            r31 = this;
+            r1 = r31
+            r0 = r45
+            r8 = r49
+            r9 = r50
+            monitor-enter(r31)
+            boolean r10 = VERBOSE_IS_LOGGABLE     // Catch:{ all -> 0x00c7 }
+            if (r10 == 0) goto L_0x0012
+            long r2 = com.bumptech.glide.util.LogTime.getLogTime()     // Catch:{ all -> 0x00c7 }
             goto L_0x0014
         L_0x0012:
             r2 = 0
         L_0x0014:
-            r10 = r2
-            com.bumptech.glide.load.engine.EngineKeyFactory r12 = r1.keyFactory     // Catch:{ all -> 0x00cd }
-            r13 = r32
+            r11 = r2
+            com.bumptech.glide.load.engine.EngineKeyFactory r13 = r1.keyFactory     // Catch:{ all -> 0x00c7 }
             r14 = r33
             r15 = r34
             r16 = r35
-            r17 = r40
-            r18 = r36
+            r17 = r36
+            r18 = r41
             r19 = r37
-            r20 = r43
-            com.bumptech.glide.load.engine.EngineKey r2 = r12.buildKey(r13, r14, r15, r16, r17, r18, r19, r20)     // Catch:{ all -> 0x00cd }
+            r20 = r38
+            r21 = r44
+            com.bumptech.glide.load.engine.EngineKey r2 = r13.buildKey(r14, r15, r16, r17, r18, r19, r20, r21)     // Catch:{ all -> 0x00c7 }
             r15 = r2
-            com.bumptech.glide.load.engine.EngineResource r2 = r1.loadFromActiveResources(r15, r0)     // Catch:{ all -> 0x00cd }
+            com.bumptech.glide.load.engine.EngineResource r2 = r1.loadFromActiveResources(r15, r0)     // Catch:{ all -> 0x00c7 }
             r14 = r2
             r2 = 0
-            if (r14 == 0) goto L_0x0044
-            com.bumptech.glide.load.DataSource r3 = com.bumptech.glide.load.DataSource.MEMORY_CACHE     // Catch:{ all -> 0x00cd }
-            r8.onResourceReady(r14, r3)     // Catch:{ all -> 0x00cd }
-            boolean r3 = VERBOSE_IS_LOGGABLE     // Catch:{ all -> 0x00cd }
-            if (r3 == 0) goto L_0x0042
+            if (r14 == 0) goto L_0x0042
+            com.bumptech.glide.load.DataSource r3 = com.bumptech.glide.load.DataSource.MEMORY_CACHE     // Catch:{ all -> 0x00c7 }
+            r8.onResourceReady(r14, r3)     // Catch:{ all -> 0x00c7 }
+            if (r10 == 0) goto L_0x0040
             java.lang.String r3 = "Loaded resource from active resources"
-            logWithTimeAndKey(r3, r10, r15)     // Catch:{ all -> 0x00cd }
+            logWithTimeAndKey(r3, r11, r15)     // Catch:{ all -> 0x00c7 }
+        L_0x0040:
+            monitor-exit(r31)
+            return r2
         L_0x0042:
-            monitor-exit(r30)
-            return r2
-        L_0x0044:
-            com.bumptech.glide.load.engine.EngineResource r3 = r1.loadFromCache(r15, r0)     // Catch:{ all -> 0x00cd }
+            com.bumptech.glide.load.engine.EngineResource r3 = r1.loadFromCache(r15, r0)     // Catch:{ all -> 0x00c7 }
             r13 = r3
-            if (r13 == 0) goto L_0x005b
-            com.bumptech.glide.load.DataSource r3 = com.bumptech.glide.load.DataSource.MEMORY_CACHE     // Catch:{ all -> 0x00cd }
-            r8.onResourceReady(r13, r3)     // Catch:{ all -> 0x00cd }
-            boolean r3 = VERBOSE_IS_LOGGABLE     // Catch:{ all -> 0x00cd }
-            if (r3 == 0) goto L_0x0059
+            if (r13 == 0) goto L_0x0057
+            com.bumptech.glide.load.DataSource r3 = com.bumptech.glide.load.DataSource.MEMORY_CACHE     // Catch:{ all -> 0x00c7 }
+            r8.onResourceReady(r13, r3)     // Catch:{ all -> 0x00c7 }
+            if (r10 == 0) goto L_0x0055
             java.lang.String r3 = "Loaded resource from cache"
-            logWithTimeAndKey(r3, r10, r15)     // Catch:{ all -> 0x00cd }
-        L_0x0059:
-            monitor-exit(r30)
+            logWithTimeAndKey(r3, r11, r15)     // Catch:{ all -> 0x00c7 }
+        L_0x0055:
+            monitor-exit(r31)
             return r2
-        L_0x005b:
-            com.bumptech.glide.load.engine.Jobs r2 = r1.jobs     // Catch:{ all -> 0x00cd }
-            r12 = r47
-            com.bumptech.glide.load.engine.EngineJob r2 = r2.get(r15, r12)     // Catch:{ all -> 0x00cd }
-            r7 = r2
-            if (r7 == 0) goto L_0x0079
-            r7.addCallback(r8, r9)     // Catch:{ all -> 0x00cd }
-            boolean r2 = VERBOSE_IS_LOGGABLE     // Catch:{ all -> 0x00cd }
-            if (r2 == 0) goto L_0x0072
+        L_0x0057:
+            com.bumptech.glide.load.engine.Jobs r2 = r1.jobs     // Catch:{ all -> 0x00c7 }
+            r7 = r48
+            com.bumptech.glide.load.engine.EngineJob r2 = r2.get(r15, r7)     // Catch:{ all -> 0x00c7 }
+            r6 = r2
+            if (r6 == 0) goto L_0x0073
+            r6.addCallback(r8, r9)     // Catch:{ all -> 0x00c7 }
+            if (r10 == 0) goto L_0x006c
             java.lang.String r2 = "Added to existing load"
-            logWithTimeAndKey(r2, r10, r15)     // Catch:{ all -> 0x00cd }
-        L_0x0072:
-            com.bumptech.glide.load.engine.Engine$LoadStatus r2 = new com.bumptech.glide.load.engine.Engine$LoadStatus     // Catch:{ all -> 0x00cd }
-            r2.<init>(r8, r7)     // Catch:{ all -> 0x00cd }
-            monitor-exit(r30)
+            logWithTimeAndKey(r2, r11, r15)     // Catch:{ all -> 0x00c7 }
+        L_0x006c:
+            com.bumptech.glide.load.engine.Engine$LoadStatus r2 = new com.bumptech.glide.load.engine.Engine$LoadStatus     // Catch:{ all -> 0x00c7 }
+            r2.<init>(r8, r6)     // Catch:{ all -> 0x00c7 }
+            monitor-exit(r31)
             return r2
-        L_0x0079:
-            com.bumptech.glide.load.engine.Engine$EngineJobFactory r2 = r1.engineJobFactory     // Catch:{ all -> 0x00cd }
+        L_0x0073:
+            com.bumptech.glide.load.engine.Engine$EngineJobFactory r2 = r1.engineJobFactory     // Catch:{ all -> 0x00c7 }
             r3 = r15
-            r4 = r44
-            r5 = r45
-            r6 = r46
-            r29 = r7
-            r7 = r47
-            com.bumptech.glide.load.engine.EngineJob r2 = r2.build(r3, r4, r5, r6, r7)     // Catch:{ all -> 0x00cd }
-            com.bumptech.glide.load.engine.Engine$DecodeJobFactory r3 = r1.decodeJobFactory     // Catch:{ all -> 0x00cd }
-            r12 = r3
-            r3 = r13
-            r13 = r31
-            r4 = r14
+            r4 = r45
+            r5 = r46
+            r30 = r6
+            r6 = r47
+            r7 = r48
+            com.bumptech.glide.load.engine.EngineJob r2 = r2.build(r3, r4, r5, r6, r7)     // Catch:{ all -> 0x00c7 }
+            com.bumptech.glide.load.engine.Engine$DecodeJobFactory r3 = r1.decodeJobFactory     // Catch:{ all -> 0x00c7 }
+            r4 = r13
+            r13 = r3
+            r3 = r14
             r14 = r32
             r5 = r15
-            r16 = r33
+            r15 = r33
+            r16 = r5
             r17 = r34
             r18 = r35
             r19 = r36
@@ -194,26 +188,26 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
             r23 = r40
             r24 = r41
             r25 = r42
-            r26 = r47
-            r27 = r43
-            r28 = r2
-            com.bumptech.glide.load.engine.DecodeJob r6 = r12.build(r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28)     // Catch:{ all -> 0x00cd }
-            com.bumptech.glide.load.engine.Jobs r7 = r1.jobs     // Catch:{ all -> 0x00cd }
-            r7.put(r5, r2)     // Catch:{ all -> 0x00cd }
-            r2.addCallback(r8, r9)     // Catch:{ all -> 0x00cd }
-            r2.start(r6)     // Catch:{ all -> 0x00cd }
-            boolean r7 = VERBOSE_IS_LOGGABLE     // Catch:{ all -> 0x00cd }
-            if (r7 == 0) goto L_0x00c6
+            r26 = r43
+            r27 = r48
+            r28 = r44
+            r29 = r2
+            com.bumptech.glide.load.engine.DecodeJob r6 = r13.build(r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29)     // Catch:{ all -> 0x00c7 }
+            com.bumptech.glide.load.engine.Jobs r7 = r1.jobs     // Catch:{ all -> 0x00c7 }
+            r7.put(r5, r2)     // Catch:{ all -> 0x00c7 }
+            r2.addCallback(r8, r9)     // Catch:{ all -> 0x00c7 }
+            r2.start(r6)     // Catch:{ all -> 0x00c7 }
+            if (r10 == 0) goto L_0x00c0
             java.lang.String r7 = "Started new load"
-            logWithTimeAndKey(r7, r10, r5)     // Catch:{ all -> 0x00cd }
-        L_0x00c6:
-            com.bumptech.glide.load.engine.Engine$LoadStatus r7 = new com.bumptech.glide.load.engine.Engine$LoadStatus     // Catch:{ all -> 0x00cd }
-            r7.<init>(r8, r2)     // Catch:{ all -> 0x00cd }
-            monitor-exit(r30)
+            logWithTimeAndKey(r7, r11, r5)     // Catch:{ all -> 0x00c7 }
+        L_0x00c0:
+            com.bumptech.glide.load.engine.Engine$LoadStatus r7 = new com.bumptech.glide.load.engine.Engine$LoadStatus     // Catch:{ all -> 0x00c7 }
+            r7.<init>(r8, r2)     // Catch:{ all -> 0x00c7 }
+            monitor-exit(r31)
             return r7
-        L_0x00cd:
+        L_0x00c7:
             r0 = move-exception
-            monitor-exit(r30)
+            monitor-exit(r31)
             throw r0
         */
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.load.engine.Engine.load(com.bumptech.glide.GlideContext, java.lang.Object, com.bumptech.glide.load.Key, int, int, java.lang.Class, java.lang.Class, com.bumptech.glide.Priority, com.bumptech.glide.load.engine.DiskCacheStrategy, java.util.Map, boolean, boolean, com.bumptech.glide.load.Options, boolean, boolean, boolean, boolean, com.bumptech.glide.request.ResourceCallback, java.util.concurrent.Executor):com.bumptech.glide.load.engine.Engine$LoadStatus");
@@ -223,7 +217,6 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         Log.v(TAG, log + " in " + LogTime.getElapsedMillis(startTime) + "ms, key: " + key);
     }
 
-    @Nullable
     private EngineResource<?> loadFromActiveResources(Key key, boolean isMemoryCacheable) {
         if (!isMemoryCacheable) {
             return null;
@@ -268,13 +261,9 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
 
     public synchronized void onEngineJobComplete(EngineJob<?> engineJob, Key key, EngineResource<?> resource) {
         if (resource != null) {
-            try {
-                resource.setResourceListener(key, this);
-                if (resource.isCacheable()) {
-                    this.activeResources.activate(key, resource);
-                }
-            } catch (Throwable th) {
-                throw th;
+            resource.setResourceListener(key, this);
+            if (resource.isCacheable()) {
+                this.activeResources.activate(key, resource);
             }
         }
         this.jobs.removeIfCurrent(key, engineJob);
@@ -284,7 +273,7 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         this.jobs.removeIfCurrent(key, engineJob);
     }
 
-    public void onResourceRemoved(@NonNull Resource<?> resource) {
+    public void onResourceRemoved(Resource<?> resource) {
         this.resourceRecycler.recycle(resource);
     }
 
@@ -301,7 +290,6 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         this.diskCacheProvider.getDiskCache().clear();
     }
 
-    @VisibleForTesting
     public void shutdown() {
         this.engineJobFactory.shutdown();
         this.diskCacheProvider.clearDiskCacheIfCreated();
@@ -333,7 +321,6 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         }
 
         /* access modifiers changed from: package-private */
-        @VisibleForTesting
         public synchronized void clearDiskCacheIfCreated() {
             if (this.diskCache != null) {
                 this.diskCache.clear();
@@ -355,7 +342,6 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         }
     }
 
-    @VisibleForTesting
     static class DecodeJobFactory {
         private int creationOrder;
         final DecodeJob.DiskCacheProvider diskCacheProvider;
@@ -379,7 +365,6 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         }
     }
 
-    @VisibleForTesting
     static class EngineJobFactory {
         final GlideExecutor animationExecutor;
         final GlideExecutor diskCacheExecutor;
@@ -401,7 +386,6 @@ public class Engine implements EngineJobListener, MemoryCache.ResourceRemovedLis
         }
 
         /* access modifiers changed from: package-private */
-        @VisibleForTesting
         public void shutdown() {
             Executors.shutdownAndAwaitTermination(this.diskCacheExecutor);
             Executors.shutdownAndAwaitTermination(this.sourceExecutor);

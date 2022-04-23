@@ -47,7 +47,7 @@
         </com.wits.ksw.launcher.view.LoopRotarySwitchView>
         <ImageView android:id="@+id/ksw_A4L_audi_che" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="120dp" android:src="@drawable/audi_left_car_a5"/>
     </FrameLayout>
-    <com.wits.ksw.launcher.view.DateView android:textColor="@color/color1" android:gravity="center" android:layout_gravity="start" android:id="@+id/date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="30dp" android:singleLine="true" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" app:datePattern="YYYYMMMMd" style="@style/audi_set_default_text"/>
+    <com.wits.ksw.launcher.view.DateView android:textColor="@color/color1" android:gravity="center" android:layout_gravity="start" android:id="@+id/date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="30dp" android:singleLine="true" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" app:datePattern="yyyyMMMMd" style="@style/audi_set_default_text"/>
     <include layout="@layout/audi_right_logo"/>
     <include layout="@layout/audi_right_carinfo"/>
     <include layout="@layout/audi_right_navi"/>

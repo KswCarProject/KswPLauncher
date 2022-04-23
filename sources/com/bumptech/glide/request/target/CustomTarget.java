@@ -1,14 +1,11 @@
 package com.bumptech.glide.request.target;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.request.Request;
 import com.bumptech.glide.util.Util;
 
 public abstract class CustomTarget<T> implements Target<T> {
     private final int height;
-    @Nullable
     private Request request;
     private final int width;
 
@@ -34,24 +31,23 @@ public abstract class CustomTarget<T> implements Target<T> {
     public void onDestroy() {
     }
 
-    public void onLoadStarted(@Nullable Drawable placeholder) {
+    public void onLoadStarted(Drawable placeholder) {
     }
 
-    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+    public void onLoadFailed(Drawable errorDrawable) {
     }
 
-    public final void getSize(@NonNull SizeReadyCallback cb) {
+    public final void getSize(SizeReadyCallback cb) {
         cb.onSizeReady(this.width, this.height);
     }
 
-    public final void removeCallback(@NonNull SizeReadyCallback cb) {
+    public final void removeCallback(SizeReadyCallback cb) {
     }
 
-    public final void setRequest(@Nullable Request request2) {
+    public final void setRequest(Request request2) {
         this.request = request2;
     }
 
-    @Nullable
     public final Request getRequest() {
         return this.request;
     }

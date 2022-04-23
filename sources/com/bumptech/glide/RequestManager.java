@@ -6,12 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.CheckResult;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.GuardedBy;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RawRes;
 import android.view.View;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
@@ -46,61 +40,58 @@ public class RequestManager implements LifecycleListener, ModelTypes<RequestBuil
     protected final Glide glide;
     final Lifecycle lifecycle;
     private final Handler mainHandler;
-    @GuardedBy("this")
     private RequestOptions requestOptions;
-    @GuardedBy("this")
     private final RequestTracker requestTracker;
-    @GuardedBy("this")
     private final TargetTracker targetTracker;
-    @GuardedBy("this")
     private final RequestManagerTreeNode treeNode;
 
-    public RequestManager(@NonNull Glide glide2, @NonNull Lifecycle lifecycle2, @NonNull RequestManagerTreeNode treeNode2, @NonNull Context context2) {
+    public RequestManager(Glide glide2, Lifecycle lifecycle2, RequestManagerTreeNode treeNode2, Context context2) {
         this(glide2, lifecycle2, treeNode2, new RequestTracker(), glide2.getConnectivityMonitorFactory(), context2);
     }
 
     RequestManager(Glide glide2, Lifecycle lifecycle2, RequestManagerTreeNode treeNode2, RequestTracker requestTracker2, ConnectivityMonitorFactory factory, Context context2) {
         this.targetTracker = new TargetTracker();
-        this.addSelfToLifecycle = new Runnable() {
+        AnonymousClass1 r0 = new Runnable() {
             public void run() {
                 RequestManager.this.lifecycle.addListener(RequestManager.this);
             }
         };
-        this.mainHandler = new Handler(Looper.getMainLooper());
+        this.addSelfToLifecycle = r0;
+        Handler handler = new Handler(Looper.getMainLooper());
+        this.mainHandler = handler;
         this.glide = glide2;
         this.lifecycle = lifecycle2;
         this.treeNode = treeNode2;
         this.requestTracker = requestTracker2;
         this.context = context2;
-        this.connectivityMonitor = factory.build(context2.getApplicationContext(), new RequestManagerConnectivityListener(requestTracker2));
+        ConnectivityMonitor build = factory.build(context2.getApplicationContext(), new RequestManagerConnectivityListener(requestTracker2));
+        this.connectivityMonitor = build;
         if (Util.isOnBackgroundThread()) {
-            this.mainHandler.post(this.addSelfToLifecycle);
+            handler.post(r0);
         } else {
             lifecycle2.addListener(this);
         }
-        lifecycle2.addListener(this.connectivityMonitor);
+        lifecycle2.addListener(build);
         this.defaultRequestListeners = new CopyOnWriteArrayList<>(glide2.getGlideContext().getDefaultRequestListeners());
         setRequestOptions(glide2.getGlideContext().getDefaultRequestOptions());
         glide2.registerRequestManager(this);
     }
 
     /* access modifiers changed from: protected */
-    public synchronized void setRequestOptions(@NonNull RequestOptions toSet) {
+    public synchronized void setRequestOptions(RequestOptions toSet) {
         this.requestOptions = (RequestOptions) ((RequestOptions) toSet.clone()).autoClone();
     }
 
-    private synchronized void updateRequestOptions(@NonNull RequestOptions toUpdate) {
+    private synchronized void updateRequestOptions(RequestOptions toUpdate) {
         this.requestOptions = (RequestOptions) this.requestOptions.apply(toUpdate);
     }
 
-    @NonNull
-    public synchronized RequestManager applyDefaultRequestOptions(@NonNull RequestOptions requestOptions2) {
+    public synchronized RequestManager applyDefaultRequestOptions(RequestOptions requestOptions2) {
         updateRequestOptions(requestOptions2);
         return this;
     }
 
-    @NonNull
-    public synchronized RequestManager setDefaultRequestOptions(@NonNull RequestOptions requestOptions2) {
+    public synchronized RequestManager setDefaultRequestOptions(RequestOptions requestOptions2) {
         setRequestOptions(requestOptions2);
         return this;
     }
@@ -164,113 +155,82 @@ public class RequestManager implements LifecycleListener, ModelTypes<RequestBuil
         this.glide.unregisterRequestManager(this);
     }
 
-    @CheckResult
-    @NonNull
     public RequestBuilder<Bitmap> asBitmap() {
         return as(Bitmap.class).apply((BaseRequestOptions<?>) DECODE_TYPE_BITMAP);
     }
 
-    @CheckResult
-    @NonNull
     public RequestBuilder<GifDrawable> asGif() {
         return as(GifDrawable.class).apply((BaseRequestOptions<?>) DECODE_TYPE_GIF);
     }
 
-    @CheckResult
-    @NonNull
     public RequestBuilder<Drawable> asDrawable() {
         return as(Drawable.class);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable Bitmap bitmap) {
+    public RequestBuilder<Drawable> load(Bitmap bitmap) {
         return asDrawable().load(bitmap);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable Drawable drawable) {
+    public RequestBuilder<Drawable> load(Drawable drawable) {
         return asDrawable().load(drawable);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable String string) {
+    public RequestBuilder<Drawable> load(String string) {
         return asDrawable().load(string);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable Uri uri) {
+    public RequestBuilder<Drawable> load(Uri uri) {
         return asDrawable().load(uri);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable File file) {
+    public RequestBuilder<Drawable> load(File file) {
         return asDrawable().load(file);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable @RawRes @DrawableRes Integer resourceId) {
+    public RequestBuilder<Drawable> load(Integer resourceId) {
         return asDrawable().load(resourceId);
     }
 
     @Deprecated
-    @CheckResult
-    public RequestBuilder<Drawable> load(@Nullable URL url) {
+    public RequestBuilder<Drawable> load(URL url) {
         return asDrawable().load(url);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable byte[] model) {
+    public RequestBuilder<Drawable> load(byte[] model) {
         return asDrawable().load(model);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<Drawable> load(@Nullable Object model) {
+    public RequestBuilder<Drawable> load(Object model) {
         return asDrawable().load(model);
     }
 
-    @CheckResult
-    @NonNull
     public RequestBuilder<File> downloadOnly() {
         return as(File.class).apply((BaseRequestOptions<?>) DOWNLOAD_ONLY_OPTIONS);
     }
 
-    @CheckResult
-    @NonNull
-    public RequestBuilder<File> download(@Nullable Object model) {
+    public RequestBuilder<File> download(Object model) {
         return downloadOnly().load(model);
     }
 
-    @CheckResult
-    @NonNull
     public RequestBuilder<File> asFile() {
         return as(File.class).apply((BaseRequestOptions<?>) RequestOptions.skipMemoryCacheOf(true));
     }
 
-    @CheckResult
-    @NonNull
-    public <ResourceType> RequestBuilder<ResourceType> as(@NonNull Class<ResourceType> resourceClass) {
+    public <ResourceType> RequestBuilder<ResourceType> as(Class<ResourceType> resourceClass) {
         return new RequestBuilder<>(this.glide, this, resourceClass, this.context);
     }
 
-    public void clear(@NonNull View view) {
+    public void clear(View view) {
         clear((Target<?>) new ClearTarget(view));
     }
 
-    public synchronized void clear(@Nullable Target<?> target) {
+    public synchronized void clear(Target<?> target) {
         if (target != null) {
             untrackOrDelegate(target);
         }
     }
 
-    private void untrackOrDelegate(@NonNull Target<?> target) {
+    private void untrackOrDelegate(Target<?> target) {
         if (!untrack(target) && !this.glide.removeFromManagers(target) && target.getRequest() != null) {
             Request request = target.getRequest();
             target.setRequest((Request) null);
@@ -279,7 +239,7 @@ public class RequestManager implements LifecycleListener, ModelTypes<RequestBuil
     }
 
     /* access modifiers changed from: package-private */
-    public synchronized boolean untrack(@NonNull Target<?> target) {
+    public synchronized boolean untrack(Target<?> target) {
         Request request = target.getRequest();
         if (request == null) {
             return true;
@@ -293,7 +253,7 @@ public class RequestManager implements LifecycleListener, ModelTypes<RequestBuil
     }
 
     /* access modifiers changed from: package-private */
-    public synchronized void track(@NonNull Target<?> target, @NonNull Request request) {
+    public synchronized void track(Target<?> target, Request request) {
         this.targetTracker.track(target);
         this.requestTracker.runRequest(request);
     }
@@ -309,7 +269,6 @@ public class RequestManager implements LifecycleListener, ModelTypes<RequestBuil
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public <T> TransitionOptions<?, T> getDefaultTransitionOptions(Class<T> transcodeClass) {
         return this.glide.getGlideContext().getDefaultTransitionOptions(transcodeClass);
     }
@@ -319,10 +278,9 @@ public class RequestManager implements LifecycleListener, ModelTypes<RequestBuil
     }
 
     private class RequestManagerConnectivityListener implements ConnectivityMonitor.ConnectivityListener {
-        @GuardedBy("RequestManager.this")
         private final RequestTracker requestTracker;
 
-        RequestManagerConnectivityListener(@NonNull RequestTracker requestTracker2) {
+        RequestManagerConnectivityListener(RequestTracker requestTracker2) {
             this.requestTracker = requestTracker2;
         }
 
@@ -336,11 +294,11 @@ public class RequestManager implements LifecycleListener, ModelTypes<RequestBuil
     }
 
     private static class ClearTarget extends ViewTarget<View, Object> {
-        ClearTarget(@NonNull View view) {
+        ClearTarget(View view) {
             super(view);
         }
 
-        public void onResourceReady(@NonNull Object resource, @Nullable Transition<? super Object> transition) {
+        public void onResourceReady(Object resource, Transition<? super Object> transition) {
         }
     }
 }

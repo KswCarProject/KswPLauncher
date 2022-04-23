@@ -6,8 +6,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.GravityCompat;
@@ -58,7 +56,7 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
         super(context, R.layout.abc_action_menu_layout, R.layout.abc_action_menu_item_layout);
     }
 
-    public void initForMenu(@NonNull Context context, @Nullable MenuBuilder menu) {
+    public void initForMenu(Context context, MenuBuilder menu) {
         super.initForMenu(context, menu);
         Resources res = context.getResources();
         ActionBarPolicy abp = ActionBarPolicy.get(context);
@@ -74,9 +72,10 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
         int width = this.mWidthLimit;
         if (this.mReserveOverflow) {
             if (this.mOverflowButton == null) {
-                this.mOverflowButton = new OverflowMenuButton(this.mSystemContext);
+                OverflowMenuButton overflowMenuButton = new OverflowMenuButton(this.mSystemContext);
+                this.mOverflowButton = overflowMenuButton;
                 if (this.mPendingOverflowIconSet) {
-                    this.mOverflowButton.setImageDrawable(this.mPendingOverflowIcon);
+                    overflowMenuButton.setImageDrawable(this.mPendingOverflowIcon);
                     this.mPendingOverflowIcon = null;
                     this.mPendingOverflowIconSet = false;
                 }
@@ -122,8 +121,9 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
     }
 
     public void setOverflowIcon(Drawable icon) {
-        if (this.mOverflowButton != null) {
-            this.mOverflowButton.setImageDrawable(icon);
+        OverflowMenuButton overflowMenuButton = this.mOverflowButton;
+        if (overflowMenuButton != null) {
+            overflowMenuButton.setImageDrawable(icon);
             return;
         }
         this.mPendingOverflowIconSet = true;
@@ -131,8 +131,9 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
     }
 
     public Drawable getOverflowIcon() {
-        if (this.mOverflowButton != null) {
-            return this.mOverflowButton.getDrawable();
+        OverflowMenuButton overflowMenuButton = this.mOverflowButton;
+        if (overflowMenuButton != null) {
+            return overflowMenuButton.getDrawable();
         }
         if (this.mPendingOverflowIconSet) {
             return this.mPendingOverflowIcon;
@@ -180,7 +181,6 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
     public void updateMenuView(boolean cleared) {
         super.updateMenuView(cleared);
         ((View) this.mMenuView).requestLayout();
-        boolean z = false;
         if (this.mMenu != null) {
             ArrayList<MenuItemImpl> actionItems = this.mMenu.getActionItems();
             int count = actionItems.size();
@@ -195,6 +195,7 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
         boolean hasOverflow = false;
         if (this.mReserveOverflow && nonActionItems != null) {
             int count2 = nonActionItems.size();
+            boolean z = false;
             if (count2 == 1) {
                 hasOverflow = !nonActionItems.get(0).isActionViewExpanded();
             } else {
@@ -216,8 +217,11 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
                 ActionMenuView menuView = (ActionMenuView) this.mMenuView;
                 menuView.addView(this.mOverflowButton, menuView.generateOverflowButtonLayoutParams());
             }
-        } else if (this.mOverflowButton != null && this.mOverflowButton.getParent() == this.mMenuView) {
-            ((ViewGroup) this.mMenuView).removeView(this.mOverflowButton);
+        } else {
+            OverflowMenuButton overflowMenuButton = this.mOverflowButton;
+            if (overflowMenuButton != null && overflowMenuButton.getParent() == this.mMenuView) {
+                ((ViewGroup) this.mMenuView).removeView(this.mOverflowButton);
+            }
         }
         ((ActionMenuView) this.mMenuView).setOverflowReserved(this.mReserveOverflow);
     }
@@ -255,35 +259,35 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
             if (r2 != 0) goto L_0x0024
             return r1
         L_0x0024:
-            android.view.MenuItem r3 = r8.getItem()
-            int r3 = r3.getItemId()
-            r7.mOpenSubMenuId = r3
-            r3 = 0
-            int r4 = r8.size()
+            android.view.MenuItem r1 = r8.getItem()
+            int r1 = r1.getItemId()
+            r7.mOpenSubMenuId = r1
+            r1 = 0
+            int r3 = r8.size()
+            r4 = 0
         L_0x0034:
-            if (r1 >= r4) goto L_0x004b
-            android.view.MenuItem r5 = r8.getItem(r1)
+            if (r4 >= r3) goto L_0x004b
+            android.view.MenuItem r5 = r8.getItem(r4)
             boolean r6 = r5.isVisible()
             if (r6 == 0) goto L_0x0048
             android.graphics.drawable.Drawable r6 = r5.getIcon()
             if (r6 == 0) goto L_0x0048
-            r3 = 1
+            r1 = 1
             goto L_0x004b
         L_0x0048:
-            int r1 = r1 + 1
+            int r4 = r4 + 1
             goto L_0x0034
         L_0x004b:
-            android.support.v7.widget.ActionMenuPresenter$ActionButtonSubmenu r1 = new android.support.v7.widget.ActionMenuPresenter$ActionButtonSubmenu
+            android.support.v7.widget.ActionMenuPresenter$ActionButtonSubmenu r4 = new android.support.v7.widget.ActionMenuPresenter$ActionButtonSubmenu
             android.content.Context r5 = r7.mContext
-            r1.<init>(r5, r8, r2)
-            r7.mActionButtonPopup = r1
-            android.support.v7.widget.ActionMenuPresenter$ActionButtonSubmenu r1 = r7.mActionButtonPopup
-            r1.setForceShowIcon(r3)
-            android.support.v7.widget.ActionMenuPresenter$ActionButtonSubmenu r1 = r7.mActionButtonPopup
-            r1.show()
+            r4.<init>(r5, r8, r2)
+            r7.mActionButtonPopup = r4
+            r4.setForceShowIcon(r1)
+            android.support.v7.widget.ActionMenuPresenter$ActionButtonSubmenu r4 = r7.mActionButtonPopup
+            r4.show()
             super.onSubMenuSelected(r8)
-            r1 = 1
-            return r1
+            r4 = 1
+            return r4
         */
         throw new UnsupportedOperationException("Method not decompiled: android.support.v7.widget.ActionMenuPresenter.onSubMenuSelected(android.support.v7.view.menu.SubMenuBuilder):boolean");
     }
@@ -332,15 +336,17 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
     }
 
     public boolean hideSubMenus() {
-        if (this.mActionButtonPopup == null) {
+        ActionButtonSubmenu actionButtonSubmenu = this.mActionButtonPopup;
+        if (actionButtonSubmenu == null) {
             return false;
         }
-        this.mActionButtonPopup.dismiss();
+        actionButtonSubmenu.dismiss();
         return true;
     }
 
     public boolean isOverflowMenuShowing() {
-        return this.mOverflowPopup != null && this.mOverflowPopup.isShowing();
+        OverflowPopup overflowPopup = this.mOverflowPopup;
+        return overflowPopup != null && overflowPopup.isShowing();
     }
 
     public boolean isOverflowMenuShowPending() {
@@ -351,272 +357,268 @@ class ActionMenuPresenter extends BaseMenuPresenter implements ActionProvider.Su
         return this.mReserveOverflow;
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:101:0x017b  */
-    /* JADX WARNING: Removed duplicated region for block: B:62:0x00f9  */
-    /* JADX WARNING: Removed duplicated region for block: B:86:0x0142  */
-    /* JADX WARNING: Removed duplicated region for block: B:91:0x0155  */
+    /* JADX WARNING: Removed duplicated region for block: B:101:0x0177  */
+    /* JADX WARNING: Removed duplicated region for block: B:61:0x00f1  */
+    /* JADX WARNING: Removed duplicated region for block: B:84:0x0135  */
+    /* JADX WARNING: Removed duplicated region for block: B:89:0x0146  */
+    /* JADX WARNING: Removed duplicated region for block: B:99:0x0173  */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public boolean flagActionItems() {
         /*
-            r25 = this;
-            r0 = r25
+            r24 = this;
+            r0 = r24
             android.support.v7.view.menu.MenuBuilder r1 = r0.mMenu
-            r2 = 0
-            if (r1 == 0) goto L_0x0012
+            if (r1 == 0) goto L_0x0011
             android.support.v7.view.menu.MenuBuilder r1 = r0.mMenu
             java.util.ArrayList r1 = r1.getVisibleItems()
-            int r3 = r1.size()
-            goto L_0x0014
-        L_0x0012:
+            int r2 = r1.size()
+            goto L_0x0013
+        L_0x0011:
             r1 = 0
-            r3 = r2
-        L_0x0014:
-            int r4 = r0.mMaxItems
-            int r5 = r0.mActionItemWidthLimit
-            int r6 = android.view.View.MeasureSpec.makeMeasureSpec(r2, r2)
+            r2 = 0
+        L_0x0013:
+            int r3 = r0.mMaxItems
+            int r4 = r0.mActionItemWidthLimit
+            r5 = 0
+            int r6 = android.view.View.MeasureSpec.makeMeasureSpec(r5, r5)
             android.support.v7.view.menu.MenuView r7 = r0.mMenuView
             android.view.ViewGroup r7 = (android.view.ViewGroup) r7
             r8 = 0
             r9 = 0
             r10 = 0
             r11 = 0
-            r12 = r4
-            r4 = r2
-        L_0x0026:
-            if (r4 >= r3) goto L_0x004f
-            java.lang.Object r13 = r1.get(r4)
+            r12 = 0
+        L_0x0025:
+            if (r12 >= r2) goto L_0x004e
+            java.lang.Object r13 = r1.get(r12)
             android.support.v7.view.menu.MenuItemImpl r13 = (android.support.v7.view.menu.MenuItemImpl) r13
             boolean r14 = r13.requiresActionButton()
-            if (r14 == 0) goto L_0x0037
+            if (r14 == 0) goto L_0x0036
             int r8 = r8 + 1
-            goto L_0x0041
-        L_0x0037:
+            goto L_0x0040
+        L_0x0036:
             boolean r14 = r13.requestsActionButton()
-            if (r14 == 0) goto L_0x0040
+            if (r14 == 0) goto L_0x003f
             int r9 = r9 + 1
-            goto L_0x0041
-        L_0x0040:
+            goto L_0x0040
+        L_0x003f:
             r11 = 1
-        L_0x0041:
+        L_0x0040:
             boolean r14 = r0.mExpandedActionViewsExclusive
-            if (r14 == 0) goto L_0x004c
+            if (r14 == 0) goto L_0x004b
             boolean r14 = r13.isActionViewExpanded()
-            if (r14 == 0) goto L_0x004c
-            r12 = 0
-        L_0x004c:
-            int r4 = r4 + 1
-            goto L_0x0026
-        L_0x004f:
-            boolean r4 = r0.mReserveOverflow
-            if (r4 == 0) goto L_0x005b
-            if (r11 != 0) goto L_0x0059
-            int r4 = r8 + r9
-            if (r4 <= r12) goto L_0x005b
-        L_0x0059:
-            int r12 = r12 + -1
-        L_0x005b:
-            int r12 = r12 - r8
-            android.util.SparseBooleanArray r4 = r0.mActionButtonGroups
-            r4.clear()
+            if (r14 == 0) goto L_0x004b
+            r3 = 0
+        L_0x004b:
+            int r12 = r12 + 1
+            goto L_0x0025
+        L_0x004e:
+            boolean r12 = r0.mReserveOverflow
+            if (r12 == 0) goto L_0x005a
+            if (r11 != 0) goto L_0x0058
+            int r12 = r8 + r9
+            if (r12 <= r3) goto L_0x005a
+        L_0x0058:
+            int r3 = r3 + -1
+        L_0x005a:
+            int r3 = r3 - r8
+            android.util.SparseBooleanArray r12 = r0.mActionButtonGroups
+            r12.clear()
             r13 = 0
             r14 = 0
             boolean r15 = r0.mStrictWidthLimit
-            if (r15 == 0) goto L_0x0075
+            if (r15 == 0) goto L_0x0070
             int r15 = r0.mMinCellSize
-            int r14 = r5 / r15
-            int r15 = r0.mMinCellSize
-            int r15 = r5 % r15
-            int r2 = r0.mMinCellSize
-            int r16 = r15 / r14
-            int r13 = r2 + r16
-        L_0x0075:
-            r2 = 0
-        L_0x0076:
-            if (r2 >= r3) goto L_0x019c
-            java.lang.Object r16 = r1.get(r2)
-            r15 = r16
-            android.support.v7.view.menu.MenuItemImpl r15 = (android.support.v7.view.menu.MenuItemImpl) r15
-            boolean r16 = r15.requiresActionButton()
-            if (r16 == 0) goto L_0x00ce
-            r17 = r3
-            android.view.View r3 = r0.mScrapActionButtonView
-            android.view.View r3 = r0.getItemView(r15, r3, r7)
-            r18 = r8
+            int r14 = r4 / r15
+            int r16 = r4 % r15
+            int r17 = r16 / r14
+            int r13 = r15 + r17
+        L_0x0070:
+            r15 = 0
+        L_0x0071:
+            if (r15 >= r2) goto L_0x0199
+            java.lang.Object r17 = r1.get(r15)
+            r5 = r17
+            android.support.v7.view.menu.MenuItemImpl r5 = (android.support.v7.view.menu.MenuItemImpl) r5
+            boolean r17 = r5.requiresActionButton()
+            if (r17 == 0) goto L_0x00c6
+            r17 = r2
+            android.view.View r2 = r0.mScrapActionButtonView
+            android.view.View r2 = r0.getItemView(r5, r2, r7)
+            r19 = r8
             android.view.View r8 = r0.mScrapActionButtonView
-            if (r8 != 0) goto L_0x0096
-            r0.mScrapActionButtonView = r3
-        L_0x0096:
+            if (r8 != 0) goto L_0x0091
+            r0.mScrapActionButtonView = r2
+        L_0x0091:
             boolean r8 = r0.mStrictWidthLimit
-            if (r8 == 0) goto L_0x00a2
+            if (r8 == 0) goto L_0x009d
             r8 = 0
-            int r16 = android.support.v7.widget.ActionMenuView.measureChildForCells(r3, r13, r14, r6, r8)
-            int r14 = r14 - r16
-            goto L_0x00a5
-        L_0x00a2:
-            r3.measure(r6, r6)
-        L_0x00a5:
-            int r8 = r3.getMeasuredWidth()
-            int r5 = r5 - r8
-            if (r10 != 0) goto L_0x00ad
+            int r20 = android.support.v7.widget.ActionMenuView.measureChildForCells(r2, r13, r14, r6, r8)
+            int r14 = r14 - r20
+            goto L_0x00a0
+        L_0x009d:
+            r2.measure(r6, r6)
+        L_0x00a0:
+            int r8 = r2.getMeasuredWidth()
+            int r4 = r4 - r8
+            if (r10 != 0) goto L_0x00a8
             r10 = r8
-        L_0x00ad:
-            r19 = r3
-            int r3 = r15.getGroupId()
-            if (r3 == 0) goto L_0x00bc
-            r20 = r5
-            r5 = 1
-            r4.put(r3, r5)
-            goto L_0x00bf
-        L_0x00bc:
-            r20 = r5
-            r5 = 1
-        L_0x00bf:
-            r15.setIsActionButton(r5)
-            r24 = r6
-            r23 = r7
-            r21 = r9
-            r5 = r20
-        L_0x00cb:
+        L_0x00a8:
+            r20 = r2
+            int r2 = r5.getGroupId()
+            if (r2 == 0) goto L_0x00b7
+            r21 = r4
+            r4 = 1
+            r12.put(r2, r4)
+            goto L_0x00ba
+        L_0x00b7:
+            r21 = r4
+            r4 = 1
+        L_0x00ba:
+            r5.setIsActionButton(r4)
+            r22 = r7
+            r4 = r21
             r0 = 0
-            goto L_0x018c
-        L_0x00ce:
-            r17 = r3
-            r18 = r8
-            boolean r3 = r15.requestsActionButton()
-            if (r3 == 0) goto L_0x0182
-            int r3 = r15.getGroupId()
-            boolean r8 = r4.get(r3)
-            if (r12 > 0) goto L_0x00e8
-            if (r8 == 0) goto L_0x00e5
-            goto L_0x00e8
-        L_0x00e5:
-            r21 = r9
-            goto L_0x00f6
-        L_0x00e8:
-            if (r5 <= 0) goto L_0x00f4
-            r21 = r9
-            boolean r9 = r0.mStrictWidthLimit
-            if (r9 == 0) goto L_0x00f2
-            if (r14 <= 0) goto L_0x00f6
-        L_0x00f2:
-            r9 = 1
-            goto L_0x00f7
-        L_0x00f4:
-            r21 = r9
-        L_0x00f6:
-            r9 = 0
-        L_0x00f7:
-            if (r9 == 0) goto L_0x0142
-            r22 = r9
-            android.view.View r9 = r0.mScrapActionButtonView
-            android.view.View r9 = r0.getItemView(r15, r9, r7)
-            r23 = r7
+            r21 = r1
+            goto L_0x018a
+        L_0x00c6:
+            r17 = r2
+            r19 = r8
+            boolean r2 = r5.requestsActionButton()
+            if (r2 == 0) goto L_0x0180
+            int r2 = r5.getGroupId()
+            boolean r8 = r12.get(r2)
+            if (r3 > 0) goto L_0x00e0
+            if (r8 == 0) goto L_0x00dd
+            goto L_0x00e0
+        L_0x00dd:
+            r20 = r3
+            goto L_0x00ee
+        L_0x00e0:
+            if (r4 <= 0) goto L_0x00ec
+            r20 = r3
+            boolean r3 = r0.mStrictWidthLimit
+            if (r3 == 0) goto L_0x00ea
+            if (r14 <= 0) goto L_0x00ee
+        L_0x00ea:
+            r3 = 1
+            goto L_0x00ef
+        L_0x00ec:
+            r20 = r3
+        L_0x00ee:
+            r3 = 0
+        L_0x00ef:
+            if (r3 == 0) goto L_0x0135
+            r21 = r3
+            android.view.View r3 = r0.mScrapActionButtonView
+            android.view.View r3 = r0.getItemView(r5, r3, r7)
+            r22 = r7
             android.view.View r7 = r0.mScrapActionButtonView
-            if (r7 != 0) goto L_0x0109
-            r0.mScrapActionButtonView = r9
-        L_0x0109:
+            if (r7 != 0) goto L_0x0101
+            r0.mScrapActionButtonView = r3
+        L_0x0101:
             boolean r7 = r0.mStrictWidthLimit
-            if (r7 == 0) goto L_0x011b
+            if (r7 == 0) goto L_0x0112
             r7 = 0
-            int r16 = android.support.v7.widget.ActionMenuView.measureChildForCells(r9, r13, r14, r6, r7)
-            int r14 = r14 - r16
-            if (r16 != 0) goto L_0x0118
+            int r23 = android.support.v7.widget.ActionMenuView.measureChildForCells(r3, r13, r14, r6, r7)
+            int r14 = r14 - r23
+            if (r23 != 0) goto L_0x0111
             r7 = 0
-            goto L_0x011a
-        L_0x0118:
-            r7 = r22
-        L_0x011a:
-            goto L_0x0120
-        L_0x011b:
-            r9.measure(r6, r6)
-            r7 = r22
-        L_0x0120:
-            int r16 = r9.getMeasuredWidth()
-            int r5 = r5 - r16
-            if (r10 != 0) goto L_0x012a
-            r10 = r16
-        L_0x012a:
-            r24 = r6
-            boolean r6 = r0.mStrictWidthLimit
-            if (r6 == 0) goto L_0x0137
-            if (r5 < 0) goto L_0x0134
-            r6 = 1
-            goto L_0x0135
-        L_0x0134:
-            r6 = 0
+            r21 = r7
+        L_0x0111:
+            goto L_0x0115
+        L_0x0112:
+            r3.measure(r6, r6)
+        L_0x0115:
+            int r7 = r3.getMeasuredWidth()
+            int r4 = r4 - r7
+            if (r10 != 0) goto L_0x011d
+            r10 = r7
+        L_0x011d:
+            r23 = r3
+            boolean r3 = r0.mStrictWidthLimit
+            if (r3 == 0) goto L_0x012b
+            if (r4 < 0) goto L_0x0127
+            r3 = 1
+            goto L_0x0128
+        L_0x0127:
+            r3 = 0
+        L_0x0128:
+            r3 = r21 & r3
+            goto L_0x0139
+        L_0x012b:
+            int r3 = r4 + r10
+            if (r3 <= 0) goto L_0x0131
+            r3 = 1
+            goto L_0x0132
+        L_0x0131:
+            r3 = 0
+        L_0x0132:
+            r3 = r21 & r3
+            goto L_0x0139
         L_0x0135:
-            r6 = r6 & r7
-            goto L_0x014a
-        L_0x0137:
-            int r6 = r5 + r10
-            if (r6 <= 0) goto L_0x013d
-            r6 = 1
-            goto L_0x013e
-        L_0x013d:
-            r6 = 0
-        L_0x013e:
-            r9 = r7 & r6
-            r6 = r9
-            goto L_0x014a
-        L_0x0142:
-            r24 = r6
-            r23 = r7
-            r22 = r9
-            r6 = r22
-        L_0x014a:
-            if (r6 == 0) goto L_0x0153
-            if (r3 == 0) goto L_0x0153
+            r21 = r3
+            r22 = r7
+        L_0x0139:
+            if (r3 == 0) goto L_0x0144
+            if (r2 == 0) goto L_0x0144
             r7 = 1
-            r4.put(r3, r7)
-            goto L_0x0179
-        L_0x0153:
-            if (r8 == 0) goto L_0x0179
+            r12.put(r2, r7)
+            r21 = r1
+            goto L_0x0175
+        L_0x0144:
+            if (r8 == 0) goto L_0x0173
             r7 = 0
-            r4.put(r3, r7)
+            r12.put(r2, r7)
             r7 = 0
-        L_0x015a:
-            if (r7 >= r2) goto L_0x0179
-            java.lang.Object r9 = r1.get(r7)
-            android.support.v7.view.menu.MenuItemImpl r9 = (android.support.v7.view.menu.MenuItemImpl) r9
-            int r0 = r9.getGroupId()
-            if (r0 != r3) goto L_0x0174
-            boolean r0 = r9.isActionButton()
-            if (r0 == 0) goto L_0x0170
-            int r12 = r12 + 1
-        L_0x0170:
-            r0 = 0
-            r9.setIsActionButton(r0)
-        L_0x0174:
+        L_0x014b:
+            if (r7 >= r15) goto L_0x0170
+            java.lang.Object r18 = r1.get(r7)
+            r0 = r18
+            android.support.v7.view.menu.MenuItemImpl r0 = (android.support.v7.view.menu.MenuItemImpl) r0
+            r21 = r1
+            int r1 = r0.getGroupId()
+            if (r1 != r2) goto L_0x0169
+            boolean r1 = r0.isActionButton()
+            if (r1 == 0) goto L_0x0165
+            int r20 = r20 + 1
+        L_0x0165:
+            r1 = 0
+            r0.setIsActionButton(r1)
+        L_0x0169:
             int r7 = r7 + 1
-            r0 = r25
-            goto L_0x015a
+            r0 = r24
+            r1 = r21
+            goto L_0x014b
+        L_0x0170:
+            r21 = r1
+            goto L_0x0175
+        L_0x0173:
+            r21 = r1
+        L_0x0175:
+            if (r3 == 0) goto L_0x0179
+            int r20 = r20 + -1
         L_0x0179:
-            if (r6 == 0) goto L_0x017d
-            int r12 = r12 + -1
-        L_0x017d:
-            r15.setIsActionButton(r6)
-            goto L_0x00cb
-        L_0x0182:
-            r24 = r6
-            r23 = r7
-            r21 = r9
+            r5.setIsActionButton(r3)
+            r3 = r20
             r0 = 0
-            r15.setIsActionButton(r0)
-        L_0x018c:
-            int r2 = r2 + 1
-            r3 = r17
-            r8 = r18
-            r9 = r21
-            r7 = r23
-            r6 = r24
-            r0 = r25
-            goto L_0x0076
-        L_0x019c:
-            r17 = r3
-            r24 = r6
-            r23 = r7
-            r18 = r8
-            r21 = r9
+            goto L_0x018a
+        L_0x0180:
+            r21 = r1
+            r20 = r3
+            r22 = r7
+            r0 = 0
+            r5.setIsActionButton(r0)
+        L_0x018a:
+            int r15 = r15 + 1
+            r5 = r0
+            r2 = r17
+            r8 = r19
+            r1 = r21
+            r7 = r22
+            r0 = r24
+            goto L_0x0071
+        L_0x0199:
             r0 = 1
             return r0
         */

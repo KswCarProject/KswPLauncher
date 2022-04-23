@@ -2,7 +2,6 @@ package com.wits.ksw.launcher.adpater;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ public class BenzMbuxRecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public List<BenzMbuxBean> getBcItemList() {
         List<BenzMbuxBean> bcItems = new ArrayList<>();
         for (int i = 0; i < resId.length; i++) {
@@ -46,14 +44,13 @@ public class BenzMbuxRecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
         return bcItems;
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         BenzMbuxItemBinding bcItemBinding = (BenzMbuxItemBinding) DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.benz_mbux_item, viewGroup, false);
         bcItemBinding.setVieModel(this.viewModel);
         return new ViewHolder(bcItemBinding);
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
         BenzMbuxItemBinding itemMvvmBinding = viewHolder.getBcItemBinding();
         itemMvvmBinding.setListItem(this.bcItemList.get(position));
         itemMvvmBinding.getRoot().setTag(Integer.valueOf(position));
@@ -61,7 +58,8 @@ public class BenzMbuxRecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
     }
 
     public int getItemCount() {
-        if (this.bcItemList == null || this.bcItemList.isEmpty()) {
+        List<BenzMbuxBean> list = this.bcItemList;
+        if (list == null || list.isEmpty()) {
             return 0;
         }
         return this.bcItemList.size();
@@ -70,7 +68,7 @@ public class BenzMbuxRecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         BenzMbuxItemBinding bcItemBinding;
 
-        public ViewHolder(@NonNull BenzMbuxItemBinding binding) {
+        public ViewHolder(BenzMbuxItemBinding binding) {
             super(binding.getRoot());
             this.bcItemBinding = binding;
         }

@@ -4,7 +4,7 @@ import android.support.constraint.solver.LinearSystem;
 import android.support.constraint.solver.SolverVariable;
 import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.constraint.solver.widgets.ConstraintWidget;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Guideline extends ConstraintWidget {
     public static final int HORIZONTAL = 0;
@@ -14,27 +14,28 @@ public class Guideline extends ConstraintWidget {
     public static final int RELATIVE_UNKNWON = -1;
     public static final int VERTICAL = 1;
     private ConstraintAnchor mAnchor = this.mTop;
-    private Rectangle mHead;
-    private int mHeadSize;
-    private boolean mIsPositionRelaxed;
-    private int mMinimumPosition;
-    private int mOrientation;
+    private int mMinimumPosition = 0;
+    private int mOrientation = 0;
     protected int mRelativeBegin = -1;
     protected int mRelativeEnd = -1;
     protected float mRelativePercent = -1.0f;
 
     public Guideline() {
-        this.mOrientation = 0;
-        this.mIsPositionRelaxed = false;
-        this.mMinimumPosition = 0;
-        this.mHead = new Rectangle();
-        this.mHeadSize = 8;
         this.mAnchors.clear();
         this.mAnchors.add(this.mAnchor);
         int count = this.mListAnchors.length;
         for (int i = 0; i < count; i++) {
             this.mListAnchors[i] = this.mAnchor;
         }
+    }
+
+    public void copy(ConstraintWidget src, HashMap<ConstraintWidget, ConstraintWidget> map) {
+        super.copy(src, map);
+        Guideline srcGuideline = (Guideline) src;
+        this.mRelativePercent = srcGuideline.mRelativePercent;
+        this.mRelativeBegin = srcGuideline.mRelativeBegin;
+        this.mRelativeEnd = srcGuideline.mRelativeEnd;
+        setOrientation(srcGuideline.mOrientation);
     }
 
     public boolean allowedInBarrier() {
@@ -52,14 +53,6 @@ public class Guideline extends ConstraintWidget {
             return 2;
         }
         return -1;
-    }
-
-    public Rectangle getHead() {
-        this.mHead.setBounds(getDrawX() - this.mHeadSize, getDrawY() - (this.mHeadSize * 2), this.mHeadSize * 2, this.mHeadSize * 2);
-        if (getOrientation() == 0) {
-            this.mHead.setBounds(getDrawX() - (this.mHeadSize * 2), getDrawY() - this.mHeadSize, this.mHeadSize * 2, this.mHeadSize * 2);
-        }
-        return this.mHead;
     }
 
     public void setOrientation(int orientation) {
@@ -95,38 +88,74 @@ public class Guideline extends ConstraintWidget {
         this.mMinimumPosition = minimum;
     }
 
-    public void setPositionRelaxed(boolean value) {
-        if (this.mIsPositionRelaxed != value) {
-            this.mIsPositionRelaxed = value;
+    /* renamed from: android.support.constraint.solver.widgets.Guideline$1  reason: invalid class name */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type;
+
+        static {
+            int[] iArr = new int[ConstraintAnchor.Type.values().length];
+            $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type = iArr;
+            try {
+                iArr[ConstraintAnchor.Type.LEFT.ordinal()] = 1;
+            } catch (NoSuchFieldError e) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.RIGHT.ordinal()] = 2;
+            } catch (NoSuchFieldError e2) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.TOP.ordinal()] = 3;
+            } catch (NoSuchFieldError e3) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.BOTTOM.ordinal()] = 4;
+            } catch (NoSuchFieldError e4) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.BASELINE.ordinal()] = 5;
+            } catch (NoSuchFieldError e5) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.CENTER.ordinal()] = 6;
+            } catch (NoSuchFieldError e6) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.CENTER_X.ordinal()] = 7;
+            } catch (NoSuchFieldError e7) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.CENTER_Y.ordinal()] = 8;
+            } catch (NoSuchFieldError e8) {
+            }
+            try {
+                $SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[ConstraintAnchor.Type.NONE.ordinal()] = 9;
+            } catch (NoSuchFieldError e9) {
+            }
         }
     }
 
     public ConstraintAnchor getAnchor(ConstraintAnchor.Type anchorType) {
-        switch (anchorType) {
-            case LEFT:
-            case RIGHT:
+        switch (AnonymousClass1.$SwitchMap$android$support$constraint$solver$widgets$ConstraintAnchor$Type[anchorType.ordinal()]) {
+            case 1:
+            case 2:
                 if (this.mOrientation == 1) {
                     return this.mAnchor;
                 }
                 break;
-            case TOP:
-            case BOTTOM:
+            case 3:
+            case 4:
                 if (this.mOrientation == 0) {
                     return this.mAnchor;
                 }
                 break;
-            case BASELINE:
-            case CENTER:
-            case CENTER_X:
-            case CENTER_Y:
-            case NONE:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
                 return null;
         }
         throw new AssertionError(anchorType.name());
-    }
-
-    public ArrayList<ConstraintAnchor> getAnchors() {
-        return this.mAnchors;
     }
 
     public void setGuidePercent(int value) {
@@ -169,41 +198,6 @@ public class Guideline extends ConstraintWidget {
         return this.mRelativeEnd;
     }
 
-    public void analyze(int optimizationLevel) {
-        ConstraintWidget constraintWidgetContainer = getParent();
-        if (constraintWidgetContainer != null) {
-            if (getOrientation() == 1) {
-                this.mTop.getResolutionNode().dependsOn(1, constraintWidgetContainer.mTop.getResolutionNode(), 0);
-                this.mBottom.getResolutionNode().dependsOn(1, constraintWidgetContainer.mTop.getResolutionNode(), 0);
-                if (this.mRelativeBegin != -1) {
-                    this.mLeft.getResolutionNode().dependsOn(1, constraintWidgetContainer.mLeft.getResolutionNode(), this.mRelativeBegin);
-                    this.mRight.getResolutionNode().dependsOn(1, constraintWidgetContainer.mLeft.getResolutionNode(), this.mRelativeBegin);
-                } else if (this.mRelativeEnd != -1) {
-                    this.mLeft.getResolutionNode().dependsOn(1, constraintWidgetContainer.mRight.getResolutionNode(), -this.mRelativeEnd);
-                    this.mRight.getResolutionNode().dependsOn(1, constraintWidgetContainer.mRight.getResolutionNode(), -this.mRelativeEnd);
-                } else if (this.mRelativePercent != -1.0f && constraintWidgetContainer.getHorizontalDimensionBehaviour() == ConstraintWidget.DimensionBehaviour.FIXED) {
-                    int position = (int) (((float) constraintWidgetContainer.mWidth) * this.mRelativePercent);
-                    this.mLeft.getResolutionNode().dependsOn(1, constraintWidgetContainer.mLeft.getResolutionNode(), position);
-                    this.mRight.getResolutionNode().dependsOn(1, constraintWidgetContainer.mLeft.getResolutionNode(), position);
-                }
-            } else {
-                this.mLeft.getResolutionNode().dependsOn(1, constraintWidgetContainer.mLeft.getResolutionNode(), 0);
-                this.mRight.getResolutionNode().dependsOn(1, constraintWidgetContainer.mLeft.getResolutionNode(), 0);
-                if (this.mRelativeBegin != -1) {
-                    this.mTop.getResolutionNode().dependsOn(1, constraintWidgetContainer.mTop.getResolutionNode(), this.mRelativeBegin);
-                    this.mBottom.getResolutionNode().dependsOn(1, constraintWidgetContainer.mTop.getResolutionNode(), this.mRelativeBegin);
-                } else if (this.mRelativeEnd != -1) {
-                    this.mTop.getResolutionNode().dependsOn(1, constraintWidgetContainer.mBottom.getResolutionNode(), -this.mRelativeEnd);
-                    this.mBottom.getResolutionNode().dependsOn(1, constraintWidgetContainer.mBottom.getResolutionNode(), -this.mRelativeEnd);
-                } else if (this.mRelativePercent != -1.0f && constraintWidgetContainer.getVerticalDimensionBehaviour() == ConstraintWidget.DimensionBehaviour.FIXED) {
-                    int position2 = (int) (((float) constraintWidgetContainer.mHeight) * this.mRelativePercent);
-                    this.mTop.getResolutionNode().dependsOn(1, constraintWidgetContainer.mTop.getResolutionNode(), position2);
-                    this.mBottom.getResolutionNode().dependsOn(1, constraintWidgetContainer.mTop.getResolutionNode(), position2);
-                }
-            }
-        }
-    }
-
     public void addToSolver(LinearSystem system) {
         ConstraintWidgetContainer parent = (ConstraintWidgetContainer) getParent();
         if (parent != null) {
@@ -221,20 +215,20 @@ public class Guideline extends ConstraintWidget {
             }
             if (this.mRelativeBegin != -1) {
                 SolverVariable guide = system.createObjectVariable(this.mAnchor);
-                system.addEquality(guide, system.createObjectVariable(begin), this.mRelativeBegin, 6);
+                system.addEquality(guide, system.createObjectVariable(begin), this.mRelativeBegin, 8);
                 if (parentWrapContent) {
                     system.addGreaterThan(system.createObjectVariable(end), guide, 0, 5);
                 }
             } else if (this.mRelativeEnd != -1) {
                 SolverVariable guide2 = system.createObjectVariable(this.mAnchor);
                 SolverVariable parentRight = system.createObjectVariable(end);
-                system.addEquality(guide2, parentRight, -this.mRelativeEnd, 6);
+                system.addEquality(guide2, parentRight, -this.mRelativeEnd, 8);
                 if (parentWrapContent) {
                     system.addGreaterThan(guide2, system.createObjectVariable(begin), 0, 5);
                     system.addGreaterThan(parentRight, guide2, 0, 5);
                 }
             } else if (this.mRelativePercent != -1.0f) {
-                system.addConstraint(LinearSystem.createRowDimensionPercent(system, system.createObjectVariable(this.mAnchor), system.createObjectVariable(begin), system.createObjectVariable(end), this.mRelativePercent, this.mIsPositionRelaxed));
+                system.addConstraint(LinearSystem.createRowDimensionPercent(system, system.createObjectVariable(this.mAnchor), system.createObjectVariable(end), this.mRelativePercent));
             }
         }
     }
@@ -253,28 +247,6 @@ public class Guideline extends ConstraintWidget {
             setY(value);
             setWidth(getParent().getWidth());
             setHeight(0);
-        }
-    }
-
-    public void setDrawOrigin(int x, int y) {
-        if (this.mOrientation == 1) {
-            int position = x - this.mOffsetX;
-            if (this.mRelativeBegin != -1) {
-                setGuideBegin(position);
-            } else if (this.mRelativeEnd != -1) {
-                setGuideEnd(getParent().getWidth() - position);
-            } else if (this.mRelativePercent != -1.0f) {
-                setGuidePercent(((float) position) / ((float) getParent().getWidth()));
-            }
-        } else {
-            int position2 = y - this.mOffsetY;
-            if (this.mRelativeBegin != -1) {
-                setGuideBegin(position2);
-            } else if (this.mRelativeEnd != -1) {
-                setGuideEnd(getParent().getHeight() - position2);
-            } else if (this.mRelativePercent != -1.0f) {
-                setGuidePercent(((float) position2) / ((float) getParent().getHeight()));
-            }
         }
     }
 
@@ -313,5 +285,9 @@ public class Guideline extends ConstraintWidget {
         } else if (this.mRelativeEnd != -1) {
             inferRelativeBeginPosition();
         }
+    }
+
+    public boolean isPercent() {
+        return this.mRelativePercent != -1.0f && this.mRelativeBegin == -1 && this.mRelativeEnd == -1;
     }
 }

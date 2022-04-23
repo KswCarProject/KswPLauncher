@@ -2,8 +2,6 @@ package com.bumptech.glide;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.widget.ImageView;
 import com.bumptech.glide.load.engine.Engine;
 import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
@@ -15,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public class GlideContext extends ContextWrapper {
-    @VisibleForTesting
     static final TransitionOptions<?, ?> DEFAULT_TRANSITION_OPTIONS = new GenericTransitionOptions();
     private final ArrayPool arrayPool;
     private final List<RequestListener<Object>> defaultRequestListeners;
@@ -27,7 +24,7 @@ public class GlideContext extends ContextWrapper {
     private final int logLevel;
     private final Registry registry;
 
-    public GlideContext(@NonNull Context context, @NonNull ArrayPool arrayPool2, @NonNull Registry registry2, @NonNull ImageViewTargetFactory imageViewTargetFactory2, @NonNull RequestOptions defaultRequestOptions2, @NonNull Map<Class<?>, TransitionOptions<?, ?>> defaultTransitionOptions2, @NonNull List<RequestListener<Object>> defaultRequestListeners2, @NonNull Engine engine2, boolean isLoggingRequestOriginsEnabled2, int logLevel2) {
+    public GlideContext(Context context, ArrayPool arrayPool2, Registry registry2, ImageViewTargetFactory imageViewTargetFactory2, RequestOptions defaultRequestOptions2, Map<Class<?>, TransitionOptions<?, ?>> defaultTransitionOptions2, List<RequestListener<Object>> defaultRequestListeners2, Engine engine2, boolean isLoggingRequestOriginsEnabled2, int logLevel2) {
         super(context.getApplicationContext());
         this.arrayPool = arrayPool2;
         this.registry = registry2;
@@ -51,9 +48,8 @@ public class GlideContext extends ContextWrapper {
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r3v3, resolved type: java.lang.Object} */
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r0v7, resolved type: com.bumptech.glide.TransitionOptions<?, T>} */
     /* JADX WARNING: Multi-variable type inference failed */
-    @android.support.annotation.NonNull
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public <T> com.bumptech.glide.TransitionOptions<?, T> getDefaultTransitionOptions(@android.support.annotation.NonNull java.lang.Class<T> r5) {
+    public <T> com.bumptech.glide.TransitionOptions<?, T> getDefaultTransitionOptions(java.lang.Class<T> r5) {
         /*
             r4 = this;
             java.util.Map<java.lang.Class<?>, com.bumptech.glide.TransitionOptions<?, ?>> r0 = r4.defaultTransitionOptions
@@ -86,17 +82,14 @@ public class GlideContext extends ContextWrapper {
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.GlideContext.getDefaultTransitionOptions(java.lang.Class):com.bumptech.glide.TransitionOptions");
     }
 
-    @NonNull
-    public <X> ViewTarget<ImageView, X> buildImageViewTarget(@NonNull ImageView imageView, @NonNull Class<X> transcodeClass) {
+    public <X> ViewTarget<ImageView, X> buildImageViewTarget(ImageView imageView, Class<X> transcodeClass) {
         return this.imageViewTargetFactory.buildTarget(imageView, transcodeClass);
     }
 
-    @NonNull
     public Engine getEngine() {
         return this.engine;
     }
 
-    @NonNull
     public Registry getRegistry() {
         return this.registry;
     }
@@ -105,7 +98,6 @@ public class GlideContext extends ContextWrapper {
         return this.logLevel;
     }
 
-    @NonNull
     public ArrayPool getArrayPool() {
         return this.arrayPool;
     }

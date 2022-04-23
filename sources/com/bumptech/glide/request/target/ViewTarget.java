@@ -3,10 +3,6 @@ package com.bumptech.glide.request.target;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -24,29 +20,26 @@ import java.util.List;
 public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
     private static final String TAG = "ViewTarget";
     private static boolean isTagUsedAtLeastOnce;
-    @Nullable
     private static Integer tagId;
-    @Nullable
     private View.OnAttachStateChangeListener attachStateListener;
     private boolean isAttachStateListenerAdded;
     private boolean isClearedByUs;
     private final SizeDeterminer sizeDeterminer;
     protected final T view;
 
-    public ViewTarget(@NonNull T view2) {
+    public ViewTarget(T view2) {
         this.view = (View) Preconditions.checkNotNull(view2);
         this.sizeDeterminer = new SizeDeterminer(view2);
     }
 
     @Deprecated
-    public ViewTarget(@NonNull T view2, boolean waitForLayout) {
+    public ViewTarget(T view2, boolean waitForLayout) {
         this(view2);
         if (waitForLayout) {
             waitForLayout();
         }
     }
 
-    @NonNull
     public final ViewTarget<T, Z> clearOnDetach() {
         if (this.attachStateListener != null) {
             return this;
@@ -82,49 +75,45 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         }
     }
 
-    @NonNull
     public final ViewTarget<T, Z> waitForLayout() {
         this.sizeDeterminer.waitForLayout = true;
         return this;
     }
 
-    @CallSuper
-    public void onLoadStarted(@Nullable Drawable placeholder) {
+    public void onLoadStarted(Drawable placeholder) {
         super.onLoadStarted(placeholder);
         maybeAddAttachStateListener();
     }
 
     private void maybeAddAttachStateListener() {
-        if (this.attachStateListener != null && !this.isAttachStateListenerAdded) {
-            this.view.addOnAttachStateChangeListener(this.attachStateListener);
+        View.OnAttachStateChangeListener onAttachStateChangeListener = this.attachStateListener;
+        if (onAttachStateChangeListener != null && !this.isAttachStateListenerAdded) {
+            this.view.addOnAttachStateChangeListener(onAttachStateChangeListener);
             this.isAttachStateListenerAdded = true;
         }
     }
 
     private void maybeRemoveAttachStateListener() {
-        if (this.attachStateListener != null && this.isAttachStateListenerAdded) {
-            this.view.removeOnAttachStateChangeListener(this.attachStateListener);
+        View.OnAttachStateChangeListener onAttachStateChangeListener = this.attachStateListener;
+        if (onAttachStateChangeListener != null && this.isAttachStateListenerAdded) {
+            this.view.removeOnAttachStateChangeListener(onAttachStateChangeListener);
             this.isAttachStateListenerAdded = false;
         }
     }
 
-    @NonNull
     public T getView() {
         return this.view;
     }
 
-    @CallSuper
-    public void getSize(@NonNull SizeReadyCallback cb) {
+    public void getSize(SizeReadyCallback cb) {
         this.sizeDeterminer.getSize(cb);
     }
 
-    @CallSuper
-    public void removeCallback(@NonNull SizeReadyCallback cb) {
+    public void removeCallback(SizeReadyCallback cb) {
         this.sizeDeterminer.removeCallback(cb);
     }
 
-    @CallSuper
-    public void onLoadCleared(@Nullable Drawable placeholder) {
+    public void onLoadCleared(Drawable placeholder) {
         super.onLoadCleared(placeholder);
         this.sizeDeterminer.clearCallbacksAndListener();
         if (!this.isClearedByUs) {
@@ -132,11 +121,10 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         }
     }
 
-    public void setRequest(@Nullable Request request) {
+    public void setRequest(Request request) {
         setTag(request);
     }
 
-    @Nullable
     public Request getRequest() {
         Object tag = getTag();
         if (tag == null) {
@@ -152,21 +140,22 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         return "Target for: " + this.view;
     }
 
-    private void setTag(@Nullable Object tag) {
-        if (tagId == null) {
+    private void setTag(Object tag) {
+        Integer num = tagId;
+        if (num == null) {
             isTagUsedAtLeastOnce = true;
             this.view.setTag(tag);
             return;
         }
-        this.view.setTag(tagId.intValue(), tag);
+        this.view.setTag(num.intValue(), tag);
     }
 
-    @Nullable
     private Object getTag() {
-        if (tagId == null) {
+        Integer num = tagId;
+        if (num == null) {
             return this.view.getTag();
         }
-        return this.view.getTag(tagId.intValue());
+        return this.view.getTag(num.intValue());
     }
 
     public static void setTagId(int tagId2) {
@@ -176,23 +165,19 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         tagId = Integer.valueOf(tagId2);
     }
 
-    @VisibleForTesting
     static final class SizeDeterminer {
         private static final int PENDING_SIZE = 0;
-        @Nullable
-        @VisibleForTesting
         static Integer maxDisplayLength;
         private final List<SizeReadyCallback> cbs = new ArrayList();
-        @Nullable
         private SizeDeterminerLayoutListener layoutListener;
         private final View view;
         boolean waitForLayout;
 
-        SizeDeterminer(@NonNull View view2) {
+        SizeDeterminer(View view2) {
             this.view = view2;
         }
 
-        private static int getMaxDisplayLength(@NonNull Context context) {
+        private static int getMaxDisplayLength(Context context) {
             if (maxDisplayLength == null) {
                 Display display = ((WindowManager) Preconditions.checkNotNull((WindowManager) context.getSystemService("window"))).getDefaultDisplay();
                 Point displayDimensions = new Point();
@@ -222,7 +207,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         }
 
         /* access modifiers changed from: package-private */
-        public void getSize(@NonNull SizeReadyCallback cb) {
+        public void getSize(SizeReadyCallback cb) {
             int currentWidth = getTargetWidth();
             int currentHeight = getTargetHeight();
             if (isViewStateAndSizeValid(currentWidth, currentHeight)) {
@@ -234,13 +219,14 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
             }
             if (this.layoutListener == null) {
                 ViewTreeObserver observer = this.view.getViewTreeObserver();
-                this.layoutListener = new SizeDeterminerLayoutListener(this);
-                observer.addOnPreDrawListener(this.layoutListener);
+                SizeDeterminerLayoutListener sizeDeterminerLayoutListener = new SizeDeterminerLayoutListener(this);
+                this.layoutListener = sizeDeterminerLayoutListener;
+                observer.addOnPreDrawListener(sizeDeterminerLayoutListener);
             }
         }
 
         /* access modifiers changed from: package-private */
-        public void removeCallback(@NonNull SizeReadyCallback cb) {
+        public void removeCallback(SizeReadyCallback cb) {
             this.cbs.remove(cb);
         }
 
@@ -298,7 +284,7 @@ public abstract class ViewTarget<T extends View, Z> extends BaseTarget<Z> {
         private static final class SizeDeterminerLayoutListener implements ViewTreeObserver.OnPreDrawListener {
             private final WeakReference<SizeDeterminer> sizeDeterminerRef;
 
-            SizeDeterminerLayoutListener(@NonNull SizeDeterminer sizeDeterminer) {
+            SizeDeterminerLayoutListener(SizeDeterminer sizeDeterminer) {
                 this.sizeDeterminerRef = new WeakReference<>(sizeDeterminer);
             }
 

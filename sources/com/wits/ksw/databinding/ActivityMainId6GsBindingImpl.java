@@ -4,8 +4,6 @@ import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -13,19 +11,14 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.view.bmwevoid6gs.BmwId6gsViewMode;
 
 public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback71;
-    @Nullable
-    private final View.OnClickListener mCallback72;
+    private final View.OnClickListener mCallback275;
+    private final View.OnClickListener mCallback276;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
-    public ActivityMainId6GsBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainId6GsBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -35,11 +28,12 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         this.id6GsLeftBtn.setTag((Object) null);
         this.id6GsMainViewPager.setTag((Object) null);
         this.id6GsRightBtn.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback71 = new OnClickListener(this, 1);
-        this.mCallback72 = new OnClickListener(this, 2);
+        this.mCallback276 = new OnClickListener(this, 2);
+        this.mCallback275 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -59,7 +53,7 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -67,7 +61,7 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
         return true;
     }
 
-    public void setVm(@Nullable BmwId6gsViewMode Vm) {
+    public void setVm(BmwId6gsViewMode Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 2;
@@ -78,10 +72,12 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
 
     /* access modifiers changed from: protected */
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-        if (localFieldId != 0) {
-            return false;
+        switch (localFieldId) {
+            case 0:
+                return onChangeVmPageIndex((ObservableInt) object, fieldId);
+            default:
+                return false;
         }
-        return onChangeVmPageIndex((ObservableInt) object, fieldId);
     }
 
     private boolean onChangeVmPageIndex(ObservableInt VmPageIndex, int fieldId) {
@@ -101,11 +97,11 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        BmwId6gsViewMode vm = this.mVm;
         int vmPageIndexInt2ViewINVISIBLEViewVISIBLE = 0;
         ObservableInt vmPageIndex = null;
-        int vmPageIndexInt0ViewINVISIBLEViewVISIBLE = 0;
+        BmwId6gsViewMode vm = this.mVm;
         int vmPageIndexGet = 0;
+        int vmPageIndexInt0ViewINVISIBLEViewVISIBLE = 0;
         if ((dirtyFlags & 7) != 0) {
             if (vm != null) {
                 vmPageIndex = vm.pageIndex;
@@ -115,18 +111,11 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
                 vmPageIndexGet = vmPageIndex.get();
             }
             boolean z = true;
-            boolean vmPageIndexInt2 = vmPageIndexGet == 2;
-            if (vmPageIndexGet != 0) {
+            boolean vmPageIndexInt0 = vmPageIndexGet == 0;
+            if (vmPageIndexGet != 2) {
                 z = false;
             }
-            boolean vmPageIndexInt0 = z;
-            if ((dirtyFlags & 7) != 0) {
-                if (vmPageIndexInt2) {
-                    dirtyFlags |= 16;
-                } else {
-                    dirtyFlags |= 8;
-                }
-            }
+            boolean vmPageIndexInt2 = z;
             if ((dirtyFlags & 7) != 0) {
                 if (vmPageIndexInt0) {
                     dirtyFlags |= 64;
@@ -134,16 +123,23 @@ public class ActivityMainId6GsBindingImpl extends ActivityMainId6GsBinding imple
                     dirtyFlags |= 32;
                 }
             }
+            if ((dirtyFlags & 7) != 0) {
+                if (vmPageIndexInt2) {
+                    dirtyFlags |= 16;
+                } else {
+                    dirtyFlags |= 8;
+                }
+            }
             int i = 4;
-            vmPageIndexInt2ViewINVISIBLEViewVISIBLE = vmPageIndexInt2 ? 4 : 0;
-            if (!vmPageIndexInt0) {
+            vmPageIndexInt0ViewINVISIBLEViewVISIBLE = vmPageIndexInt0 ? 4 : 0;
+            if (!vmPageIndexInt2) {
                 i = 0;
             }
-            vmPageIndexInt0ViewINVISIBLEViewVISIBLE = i;
+            vmPageIndexInt2ViewINVISIBLEViewVISIBLE = i;
         }
         if ((4 & dirtyFlags) != 0) {
-            this.id6GsLeftBtn.setOnClickListener(this.mCallback71);
-            this.id6GsRightBtn.setOnClickListener(this.mCallback72);
+            this.id6GsLeftBtn.setOnClickListener(this.mCallback275);
+            this.id6GsRightBtn.setOnClickListener(this.mCallback276);
         }
         if ((7 & dirtyFlags) != 0) {
             this.id6GsLeftBtn.setVisibility(vmPageIndexInt0ViewINVISIBLEViewVISIBLE);

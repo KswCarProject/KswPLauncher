@@ -19,7 +19,9 @@ import com.wits.ksw.BuildConfig;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.id7_new.SavaUtils;
+import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.model.MediaImpl;
+import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.WitsCommand;
 
 public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickListener {
@@ -43,22 +45,30 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     private void init() {
-        this.rel_firtfm = (RelativeLayout) this.view.findViewById(R.id.rel_firtfm);
-        this.rel_firtfm.setOnClickListener(this);
+        RelativeLayout relativeLayout = (RelativeLayout) this.view.findViewById(R.id.rel_firtfm);
+        this.rel_firtfm = relativeLayout;
+        relativeLayout.setOnClickListener(this);
         this.tv_msInfo = (TextView) this.view.findViewById(R.id.tv_msInfo);
-        this.rel_firtMs = (RelativeLayout) this.view.findViewById(R.id.rel_firtMs);
-        this.rel_firtMs.setOnClickListener(this);
-        this.rel_firtvd = (RelativeLayout) this.view.findViewById(R.id.rel_firtvd);
-        this.rel_firtvd.setOnClickListener(this);
-        this.rel_firtie = (RelativeLayout) this.view.findViewById(R.id.rel_firtie);
-        this.rel_firtie.setOnClickListener(this);
-        this.rel_firtset = (RelativeLayout) this.view.findViewById(R.id.rel_firtset);
-        this.rel_firtset.setOnClickListener(this);
+        RelativeLayout relativeLayout2 = (RelativeLayout) this.view.findViewById(R.id.rel_firtMs);
+        this.rel_firtMs = relativeLayout2;
+        relativeLayout2.setOnClickListener(this);
+        RelativeLayout relativeLayout3 = (RelativeLayout) this.view.findViewById(R.id.rel_firtvd);
+        this.rel_firtvd = relativeLayout3;
+        relativeLayout3.setOnClickListener(this);
+        RelativeLayout relativeLayout4 = (RelativeLayout) this.view.findViewById(R.id.rel_firtie);
+        this.rel_firtie = relativeLayout4;
+        relativeLayout4.setOnClickListener(this);
+        RelativeLayout relativeLayout5 = (RelativeLayout) this.view.findViewById(R.id.rel_firtset);
+        this.rel_firtset = relativeLayout5;
+        relativeLayout5.setOnClickListener(this);
         try {
-            if (!TextUtils.isEmpty(MediaImpl.getInstance().getMediaInfo().musicName.get())) {
+            if (TextUtils.isEmpty(MediaImpl.getInstance().getMediaInfo().musicName.get())) {
+                Context context = this.m_con;
+                if (context != null) {
+                    this.tv_msInfo.setText(context.getString(R.string.unkonw));
+                }
+            } else {
                 this.tv_msInfo.setText(MediaImpl.getInstance().getMediaInfo().musicName.get());
-            } else if (this.m_con != null) {
-                this.tv_msInfo.setText(this.m_con.getString(R.string.unkonw));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,11 +82,15 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     public void setMediaInfo(MediaInfo mediaInfo) {
-        if (!TextUtils.isEmpty(mediaInfo.musicName.get())) {
-            this.tv_msInfo.setText(mediaInfo.musicName.get());
-        } else if (this.m_con != null) {
-            this.tv_msInfo.setText(this.m_con.getString(R.string.unkonw));
+        if (TextUtils.isEmpty(mediaInfo.musicName.get())) {
+            Context context = this.m_con;
+            if (context != null) {
+                this.tv_msInfo.setText(context.getString(R.string.unkonw));
+                return;
+            }
+            return;
         }
+        this.tv_msInfo.setText(mediaInfo.musicName.get());
     }
 
     public void initFouse(int inext) {
@@ -86,96 +100,76 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     public void updateFouce(int index) {
-        if (index != -1) {
-            switch (index) {
-                case 5:
-                    this.rel_firtMs.setSelected(true);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 6:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(true);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 7:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(true);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 8:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(true);
-                    this.rel_firtset.setSelected(false);
-                    return;
-                case 9:
-                    this.rel_firtMs.setSelected(false);
-                    this.rel_firtvd.setSelected(false);
-                    this.rel_firtie.setSelected(false);
-                    this.rel_firtfm.setSelected(false);
-                    this.rel_firtset.setSelected(true);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            this.rel_firtMs.setSelected(false);
-            this.rel_firtvd.setSelected(false);
-            this.rel_firtie.setSelected(false);
-            this.rel_firtfm.setSelected(false);
-            this.rel_firtset.setSelected(false);
+        switch (index) {
+            case -1:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 5:
+                this.rel_firtMs.setSelected(true);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 6:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(true);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 7:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(true);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 8:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(true);
+                this.rel_firtset.setSelected(false);
+                return;
+            case 9:
+                this.rel_firtMs.setSelected(false);
+                this.rel_firtvd.setSelected(false);
+                this.rel_firtie.setSelected(false);
+                this.rel_firtfm.setSelected(false);
+                this.rel_firtset.setSelected(true);
+                return;
+            default:
+                return;
         }
     }
 
     public void oncheckID(int id) {
         switch (id) {
             case 5:
-                String pkg = Settings.System.getString(this.contentResolver, "defPlayApp");
-                Log.i(Constraints.TAG, "oncheckID openMusic: pkg=" + pkg);
-                if (TextUtils.isEmpty(pkg)) {
-                    pkg = "com.wits.media.MUSIC";
-                }
-                if (pkg.equals("com.wits.ksw.media")) {
-                    openApp(new Intent("com.wits.media.MUSIC"));
-                } else {
-                    Intent intent = this.m_con.getPackageManager().getLaunchIntentForPackage(pkg);
-                    Log.d(Constraints.TAG, "oncheckID   intent = " + intent);
-                    if (intent == null) {
-                        openApp(new Intent("com.wits.media.MUSIC"));
-                    } else {
-                        openApp(intent);
-                        try {
-                            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                openMusicMulti();
                 Settings.System.putInt(this.m_con.getContentResolver(), SavaUtils.PAGE_INDEX, 5);
                 updateFouce(5);
                 return;
             case 6:
-                openApp(new Intent("com.wits.media.VIDEO"));
+                Log.d("liuhaoNew", "111111111111111111111");
+                openVideoMulti();
                 Settings.System.putInt(this.m_con.getContentResolver(), SavaUtils.PAGE_INDEX, 6);
                 updateFouce(6);
                 return;
             case 7:
-                openApp(new ComponentName("com.android.chrome", "com.google.android.apps.chrome.Main"));
+                openApp(new ComponentName("com.android.chrome", LauncherViewModel.CLS_CHROME));
                 Settings.System.putInt(this.m_con.getContentResolver(), SavaUtils.PAGE_INDEX, 7);
                 updateFouce(7);
                 try {
                     WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
                     return;
-                } catch (Exception e2) {
-                    e2.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                     return;
                 }
             case 8:
@@ -194,26 +188,24 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
     }
 
     public void onClick(View v) {
-        int id = v.getId();
-        if (id != R.id.rel_firtMs) {
-            switch (id) {
-                case R.id.rel_firtfm:
-                    oncheckID(8);
-                    return;
-                case R.id.rel_firtie:
-                    oncheckID(7);
-                    return;
-                case R.id.rel_firtset:
-                    oncheckID(9);
-                    return;
-                case R.id.rel_firtvd:
-                    oncheckID(6);
-                    return;
-                default:
-                    return;
-            }
-        } else {
-            oncheckID(5);
+        switch (v.getId()) {
+            case R.id.rel_firtMs:
+                oncheckID(5);
+                return;
+            case R.id.rel_firtfm:
+                oncheckID(8);
+                return;
+            case R.id.rel_firtie:
+                oncheckID(7);
+                return;
+            case R.id.rel_firtset:
+                oncheckID(9);
+                return;
+            case R.id.rel_firtvd:
+                oncheckID(6);
+                return;
+            default:
+                return;
         }
     }
 
@@ -246,6 +238,69 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getContext(), getContext().getString(R.string.uninstall), 0).show();
+        }
+    }
+
+    public void openMusicMulti() {
+        String pkg = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_PKG);
+        String cls = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
+        if (TextUtils.isEmpty(pkg) || TextUtils.isEmpty(cls) || KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
+            openMusic();
+        } else if (KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
+            openApp(new Intent("com.wits.media.VIDEO"));
+        } else {
+            openAppByCls(new ComponentName(pkg, cls));
+        }
+    }
+
+    public void openVideoMulti() {
+        Log.d("openVideoMulti", "000000000000000000");
+        String pkg = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_PKG);
+        String cls = Settings.System.getString(this.m_con.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
+        if (TextUtils.isEmpty(pkg) || TextUtils.isEmpty(cls) || KeyConfig.CLS_LOCAL_VIDEO.equals(cls)) {
+            openApp(new Intent("com.wits.media.VIDEO"));
+        } else if (KeyConfig.CLS_LOCAL_MUSIC.equals(cls)) {
+            openMusic();
+        } else {
+            openAppByCls(new ComponentName(pkg, cls));
+        }
+    }
+
+    public void openAppByCls(ComponentName component) {
+        try {
+            Log.i("Constraints openAppByCls ", "11111111111111111 openApp: " + component.toString());
+            Intent intent = new Intent();
+            intent.setComponent(component);
+            intent.setFlags(268435456);
+            this.m_con.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Context context = this.m_con;
+            Toast.makeText(context, context.getString(R.string.uninstall), 0).show();
+        }
+    }
+
+    public void openMusic() {
+        String pkg = Settings.System.getString(this.contentResolver, "defPlayApp");
+        Log.i(Constraints.TAG, "oncheckID openMusic: pkg=" + pkg);
+        if (TextUtils.isEmpty(pkg)) {
+            pkg = "com.wits.media.MUSIC";
+        }
+        if (pkg.equals("com.wits.ksw.media")) {
+            openApp(new Intent("com.wits.media.MUSIC"));
+            return;
+        }
+        Intent intent = this.m_con.getPackageManager().getLaunchIntentForPackage(pkg);
+        Log.d(Constraints.TAG, "oncheckID   intent = " + intent);
+        if (intent == null) {
+            openApp(new Intent("com.wits.media.MUSIC"));
+            return;
+        }
+        openApp(intent);
+        try {
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

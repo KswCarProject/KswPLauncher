@@ -2,14 +2,12 @@ package android.support.v7.widget;
 
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.View;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ViewUtils {
     private static final String TAG = "ViewUtils";
     private static Method sComputeFitSystemWindowsMethod;
@@ -17,8 +15,9 @@ public class ViewUtils {
     static {
         if (Build.VERSION.SDK_INT >= 18) {
             try {
-                sComputeFitSystemWindowsMethod = View.class.getDeclaredMethod("computeFitSystemWindows", new Class[]{Rect.class, Rect.class});
-                if (!sComputeFitSystemWindowsMethod.isAccessible()) {
+                Method declaredMethod = View.class.getDeclaredMethod("computeFitSystemWindows", new Class[]{Rect.class, Rect.class});
+                sComputeFitSystemWindowsMethod = declaredMethod;
+                if (!declaredMethod.isAccessible()) {
                     sComputeFitSystemWindowsMethod.setAccessible(true);
                 }
             } catch (NoSuchMethodException e) {
@@ -35,9 +34,10 @@ public class ViewUtils {
     }
 
     public static void computeFitSystemWindows(View view, Rect inoutInsets, Rect outLocalInsets) {
-        if (sComputeFitSystemWindowsMethod != null) {
+        Method method = sComputeFitSystemWindowsMethod;
+        if (method != null) {
             try {
-                sComputeFitSystemWindowsMethod.invoke(view, new Object[]{inoutInsets, outLocalInsets});
+                method.invoke(view, new Object[]{inoutInsets, outLocalInsets});
             } catch (Exception e) {
                 Log.d(TAG, "Could not invoke computeFitSystemWindows", e);
             }

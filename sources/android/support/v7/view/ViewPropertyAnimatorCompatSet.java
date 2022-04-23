@@ -1,6 +1,5 @@
 package android.support.v7.view;
 
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
@@ -9,7 +8,6 @@ import android.view.animation.Interpolator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ViewPropertyAnimatorCompatSet {
     final ArrayList<ViewPropertyAnimatorCompat> mAnimators = new ArrayList<>();
     private long mDuration = -1;
@@ -67,11 +65,13 @@ public class ViewPropertyAnimatorCompatSet {
             Iterator<ViewPropertyAnimatorCompat> it = this.mAnimators.iterator();
             while (it.hasNext()) {
                 ViewPropertyAnimatorCompat animator = it.next();
-                if (this.mDuration >= 0) {
-                    animator.setDuration(this.mDuration);
+                long j = this.mDuration;
+                if (j >= 0) {
+                    animator.setDuration(j);
                 }
-                if (this.mInterpolator != null) {
-                    animator.setInterpolator(this.mInterpolator);
+                Interpolator interpolator = this.mInterpolator;
+                if (interpolator != null) {
+                    animator.setInterpolator(interpolator);
                 }
                 if (this.mListener != null) {
                     animator.setListener(this.mProxyListener);

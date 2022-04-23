@@ -2,6 +2,7 @@ package android.support.v7.widget;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -172,22 +173,24 @@ public class GridLayoutManager extends LinearLayoutManager {
     }
 
     public void setMeasuredDimension(Rect childrenBounds, int wSpec, int hSpec) {
-        int height;
         int width;
+        int usedHeight;
         if (this.mCachedBorders == null) {
             super.setMeasuredDimension(childrenBounds, wSpec, hSpec);
         }
         int horizontalPadding = getPaddingLeft() + getPaddingRight();
         int verticalPadding = getPaddingTop() + getPaddingBottom();
         if (this.mOrientation == 1) {
-            int chooseSize = chooseSize(hSpec, childrenBounds.height() + verticalPadding, getMinimumHeight());
-            height = chooseSize(wSpec, this.mCachedBorders[this.mCachedBorders.length - 1] + horizontalPadding, getMinimumWidth());
-            width = chooseSize;
+            width = chooseSize(hSpec, childrenBounds.height() + verticalPadding, getMinimumHeight());
+            int[] iArr = this.mCachedBorders;
+            usedHeight = chooseSize(wSpec, iArr[iArr.length - 1] + horizontalPadding, getMinimumWidth());
         } else {
-            height = chooseSize(wSpec, childrenBounds.width() + horizontalPadding, getMinimumWidth());
-            width = chooseSize(hSpec, this.mCachedBorders[this.mCachedBorders.length - 1] + verticalPadding, getMinimumHeight());
+            int width2 = chooseSize(wSpec, childrenBounds.width() + horizontalPadding, getMinimumWidth());
+            int[] iArr2 = this.mCachedBorders;
+            usedHeight = width2;
+            width = chooseSize(hSpec, iArr2[iArr2.length - 1] + verticalPadding, getMinimumHeight());
         }
-        setMeasuredDimension(height, width);
+        setMeasuredDimension(usedHeight, width);
     }
 
     private void calculateItemBorders(int totalSpace) {
@@ -219,9 +222,12 @@ public class GridLayoutManager extends LinearLayoutManager {
     /* access modifiers changed from: package-private */
     public int getSpaceForSpanRange(int startSpan, int spanSize) {
         if (this.mOrientation != 1 || !isLayoutRTL()) {
-            return this.mCachedBorders[startSpan + spanSize] - this.mCachedBorders[startSpan];
+            int[] iArr = this.mCachedBorders;
+            return iArr[startSpan + spanSize] - iArr[startSpan];
         }
-        return this.mCachedBorders[this.mSpanCount - startSpan] - this.mCachedBorders[(this.mSpanCount - startSpan) - spanSize];
+        int[] iArr2 = this.mCachedBorders;
+        int i = this.mSpanCount;
+        return iArr2[i - startSpan] - iArr2[(i - startSpan) - spanSize];
     }
 
     /* access modifiers changed from: package-private */
@@ -235,7 +241,8 @@ public class GridLayoutManager extends LinearLayoutManager {
     }
 
     private void ensureViewSet() {
-        if (this.mSet == null || this.mSet.length != this.mSpanCount) {
+        View[] viewArr = this.mSet;
+        if (viewArr == null || viewArr.length != this.mSpanCount) {
             this.mSet = new View[this.mSpanCount];
         }
     }
@@ -279,11 +286,11 @@ public class GridLayoutManager extends LinearLayoutManager {
     /* access modifiers changed from: package-private */
     public View findReferenceChild(RecyclerView.Recycler recycler, RecyclerView.State state, int start, int end, int itemCount) {
         ensureLayoutState();
+        View invalidMatch = null;
         View outOfBoundsMatch = null;
         int boundsStart = this.mOrientationHelper.getStartAfterPadding();
         int boundsEnd = this.mOrientationHelper.getEndAfterPadding();
         int diff = end > start ? 1 : -1;
-        View invalidMatch = null;
         for (int i = start; i != end; i += diff) {
             View view = getChildAt(i);
             int position = getPosition(view);
@@ -361,14 +368,16 @@ public class GridLayoutManager extends LinearLayoutManager {
 
     /* access modifiers changed from: package-private */
     public void layoutChunk(RecyclerView.Recycler recycler, RecyclerView.State state, LinearLayoutManager.LayoutState layoutState, LinearLayoutManager.LayoutChunkResult result) {
+        int consumedSpanCount;
+        int itemSpanSize;
         int maxSize;
+        int bottom;
         int right;
         int left;
-        int bottom;
         int top;
-        int remainingSpan;
         int otherDirSpecMode;
         float maxSizeInOther;
+        int remainingSpan;
         int hSpec;
         int wSpec;
         View view;
@@ -387,10 +396,13 @@ public class GridLayoutManager extends LinearLayoutManager {
         int remainingSpan2 = this.mSpanCount;
         if (!layingOutInPrimaryDirection) {
             remainingSpan2 = getSpanIndex(recycler2, state2, layoutState2.mCurrentPosition) + getSpanSize(recycler2, state2, layoutState2.mCurrentPosition);
+            itemSpanSize = 0;
+            consumedSpanCount = 0;
+        } else {
+            itemSpanSize = 0;
+            consumedSpanCount = 0;
         }
-        int count = 0;
-        int consumedSpanCount = 0;
-        while (count < this.mSpanCount && layoutState2.hasMore(state2) && remainingSpan2 > 0) {
+        while (itemSpanSize < this.mSpanCount && layoutState2.hasMore(state2) && remainingSpan2 > 0) {
             int pos = layoutState2.mCurrentPosition;
             int spanSize = getSpanSize(recycler2, state2, pos);
             if (spanSize <= this.mSpanCount) {
@@ -399,24 +411,24 @@ public class GridLayoutManager extends LinearLayoutManager {
                     break;
                 }
                 consumedSpanCount += spanSize;
-                this.mSet[count] = view;
-                count++;
+                this.mSet[itemSpanSize] = view;
+                itemSpanSize++;
             } else {
                 throw new IllegalArgumentException("Item at position " + pos + " requires " + spanSize + " spans but GridLayoutManager has only " + this.mSpanCount + " spans.");
             }
         }
         int remainingSpan3 = remainingSpan2;
-        if (count == 0) {
+        if (itemSpanSize == 0) {
             layoutChunkResult.mFinished = true;
             return;
         }
-        int count2 = count;
+        int count = itemSpanSize;
         int currentOtherDirSize2 = currentOtherDirSize;
-        assignSpans(recycler, state, count, consumedSpanCount, layingOutInPrimaryDirection);
+        assignSpans(recycler, state, itemSpanSize, consumedSpanCount, layingOutInPrimaryDirection);
         int i = 0;
         int maxSize2 = 0;
         float maxSizeInOther2 = 0.0f;
-        while (i < count2) {
+        while (i < count) {
             View view2 = this.mSet[i];
             if (layoutState2.mScrapList == null) {
                 if (layingOutInPrimaryDirection) {
@@ -447,9 +459,9 @@ public class GridLayoutManager extends LinearLayoutManager {
         if (flexibleInOtherDir) {
             guessMeasurement(maxSizeInOther2, currentOtherDirSize2);
             int maxSize4 = 0;
-            for (int i2 = 0; i2 < count2; i2++) {
+            for (int i2 = 0; i2 < count; i2++) {
                 View view3 = this.mSet[i2];
-                measureChild(view3, 1073741824, true);
+                measureChild(view3, BasicMeasure.EXACTLY, true);
                 int size2 = this.mOrientationHelper.getDecoratedMeasurement(view3);
                 if (size2 > maxSize4) {
                     maxSize4 = size2;
@@ -460,7 +472,7 @@ public class GridLayoutManager extends LinearLayoutManager {
             maxSize = maxSize2;
         }
         int i3 = 0;
-        while (i3 < count2) {
+        while (i3 < count) {
             View view4 = this.mSet[i3];
             if (this.mOrientationHelper.getDecoratedMeasurement(view4) != maxSize) {
                 LayoutParams lp = (LayoutParams) view4.getLayoutParams();
@@ -473,14 +485,14 @@ public class GridLayoutManager extends LinearLayoutManager {
                 otherDirSpecMode = otherDirSpecMode2;
                 if (this.mOrientation == 1) {
                     remainingSpan = remainingSpan3;
-                    wSpec = getChildMeasureSpec(totalSpaceInOther, 1073741824, horizontalInsets, lp.width, false);
-                    hSpec = View.MeasureSpec.makeMeasureSpec(maxSize - verticalInsets, 1073741824);
+                    wSpec = getChildMeasureSpec(totalSpaceInOther, BasicMeasure.EXACTLY, horizontalInsets, lp.width, false);
+                    hSpec = View.MeasureSpec.makeMeasureSpec(maxSize - verticalInsets, BasicMeasure.EXACTLY);
                     LayoutParams layoutParams = lp;
                 } else {
                     remainingSpan = remainingSpan3;
-                    wSpec = View.MeasureSpec.makeMeasureSpec(maxSize - horizontalInsets, 1073741824);
+                    wSpec = View.MeasureSpec.makeMeasureSpec(maxSize - horizontalInsets, BasicMeasure.EXACTLY);
                     LayoutParams layoutParams2 = lp;
-                    hSpec = getChildMeasureSpec(totalSpaceInOther, 1073741824, verticalInsets, lp.height, false);
+                    hSpec = getChildMeasureSpec(totalSpaceInOther, BasicMeasure.EXACTLY, verticalInsets, lp.height, false);
                 }
                 measureChildWithDecorationsAndMargin(view4, wSpec, hSpec, true);
             } else {
@@ -489,13 +501,12 @@ public class GridLayoutManager extends LinearLayoutManager {
                 remainingSpan = remainingSpan3;
             }
             i3++;
-            maxSizeInOther2 = maxSizeInOther;
-            otherDirSpecMode2 = otherDirSpecMode;
-            remainingSpan3 = remainingSpan;
             RecyclerView.Recycler recycler3 = recycler;
             RecyclerView.State state3 = state;
+            remainingSpan3 = remainingSpan;
+            maxSizeInOther2 = maxSizeInOther;
+            otherDirSpecMode2 = otherDirSpecMode;
         }
-        float maxSizeInOther3 = maxSizeInOther2;
         int i4 = otherDirSpecMode2;
         int i5 = remainingSpan3;
         layoutChunkResult.mConsumed = maxSize;
@@ -519,55 +530,47 @@ public class GridLayoutManager extends LinearLayoutManager {
             right2 = left2 + maxSize;
         }
         int i6 = 0;
-        while (true) {
-            int i7 = i6;
-            if (i7 < count2) {
-                View view5 = this.mSet[i7];
-                LayoutParams params = (LayoutParams) view5.getLayoutParams();
-                if (this.mOrientation != 1) {
-                    left = left2;
-                    right = right2;
-                    int top3 = getPaddingTop() + this.mCachedBorders[params.mSpanIndex];
-                    top = top3;
-                    bottom = this.mOrientationHelper.getDecoratedMeasurementInOther(view5) + top3;
-                } else if (isLayoutRTL()) {
-                    int i8 = left2;
-                    int i9 = right2;
-                    int right3 = getPaddingLeft() + this.mCachedBorders[this.mSpanCount - params.mSpanIndex];
-                    left = right3 - this.mOrientationHelper.getDecoratedMeasurementInOther(view5);
-                    top = top2;
-                    bottom = bottom2;
-                    right = right3;
-                } else {
-                    int i10 = right2;
-                    int left3 = getPaddingLeft() + this.mCachedBorders[params.mSpanIndex];
-                    left = left3;
-                    right = this.mOrientationHelper.getDecoratedMeasurementInOther(view5) + left3;
-                    top = top2;
-                    bottom = bottom2;
-                }
-                int maxSize5 = maxSize;
-                float maxSizeInOther4 = maxSizeInOther3;
-                layoutDecoratedWithMargins(view5, left, top, right, bottom);
-                if (params.isItemRemoved() || params.isItemChanged()) {
-                    layoutChunkResult.mIgnoreConsumed = true;
-                }
-                layoutChunkResult.mFocusable |= view5.hasFocusable();
-                i6 = i7 + 1;
-                top2 = top;
-                bottom2 = bottom;
-                maxSize = maxSize5;
-                maxSizeInOther3 = maxSizeInOther4;
-                left2 = left;
-                right2 = right;
+        while (i6 < count) {
+            View view5 = this.mSet[i6];
+            LayoutParams params = (LayoutParams) view5.getLayoutParams();
+            if (this.mOrientation != 1) {
+                left = left2;
+                right = right2;
+                int top3 = getPaddingTop() + this.mCachedBorders[params.mSpanIndex];
+                top = top3;
+                bottom = this.mOrientationHelper.getDecoratedMeasurementInOther(view5) + top3;
+            } else if (isLayoutRTL()) {
+                int i7 = left2;
+                int i8 = right2;
+                int right3 = getPaddingLeft() + this.mCachedBorders[this.mSpanCount - params.mSpanIndex];
+                left = right3 - this.mOrientationHelper.getDecoratedMeasurementInOther(view5);
+                top = top2;
+                bottom = bottom2;
+                right = right3;
             } else {
-                int i11 = right2;
-                int i12 = maxSize;
-                float f = maxSizeInOther3;
-                Arrays.fill(this.mSet, (Object) null);
-                return;
+                int i9 = left2;
+                int i10 = right2;
+                int left3 = getPaddingLeft() + this.mCachedBorders[params.mSpanIndex];
+                left = left3;
+                right = this.mOrientationHelper.getDecoratedMeasurementInOther(view5) + left3;
+                top = top2;
+                bottom = bottom2;
             }
+            int maxSize5 = maxSize;
+            layoutDecoratedWithMargins(view5, left, top, right, bottom);
+            if (params.isItemRemoved() || params.isItemChanged()) {
+                layoutChunkResult.mIgnoreConsumed = true;
+            }
+            layoutChunkResult.mFocusable |= view5.hasFocusable();
+            i6++;
+            top2 = top;
+            left2 = left;
+            right2 = right;
+            bottom2 = bottom;
+            maxSize = maxSize5;
         }
+        int i11 = right2;
+        Arrays.fill(this.mSet, (Object) null);
     }
 
     private void measureChild(View view, int otherDirParentSpecMode, boolean alreadyMeasured) {
@@ -678,29 +681,29 @@ public class GridLayoutManager extends LinearLayoutManager {
         }
 
         public int getSpanIndex(int position, int spanCount) {
+            int span;
             int prevKey;
             int positionSpanSize = getSpanSize(position);
             if (positionSpanSize == spanCount) {
                 return 0;
             }
-            int span = 0;
+            int span2 = 0;
             int startPos = 0;
             if (this.mCacheSpanIndices && this.mSpanIndexCache.size() > 0 && (prevKey = findReferenceIndexFromCache(position)) >= 0) {
-                span = this.mSpanIndexCache.get(prevKey) + getSpanSize(prevKey);
+                span2 = this.mSpanIndexCache.get(prevKey) + getSpanSize(prevKey);
                 startPos = prevKey + 1;
             }
-            int span2 = span;
             for (int i = startPos; i < position; i++) {
                 int size = getSpanSize(i);
-                span2 += size;
-                if (span2 == spanCount) {
-                    span2 = 0;
-                } else if (span2 > spanCount) {
-                    span2 = size;
+                span += size;
+                if (span == spanCount) {
+                    span = 0;
+                } else if (span > spanCount) {
+                    span = size;
                 }
             }
-            if (span2 + positionSpanSize <= spanCount) {
-                return span2;
+            if (span + positionSpanSize <= spanCount) {
+                return span;
             }
             return 0;
         }
@@ -746,263 +749,166 @@ public class GridLayoutManager extends LinearLayoutManager {
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:28:0x0089, code lost:
-        r29 = r3;
-        r33 = r4;
-        r34 = r5;
-        r30 = r11;
-     */
-    /* JADX WARNING: Removed duplicated region for block: B:74:0x013e  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public android.view.View onFocusSearchFailed(android.view.View r36, int r37, android.support.v7.widget.RecyclerView.Recycler r38, android.support.v7.widget.RecyclerView.State r39) {
-        /*
-            r35 = this;
-            r0 = r35
-            r1 = r38
-            r2 = r39
-            android.view.View r3 = r35.findContainingItemView(r36)
-            r4 = 0
-            if (r3 != 0) goto L_0x000e
-            return r4
-        L_0x000e:
-            android.view.ViewGroup$LayoutParams r5 = r3.getLayoutParams()
-            android.support.v7.widget.GridLayoutManager$LayoutParams r5 = (android.support.v7.widget.GridLayoutManager.LayoutParams) r5
-            int r6 = r5.mSpanIndex
-            int r7 = r5.mSpanIndex
-            int r8 = r5.mSpanSize
-            int r7 = r7 + r8
-            android.view.View r8 = super.onFocusSearchFailed(r36, r37, r38, r39)
-            if (r8 != 0) goto L_0x0022
-            return r4
-        L_0x0022:
-            r4 = r37
-            int r9 = r0.convertFocusDirectionToLayoutDirection(r4)
-            r11 = 1
-            if (r9 != r11) goto L_0x002d
-            r12 = r11
-            goto L_0x002e
-        L_0x002d:
-            r12 = 0
-        L_0x002e:
-            boolean r13 = r0.mShouldReverseLayout
-            if (r12 == r13) goto L_0x0034
-            r12 = r11
-            goto L_0x0035
-        L_0x0034:
-            r12 = 0
-        L_0x0035:
-            if (r12 == 0) goto L_0x003f
-            int r13 = r35.getChildCount()
-            int r13 = r13 - r11
-            r14 = -1
-            r15 = -1
-            goto L_0x0045
-        L_0x003f:
-            r13 = 0
-            r14 = 1
-            int r15 = r35.getChildCount()
-        L_0x0045:
-            int r10 = r0.mOrientation
-            if (r10 != r11) goto L_0x0051
-            boolean r10 = r35.isLayoutRTL()
-            if (r10 == 0) goto L_0x0051
-            r10 = r11
-            goto L_0x0052
-        L_0x0051:
-            r10 = 0
-        L_0x0052:
-            r17 = 0
-            r18 = -1
-            r19 = 0
-            r20 = 0
-            r21 = -1
-            r22 = 0
-            int r11 = r0.getSpanGroupIndex(r1, r2, r13)
-            r23 = r5
-            r24 = r8
-            r25 = r9
-            r4 = r18
-            r5 = r19
-            r8 = r21
-            r9 = r22
-            r18 = r17
-            r17 = r13
-        L_0x0074:
-            r26 = r17
-            r27 = r12
-            r12 = r26
-            if (r12 == r15) goto L_0x0181
-            r28 = r13
-            int r13 = r0.getSpanGroupIndex(r1, r2, r12)
-            android.view.View r1 = r0.getChildAt(r12)
-            if (r1 != r3) goto L_0x0093
-        L_0x0089:
-            r29 = r3
-            r33 = r4
-            r34 = r5
-            r30 = r11
-            goto L_0x018b
-        L_0x0093:
-            boolean r17 = r1.hasFocusable()
-            if (r17 == 0) goto L_0x00a8
-            if (r13 == r11) goto L_0x00a8
-            if (r18 == 0) goto L_0x009e
-            goto L_0x0089
-        L_0x009e:
-            r29 = r3
-            r33 = r4
-            r34 = r5
-            r30 = r11
-            goto L_0x016d
-        L_0x00a8:
-            android.view.ViewGroup$LayoutParams r17 = r1.getLayoutParams()
-            r2 = r17
-            android.support.v7.widget.GridLayoutManager$LayoutParams r2 = (android.support.v7.widget.GridLayoutManager.LayoutParams) r2
-            r29 = r3
-            int r3 = r2.mSpanIndex
-            r30 = r11
-            int r11 = r2.mSpanIndex
-            r31 = r13
-            int r13 = r2.mSpanSize
-            int r11 = r11 + r13
-            boolean r13 = r1.hasFocusable()
-            if (r13 == 0) goto L_0x00c8
-            if (r3 != r6) goto L_0x00c8
-            if (r11 != r7) goto L_0x00c8
-            return r1
-        L_0x00c8:
-            r13 = 0
-            boolean r17 = r1.hasFocusable()
-            if (r17 == 0) goto L_0x00d1
-            if (r18 == 0) goto L_0x00d9
-        L_0x00d1:
-            boolean r17 = r1.hasFocusable()
-            if (r17 != 0) goto L_0x00e1
-            if (r20 != 0) goto L_0x00e1
-        L_0x00d9:
-            r13 = 1
-            r33 = r4
-        L_0x00dc:
-            r34 = r5
-        L_0x00de:
-            r5 = 0
-            goto L_0x013c
-        L_0x00e1:
-            int r17 = java.lang.Math.max(r3, r6)
-            int r19 = java.lang.Math.min(r11, r7)
-            r32 = r13
-            int r13 = r19 - r17
-            boolean r21 = r1.hasFocusable()
-            if (r21 == 0) goto L_0x0118
-            if (r13 <= r5) goto L_0x00fe
-            r21 = 1
-            r33 = r4
-            r34 = r5
-            r13 = r21
-            goto L_0x00de
-        L_0x00fe:
-            if (r13 != r5) goto L_0x0112
-            if (r3 <= r4) goto L_0x0106
-            r33 = r4
-            r4 = 1
-            goto L_0x0109
-        L_0x0106:
-            r33 = r4
-            r4 = 0
-        L_0x0109:
-            if (r10 != r4) goto L_0x010e
-            r4 = 1
-            r13 = r4
-            goto L_0x00dc
-        L_0x010e:
-            r34 = r5
-            r5 = 0
-            goto L_0x013a
-        L_0x0112:
-            r33 = r4
-            r34 = r5
-            r5 = 0
-            goto L_0x013a
-        L_0x0118:
-            r33 = r4
-            if (r18 != 0) goto L_0x0137
-            r34 = r5
-            r4 = 1
-            r5 = 0
-            boolean r16 = r0.isViewPartiallyVisible(r1, r5, r4)
-            if (r16 == 0) goto L_0x013a
-            if (r13 <= r9) goto L_0x012d
-            r16 = 1
-            r13 = r16
-            goto L_0x013c
-        L_0x012d:
-            if (r13 != r9) goto L_0x013a
-            if (r3 <= r8) goto L_0x0132
-            goto L_0x0133
-        L_0x0132:
-            r4 = r5
-        L_0x0133:
-            if (r10 != r4) goto L_0x013a
-            r13 = 1
-            goto L_0x013c
-        L_0x0137:
-            r34 = r5
-            r5 = 0
-        L_0x013a:
-            r13 = r32
-        L_0x013c:
-            if (r13 == 0) goto L_0x016d
-            boolean r4 = r1.hasFocusable()
-            if (r4 == 0) goto L_0x0157
-            r4 = r1
-            int r5 = r2.mSpanIndex
-            int r16 = java.lang.Math.min(r11, r7)
-            int r17 = java.lang.Math.max(r3, r6)
-            int r16 = r16 - r17
-            r18 = r4
-            r4 = r5
-            r5 = r16
-            goto L_0x0171
-        L_0x0157:
-            r4 = r1
-            int r5 = r2.mSpanIndex
-            int r8 = java.lang.Math.min(r11, r7)
-            int r16 = java.lang.Math.max(r3, r6)
-            int r8 = r8 - r16
-            r20 = r4
-            r9 = r8
-            r4 = r33
-            r8 = r5
-            r5 = r34
-            goto L_0x0171
-        L_0x016d:
-            r4 = r33
-            r5 = r34
-        L_0x0171:
-            int r17 = r12 + r14
-            r12 = r27
-            r13 = r28
-            r3 = r29
-            r11 = r30
-            r1 = r38
-            r2 = r39
-            goto L_0x0074
-        L_0x0181:
-            r29 = r3
-            r33 = r4
-            r34 = r5
-            r30 = r11
-            r28 = r13
-        L_0x018b:
-            if (r18 == 0) goto L_0x0190
-            r1 = r18
-            goto L_0x0192
-        L_0x0190:
-            r1 = r20
-        L_0x0192:
-            return r1
-        */
-        throw new UnsupportedOperationException("Method not decompiled: android.support.v7.widget.GridLayoutManager.onFocusSearchFailed(android.view.View, int, android.support.v7.widget.RecyclerView$Recycler, android.support.v7.widget.RecyclerView$State):android.view.View");
+    public View onFocusSearchFailed(View focused, int focusDirection, RecyclerView.Recycler recycler, RecyclerView.State state) {
+        int limit;
+        int inc;
+        int start;
+        int focusableSpanGroupIndex;
+        View prevFocusedChild;
+        int focusableWeakCandidateSpanIndex;
+        int focusableWeakCandidateOverlap;
+        int overlap;
+        RecyclerView.Recycler recycler2 = recycler;
+        RecyclerView.State state2 = state;
+        View prevFocusedChild2 = findContainingItemView(focused);
+        if (prevFocusedChild2 == null) {
+            return null;
+        }
+        LayoutParams lp = (LayoutParams) prevFocusedChild2.getLayoutParams();
+        int prevSpanStart = lp.mSpanIndex;
+        int prevSpanEnd = lp.mSpanIndex + lp.mSpanSize;
+        View view = super.onFocusSearchFailed(focused, focusDirection, recycler, state);
+        if (view == null) {
+            return null;
+        }
+        int layoutDir = convertFocusDirectionToLayoutDirection(focusDirection);
+        int ascend = (layoutDir == 1) != this.mShouldReverseLayout;
+        if (ascend != 0) {
+            start = getChildCount() - 1;
+            inc = -1;
+            limit = -1;
+        } else {
+            start = 0;
+            inc = 1;
+            limit = getChildCount();
+        }
+        boolean preferLastSpan = this.mOrientation == 1 && isLayoutRTL();
+        View focusableWeakCandidate = null;
+        View unfocusableWeakCandidate = null;
+        int focusableSpanGroupIndex2 = getSpanGroupIndex(recycler2, state2, start);
+        int focusableWeakCandidateSpanIndex2 = -1;
+        LayoutParams layoutParams = lp;
+        int focusableWeakCandidateSpanIndex3 = 0;
+        View view2 = view;
+        int unfocusableWeakCandidateSpanIndex = -1;
+        int unfocusableWeakCandidateSpanIndex2 = layoutDir;
+        int unfocusableWeakCandidateOverlap = 0;
+        int unfocusableWeakCandidateOverlap2 = ascend;
+        int i = start;
+        while (true) {
+            if (i == limit) {
+                int i2 = focusableWeakCandidateSpanIndex2;
+                int i3 = focusableWeakCandidateSpanIndex3;
+                int i4 = focusableSpanGroupIndex2;
+                int i5 = start;
+                break;
+            }
+            int start2 = start;
+            int spanGroupIndex = getSpanGroupIndex(recycler2, state2, i);
+            View candidate = getChildAt(i);
+            if (candidate == prevFocusedChild2) {
+                View view3 = prevFocusedChild2;
+                int i6 = focusableWeakCandidateSpanIndex2;
+                int i7 = focusableWeakCandidateSpanIndex3;
+                int i8 = focusableSpanGroupIndex2;
+                break;
+            }
+            if (!candidate.hasFocusable() || spanGroupIndex == focusableSpanGroupIndex2) {
+                LayoutParams candidateLp = (LayoutParams) candidate.getLayoutParams();
+                prevFocusedChild = prevFocusedChild2;
+                int candidateStart = candidateLp.mSpanIndex;
+                focusableSpanGroupIndex = focusableSpanGroupIndex2;
+                int i9 = spanGroupIndex;
+                int candidateEnd = candidateLp.mSpanIndex + candidateLp.mSpanSize;
+                if (candidate.hasFocusable() && candidateStart == prevSpanStart && candidateEnd == prevSpanEnd) {
+                    return candidate;
+                }
+                if ((!candidate.hasFocusable() || focusableWeakCandidate != null) && (candidate.hasFocusable() || unfocusableWeakCandidate != null)) {
+                    int overlap2 = Math.min(candidateEnd, prevSpanEnd) - Math.max(candidateStart, prevSpanStart);
+                    if (!candidate.hasFocusable()) {
+                        focusableWeakCandidateSpanIndex = focusableWeakCandidateSpanIndex2;
+                        if (focusableWeakCandidate == null) {
+                            focusableWeakCandidateOverlap = focusableWeakCandidateSpanIndex3;
+                            boolean z = false;
+                            if (isViewPartiallyVisible(candidate, false, true)) {
+                                if (overlap2 > unfocusableWeakCandidateOverlap) {
+                                    overlap = 1;
+                                } else if (overlap2 == unfocusableWeakCandidateOverlap) {
+                                    if (candidateStart > unfocusableWeakCandidateSpanIndex) {
+                                        z = true;
+                                    }
+                                    if (preferLastSpan == z) {
+                                        overlap = 1;
+                                    }
+                                }
+                            }
+                        } else {
+                            focusableWeakCandidateOverlap = focusableWeakCandidateSpanIndex3;
+                        }
+                    } else if (overlap2 > focusableWeakCandidateSpanIndex3) {
+                        focusableWeakCandidateSpanIndex = focusableWeakCandidateSpanIndex2;
+                        focusableWeakCandidateOverlap = focusableWeakCandidateSpanIndex3;
+                        overlap = 1;
+                    } else {
+                        if (overlap2 == focusableWeakCandidateSpanIndex3) {
+                            focusableWeakCandidateSpanIndex = focusableWeakCandidateSpanIndex2;
+                            if (preferLastSpan == (candidateStart > focusableWeakCandidateSpanIndex2)) {
+                                overlap = 1;
+                                focusableWeakCandidateOverlap = focusableWeakCandidateSpanIndex3;
+                            }
+                        } else {
+                            focusableWeakCandidateSpanIndex = focusableWeakCandidateSpanIndex2;
+                        }
+                        focusableWeakCandidateOverlap = focusableWeakCandidateSpanIndex3;
+                    }
+                    overlap = 0;
+                } else {
+                    overlap = 1;
+                    focusableWeakCandidateSpanIndex = focusableWeakCandidateSpanIndex2;
+                    focusableWeakCandidateOverlap = focusableWeakCandidateSpanIndex3;
+                }
+                if (overlap != 0) {
+                    if (candidate.hasFocusable()) {
+                        focusableWeakCandidate = candidate;
+                        focusableWeakCandidateSpanIndex2 = candidateLp.mSpanIndex;
+                        focusableWeakCandidateSpanIndex3 = Math.min(candidateEnd, prevSpanEnd) - Math.max(candidateStart, prevSpanStart);
+                    } else {
+                        int unfocusableWeakCandidateSpanIndex3 = candidateLp.mSpanIndex;
+                        unfocusableWeakCandidate = candidate;
+                        unfocusableWeakCandidateOverlap = Math.min(candidateEnd, prevSpanEnd) - Math.max(candidateStart, prevSpanStart);
+                        focusableWeakCandidateSpanIndex2 = focusableWeakCandidateSpanIndex;
+                        unfocusableWeakCandidateSpanIndex = unfocusableWeakCandidateSpanIndex3;
+                        focusableWeakCandidateSpanIndex3 = focusableWeakCandidateOverlap;
+                    }
+                    i += inc;
+                    recycler2 = recycler;
+                    state2 = state;
+                    start = start2;
+                    prevFocusedChild2 = prevFocusedChild;
+                    focusableSpanGroupIndex2 = focusableSpanGroupIndex;
+                }
+            } else if (focusableWeakCandidate != null) {
+                View view4 = prevFocusedChild2;
+                int i10 = focusableWeakCandidateSpanIndex2;
+                int i11 = focusableWeakCandidateSpanIndex3;
+                int i12 = focusableSpanGroupIndex2;
+                break;
+            } else {
+                prevFocusedChild = prevFocusedChild2;
+                focusableWeakCandidateSpanIndex = focusableWeakCandidateSpanIndex2;
+                focusableWeakCandidateOverlap = focusableWeakCandidateSpanIndex3;
+                focusableSpanGroupIndex = focusableSpanGroupIndex2;
+            }
+            focusableWeakCandidateSpanIndex3 = focusableWeakCandidateOverlap;
+            focusableWeakCandidateSpanIndex2 = focusableWeakCandidateSpanIndex;
+            i += inc;
+            recycler2 = recycler;
+            state2 = state;
+            start = start2;
+            prevFocusedChild2 = prevFocusedChild;
+            focusableSpanGroupIndex2 = focusableSpanGroupIndex;
+        }
+        return focusableWeakCandidate != null ? focusableWeakCandidate : unfocusableWeakCandidate;
     }
 
     public boolean supportsPredictiveItemAnimations() {

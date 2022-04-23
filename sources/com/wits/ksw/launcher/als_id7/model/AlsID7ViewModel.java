@@ -1,6 +1,5 @@
 package com.wits.ksw.launcher.als_id7.model;
 
-import android.databinding.BindingAdapter;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +18,7 @@ public class AlsID7ViewModel extends LauncherViewModel {
     public View.OnFocusChangeListener btPhoneViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                String access$000 = AlsID7ViewModel.this.TAG;
-                Log.i(access$000, "onFocusChange: btPhoneViewFocusChangeListener activity =" + MainActivity.mainActivity);
+                Log.i(AlsID7ViewModel.this.TAG, "onFocusChange: btPhoneViewFocusChangeListener activity =" + MainActivity.mainActivity);
                 if (MainActivity.mainActivity != null) {
                     MainActivity.mainActivity.setCurrentItem(1);
                 }
@@ -30,8 +28,7 @@ public class AlsID7ViewModel extends LauncherViewModel {
     public View.OnFocusChangeListener carinfoViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                String access$000 = AlsID7ViewModel.this.TAG;
-                Log.i(access$000, "onFocusChange: carinfoViewFocusChangeListener activity =" + MainActivity.mainActivity);
+                Log.i(AlsID7ViewModel.this.TAG, "onFocusChange: carinfoViewFocusChangeListener activity =" + MainActivity.mainActivity);
                 if (MainActivity.mainActivity != null) {
                     MainActivity.mainActivity.setCurrentItem(0);
                 }
@@ -42,16 +39,14 @@ public class AlsID7ViewModel extends LauncherViewModel {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus && MainActivity.mainActivity != null) {
                 MainActivity.mainActivity.setCurrentItem(2);
-                String access$000 = AlsID7ViewModel.this.TAG;
-                Log.i(access$000, "onFocusChange: dashViewFocusChangeListener activity =" + MainActivity.mainActivity);
+                Log.i(AlsID7ViewModel.this.TAG, "onFocusChange: dashViewFocusChangeListener activity =" + MainActivity.mainActivity);
             }
         }
     };
     public View.OnFocusChangeListener musicViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                String access$000 = AlsID7ViewModel.this.TAG;
-                Log.i(access$000, "onFocusChange: musicViewFocusChangeListener activity =" + MainActivity.mainActivity);
+                Log.i(AlsID7ViewModel.this.TAG, "onFocusChange: musicViewFocusChangeListener activity =" + MainActivity.mainActivity);
                 if (MainActivity.mainActivity != null) {
                     MainActivity.mainActivity.setCurrentItem(1);
                 }
@@ -71,57 +66,54 @@ public class AlsID7ViewModel extends LauncherViewModel {
 
     public void btnMusicPrev(View view) {
         try {
-            int lastMode = PowerManagerApp.getStatusInt("lastMode");
             View musiView = MainActivity.mainActivity.findViewById(R.id.imageFrameLayout);
-            String str = this.TAG;
-            Log.i(str, "btnMusicPrev isMusicStop=" + isMusicStop());
-            if (isMusicStop()) {
+            if (mediaInfo.musicStop.get().booleanValue()) {
                 Log.d(this.TAG, "btnMusicPrev");
                 openMusic(musiView);
             }
             KswUtils.sendKeyDownUpSync(88);
             addLastViewFocused(musiView);
             refreshLastViewFocused();
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (0 != 0) {
+                openMusic((View) null);
+            }
         }
     }
 
     public void btnMusicPlayPause(View view) {
         try {
-            int lastMode = PowerManagerApp.getStatusInt("lastMode");
             View musiView = MainActivity.mainActivity.findViewById(R.id.imageFrameLayout);
-            String str = this.TAG;
-            Log.i(str, "btnMusicPlayPause isMusicStop=" + isMusicStop());
-            if (isMusicStop()) {
-                Log.d(this.TAG, "btnMusicPlayPause");
+            if (mediaInfo.musicStop.get().booleanValue()) {
                 openMusic(musiView);
             }
             KswUtils.sendKeyDownUpSync(85);
-            String str2 = this.TAG;
-            Log.d(str2, "btnMusicPlayPause isMusicPlay =" + isMusicPlay());
             addLastViewFocused(musiView);
             refreshLastViewFocused();
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (0 != 0) {
+                openMusic((View) null);
+            }
         }
     }
 
     public void btnMusicNext(View view) {
         try {
-            int lastMode = PowerManagerApp.getStatusInt("lastMode");
             View musiView = MainActivity.mainActivity.findViewById(R.id.imageFrameLayout);
-            String str = this.TAG;
-            Log.i(str, " btnMusicNext isMusicStop=" + isMusicStop());
-            if (isMusicStop()) {
+            if (mediaInfo.musicStop.get().booleanValue()) {
                 Log.d(this.TAG, "btnMusicNext");
                 openMusic(musiView);
             }
             KswUtils.sendKeyDownUpSync(87);
             addLastViewFocused(musiView);
             refreshLastViewFocused();
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (0 != 0) {
+                openMusic((View) null);
+            }
         }
     }
 
@@ -129,8 +121,7 @@ public class AlsID7ViewModel extends LauncherViewModel {
         boolean musicStop = false;
         try {
             musicStop = PowerManagerApp.getManager().getStatusBoolean("music_stop");
-            String str = this.TAG;
-            Log.d(str, "isMusicStop =" + musicStop);
+            Log.d(this.TAG, "isMusicStop =" + musicStop);
             return musicStop;
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -142,14 +133,11 @@ public class AlsID7ViewModel extends LauncherViewModel {
         boolean isPlaying = false;
         try {
             isPlaying = PowerManagerApp.getManager().getStatusBoolean("play");
-            String str = this.TAG;
-            Log.d(str, "isMusicPlay =" + isPlaying);
-            if (isMusicStop()) {
-                return false;
-            }
+            Log.d(this.TAG, "isMusicPlay =" + isPlaying);
             return isPlaying;
         } catch (RemoteException e) {
             e.printStackTrace();
+            return isPlaying;
         }
     }
 
@@ -157,7 +145,10 @@ public class AlsID7ViewModel extends LauncherViewModel {
         mediaInfo.setMusicPlay(play);
     }
 
-    @BindingAdapter({"setPlayBtnicon"})
+    public void setMusicPlayStop(boolean stop) {
+        mediaInfo.setMusicStop(stop);
+    }
+
     public static void setPlayBtnicon(ImageView imageView, boolean play) {
         ((RequestBuilder) ((RequestBuilder) Glide.with(imageView.getContext()).load(Integer.valueOf(play ? R.drawable.als_id7_main_music_btn_pause : R.drawable.als_id7_main_music_btn_play)).placeholder((int) R.drawable.als_id7_main_music_btn_play)).error((int) R.drawable.als_id7_main_music_btn_play)).into(imageView);
     }

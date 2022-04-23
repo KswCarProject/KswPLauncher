@@ -1,7 +1,6 @@
 package com.bumptech.glide.load.engine.cache;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.load.engine.cache.DiskCache;
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import java.io.File;
@@ -17,7 +16,6 @@ public final class ExternalPreferredCacheDiskCacheFactory extends DiskLruCacheFa
 
     public ExternalPreferredCacheDiskCacheFactory(final Context context, final String diskCacheName, long diskCacheSize) {
         super((DiskLruCacheFactory.CacheDirectoryGetter) new DiskLruCacheFactory.CacheDirectoryGetter() {
-            @Nullable
             private File getInternalCacheDirectory() {
                 File cacheDirectory = context.getCacheDir();
                 if (cacheDirectory == null) {

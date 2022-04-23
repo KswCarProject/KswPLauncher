@@ -2,7 +2,6 @@ package android.support.v4.view.accessibility;
 
 import android.os.Build;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.accessibility.AccessibilityRecord;
 import java.util.List;
@@ -40,7 +39,7 @@ public class AccessibilityRecordCompat {
         setSource(this.mRecord, root, virtualDescendantId);
     }
 
-    public static void setSource(@NonNull AccessibilityRecord record, View root, int virtualDescendantId) {
+    public static void setSource(AccessibilityRecord record, View root, int virtualDescendantId) {
         if (Build.VERSION.SDK_INT >= 16) {
             record.setSource(root, virtualDescendantId);
         }
@@ -284,10 +283,11 @@ public class AccessibilityRecordCompat {
 
     @Deprecated
     public int hashCode() {
-        if (this.mRecord == null) {
+        AccessibilityRecord accessibilityRecord = this.mRecord;
+        if (accessibilityRecord == null) {
             return 0;
         }
-        return this.mRecord.hashCode();
+        return accessibilityRecord.hashCode();
     }
 
     @Deprecated
@@ -299,11 +299,12 @@ public class AccessibilityRecordCompat {
             return false;
         }
         AccessibilityRecordCompat other = (AccessibilityRecordCompat) obj;
-        if (this.mRecord == null) {
+        AccessibilityRecord accessibilityRecord = this.mRecord;
+        if (accessibilityRecord == null) {
             if (other.mRecord != null) {
                 return false;
             }
-        } else if (!this.mRecord.equals(other.mRecord)) {
+        } else if (!accessibilityRecord.equals(other.mRecord)) {
             return false;
         }
         return true;

@@ -1,7 +1,5 @@
 package com.wits.ksw.launcher.model;
 
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.os.Build;
@@ -26,19 +24,16 @@ import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
 
-@BindingMethods({@BindingMethod(attribute = "scrollToPosition", method = "setScrollToPosition", type = LauncherViewModel.class), @BindingMethod(attribute = "smoothScrollToPosition", method = "setSmoothScrollToPosition", type = LauncherViewModel.class)})
 public class BcNTG5ViewModel extends BcVieModel {
     public ObservableInt bcPagePosition = new ObservableInt();
     /* access modifiers changed from: private */
     public McuStatus.BenzData benzData;
     public final CompoundButton.OnCheckedChangeListener chassisOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            String str = LauncherViewModel.TAG;
-            Log.i(str, "onCheckedChanged: " + isChecked);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcNTG5ViewModel.this.benzData.highChassisSwitch = isChecked;
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcNTG5ViewModel.this.benzData.getJson());
-            String str2 = LauncherViewModel.TAG;
-            Log.i(str2, "onCheckedChanged: 底盘升降开关:" + BcNTG5ViewModel.this.benzData.auxiliaryRadar);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: 底盘升降开关:" + BcNTG5ViewModel.this.benzData.auxiliaryRadar);
         }
     };
     public ControlBean controlBean = new ControlBean(this.context);
@@ -46,8 +41,7 @@ public class BcNTG5ViewModel extends BcVieModel {
     public ObservableBoolean isRightArrowDisplay = new ObservableBoolean();
     public final CompoundButton.OnCheckedChangeListener leftOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            String str = LauncherViewModel.TAG;
-            Log.i(str, "onCheckedChanged: " + isChecked);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcNTG5ViewModel.this.controlBean.leftBrightnessAdjus.set(isChecked);
             if (isChecked) {
                 Ntg6ControlView.getInstance().showBenzBrightnessControl(buttonView.getContext(), BcNTG5ViewModel.this.benzData, BcNTG5ViewModel.this);
@@ -56,18 +50,15 @@ public class BcNTG5ViewModel extends BcVieModel {
     };
     public final CompoundButton.OnCheckedChangeListener radarOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            String str = LauncherViewModel.TAG;
-            Log.i(str, "onCheckedChanged: " + isChecked);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcNTG5ViewModel.this.benzData.auxiliaryRadar = isChecked;
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcNTG5ViewModel.this.benzData.getJson());
-            String str2 = LauncherViewModel.TAG;
-            Log.i(str2, "onCheckedChanged: 辅助雷达开关:" + BcNTG5ViewModel.this.benzData.auxiliaryRadar);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: 辅助雷达开关:" + BcNTG5ViewModel.this.benzData.auxiliaryRadar);
         }
     };
     public final CompoundButton.OnCheckedChangeListener rightOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            String str = LauncherViewModel.TAG;
-            Log.i(str, "onCheckedChanged: " + isChecked);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcNTG5ViewModel.this.controlBean.rightBrightnessAdjus.set(isChecked);
             if (isChecked) {
                 Ntg6ControlView.getInstance().showBenzBrightnessControl(buttonView.getContext(), BcNTG5ViewModel.this.benzData, BcNTG5ViewModel.this);
@@ -76,12 +67,10 @@ public class BcNTG5ViewModel extends BcVieModel {
     };
     public final CompoundButton.OnCheckedChangeListener sportOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            String str = LauncherViewModel.TAG;
-            Log.i(str, "onCheckedChanged: " + isChecked);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
             BcNTG5ViewModel.this.benzData.airMaticStatus = isChecked;
             WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, BcNTG5ViewModel.this.benzData.getJson());
-            String str2 = LauncherViewModel.TAG;
-            Log.i(str2, "onCheckedChanged: 运动模式开关:" + BcNTG5ViewModel.this.benzData.airMaticStatus);
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: 运动模式开关:" + BcNTG5ViewModel.this.benzData.airMaticStatus);
         }
     };
     private Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -97,8 +86,7 @@ public class BcNTG5ViewModel extends BcVieModel {
         PowerManagerApp.registerIContentObserver("benzData", new IContentObserver.Stub() {
             public void onChange() throws RemoteException {
                 McuStatus.BenzData benzData = McuStatus.BenzData.getStatusFromJson(PowerManagerApp.getStatusString("benzData"));
-                String str = LauncherViewModel.TAG;
-                Log.i(str, "benzData onChange: " + benzData.getJson());
+                Log.i(LauncherViewModel.TAG, "benzData onChange: " + benzData.getJson());
                 BcNTG5ViewModel.this.controlBean.chassis.set(benzData.highChassisSwitch);
                 ObservableBoolean observableBoolean = BcNTG5ViewModel.this.controlBean.sport;
                 boolean z = true;
@@ -120,23 +108,11 @@ public class BcNTG5ViewModel extends BcVieModel {
             this.controlBean.sport.set(this.benzData.airMaticStatus == 1);
             this.controlBean.rdarAssistance.set(this.benzData.auxiliaryRadar);
             this.controlBean.passairbar.set(this.benzData.airBagSystem);
-            StringBuilder sb = new StringBuilder();
-            sb.append("initData: 底盘开关：");
-            sb.append(this.benzData.highChassisSwitch);
-            sb.append(",运动模式：");
+            StringBuilder append = new StringBuilder().append("initData: 底盘开关：").append(this.benzData.highChassisSwitch).append(",运动模式：");
             if (this.benzData.airMaticStatus == 1) {
                 z = true;
             }
-            sb.append(z);
-            sb.append(",雷达辅助开关：");
-            sb.append(this.benzData.auxiliaryRadar);
-            sb.append(" light1:");
-            sb.append(this.benzData.light1);
-            sb.append(" light2:");
-            sb.append(this.benzData.light2);
-            sb.append(" 安全气囊 ");
-            sb.append(this.benzData.airBagSystem);
-            Log.i("控制面板", sb.toString());
+            Log.i("控制面板", append.append(z).append(",雷达辅助开关：").append(this.benzData.auxiliaryRadar).append(" light1:").append(this.benzData.light1).append(" light2:").append(this.benzData.light2).append(" 安全气囊 ").append(this.benzData.airBagSystem).toString());
         } catch (Exception e) {
             this.benzData = new McuStatus.BenzData();
         }
@@ -145,16 +121,14 @@ public class BcNTG5ViewModel extends BcVieModel {
     public void benzControlPanel() {
         try {
             int benzpane = PowerManagerApp.getSettingsInt(KeyConfig.BENZPANE);
-            boolean z = false;
+            boolean z = true;
             this.controlBean.controlPanelClose.set(benzpane == 0);
             String str = TAG;
-            StringBuilder sb = new StringBuilder();
-            sb.append("benzControlPanel: ");
-            if (benzpane == 0) {
-                z = true;
+            StringBuilder append = new StringBuilder().append("benzControlPanel: ");
+            if (benzpane != 0) {
+                z = false;
             }
-            sb.append(z);
-            Log.i(str, sb.toString());
+            Log.i(str, append.append(z).toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,8 +163,7 @@ public class BcNTG5ViewModel extends BcVieModel {
     }
 
     public void onMbuxHomeItemClick(final View view, final BenzMbuxBean item) {
-        String str = TAG;
-        Log.i(str, "onItemClick: " + item.getId());
+        Log.i(TAG, "onItemClick: " + item.getId());
         addLastViewFocused(view);
         refreshLastViewFocused();
         this.uiHandler.removeCallbacksAndMessages((Object) null);
@@ -220,13 +193,16 @@ public class BcNTG5ViewModel extends BcVieModel {
                         return;
                     case 7:
                         if (!Build.DISPLAY.contains("8937")) {
-                            BcNTG5ViewModel.this.openApp(BcNTG5ViewModel.this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                            BcNTG5ViewModel bcNTG5ViewModel = BcNTG5ViewModel.this;
+                            bcNTG5ViewModel.openApp(bcNTG5ViewModel.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                             return;
                         } else if (Settings.System.getInt(BcNTG5ViewModel.this.context.getContentResolver(), "speed_play_switch", 1) == 2) {
-                            BcNTG5ViewModel.this.openApp(BcNTG5ViewModel.this.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
+                            BcNTG5ViewModel bcNTG5ViewModel2 = BcNTG5ViewModel.this;
+                            bcNTG5ViewModel2.openApp(bcNTG5ViewModel2.context.getPackageManager().getLaunchIntentForPackage("com.suding.speedplay"));
                             return;
                         } else {
-                            BcNTG5ViewModel.this.openApp(BcNTG5ViewModel.this.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
+                            BcNTG5ViewModel bcNTG5ViewModel3 = BcNTG5ViewModel.this;
+                            bcNTG5ViewModel3.openApp(bcNTG5ViewModel3.context.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                             return;
                         }
                     case 8:
@@ -244,14 +220,12 @@ public class BcNTG5ViewModel extends BcVieModel {
 
     public void showLastViewFocus() {
         int resId = KswUtils.getLastViewId(this.context);
-        String str = TAG;
-        Log.i(str, "showLastViewFocus: resId=" + resId);
+        Log.i(TAG, "showLastViewFocus: resId=" + resId);
         WiewFocusUtils.setViewRequestFocus(this.activity.getWindow().getDecorView().findViewById(resId));
     }
 
     public void onItemClick(final View view, final BcItem item) {
-        String str = TAG;
-        Log.i(str, "onItemClick: " + item.getId() + " " + view.getId());
+        Log.i(TAG, "onItemClick: " + item.getId() + " " + view.getId());
         addLastViewFocused(view);
         refreshLastViewFocused();
         this.uiHandler.removeCallbacksAndMessages((Object) null);
@@ -269,7 +243,7 @@ public class BcNTG5ViewModel extends BcVieModel {
                 openNaviApp();
                 return;
             case 1:
-                openChoseMusic(view);
+                openMusicMulti((View) null);
                 return;
             case 2:
                 openBtApp();
@@ -281,7 +255,7 @@ public class BcNTG5ViewModel extends BcVieModel {
                 onItemClick(BuildConfig.APPLICATION_ID, "com.wits.ksw.settings.SettingsActivity");
                 return;
             case 5:
-                onItemClick("com.wits.media.VIDEO");
+                openVideoMulti((View) null);
                 return;
             case 6:
                 openApps(view);
@@ -355,8 +329,7 @@ public class BcNTG5ViewModel extends BcVieModel {
 
     public void onControlClick(View view) {
         int benzpane = KswUtils.getBenzpaneVersion();
-        String str = TAG;
-        Log.i(str, "onControlClick: benzpane = " + benzpane);
+        Log.i(TAG, "onControlClick: benzpane = " + benzpane);
         if (benzpane == 1) {
             if (Ntg6ControlView.getInstance().isShowing()) {
                 Ntg6ControlView.getInstance().dismiss();
@@ -376,36 +349,31 @@ public class BcNTG5ViewModel extends BcVieModel {
     public void onHighChasssisClick(View view) {
         this.benzData.key3 = 0;
         this.benzData.pressButton(1);
-        String str = TAG;
-        Log.i(str, "onCheckedChanged: 底盘升降开关:" + this.benzData.getJson());
+        Log.i(TAG, "onCheckedChanged: 底盘升降开关:" + this.benzData.getJson());
     }
 
     public void onAuxiliaryRadarClick(View view) {
         this.benzData.key3 = 0;
         this.benzData.pressButton(3);
-        String str = TAG;
-        Log.i(str, "onCheckedChanged: 辅助雷达开关:" + this.benzData.getJson());
+        Log.i(TAG, "onCheckedChanged: 辅助雷达开关:" + this.benzData.getJson());
     }
 
     public void onEspClick(View view) {
         this.benzData.key3 = 5;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
-        String str = TAG;
-        Log.d(str, "onEspClick: " + this.benzData.getJson());
+        Log.d(TAG, "onEspClick: " + this.benzData.getJson());
     }
 
     public void onFoldLeftClick(View view) {
         this.benzData.key3 = 6;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
-        String str = TAG;
-        Log.d(str, "onFoldLeftClick: " + this.benzData.getJson());
+        Log.d(TAG, "onFoldLeftClick: " + this.benzData.getJson());
     }
 
     public void onFoldRigtClick(View view) {
         this.benzData.key3 = 7;
         WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
-        String str = TAG;
-        Log.d(str, "onFoldRigtClick: " + this.benzData.getJson());
+        Log.d(TAG, "onFoldRigtClick: " + this.benzData.getJson());
     }
 
     public void onSportClick(View view) {

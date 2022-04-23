@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp" android:text="@string/eq_text7"/>
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_mdiSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="120dp" android:layout_marginTop="15dp" android:text="10"/>
+        <SeekBar android:id="@+id/seekbar_mdi" android:background="@drawable/als_sp_id7_progress_bar_bk" android:focusable="false" android:layout_width="297dp" android:layout_height="24dp" android:layout_marginLeft="10dp" android:layout_marginTop="5dp" android:progressDrawable="@null" android:thumb="@drawable/als_id7_ui_seek_thumb" android:layout_below="@+id/tv_mdiSize"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp" android:text="@string/eq_text8"/>
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_mzhSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="120dp" android:layout_marginTop="15dp" android:text="10"/>
+        <SeekBar android:id="@+id/seekbar_mzh" android:background="@drawable/als_sp_id7_progress_bar_bk" android:focusable="false" android:layout_width="297dp" android:layout_height="24dp" android:layout_marginLeft="10dp" android:layout_marginTop="5dp" android:progressDrawable="@null" android:thumb="@drawable/als_id7_ui_seek_thumb" android:layout_below="@+id/tv_mzhSize"/>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="15dp" android:text="@string/eq_text9"/>
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:id="@+id/tv_mgoSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="120dp" android:layout_marginTop="15dp" android:text="10"/>
+        <SeekBar android:id="@+id/seekbar_mgo" android:background="@drawable/als_sp_id7_progress_bar_bk" android:focusable="false" android:layout_width="297dp" android:layout_height="24dp" android:layout_marginLeft="10dp" android:layout_marginTop="5dp" android:progressDrawable="@null" android:thumb="@drawable/als_id7_ui_seek_thumb" android:layout_below="@+id/tv_mgoSize"/>
+    </RelativeLayout>
+</LinearLayout>

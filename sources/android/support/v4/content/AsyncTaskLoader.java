@@ -3,9 +3,6 @@ package android.support.v4.content;
 import android.content.Context;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.os.OperationCanceledException;
 import android.support.v4.util.TimeUtils;
 import java.io.FileDescriptor;
@@ -23,7 +20,6 @@ public abstract class AsyncTaskLoader<D> extends Loader<D> {
     volatile AsyncTaskLoader<D>.LoadTask mTask;
     long mUpdateThrottle;
 
-    @Nullable
     public abstract D loadInBackground();
 
     final class LoadTask extends ModernAsyncTask<Void, Void, D> implements Runnable {
@@ -76,11 +72,11 @@ public abstract class AsyncTaskLoader<D> extends Loader<D> {
         }
     }
 
-    public AsyncTaskLoader(@NonNull Context context) {
+    public AsyncTaskLoader(Context context) {
         this(context, ModernAsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private AsyncTaskLoader(@NonNull Context context, @NonNull Executor executor) {
+    private AsyncTaskLoader(Context context, Executor executor) {
         super(context);
         this.mLastLoadCompleteTime = -10000;
         this.mExecutor = executor;
@@ -132,7 +128,7 @@ public abstract class AsyncTaskLoader<D> extends Loader<D> {
         }
     }
 
-    public void onCanceled(@Nullable D d) {
+    public void onCanceled(D d) {
     }
 
     /* access modifiers changed from: package-private */
@@ -178,7 +174,6 @@ public abstract class AsyncTaskLoader<D> extends Loader<D> {
     }
 
     /* access modifiers changed from: protected */
-    @Nullable
     public D onLoadInBackground() {
         return loadInBackground();
     }
@@ -190,7 +185,6 @@ public abstract class AsyncTaskLoader<D> extends Loader<D> {
         return this.mCancellingTask != null;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void waitForLoader() {
         AsyncTaskLoader<D>.LoadTask task = this.mTask;
         if (task != null) {

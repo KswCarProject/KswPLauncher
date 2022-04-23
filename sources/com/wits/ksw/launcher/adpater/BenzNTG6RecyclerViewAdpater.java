@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.adpater;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +26,7 @@ public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
             bcItemArrys = KswApplication.appContext.getResources().getStringArray(R.array.bc_home_netg6_als_6208_item_text_array);
             resId = new int[]{R.drawable.bc_ntg6_navi_normal, R.drawable.bc_ntg6_video_normal, R.drawable.bc_ntg6_music_normal, R.drawable.bc_ntg6_bt_normal, R.drawable.bc_ntg6_car_normal, R.drawable.bc_ntg6_dash_board_normal, R.drawable.bc_ntg6_easyconn_normal, R.drawable.bc_ntg6_file_manager_normal, R.drawable.ntg6_dvr_small, R.drawable.bc_ntg6_settings_normal};
             Log.i(KswApplication.TAG, "BenzNTG6RecyclerViewAdpater: resId=" + resId.length + " bcItemArrys=" + bcItemArrys.length);
-            Drawable drawable = KswApplication.appContext.getResources().getDrawable(resId[0]);
-            StringBuilder sb = new StringBuilder();
-            sb.append("BenzNTG6RecyclerViewAdpater: drawable=");
-            sb.append(drawable);
-            Log.i(KswApplication.TAG, sb.toString());
+            Log.i(KswApplication.TAG, "BenzNTG6RecyclerViewAdpater: drawable=" + KswApplication.appContext.getResources().getDrawable(resId[0]));
         } else {
             bcItemArrys = KswApplication.appContext.getResources().getStringArray(R.array.bc_item_text_array);
             resId = new int[]{R.drawable.bc_ntg6_navi_normal, R.drawable.bc_ntg6_music_normal, R.drawable.bc_ntg6_bt_normal, R.drawable.bc_ntg6_car_normal, R.drawable.bc_ntg6_settings_normal, R.drawable.bc_ntg6_video_normal, R.drawable.bc_ntg6_file_manager_normal, R.drawable.bc_ntg6_easyconn_normal, R.drawable.bc_ntg6_dash_board_normal, R.drawable.ntg6_dvr_small};
@@ -41,7 +35,6 @@ public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public List<BcItem> getBcItemList() {
         List<BcItem> bcItems = new ArrayList<>();
         for (int i = 0; i < resId.length; i++) {
@@ -54,14 +47,13 @@ public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
         return bcItems;
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         BcItemBinding bcItemBinding = (BcItemBinding) DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.bc_item, viewGroup, false);
         bcItemBinding.setMBcVieModel(this.viewModel);
         return new ViewHolder(bcItemBinding);
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
         BcItemBinding itemMvvmBinding = viewHolder.getBcItemBinding();
         itemMvvmBinding.setListItem(this.bcItemList.get(position));
         itemMvvmBinding.getRoot().setTag(Integer.valueOf(position));
@@ -69,7 +61,8 @@ public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
     }
 
     public int getItemCount() {
-        if (this.bcItemList == null || this.bcItemList.isEmpty()) {
+        List<BcItem> list = this.bcItemList;
+        if (list == null || list.isEmpty()) {
             return 0;
         }
         return this.bcItemList.size();
@@ -78,7 +71,7 @@ public class BenzNTG6RecyclerViewAdpater extends RecyclerView.Adapter<ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         BcItemBinding bcItemBinding;
 
-        public ViewHolder(@NonNull BcItemBinding binding) {
+        public ViewHolder(BcItemBinding binding) {
             super(binding.getRoot());
             this.bcItemBinding = binding;
         }

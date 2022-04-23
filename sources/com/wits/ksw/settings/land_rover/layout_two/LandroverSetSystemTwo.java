@@ -1,6 +1,5 @@
 package com.wits.ksw.settings.land_rover.layout_two;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -9,6 +8,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.launcher.adpater.VerRecyclerAdapter;
+import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.utils.AppInfoUtils;
 import com.wits.ksw.settings.BrightnessUtils;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
@@ -39,6 +45,8 @@ public class LandroverSetSystemTwo extends RelativeLayout {
     public Context context;
     private int groupValue;
     private ImageView img_twoDefaul;
+    private RecyclerView listview_music;
+    private RecyclerView listview_video;
     /* access modifiers changed from: private */
     public Handler mBackgroundHandler;
     private BrightnessObserver mBrightnessObserver;
@@ -69,7 +77,6 @@ public class LandroverSetSystemTwo extends RelativeLayout {
     /* access modifiers changed from: private */
     public TextView tv_cauxSize2;
 
-    @SuppressLint({"NewApi"})
     public LandroverSetSystemTwo(Context context2) {
         super(context2);
         this.context = context2;
@@ -81,8 +88,9 @@ public class LandroverSetSystemTwo extends RelativeLayout {
         view.setLayoutParams(layoutParams);
         addView(view);
         this.mBackgroundHandler = new Handler(Looper.getMainLooper());
-        this.mBrightnessObserver = new BrightnessObserver(new Handler());
-        this.mBrightnessObserver.startObserving();
+        BrightnessObserver brightnessObserver = new BrightnessObserver(new Handler());
+        this.mBrightnessObserver = brightnessObserver;
+        brightnessObserver.startObserving();
     }
 
     private void initData() {
@@ -91,8 +99,7 @@ public class LandroverSetSystemTwo extends RelativeLayout {
             this.aux_index1 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX1);
             this.aux_index2 = PowerManagerApp.getSettingsInt(KeyConfig.CAR_AUX_INDEX2);
             this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-            String str = TAG;
-            Log.i(str, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
+            Log.i(TAG, "initData: TempUnit:" + this.tempUnit + "\tDAO_CHE_SXT:" + this.groupValue + "\tCAR_AUX_INDEX1:" + this.aux_index1 + "\tCAR_AUX_INDEX2:" + this.aux_index2);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -106,15 +113,14 @@ public class LandroverSetSystemTwo extends RelativeLayout {
         this.relate_shext = (RelativeLayout) view.findViewById(R.id.relate_shext);
         this.relate_auxweiz = (LinearLayout) view.findViewById(R.id.relate_auxweiz);
         this.tv_cauxSize = (TextView) view.findViewById(R.id.tv_cauxSize);
-        this.seekbar_caux = (SeekBar) view.findViewById(R.id.seekbar_caux);
-        this.seekbar_caux.setMax(12);
+        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekbar_caux);
+        this.seekbar_caux = seekBar;
+        seekBar.setMax(12);
         this.seekbar_caux.setProgress(this.aux_index1);
-        TextView textView = this.tv_cauxSize;
-        textView.setText(this.aux_index1 + "");
+        this.tv_cauxSize.setText(this.aux_index1 + "");
         this.seekbar_caux.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$000 = LandroverSetSystemTwo.this.tv_cauxSize;
-                access$000.setText(progress + "");
+                LandroverSetSystemTwo.this.tv_cauxSize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX1, progress);
             }
 
@@ -128,12 +134,10 @@ public class LandroverSetSystemTwo extends RelativeLayout {
         this.tv_cauxSize2 = (TextView) view.findViewById(R.id.tv_cauxSize2);
         this.seekbar_caux2.setMax(12);
         this.seekbar_caux2.setProgress(this.aux_index2);
-        TextView textView2 = this.tv_cauxSize2;
-        textView2.setText(this.aux_index2 + "");
+        this.tv_cauxSize2.setText(this.aux_index2 + "");
         this.seekbar_caux2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                TextView access$100 = LandroverSetSystemTwo.this.tv_cauxSize2;
-                access$100.setText(progress + "");
+                LandroverSetSystemTwo.this.tv_cauxSize2.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_INDEX2, progress);
             }
 
@@ -146,8 +150,9 @@ public class LandroverSetSystemTwo extends RelativeLayout {
         this.relate_beigld = (RelativeLayout) view.findViewById(R.id.relate_beigld);
         this.tv_beigSize = (TextView) view.findViewById(R.id.tv_beigSize);
         Log.i("SetSystemTwo", "initView: beiguangValue=" + this.beiguangValue);
-        this.seekbar_brightness = (SeekBar) view.findViewById(R.id.seekbar_brightness);
-        this.seekbar_brightness.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
+        SeekBar seekBar2 = (SeekBar) view.findViewById(R.id.seekbar_brightness);
+        this.seekbar_brightness = seekBar2;
+        seekBar2.setMax(BrightnessUtils.GAMMA_SPACE_MAX);
         setProgress(this.beiguangValue);
         setProgressText(this.beiguangValue);
         this.seekbar_brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -155,7 +160,8 @@ public class LandroverSetSystemTwo extends RelativeLayout {
                 if (fromUser) {
                     int val = BrightnessUtils.convertGammaToLinear(progress, LandroverSetSystemTwo.this.mMinBrightness, LandroverSetSystemTwo.this.mMaxBrightness);
                     Log.e("SetSystemTwo", "onProgressChanged: fromUser=" + fromUser + " : progress=" + progress + " : val=" + val);
-                    LandroverSetSystemTwo.this.setBrightnessValueBg(LandroverSetSystemTwo.this.context, val);
+                    LandroverSetSystemTwo landroverSetSystemTwo = LandroverSetSystemTwo.this;
+                    landroverSetSystemTwo.setBrightnessValueBg(landroverSetSystemTwo.context, val);
                     LandroverSetSystemTwo.this.setSystemBrightness(val);
                 }
             }
@@ -166,28 +172,29 @@ public class LandroverSetSystemTwo extends RelativeLayout {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        this.rdg_shext = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.rdg_shext);
+        this.rdg_shext = radioGroup;
         switch (this.groupValue) {
             case 0:
-                this.rdg_shext.check(R.id.rdb_shext1);
+                radioGroup.check(R.id.rdb_shext1);
                 break;
             case 1:
-                this.rdg_shext.check(R.id.rdb_shext2);
+                radioGroup.check(R.id.rdb_shext2);
                 break;
             case 2:
-                this.rdg_shext.check(R.id.rdb_shext3);
+                radioGroup.check(R.id.rdb_shext3);
                 break;
         }
         this.rdg_shext.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_shext1:
+                    case R.id.rdb_shext1 /*2131297192*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 0);
                         return;
-                    case R.id.rdb_shext2:
+                    case R.id.rdb_shext2 /*2131297193*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 1);
                         return;
-                    case R.id.rdb_shext3:
+                    case R.id.rdb_shext3 /*2131297194*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 2);
                         return;
                     default:
@@ -195,21 +202,72 @@ public class LandroverSetSystemTwo extends RelativeLayout {
                 }
             }
         });
-        this.tempRadioGroup = (RadioGroup) view.findViewById(R.id.rdg_temp_group);
-        for (int i = 0; i < this.tempRadioGroup.getChildCount(); i++) {
-            if (i == this.tempUnit) {
-                this.tempRadioGroup.check(this.tempRadioGroup.getChildAt(i).getId());
-            }
+        RadioGroup radioGroup2 = (RadioGroup) view.findViewById(R.id.rdg_temp_group);
+        this.tempRadioGroup = radioGroup2;
+        switch (this.tempUnit) {
+            case 0:
+                radioGroup2.check(R.id.rdg_temp_group1);
+                break;
+            case 1:
+                radioGroup2.check(R.id.rdg_temp_group2);
+                break;
         }
         this.tempRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int count = group.getChildCount();
-                for (int i = 0; i < count; i++) {
-                    if (checkedId == group.getChildAt(i).getId()) {
-                        FileUtils.savaIntData(KeyConfig.TempUnit, i);
-                        Log.i(LandroverSetSystemTwo.TAG, "save tempUnit  : " + i);
-                    }
-                    group.getChildAt(i).setSelected(checkedId == group.getChildAt(i).getId());
+                int childCount = group.getChildCount();
+                switch (checkedId) {
+                    case R.id.rdg_temp_group1 /*2131297279*/:
+                        FileUtils.savaIntData(KeyConfig.TempUnit, 0);
+                        Log.i(LandroverSetSystemTwo.TAG, "save tempUnit  : 0");
+                        return;
+                    case R.id.rdg_temp_group2 /*2131297280*/:
+                        FileUtils.savaIntData(KeyConfig.TempUnit, 1);
+                        Log.i(LandroverSetSystemTwo.TAG, "save tempUnit  : 1");
+                        return;
+                    default:
+                        return;
+                }
+            }
+        });
+        this.listview_music = (RecyclerView) view.findViewById(R.id.listview_music);
+        VerRecyclerAdapter adapterMusic = new VerRecyclerAdapter(this.context, AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ATYS_DISMISS_MUSIC, 1, this.context), R.layout.app_third_item_landrover);
+        this.listview_music.setAdapter(adapterMusic);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.context);
+        layoutManager.setOrientation(1);
+        this.listview_music.setLayoutManager(layoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(this.context, 1);
+        divider.setDrawable(ContextCompat.getDrawable(this.context, R.mipmap.landrover_settings_list_line));
+        this.listview_music.addItemDecoration(divider);
+        adapterMusic.setAppsCheckListener(new VerRecyclerAdapter.IAppsCheckListener() {
+            public void checkedListener(String pkg, String cls, int pos) {
+                Log.i("liuhao", "music app pkg =  " + pkg + "  cls = " + cls);
+                Settings.System.putString(LandroverSetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_PKG, pkg);
+                Settings.System.putString(LandroverSetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS, cls);
+                if (cls.equals(KeyConfig.CLS_LOCAL_MUSIC)) {
+                    LauncherViewModel.setThirdMusic(false);
+                } else {
+                    LauncherViewModel.setThirdMusic(true);
+                }
+            }
+        });
+        this.listview_video = (RecyclerView) view.findViewById(R.id.listview_video);
+        VerRecyclerAdapter adapterVideo = new VerRecyclerAdapter(this.context, AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ATYS_DISMISS_MUSIC, 2, this.context), R.layout.app_third_item_landrover);
+        this.listview_video.setAdapter(adapterVideo);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this.context);
+        layoutManager1.setOrientation(1);
+        this.listview_video.setLayoutManager(layoutManager1);
+        DividerItemDecoration divider1 = new DividerItemDecoration(this.context, 1);
+        divider1.setDrawable(ContextCompat.getDrawable(this.context, R.mipmap.landrover_settings_list_line));
+        this.listview_video.addItemDecoration(divider1);
+        adapterVideo.setAppsCheckListener(new VerRecyclerAdapter.IAppsCheckListener() {
+            public void checkedListener(String pkg, String cls, int pos) {
+                Log.i("liuhao", "video app pkg =  " + pkg + "  cls = " + cls);
+                Settings.System.putString(LandroverSetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_PKG, pkg);
+                Settings.System.putString(LandroverSetSystemTwo.this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS, cls);
+                if (cls.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
+                    LauncherViewModel.setThirdVideo(false);
+                } else {
+                    LauncherViewModel.setThirdVideo(true);
                 }
             }
         });
@@ -225,24 +283,18 @@ public class LandroverSetSystemTwo extends RelativeLayout {
     public void setProgressText(int progress) {
         int value = BrightnessUtils.convertLinearToGamma(progress, this.mMinBrightness, this.mMaxBrightness);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
-        int progress2 = (int) Math.round(100.0d * b);
-        TextView textView = this.tv_beigSize;
-        StringBuilder sb = new StringBuilder();
-        sb.append("");
-        sb.append(progress2);
-        textView.setText(sb.toString());
+        Log.i("SetSystemTwo", "setProgressText run: brightness=" + progress + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
+        this.tv_beigSize.setText("" + ((int) Math.round(100.0d * b)));
     }
 
     /* access modifiers changed from: private */
     public void setProgress(int brightness) {
         this.mMinBrightness = getMinimumScreenBrightnessSetting();
-        this.mMaxBrightness = getMaximumScreenBrightnessSetting();
-        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, this.mMaxBrightness);
+        int maximumScreenBrightnessSetting = getMaximumScreenBrightnessSetting();
+        this.mMaxBrightness = maximumScreenBrightnessSetting;
+        int value = BrightnessUtils.convertLinearToGamma(brightness, this.mMinBrightness, maximumScreenBrightnessSetting);
         double b = BrightnessUtils.getPercentage((double) value, 0, BrightnessUtils.GAMMA_SPACE_MAX);
-        String aaa = NumberFormat.getPercentInstance().format(b);
-        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + aaa);
+        Log.i("SetSystemTwo", "run: brightness=" + brightness + " : mMinBrightness=" + this.mMinBrightness + " mMaxBrightness=" + this.mMaxBrightness + " value=" + value + " b=" + b + " aaa=" + NumberFormat.getPercentInstance().format(b));
         this.seekbar_brightness.setProgress(value);
     }
 
@@ -254,6 +306,8 @@ public class LandroverSetSystemTwo extends RelativeLayout {
                 this.relate_beigld.setVisibility(8);
                 this.relate_auxweiz.setVisibility(8);
                 this.tempRadioGroup.setVisibility(8);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
                 return;
             case 1:
                 this.img_twoDefaul.setVisibility(8);
@@ -261,6 +315,8 @@ public class LandroverSetSystemTwo extends RelativeLayout {
                 this.tempRadioGroup.setVisibility(8);
                 this.relate_beigld.setVisibility(8);
                 this.relate_auxweiz.setVisibility(8);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
                 return;
             case 2:
                 this.img_twoDefaul.setVisibility(8);
@@ -268,6 +324,8 @@ public class LandroverSetSystemTwo extends RelativeLayout {
                 this.relate_auxweiz.setVisibility(8);
                 this.tempRadioGroup.setVisibility(8);
                 this.relate_beigld.setVisibility(0);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
                 return;
             case 3:
                 this.img_twoDefaul.setVisibility(8);
@@ -275,6 +333,8 @@ public class LandroverSetSystemTwo extends RelativeLayout {
                 this.relate_beigld.setVisibility(8);
                 this.tempRadioGroup.setVisibility(8);
                 this.relate_auxweiz.setVisibility(0);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
                 return;
             case 4:
                 this.tempRadioGroup.setVisibility(0);
@@ -282,6 +342,26 @@ public class LandroverSetSystemTwo extends RelativeLayout {
                 this.relate_shext.setVisibility(8);
                 this.relate_beigld.setVisibility(8);
                 this.relate_auxweiz.setVisibility(8);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(8);
+                return;
+            case 6:
+                this.tempRadioGroup.setVisibility(8);
+                this.img_twoDefaul.setVisibility(8);
+                this.relate_shext.setVisibility(8);
+                this.relate_beigld.setVisibility(8);
+                this.relate_auxweiz.setVisibility(8);
+                this.listview_music.setVisibility(0);
+                this.listview_video.setVisibility(8);
+                return;
+            case 7:
+                this.tempRadioGroup.setVisibility(8);
+                this.img_twoDefaul.setVisibility(8);
+                this.relate_shext.setVisibility(8);
+                this.relate_beigld.setVisibility(8);
+                this.relate_auxweiz.setVisibility(8);
+                this.listview_music.setVisibility(8);
+                this.listview_video.setVisibility(0);
                 return;
             default:
                 return;

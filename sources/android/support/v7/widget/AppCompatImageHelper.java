@@ -5,15 +5,12 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.appcompat.R;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class AppCompatImageHelper {
     private TintInfo mImageTint;
     private TintInfo mInternalImageTint;
@@ -80,8 +77,9 @@ public class AppCompatImageHelper {
 
     /* access modifiers changed from: package-private */
     public ColorStateList getSupportImageTintList() {
-        if (this.mImageTint != null) {
-            return this.mImageTint.mTintList;
+        TintInfo tintInfo = this.mImageTint;
+        if (tintInfo != null) {
+            return tintInfo.mTintList;
         }
         return null;
     }
@@ -98,8 +96,9 @@ public class AppCompatImageHelper {
 
     /* access modifiers changed from: package-private */
     public PorterDuff.Mode getSupportImageTintMode() {
-        if (this.mImageTint != null) {
-            return this.mImageTint.mTintMode;
+        TintInfo tintInfo = this.mImageTint;
+        if (tintInfo != null) {
+            return tintInfo.mTintMode;
         }
         return null;
     }
@@ -113,13 +112,16 @@ public class AppCompatImageHelper {
         if (imageViewDrawable == null) {
             return;
         }
-        if (shouldApplyFrameworkTintUsingColorFilter() && applyFrameworkTintUsingColorFilter(imageViewDrawable)) {
-            return;
-        }
-        if (this.mImageTint != null) {
-            AppCompatDrawableManager.tintDrawable(imageViewDrawable, this.mImageTint, this.mView.getDrawableState());
-        } else if (this.mInternalImageTint != null) {
-            AppCompatDrawableManager.tintDrawable(imageViewDrawable, this.mInternalImageTint, this.mView.getDrawableState());
+        if (!shouldApplyFrameworkTintUsingColorFilter() || !applyFrameworkTintUsingColorFilter(imageViewDrawable)) {
+            TintInfo tintInfo = this.mImageTint;
+            if (tintInfo != null) {
+                AppCompatDrawableManager.tintDrawable(imageViewDrawable, tintInfo, this.mView.getDrawableState());
+                return;
+            }
+            TintInfo tintInfo2 = this.mInternalImageTint;
+            if (tintInfo2 != null) {
+                AppCompatDrawableManager.tintDrawable(imageViewDrawable, tintInfo2, this.mView.getDrawableState());
+            }
         }
     }
 
@@ -148,7 +150,7 @@ public class AppCompatImageHelper {
         return false;
     }
 
-    private boolean applyFrameworkTintUsingColorFilter(@NonNull Drawable imageSource) {
+    private boolean applyFrameworkTintUsingColorFilter(Drawable imageSource) {
         if (this.mTmpInfo == null) {
             this.mTmpInfo = new TintInfo();
         }

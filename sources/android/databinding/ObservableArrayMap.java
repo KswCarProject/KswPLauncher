@@ -15,8 +15,9 @@ public class ObservableArrayMap<K, V> extends ArrayMap<K, V> implements Observab
     }
 
     public void removeOnMapChangedCallback(ObservableMap.OnMapChangedCallback<? extends ObservableMap<K, V>, K, V> listener) {
-        if (this.mListeners != null) {
-            this.mListeners.remove(listener);
+        MapChangeRegistry mapChangeRegistry = this.mListeners;
+        if (mapChangeRegistry != null) {
+            mapChangeRegistry.remove(listener);
         }
     }
 
@@ -73,8 +74,9 @@ public class ObservableArrayMap<K, V> extends ArrayMap<K, V> implements Observab
     }
 
     private void notifyChange(Object key) {
-        if (this.mListeners != null) {
-            this.mListeners.notifyCallbacks(this, 0, key);
+        MapChangeRegistry mapChangeRegistry = this.mListeners;
+        if (mapChangeRegistry != null) {
+            mapChangeRegistry.notifyCallbacks(this, 0, key);
         }
     }
 }

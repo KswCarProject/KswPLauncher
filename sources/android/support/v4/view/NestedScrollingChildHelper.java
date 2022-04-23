@@ -1,7 +1,5 @@
 package android.support.v4.view;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -12,7 +10,7 @@ public class NestedScrollingChildHelper {
     private int[] mTempNestedScrollConsumed;
     private final View mView;
 
-    public NestedScrollingChildHelper(@NonNull View view) {
+    public NestedScrollingChildHelper(View view) {
         this.mView = view;
     }
 
@@ -72,11 +70,13 @@ public class NestedScrollingChildHelper {
         }
     }
 
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow) {
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
         return dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow, 0);
     }
 
-    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow, int type) {
+    public boolean dispatchNestedScroll(int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow, int type) {
+        int startY;
+        int startX;
         int[] iArr = offsetInWindow;
         if (isNestedScrollingEnabled()) {
             ViewParent parent = getNestedScrollingParentForType(type);
@@ -84,20 +84,19 @@ public class NestedScrollingChildHelper {
                 return false;
             }
             if (dxConsumed != 0 || dyConsumed != 0 || dxUnconsumed != 0 || dyUnconsumed != 0) {
-                int startX = 0;
-                int startY = 0;
                 if (iArr != null) {
                     this.mView.getLocationInWindow(iArr);
                     startX = iArr[0];
                     startY = iArr[1];
+                } else {
+                    startX = 0;
+                    startY = 0;
                 }
-                int startX2 = startX;
-                int startY2 = startY;
                 ViewParentCompat.onNestedScroll(parent, this.mView, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type);
                 if (iArr != null) {
                     this.mView.getLocationInWindow(iArr);
-                    iArr[0] = iArr[0] - startX2;
-                    iArr[1] = iArr[1] - startY2;
+                    iArr[0] = iArr[0] - startX;
+                    iArr[1] = iArr[1] - startY;
                 }
                 return true;
             } else if (iArr != null) {
@@ -110,11 +109,13 @@ public class NestedScrollingChildHelper {
         return false;
     }
 
-    public boolean dispatchNestedPreScroll(int dx, int dy, @Nullable int[] consumed, @Nullable int[] offsetInWindow) {
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
         return dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, 0);
     }
 
-    public boolean dispatchNestedPreScroll(int dx, int dy, @Nullable int[] consumed, @Nullable int[] offsetInWindow, int type) {
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow, int type) {
+        int startY;
+        int startX;
         int[] consumed2;
         int[] iArr = offsetInWindow;
         if (isNestedScrollingEnabled()) {
@@ -123,15 +124,14 @@ public class NestedScrollingChildHelper {
                 return false;
             }
             if (dx != 0 || dy != 0) {
-                int startX = 0;
-                int startY = 0;
                 if (iArr != null) {
                     this.mView.getLocationInWindow(iArr);
                     startX = iArr[0];
                     startY = iArr[1];
+                } else {
+                    startX = 0;
+                    startY = 0;
                 }
-                int startX2 = startX;
-                int startY2 = startY;
                 if (consumed == null) {
                     if (this.mTempNestedScrollConsumed == null) {
                         this.mTempNestedScrollConsumed = new int[2];
@@ -145,13 +145,10 @@ public class NestedScrollingChildHelper {
                 ViewParentCompat.onNestedPreScroll(parent, this.mView, dx, dy, consumed2, type);
                 if (iArr != null) {
                     this.mView.getLocationInWindow(iArr);
-                    iArr[0] = iArr[0] - startX2;
-                    iArr[1] = iArr[1] - startY2;
+                    iArr[0] = iArr[0] - startX;
+                    iArr[1] = iArr[1] - startY;
                 }
-                if (consumed2[0] == 0 && consumed2[1] == 0) {
-                    return false;
-                }
-                return true;
+                return (consumed2[0] == 0 && consumed2[1] == 0) ? false : true;
             } else if (iArr != null) {
                 iArr[0] = 0;
                 iArr[1] = 0;
@@ -182,7 +179,7 @@ public class NestedScrollingChildHelper {
         ViewCompat.stopNestedScroll(this.mView);
     }
 
-    public void onStopNestedScroll(@NonNull View child) {
+    public void onStopNestedScroll(View child) {
         ViewCompat.stopNestedScroll(this.mView);
     }
 

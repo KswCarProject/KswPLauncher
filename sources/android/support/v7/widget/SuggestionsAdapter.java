@@ -164,8 +164,9 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements View.OnClickLi
         CharSequence text2;
         ChildViewCache views = (ChildViewCache) view.getTag();
         int flags = 0;
-        if (this.mFlagsCol != -1) {
-            flags = cursor.getInt(this.mFlagsCol);
+        int i = this.mFlagsCol;
+        if (i != -1) {
+            flags = cursor.getInt(i);
         }
         if (views.mText1 != null) {
             setViewText(views.mText1, getStringOrNull(cursor, this.mText1Col));
@@ -194,7 +195,8 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements View.OnClickLi
         if (views.mIcon2 != null) {
             setViewDrawable(views.mIcon2, getIcon2(cursor), 8);
         }
-        if (this.mQueryRefinement == 2 || (this.mQueryRefinement == 1 && (flags & 1) != 0)) {
+        int i2 = this.mQueryRefinement;
+        if (i2 == 2 || (i2 == 1 && (flags & 1) != 0)) {
             views.mIconRefine.setVisibility(0);
             views.mIconRefine.setTag(views.mText1.getText());
             views.mIconRefine.setOnClickListener(this);
@@ -231,10 +233,11 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements View.OnClickLi
     }
 
     private Drawable getIcon1(Cursor cursor) {
-        if (this.mIconName1Col == -1) {
+        int i = this.mIconName1Col;
+        if (i == -1) {
             return null;
         }
-        Drawable drawable = getDrawableFromResourceValue(cursor.getString(this.mIconName1Col));
+        Drawable drawable = getDrawableFromResourceValue(cursor.getString(i));
         if (drawable != null) {
             return drawable;
         }
@@ -242,10 +245,11 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements View.OnClickLi
     }
 
     private Drawable getIcon2(Cursor cursor) {
-        if (this.mIconName2Col == -1) {
+        int i = this.mIconName2Col;
+        if (i == -1) {
             return null;
         }
-        return getDrawableFromResourceValue(cursor.getString(this.mIconName2Col));
+        return getDrawableFromResourceValue(cursor.getString(i));
     }
 
     private void setViewDrawable(ImageView v, Drawable drawable, int nullVisibility) {
@@ -478,6 +482,7 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements View.OnClickLi
     /* access modifiers changed from: package-private */
     public Cursor getSearchManagerSuggestions(SearchableInfo searchable, String query, int limit) {
         String authority;
+        String[] selArgs;
         if (searchable == null || (authority = searchable.getSuggestAuthority()) == null) {
             return null;
         }
@@ -488,16 +493,15 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements View.OnClickLi
         }
         uriBuilder.appendPath("search_suggest_query");
         String selection = searchable.getSuggestSelection();
-        String[] selArgs = null;
         if (selection != null) {
             selArgs = new String[]{query};
         } else {
             uriBuilder.appendPath(query);
+            selArgs = null;
         }
-        String[] selArgs2 = selArgs;
         if (limit > 0) {
             uriBuilder.appendQueryParameter("limit", String.valueOf(limit));
         }
-        return this.mContext.getContentResolver().query(uriBuilder.build(), (String[]) null, selection, selArgs2, (String) null);
+        return this.mContext.getContentResolver().query(uriBuilder.build(), (String[]) null, selection, selArgs, (String) null);
     }
 }

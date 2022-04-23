@@ -7,6 +7,15 @@ public final class AppInfo {
     public String appLable;
     public String apppkg;
     public String className;
+    private boolean isCheck;
+
+    public boolean isCheck() {
+        return this.isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        this.isCheck = check;
+    }
 
     public String getAppLable() {
         return this.appLable;

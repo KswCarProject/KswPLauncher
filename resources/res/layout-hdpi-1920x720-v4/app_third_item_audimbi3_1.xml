@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center_vertical" android:orientation="horizontal" android:id="@+id/rbt_apps" android:tag="layout-hdpi-1920x720/app_third_item_audimbi3_1_0" android:background="@drawable/audi_mib3_set_item_ripple" android:layout_width="match_parent" android:layout_height="63dp">
+    <ImageView android:id="@+id/iv_check" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/audi_mib3_radio_button_icon_1"/>
+    <ImageView android:id="@+id/iv_app_icon" android:visibility="visible" android:layout_width="35dp" android:layout_height="35dp" android:layout_marginLeft="28dp"/>
+    <TextView android:textSize="26sp" android:textColor="@color/color1" android:id="@+id/tv_app_name" android:paddingLeft="20dp" android:paddingRight="20dp" android:layout_width="0dp" android:layout_height="wrap_content" android:lines="1" android:layout_weight="1"/>
+</LinearLayout>

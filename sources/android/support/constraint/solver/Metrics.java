@@ -9,17 +9,27 @@ public class Metrics {
     public long centerConnectionResolved;
     public long chainConnectionResolved;
     public long constraints;
+    public long determineGroups;
     public long errors;
     public long extravariables;
     public long fullySolved;
     public long graphOptimizer;
+    public long graphSolved;
+    public long infeasibleDetermineGroups;
     public long iterations;
     public long lastTableSize;
+    public long linearSolved;
     public long matchConnectionResolved;
     public long maxRows;
     public long maxTableSize;
     public long maxVariables;
+    public long measuredMatchWidgets;
+    public long measuredWidgets;
     public long measures;
+    public long measuresLayoutDuration;
+    public long measuresWidgetsDuration;
+    public long measuresWrap;
+    public long measuresWrapInfeasible;
     public long minimize;
     public long minimizeGoal;
     public long nonresolvedWidgets;
@@ -33,13 +43,15 @@ public class Metrics {
     public long slackvariables;
     public long tableSizeIncrease;
     public long variables;
+    public long widgets;
 
     public String toString() {
-        return "\n*** Metrics ***\nmeasures: " + this.measures + "\nadditionalMeasures: " + this.additionalMeasures + "\nresolutions passes: " + this.resolutions + "\ntable increases: " + this.tableSizeIncrease + "\nmaxTableSize: " + this.maxTableSize + "\nmaxVariables: " + this.maxVariables + "\nmaxRows: " + this.maxRows + "\n\nminimize: " + this.minimize + "\nminimizeGoal: " + this.minimizeGoal + "\nconstraints: " + this.constraints + "\nsimpleconstraints: " + this.simpleconstraints + "\noptimize: " + this.optimize + "\niterations: " + this.iterations + "\npivots: " + this.pivots + "\nbfs: " + this.bfs + "\nvariables: " + this.variables + "\nerrors: " + this.errors + "\nslackvariables: " + this.slackvariables + "\nextravariables: " + this.extravariables + "\nfullySolved: " + this.fullySolved + "\ngraphOptimizer: " + this.graphOptimizer + "\nresolvedWidgets: " + this.resolvedWidgets + "\noldresolvedWidgets: " + this.oldresolvedWidgets + "\nnonresolvedWidgets: " + this.nonresolvedWidgets + "\ncenterConnectionResolved: " + this.centerConnectionResolved + "\nmatchConnectionResolved: " + this.matchConnectionResolved + "\nchainConnectionResolved: " + this.chainConnectionResolved + "\nbarrierConnectionResolved: " + this.barrierConnectionResolved + "\nproblematicsLayouts: " + this.problematicLayouts + "\n";
+        return "\n*** Metrics ***\nmeasures: " + this.measures + "\nmeasuresWrap: " + this.measuresWrap + "\nmeasuresWrapInfeasible: " + this.measuresWrapInfeasible + "\ndetermineGroups: " + this.determineGroups + "\ninfeasibleDetermineGroups: " + this.infeasibleDetermineGroups + "\ngraphOptimizer: " + this.graphOptimizer + "\nwidgets: " + this.widgets + "\ngraphSolved: " + this.graphSolved + "\nlinearSolved: " + this.linearSolved + "\n";
     }
 
     public void reset() {
         this.measures = 0;
+        this.widgets = 0;
         this.additionalMeasures = 0;
         this.resolutions = 0;
         this.tableSizeIncrease = 0;
@@ -61,6 +73,7 @@ public class Metrics {
         this.extravariables = 0;
         this.fullySolved = 0;
         this.graphOptimizer = 0;
+        this.graphSolved = 0;
         this.resolvedWidgets = 0;
         this.oldresolvedWidgets = 0;
         this.nonresolvedWidgets = 0;

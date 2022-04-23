@@ -1,12 +1,9 @@
 package android.arch.core.internal;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
     private Entry<K, V> mEnd;
     private WeakHashMap<SupportRemove<K, V>, Boolean> mIterators = new WeakHashMap<>();
@@ -15,7 +12,7 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
     public Entry<K, V> mStart;
 
     interface SupportRemove<K, V> {
-        void supportRemove(@NonNull Entry<K, V> entry);
+        void supportRemove(Entry<K, V> entry);
     }
 
     /* access modifiers changed from: protected */
@@ -27,7 +24,7 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
         return currentNode;
     }
 
-    public V putIfAbsent(@NonNull K key, @NonNull V v) {
+    public V putIfAbsent(K key, V v) {
         Entry<K, V> entry = get(key);
         if (entry != null) {
             return entry.mValue;
@@ -37,21 +34,22 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
     }
 
     /* access modifiers changed from: protected */
-    public Entry<K, V> put(@NonNull K key, @NonNull V v) {
+    public Entry<K, V> put(K key, V v) {
         Entry<K, V> newEntry = new Entry<>(key, v);
         this.mSize++;
-        if (this.mEnd == null) {
+        Entry<K, V> entry = this.mEnd;
+        if (entry == null) {
             this.mStart = newEntry;
-            this.mEnd = this.mStart;
+            this.mEnd = newEntry;
             return newEntry;
         }
-        this.mEnd.mNext = newEntry;
+        entry.mNext = newEntry;
         newEntry.mPrevious = this.mEnd;
         this.mEnd = newEntry;
         return newEntry;
     }
 
-    public V remove(@NonNull K key) {
+    public V remove(K key) {
         Entry<K, V> toRemove = get(key);
         if (toRemove == null) {
             return null;
@@ -81,7 +79,6 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
         return this.mSize;
     }
 
-    @NonNull
     public Iterator<Map.Entry<K, V>> iterator() {
         ListIterator<K, V> iterator = new AscendingIterator<>(this.mStart, this.mEnd);
         this.mIterators.put(iterator, false);
@@ -167,13 +164,14 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
             return this.mNext != null;
         }
 
-        public void supportRemove(@NonNull Entry<K, V> entry) {
+        public void supportRemove(Entry<K, V> entry) {
             if (this.mExpectedEnd == entry && entry == this.mNext) {
                 this.mNext = null;
                 this.mExpectedEnd = null;
             }
-            if (this.mExpectedEnd == entry) {
-                this.mExpectedEnd = backward(this.mExpectedEnd);
+            Entry<K, V> entry2 = this.mExpectedEnd;
+            if (entry2 == entry) {
+                this.mExpectedEnd = backward(entry2);
             }
             if (this.mNext == entry) {
                 this.mNext = nextNode();
@@ -181,10 +179,12 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
         }
 
         private Entry<K, V> nextNode() {
-            if (this.mNext == this.mExpectedEnd || this.mExpectedEnd == null) {
+            Entry<K, V> entry = this.mNext;
+            Entry<K, V> entry2 = this.mExpectedEnd;
+            if (entry == entry2 || entry2 == null) {
                 return null;
             }
-            return forward(this.mNext);
+            return forward(entry);
         }
 
         public Map.Entry<K, V> next() {
@@ -234,23 +234,26 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
             this.mBeforeStart = true;
         }
 
-        public void supportRemove(@NonNull Entry<K, V> entry) {
-            if (entry == this.mCurrent) {
-                this.mCurrent = this.mCurrent.mPrevious;
-                this.mBeforeStart = this.mCurrent == null;
+        public void supportRemove(Entry<K, V> entry) {
+            Entry<K, V> entry2 = this.mCurrent;
+            if (entry == entry2) {
+                Entry<K, V> entry3 = entry2.mPrevious;
+                this.mCurrent = entry3;
+                this.mBeforeStart = entry3 == null;
             }
         }
 
         public boolean hasNext() {
-            if (this.mBeforeStart) {
-                if (SafeIterableMap.this.mStart != null) {
-                    return true;
+            if (!this.mBeforeStart) {
+                Entry<K, V> entry = this.mCurrent;
+                if (entry == null || entry.mNext == null) {
+                    return false;
                 }
-                return false;
-            } else if (this.mCurrent == null || this.mCurrent.mNext == null) {
-                return false;
-            } else {
                 return true;
+            } else if (SafeIterableMap.this.mStart != null) {
+                return true;
+            } else {
+                return false;
             }
         }
 
@@ -259,31 +262,28 @@ public class SafeIterableMap<K, V> implements Iterable<Map.Entry<K, V>> {
                 this.mBeforeStart = false;
                 this.mCurrent = SafeIterableMap.this.mStart;
             } else {
-                this.mCurrent = this.mCurrent != null ? this.mCurrent.mNext : null;
+                Entry<K, V> entry = this.mCurrent;
+                this.mCurrent = entry != null ? entry.mNext : null;
             }
             return this.mCurrent;
         }
     }
 
     static class Entry<K, V> implements Map.Entry<K, V> {
-        @NonNull
         final K mKey;
         Entry<K, V> mNext;
         Entry<K, V> mPrevious;
-        @NonNull
         final V mValue;
 
-        Entry(@NonNull K key, @NonNull V value) {
+        Entry(K key, V value) {
             this.mKey = key;
             this.mValue = value;
         }
 
-        @NonNull
         public K getKey() {
             return this.mKey;
         }
 
-        @NonNull
         public V getValue() {
             return this.mValue;
         }

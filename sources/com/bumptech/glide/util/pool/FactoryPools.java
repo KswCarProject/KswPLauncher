@@ -1,6 +1,5 @@
 package com.bumptech.glide.util.pool;
 
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pools;
 import android.util.Log;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 public final class FactoryPools {
     private static final int DEFAULT_POOL_SIZE = 20;
     private static final Resetter<Object> EMPTY_RESETTER = new Resetter<Object>() {
-        public void reset(@NonNull Object object) {
+        public void reset(Object object) {
         }
     };
     private static final String TAG = "FactoryPools";
@@ -19,57 +18,48 @@ public final class FactoryPools {
     }
 
     public interface Poolable {
-        @NonNull
         StateVerifier getVerifier();
     }
 
     public interface Resetter<T> {
-        void reset(@NonNull T t);
+        void reset(T t);
     }
 
     private FactoryPools() {
     }
 
-    @NonNull
-    public static <T extends Poolable> Pools.Pool<T> simple(int size, @NonNull Factory<T> factory) {
+    public static <T extends Poolable> Pools.Pool<T> simple(int size, Factory<T> factory) {
         return build(new Pools.SimplePool(size), factory);
     }
 
-    @NonNull
-    public static <T extends Poolable> Pools.Pool<T> threadSafe(int size, @NonNull Factory<T> factory) {
+    public static <T extends Poolable> Pools.Pool<T> threadSafe(int size, Factory<T> factory) {
         return build(new Pools.SynchronizedPool(size), factory);
     }
 
-    @NonNull
     public static <T> Pools.Pool<List<T>> threadSafeList() {
         return threadSafeList(20);
     }
 
-    @NonNull
     public static <T> Pools.Pool<List<T>> threadSafeList(int size) {
         return build(new Pools.SynchronizedPool(size), new Factory<List<T>>() {
-            @NonNull
             public List<T> create() {
                 return new ArrayList();
             }
         }, new Resetter<List<T>>() {
-            public void reset(@NonNull List<T> object) {
+            public void reset(List<T> object) {
                 object.clear();
             }
         });
     }
 
-    @NonNull
-    private static <T extends Poolable> Pools.Pool<T> build(@NonNull Pools.Pool<T> pool, @NonNull Factory<T> factory) {
+    private static <T extends Poolable> Pools.Pool<T> build(Pools.Pool<T> pool, Factory<T> factory) {
         return build(pool, factory, emptyResetter());
     }
 
-    @NonNull
-    private static <T> Pools.Pool<T> build(@NonNull Pools.Pool<T> pool, @NonNull Factory<T> factory, @NonNull Resetter<T> resetter) {
+    private static <T> Pools.Pool<T> build(Pools.Pool<T> pool, Factory<T> factory, Resetter<T> resetter) {
         return new FactoryPool(pool, factory, resetter);
     }
 
-    @NonNull
     private static <T> Resetter<T> emptyResetter() {
         return EMPTY_RESETTER;
     }
@@ -79,7 +69,7 @@ public final class FactoryPools {
         private final Pools.Pool<T> pool;
         private final Resetter<T> resetter;
 
-        FactoryPool(@NonNull Pools.Pool<T> pool2, @NonNull Factory<T> factory2, @NonNull Resetter<T> resetter2) {
+        FactoryPool(Pools.Pool<T> pool2, Factory<T> factory2, Resetter<T> resetter2) {
             this.pool = pool2;
             this.factory = factory2;
             this.resetter = resetter2;
@@ -99,7 +89,7 @@ public final class FactoryPools {
             return result;
         }
 
-        public boolean release(@NonNull T instance) {
+        public boolean release(T instance) {
             if (instance instanceof Poolable) {
                 ((Poolable) instance).getVerifier().setRecycled(true);
             }

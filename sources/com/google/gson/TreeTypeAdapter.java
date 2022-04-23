@@ -35,12 +35,13 @@ final class TreeTypeAdapter<T> extends TypeAdapter<T> {
     }
 
     public void write(JsonWriter out, T value) throws IOException {
-        if (this.serializer == null) {
+        JsonSerializer<T> jsonSerializer = this.serializer;
+        if (jsonSerializer == null) {
             delegate().write(out, value);
         } else if (value == null) {
             out.nullValue();
         } else {
-            Streams.write(this.serializer.serialize(value, this.typeToken.getType(), this.gson.serializationContext), out);
+            Streams.write(jsonSerializer.serialize(value, this.typeToken.getType(), this.gson.serializationContext), out);
         }
     }
 
@@ -75,16 +76,19 @@ final class TreeTypeAdapter<T> extends TypeAdapter<T> {
 
         private SingleTypeFactory(Object typeAdapter, TypeToken<?> exactType2, boolean matchRawType2, Class<?> hierarchyType2) {
             JsonDeserializer<?> jsonDeserializer = null;
-            this.serializer = typeAdapter instanceof JsonSerializer ? (JsonSerializer) typeAdapter : null;
-            this.deserializer = typeAdapter instanceof JsonDeserializer ? (JsonDeserializer) typeAdapter : jsonDeserializer;
-            C$Gson$Preconditions.checkArgument((this.serializer == null && this.deserializer == null) ? false : true);
+            JsonSerializer<?> jsonSerializer = typeAdapter instanceof JsonSerializer ? (JsonSerializer) typeAdapter : null;
+            this.serializer = jsonSerializer;
+            jsonDeserializer = typeAdapter instanceof JsonDeserializer ? (JsonDeserializer) typeAdapter : jsonDeserializer;
+            this.deserializer = jsonDeserializer;
+            C$Gson$Preconditions.checkArgument((jsonSerializer == null && jsonDeserializer == null) ? false : true);
             this.exactType = exactType2;
             this.matchRawType = matchRawType2;
             this.hierarchyType = hierarchyType2;
         }
 
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-            if (this.exactType != null ? this.exactType.equals(type) || (this.matchRawType && this.exactType.getType() == type.getRawType()) : this.hierarchyType.isAssignableFrom(type.getRawType())) {
+            TypeToken<?> typeToken = this.exactType;
+            if (typeToken != null ? typeToken.equals(type) || (this.matchRawType && this.exactType.getType() == type.getRawType()) : this.hierarchyType.isAssignableFrom(type.getRawType())) {
                 return new TreeTypeAdapter(this.serializer, this.deserializer, gson, type, this);
             }
             return null;

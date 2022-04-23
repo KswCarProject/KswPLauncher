@@ -20,8 +20,9 @@ public final class JsonStreamParser implements Iterator<JsonElement> {
     }
 
     public JsonStreamParser(Reader reader) {
-        this.parser = new JsonReader(reader);
-        this.parser.setLenient(true);
+        JsonReader jsonReader = new JsonReader(reader);
+        this.parser = jsonReader;
+        jsonReader.setLenient(true);
         this.lock = new Object();
     }
 

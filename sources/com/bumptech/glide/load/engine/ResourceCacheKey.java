@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.Transformation;
@@ -45,20 +44,22 @@ final class ResourceCacheKey implements Key {
 
     public int hashCode() {
         int result = (((((this.sourceKey.hashCode() * 31) + this.signature.hashCode()) * 31) + this.width) * 31) + this.height;
-        if (this.transformation != null) {
-            result = (result * 31) + this.transformation.hashCode();
+        Transformation<?> transformation2 = this.transformation;
+        if (transformation2 != null) {
+            result = (result * 31) + transformation2.hashCode();
         }
         return (((result * 31) + this.decodedResourceClass.hashCode()) * 31) + this.options.hashCode();
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         byte[] dimensions = (byte[]) this.arrayPool.getExact(8, byte[].class);
         ByteBuffer.wrap(dimensions).putInt(this.width).putInt(this.height).array();
         this.signature.updateDiskCacheKey(messageDigest);
         this.sourceKey.updateDiskCacheKey(messageDigest);
         messageDigest.update(dimensions);
-        if (this.transformation != null) {
-            this.transformation.updateDiskCacheKey(messageDigest);
+        Transformation<?> transformation2 = this.transformation;
+        if (transformation2 != null) {
+            transformation2.updateDiskCacheKey(messageDigest);
         }
         this.options.updateDiskCacheKey(messageDigest);
         messageDigest.update(getResourceClassBytes());
@@ -66,12 +67,13 @@ final class ResourceCacheKey implements Key {
     }
 
     private byte[] getResourceClassBytes() {
-        byte[] result = RESOURCE_CLASS_BYTES.get(this.decodedResourceClass);
+        LruCache<Class<?>, byte[]> lruCache = RESOURCE_CLASS_BYTES;
+        byte[] result = lruCache.get(this.decodedResourceClass);
         if (result != null) {
             return result;
         }
         byte[] result2 = this.decodedResourceClass.getName().getBytes(CHARSET);
-        RESOURCE_CLASS_BYTES.put(this.decodedResourceClass, result2);
+        lruCache.put(this.decodedResourceClass, result2);
         return result2;
     }
 

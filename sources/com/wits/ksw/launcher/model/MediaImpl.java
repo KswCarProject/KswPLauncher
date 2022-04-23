@@ -1,15 +1,28 @@
 package com.wits.ksw.launcher.model;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.os.Handler;
 import android.os.Looper;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.text.TextUtils;
 import android.util.Log;
 import com.wits.ksw.launcher.bean.MediaInfo;
+import com.wits.ksw.launcher.utils.BitmapUtil;
 import com.wits.ksw.launcher.utils.KswUtils;
+import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class MediaImpl {
@@ -37,17 +50,14 @@ public class MediaImpl {
             String path = getMusicPathcString();
             int postion = getMusicPostion();
             boolean isPlay = getMusicPlayState();
-            boolean isStop = isMusicStop();
-            String str = TAG;
-            Log.d(str, "initDAta isplay =" + isPlay + " isstop =" + isStop);
+            Log.d(TAG, "initDAta isplay =" + isPlay + " isstop =" + isMusicStop());
             if (!TextUtils.equals(path, this.musicPath)) {
                 handleMediaPlaySeekbarAndCurrentime(postion);
                 handleMediaInfo(path);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            String str2 = TAG;
-            Log.e(str2, "initData: " + e.getMessage());
+            Log.e(TAG, "initData: " + e.getMessage());
             updataNull();
         }
     }
@@ -60,7 +70,7 @@ public class MediaImpl {
         return PowerManagerApp.getManager().getStatusString("path");
     }
 
-    private boolean getMusicPlayState() throws Exception {
+    public boolean getMusicPlayState() throws Exception {
         return PowerManagerApp.getManager().getStatusBoolean("play");
     }
 
@@ -90,8 +100,9 @@ public class MediaImpl {
     }
 
     private void releaseMetadata() {
-        if (this.metadataRetriever != null) {
-            this.metadataRetriever.release();
+        MediaMetadataRetriever mediaMetadataRetriever = this.metadataRetriever;
+        if (mediaMetadataRetriever != null) {
+            mediaMetadataRetriever.release();
             this.metadataRetriever = null;
         }
     }
@@ -104,8 +115,7 @@ public class MediaImpl {
         if (this.metadataRetriever == null) {
             this.metadataRetriever = new MediaMetadataRetriever();
         }
-        String str = TAG;
-        Log.i(str, "initMediaMetadataRetriever: " + this.metadataRetriever);
+        Log.i(TAG, "initMediaMetadataRetriever: " + this.metadataRetriever);
         this.metadataRetriever.setDataSource(path);
         return this.metadataRetriever;
     }
@@ -126,7 +136,7 @@ public class MediaImpl {
             Log.i(str, "handleMediaInfo: path:" + path);
             MediaMetadataRetriever metadataRetriever2 = initMediaMetadataRetriever(path);
             if (metadataRetriever2 == null) {
-                Log.i(TAG, "handleMediaInfo: initMediaMetadataRetriever null");
+                Log.i(str, "handleMediaInfo: initMediaMetadataRetriever null");
                 updataNull();
                 return;
             }
@@ -147,7 +157,25 @@ public class MediaImpl {
             mediaInfo2.setMusicName(title);
             mediaInfo2.setMusicAlbum(album);
             mediaInfo2.setMusicAtist(artist);
+            if (!TextUtils.isEmpty(artist)) {
+                mediaInfo2.songInfo.set(title + " - " + artist);
+            } else {
+                mediaInfo2.songInfo.set(title);
+            }
             mediaInfo2.setPic(icon);
+            if (icon == null) {
+                LOGE.D("liuhaoMedia ____________________aaa BitmapUtil.isBenzMbux2021()&&icon==null__________________________________");
+                mediaInfo2.setPicBg((BitmapDrawable) BitmapUtil.getDefaultMBUX2021BG_OTHER());
+                mediaInfo2.setPicZoom((BitmapDrawable) null);
+            } else {
+                mediaInfo2.setPicZoom((BitmapDrawable) zoomDrawable(icon, 100, 100));
+                Bitmap bmp = BitmapUtil.drawableToBitmap(icon);
+                if (bmp == null) {
+                    bmp = BitmapUtil.drawableToBitmap(BitmapUtil.getDefaultMBUX2021BG_OTHER());
+                }
+                mediaInfo2.setPicBg(new BitmapDrawable(bmp));
+            }
+            mediaInfo2.setPageIndex(mediaInfo2.pageIndex.get());
             if (TextUtils.isEmpty(duration)) {
                 mediaInfo2.setTotalTime(KswUtils.formatMusicPlayTime(0));
             } else {
@@ -158,12 +186,10 @@ public class MediaImpl {
                     MediaImpl.this.mediaInfoMutableLiveData.setValue(mediaInfo2);
                 }
             });
-            String str2 = TAG;
-            Log.i(str2, "handleMediaInfo: title:" + title + " album:" + album + " artist:" + artist + " totalTime:" + duration);
+            Log.i(str, "handleMediaInfo: title:" + title + " album:" + album + " artist:" + artist + " totalTime:" + duration);
         } catch (Exception e) {
             e.printStackTrace();
-            String str3 = TAG;
-            Log.e(str3, "onChange:" + e.getMessage());
+            Log.e(TAG, "onChange:" + e.getMessage());
         }
     }
 
@@ -171,5 +197,59 @@ public class MediaImpl {
         MediaInfo mediaInfo2 = getInstance().getMediaInfo();
         mediaInfo2.setProgress(currentTime);
         mediaInfo2.setCurrentTime(KswUtils.formatMusicPlayTime((long) currentTime));
+    }
+
+    public static Bitmap zoomImage(Bitmap bgimage, double newWidth, double newHeight) {
+        float width = (float) bgimage.getWidth();
+        float height = (float) bgimage.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.postScale(((float) newWidth) / width, ((float) newHeight) / height);
+        return Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
+    }
+
+    public static Bitmap getShapeBitmap(Bitmap bitmap) {
+        Bitmap bmp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        new ColorMatrix().set(new float[]{1.0f, 0.0f, 0.0f, 0.0f, 20.0f, 0.0f, 1.0f, 0.0f, 0.0f, 20.0f, 0.0f, 0.0f, 1.0f, 0.0f, 20.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f});
+        return bmp;
+    }
+
+    private Drawable zoomDrawable(Drawable drawable, int w, int h) {
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        Bitmap oldbmp = drawableToBitmap(drawable);
+        Matrix matrix = new Matrix();
+        matrix.postScale(((float) w) / ((float) width), ((float) h) / ((float) height));
+        return new BitmapDrawable((Resources) null, Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true));
+    }
+
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap.Config config;
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        if (drawable.getOpacity() != -1) {
+            config = Bitmap.Config.ARGB_8888;
+        } else {
+            config = Bitmap.Config.RGB_565;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    public static Bitmap blurBitmap(Bitmap bitmap, Context context) {
+        Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        RenderScript rs = RenderScript.create(context);
+        ScriptIntrinsicBlur blurScript = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        Allocation allIn = Allocation.createFromBitmap(rs, bitmap);
+        Allocation allOut = Allocation.createFromBitmap(rs, outBitmap);
+        blurScript.setRadius(25.0f);
+        blurScript.setInput(allIn);
+        blurScript.forEach(allOut);
+        allOut.copyTo(outBitmap);
+        bitmap.recycle();
+        rs.destroy();
+        return outBitmap;
     }
 }

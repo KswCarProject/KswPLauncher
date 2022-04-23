@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.resource.bitmap;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -32,7 +31,6 @@ final class HardwareConfigState {
     }
 
     /* access modifiers changed from: package-private */
-    @TargetApi(26)
     public boolean setHardwareConfigIfAllowed(int targetWidth, int targetHeight, BitmapFactory.Options optionsWithScaling, DecodeFormat decodeFormat, boolean isHardwareConfigAllowed2, boolean isExifOrientationRequired) {
         if (!isHardwareConfigAllowed2 || Build.VERSION.SDK_INT < 26 || isExifOrientationRequired) {
             return false;
@@ -46,14 +44,14 @@ final class HardwareConfigState {
     }
 
     private synchronized boolean isFdSizeBelowHardwareLimit() {
+        boolean z = true;
         int i = this.decodesSinceLastFdCheck + 1;
         this.decodesSinceLastFdCheck = i;
         if (i >= 50) {
-            boolean z = false;
             this.decodesSinceLastFdCheck = 0;
             int currentFds = FD_SIZE_LIST.list().length;
-            if (currentFds < 700) {
-                z = true;
+            if (currentFds >= 700) {
+                z = false;
             }
             this.isHardwareConfigAllowed = z;
             if (!this.isHardwareConfigAllowed && Log.isLoggable("Downsampler", 5)) {

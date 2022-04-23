@@ -33,10 +33,10 @@ public class AudiConstraintLayout extends ConstraintLayout {
     }
 
     private void init() {
-        String str = TAG;
-        Log.i(str, "init: " + getChildCount());
-        this.childViews = getAllChildViews(this);
-        for (View mView : this.childViews) {
+        Log.i(TAG, "init: " + getChildCount());
+        List<View> allChildViews = getAllChildViews(this);
+        this.childViews = allChildViews;
+        for (View mView : allChildViews) {
             if (mView instanceof CompoundButton) {
                 mView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {

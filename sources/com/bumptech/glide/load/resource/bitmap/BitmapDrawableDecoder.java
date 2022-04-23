@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.ResourceDecoder;
 import com.bumptech.glide.load.engine.Resource;
@@ -25,16 +24,16 @@ public class BitmapDrawableDecoder<DataType> implements ResourceDecoder<DataType
         this(resources2, decoder2);
     }
 
-    public BitmapDrawableDecoder(@NonNull Resources resources2, @NonNull ResourceDecoder<DataType, Bitmap> decoder2) {
+    public BitmapDrawableDecoder(Resources resources2, ResourceDecoder<DataType, Bitmap> decoder2) {
         this.resources = (Resources) Preconditions.checkNotNull(resources2);
         this.decoder = (ResourceDecoder) Preconditions.checkNotNull(decoder2);
     }
 
-    public boolean handles(@NonNull DataType source, @NonNull Options options) throws IOException {
+    public boolean handles(DataType source, Options options) throws IOException {
         return this.decoder.handles(source, options);
     }
 
-    public Resource<BitmapDrawable> decode(@NonNull DataType source, int width, int height, @NonNull Options options) throws IOException {
+    public Resource<BitmapDrawable> decode(DataType source, int width, int height, Options options) throws IOException {
         return LazyBitmapDrawableResource.obtain(this.resources, this.decoder.decode(source, width, height, options));
     }
 }

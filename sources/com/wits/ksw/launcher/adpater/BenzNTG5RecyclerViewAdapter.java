@@ -1,7 +1,6 @@
 package com.wits.ksw.launcher.adpater;
 
 import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +38,6 @@ public class BenzNTG5RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public List<BcItem> getBcItemList() {
         List<BcItem> bcItems = new ArrayList<>();
         for (int i = 0; i < resId.length; i++) {
@@ -52,14 +50,13 @@ public class BenzNTG5RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
         return bcItems;
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         BcNtg5ItemBinding bcItemBinding = (BcNtg5ItemBinding) DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.bc_ntg5_item, viewGroup, false);
         bcItemBinding.setMBcVieModel(this.viewModel);
         return new ViewHolder(bcItemBinding);
     }
 
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
         BcNtg5ItemBinding itemMvvmBinding = viewHolder.getBcItemBinding();
         Log.d("BenzNTG5RecyclerViewAdapter ", "focusPosition: " + this.focusPosition);
         itemMvvmBinding.setListItem(this.bcItemList.get(position));
@@ -78,24 +75,26 @@ public class BenzNTG5RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder
     }
 
     public int getItemCount() {
-        if (this.bcItemList == null || this.bcItemList.isEmpty()) {
+        List<BcItem> list = this.bcItemList;
+        if (list == null || list.isEmpty()) {
             return 0;
         }
         return this.bcItemList.size();
     }
 
-    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+    public void onViewAttachedToWindow(ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         Log.d("sss", "onViewAttachedToWindow");
-        if (this.focusPosition != null) {
-            this.viewModel.refreshViewFocused(this.focusPosition);
+        View view = this.focusPosition;
+        if (view != null) {
+            this.viewModel.refreshViewFocused(view);
         }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         BcNtg5ItemBinding bcItemBinding;
 
-        public ViewHolder(@NonNull BcNtg5ItemBinding binding) {
+        public ViewHolder(BcNtg5ItemBinding binding) {
             super(binding.getRoot());
             this.bcItemBinding = binding;
         }

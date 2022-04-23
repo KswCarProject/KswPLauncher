@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/lexus_ls_main_ll" android:tag="layout/lexus_ls_main_layout_0" android:background="@drawable/lexus_ls_main_bk" android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="300dp">
+        <android.support.v7.widget.RecyclerView android:id="@+id/lexus_ls_recycleview_desktop" android:layout_width="match_parent" android:layout_height="300dp" android:layout_marginLeft="20dp" android:layout_marginTop="60dp" android:layout_marginRight="20dp" android:layout_alignParentTop="true"/>
+        <ImageView android:id="@+id/iv_lexus_ls_bg_app_layerlist" android:background="@drawable/lexus_ls_viewpaer_layerlist" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent"/>
+    </FrameLayout>
+    <RelativeLayout android:gravity="center" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="@dimen/dimen_lexus_ls_bottom_iv_height" android:layout_marginBottom="-15dp" android:layout_alignParentBottom="true">
+        <ImageView android:id="@+id/iv_lexusls_left_btn" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:src="@drawable/lexus_ls_bottom_sel_left" android:scaleType="fitCenter" android:layout_alignParentLeft="true"/>
+        <android.support.v4.view.ViewPager android:id="@+id/lexus_ls_viewpager_bottom" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="65dp" android:layout_marginRight="65dp" android:layout_weight="1"/>
+        <ImageView android:id="@+id/iv_lexusls_right_btn" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:src="@drawable/lexus_ls_bottom_sel_right" android:scaleType="fitCenter" android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+</RelativeLayout>

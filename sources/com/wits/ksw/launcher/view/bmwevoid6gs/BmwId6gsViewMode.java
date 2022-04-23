@@ -11,7 +11,8 @@ public class BmwId6gsViewMode extends LauncherViewModel {
     private ContentObserver contentObserver = new ContentObserver(new Handler()) {
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
-            BmwId6gsViewMode.this.setIndex(BmwId6GsConfig.getIndex(BmwId6gsViewMode.this.context));
+            BmwId6gsViewMode bmwId6gsViewMode = BmwId6gsViewMode.this;
+            bmwId6gsViewMode.setIndex(BmwId6GsConfig.getIndex(bmwId6gsViewMode.context));
         }
     };
     public ObservableInt index = new ObservableInt();
@@ -43,13 +44,13 @@ public class BmwId6gsViewMode extends LauncherViewModel {
                 openNaviApp(view);
                 return;
             case 1:
-                openChoseMusic(view);
+                openMusicMulti(view);
                 return;
             case 2:
                 openBtApp(view);
                 return;
             case 3:
-                openVideo(view);
+                openVideoMulti(view);
                 return;
             case 4:
                 openCar(view);

@@ -1,7 +1,5 @@
 package com.bumptech.glide.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import java.io.FilterInputStream;
@@ -14,17 +12,15 @@ public final class ContentLengthInputStream extends FilterInputStream {
     private final long contentLength;
     private int readSoFar;
 
-    @NonNull
-    public static InputStream obtain(@NonNull InputStream other, @Nullable String contentLengthHeader) {
+    public static InputStream obtain(InputStream other, String contentLengthHeader) {
         return obtain(other, (long) parseContentLength(contentLengthHeader));
     }
 
-    @NonNull
-    public static InputStream obtain(@NonNull InputStream other, long contentLength2) {
+    public static InputStream obtain(InputStream other, long contentLength2) {
         return new ContentLengthInputStream(other, contentLength2);
     }
 
-    private static int parseContentLength(@Nullable String contentLengthHeader) {
+    private static int parseContentLength(String contentLengthHeader) {
         if (TextUtils.isEmpty(contentLengthHeader)) {
             return -1;
         }
@@ -39,7 +35,7 @@ public final class ContentLengthInputStream extends FilterInputStream {
         }
     }
 
-    private ContentLengthInputStream(@NonNull InputStream in, long contentLength2) {
+    private ContentLengthInputStream(InputStream in, long contentLength2) {
         super(in);
         this.contentLength = contentLength2;
     }

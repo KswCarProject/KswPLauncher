@@ -55,9 +55,10 @@ public class BwmNbtModel extends LauncherViewModel implements View.OnFocusChange
     }
 
     private void btnSelect(int index) {
-        if (this.mainnbtBinging != null) {
+        ActivityBmwNbtBinding activityBmwNbtBinding = this.mainnbtBinging;
+        if (activityBmwNbtBinding != null) {
             boolean z = false;
-            this.mainnbtBinging.appLl.setSelected(index == 0);
+            activityBmwNbtBinding.appLl.setSelected(index == 0);
             this.mainnbtBinging.naviLl.setSelected(index == 1);
             this.mainnbtBinging.musicLl.setSelected(index == 2);
             this.mainnbtBinging.videoLl.setSelected(index == 3);
@@ -74,46 +75,46 @@ public class BwmNbtModel extends LauncherViewModel implements View.OnFocusChange
 
     private void focusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
-            case R.id.app_ll:
+            case R.id.app_ll /*2131296339*/:
                 if (hasFocus) {
                     refrshBg(0);
                     return;
                 }
                 return;
-            case R.id.dashbroad_ll:
+            case R.id.dashbroad_ll /*2131296623*/:
                 if (hasFocus) {
                     refrshBg(6);
                     return;
                 }
                 return;
-            case R.id.music_ll:
+            case R.id.music_ll /*2131297083*/:
                 if (hasFocus) {
                     refrshBg(2);
                     return;
                 }
                 return;
-            case R.id.navi_ll:
+            case R.id.navi_ll /*2131297105*/:
                 if (hasFocus) {
                     refrshBg(1);
                     return;
                 }
                 return;
-            case R.id.phone_ll:
+            case R.id.phone_ll /*2131297140*/:
                 if (hasFocus) {
                     refrshBg(4);
                     return;
                 }
                 return;
-            case R.id.rl_car:
+            case R.id.rl_car /*2131297327*/:
                 refrshBg(5);
                 return;
-            case R.id.rl_settings:
+            case R.id.rl_settings /*2131297334*/:
                 if (hasFocus) {
                     refrshBg(7);
                     return;
                 }
                 return;
-            case R.id.video_ll:
+            case R.id.video_ll /*2131297676*/:
                 if (hasFocus) {
                     refrshBg(3);
                     return;
@@ -126,37 +127,37 @@ public class BwmNbtModel extends LauncherViewModel implements View.OnFocusChange
 
     public void onNbtClick(View v) {
         switch (v.getId()) {
-            case R.id.app_ll:
+            case R.id.app_ll /*2131296339*/:
                 refrshBg(0);
                 openApps(v);
                 return;
-            case R.id.dashbroad_ll:
+            case R.id.dashbroad_ll /*2131296623*/:
                 refrshBg(6);
                 openDashboard(v);
                 return;
-            case R.id.music_ll:
+            case R.id.music_ll /*2131297083*/:
                 refrshBg(2);
-                openMusic(v);
+                openMusicMulti(v);
                 return;
-            case R.id.navi_ll:
+            case R.id.navi_ll /*2131297105*/:
                 refrshBg(1);
                 openNaviApp(v);
                 return;
-            case R.id.phone_ll:
+            case R.id.phone_ll /*2131297140*/:
                 refrshBg(4);
                 openBtApp(v);
                 return;
-            case R.id.rl_car:
+            case R.id.rl_car /*2131297327*/:
                 refrshBg(5);
                 openCar(v);
                 return;
-            case R.id.rl_settings:
+            case R.id.rl_settings /*2131297334*/:
                 refrshBg(7);
                 openSettings(v);
                 return;
-            case R.id.video_ll:
+            case R.id.video_ll /*2131297676*/:
                 refrshBg(3);
-                openVideo(v);
+                openVideoMulti(v);
                 return;
             default:
                 return;

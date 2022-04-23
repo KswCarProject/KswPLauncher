@@ -2,7 +2,6 @@ package com.wits.ksw.settings.id6.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,12 +39,11 @@ public class ID6NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
         this.rbtCheckListener = listener;
     }
 
-    @NonNull
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new MyViewHolder(LayoutInflater.from(this.context).inflate(R.layout.navi_id6_adpter_layout, viewGroup, false));
     }
 
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         Drawable drawable;
         if (this.mapBanList.get(position).getMapicon() == null) {
             drawable = this.context.getDrawable(R.mipmap.ic_launcher);
@@ -57,7 +55,7 @@ public class ID6NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.rbt_navi.setText(this.mapBanList.get(position).getName());
         Log.d("NaviAdapter", "appName: " + this.mapBanList.get(position).getName());
         holder.rbt_navi.setCompoundDrawablePadding(10);
-        holder.rbt_navi.setEnabled(this.isShow ^ true);
+        holder.rbt_navi.setEnabled(!this.isShow);
         holder.rbt_navi.setTextColor(ContextCompat.getColor(this.context, R.color.color1));
         holder.rbt_navi.setChecked(this.mapBanList.get(position).isCheck());
         if (this.rbtCheckListener != null) {
@@ -75,16 +73,17 @@ public class ID6NaviAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public int getItemCount() {
-        if (this.mapBanList == null) {
+        List<MapBean> list = this.mapBanList;
+        if (list == null) {
             return 0;
         }
-        return this.mapBanList.size();
+        return list.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         RadioButton rbt_navi;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
             this.rbt_navi = (RadioButton) itemView.findViewById(R.id.rbt_navi);
         }

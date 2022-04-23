@@ -47,6 +47,7 @@ class StrictLineReader implements Closeable {
 
     public String readLine() throws IOException {
         int i;
+        byte[] bArr;
         synchronized (this.in) {
             if (this.buf != null) {
                 if (this.pos >= this.end) {
@@ -54,8 +55,12 @@ class StrictLineReader implements Closeable {
                 }
                 int i2 = this.pos;
                 while (i2 != this.end) {
-                    if (this.buf[i2] == 10) {
-                        String res = new String(this.buf, this.pos, ((i2 == this.pos || this.buf[i2 + -1] != 13) ? i2 : i2 - 1) - this.pos, this.charset.name());
+                    byte[] bArr2 = this.buf;
+                    if (bArr2[i2] == 10) {
+                        int lineEnd = (i2 == this.pos || bArr2[i2 + -1] != 13) ? i2 : i2 - 1;
+                        byte[] bArr3 = this.buf;
+                        int i3 = this.pos;
+                        String res = new String(bArr3, i3, lineEnd - i3, this.charset.name());
                         this.pos = i2 + 1;
                         return res;
                     }
@@ -72,21 +77,23 @@ class StrictLineReader implements Closeable {
                 };
                 loop1:
                 while (true) {
-                    out.write(this.buf, this.pos, this.end - this.pos);
+                    byte[] bArr4 = this.buf;
+                    int i4 = this.pos;
+                    out.write(bArr4, i4, this.end - i4);
                     this.end = -1;
                     fillBuf();
                     i = this.pos;
-                    while (true) {
-                        if (i != this.end) {
-                            if (this.buf[i] == 10) {
-                                break loop1;
-                            }
-                            i++;
+                    while (i != this.end) {
+                        bArr = this.buf;
+                        if (bArr[i] == 10) {
+                            break loop1;
                         }
+                        i++;
                     }
                 }
-                if (i != this.pos) {
-                    out.write(this.buf, this.pos, i - this.pos);
+                int i5 = this.pos;
+                if (i != i5) {
+                    out.write(bArr, i5, i - i5);
                 }
                 this.pos = i + 1;
                 String byteArrayOutputStream = out.toString();
@@ -101,7 +108,9 @@ class StrictLineReader implements Closeable {
     }
 
     private void fillBuf() throws IOException {
-        int result = this.in.read(this.buf, 0, this.buf.length);
+        InputStream inputStream = this.in;
+        byte[] bArr = this.buf;
+        int result = inputStream.read(bArr, 0, bArr.length);
         if (result != -1) {
             this.pos = 0;
             this.end = result;

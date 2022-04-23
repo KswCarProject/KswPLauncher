@@ -14,12 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
-import android.support.annotation.IdRes;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v13.view.DragAndDropPermissionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
@@ -32,16 +26,15 @@ public class ActivityCompat extends ContextCompat {
     private static PermissionCompatDelegate sDelegate;
 
     public interface OnRequestPermissionsResultCallback {
-        void onRequestPermissionsResult(int i, @NonNull String[] strArr, @NonNull int[] iArr);
+        void onRequestPermissionsResult(int i, String[] strArr, int[] iArr);
     }
 
     public interface PermissionCompatDelegate {
-        boolean onActivityResult(@NonNull Activity activity, @IntRange(from = 0) int i, int i2, @Nullable Intent intent);
+        boolean onActivityResult(Activity activity, int i, int i2, Intent intent);
 
-        boolean requestPermissions(@NonNull Activity activity, @NonNull String[] strArr, @IntRange(from = 0) int i);
+        boolean requestPermissions(Activity activity, String[] strArr, int i);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public interface RequestPermissionsRequestCodeValidator {
         void validateRequestPermissionsRequestCode(int i);
     }
@@ -49,11 +42,10 @@ public class ActivityCompat extends ContextCompat {
     protected ActivityCompat() {
     }
 
-    public static void setPermissionCompatDelegate(@Nullable PermissionCompatDelegate delegate) {
+    public static void setPermissionCompatDelegate(PermissionCompatDelegate delegate) {
         sDelegate = delegate;
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static PermissionCompatDelegate getPermissionCompatDelegate() {
         return sDelegate;
     }
@@ -64,7 +56,7 @@ public class ActivityCompat extends ContextCompat {
         return true;
     }
 
-    public static void startActivityForResult(@NonNull Activity activity, @NonNull Intent intent, int requestCode, @Nullable Bundle options) {
+    public static void startActivityForResult(Activity activity, Intent intent, int requestCode, Bundle options) {
         if (Build.VERSION.SDK_INT >= 16) {
             activity.startActivityForResult(intent, requestCode, options);
         } else {
@@ -72,7 +64,7 @@ public class ActivityCompat extends ContextCompat {
         }
     }
 
-    public static void startIntentSenderForResult(@NonNull Activity activity, @NonNull IntentSender intent, int requestCode, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, @Nullable Bundle options) throws IntentSender.SendIntentException {
+    public static void startIntentSenderForResult(Activity activity, IntentSender intent, int requestCode, Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) throws IntentSender.SendIntentException {
         if (Build.VERSION.SDK_INT >= 16) {
             activity.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options);
         } else {
@@ -80,7 +72,7 @@ public class ActivityCompat extends ContextCompat {
         }
     }
 
-    public static void finishAffinity(@NonNull Activity activity) {
+    public static void finishAffinity(Activity activity) {
         if (Build.VERSION.SDK_INT >= 16) {
             activity.finishAffinity();
         } else {
@@ -88,7 +80,7 @@ public class ActivityCompat extends ContextCompat {
         }
     }
 
-    public static void finishAfterTransition(@NonNull Activity activity) {
+    public static void finishAfterTransition(Activity activity) {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.finishAfterTransition();
         } else {
@@ -96,8 +88,7 @@ public class ActivityCompat extends ContextCompat {
         }
     }
 
-    @Nullable
-    public static Uri getReferrer(@NonNull Activity activity) {
+    public static Uri getReferrer(Activity activity) {
         if (Build.VERSION.SDK_INT >= 22) {
             return activity.getReferrer();
         }
@@ -113,8 +104,7 @@ public class ActivityCompat extends ContextCompat {
         return null;
     }
 
-    @NonNull
-    public static <T extends View> T requireViewById(@NonNull Activity activity, @IdRes int id) {
+    public static <T extends View> T requireViewById(Activity activity, int id) {
         if (Build.VERSION.SDK_INT >= 28) {
             return activity.requireViewById(id);
         }
@@ -125,32 +115,33 @@ public class ActivityCompat extends ContextCompat {
         throw new IllegalArgumentException("ID does not reference a View inside this Activity");
     }
 
-    public static void setEnterSharedElementCallback(@NonNull Activity activity, @Nullable SharedElementCallback callback) {
+    public static void setEnterSharedElementCallback(Activity activity, SharedElementCallback callback) {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.setEnterSharedElementCallback(callback != null ? new SharedElementCallback21Impl(callback) : null);
         }
     }
 
-    public static void setExitSharedElementCallback(@NonNull Activity activity, @Nullable SharedElementCallback callback) {
+    public static void setExitSharedElementCallback(Activity activity, SharedElementCallback callback) {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.setExitSharedElementCallback(callback != null ? new SharedElementCallback21Impl(callback) : null);
         }
     }
 
-    public static void postponeEnterTransition(@NonNull Activity activity) {
+    public static void postponeEnterTransition(Activity activity) {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.postponeEnterTransition();
         }
     }
 
-    public static void startPostponedEnterTransition(@NonNull Activity activity) {
+    public static void startPostponedEnterTransition(Activity activity) {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.startPostponedEnterTransition();
         }
     }
 
-    public static void requestPermissions(@NonNull final Activity activity, @NonNull final String[] permissions, @IntRange(from = 0) final int requestCode) {
-        if (sDelegate != null && sDelegate.requestPermissions(activity, permissions, requestCode)) {
+    public static void requestPermissions(final Activity activity, final String[] permissions, final int requestCode) {
+        PermissionCompatDelegate permissionCompatDelegate = sDelegate;
+        if (permissionCompatDelegate != null && permissionCompatDelegate.requestPermissions(activity, permissions, requestCode)) {
             return;
         }
         if (Build.VERSION.SDK_INT >= 23) {
@@ -174,19 +165,17 @@ public class ActivityCompat extends ContextCompat {
         }
     }
 
-    public static boolean shouldShowRequestPermissionRationale(@NonNull Activity activity, @NonNull String permission) {
+    public static boolean shouldShowRequestPermissionRationale(Activity activity, String permission) {
         if (Build.VERSION.SDK_INT >= 23) {
             return activity.shouldShowRequestPermissionRationale(permission);
         }
         return false;
     }
 
-    @Nullable
     public static DragAndDropPermissionsCompat requestDragAndDropPermissions(Activity activity, DragEvent dragEvent) {
         return DragAndDropPermissionsCompat.request(activity, dragEvent);
     }
 
-    @RequiresApi(21)
     private static class SharedElementCallback21Impl extends SharedElementCallback {
         private final SharedElementCallback mCallback;
 
@@ -218,7 +207,6 @@ public class ActivityCompat extends ContextCompat {
             return this.mCallback.onCreateSnapshotView(context, snapshot);
         }
 
-        @RequiresApi(23)
         public void onSharedElementsArrived(List<String> sharedElementNames, List<View> sharedElements, final SharedElementCallback.OnSharedElementsReadyListener listener) {
             this.mCallback.onSharedElementsArrived(sharedElementNames, sharedElements, new SharedElementCallback.OnSharedElementsReadyListener() {
                 public void onSharedElementsReady() {

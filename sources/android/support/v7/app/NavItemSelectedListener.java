@@ -12,8 +12,9 @@ class NavItemSelectedListener implements AdapterView.OnItemSelectedListener {
     }
 
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        if (this.mListener != null) {
-            this.mListener.onNavigationItemSelected(position, id);
+        ActionBar.OnNavigationListener onNavigationListener = this.mListener;
+        if (onNavigationListener != null) {
+            onNavigationListener.onNavigationItemSelected(position, id);
         }
     }
 

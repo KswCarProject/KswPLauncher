@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine.cache;
 
-import android.support.annotation.NonNull;
 import android.support.v4.util.Pools;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.util.LruCache;
@@ -55,7 +54,6 @@ public class SafeKeyGenerator {
             this.messageDigest = messageDigest2;
         }
 
-        @NonNull
         public StateVerifier getVerifier() {
             return this.stateVerifier;
         }

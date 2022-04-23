@@ -1,15 +1,12 @@
 package android.support.v4.media;
 
-import android.annotation.TargetApi;
 import android.media.AudioAttributes;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-@TargetApi(21)
 class AudioAttributesImplApi21 implements AudioAttributesImpl {
     private static final String TAG = "AudioAttributesCompat21";
     static Method sAudioAttributesToLegacyStreamType;
@@ -53,8 +50,9 @@ class AudioAttributesImplApi21 implements AudioAttributesImpl {
     }
 
     public int getLegacyStreamType() {
-        if (this.mLegacyStreamType != -1) {
-            return this.mLegacyStreamType;
+        int i = this.mLegacyStreamType;
+        if (i != -1) {
+            return i;
         }
         Method frameworkMethod = getAudioAttributesToLegacyStreamTypeMethod();
         if (frameworkMethod == null) {
@@ -85,12 +83,12 @@ class AudioAttributesImplApi21 implements AudioAttributesImpl {
         return this.mAudioAttributes.getFlags();
     }
 
-    @NonNull
     public Bundle toBundle() {
         Bundle bundle = new Bundle();
         bundle.putParcelable("android.support.v4.media.audio_attrs.FRAMEWORKS", this.mAudioAttributes);
-        if (this.mLegacyStreamType != -1) {
-            bundle.putInt("android.support.v4.media.audio_attrs.LEGACY_STREAM_TYPE", this.mLegacyStreamType);
+        int i = this.mLegacyStreamType;
+        if (i != -1) {
+            bundle.putInt("android.support.v4.media.audio_attrs.LEGACY_STREAM_TYPE", i);
         }
         return bundle;
     }

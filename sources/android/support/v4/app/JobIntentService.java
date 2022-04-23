@@ -13,9 +13,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,7 +42,7 @@ public abstract class JobIntentService extends Service {
     }
 
     /* access modifiers changed from: protected */
-    public abstract void onHandleWork(@NonNull Intent intent);
+    public abstract void onHandleWork(Intent intent);
 
     static abstract class WorkEnqueuer {
         final ComponentName mComponentName;
@@ -90,10 +87,12 @@ public abstract class JobIntentService extends Service {
             super(context, cn);
             this.mContext = context.getApplicationContext();
             PowerManager pm = (PowerManager) context.getSystemService("power");
-            this.mLaunchWakeLock = pm.newWakeLock(1, cn.getClassName() + ":launch");
-            this.mLaunchWakeLock.setReferenceCounted(false);
-            this.mRunWakeLock = pm.newWakeLock(1, cn.getClassName() + ":run");
-            this.mRunWakeLock.setReferenceCounted(false);
+            PowerManager.WakeLock newWakeLock = pm.newWakeLock(1, cn.getClassName() + ":launch");
+            this.mLaunchWakeLock = newWakeLock;
+            newWakeLock.setReferenceCounted(false);
+            PowerManager.WakeLock newWakeLock2 = pm.newWakeLock(1, cn.getClassName() + ":run");
+            this.mRunWakeLock = newWakeLock2;
+            newWakeLock2.setReferenceCounted(false);
         }
 
         /* access modifiers changed from: package-private */
@@ -141,7 +140,6 @@ public abstract class JobIntentService extends Service {
         }
     }
 
-    @RequiresApi(26)
     static final class JobServiceEngineImpl extends JobServiceEngine implements CompatJobEngine {
         static final boolean DEBUG = false;
         static final String TAG = "JobServiceEngineImpl";
@@ -192,16 +190,16 @@ public abstract class JobIntentService extends Service {
             return result;
         }
 
-        /* JADX WARNING: Code restructure failed: missing block: B:11:0x0011, code lost:
-            if (r2 == null) goto L_0x0026;
+        /* JADX WARNING: Code restructure failed: missing block: B:11:0x000f, code lost:
+            if (r2 == null) goto L_0x0024;
          */
-        /* JADX WARNING: Code restructure failed: missing block: B:12:0x0013, code lost:
+        /* JADX WARNING: Code restructure failed: missing block: B:12:0x0011, code lost:
             r2.getIntent().setExtrasClassLoader(r4.mService.getClassLoader());
          */
-        /* JADX WARNING: Code restructure failed: missing block: B:13:0x0025, code lost:
+        /* JADX WARNING: Code restructure failed: missing block: B:13:0x0023, code lost:
             return new android.support.v4.app.JobIntentService.JobServiceEngineImpl.WrapperWorkItem(r4, r2);
          */
-        /* JADX WARNING: Code restructure failed: missing block: B:14:0x0026, code lost:
+        /* JADX WARNING: Code restructure failed: missing block: B:14:0x0024, code lost:
             return null;
          */
         /* Code decompiled incorrectly, please refer to instructions dump. */
@@ -211,15 +209,14 @@ public abstract class JobIntentService extends Service {
                 java.lang.Object r0 = r4.mLock
                 monitor-enter(r0)
                 r1 = 0
-                android.app.job.JobParameters r2 = r4.mParams     // Catch:{ all -> 0x002c }
+                android.app.job.JobParameters r2 = r4.mParams     // Catch:{ all -> 0x002a }
                 if (r2 != 0) goto L_0x000a
-                monitor-exit(r0)     // Catch:{ all -> 0x002c }
+                monitor-exit(r0)     // Catch:{ all -> 0x002a }
                 return r1
             L_0x000a:
-                android.app.job.JobParameters r2 = r4.mParams     // Catch:{ all -> 0x002c }
-                android.app.job.JobWorkItem r2 = r2.dequeueWork()     // Catch:{ all -> 0x002c }
-                monitor-exit(r0)     // Catch:{ all -> 0x0027 }
-                if (r2 == 0) goto L_0x0026
+                android.app.job.JobWorkItem r2 = r2.dequeueWork()     // Catch:{ all -> 0x002a }
+                monitor-exit(r0)     // Catch:{ all -> 0x0025 }
+                if (r2 == 0) goto L_0x0024
                 android.content.Intent r0 = r2.getIntent()
                 android.support.v4.app.JobIntentService r1 = r4.mService
                 java.lang.ClassLoader r1 = r1.getClassLoader()
@@ -227,25 +224,27 @@ public abstract class JobIntentService extends Service {
                 android.support.v4.app.JobIntentService$JobServiceEngineImpl$WrapperWorkItem r0 = new android.support.v4.app.JobIntentService$JobServiceEngineImpl$WrapperWorkItem
                 r0.<init>(r2)
                 return r0
-            L_0x0026:
+            L_0x0024:
                 return r1
-            L_0x0027:
+            L_0x0025:
                 r1 = move-exception
                 r3 = r2
                 r2 = r1
                 r1 = r3
-                goto L_0x002d
-            L_0x002c:
+                goto L_0x002b
+            L_0x002a:
                 r2 = move-exception
-            L_0x002d:
-                monitor-exit(r0)     // Catch:{ all -> 0x002c }
+            L_0x002b:
+                monitor-exit(r0)     // Catch:{ all -> 0x002d }
                 throw r2
+            L_0x002d:
+                r2 = move-exception
+                goto L_0x002b
             */
             throw new UnsupportedOperationException("Method not decompiled: android.support.v4.app.JobIntentService.JobServiceEngineImpl.dequeueWork():android.support.v4.app.JobIntentService$GenericWorkItem");
         }
     }
 
-    @RequiresApi(26)
     static final class JobWorkEnqueuer extends WorkEnqueuer {
         private final JobInfo mJobInfo;
         private final JobScheduler mJobScheduler;
@@ -328,7 +327,7 @@ public abstract class JobIntentService extends Service {
         this.mCompatWorkEnqueuer = getWorkEnqueuer(this, new ComponentName(this, getClass()), false, 0);
     }
 
-    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         if (this.mCompatQueue == null) {
             return 2;
         }
@@ -340,28 +339,30 @@ public abstract class JobIntentService extends Service {
         return 3;
     }
 
-    public IBinder onBind(@NonNull Intent intent) {
-        if (this.mJobImpl != null) {
-            return this.mJobImpl.compatGetBinder();
+    public IBinder onBind(Intent intent) {
+        CompatJobEngine compatJobEngine = this.mJobImpl;
+        if (compatJobEngine != null) {
+            return compatJobEngine.compatGetBinder();
         }
         return null;
     }
 
     public void onDestroy() {
         super.onDestroy();
-        if (this.mCompatQueue != null) {
-            synchronized (this.mCompatQueue) {
+        ArrayList<CompatWorkItem> arrayList = this.mCompatQueue;
+        if (arrayList != null) {
+            synchronized (arrayList) {
                 this.mDestroyed = true;
                 this.mCompatWorkEnqueuer.serviceProcessingFinished();
             }
         }
     }
 
-    public static void enqueueWork(@NonNull Context context, @NonNull Class cls, int jobId, @NonNull Intent work) {
+    public static void enqueueWork(Context context, Class cls, int jobId, Intent work) {
         enqueueWork(context, new ComponentName(context, cls), jobId, work);
     }
 
-    public static void enqueueWork(@NonNull Context context, @NonNull ComponentName component, int jobId, @NonNull Intent work) {
+    public static void enqueueWork(Context context, ComponentName component, int jobId, Intent work) {
         if (work != null) {
             synchronized (sLock) {
                 WorkEnqueuer we = getWorkEnqueuer(context, component, true, jobId);
@@ -374,7 +375,8 @@ public abstract class JobIntentService extends Service {
     }
 
     static WorkEnqueuer getWorkEnqueuer(Context context, ComponentName cn, boolean hasJobId, int jobId) {
-        WorkEnqueuer we = sClassWorkEnqueuer.get(cn);
+        HashMap<ComponentName, WorkEnqueuer> hashMap = sClassWorkEnqueuer;
+        WorkEnqueuer we = hashMap.get(cn);
         if (we == null) {
             if (Build.VERSION.SDK_INT < 26) {
                 we = new CompatWorkEnqueuer(context, cn);
@@ -383,7 +385,7 @@ public abstract class JobIntentService extends Service {
             } else {
                 throw new IllegalArgumentException("Can't be here without a job id");
             }
-            sClassWorkEnqueuer.put(cn, we);
+            hashMap.put(cn, we);
         }
         return we;
     }
@@ -402,8 +404,9 @@ public abstract class JobIntentService extends Service {
 
     /* access modifiers changed from: package-private */
     public boolean doStopCurrentWork() {
-        if (this.mCurProcessor != null) {
-            this.mCurProcessor.cancel(this.mInterruptIfStopped);
+        CommandProcessor commandProcessor = this.mCurProcessor;
+        if (commandProcessor != null) {
+            commandProcessor.cancel(this.mInterruptIfStopped);
         }
         this.mStopped = true;
         return onStopCurrentWork();
@@ -413,8 +416,9 @@ public abstract class JobIntentService extends Service {
     public void ensureProcessorRunningLocked(boolean reportStarted) {
         if (this.mCurProcessor == null) {
             this.mCurProcessor = new CommandProcessor();
-            if (this.mCompatWorkEnqueuer != null && reportStarted) {
-                this.mCompatWorkEnqueuer.serviceProcessingStarted();
+            WorkEnqueuer workEnqueuer = this.mCompatWorkEnqueuer;
+            if (workEnqueuer != null && reportStarted) {
+                workEnqueuer.serviceProcessingStarted();
             }
             this.mCurProcessor.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Void[0]);
         }
@@ -422,10 +426,12 @@ public abstract class JobIntentService extends Service {
 
     /* access modifiers changed from: package-private */
     public void processorFinished() {
-        if (this.mCompatQueue != null) {
-            synchronized (this.mCompatQueue) {
+        ArrayList<CompatWorkItem> arrayList = this.mCompatQueue;
+        if (arrayList != null) {
+            synchronized (arrayList) {
                 this.mCurProcessor = null;
-                if (this.mCompatQueue != null && this.mCompatQueue.size() > 0) {
+                ArrayList<CompatWorkItem> arrayList2 = this.mCompatQueue;
+                if (arrayList2 != null && arrayList2.size() > 0) {
                     ensureProcessorRunningLocked(false);
                 } else if (!this.mDestroyed) {
                     this.mCompatWorkEnqueuer.serviceProcessingFinished();
@@ -436,8 +442,9 @@ public abstract class JobIntentService extends Service {
 
     /* access modifiers changed from: package-private */
     public GenericWorkItem dequeueWork() {
-        if (this.mJobImpl != null) {
-            return this.mJobImpl.dequeueWork();
+        CompatJobEngine compatJobEngine = this.mJobImpl;
+        if (compatJobEngine != null) {
+            return compatJobEngine.dequeueWork();
         }
         synchronized (this.mCompatQueue) {
             if (this.mCompatQueue.size() <= 0) {

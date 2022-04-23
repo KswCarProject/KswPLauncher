@@ -3,7 +3,6 @@ package android.support.v4.view;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewConfiguration;
@@ -33,14 +32,14 @@ public final class ViewConfigurationCompat {
         return config.hasPermanentMenuKey();
     }
 
-    public static float getScaledHorizontalScrollFactor(@NonNull ViewConfiguration config, @NonNull Context context) {
+    public static float getScaledHorizontalScrollFactor(ViewConfiguration config, Context context) {
         if (Build.VERSION.SDK_INT >= 26) {
             return config.getScaledHorizontalScrollFactor();
         }
         return getLegacyScrollFactor(config, context);
     }
 
-    public static float getScaledVerticalScrollFactor(@NonNull ViewConfiguration config, @NonNull Context context) {
+    public static float getScaledVerticalScrollFactor(ViewConfiguration config, Context context) {
         if (Build.VERSION.SDK_INT >= 26) {
             return config.getScaledVerticalScrollFactor();
         }
@@ -48,9 +47,10 @@ public final class ViewConfigurationCompat {
     }
 
     private static float getLegacyScrollFactor(ViewConfiguration config, Context context) {
-        if (Build.VERSION.SDK_INT >= 25 && sGetScaledScrollFactorMethod != null) {
+        Method method;
+        if (Build.VERSION.SDK_INT >= 25 && (method = sGetScaledScrollFactorMethod) != null) {
             try {
-                return (float) ((Integer) sGetScaledScrollFactorMethod.invoke(config, new Object[0])).intValue();
+                return (float) ((Integer) method.invoke(config, new Object[0])).intValue();
             } catch (Exception e) {
                 Log.i(TAG, "Could not find method getScaledScrollFactor() on ViewConfiguration");
             }
@@ -69,7 +69,7 @@ public final class ViewConfigurationCompat {
         return config.getScaledTouchSlop() / 2;
     }
 
-    public static boolean shouldShowMenuShortcutsWhenKeyboardPresent(ViewConfiguration config, @NonNull Context context) {
+    public static boolean shouldShowMenuShortcutsWhenKeyboardPresent(ViewConfiguration config, Context context) {
         if (Build.VERSION.SDK_INT >= 28) {
             return config.shouldShowMenuShortcutsWhenKeyboardPresent();
         }

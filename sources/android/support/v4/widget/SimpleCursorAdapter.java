@@ -3,18 +3,15 @@ package android.support.v4.widget;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SimpleCursorAdapter extends ResourceCursorAdapter {
     private CursorToStringConverter mCursorToStringConverter;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected int[] mFrom;
     String[] mOriginalFrom;
     private int mStringConversionColumn = -1;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     protected int[] mTo;
     private ViewBinder mViewBinder;
 
@@ -109,11 +106,13 @@ public class SimpleCursorAdapter extends ResourceCursorAdapter {
     }
 
     public CharSequence convertToString(Cursor cursor) {
-        if (this.mCursorToStringConverter != null) {
-            return this.mCursorToStringConverter.convertToString(cursor);
+        CursorToStringConverter cursorToStringConverter = this.mCursorToStringConverter;
+        if (cursorToStringConverter != null) {
+            return cursorToStringConverter.convertToString(cursor);
         }
-        if (this.mStringConversionColumn > -1) {
-            return cursor.getString(this.mStringConversionColumn);
+        int i = this.mStringConversionColumn;
+        if (i > -1) {
+            return cursor.getString(i);
         }
         return super.convertToString(cursor);
     }
@@ -121,7 +120,8 @@ public class SimpleCursorAdapter extends ResourceCursorAdapter {
     private void findColumns(Cursor c, String[] from) {
         if (c != null) {
             int count = from.length;
-            if (this.mFrom == null || this.mFrom.length != count) {
+            int[] iArr = this.mFrom;
+            if (iArr == null || iArr.length != count) {
                 this.mFrom = new int[count];
             }
             for (int i = 0; i < count; i++) {
@@ -140,7 +140,7 @@ public class SimpleCursorAdapter extends ResourceCursorAdapter {
     public void changeCursorAndColumns(Cursor c, String[] from, int[] to) {
         this.mOriginalFrom = from;
         this.mTo = to;
-        findColumns(c, this.mOriginalFrom);
+        findColumns(c, from);
         super.changeCursor(c);
     }
 }

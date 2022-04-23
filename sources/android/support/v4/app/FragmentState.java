@@ -46,7 +46,7 @@ final class FragmentState implements Parcelable {
     FragmentState(Parcel in) {
         this.mClassName = in.readString();
         this.mIndex = in.readInt();
-        boolean z = false;
+        boolean z = true;
         this.mFromLayout = in.readInt() != 0;
         this.mFragmentId = in.readInt();
         this.mContainerId = in.readInt();
@@ -54,23 +54,25 @@ final class FragmentState implements Parcelable {
         this.mRetainInstance = in.readInt() != 0;
         this.mDetached = in.readInt() != 0;
         this.mArguments = in.readBundle();
-        this.mHidden = in.readInt() != 0 ? true : z;
+        this.mHidden = in.readInt() == 0 ? false : z;
         this.mSavedFragmentState = in.readBundle();
     }
 
     public Fragment instantiate(FragmentHostCallback host, FragmentContainer container, Fragment parent, FragmentManagerNonConfig childNonConfig, ViewModelStore viewModelStore) {
         if (this.mInstance == null) {
             Context context = host.getContext();
-            if (this.mArguments != null) {
-                this.mArguments.setClassLoader(context.getClassLoader());
+            Bundle bundle = this.mArguments;
+            if (bundle != null) {
+                bundle.setClassLoader(context.getClassLoader());
             }
             if (container != null) {
                 this.mInstance = container.instantiate(context, this.mClassName, this.mArguments);
             } else {
                 this.mInstance = Fragment.instantiate(context, this.mClassName, this.mArguments);
             }
-            if (this.mSavedFragmentState != null) {
-                this.mSavedFragmentState.setClassLoader(context.getClassLoader());
+            Bundle bundle2 = this.mSavedFragmentState;
+            if (bundle2 != null) {
+                bundle2.setClassLoader(context.getClassLoader());
                 this.mInstance.mSavedFragmentState = this.mSavedFragmentState;
             }
             this.mInstance.setIndex(this.mIndex, parent);

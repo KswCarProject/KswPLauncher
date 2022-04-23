@@ -1,6 +1,5 @@
 package com.bumptech.glide.request.target;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.util.Util;
 
 @Deprecated
@@ -17,7 +16,7 @@ public abstract class SimpleTarget<Z> extends BaseTarget<Z> {
         this.height = height2;
     }
 
-    public final void getSize(@NonNull SizeReadyCallback cb) {
+    public final void getSize(SizeReadyCallback cb) {
         if (Util.isValidDimensions(this.width, this.height)) {
             cb.onSizeReady(this.width, this.height);
             return;
@@ -25,6 +24,6 @@ public abstract class SimpleTarget<Z> extends BaseTarget<Z> {
         throw new IllegalArgumentException("Width and height must both be > 0 or Target#SIZE_ORIGINAL, but given width: " + this.width + " and height: " + this.height + ", either provide dimensions in the constructor or call override()");
     }
 
-    public void removeCallback(@NonNull SizeReadyCallback cb) {
+    public void removeCallback(SizeReadyCallback cb) {
     }
 }

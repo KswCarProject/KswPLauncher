@@ -2,9 +2,6 @@ package com.wits.ksw.settings.audi.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -15,7 +12,6 @@ import android.widget.Space;
 import android.widget.TextView;
 import com.wits.ksw.R;
 
-@BindingMethods({@BindingMethod(attribute = "space", method = "setSpace", type = AudioSeekBar.class), @BindingMethod(attribute = "title", method = "setTitle", type = AudioSeekBar.class), @BindingMethod(attribute = "progress", method = "setProgress", type = AudioSeekBar.class), @BindingMethod(attribute = "max", method = "setMax", type = AudioSeekBar.class), @BindingMethod(attribute = "LVisibility", method = "setLVisibility", type = AudioSeekBar.class), @BindingMethod(attribute = "RVisibility", method = "setRVisibility", type = AudioSeekBar.class), @BindingMethod(attribute = "OnSeekBarChangeListener", method = "setOnSeekBarChangeListener", type = AudioSeekBar.class)})
 public class AudioSeekBar extends LinearLayout {
     private static final String TAG = ("KSWLauncher." + AudioSeekBar.class.getSimpleName());
     private static final int[] VISIBILITY_FLAGS = {0, 4, 8};
@@ -29,7 +25,7 @@ public class AudioSeekBar extends LinearLayout {
         this(context, (AttributeSet) null);
     }
 
-    public AudioSeekBar(Context context, @Nullable AttributeSet attrs) {
+    public AudioSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AudioSeekBar);
         View view = LayoutInflater.from(context).inflate(R.layout.audi_seekbar, this);
@@ -46,10 +42,10 @@ public class AudioSeekBar extends LinearLayout {
                     setMax(a.getInt(attr, 100));
                     break;
                 case 1:
-                    int progress = a.getInt(attr, 0);
-                    setProgress(progress);
-                    setLText(progress);
-                    setRText(progress);
+                    int space2 = a.getInt(attr, 0);
+                    setProgress(space2);
+                    setLText(space2);
+                    setRText(space2);
                     break;
                 case 2:
                     setSpace(a.getInt(attr, 0));
@@ -87,14 +83,12 @@ public class AudioSeekBar extends LinearLayout {
 
     /* access modifiers changed from: private */
     public void setRText(int progress) {
-        TextView textView = this.rtextView;
-        textView.setText("" + progress);
+        this.rtextView.setText("" + progress);
     }
 
     /* access modifiers changed from: private */
     public void setLText(int progress) {
-        TextView textView = this.ltextView;
-        textView.setText("" + progress);
+        this.ltextView.setText("" + progress);
     }
 
     private void setTitle(CharSequence title) {

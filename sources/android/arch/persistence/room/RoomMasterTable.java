@@ -1,8 +1,5 @@
 package android.arch.persistence.room;
 
-import android.support.annotation.RestrictTo;
-
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class RoomMasterTable {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_IDENTITY_HASH = "identity_hash";

@@ -1,11 +1,8 @@
 package com.bumptech.glide.util;
 
-import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.load.model.Model;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -22,32 +19,31 @@ public final class Util {
     private Util() {
     }
 
-    @NonNull
-    public static String sha256BytesToHex(@NonNull byte[] bytes) {
+    public static String sha256BytesToHex(byte[] bytes) {
         String bytesToHex;
-        synchronized (SHA_256_CHARS) {
-            bytesToHex = bytesToHex(bytes, SHA_256_CHARS);
+        char[] cArr = SHA_256_CHARS;
+        synchronized (cArr) {
+            bytesToHex = bytesToHex(bytes, cArr);
         }
         return bytesToHex;
     }
 
-    @NonNull
-    private static String bytesToHex(@NonNull byte[] bytes, @NonNull char[] hexChars) {
+    private static String bytesToHex(byte[] bytes, char[] hexChars) {
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 255;
-            hexChars[j * 2] = HEX_CHAR_ARRAY[v >>> 4];
-            hexChars[(j * 2) + 1] = HEX_CHAR_ARRAY[v & 15];
+            char[] cArr = HEX_CHAR_ARRAY;
+            hexChars[j * 2] = cArr[v >>> 4];
+            hexChars[(j * 2) + 1] = cArr[v & 15];
         }
         return new String(hexChars);
     }
 
     @Deprecated
-    public static int getSize(@NonNull Bitmap bitmap) {
+    public static int getSize(Bitmap bitmap) {
         return getBitmapByteSize(bitmap);
     }
 
-    @TargetApi(19)
-    public static int getBitmapByteSize(@NonNull Bitmap bitmap) {
+    public static int getBitmapByteSize(Bitmap bitmap) {
         if (!bitmap.isRecycled()) {
             if (Build.VERSION.SDK_INT >= 19) {
                 try {
@@ -60,11 +56,11 @@ public final class Util {
         throw new IllegalStateException("Cannot obtain size for recycled Bitmap: " + bitmap + "[" + bitmap.getWidth() + "x" + bitmap.getHeight() + "] " + bitmap.getConfig());
     }
 
-    public static int getBitmapByteSize(int width, int height, @Nullable Bitmap.Config config) {
+    public static int getBitmapByteSize(int width, int height, Bitmap.Config config) {
         return width * height * getBytesPerPixel(config);
     }
 
-    private static int getBytesPerPixel(@Nullable Bitmap.Config config) {
+    private static int getBytesPerPixel(Bitmap.Config config) {
         if (config == null) {
             config = Bitmap.Config.ARGB_8888;
         }
@@ -83,11 +79,13 @@ public final class Util {
 
     /* renamed from: com.bumptech.glide.util.Util$1  reason: invalid class name */
     static /* synthetic */ class AnonymousClass1 {
-        static final /* synthetic */ int[] $SwitchMap$android$graphics$Bitmap$Config = new int[Bitmap.Config.values().length];
+        static final /* synthetic */ int[] $SwitchMap$android$graphics$Bitmap$Config;
 
         static {
+            int[] iArr = new int[Bitmap.Config.values().length];
+            $SwitchMap$android$graphics$Bitmap$Config = iArr;
             try {
-                $SwitchMap$android$graphics$Bitmap$Config[Bitmap.Config.ALPHA_8.ordinal()] = 1;
+                iArr[Bitmap.Config.ALPHA_8.ordinal()] = 1;
             } catch (NoSuchFieldError e) {
             }
             try {
@@ -137,13 +135,11 @@ public final class Util {
         return !isOnMainThread();
     }
 
-    @NonNull
     public static <T> Queue<T> createQueue(int size) {
         return new ArrayDeque(size);
     }
 
-    @NonNull
-    public static <T> List<T> getSnapshot(@NonNull Collection<T> other) {
+    public static <T> List<T> getSnapshot(Collection<T> other) {
         List<T> result = new ArrayList<>(other.size());
         for (T item : other) {
             if (item != null) {
@@ -153,14 +149,14 @@ public final class Util {
         return result;
     }
 
-    public static boolean bothNullOrEqual(@Nullable Object a, @Nullable Object b) {
+    public static boolean bothNullOrEqual(Object a, Object b) {
         if (a == null) {
             return b == null;
         }
         return a.equals(b);
     }
 
-    public static boolean bothModelsNullEquivalentOrEquals(@Nullable Object a, @Nullable Object b) {
+    public static boolean bothModelsNullEquivalentOrEquals(Object a, Object b) {
         if (a == null) {
             return b == null;
         }
@@ -186,7 +182,7 @@ public final class Util {
         return hashCode(Float.floatToIntBits(value), accumulator);
     }
 
-    public static int hashCode(@Nullable Object object, int accumulator) {
+    public static int hashCode(Object object, int accumulator) {
         return hashCode(object == null ? 0 : object.hashCode(), accumulator);
     }
 

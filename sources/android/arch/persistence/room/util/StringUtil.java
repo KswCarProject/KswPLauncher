@@ -1,13 +1,10 @@
 package android.arch.persistence.room.util;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class StringUtil {
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -24,8 +21,7 @@ public class StringUtil {
         }
     }
 
-    @Nullable
-    public static List<Integer> splitToIntList(@Nullable String input) {
+    public static List<Integer> splitToIntList(String input) {
         if (input == null) {
             return null;
         }
@@ -41,8 +37,7 @@ public class StringUtil {
         return result;
     }
 
-    @Nullable
-    public static String joinIntoString(@Nullable List<Integer> input) {
+    public static String joinIntoString(List<Integer> input) {
         if (input == null) {
             return null;
         }

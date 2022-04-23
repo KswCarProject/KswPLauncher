@@ -7,22 +7,19 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.util.Log;
 import android.widget.Toast;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
-import com.wits.ksw.launcher.view.AppsActivity;
 
-@BindingMethods({@BindingMethod(attribute = "setOnClickListener", method = "onClickListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnCheckedChangeListener", method = "onCheckedChangeListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnFocusChangeListener", method = "onFocusChangeListener", type = BaseViewModel.class), @BindingMethod(attribute = "setOnItemClickListener", method = "onItemClickListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnItemLongClickListener", method = "onItemLongClickListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnItemChangeListener", method = "onItemChangerListener", type = AppsActivity.class), @BindingMethod(attribute = "setOnSeekBarChangeListener", method = "onSeekBarChangeListener", type = BaseViewModel.class)})
 public abstract class BaseViewModel extends ViewModel {
     private static final String TAG = BaseViewModel.class.getSimpleName();
-    protected Activity activity;
+    /* access modifiers changed from: protected */
+    public Activity activity;
     /* access modifiers changed from: protected */
     public ContentResolver contentResolver;
     /* access modifiers changed from: protected */
-    public Context context = KswApplication.appContext;
+    public Context context;
     protected PackageManager mPackageManager;
     protected String unknow;
 
@@ -30,8 +27,10 @@ public abstract class BaseViewModel extends ViewModel {
 
     public BaseViewModel() {
         Log.i(TAG, "BaseViewModel: ");
+        Context context2 = KswApplication.appContext;
+        this.context = context2;
         if (this.unknow == null) {
-            this.unknow = this.context.getString(17039374);
+            this.unknow = context2.getString(17039374);
         }
         if (this.contentResolver == null) {
             this.contentResolver = this.context.getContentResolver();
@@ -51,11 +50,11 @@ public abstract class BaseViewModel extends ViewModel {
             Intent intent = new Intent();
             intent.setComponent(component);
             this.activity.startActivity(intent);
-            String str = TAG;
-            Log.i(str, "openApp: " + component.toString());
+            Log.i(TAG, "openApp: " + component.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
+            Context context2 = this.context;
+            Toast.makeText(context2, context2.getString(R.string.uninstall), 0).show();
         }
     }
 
@@ -66,23 +65,22 @@ public abstract class BaseViewModel extends ViewModel {
             intent.setComponent(component);
             intent.setFlags(268435456);
             this.activity.startActivity(intent);
-            String str = TAG;
-            Log.i(str, "openApp: " + component.toString());
+            Log.i(TAG, "openApp: " + component.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
+            Context context2 = this.context;
+            Toast.makeText(context2, context2.getString(R.string.uninstall), 0).show();
         }
     }
 
-    /* access modifiers changed from: protected */
     public void openApp(Intent intent) {
         try {
             this.activity.startActivity(intent);
-            String str = TAG;
-            Log.i(str, "openApp: " + intent.toString());
+            Log.i(TAG, "openApp: " + intent.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this.context, this.context.getString(R.string.uninstall), 0).show();
+            Context context2 = this.context;
+            Toast.makeText(context2, context2.getString(R.string.uninstall), 0).show();
         }
     }
 

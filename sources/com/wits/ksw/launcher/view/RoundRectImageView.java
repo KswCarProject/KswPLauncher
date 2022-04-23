@@ -50,7 +50,15 @@ public class RoundRectImageView extends AppCompatImageView {
     }
 
     public Bitmap getBitmapFromDrawable(Drawable drawable) {
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), drawable.getOpacity() != -1 ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+        Bitmap.Config config;
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        if (drawable.getOpacity() != -1) {
+            config = Bitmap.Config.ARGB_8888;
+        } else {
+            config = Bitmap.Config.RGB_565;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
         Canvas canvas = new Canvas(bitmap);
         canvas.setDrawFilter(new PaintFlagsDrawFilter(0, 3));
         drawable.draw(canvas);

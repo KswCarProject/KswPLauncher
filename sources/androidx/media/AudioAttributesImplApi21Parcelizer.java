@@ -1,10 +1,8 @@
 package androidx.media;
 
 import android.media.AudioAttributes;
-import android.support.annotation.RestrictTo;
 import androidx.versionedparcelable.VersionedParcel;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public final class AudioAttributesImplApi21Parcelizer {
     public static AudioAttributesImplApi21 read(VersionedParcel parcel) {
         AudioAttributesImplApi21 obj = new AudioAttributesImplApi21();

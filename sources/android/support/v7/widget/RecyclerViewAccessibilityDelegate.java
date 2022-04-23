@@ -1,7 +1,6 @@
 package android.support.v7.widget;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.view.View;
@@ -11,7 +10,7 @@ public class RecyclerViewAccessibilityDelegate extends AccessibilityDelegateComp
     final AccessibilityDelegateCompat mItemDelegate = new ItemDelegate(this);
     final RecyclerView mRecyclerView;
 
-    public RecyclerViewAccessibilityDelegate(@NonNull RecyclerView recyclerView) {
+    public RecyclerViewAccessibilityDelegate(RecyclerView recyclerView) {
         this.mRecyclerView = recyclerView;
     }
 
@@ -49,7 +48,6 @@ public class RecyclerViewAccessibilityDelegate extends AccessibilityDelegateComp
         }
     }
 
-    @NonNull
     public AccessibilityDelegateCompat getItemDelegate() {
         return this.mItemDelegate;
     }
@@ -57,7 +55,7 @@ public class RecyclerViewAccessibilityDelegate extends AccessibilityDelegateComp
     public static class ItemDelegate extends AccessibilityDelegateCompat {
         final RecyclerViewAccessibilityDelegate mRecyclerViewDelegate;
 
-        public ItemDelegate(@NonNull RecyclerViewAccessibilityDelegate recyclerViewDelegate) {
+        public ItemDelegate(RecyclerViewAccessibilityDelegate recyclerViewDelegate) {
             this.mRecyclerViewDelegate = recyclerViewDelegate;
         }
 

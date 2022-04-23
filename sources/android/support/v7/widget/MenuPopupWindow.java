@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.ListMenuItemView;
 import android.support.v7.view.menu.MenuAdapter;
 import android.support.v7.view.menu.MenuBuilder;
@@ -18,7 +16,6 @@ import android.view.MotionEvent;
 import android.widget.PopupWindow;
 import java.lang.reflect.Method;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class MenuPopupWindow extends ListPopupWindow implements MenuItemHoverListener {
     private static final String TAG = "MenuPopupWindow";
     private static Method sSetTouchModalMethod;
@@ -61,28 +58,30 @@ public class MenuPopupWindow extends ListPopupWindow implements MenuItemHoverLis
     }
 
     public void setTouchModal(boolean touchModal) {
-        if (sSetTouchModalMethod != null) {
+        Method method = sSetTouchModalMethod;
+        if (method != null) {
             try {
-                sSetTouchModalMethod.invoke(this.mPopup, new Object[]{Boolean.valueOf(touchModal)});
+                method.invoke(this.mPopup, new Object[]{Boolean.valueOf(touchModal)});
             } catch (Exception e) {
                 Log.i(TAG, "Could not invoke setTouchModal() on PopupWindow. Oh well.");
             }
         }
     }
 
-    public void onItemHoverEnter(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
-        if (this.mHoverListener != null) {
-            this.mHoverListener.onItemHoverEnter(menu, item);
+    public void onItemHoverEnter(MenuBuilder menu, MenuItem item) {
+        MenuItemHoverListener menuItemHoverListener = this.mHoverListener;
+        if (menuItemHoverListener != null) {
+            menuItemHoverListener.onItemHoverEnter(menu, item);
         }
     }
 
-    public void onItemHoverExit(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
-        if (this.mHoverListener != null) {
-            this.mHoverListener.onItemHoverExit(menu, item);
+    public void onItemHoverExit(MenuBuilder menu, MenuItem item) {
+        MenuItemHoverListener menuItemHoverListener = this.mHoverListener;
+        if (menuItemHoverListener != null) {
+            menuItemHoverListener.onItemHoverExit(menu, item);
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public static class MenuDropDownListView extends DropDownListView {
         final int mAdvanceKey;
         private MenuItemHoverListener mHoverListener;

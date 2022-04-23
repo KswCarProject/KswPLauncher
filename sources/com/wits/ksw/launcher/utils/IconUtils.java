@@ -171,8 +171,7 @@ public class IconUtils {
             return PowerManagerApp.getSettingsInt("AppsIcon_Select");
         } catch (Exception e) {
             e.printStackTrace();
-            String str = TAG;
-            Log.e(str, "getClient: " + e.getMessage());
+            Log.e(TAG, "getClient: " + e.getMessage());
             return 0;
         }
     }
@@ -215,10 +214,16 @@ public class IconUtils {
     }
 
     public static Bitmap DrawableToBitmap(Drawable drawable) {
+        Bitmap.Config config;
         int width = drawable.getIntrinsicWidth();
         int heigh = drawable.getIntrinsicHeight();
         drawable.setBounds(0, 0, width, heigh);
-        Bitmap bitmap = Bitmap.createBitmap(width, heigh, drawable.getOpacity() != -1 ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+        if (drawable.getOpacity() != -1) {
+            config = Bitmap.Config.ARGB_8888;
+        } else {
+            config = Bitmap.Config.RGB_565;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width, heigh, config);
         drawable.draw(new Canvas(bitmap));
         return bitmap;
     }

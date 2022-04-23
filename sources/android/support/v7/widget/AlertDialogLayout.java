@@ -2,8 +2,7 @@ package android.support.v7.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
+import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.appcompat.R;
@@ -12,13 +11,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class AlertDialogLayout extends LinearLayoutCompat {
-    public AlertDialogLayout(@Nullable Context context) {
+    public AlertDialogLayout(Context context) {
         super(context);
     }
 
-    public AlertDialogLayout(@Nullable Context context, @Nullable AttributeSet attrs) {
+    public AlertDialogLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -33,10 +31,10 @@ public class AlertDialogLayout extends LinearLayoutCompat {
         int childHeightSpec;
         int i = widthMeasureSpec;
         int i2 = heightMeasureSpec;
-        int count = getChildCount();
-        View middlePanel = null;
-        View buttonPanel = null;
         View topPanel = null;
+        View buttonPanel = null;
+        View middlePanel = null;
+        int count = getChildCount();
         for (int i3 = 0; i3 < count; i3++) {
             View child = getChildAt(i3);
             if (child.getVisibility() != 8) {
@@ -74,8 +72,8 @@ public class AlertDialogLayout extends LinearLayoutCompat {
         int middleHeight = 0;
         if (middlePanel != null) {
             if (i4 == 0) {
-                childHeightSpec = 0;
                 View view = topPanel;
+                childHeightSpec = 0;
             } else {
                 View view2 = topPanel;
                 childHeightSpec = View.MeasureSpec.makeMeasureSpec(Math.max(0, heightSize - usedHeight), i4);
@@ -93,35 +91,36 @@ public class AlertDialogLayout extends LinearLayoutCompat {
                 remainingHeight -= heightToGive;
                 buttonHeight += heightToGive;
             }
-            buttonPanel.measure(i, View.MeasureSpec.makeMeasureSpec(buttonHeight, 1073741824));
+            buttonPanel.measure(i, View.MeasureSpec.makeMeasureSpec(buttonHeight, BasicMeasure.EXACTLY));
             usedHeight = usedHeight2 + buttonPanel.getMeasuredHeight();
             childState = View.combineMeasuredStates(childState, buttonPanel.getMeasuredState());
             remainingHeight = remainingHeight;
         }
-        if (middlePanel == null || remainingHeight <= 0) {
-            int heightMode = i4;
-        } else {
+        if (middlePanel != null && remainingHeight > 0) {
             int heightToGive2 = remainingHeight;
-            middlePanel.measure(i, View.MeasureSpec.makeMeasureSpec(middleHeight + heightToGive2, i4));
+            int remainingHeight2 = remainingHeight - heightToGive2;
+            int childHeightSpec2 = View.MeasureSpec.makeMeasureSpec(middleHeight + heightToGive2, i4);
+            middlePanel.measure(i, childHeightSpec2);
             usedHeight = (usedHeight - middleHeight) + middlePanel.getMeasuredHeight();
-            int i5 = i4;
+            int i5 = childHeightSpec2;
             childState = View.combineMeasuredStates(childState, middlePanel.getMeasuredState());
-            remainingHeight -= heightToGive2;
+            remainingHeight = remainingHeight2;
         }
         int maxWidth = 0;
-        int i6 = 0;
-        while (i6 < count) {
-            View child2 = getChildAt(i6);
-            int remainingHeight2 = remainingHeight;
+        int i6 = remainingHeight;
+        int i7 = 0;
+        while (i7 < count) {
+            View child2 = getChildAt(i7);
             View buttonPanel2 = buttonPanel;
+            View middlePanel2 = middlePanel;
             if (child2.getVisibility() != 8) {
                 maxWidth = Math.max(maxWidth, child2.getMeasuredWidth());
             }
-            i6++;
-            remainingHeight = remainingHeight2;
+            i7++;
             buttonPanel = buttonPanel2;
+            middlePanel = middlePanel2;
         }
-        View view3 = buttonPanel;
+        View view3 = middlePanel;
         setMeasuredDimension(View.resolveSizeAndState(maxWidth + getPaddingLeft() + getPaddingRight(), i, childState), View.resolveSizeAndState(usedHeight, i2, 0));
         if (widthMode == 1073741824) {
             return true;
@@ -131,7 +130,7 @@ public class AlertDialogLayout extends LinearLayoutCompat {
     }
 
     private void forceUniformWidth(int count, int heightMeasureSpec) {
-        int uniformMeasureSpec = View.MeasureSpec.makeMeasureSpec(getMeasuredWidth(), 1073741824);
+        int uniformMeasureSpec = View.MeasureSpec.makeMeasureSpec(getMeasuredWidth(), BasicMeasure.EXACTLY);
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             if (child.getVisibility() != 8) {
@@ -163,9 +162,9 @@ public class AlertDialogLayout extends LinearLayoutCompat {
     /* access modifiers changed from: protected */
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
         int childTop;
-        int count;
         int i;
-        int majorGravity;
+        int i2;
+        int layoutGravity;
         int childLeft;
         AlertDialogLayout alertDialogLayout = this;
         int paddingLeft = getPaddingLeft();
@@ -173,61 +172,68 @@ public class AlertDialogLayout extends LinearLayoutCompat {
         int childRight = width - getPaddingRight();
         int childSpace = (width - paddingLeft) - getPaddingRight();
         int totalLength = getMeasuredHeight();
-        int count2 = getChildCount();
+        int count = getChildCount();
         int gravity = getGravity();
-        int majorGravity2 = gravity & 112;
+        int majorGravity = gravity & 112;
         int minorGravity = gravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK;
-        if (majorGravity2 == 16) {
-            childTop = getPaddingTop() + (((bottom - top) - totalLength) / 2);
-        } else if (majorGravity2 != 80) {
-            childTop = getPaddingTop();
-        } else {
-            childTop = ((getPaddingTop() + bottom) - top) - totalLength;
+        switch (majorGravity) {
+            case 16:
+                childTop = getPaddingTop() + (((bottom - top) - totalLength) / 2);
+                break;
+            case 80:
+                childTop = ((getPaddingTop() + bottom) - top) - totalLength;
+                break;
+            default:
+                childTop = getPaddingTop();
+                break;
         }
         Drawable dividerDrawable = getDividerDrawable();
-        int i2 = 0;
-        int dividerHeight = dividerDrawable == null ? 0 : dividerDrawable.getIntrinsicHeight();
-        while (true) {
-            int i3 = i2;
-            if (i3 < count2) {
-                View child = alertDialogLayout.getChildAt(i3);
-                if (child == null || child.getVisibility() == 8) {
-                    i = i3;
-                    majorGravity = majorGravity2;
-                    count = count2;
-                } else {
-                    int childWidth = child.getMeasuredWidth();
-                    int childHeight = child.getMeasuredHeight();
-                    LinearLayoutCompat.LayoutParams lp = (LinearLayoutCompat.LayoutParams) child.getLayoutParams();
-                    int layoutGravity = lp.gravity;
-                    if (layoutGravity < 0) {
-                        layoutGravity = minorGravity;
-                    }
-                    int i4 = layoutGravity;
-                    int layoutGravity2 = GravityCompat.getAbsoluteGravity(layoutGravity, ViewCompat.getLayoutDirection(this)) & 7;
-                    majorGravity = majorGravity2;
-                    if (layoutGravity2 != 1) {
-                        childLeft = layoutGravity2 != 5 ? lp.leftMargin + paddingLeft : (childRight - childWidth) - lp.rightMargin;
-                    } else {
-                        childLeft = ((((childSpace - childWidth) / 2) + paddingLeft) + lp.leftMargin) - lp.rightMargin;
-                    }
-                    if (alertDialogLayout.hasDividerBeforeChildAt(i3)) {
-                        childTop += dividerHeight;
-                    }
-                    int childTop2 = childTop + lp.topMargin;
-                    i = i3;
-                    count = count2;
-                    setChildFrame(child, childLeft, childTop2, childWidth, childHeight);
-                    childTop = childTop2 + childHeight + lp.bottomMargin;
-                }
-                i2 = i + 1;
-                majorGravity2 = majorGravity;
-                count2 = count;
-                alertDialogLayout = this;
+        if (dividerDrawable == null) {
+            i = 0;
+        } else {
+            i = dividerDrawable.getIntrinsicHeight();
+        }
+        int dividerHeight = i;
+        int i3 = 0;
+        while (i3 < count) {
+            View child = alertDialogLayout.getChildAt(i3);
+            if (child == null || child.getVisibility() == 8) {
+                i2 = i3;
             } else {
-                int i5 = count2;
-                return;
+                int childWidth = child.getMeasuredWidth();
+                int childHeight = child.getMeasuredHeight();
+                LinearLayoutCompat.LayoutParams lp = (LinearLayoutCompat.LayoutParams) child.getLayoutParams();
+                int layoutGravity2 = lp.gravity;
+                if (layoutGravity2 < 0) {
+                    layoutGravity = minorGravity;
+                } else {
+                    layoutGravity = layoutGravity2;
+                }
+                int layoutDirection = ViewCompat.getLayoutDirection(this);
+                switch (GravityCompat.getAbsoluteGravity(layoutGravity, layoutDirection) & 7) {
+                    case 1:
+                        childLeft = ((((childSpace - childWidth) / 2) + paddingLeft) + lp.leftMargin) - lp.rightMargin;
+                        break;
+                    case 5:
+                        int i4 = layoutDirection;
+                        childLeft = (childRight - childWidth) - lp.rightMargin;
+                        break;
+                    default:
+                        int i5 = layoutDirection;
+                        childLeft = lp.leftMargin + paddingLeft;
+                        break;
+                }
+                if (alertDialogLayout.hasDividerBeforeChildAt(i3) != 0) {
+                    childTop += dividerHeight;
+                }
+                int childTop2 = childTop + lp.topMargin;
+                int i6 = layoutGravity;
+                i2 = i3;
+                setChildFrame(child, childLeft, childTop2, childWidth, childHeight);
+                childTop = childTop2 + childHeight + lp.bottomMargin;
             }
+            i3 = i2 + 1;
+            alertDialogLayout = this;
         }
     }
 

@@ -2,11 +2,9 @@ package android.support.v4.media;
 
 import android.content.Context;
 import android.media.session.MediaSessionManager;
-import android.support.annotation.RequiresApi;
 import android.support.v4.media.MediaSessionManager;
 import android.support.v4.util.ObjectsCompat;
 
-@RequiresApi(28)
 class MediaSessionManagerImplApi28 extends MediaSessionManagerImplApi21 {
     MediaSessionManager mObject;
 

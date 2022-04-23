@@ -3,8 +3,6 @@ package com.bumptech.glide.load.model;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.ModelLoader;
@@ -18,7 +16,7 @@ public class StringLoader<Data> implements ModelLoader<String, Data> {
         this.uriLoader = uriLoader2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(String model, int width, int height, Options options) {
         Uri uri = parseUri(model);
         if (uri == null || !this.uriLoader.handles(uri)) {
             return null;
@@ -26,11 +24,10 @@ public class StringLoader<Data> implements ModelLoader<String, Data> {
         return this.uriLoader.buildLoadData(uri, width, height, options);
     }
 
-    public boolean handles(@NonNull String model) {
+    public boolean handles(String model) {
         return true;
     }
 
-    @Nullable
     private static Uri parseUri(String model) {
         if (TextUtils.isEmpty(model)) {
             return null;
@@ -50,8 +47,7 @@ public class StringLoader<Data> implements ModelLoader<String, Data> {
     }
 
     public static class StreamFactory implements ModelLoaderFactory<String, InputStream> {
-        @NonNull
-        public ModelLoader<String, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<String, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new StringLoader(multiFactory.build(Uri.class, InputStream.class));
         }
 
@@ -60,8 +56,7 @@ public class StringLoader<Data> implements ModelLoader<String, Data> {
     }
 
     public static class FileDescriptorFactory implements ModelLoaderFactory<String, ParcelFileDescriptor> {
-        @NonNull
-        public ModelLoader<String, ParcelFileDescriptor> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<String, ParcelFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new StringLoader(multiFactory.build(Uri.class, ParcelFileDescriptor.class));
         }
 
@@ -70,7 +65,7 @@ public class StringLoader<Data> implements ModelLoader<String, Data> {
     }
 
     public static final class AssetFileDescriptorFactory implements ModelLoaderFactory<String, AssetFileDescriptor> {
-        public ModelLoader<String, AssetFileDescriptor> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<String, AssetFileDescriptor> build(MultiModelLoaderFactory multiFactory) {
             return new StringLoader(multiFactory.build(Uri.class, AssetFileDescriptor.class));
         }
 

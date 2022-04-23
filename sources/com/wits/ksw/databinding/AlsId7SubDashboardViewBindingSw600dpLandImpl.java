@@ -1,38 +1,29 @@
 package com.wits.ksw.databinding;
 
-import android.content.res.Resources;
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableFloat;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
-import android.databinding.adapters.TextViewBindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
-import com.wits.ksw.launcher.bean.CarInfo;
-import com.wits.ksw.launcher.model.DashboardViewModel;
 
 public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashboardViewBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback116;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback174;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.title, 7);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.title, 7);
     }
 
-    public AlsId7SubDashboardViewBindingSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public AlsId7SubDashboardViewBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 8, sIncludes, sViewsWithIds));
     }
 
@@ -48,7 +39,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         this.seatBeltTextView.setTag((Object) null);
         this.speedTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback116 = new OnClickListener(this, 1);
+        this.mCallback174 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -68,20 +59,20 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (15 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (3 != variableId) {
             return false;
         }
         setDashVideoViewModel((AlsID7ViewModel) variable);
         return true;
     }
 
-    public void setDashVideoViewModel(@Nullable AlsID7ViewModel DashVideoViewModel) {
+    public void setDashVideoViewModel(AlsID7ViewModel DashVideoViewModel) {
         this.mDashVideoViewModel = DashVideoViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(3);
         super.requestRebind();
     }
 
@@ -89,21 +80,21 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeDashVideoViewModelCarInfoTurnSpeedAnge((ObservableFloat) object, fieldId);
-            case 1:
-                return onChangeDashVideoViewModelCarInfoSeatBeltpValue((ObservableField) object, fieldId);
-            case 2:
-                return onChangeDashVideoViewModelCarInfoOilValue((ObservableInt) object, fieldId);
-            case 3:
                 return onChangeDashVideoViewModelCarInfoTurnSpeed((ObservableInt) object, fieldId);
-            case 4:
+            case 1:
                 return onChangeDashVideoViewModelCarInfoBrakeValue((ObservableField) object, fieldId);
+            case 2:
+                return onChangeDashVideoViewModelCarInfoOilValue((ObservableField) object, fieldId);
+            case 3:
+                return onChangeDashVideoViewModelCarInfoSeatBeltpValue((ObservableField) object, fieldId);
+            case 4:
+                return onChangeDashVideoViewModelCarInfoTurnSpeedAnge((ObservableFloat) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeDashVideoViewModelCarInfoTurnSpeedAnge(ObservableFloat DashVideoViewModelCarInfoTurnSpeedAnge, int fieldId) {
+    private boolean onChangeDashVideoViewModelCarInfoTurnSpeed(ObservableInt DashVideoViewModelCarInfoTurnSpeed, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -113,7 +104,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         return true;
     }
 
-    private boolean onChangeDashVideoViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeDashVideoViewModelCarInfoBrakeValue(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -123,7 +114,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         return true;
     }
 
-    private boolean onChangeDashVideoViewModelCarInfoOilValue(ObservableInt DashVideoViewModelCarInfoOilValue, int fieldId) {
+    private boolean onChangeDashVideoViewModelCarInfoOilValue(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -133,7 +124,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         return true;
     }
 
-    private boolean onChangeDashVideoViewModelCarInfoTurnSpeed(ObservableInt DashVideoViewModelCarInfoTurnSpeed, int fieldId) {
+    private boolean onChangeDashVideoViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -143,7 +134,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         return true;
     }
 
-    private boolean onChangeDashVideoViewModelCarInfoBrakeValue(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeDashVideoViewModelCarInfoTurnSpeedAnge(ObservableFloat DashVideoViewModelCarInfoTurnSpeedAnge, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -154,165 +145,306 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
     }
 
     /* access modifiers changed from: protected */
+    /* JADX WARNING: Removed duplicated region for block: B:107:? A[RETURN, SYNTHETIC] */
+    /* JADX WARNING: Removed duplicated region for block: B:78:0x018e  */
+    /* JADX WARNING: Removed duplicated region for block: B:79:0x0196  */
+    /* JADX WARNING: Removed duplicated region for block: B:82:0x01a0  */
+    /* JADX WARNING: Removed duplicated region for block: B:83:0x01aa  */
+    /* JADX WARNING: Removed duplicated region for block: B:86:0x01b2  */
+    /* JADX WARNING: Removed duplicated region for block: B:89:0x01bd  */
+    /* JADX WARNING: Removed duplicated region for block: B:92:0x01c8  */
+    /* JADX WARNING: Removed duplicated region for block: B:95:0x01d3  */
+    /* JADX WARNING: Removed duplicated region for block: B:98:0x01de  */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
     public void executeBindings() {
-        long dirtyFlags;
-        View.OnFocusChangeListener dashVideoViewModelDashViewFocusChangeListener;
-        ObservableField<Boolean> dashVideoViewModelCarInfoBrakeValue;
-        Resources resources;
-        int i;
-        ObservableInt dashVideoViewModelCarInfoTurnSpeed;
-        ObservableInt dashVideoViewModelCarInfoOilValue;
-        Resources resources2;
-        int i2;
-        synchronized (this) {
-            dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
-        }
-        ObservableFloat dashVideoViewModelCarInfoTurnSpeedAnge = null;
-        String stringValueOfDashVideoViewModelCarInfoOilValue = null;
-        CarInfo dashVideoViewModelCarInfo = null;
-        ObservableField<Boolean> dashVideoViewModelCarInfoSeatBeltpValue = null;
-        AlsID7ViewModel dashVideoViewModel = this.mDashVideoViewModel;
-        String stringValueOfDashVideoViewModelCarInfoOilValueJavaLangStringL = null;
-        Boolean dashVideoViewModelCarInfoBrakeValueGet = null;
-        float dashVideoViewModelCarInfoTurnSpeedAngeGet = 0.0f;
-        int dashVideoViewModelCarInfoOilValueGet = 0;
-        String dashVideoViewModelCarInfoSeatBeltpValueSeatBeltTextViewAndroidStringKswId7Seatbelt2SeatBeltTextViewAndroidStringKswId7Seatbelt1 = null;
-        String stringValueOfDashVideoViewModelCarInfoTurnSpeed = null;
-        String dashVideoViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake1 = null;
-        int dashVideoViewModelCarInfoTurnSpeedGet = 0;
-        Boolean dashVideoViewModelCarInfoSeatBeltpValueGet = null;
-        if ((dirtyFlags & 95) != 0) {
-            dashVideoViewModelCarInfo = AlsID7ViewModel.carInfo;
-            if ((dirtyFlags & 65) != 0) {
-                if (dashVideoViewModelCarInfo != null) {
-                    dashVideoViewModelCarInfoTurnSpeedAnge = dashVideoViewModelCarInfo.turnSpeedAnge;
-                }
-                updateRegistration(0, (Observable) dashVideoViewModelCarInfoTurnSpeedAnge);
-                if (dashVideoViewModelCarInfoTurnSpeedAnge != null) {
-                    dashVideoViewModelCarInfoTurnSpeedAngeGet = dashVideoViewModelCarInfoTurnSpeedAnge.get();
-                }
-            }
-            if ((dirtyFlags & 66) != 0) {
-                if (dashVideoViewModelCarInfo != null) {
-                    dashVideoViewModelCarInfoSeatBeltpValue = dashVideoViewModelCarInfo.seatBeltpValue;
-                }
-                updateRegistration(1, (Observable) dashVideoViewModelCarInfoSeatBeltpValue);
-                if (dashVideoViewModelCarInfoSeatBeltpValue != null) {
-                    dashVideoViewModelCarInfoSeatBeltpValueGet = dashVideoViewModelCarInfoSeatBeltpValue.get();
-                }
-                boolean androidDatabindingViewDataBindingSafeUnboxDashVideoViewModelCarInfoSeatBeltpValueGet = ViewDataBinding.safeUnbox(dashVideoViewModelCarInfoSeatBeltpValueGet);
-                if ((dirtyFlags & 66) != 0) {
-                    if (androidDatabindingViewDataBindingSafeUnboxDashVideoViewModelCarInfoSeatBeltpValueGet) {
-                        dirtyFlags |= 256;
-                    } else {
-                        dirtyFlags |= 128;
-                    }
-                }
-                if (androidDatabindingViewDataBindingSafeUnboxDashVideoViewModelCarInfoSeatBeltpValueGet) {
-                    resources2 = this.seatBeltTextView.getResources();
-                    i2 = R.string.ksw_id7_seatbelt2;
-                } else {
-                    resources2 = this.seatBeltTextView.getResources();
-                    i2 = R.string.ksw_id7_seatbelt1;
-                }
-                String string = resources2.getString(i2);
-                boolean z = androidDatabindingViewDataBindingSafeUnboxDashVideoViewModelCarInfoSeatBeltpValueGet;
-                dashVideoViewModelCarInfoSeatBeltpValueSeatBeltTextViewAndroidStringKswId7Seatbelt2SeatBeltTextViewAndroidStringKswId7Seatbelt1 = string;
-            }
-            if ((dirtyFlags & 68) != 0) {
-                if (dashVideoViewModelCarInfo != null) {
-                    dashVideoViewModelCarInfoOilValue = dashVideoViewModelCarInfo.oilValue;
-                } else {
-                    dashVideoViewModelCarInfoOilValue = null;
-                }
-                updateRegistration(2, (Observable) dashVideoViewModelCarInfoOilValue);
-                if (dashVideoViewModelCarInfoOilValue != null) {
-                    dashVideoViewModelCarInfoOilValueGet = dashVideoViewModelCarInfoOilValue.get();
-                }
-                String stringValueOfDashVideoViewModelCarInfoOilValue2 = String.valueOf(dashVideoViewModelCarInfoOilValueGet);
-                StringBuilder sb = new StringBuilder();
-                sb.append(stringValueOfDashVideoViewModelCarInfoOilValue2);
-                ObservableFloat observableFloat = dashVideoViewModelCarInfoTurnSpeedAnge;
-                sb.append("L");
-                stringValueOfDashVideoViewModelCarInfoOilValueJavaLangStringL = sb.toString();
-                ObservableInt observableInt = dashVideoViewModelCarInfoOilValue;
-                stringValueOfDashVideoViewModelCarInfoOilValue = stringValueOfDashVideoViewModelCarInfoOilValue2;
-            }
-            if ((dirtyFlags & 72) != 0) {
-                if (dashVideoViewModelCarInfo != null) {
-                    dashVideoViewModelCarInfoTurnSpeed = dashVideoViewModelCarInfo.turnSpeed;
-                } else {
-                    dashVideoViewModelCarInfoTurnSpeed = null;
-                }
-                updateRegistration(3, (Observable) dashVideoViewModelCarInfoTurnSpeed);
-                if (dashVideoViewModelCarInfoTurnSpeed != null) {
-                    dashVideoViewModelCarInfoTurnSpeedGet = dashVideoViewModelCarInfoTurnSpeed.get();
-                }
-                ObservableInt observableInt2 = dashVideoViewModelCarInfoTurnSpeed;
-                stringValueOfDashVideoViewModelCarInfoTurnSpeed = String.valueOf(dashVideoViewModelCarInfoTurnSpeedGet);
-            }
-            if ((dirtyFlags & 80) != 0) {
-                if (dashVideoViewModelCarInfo != null) {
-                    dashVideoViewModelCarInfoBrakeValue = dashVideoViewModelCarInfo.brakeValue;
-                } else {
-                    dashVideoViewModelCarInfoBrakeValue = null;
-                }
-                updateRegistration(4, (Observable) dashVideoViewModelCarInfoBrakeValue);
-                if (dashVideoViewModelCarInfoBrakeValue != null) {
-                    dashVideoViewModelCarInfoBrakeValueGet = dashVideoViewModelCarInfoBrakeValue.get();
-                }
-                boolean androidDatabindingViewDataBindingSafeUnboxDashVideoViewModelCarInfoBrakeValueGet = ViewDataBinding.safeUnbox(dashVideoViewModelCarInfoBrakeValueGet);
-                if ((dirtyFlags & 80) != 0) {
-                    if (androidDatabindingViewDataBindingSafeUnboxDashVideoViewModelCarInfoBrakeValueGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-                    } else {
-                        dirtyFlags |= 512;
-                    }
-                }
-                if (androidDatabindingViewDataBindingSafeUnboxDashVideoViewModelCarInfoBrakeValueGet) {
-                    resources = this.brakeTextView.getResources();
-                    i = R.string.ksw_id7_brake2;
-                } else {
-                    resources = this.brakeTextView.getResources();
-                    i = R.string.ksw_id7_brake1;
-                }
-                dashVideoViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake1 = resources.getString(i);
-                ObservableField<Boolean> observableField = dashVideoViewModelCarInfoBrakeValue;
-            }
-        }
-        String dashVideoViewModelCarInfoSeatBeltpValueSeatBeltTextViewAndroidStringKswId7Seatbelt2SeatBeltTextViewAndroidStringKswId7Seatbelt12 = dashVideoViewModelCarInfoSeatBeltpValueSeatBeltTextViewAndroidStringKswId7Seatbelt2SeatBeltTextViewAndroidStringKswId7Seatbelt1;
-        String stringValueOfDashVideoViewModelCarInfoTurnSpeed2 = stringValueOfDashVideoViewModelCarInfoTurnSpeed;
-        String dashVideoViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake12 = dashVideoViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake1;
-        if ((dirtyFlags & 96) == 0 || dashVideoViewModel == null) {
-            dashVideoViewModelDashViewFocusChangeListener = null;
-        } else {
-            String str = stringValueOfDashVideoViewModelCarInfoOilValue;
-            dashVideoViewModelDashViewFocusChangeListener = dashVideoViewModel.dashViewFocusChangeListener;
-        }
-        if ((dirtyFlags & 80) != 0) {
-            CarInfo carInfo = dashVideoViewModelCarInfo;
-            TextViewBindingAdapter.setText(this.brakeTextView, dashVideoViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake12);
-        }
-        if ((dirtyFlags & 64) != 0) {
-            String str2 = dashVideoViewModelCarInfoBrakeValueBrakeTextViewAndroidStringKswId7Brake2BrakeTextViewAndroidStringKswId7Brake12;
-            this.dashboardImageView.setOnClickListener(this.mCallback116);
-        }
-        if ((dirtyFlags & 96) != 0) {
-            this.dashboardImageView.setOnFocusChangeListener(dashVideoViewModelDashViewFocusChangeListener);
-        }
-        if ((dirtyFlags & 68) != 0) {
-            TextViewBindingAdapter.setText(this.oilTextView, stringValueOfDashVideoViewModelCarInfoOilValueJavaLangStringL);
-        }
-        if ((dirtyFlags & 65) != 0) {
-            DashboardViewModel.setRotation(this.pointerImageView, dashVideoViewModelCarInfoTurnSpeedAngeGet);
-        }
-        if ((dirtyFlags & 66) != 0) {
-            TextViewBindingAdapter.setText(this.seatBeltTextView, dashVideoViewModelCarInfoSeatBeltpValueSeatBeltTextViewAndroidStringKswId7Seatbelt2SeatBeltTextViewAndroidStringKswId7Seatbelt12);
-        }
-        if ((dirtyFlags & 72) != 0) {
-            TextViewBindingAdapter.setText(this.speedTextView, stringValueOfDashVideoViewModelCarInfoTurnSpeed2);
-        }
+        /*
+            r39 = this;
+            r1 = r39
+            r2 = 0
+            monitor-enter(r39)
+            long r4 = r1.mDirtyFlags     // Catch:{ all -> 0x01e4 }
+            r2 = r4
+            r4 = 0
+            r1.mDirtyFlags = r4     // Catch:{ all -> 0x01e4 }
+            monitor-exit(r39)     // Catch:{ all -> 0x01e4 }
+            r0 = 0
+            r6 = 0
+            r7 = 0
+            r8 = 0
+            r9 = 0
+            r10 = 0
+            r11 = 0
+            r12 = 0
+            r13 = 0
+            r14 = 0
+            r15 = 0
+            com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel r4 = r1.mDashVideoViewModel
+            r5 = 0
+            r18 = 0
+            r19 = 0
+            r20 = 0
+            r21 = 0
+            r22 = 0
+            r23 = 95
+            long r23 = r2 & r23
+            r16 = 0
+            int r23 = (r23 > r16 ? 1 : (r23 == r16 ? 0 : -1))
+            r24 = 80
+            r26 = 68
+            r28 = 65
+            r30 = 72
+            r32 = 66
+            if (r23 == 0) goto L_0x0166
+            com.wits.ksw.launcher.bean.CarInfo r8 = com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel.carInfo
+            long r34 = r2 & r28
+            int r23 = (r34 > r16 ? 1 : (r34 == r16 ? 0 : -1))
+            if (r23 == 0) goto L_0x0057
+            if (r8 == 0) goto L_0x0045
+            android.databinding.ObservableInt r6 = r8.turnSpeed
+        L_0x0045:
+            r23 = r0
+            r0 = 0
+            r1.updateRegistration((int) r0, (android.databinding.Observable) r6)
+            if (r6 == 0) goto L_0x0051
+            int r5 = r6.get()
+        L_0x0051:
+            java.lang.String r0 = java.lang.String.valueOf(r5)
+            r11 = r0
+            goto L_0x0059
+        L_0x0057:
+            r23 = r0
+        L_0x0059:
+            long r34 = r2 & r32
+            r16 = 0
+            int r0 = (r34 > r16 ? 1 : (r34 == r16 ? 0 : -1))
+            if (r0 == 0) goto L_0x00ae
+            if (r8 == 0) goto L_0x0065
+            android.databinding.ObservableField<java.lang.Boolean> r7 = r8.brakeValue
+        L_0x0065:
+            r0 = 1
+            r1.updateRegistration((int) r0, (android.databinding.Observable) r7)
+            if (r7 == 0) goto L_0x0073
+            java.lang.Object r0 = r7.get()
+            r20 = r0
+            java.lang.Boolean r20 = (java.lang.Boolean) r20
+        L_0x0073:
+            boolean r0 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r20)
+            long r34 = r2 & r32
+            r16 = 0
+            int r9 = (r34 > r16 ? 1 : (r34 == r16 ? 0 : -1))
+            if (r9 == 0) goto L_0x008a
+            if (r0 == 0) goto L_0x0086
+            r34 = 1024(0x400, double:5.06E-321)
+            long r2 = r2 | r34
+            goto L_0x008a
+        L_0x0086:
+            r34 = 512(0x200, double:2.53E-321)
+            long r2 = r2 | r34
+        L_0x008a:
+            if (r0 == 0) goto L_0x009c
+            android.widget.TextView r9 = r1.brakeTextView
+            android.content.res.Resources r9 = r9.getResources()
+            r34 = r0
+            r0 = 2131558729(0x7f0d0149, float:1.8742782E38)
+            java.lang.String r0 = r9.getString(r0)
+            goto L_0x00ab
+        L_0x009c:
+            r34 = r0
+            android.widget.TextView r0 = r1.brakeTextView
+            android.content.res.Resources r0 = r0.getResources()
+            r9 = 2131558728(0x7f0d0148, float:1.874278E38)
+            java.lang.String r0 = r0.getString(r9)
+        L_0x00ab:
+            r14 = r0
+            r9 = r34
+        L_0x00ae:
+            long r34 = r2 & r26
+            r16 = 0
+            int r0 = (r34 > r16 ? 1 : (r34 == r16 ? 0 : -1))
+            if (r0 == 0) goto L_0x00ca
+            if (r8 == 0) goto L_0x00ba
+            android.databinding.ObservableField<java.lang.String> r13 = r8.oilValue
+        L_0x00ba:
+            r0 = 2
+            r1.updateRegistration((int) r0, (android.databinding.Observable) r13)
+            if (r13 == 0) goto L_0x00c7
+            java.lang.Object r0 = r13.get()
+            java.lang.String r0 = (java.lang.String) r0
+            goto L_0x00cc
+        L_0x00c7:
+            r0 = r23
+            goto L_0x00cc
+        L_0x00ca:
+            r0 = r23
+        L_0x00cc:
+            long r34 = r2 & r30
+            r16 = 0
+            int r23 = (r34 > r16 ? 1 : (r34 == r16 ? 0 : -1))
+            if (r23 == 0) goto L_0x0124
+            if (r8 == 0) goto L_0x00d8
+            android.databinding.ObservableField<java.lang.Boolean> r15 = r8.seatBeltpValue
+        L_0x00d8:
+            r23 = r0
+            r0 = 3
+            r1.updateRegistration((int) r0, (android.databinding.Observable) r15)
+            if (r15 == 0) goto L_0x00e8
+            java.lang.Object r0 = r15.get()
+            r21 = r0
+            java.lang.Boolean r21 = (java.lang.Boolean) r21
+        L_0x00e8:
+            boolean r0 = android.databinding.ViewDataBinding.safeUnbox((java.lang.Boolean) r21)
+            long r34 = r2 & r30
+            r16 = 0
+            int r12 = (r34 > r16 ? 1 : (r34 == r16 ? 0 : -1))
+            if (r12 == 0) goto L_0x00ff
+            if (r0 == 0) goto L_0x00fb
+            r34 = 256(0x100, double:1.265E-321)
+            long r2 = r2 | r34
+            goto L_0x00ff
+        L_0x00fb:
+            r34 = 128(0x80, double:6.32E-322)
+            long r2 = r2 | r34
+        L_0x00ff:
+            if (r0 == 0) goto L_0x0111
+            android.widget.TextView r12 = r1.seatBeltTextView
+            android.content.res.Resources r12 = r12.getResources()
+            r34 = r0
+            r0 = 2131558746(0x7f0d015a, float:1.8742817E38)
+            java.lang.String r0 = r12.getString(r0)
+            goto L_0x0120
+        L_0x0111:
+            r34 = r0
+            android.widget.TextView r0 = r1.seatBeltTextView
+            android.content.res.Resources r0 = r0.getResources()
+            r12 = 2131558745(0x7f0d0159, float:1.8742814E38)
+            java.lang.String r0 = r0.getString(r12)
+        L_0x0120:
+            r10 = r0
+            r12 = r34
+            goto L_0x0126
+        L_0x0124:
+            r23 = r0
+        L_0x0126:
+            long r34 = r2 & r24
+            r16 = 0
+            int r0 = (r34 > r16 ? 1 : (r34 == r16 ? 0 : -1))
+            if (r0 == 0) goto L_0x015b
+            if (r8 == 0) goto L_0x0133
+            android.databinding.ObservableFloat r0 = r8.turnSpeedAnge
+            goto L_0x0135
+        L_0x0133:
+            r0 = r19
+        L_0x0135:
+            r34 = r2
+            r2 = 4
+            r1.updateRegistration((int) r2, (android.databinding.Observable) r0)
+            if (r0 == 0) goto L_0x014e
+            float r22 = r0.get()
+            r19 = r0
+            r0 = r23
+            r2 = r34
+            r38 = r22
+            r22 = r5
+            r5 = r38
+            goto L_0x016e
+        L_0x014e:
+            r19 = r0
+            r0 = r23
+            r2 = r34
+            r38 = r22
+            r22 = r5
+            r5 = r38
+            goto L_0x016e
+        L_0x015b:
+            r34 = r2
+            r0 = r23
+            r38 = r22
+            r22 = r5
+            r5 = r38
+            goto L_0x016e
+        L_0x0166:
+            r23 = r0
+            r38 = r22
+            r22 = r5
+            r5 = r38
+        L_0x016e:
+            r34 = 96
+            long r36 = r2 & r34
+            r16 = 0
+            int r23 = (r36 > r16 ? 1 : (r36 == r16 ? 0 : -1))
+            if (r23 == 0) goto L_0x0182
+            if (r4 == 0) goto L_0x017f
+            r23 = r6
+            android.view.View$OnFocusChangeListener r6 = r4.dashViewFocusChangeListener
+            goto L_0x0186
+        L_0x017f:
+            r23 = r6
+            goto L_0x0184
+        L_0x0182:
+            r23 = r6
+        L_0x0184:
+            r6 = r18
+        L_0x0186:
+            long r32 = r2 & r32
+            r16 = 0
+            int r18 = (r32 > r16 ? 1 : (r32 == r16 ? 0 : -1))
+            if (r18 == 0) goto L_0x0196
+            r18 = r4
+            android.widget.TextView r4 = r1.brakeTextView
+            android.databinding.adapters.TextViewBindingAdapter.setText(r4, r14)
+            goto L_0x0198
+        L_0x0196:
+            r18 = r4
+        L_0x0198:
+            r32 = 64
+            long r32 = r2 & r32
+            int r4 = (r32 > r16 ? 1 : (r32 == r16 ? 0 : -1))
+            if (r4 == 0) goto L_0x01aa
+            com.wits.ksw.launcher.view.CustomBmwImageView r4 = r1.dashboardImageView
+            r32 = r7
+            android.view.View$OnClickListener r7 = r1.mCallback174
+            r4.setOnClickListener(r7)
+            goto L_0x01ac
+        L_0x01aa:
+            r32 = r7
+        L_0x01ac:
+            long r33 = r2 & r34
+            int r4 = (r33 > r16 ? 1 : (r33 == r16 ? 0 : -1))
+            if (r4 == 0) goto L_0x01b7
+            com.wits.ksw.launcher.view.CustomBmwImageView r4 = r1.dashboardImageView
+            r4.setOnFocusChangeListener(r6)
+        L_0x01b7:
+            long r26 = r2 & r26
+            int r4 = (r26 > r16 ? 1 : (r26 == r16 ? 0 : -1))
+            if (r4 == 0) goto L_0x01c2
+            android.widget.TextView r4 = r1.oilTextView
+            android.databinding.adapters.TextViewBindingAdapter.setText(r4, r0)
+        L_0x01c2:
+            long r24 = r2 & r24
+            int r4 = (r24 > r16 ? 1 : (r24 == r16 ? 0 : -1))
+            if (r4 == 0) goto L_0x01cd
+            android.widget.ImageView r4 = r1.pointerImageView
+            com.wits.ksw.launcher.model.DashboardViewModel.setRotation(r4, r5)
+        L_0x01cd:
+            long r24 = r2 & r30
+            int r4 = (r24 > r16 ? 1 : (r24 == r16 ? 0 : -1))
+            if (r4 == 0) goto L_0x01d8
+            android.widget.TextView r4 = r1.seatBeltTextView
+            android.databinding.adapters.TextViewBindingAdapter.setText(r4, r10)
+        L_0x01d8:
+            long r24 = r2 & r28
+            int r4 = (r24 > r16 ? 1 : (r24 == r16 ? 0 : -1))
+            if (r4 == 0) goto L_0x01e3
+            android.widget.TextView r4 = r1.speedTextView
+            android.databinding.adapters.TextViewBindingAdapter.setText(r4, r11)
+        L_0x01e3:
+            return
+        L_0x01e4:
+            r0 = move-exception
+            monitor-exit(r39)     // Catch:{ all -> 0x01e4 }
+            throw r0
+        */
+        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.AlsId7SubDashboardViewBindingSw600dpLandImpl.executeBindings():void");
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {

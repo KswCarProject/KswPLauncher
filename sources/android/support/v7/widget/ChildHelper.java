@@ -266,11 +266,15 @@ class ChildHelper {
 
         /* access modifiers changed from: package-private */
         public void clear(int index) {
-            if (index < 64) {
-                this.mData &= ~(1 << index);
-            } else if (this.mNext != null) {
-                this.mNext.clear(index - 64);
+            if (index >= 64) {
+                Bucket bucket = this.mNext;
+                if (bucket != null) {
+                    bucket.clear(index - 64);
+                    return;
+                }
+                return;
             }
+            this.mData &= ~(1 << index);
         }
 
         /* access modifiers changed from: package-private */
@@ -285,8 +289,9 @@ class ChildHelper {
         /* access modifiers changed from: package-private */
         public void reset() {
             this.mData = 0;
-            if (this.mNext != null) {
-                this.mNext.reset();
+            Bucket bucket = this.mNext;
+            if (bucket != null) {
+                bucket.reset();
             }
         }
 
@@ -297,9 +302,10 @@ class ChildHelper {
                 this.mNext.insert(index - 64, value);
                 return;
             }
-            boolean lastBit = (this.mData & LAST_BIT) != 0;
+            long j = this.mData;
+            boolean lastBit = (LAST_BIT & j) != 0;
             long mask = (1 << index) - 1;
-            this.mData = (this.mData & mask) | ((this.mData & (~mask)) << 1);
+            this.mData = (j & mask) | ((j & (~mask)) << 1);
             if (value) {
                 set(index);
             } else {
@@ -318,12 +324,15 @@ class ChildHelper {
                 return this.mNext.remove(index - 64);
             }
             long mask = 1 << index;
-            boolean value = (this.mData & mask) != 0;
-            this.mData &= ~mask;
+            long j = this.mData;
+            boolean value = (j & mask) != 0;
+            long j2 = j & (~mask);
+            this.mData = j2;
             long mask2 = mask - 1;
-            this.mData = (this.mData & mask2) | Long.rotateRight(this.mData & (~mask2), 1);
-            if (this.mNext != null) {
-                if (this.mNext.get(0)) {
+            this.mData = (j2 & mask2) | Long.rotateRight(j2 & (~mask2), 1);
+            Bucket bucket = this.mNext;
+            if (bucket != null) {
+                if (bucket.get(0)) {
                     set(63);
                 }
                 this.mNext.remove(0);
@@ -333,7 +342,8 @@ class ChildHelper {
 
         /* access modifiers changed from: package-private */
         public int countOnesBefore(int index) {
-            if (this.mNext == null) {
+            Bucket bucket = this.mNext;
+            if (bucket == null) {
                 if (index >= 64) {
                     return Long.bitCount(this.mData);
                 }
@@ -341,7 +351,7 @@ class ChildHelper {
             } else if (index < 64) {
                 return Long.bitCount(this.mData & ((1 << index) - 1));
             } else {
-                return this.mNext.countOnesBefore(index - 64) + Long.bitCount(this.mData);
+                return bucket.countOnesBefore(index - 64) + Long.bitCount(this.mData);
             }
         }
 

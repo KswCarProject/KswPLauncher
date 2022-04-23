@@ -3,8 +3,6 @@ package android.support.v4.app;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,16 +22,18 @@ public final class BundleCompat {
         public static IBinder getBinder(Bundle bundle, String key) {
             if (!sGetIBinderMethodFetched) {
                 try {
-                    sGetIBinderMethod = Bundle.class.getMethod("getIBinder", new Class[]{String.class});
-                    sGetIBinderMethod.setAccessible(true);
+                    Method method = Bundle.class.getMethod("getIBinder", new Class[]{String.class});
+                    sGetIBinderMethod = method;
+                    method.setAccessible(true);
                 } catch (NoSuchMethodException e) {
                     Log.i(TAG, "Failed to retrieve getIBinder method", e);
                 }
                 sGetIBinderMethodFetched = true;
             }
-            if (sGetIBinderMethod != null) {
+            Method method2 = sGetIBinderMethod;
+            if (method2 != null) {
                 try {
-                    return (IBinder) sGetIBinderMethod.invoke(bundle, new Object[]{key});
+                    return (IBinder) method2.invoke(bundle, new Object[]{key});
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
                     Log.i(TAG, "Failed to invoke getIBinder via reflection", e2);
                     sGetIBinderMethod = null;
@@ -45,16 +45,18 @@ public final class BundleCompat {
         public static void putBinder(Bundle bundle, String key, IBinder binder) {
             if (!sPutIBinderMethodFetched) {
                 try {
-                    sPutIBinderMethod = Bundle.class.getMethod("putIBinder", new Class[]{String.class, IBinder.class});
-                    sPutIBinderMethod.setAccessible(true);
+                    Method method = Bundle.class.getMethod("putIBinder", new Class[]{String.class, IBinder.class});
+                    sPutIBinderMethod = method;
+                    method.setAccessible(true);
                 } catch (NoSuchMethodException e) {
                     Log.i(TAG, "Failed to retrieve putIBinder method", e);
                 }
                 sPutIBinderMethodFetched = true;
             }
-            if (sPutIBinderMethod != null) {
+            Method method2 = sPutIBinderMethod;
+            if (method2 != null) {
                 try {
-                    sPutIBinderMethod.invoke(bundle, new Object[]{key, binder});
+                    method2.invoke(bundle, new Object[]{key, binder});
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e2) {
                     Log.i(TAG, "Failed to invoke putIBinder via reflection", e2);
                     sPutIBinderMethod = null;
@@ -66,15 +68,14 @@ public final class BundleCompat {
     private BundleCompat() {
     }
 
-    @Nullable
-    public static IBinder getBinder(@NonNull Bundle bundle, @Nullable String key) {
+    public static IBinder getBinder(Bundle bundle, String key) {
         if (Build.VERSION.SDK_INT >= 18) {
             return bundle.getBinder(key);
         }
         return BundleCompatBaseImpl.getBinder(bundle, key);
     }
 
-    public static void putBinder(@NonNull Bundle bundle, @Nullable String key, @Nullable IBinder binder) {
+    public static void putBinder(Bundle bundle, String key, IBinder binder) {
         if (Build.VERSION.SDK_INT >= 18) {
             bundle.putBinder(key, binder);
         } else {

@@ -89,6 +89,12 @@ public class LoopRotarySwitchView extends RelativeLayout {
         void onTouch(MotionEvent motionEvent);
     }
 
+    static /* synthetic */ float access$218(LoopRotarySwitchView x0, double x1) {
+        float f = (float) (((double) x0.angle) + x1);
+        x0.angle = f;
+        return f;
+    }
+
     public LoopRotarySwitchView(Context context) {
         this(context, (AttributeSet) null);
     }
@@ -111,7 +117,7 @@ public class LoopRotarySwitchView extends RelativeLayout {
         this.size = 0;
         this.r = 200.0f;
         this.multiple = 2.0f;
-        this.distance = this.multiple * this.r;
+        this.distance = 2.0f * 200.0f;
         this.angle = 0.0f;
         this.last_angle = 0.0f;
         this.autoRotation = false;
@@ -140,7 +146,8 @@ public class LoopRotarySwitchView extends RelativeLayout {
                         if (LoopRotarySwitchView.this.angle == 360.0f) {
                             float unused = LoopRotarySwitchView.this.angle = 0.0f;
                         }
-                        LoopRotarySwitchView.this.AnimRotationTo(LoopRotarySwitchView.this.angle + ((float) perAngle), (Runnable) null);
+                        LoopRotarySwitchView loopRotarySwitchView = LoopRotarySwitchView.this;
+                        loopRotarySwitchView.AnimRotationTo(loopRotarySwitchView.angle + ((float) perAngle), (Runnable) null);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -149,7 +156,7 @@ public class LoopRotarySwitchView extends RelativeLayout {
         };
         this.handlerFocus = new Handler(new Handler.Callback() {
             public final boolean handleMessage(Message message) {
-                return LoopRotarySwitchView.lambda$new$0(LoopRotarySwitchView.this, message);
+                return LoopRotarySwitchView.this.lambda$new$0$LoopRotarySwitchView(message);
             }
         });
         this.bottom = 0;
@@ -176,11 +183,13 @@ public class LoopRotarySwitchView extends RelativeLayout {
 
     /* renamed from: com.wits.ksw.launcher.view.LoopRotarySwitchView$11  reason: invalid class name */
     static /* synthetic */ class AnonymousClass11 {
-        static final /* synthetic */ int[] $SwitchMap$com$wits$ksw$launcher$view$LoopRotarySwitchView$AutoScrollDirection = new int[AutoScrollDirection.values().length];
+        static final /* synthetic */ int[] $SwitchMap$com$wits$ksw$launcher$view$LoopRotarySwitchView$AutoScrollDirection;
 
         static {
+            int[] iArr = new int[AutoScrollDirection.values().length];
+            $SwitchMap$com$wits$ksw$launcher$view$LoopRotarySwitchView$AutoScrollDirection = iArr;
             try {
-                $SwitchMap$com$wits$ksw$launcher$view$LoopRotarySwitchView$AutoScrollDirection[AutoScrollDirection.left.ordinal()] = 1;
+                iArr[AutoScrollDirection.left.ordinal()] = 1;
             } catch (NoSuchFieldError e) {
             }
             try {
@@ -222,244 +231,239 @@ public class LoopRotarySwitchView extends RelativeLayout {
     private GestureDetector.SimpleOnGestureListener getGeomeryController() {
         return new GestureDetector.SimpleOnGestureListener() {
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                float unused = LoopRotarySwitchView.this.angle = (float) (((double) LoopRotarySwitchView.this.angle) + (Math.cos(Math.toRadians((double) LoopRotarySwitchView.this.loopRotationZ)) * ((double) (distanceX / 4.0f))) + (Math.sin(Math.toRadians((double) LoopRotarySwitchView.this.loopRotationZ)) * ((double) (distanceY / 4.0f))));
+                LoopRotarySwitchView loopRotarySwitchView = LoopRotarySwitchView.this;
+                LoopRotarySwitchView.access$218(loopRotarySwitchView, (Math.cos(Math.toRadians((double) loopRotarySwitchView.loopRotationZ)) * ((double) (distanceX / 4.0f))) + (Math.sin(Math.toRadians((double) LoopRotarySwitchView.this.loopRotationZ)) * ((double) (distanceY / 4.0f))));
                 LoopRotarySwitchView.this.initView();
                 return true;
             }
         };
     }
 
-    public static /* synthetic */ boolean lambda$new$0(LoopRotarySwitchView loopRotarySwitchView, Message message) {
-        if (message.what != 0) {
-            return false;
+    public /* synthetic */ boolean lambda$new$0$LoopRotarySwitchView(Message message) {
+        switch (message.what) {
+            case 0:
+                Log.i(TAG, "handler i=" + message.arg1);
+                setSelectItem(message.arg1);
+                return false;
+            default:
+                return false;
         }
-        Log.i(TAG, "handler i=" + message.arg1);
-        loopRotarySwitchView.setSelectItem(message.arg1);
-        return false;
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:26:0x0171  */
-    /* JADX WARNING: Removed duplicated region for block: B:36:0x019d A[SYNTHETIC] */
+    /* JADX WARNING: Removed duplicated region for block: B:26:0x0166  */
+    /* JADX WARNING: Removed duplicated region for block: B:36:0x0194 A[SYNTHETIC] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public void initView() {
         /*
-            r23 = this;
-            r0 = r23
-            r2 = 0
+            r21 = this;
+            r0 = r21
+            r1 = 0
         L_0x0003:
-            java.util.List<android.view.View> r3 = r0.views
-            int r3 = r3.size()
-            if (r2 >= r3) goto L_0x01a1
-            float r3 = r0.angle
-            r4 = 1127481344(0x43340000, float:180.0)
-            float r3 = r3 + r4
-            int r4 = r2 * 360
-            int r5 = r0.size
-            int r4 = r4 / r5
+            java.util.List<android.view.View> r2 = r0.views
+            int r2 = r2.size()
+            if (r1 >= r2) goto L_0x0198
+            float r2 = r0.angle
+            r3 = 1127481344(0x43340000, float:180.0)
+            float r2 = r2 + r3
+            int r3 = r1 * 360
+            int r4 = r0.size
+            int r3 = r3 / r4
+            float r3 = (float) r3
+            float r2 = r2 - r3
+            double r2 = (double) r2
+            double r4 = java.lang.Math.toRadians(r2)
+            double r4 = java.lang.Math.sin(r4)
             float r4 = (float) r4
-            float r3 = r3 - r4
-            double r3 = (double) r3
-            double r5 = java.lang.Math.toRadians(r3)
-            double r5 = java.lang.Math.sin(r5)
+            float r5 = r0.r
+            float r4 = r4 * r5
+            double r5 = java.lang.Math.toRadians(r2)
+            double r5 = java.lang.Math.cos(r5)
             float r5 = (float) r5
             float r6 = r0.r
             float r5 = r5 * r6
-            double r6 = java.lang.Math.toRadians(r3)
-            double r6 = java.lang.Math.cos(r6)
+            float r7 = r0.distance
+            float r8 = r7 - r5
+            float r7 = r7 + r6
+            float r8 = r8 / r7
+            java.util.List<android.view.View> r6 = r0.views
+            java.lang.Object r6 = r6.get(r1)
+            android.view.View r6 = (android.view.View) r6
+            r7 = 1056964608(0x3f000000, float:0.5)
+            float r9 = java.lang.Math.max(r8, r7)
+            r6.setScaleX(r9)
+            java.util.List<android.view.View> r6 = r0.views
+            java.lang.Object r6 = r6.get(r1)
+            android.view.View r6 = (android.view.View) r6
+            float r9 = java.lang.Math.max(r8, r7)
+            r6.setScaleY(r9)
+            java.util.List<android.view.View> r6 = r0.views
+            java.lang.Object r6 = r6.get(r1)
+            android.view.View r6 = (android.view.View) r6
+            float r7 = java.lang.Math.max(r8, r7)
+            r6.setAlpha(r7)
+            int r6 = r0.loopRotationX
+            double r6 = (double) r6
+            double r9 = java.lang.Math.toRadians(r2)
+            double r9 = java.lang.Math.cos(r9)
+            double r6 = r6 * r9
+            double r6 = java.lang.Math.toRadians(r6)
+            double r6 = java.lang.Math.sin(r6)
             float r6 = (float) r6
             float r7 = r0.r
             float r6 = r6 * r7
-            float r7 = r0.distance
-            float r7 = r7 - r6
-            float r8 = r0.distance
-            float r9 = r0.r
-            float r8 = r8 + r9
-            float r7 = r7 / r8
-            java.util.List<android.view.View> r8 = r0.views
-            java.lang.Object r8 = r8.get(r2)
-            android.view.View r8 = (android.view.View) r8
-            r9 = 1056964608(0x3f000000, float:0.5)
-            float r10 = java.lang.Math.max(r7, r9)
-            r8.setScaleX(r10)
-            java.util.List<android.view.View> r8 = r0.views
-            java.lang.Object r8 = r8.get(r2)
-            android.view.View r8 = (android.view.View) r8
-            float r10 = java.lang.Math.max(r7, r9)
-            r8.setScaleY(r10)
-            java.util.List<android.view.View> r8 = r0.views
-            java.lang.Object r8 = r8.get(r2)
-            android.view.View r8 = (android.view.View) r8
-            float r9 = java.lang.Math.max(r7, r9)
-            r8.setAlpha(r9)
-            int r8 = r0.loopRotationX
-            double r8 = (double) r8
-            double r10 = java.lang.Math.toRadians(r3)
-            double r10 = java.lang.Math.cos(r10)
-            double r8 = r8 * r10
-            double r8 = java.lang.Math.toRadians(r8)
-            double r8 = java.lang.Math.sin(r8)
-            float r8 = (float) r8
-            float r9 = r0.r
-            float r8 = r8 * r9
+            int r7 = r0.loopRotationZ
+            int r7 = -r7
+            double r9 = (double) r7
+            double r9 = java.lang.Math.toRadians(r9)
+            double r9 = java.lang.Math.sin(r9)
+            float r7 = (float) r9
+            float r7 = -r7
+            float r7 = r7 * r4
             int r9 = r0.loopRotationZ
             int r9 = -r9
             double r9 = (double) r9
             double r9 = java.lang.Math.toRadians(r9)
-            double r9 = java.lang.Math.sin(r9)
+            double r9 = java.lang.Math.cos(r9)
             float r9 = (float) r9
-            float r9 = -r9
-            float r9 = r9 * r5
-            int r10 = r0.loopRotationZ
-            int r10 = -r10
-            double r10 = (double) r10
-            double r10 = java.lang.Math.toRadians(r10)
-            double r10 = java.lang.Math.cos(r10)
-            float r10 = (float) r10
-            float r10 = r10 * r5
-            float r10 = r10 - r5
-            java.util.List<android.view.View> r11 = r0.views
-            java.lang.Object r11 = r11.get(r2)
-            android.view.View r11 = (android.view.View) r11
-            float r12 = r5 + r10
-            r11.setTranslationX(r12)
-            java.util.List<android.view.View> r11 = r0.views
-            java.lang.Object r11 = r11.get(r2)
-            android.view.View r11 = (android.view.View) r11
-            float r12 = r8 + r9
-            r11.setTranslationY(r12)
-            r11 = 4645040803167600640(0x4076800000000000, double:360.0)
-            double r13 = r3 % r11
-            r15 = 0
-            int r15 = (r13 > r15 ? 1 : (r13 == r15 ? 0 : -1))
-            if (r15 >= 0) goto L_0x00c6
-            double r13 = r13 + r11
-        L_0x00c6:
-            r15 = 4644407484470001664(0x4074400000000000, double:324.0)
-            int r17 = (r15 > r13 ? 1 : (r15 == r13 ? 0 : -1))
-            r18 = 360(0x168, float:5.04E-43)
-            if (r17 >= 0) goto L_0x00f9
-            int r17 = (r13 > r11 ? 1 : (r13 == r11 ? 0 : -1))
-            if (r17 < 0) goto L_0x00da
-            r19 = r5
-            r20 = r6
-            goto L_0x00fd
-        L_0x00da:
-            java.util.List<android.view.View> r15 = r0.views
-            java.lang.Object r15 = r15.get(r2)
-            android.view.View r15 = (android.view.View) r15
-            r16 = 4607182418800017408(0x3ff0000000000000, double:1.0)
-            double r11 = r11 - r13
-            int r1 = r0.size
-            int r1 = r18 / r1
-            r19 = r5
-            r20 = r6
-            double r5 = (double) r1
-            double r11 = r11 / r5
-            double r5 = r16 - r11
-            float r1 = (float) r5
-            r15.setAlpha(r1)
-            r21 = r3
-            r3 = 0
-            goto L_0x0163
-        L_0x00f9:
-            r19 = r5
-            r20 = r6
-        L_0x00fd:
-            r5 = r3
-            r11 = 4641803840935428096(0x406b000000000000, double:216.0)
-            int r1 = (r11 > r13 ? 1 : (r11 == r13 ? 0 : -1))
-            r11 = 4643070478330626048(0x406f800000000000, double:252.0)
-            if (r1 >= 0) goto L_0x0124
-            int r1 = (r13 > r11 ? 1 : (r13 == r11 ? 0 : -1))
-            if (r1 >= 0) goto L_0x0124
-            java.util.List<android.view.View> r1 = r0.views
-            java.lang.Object r1 = r1.get(r2)
-            android.view.View r1 = (android.view.View) r1
-            double r11 = r11 - r13
+            float r9 = r9 * r4
+            float r9 = r9 - r4
+            java.util.List<android.view.View> r10 = r0.views
+            java.lang.Object r10 = r10.get(r1)
+            android.view.View r10 = (android.view.View) r10
+            float r11 = r4 + r9
+            r10.setTranslationX(r11)
+            java.util.List<android.view.View> r10 = r0.views
+            java.lang.Object r10 = r10.get(r1)
+            android.view.View r10 = (android.view.View) r10
+            float r11 = r6 + r7
+            r10.setTranslationY(r11)
+            r10 = 4645040803167600640(0x4076800000000000, double:360.0)
+            double r12 = r2 % r10
+            r14 = 0
+            int r14 = (r12 > r14 ? 1 : (r12 == r14 ? 0 : -1))
+            if (r14 >= 0) goto L_0x00c3
+            double r12 = r12 + r10
+        L_0x00c3:
+            r14 = 4644407484470001664(0x4074400000000000, double:324.0)
+            int r16 = (r14 > r12 ? 1 : (r14 == r12 ? 0 : -1))
+            r17 = 360(0x168, float:5.04E-43)
+            if (r16 >= 0) goto L_0x00f2
+            int r16 = (r12 > r10 ? 1 : (r12 == r10 ? 0 : -1))
+            if (r16 < 0) goto L_0x00d7
+            r16 = r4
+            r20 = r5
+            goto L_0x00f6
+        L_0x00d7:
+            java.util.List<android.view.View> r14 = r0.views
+            java.lang.Object r14 = r14.get(r1)
+            android.view.View r14 = (android.view.View) r14
+            double r10 = r10 - r12
             int r15 = r0.size
-            int r15 = r18 / r15
-            r21 = r3
-            double r3 = (double) r15
-            double r11 = r11 / r3
-            float r3 = (float) r11
-            r1.setAlpha(r3)
-            r3 = 0
-            goto L_0x0162
-        L_0x0124:
-            r21 = r3
-            int r1 = (r11 > r13 ? 1 : (r11 == r13 ? 0 : -1))
-            if (r1 > 0) goto L_0x0148
-            int r1 = (r13 > r15 ? 1 : (r13 == r15 ? 0 : -1))
-            if (r1 <= 0) goto L_0x012f
-            goto L_0x0148
-        L_0x012f:
-            java.util.List<android.view.View> r1 = r0.views
-            java.lang.Object r1 = r1.get(r2)
-            android.view.View r1 = (android.view.View) r1
-            r3 = 0
-            r1.setAlpha(r3)
-            java.util.List<android.view.View> r1 = r0.views
-            java.lang.Object r1 = r1.get(r2)
-            android.view.View r1 = (android.view.View) r1
-            r3 = 0
-            r1.setClickable(r3)
-            goto L_0x0162
-        L_0x0148:
-            r3 = 0
-            java.util.List<android.view.View> r1 = r0.views
-            java.lang.Object r1 = r1.get(r2)
-            android.view.View r1 = (android.view.View) r1
-            r4 = 1065353216(0x3f800000, float:1.0)
-            r1.setAlpha(r4)
-            java.util.List<android.view.View> r1 = r0.views
-            java.lang.Object r1 = r1.get(r2)
-            android.view.View r1 = (android.view.View) r1
-            r4 = 1
-            r1.setClickable(r4)
-        L_0x0162:
-        L_0x0163:
-            java.util.List<android.view.View> r1 = r0.views
-            java.lang.Object r1 = r1.get(r2)
-            android.view.View r1 = (android.view.View) r1
-            android.view.View$OnFocusChangeListener r1 = r1.getOnFocusChangeListener()
-            if (r1 != 0) goto L_0x019d
-            java.lang.String r1 = "LoopRotarySwitchView"
+            int r15 = r17 / r15
+            r16 = r4
+            r20 = r5
+            double r4 = (double) r15
+            double r10 = r10 / r4
+            r4 = 4607182418800017408(0x3ff0000000000000, double:1.0)
+            double r4 = r4 - r10
+            float r4 = (float) r4
+            r14.setAlpha(r4)
+            goto L_0x0158
+        L_0x00f2:
+            r16 = r4
+            r20 = r5
+        L_0x00f6:
+            r4 = r2
+            r10 = 4641803840935428096(0x406b000000000000, double:216.0)
+            int r10 = (r10 > r12 ? 1 : (r10 == r12 ? 0 : -1))
+            r18 = 4643070478330626048(0x406f800000000000, double:252.0)
+            if (r10 >= 0) goto L_0x011c
+            int r10 = (r12 > r18 ? 1 : (r12 == r18 ? 0 : -1))
+            if (r10 >= 0) goto L_0x011c
+            java.util.List<android.view.View> r10 = r0.views
+            java.lang.Object r10 = r10.get(r1)
+            android.view.View r10 = (android.view.View) r10
+            double r18 = r18 - r12
+            int r11 = r0.size
+            int r11 = r17 / r11
+            double r14 = (double) r11
+            double r14 = r18 / r14
+            float r11 = (float) r14
+            r10.setAlpha(r11)
+            goto L_0x0157
+        L_0x011c:
+            int r10 = (r18 > r12 ? 1 : (r18 == r12 ? 0 : -1))
+            if (r10 > 0) goto L_0x013e
+            int r10 = (r12 > r14 ? 1 : (r12 == r14 ? 0 : -1))
+            if (r10 <= 0) goto L_0x0125
+            goto L_0x013e
+        L_0x0125:
+            java.util.List<android.view.View> r10 = r0.views
+            java.lang.Object r10 = r10.get(r1)
+            android.view.View r10 = (android.view.View) r10
+            r11 = 0
+            r10.setAlpha(r11)
+            java.util.List<android.view.View> r10 = r0.views
+            java.lang.Object r10 = r10.get(r1)
+            android.view.View r10 = (android.view.View) r10
+            r11 = 0
+            r10.setClickable(r11)
+            goto L_0x0157
+        L_0x013e:
+            java.util.List<android.view.View> r10 = r0.views
+            java.lang.Object r10 = r10.get(r1)
+            android.view.View r10 = (android.view.View) r10
+            r11 = 1065353216(0x3f800000, float:1.0)
+            r10.setAlpha(r11)
+            java.util.List<android.view.View> r10 = r0.views
+            java.lang.Object r10 = r10.get(r1)
+            android.view.View r10 = (android.view.View) r10
+            r11 = 1
+            r10.setClickable(r11)
+        L_0x0157:
+        L_0x0158:
+            java.util.List<android.view.View> r4 = r0.views
+            java.lang.Object r4 = r4.get(r1)
+            android.view.View r4 = (android.view.View) r4
+            android.view.View$OnFocusChangeListener r4 = r4.getOnFocusChangeListener()
+            if (r4 != 0) goto L_0x0194
             java.lang.StringBuilder r4 = new java.lang.StringBuilder
             r4.<init>()
             java.lang.String r5 = "initView: setOnFocusChangeListener view="
-            r4.append(r5)
+            java.lang.StringBuilder r4 = r4.append(r5)
             java.util.List<android.view.View> r5 = r0.views
-            java.lang.Object r5 = r5.get(r2)
-            r4.append(r5)
+            java.lang.Object r5 = r5.get(r1)
+            java.lang.StringBuilder r4 = r4.append(r5)
             java.lang.String r4 = r4.toString()
-            android.util.Log.i(r1, r4)
-            java.util.List<android.view.View> r1 = r0.views
-            java.lang.Object r1 = r1.get(r2)
-            android.view.View r1 = (android.view.View) r1
-            com.wits.ksw.launcher.view.LoopRotarySwitchView$3 r4 = new com.wits.ksw.launcher.view.LoopRotarySwitchView$3
-            r4.<init>()
-            r1.setOnFocusChangeListener(r4)
-        L_0x019d:
-            int r2 = r2 + 1
+            java.lang.String r5 = "LoopRotarySwitchView"
+            android.util.Log.i(r5, r4)
+            java.util.List<android.view.View> r4 = r0.views
+            java.lang.Object r4 = r4.get(r1)
+            android.view.View r4 = (android.view.View) r4
+            com.wits.ksw.launcher.view.LoopRotarySwitchView$3 r5 = new com.wits.ksw.launcher.view.LoopRotarySwitchView$3
+            r5.<init>()
+            r4.setOnFocusChangeListener(r5)
+        L_0x0194:
+            int r1 = r1 + 1
             goto L_0x0003
-        L_0x01a1:
-            r3 = 0
+        L_0x0198:
             java.util.ArrayList r1 = new java.util.ArrayList
             r1.<init>()
             r1.clear()
-        L_0x01ab:
-            r2 = r3
+            r2 = 0
+        L_0x01a1:
             java.util.List<android.view.View> r3 = r0.views
             int r3 = r3.size()
-            if (r2 >= r3) goto L_0x01c0
+            if (r2 >= r3) goto L_0x01b7
             java.util.List<android.view.View> r3 = r0.views
             java.lang.Object r3 = r3.get(r2)
+            android.view.View r3 = (android.view.View) r3
             r1.add(r3)
-            int r3 = r2 + 1
-            goto L_0x01ab
-        L_0x01c0:
+            int r2 = r2 + 1
+            goto L_0x01a1
+        L_0x01b7:
             r0.sortList(r1)
-            r23.postInvalidate()
+            r21.postInvalidate()
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.launcher.view.LoopRotarySwitchView.initView():void");
@@ -470,7 +474,8 @@ public class LoopRotarySwitchView extends RelativeLayout {
         super.onSizeChanged(w, h, oldw, oldh);
         initView();
         if (this.autoRotation) {
-            this.loopHandler.sendEmptyMessageDelayed(1000, this.loopHandler.loopTime);
+            LoopRotarySwitchViewHandler loopRotarySwitchViewHandler = this.loopHandler;
+            loopRotarySwitchViewHandler.sendEmptyMessageDelayed(1000, loopRotarySwitchViewHandler.loopTime);
         }
     }
 
@@ -479,9 +484,11 @@ public class LoopRotarySwitchView extends RelativeLayout {
         super.onLayout(changed, l, t, r2, b);
         if (changed) {
             checkChildView();
-            if (this.onItemSelectedListener != null) {
+            OnItemSelectedListener onItemSelectedListener2 = this.onItemSelectedListener;
+            if (onItemSelectedListener2 != null) {
                 this.isCanClickListener = true;
-                this.onItemSelectedListener.selected(this.selectItem, this.views.get(this.selectItem));
+                int i = this.selectItem;
+                onItemSelectedListener2.selected(i, this.views.get(i));
             }
             RAnimation();
         }
@@ -500,8 +507,9 @@ public class LoopRotarySwitchView extends RelativeLayout {
     }
 
     public void RAnimation(float from, float to) {
-        this.rAnimation = ValueAnimator.ofFloat(new float[]{from, to});
-        this.rAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        ValueAnimator ofFloat = ValueAnimator.ofFloat(new float[]{from, to});
+        this.rAnimation = ofFloat;
+        ofFloat.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float unused = LoopRotarySwitchView.this.r = ((Float) valueAnimator.getAnimatedValue()).floatValue();
                 LoopRotarySwitchView.this.initView();
@@ -516,11 +524,11 @@ public class LoopRotarySwitchView extends RelativeLayout {
         for (int i = 0; i < this.views.size(); i++) {
             this.views.remove(i);
         }
-        int count = getChildCount();
-        this.size = count;
-        for (int i2 = 0; i2 < count; i2++) {
-            View view = getChildAt(i2);
-            final int position = i2;
+        int i2 = getChildCount();
+        this.size = i2;
+        for (int i3 = 0; i3 < i2; i3++) {
+            View view = getChildAt(i3);
+            final int position = i3;
             this.views.add(view);
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -539,20 +547,22 @@ public class LoopRotarySwitchView extends RelativeLayout {
 
     private void restPosition() {
         float finall;
-        if (this.size != 0) {
-            float part = (float) (360 / this.size);
-            if (this.angle < 0.0f) {
+        int i = this.size;
+        if (i != 0) {
+            float part = (float) (360 / i);
+            float f = this.angle;
+            if (f < 0.0f) {
                 part = -part;
             }
-            float minvalue = ((float) ((int) (this.angle / part))) * part;
-            float maxvalue = (((float) ((int) (this.angle / part))) * part) + part;
-            if (this.angle >= 0.0f) {
-                if (this.angle - this.last_angle > 0.0f) {
+            float minvalue = ((float) ((int) (f / part))) * part;
+            float maxvalue = (((float) ((int) (f / part))) * part) + part;
+            if (f >= 0.0f) {
+                if (f - this.last_angle > 0.0f) {
                     finall = maxvalue;
                 } else {
                     finall = minvalue;
                 }
-            } else if (this.angle - this.last_angle < 0.0f) {
+            } else if (f - this.last_angle < 0.0f) {
                 finall = maxvalue;
             } else {
                 finall = minvalue;
@@ -563,9 +573,11 @@ public class LoopRotarySwitchView extends RelativeLayout {
 
     /* access modifiers changed from: private */
     public void AnimRotationTo(float finall, final Runnable complete) {
-        if (this.angle != finall) {
-            this.restAnimator = ValueAnimator.ofFloat(new float[]{this.angle, finall});
-            this.restAnimator.setInterpolator(new DecelerateInterpolator());
+        float f = this.angle;
+        if (f != finall) {
+            ValueAnimator ofFloat = ValueAnimator.ofFloat(new float[]{f, finall});
+            this.restAnimator = ofFloat;
+            ofFloat.setInterpolator(new DecelerateInterpolator());
             this.restAnimator.setDuration(300);
             this.restAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -585,10 +597,12 @@ public class LoopRotarySwitchView extends RelativeLayout {
                     Log.d(LoopRotarySwitchView.TAG, "onAnimationEnd: ");
                     Boolean unused = LoopRotarySwitchView.isCanSwitchItem = true;
                     if (!LoopRotarySwitchView.this.touching) {
-                        int unused2 = LoopRotarySwitchView.this.selectItem = LoopRotarySwitchView.this.calculateItem();
+                        LoopRotarySwitchView loopRotarySwitchView = LoopRotarySwitchView.this;
+                        int unused2 = loopRotarySwitchView.selectItem = loopRotarySwitchView.calculateItem();
                         Log.i(LoopRotarySwitchView.TAG, "onAnimationEnd: selectitem=" + LoopRotarySwitchView.this.selectItem);
                         if (LoopRotarySwitchView.this.selectItem < 0) {
-                            int unused3 = LoopRotarySwitchView.this.selectItem = LoopRotarySwitchView.this.size + LoopRotarySwitchView.this.selectItem;
+                            LoopRotarySwitchView loopRotarySwitchView2 = LoopRotarySwitchView.this;
+                            int unused3 = loopRotarySwitchView2.selectItem = loopRotarySwitchView2.size + LoopRotarySwitchView.this.selectItem;
                         }
                         if (LoopRotarySwitchView.this.onItemSelectedListener != null) {
                             LoopRotarySwitchView.this.onItemSelectedListener.selected(LoopRotarySwitchView.this.selectItem, (View) LoopRotarySwitchView.this.views.get(LoopRotarySwitchView.this.selectItem));
@@ -648,8 +662,10 @@ public class LoopRotarySwitchView extends RelativeLayout {
 
     /* access modifiers changed from: private */
     public int calculateItem() {
-        this.angle %= 360.0f;
-        return ((int) (this.angle / ((float) (360 / this.size)))) % this.size;
+        float f = this.angle % 360.0f;
+        this.angle = f;
+        int i = this.size;
+        return ((int) (f / ((float) (360 / i)))) % i;
     }
 
     private boolean onTouch(MotionEvent event) {
@@ -669,8 +685,9 @@ public class LoopRotarySwitchView extends RelativeLayout {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        if (this.onLoopViewTouchListener != null) {
-            this.onLoopViewTouchListener.onTouch(event);
+        OnLoopViewTouchListener onLoopViewTouchListener2 = this.onLoopViewTouchListener;
+        if (onLoopViewTouchListener2 != null) {
+            onLoopViewTouchListener2.onTouch(event);
         }
         isCanClickListener(event);
         return true;
@@ -678,8 +695,9 @@ public class LoopRotarySwitchView extends RelativeLayout {
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
         onTouch(ev);
-        if (this.onLoopViewTouchListener != null) {
-            this.onLoopViewTouchListener.onTouch(ev);
+        OnLoopViewTouchListener onLoopViewTouchListener2 = this.onLoopViewTouchListener;
+        if (onLoopViewTouchListener2 != null) {
+            onLoopViewTouchListener2.onTouch(ev);
         }
         isCanClickListener(ev);
         return super.dispatchTouchEvent(ev);
@@ -697,9 +715,12 @@ public class LoopRotarySwitchView extends RelativeLayout {
             case 1:
             case 3:
                 if (this.autoRotation) {
-                    this.loopHandler.sendEmptyMessageDelayed(1000, this.loopHandler.loopTime);
+                    LoopRotarySwitchViewHandler loopRotarySwitchViewHandler = this.loopHandler;
+                    loopRotarySwitchViewHandler.sendEmptyMessageDelayed(1000, loopRotarySwitchViewHandler.loopTime);
                 }
-                if (event.getX() - this.x > this.limitX || this.x - event.getX() > this.limitX) {
+                float x2 = event.getX();
+                float f = this.x;
+                if (x2 - f > this.limitX || f - event.getX() > this.limitX) {
                     this.isCanClickListener = false;
                     return;
                 } else {
@@ -741,13 +762,15 @@ public class LoopRotarySwitchView extends RelativeLayout {
 
     public void setSelectItem(int pos) {
         Log.i(TAG, "setSelectItem: pos=" + pos);
-        if (this.restAnimator != null && this.restAnimator.isRunning()) {
+        ValueAnimator valueAnimator = this.restAnimator;
+        if (valueAnimator != null && valueAnimator.isRunning()) {
             this.restAnimator.end();
             this.restAnimator.cancel();
         }
         if (pos >= 0 && pos < this.views.size()) {
-            this.bottom = calculateItem();
-            if (this.bottom == pos) {
+            int calculateItem = calculateItem();
+            this.bottom = calculateItem;
+            if (calculateItem == pos) {
                 Log.e("setToPos", "bottom");
             }
             int difPos = this.bottom - pos;
@@ -805,7 +828,7 @@ public class LoopRotarySwitchView extends RelativeLayout {
 
     public LoopRotarySwitchView setMultiple(float mMultiple) {
         this.multiple = mMultiple;
-        this.distance = this.multiple * this.r;
+        this.distance = this.r * mMultiple;
         return this;
     }
 
@@ -815,11 +838,13 @@ public class LoopRotarySwitchView extends RelativeLayout {
     }
 
     public void createXAnimation(int from, int to, boolean start) {
-        if (this.xAnimation != null && this.xAnimation.isRunning()) {
+        ValueAnimator valueAnimator = this.xAnimation;
+        if (valueAnimator != null && valueAnimator.isRunning()) {
             this.xAnimation.cancel();
         }
-        this.xAnimation = ValueAnimator.ofInt(new int[]{from, to});
-        this.xAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        ValueAnimator ofInt = ValueAnimator.ofInt(new int[]{from, to});
+        this.xAnimation = ofInt;
+        ofInt.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
                 int unused = LoopRotarySwitchView.this.loopRotationX = ((Integer) animation.getAnimatedValue()).intValue();
                 LoopRotarySwitchView.this.initView();
@@ -833,11 +858,13 @@ public class LoopRotarySwitchView extends RelativeLayout {
     }
 
     public ValueAnimator createZAnimation(int from, int to, boolean start) {
-        if (this.zAnimation != null && this.zAnimation.isRunning()) {
+        ValueAnimator valueAnimator = this.zAnimation;
+        if (valueAnimator != null && valueAnimator.isRunning()) {
             this.zAnimation.cancel();
         }
-        this.zAnimation = ValueAnimator.ofInt(new int[]{from, to});
-        this.zAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        ValueAnimator ofInt = ValueAnimator.ofInt(new int[]{from, to});
+        this.zAnimation = ofInt;
+        ofInt.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
                 int unused = LoopRotarySwitchView.this.loopRotationZ = ((Integer) animation.getAnimatedValue()).intValue();
                 LoopRotarySwitchView.this.initView();

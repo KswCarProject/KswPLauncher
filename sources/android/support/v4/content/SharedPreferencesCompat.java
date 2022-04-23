@@ -1,7 +1,6 @@
 package android.support.v4.content;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 
 @Deprecated
 public final class SharedPreferencesCompat {
@@ -15,7 +14,7 @@ public final class SharedPreferencesCompat {
             Helper() {
             }
 
-            public void apply(@NonNull SharedPreferences.Editor editor) {
+            public void apply(SharedPreferences.Editor editor) {
                 try {
                     editor.apply();
                 } catch (AbstractMethodError e) {
@@ -36,7 +35,7 @@ public final class SharedPreferencesCompat {
         }
 
         @Deprecated
-        public void apply(@NonNull SharedPreferences.Editor editor) {
+        public void apply(SharedPreferences.Editor editor) {
             this.mHelper.apply(editor);
         }
     }

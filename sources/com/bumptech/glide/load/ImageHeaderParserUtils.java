@@ -1,7 +1,5 @@
 package com.bumptech.glide.load;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.load.ImageHeaderParser;
 import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
 import com.bumptech.glide.load.resource.bitmap.RecyclableBufferedInputStream;
@@ -17,8 +15,7 @@ public final class ImageHeaderParserUtils {
     }
 
     /* JADX INFO: finally extract failed */
-    @NonNull
-    public static ImageHeaderParser.ImageType getType(@NonNull List<ImageHeaderParser> parsers, @Nullable InputStream is, @NonNull ArrayPool byteArrayPool) throws IOException {
+    public static ImageHeaderParser.ImageType getType(List<ImageHeaderParser> parsers, InputStream is, ArrayPool byteArrayPool) throws IOException {
         if (is == null) {
             return ImageHeaderParser.ImageType.UNKNOWN;
         }
@@ -45,8 +42,7 @@ public final class ImageHeaderParserUtils {
         return ImageHeaderParser.ImageType.UNKNOWN;
     }
 
-    @NonNull
-    public static ImageHeaderParser.ImageType getType(@NonNull List<ImageHeaderParser> parsers, @Nullable ByteBuffer buffer) throws IOException {
+    public static ImageHeaderParser.ImageType getType(List<ImageHeaderParser> parsers, ByteBuffer buffer) throws IOException {
         if (buffer == null) {
             return ImageHeaderParser.ImageType.UNKNOWN;
         }
@@ -61,7 +57,7 @@ public final class ImageHeaderParserUtils {
     }
 
     /* JADX INFO: finally extract failed */
-    public static int getOrientation(@NonNull List<ImageHeaderParser> parsers, @Nullable InputStream is, @NonNull ArrayPool byteArrayPool) throws IOException {
+    public static int getOrientation(List<ImageHeaderParser> parsers, InputStream is, ArrayPool byteArrayPool) throws IOException {
         if (is == null) {
             return -1;
         }

@@ -22,8 +22,9 @@ public class ToastUtils {
     }
 
     public static void showToast(final Context context, final String message, final int duration) {
-        if (mToast != null) {
-            mToast.cancel();
+        Toast toast = mToast;
+        if (toast != null) {
+            toast.cancel();
         }
         getMainThreadHandler().post(new Runnable() {
             public void run() {

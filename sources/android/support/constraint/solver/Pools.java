@@ -27,22 +27,26 @@ final class Pools {
         }
 
         public T acquire() {
-            if (this.mPoolSize <= 0) {
+            int i = this.mPoolSize;
+            if (i <= 0) {
                 return null;
             }
-            int lastPooledIndex = this.mPoolSize - 1;
-            T instance = this.mPool[lastPooledIndex];
-            this.mPool[lastPooledIndex] = null;
-            this.mPoolSize--;
+            int lastPooledIndex = i - 1;
+            T[] tArr = this.mPool;
+            T instance = tArr[lastPooledIndex];
+            tArr[lastPooledIndex] = null;
+            this.mPoolSize = i - 1;
             return instance;
         }
 
         public boolean release(T instance) {
-            if (this.mPoolSize >= this.mPool.length) {
+            int i = this.mPoolSize;
+            Object[] objArr = this.mPool;
+            if (i >= objArr.length) {
                 return false;
             }
-            this.mPool[this.mPoolSize] = instance;
-            this.mPoolSize++;
+            objArr[i] = instance;
+            this.mPoolSize = i + 1;
             return true;
         }
 
@@ -52,9 +56,11 @@ final class Pools {
             }
             for (int i = 0; i < count; i++) {
                 T instance = variables[i];
-                if (this.mPoolSize < this.mPool.length) {
-                    this.mPool[this.mPoolSize] = instance;
-                    this.mPoolSize++;
+                int i2 = this.mPoolSize;
+                Object[] objArr = this.mPool;
+                if (i2 < objArr.length) {
+                    objArr[i2] = instance;
+                    this.mPoolSize = i2 + 1;
                 }
             }
         }

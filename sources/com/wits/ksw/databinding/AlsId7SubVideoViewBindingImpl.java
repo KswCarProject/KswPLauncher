@@ -2,8 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
@@ -11,20 +9,19 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 
 public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback118;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback136;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.textView2, 2);
-        sViewsWithIds.put(R.id.textView3, 3);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.textView2, 2);
+        sparseIntArray.put(R.id.textView3, 3);
     }
 
-    public AlsId7SubVideoViewBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public AlsId7SubVideoViewBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -34,7 +31,7 @@ public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding imp
         this.videoConstraintLayout.setTag((Object) null);
         this.videoImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback118 = new OnClickListener(this, 1);
+        this.mCallback136 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -54,20 +51,20 @@ public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding imp
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (15 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (3 != variableId) {
             return false;
         }
         setDashVideoViewModel((AlsID7ViewModel) variable);
         return true;
     }
 
-    public void setDashVideoViewModel(@Nullable AlsID7ViewModel DashVideoViewModel) {
+    public void setDashVideoViewModel(AlsID7ViewModel DashVideoViewModel) {
         this.mDashVideoViewModel = DashVideoViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(3);
         super.requestRebind();
     }
 
@@ -85,14 +82,14 @@ public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding imp
         }
         AlsID7ViewModel alsID7ViewModel = this.mDashVideoViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.videoImageView.setOnClickListener(this.mCallback118);
+            this.videoImageView.setOnClickListener(this.mCallback136);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
         AlsID7ViewModel dashVideoViewModel = this.mDashVideoViewModel;
         if (dashVideoViewModel != null) {
-            dashVideoViewModel.openVideo(callbackArg_0);
+            dashVideoViewModel.openVideoMulti(callbackArg_0);
         }
     }
 }

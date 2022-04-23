@@ -1,41 +1,37 @@
 package android.arch.lifecycle;
 
 import android.arch.core.util.Function;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 public class Transformations {
     private Transformations() {
     }
 
-    @MainThread
-    public static <X, Y> LiveData<Y> map(@NonNull LiveData<X> source, @NonNull final Function<X, Y> func) {
+    public static <X, Y> LiveData<Y> map(LiveData<X> source, final Function<X, Y> func) {
         final MediatorLiveData<Y> result = new MediatorLiveData<>();
         result.addSource(source, new Observer<X>() {
-            public void onChanged(@Nullable X x) {
+            public void onChanged(X x) {
                 result.setValue(func.apply(x));
             }
         });
         return result;
     }
 
-    @MainThread
-    public static <X, Y> LiveData<Y> switchMap(@NonNull LiveData<X> trigger, @NonNull final Function<X, LiveData<Y>> func) {
+    public static <X, Y> LiveData<Y> switchMap(LiveData<X> trigger, final Function<X, LiveData<Y>> func) {
         final MediatorLiveData<Y> result = new MediatorLiveData<>();
         result.addSource(trigger, new Observer<X>() {
             LiveData<Y> mSource;
 
-            public void onChanged(@Nullable X x) {
+            public void onChanged(X x) {
                 LiveData<Y> newLiveData = (LiveData) func.apply(x);
-                if (this.mSource != newLiveData) {
-                    if (this.mSource != null) {
-                        result.removeSource(this.mSource);
+                LiveData<Y> liveData = this.mSource;
+                if (liveData != newLiveData) {
+                    if (liveData != null) {
+                        result.removeSource(liveData);
                     }
                     this.mSource = newLiveData;
-                    if (this.mSource != null) {
-                        result.addSource(this.mSource, new Observer<Y>() {
-                            public void onChanged(@Nullable Y y) {
+                    if (newLiveData != null) {
+                        result.addSource(newLiveData, new Observer<Y>() {
+                            public void onChanged(Y y) {
                                 result.setValue(y);
                             }
                         });

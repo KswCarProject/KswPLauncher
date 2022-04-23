@@ -44,6 +44,12 @@
     <string name="audi_set_temp_unit">وحدة درجة الحرارة</string>
     <string name="bc_apps_btn_text">تطبيقات</string>
     <string name="benz_gs_home_navi">ملاحة</string>
+    <string name="benz_mbux_2021_bg_sel_tip">الخلفية</string>
+    <string name="benz_mbux_2021_img_sel_tip">نمط الأيقونة</string>
+    <string name="benz_mbux_2021_style_classical_tip">كلاسيكي</string>
+    <string name="benz_mbux_2021_style_modern_tip">عصري</string>
+    <string name="benz_mbux_2021_theme_settings">إعدادات الموضوع  </string>
+    <string name="benz_ntg6_fy_theme_settings">موضوع</string>
     <string name="boot_record_mode">تذكر المصدر الأخير</string>
     <string name="boot_record_mode_radio1">تمكين</string>
     <string name="boot_record_mode_radio2">إلى نظام OEM</string>
@@ -95,6 +101,9 @@
     <string name="factory_danwei">جير</string>
     <string name="factory_danwei1">تلقائي</string>
     <string name="factory_danwei2">يدوي</string>
+    <string name="factory_gears1">نوع العتاد 1</string>
+    <string name="factory_gears2">نوع العتاد 2</string>
+    <string name="factory_gears3">نوع العتاد 3</string>
     <string name="factory_input1">قم باستيراد factory_config.xml من مجلد OEM لوحدة التخزين الخارجية</string>
     <string name="factory_input2">الإصدار:</string>
     <string name="factory_input3">تكوين الاستيراد</string>
@@ -119,6 +128,8 @@
     <string name="factory_yuyinkey2">الصحافة القصيرة لا تفعل شيئا ، الصحافة طويلة تفتح NAVI</string>
     <string name="factory_yuyinkey3">الصحافة القصيرة تفتح الأوامر الصوتية ، الصحافة الطويلة تفتح NAVI</string>
     <string name="factory_yuyinkey4">الصحافة القصيرة تفتح NAVI ، الصحافة الطويلة لا تفعل شيئا</string>
+    <string name="factory_yuyinkey5">HiCar وظيفة الصوت اضغط على مفتاح</string>
+    <string name="fuel_unit">وحدة الوقود</string>
     <string name="function_bt">البلوتوث</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">CVBS DVR</string>
@@ -162,12 +173,13 @@
     <string name="id6_phone">هاتف</string>
     <string name="id6_phone_mess">إجراء مكالمة</string>
     <string name="id6_setting_mess">إعدادات وظيفة النظام</string>
-    <string name="id6_shouj_hulian">EasyConnection</string>
+    <string name="id6_shouj_hulian">PhoneLink</string>
     <string name="id6_shouj_hulian_mess">الهاتف الإنعكاس</string>
     <string name="id6_xingchejily_mess">سجل فيديو القيادة</string>
     <string name="id7_als_item_one">ECO PRO</string>
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
+    <string name="id7_browser">@string/id6_browser</string>
     <string name="item1">النظام</string>
     <string name="item2">ملاحة</string>
     <string name="item3">مستوى الصوت</string>
@@ -202,8 +214,14 @@
     <string name="ksw_idf7_unknow_artis">فنان غير معروف</string>
     <string name="ksw_idf7_unkonw_album">ألبوم غير معروف</string>
     <string name="ksw_idf7_unkonw_soung">أغنية غير معروفة</string>
+    <string name="land_rover_dvr">مسجل القيادة</string>
+    <string name="landrover_apps">@string/ksw_id7_apps</string>
+    <string name="landrover_dashboard">@string/ksw_id7_ecu</string>
+    <string name="langover_bt">@string/ksw_id7_communication</string>
     <string name="lb_password_error">خطأ كلمة المرور!</string>
     <string name="mcu_file_corrupted">تلف ملف الترقية!</string>
+    <string name="mic_text">MIC ربح</string>
+    <string name="music_app_sel">اختر تطبيق موسيقى</string>
     <string name="ntg6_dvr_toast">لا أجهزة!</string>
     <string name="oil_size">بنزين: %s</string>
     <string name="raw_car_text1">كامل الشاشة</string>
@@ -225,6 +243,7 @@
     <string name="set_text7">كتم الصوت أثناء الرجوع للخلف</string>
     <string name="set_text8">نسبة مزيج الملاحة</string>
     <string name="set_text9">اختيار نافي APP</string>
+    <string name="set_text99">اختيار نافي APP</string>
     <string name="seven_color_menu_item_text1">أحمر</string>
     <string name="seven_color_menu_item_text2">البرتقالي</string>
     <string name="seven_color_menu_item_text3">الأصفر</string>
@@ -285,6 +304,7 @@
     <string name="update_mcu_file">هل تريد ترقية MCU؟</string>
     <string name="update_reset_all">هل تريد استعادة إعدادات المصنع؟</string>
     <string name="video">الفيديو</string>
+    <string name="video_app_sel">اختر تطبيق الفيديو</string>
     <string name="voic_1">Android</string>
     <string name="voic_2">الوسائط</string>
     <string name="voic_3">المكالمة</string>

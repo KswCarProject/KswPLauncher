@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
 import android.util.Base64;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -29,11 +28,11 @@ public final class DataUrlLoader<Model, Data> implements ModelLoader<Model, Data
         this.dataDecoder = dataDecoder2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull Model model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(Model model, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(model), new DataUriFetcher(model.toString(), this.dataDecoder));
     }
 
-    public boolean handles(@NonNull Model model) {
+    public boolean handles(Model model) {
         return model.toString().startsWith(DATA_SCHEME_IMAGE);
     }
 
@@ -47,10 +46,11 @@ public final class DataUrlLoader<Model, Data> implements ModelLoader<Model, Data
             this.reader = reader2;
         }
 
-        public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super Data> callback) {
+        public void loadData(Priority priority, DataFetcher.DataCallback<? super Data> callback) {
             try {
-                this.data = this.reader.decode(this.dataUri);
-                callback.onDataReady(this.data);
+                Data decode = this.reader.decode(this.dataUri);
+                this.data = decode;
+                callback.onDataReady(decode);
             } catch (IllegalArgumentException e) {
                 callback.onLoadFailed(e);
             }
@@ -66,12 +66,10 @@ public final class DataUrlLoader<Model, Data> implements ModelLoader<Model, Data
         public void cancel() {
         }
 
-        @NonNull
         public Class<Data> getDataClass() {
             return this.reader.getDataClass();
         }
 
-        @NonNull
         public DataSource getDataSource() {
             return DataSource.LOCAL;
         }
@@ -103,8 +101,7 @@ public final class DataUrlLoader<Model, Data> implements ModelLoader<Model, Data
             }
         };
 
-        @NonNull
-        public ModelLoader<Model, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<Model, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new DataUrlLoader(this.opener);
         }
 

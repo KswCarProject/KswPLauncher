@@ -1,13 +1,9 @@
 package com.bumptech.glide.load.engine.bitmap_recycle;
 
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.util.Util;
 import java.util.NavigableMap;
 
-@RequiresApi(19)
 final class SizeStrategy implements LruPoolStrategy {
     private static final int MAX_SIZE_MULTIPLE = 8;
     private final GroupedLinkedMap<Key, Bitmap> groupedMap = new GroupedLinkedMap<>();
@@ -30,7 +26,6 @@ final class SizeStrategy implements LruPoolStrategy {
         navigableMap.put(valueOf, Integer.valueOf(i));
     }
 
-    @Nullable
     public Bitmap get(int width, int height, Bitmap.Config config) {
         int size = Util.getBitmapByteSize(width, height, config);
         Key key = this.keyPool.get(size);
@@ -47,7 +42,6 @@ final class SizeStrategy implements LruPoolStrategy {
         return result;
     }
 
-    @Nullable
     public Bitmap removeLast() {
         Bitmap removed = this.groupedMap.removeLast();
         if (removed != null) {
@@ -89,7 +83,6 @@ final class SizeStrategy implements LruPoolStrategy {
         return "[" + size + "]";
     }
 
-    @VisibleForTesting
     static class KeyPool extends BaseKeyPool<Key> {
         KeyPool() {
         }
@@ -106,7 +99,6 @@ final class SizeStrategy implements LruPoolStrategy {
         }
     }
 
-    @VisibleForTesting
     static final class Key implements Poolable {
         private final KeyPool pool;
         int size;

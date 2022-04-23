@@ -2,35 +2,33 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.view.RtlLayout;
 
 public class ID5MaindBindSw600dpLandImpl extends ID5MaindBind {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final RtlLayout mboundView0;
 
     static {
-        sViewsWithIds.put(R.id.id5_main_view_pager, 1);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.id5_main_view_pager, 1);
     }
 
-    public ID5MaindBindSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ID5MaindBindSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 2, sIncludes, sViewsWithIds));
     }
 
     private ID5MaindBindSw600dpLandImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0, bindings[1]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        RtlLayout rtlLayout = bindings[0];
+        this.mboundView0 = rtlLayout;
+        rtlLayout.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -51,7 +49,7 @@ public class ID5MaindBindSw600dpLandImpl extends ID5MaindBind {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         return true;
     }
 

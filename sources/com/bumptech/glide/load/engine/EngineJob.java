@@ -1,7 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pools;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Key;
@@ -48,7 +46,6 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
         this(diskCacheExecutor2, sourceExecutor2, sourceUnlimitedExecutor2, animationExecutor2, listener2, pool2, DEFAULT_FACTORY);
     }
 
-    @VisibleForTesting
     EngineJob(GlideExecutor diskCacheExecutor2, GlideExecutor sourceExecutor2, GlideExecutor sourceUnlimitedExecutor2, GlideExecutor animationExecutor2, EngineJobListener listener2, Pools.Pool<EngineJob<?>> pool2, EngineResourceFactory engineResourceFactory2) {
         this.cbs = new ResourceCallbacksAndExecutors();
         this.stateVerifier = StateVerifier.newInstance();
@@ -63,7 +60,6 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public synchronized EngineJob<R> init(Key key2, boolean isCacheable2, boolean useUnlimitedSourceGeneratorPool2, boolean useAnimationPool2, boolean onlyRetrieveFromCache2) {
         this.key = key2;
         this.isCacheable = isCacheable2;
@@ -88,6 +84,7 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
     public synchronized void addCallback(ResourceCallback cb, Executor callbackExecutor) {
         this.stateVerifier.throwIfRecycled();
         this.cbs.add(cb, callbackExecutor);
+        boolean z = true;
         if (this.hasResource) {
             incrementPendingCallbacks(1);
             callbackExecutor.execute(new CallResourceReady(cb));
@@ -95,7 +92,10 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
             incrementPendingCallbacks(1);
             callbackExecutor.execute(new CallLoadFailed(cb));
         } else {
-            Preconditions.checkArgument(!this.isCancelled, "Cannot add callbacks to a cancelled EngineJob");
+            if (this.isCancelled) {
+                z = false;
+            }
+            Preconditions.checkArgument(z, "Cannot add callbacks to a cancelled EngineJob");
         }
     }
 
@@ -257,9 +257,10 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
 
     /* access modifiers changed from: package-private */
     public synchronized void incrementPendingCallbacks(int count) {
+        EngineResource<?> engineResource2;
         Preconditions.checkArgument(isDone(), "Not yet complete!");
-        if (this.pendingCallbacks.getAndAdd(count) == 0 && this.engineResource != null) {
-            this.engineResource.acquire();
+        if (this.pendingCallbacks.getAndAdd(count) == 0 && (engineResource2 = this.engineResource) != null) {
+            engineResource2.acquire();
         }
     }
 
@@ -270,8 +271,9 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
         int decremented = this.pendingCallbacks.decrementAndGet();
         Preconditions.checkArgument(decremented >= 0, "Can't decrement below 0");
         if (decremented == 0) {
-            if (this.engineResource != null) {
-                this.engineResource.release();
+            EngineResource<?> engineResource2 = this.engineResource;
+            if (engineResource2 != null) {
+                engineResource2.release();
             }
             release();
         }
@@ -396,7 +398,6 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.load.engine.EngineJob.notifyCallbacksOfException():void");
     }
 
-    @NonNull
     public StateVerifier getVerifier() {
         return this.stateVerifier;
     }
@@ -487,7 +488,6 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
             return new ResourceCallbackAndExecutor(cb, Executors.directExecutor());
         }
 
-        @NonNull
         public Iterator<ResourceCallbackAndExecutor> iterator() {
             return this.callbacksAndExecutors.iterator();
         }
@@ -514,7 +514,6 @@ class EngineJob<R> implements DecodeJob.Callback<R>, FactoryPools.Poolable {
         }
     }
 
-    @VisibleForTesting
     static class EngineResourceFactory {
         EngineResourceFactory() {
         }

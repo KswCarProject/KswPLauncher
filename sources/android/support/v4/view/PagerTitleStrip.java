@@ -4,10 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.TextViewCompat;
 import android.text.TextUtils;
@@ -61,11 +57,11 @@ public class PagerTitleStrip extends ViewGroup {
         text.setTransformationMethod(new SingleLineAllCapsTransform(text.getContext()));
     }
 
-    public PagerTitleStrip(@NonNull Context context) {
+    public PagerTitleStrip(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public PagerTitleStrip(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PagerTitleStrip(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mLastKnownCurrentPage = -1;
         this.mLastKnownPositionOffset = -1.0f;
@@ -130,14 +126,15 @@ public class PagerTitleStrip extends ViewGroup {
         return this.mScaledTextSpacing;
     }
 
-    public void setNonPrimaryAlpha(@FloatRange(from = 0.0d, to = 1.0d) float alpha) {
-        this.mNonPrimaryAlpha = ((int) (255.0f * alpha)) & 255;
-        int transparentColor = (this.mNonPrimaryAlpha << 24) | (this.mTextColor & ViewCompat.MEASURED_SIZE_MASK);
+    public void setNonPrimaryAlpha(float alpha) {
+        int i = ((int) (255.0f * alpha)) & 255;
+        this.mNonPrimaryAlpha = i;
+        int transparentColor = (i << 24) | (this.mTextColor & ViewCompat.MEASURED_SIZE_MASK);
         this.mPrevText.setTextColor(transparentColor);
         this.mNextText.setTextColor(transparentColor);
     }
 
-    public void setTextColor(@ColorInt int color) {
+    public void setTextColor(int color) {
         this.mTextColor = color;
         this.mCurrText.setTextColor(color);
         int transparentColor = (this.mNonPrimaryAlpha << 24) | (this.mTextColor & ViewCompat.MEASURED_SIZE_MASK);
@@ -166,7 +163,8 @@ public class PagerTitleStrip extends ViewGroup {
             pager.setInternalPageChangeListener(this.mPageListener);
             pager.addOnAdapterChangeListener(this.mPageListener);
             this.mPager = pager;
-            updateAdapter(this.mWatchingAdapter != null ? (PagerAdapter) this.mWatchingAdapter.get() : null, adapter);
+            WeakReference<PagerAdapter> weakReference = this.mWatchingAdapter;
+            updateAdapter(weakReference != null ? (PagerAdapter) weakReference.get() : null, adapter);
             return;
         }
         throw new IllegalStateException("PagerTitleStrip must be a direct child of a ViewPager.");
@@ -175,8 +173,9 @@ public class PagerTitleStrip extends ViewGroup {
     /* access modifiers changed from: protected */
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (this.mPager != null) {
-            updateAdapter(this.mPager.getAdapter(), (PagerAdapter) null);
+        ViewPager viewPager = this.mPager;
+        if (viewPager != null) {
+            updateAdapter(viewPager.getAdapter(), (PagerAdapter) null);
             this.mPager.setInternalPageChangeListener((ViewPager.OnPageChangeListener) null);
             this.mPager.removeOnAdapterChangeListener(this.mPageListener);
             this.mPager = null;
@@ -226,18 +225,19 @@ public class PagerTitleStrip extends ViewGroup {
             newAdapter.registerDataSetObserver(this.mPageListener);
             this.mWatchingAdapter = new WeakReference<>(newAdapter);
         }
-        if (this.mPager != null) {
+        ViewPager viewPager = this.mPager;
+        if (viewPager != null) {
             this.mLastKnownCurrentPage = -1;
             this.mLastKnownPositionOffset = -1.0f;
-            updateText(this.mPager.getCurrentItem(), newAdapter);
+            updateText(viewPager.getCurrentItem(), newAdapter);
             requestLayout();
         }
     }
 
     /* access modifiers changed from: package-private */
     public void updateTextPositions(int position, float positionOffset, boolean force) {
-        int stripHeight;
         int prevTop;
+        int stripHeight;
         int vgrav;
         int i = position;
         float f = positionOffset;
@@ -265,15 +265,15 @@ public class PagerTitleStrip extends ViewGroup {
             currOffset -= 1.0f;
         }
         int currLeft = ((stripWidth - textPaddedRight) - ((int) (((float) contentWidth) * currOffset))) - (currWidth / 2);
-        int i2 = contentWidth;
+        int i2 = halfCurrWidth;
         int currRight = currLeft + currWidth;
         int i3 = currWidth;
         int prevBaseline = this.mPrevText.getBaseline();
-        int i4 = halfCurrWidth;
+        int i4 = textPaddedLeft;
         int currBaseline = this.mCurrText.getBaseline();
-        int i5 = textPaddedLeft;
+        int i5 = textPaddedRight;
         int nextBaseline = this.mNextText.getBaseline();
-        int i6 = textPaddedRight;
+        int i6 = contentWidth;
         int maxBaseline = Math.max(Math.max(prevBaseline, currBaseline), nextBaseline);
         int prevTopOffset = maxBaseline - prevBaseline;
         int currTopOffset = maxBaseline - currBaseline;
@@ -288,37 +288,44 @@ public class PagerTitleStrip extends ViewGroup {
         int i11 = alignedPrevHeight;
         int vgrav2 = this.mGravity & 112;
         int i12 = alignedCurrHeight;
-        if (vgrav2 == 16) {
-            int centeredTop = (((stripHeight2 - paddingTop) - paddingBottom) - maxTextHeight) / 2;
-            int i13 = vgrav2;
-            int i14 = stripHeight2;
-            vgrav = centeredTop + prevTopOffset;
-            prevTop = centeredTop + currTopOffset;
-            stripHeight = centeredTop + nextTopOffset;
-        } else if (vgrav2 != 80) {
-            int i15 = vgrav2;
-            vgrav = paddingTop + prevTopOffset;
-            int i16 = stripHeight2;
-            prevTop = paddingTop + currTopOffset;
-            stripHeight = paddingTop + nextTopOffset;
-        } else {
-            int bottomGravTop = (stripHeight2 - paddingBottom) - maxTextHeight;
-            int i17 = vgrav2;
-            int i18 = stripHeight2;
-            vgrav = bottomGravTop + prevTopOffset;
-            stripHeight = bottomGravTop + nextTopOffset;
-            prevTop = bottomGravTop + currTopOffset;
+        switch (vgrav2) {
+            case 16:
+                int centeredTop = (((stripHeight2 - paddingTop) - paddingBottom) - maxTextHeight) / 2;
+                prevTop = centeredTop + prevTopOffset;
+                int prevTop2 = vgrav2;
+                vgrav = centeredTop + nextTopOffset;
+                int currTop = stripHeight2;
+                stripHeight = centeredTop + currTopOffset;
+                break;
+            case 80:
+                int bottomGravTop = (stripHeight2 - paddingBottom) - maxTextHeight;
+                prevTop = bottomGravTop + prevTopOffset;
+                int prevTop3 = vgrav2;
+                vgrav = bottomGravTop + nextTopOffset;
+                int nextTop = stripHeight2;
+                stripHeight = bottomGravTop + currTopOffset;
+                break;
+            default:
+                prevTop = paddingTop + prevTopOffset;
+                int prevTop4 = vgrav2;
+                vgrav = paddingTop + nextTopOffset;
+                int nextTop2 = stripHeight2;
+                stripHeight = paddingTop + currTopOffset;
+                break;
         }
-        int i19 = paddingTop;
-        int i20 = paddingBottom;
-        this.mCurrText.layout(currLeft, prevTop, currRight, this.mCurrText.getMeasuredHeight() + prevTop);
+        int paddedHeight = paddingTop;
+        TextView textView = this.mCurrText;
+        int i13 = paddingBottom;
+        textView.layout(currLeft, stripHeight, currRight, stripHeight + textView.getMeasuredHeight());
         int prevLeft = Math.min(paddingLeft, (currLeft - this.mScaledTextSpacing) - prevWidth);
-        int i21 = currLeft;
-        int i22 = prevWidth;
-        this.mPrevText.layout(prevLeft, vgrav, prevLeft + prevWidth, this.mPrevText.getMeasuredHeight() + vgrav);
+        TextView textView2 = this.mPrevText;
+        int i14 = currLeft;
+        int i15 = prevWidth;
+        textView2.layout(prevLeft, prevTop, prevLeft + prevWidth, prevTop + textView2.getMeasuredHeight());
         int nextLeft = Math.max((stripWidth - paddingRight) - nextWidth, this.mScaledTextSpacing + currRight);
-        int i23 = currRight;
-        this.mNextText.layout(nextLeft, stripHeight, nextLeft + nextWidth, this.mNextText.getMeasuredHeight() + stripHeight);
+        TextView textView3 = this.mNextText;
+        int i16 = nextWidth;
+        textView3.layout(nextLeft, vgrav, nextLeft + nextWidth, vgrav + textView3.getMeasuredHeight());
         this.mLastKnownPositionOffset = f;
         this.mUpdatingPositions = false;
     }
@@ -348,9 +355,9 @@ public class PagerTitleStrip extends ViewGroup {
     /* access modifiers changed from: protected */
     public void onLayout(boolean changed, int l, int t, int r, int b) {
         if (this.mPager != null) {
-            float offset = 0.0f;
-            if (this.mLastKnownPositionOffset >= 0.0f) {
-                offset = this.mLastKnownPositionOffset;
+            float offset = this.mLastKnownPositionOffset;
+            if (offset < 0.0f) {
+                offset = 0.0f;
             }
             updateTextPositions(this.mLastKnownCurrentPage, offset, true);
         }
@@ -380,12 +387,15 @@ public class PagerTitleStrip extends ViewGroup {
 
         public void onPageSelected(int position) {
             if (this.mScrollState == 0) {
-                PagerTitleStrip.this.updateText(PagerTitleStrip.this.mPager.getCurrentItem(), PagerTitleStrip.this.mPager.getAdapter());
-                float offset = 0.0f;
+                PagerTitleStrip pagerTitleStrip = PagerTitleStrip.this;
+                pagerTitleStrip.updateText(pagerTitleStrip.mPager.getCurrentItem(), PagerTitleStrip.this.mPager.getAdapter());
+                float f = 0.0f;
                 if (PagerTitleStrip.this.mLastKnownPositionOffset >= 0.0f) {
-                    offset = PagerTitleStrip.this.mLastKnownPositionOffset;
+                    f = PagerTitleStrip.this.mLastKnownPositionOffset;
                 }
-                PagerTitleStrip.this.updateTextPositions(PagerTitleStrip.this.mPager.getCurrentItem(), offset, true);
+                float offset = f;
+                PagerTitleStrip pagerTitleStrip2 = PagerTitleStrip.this;
+                pagerTitleStrip2.updateTextPositions(pagerTitleStrip2.mPager.getCurrentItem(), offset, true);
             }
         }
 
@@ -398,12 +408,15 @@ public class PagerTitleStrip extends ViewGroup {
         }
 
         public void onChanged() {
-            PagerTitleStrip.this.updateText(PagerTitleStrip.this.mPager.getCurrentItem(), PagerTitleStrip.this.mPager.getAdapter());
-            float offset = 0.0f;
+            PagerTitleStrip pagerTitleStrip = PagerTitleStrip.this;
+            pagerTitleStrip.updateText(pagerTitleStrip.mPager.getCurrentItem(), PagerTitleStrip.this.mPager.getAdapter());
+            float f = 0.0f;
             if (PagerTitleStrip.this.mLastKnownPositionOffset >= 0.0f) {
-                offset = PagerTitleStrip.this.mLastKnownPositionOffset;
+                f = PagerTitleStrip.this.mLastKnownPositionOffset;
             }
-            PagerTitleStrip.this.updateTextPositions(PagerTitleStrip.this.mPager.getCurrentItem(), offset, true);
+            float offset = f;
+            PagerTitleStrip pagerTitleStrip2 = PagerTitleStrip.this;
+            pagerTitleStrip2.updateTextPositions(pagerTitleStrip2.mPager.getCurrentItem(), offset, true);
         }
     }
 }

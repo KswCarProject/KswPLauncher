@@ -13,9 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -114,13 +111,11 @@ public class Glide implements ComponentCallbacks2 {
     private final Registry registry;
     private final RequestManagerRetriever requestManagerRetriever;
 
-    @Nullable
-    public static File getPhotoCacheDir(@NonNull Context context) {
+    public static File getPhotoCacheDir(Context context) {
         return getPhotoCacheDir(context, "image_manager_disk_cache");
     }
 
-    @Nullable
-    public static File getPhotoCacheDir(@NonNull Context context, @NonNull String cacheName) {
+    public static File getPhotoCacheDir(Context context, String cacheName) {
         File cacheDir = context.getCacheDir();
         if (cacheDir != null) {
             File result = new File(cacheDir, cacheName);
@@ -135,8 +130,7 @@ public class Glide implements ComponentCallbacks2 {
         return null;
     }
 
-    @NonNull
-    public static Glide get(@NonNull Context context) {
+    public static Glide get(Context context) {
         if (glide == null) {
             synchronized (Glide.class) {
                 if (glide == null) {
@@ -147,7 +141,7 @@ public class Glide implements ComponentCallbacks2 {
         return glide;
     }
 
-    private static void checkAndInitializeGlide(@NonNull Context context) {
+    private static void checkAndInitializeGlide(Context context) {
         if (!isInitializing) {
             isInitializing = true;
             initializeGlide(context);
@@ -157,7 +151,6 @@ public class Glide implements ComponentCallbacks2 {
         throw new IllegalStateException("You cannot call Glide.get() in registerComponents(), use the provided Glide instance instead");
     }
 
-    @VisibleForTesting
     @Deprecated
     public static synchronized void init(Glide glide2) {
         synchronized (Glide.class) {
@@ -168,8 +161,7 @@ public class Glide implements ComponentCallbacks2 {
         }
     }
 
-    @VisibleForTesting
-    public static synchronized void init(@NonNull Context context, @NonNull GlideBuilder builder) {
+    public static synchronized void init(Context context, GlideBuilder builder) {
         synchronized (Glide.class) {
             if (glide != null) {
                 tearDown();
@@ -178,7 +170,6 @@ public class Glide implements ComponentCallbacks2 {
         }
     }
 
-    @VisibleForTesting
     public static synchronized void tearDown() {
         synchronized (Glide.class) {
             if (glide != null) {
@@ -189,11 +180,11 @@ public class Glide implements ComponentCallbacks2 {
         }
     }
 
-    private static void initializeGlide(@NonNull Context context) {
+    private static void initializeGlide(Context context) {
         initializeGlide(context, new GlideBuilder());
     }
 
-    private static void initializeGlide(@NonNull Context context, @NonNull GlideBuilder builder) {
+    private static void initializeGlide(Context context, GlideBuilder builder) {
         Context applicationContext = context.getApplicationContext();
         GeneratedAppGlideModule annotationGeneratedModule = getAnnotationGeneratedGlideModules();
         List<GlideModule> manifestModules = Collections.emptyList();
@@ -236,7 +227,6 @@ public class Glide implements ComponentCallbacks2 {
         glide = glide2;
     }
 
-    @Nullable
     private static GeneratedAppGlideModule getAnnotationGeneratedGlideModules() {
         try {
             return (GeneratedAppGlideModule) Class.forName("com.bumptech.glide.GeneratedAppGlideModuleImpl").getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
@@ -265,11 +255,12 @@ public class Glide implements ComponentCallbacks2 {
         throw new IllegalStateException("GeneratedAppGlideModuleImpl is implemented incorrectly. If you've manually implemented this class, remove your implementation. The Annotation processor will generate a correct implementation.", e);
     }
 
-    Glide(@NonNull Context context, @NonNull Engine engine2, @NonNull MemoryCache memoryCache2, @NonNull BitmapPool bitmapPool2, @NonNull ArrayPool arrayPool2, @NonNull RequestManagerRetriever requestManagerRetriever2, @NonNull ConnectivityMonitorFactory connectivityMonitorFactory2, int logLevel, @NonNull RequestOptions defaultRequestOptions, @NonNull Map<Class<?>, TransitionOptions<?, ?>> defaultTransitionOptions, @NonNull List<RequestListener<Object>> defaultRequestListeners, boolean isLoggingRequestOriginsEnabled) {
+    Glide(Context context, Engine engine2, MemoryCache memoryCache2, BitmapPool bitmapPool2, ArrayPool arrayPool2, RequestManagerRetriever requestManagerRetriever2, ConnectivityMonitorFactory connectivityMonitorFactory2, int logLevel, RequestOptions defaultRequestOptions, Map<Class<?>, TransitionOptions<?, ?>> defaultTransitionOptions, List<RequestListener<Object>> defaultRequestListeners, boolean isLoggingRequestOriginsEnabled) {
         Context context2 = context;
         MemoryCache memoryCache3 = memoryCache2;
         BitmapPool bitmapPool3 = bitmapPool2;
         ArrayPool arrayPool3 = arrayPool2;
+        Class<byte[]> cls = byte[].class;
         this.engine = engine2;
         this.bitmapPool = bitmapPool3;
         this.arrayPool = arrayPool3;
@@ -279,67 +270,62 @@ public class Glide implements ComponentCallbacks2 {
         DecodeFormat decodeFormat = (DecodeFormat) defaultRequestOptions.getOptions().get(Downsampler.DECODE_FORMAT);
         this.bitmapPreFiller = new BitmapPreFiller(memoryCache3, bitmapPool3, decodeFormat);
         Resources resources = context.getResources();
-        this.registry = new Registry();
-        this.registry.register((ImageHeaderParser) new DefaultImageHeaderParser());
+        Registry registry2 = new Registry();
+        this.registry = registry2;
+        registry2.register((ImageHeaderParser) new DefaultImageHeaderParser());
         if (Build.VERSION.SDK_INT >= 27) {
-            this.registry.register((ImageHeaderParser) new ExifInterfaceImageHeaderParser());
+            registry2.register((ImageHeaderParser) new ExifInterfaceImageHeaderParser());
         }
-        List<ImageHeaderParser> imageHeaderParsers = this.registry.getImageHeaderParsers();
+        List<ImageHeaderParser> imageHeaderParsers = registry2.getImageHeaderParsers();
         Downsampler downsampler = new Downsampler(imageHeaderParsers, resources.getDisplayMetrics(), bitmapPool3, arrayPool3);
         ByteBufferGifDecoder byteBufferGifDecoder = new ByteBufferGifDecoder(context2, imageHeaderParsers, bitmapPool3, arrayPool3);
         ResourceDecoder<ParcelFileDescriptor, Bitmap> parcelFileDescriptorVideoDecoder = VideoDecoder.parcel(bitmapPool2);
+        DecodeFormat decodeFormat2 = decodeFormat;
         ByteBufferBitmapDecoder byteBufferBitmapDecoder = new ByteBufferBitmapDecoder(downsampler);
         StreamBitmapDecoder streamBitmapDecoder = new StreamBitmapDecoder(downsampler, arrayPool3);
         Downsampler downsampler2 = downsampler;
         ResourceDrawableDecoder resourceDrawableDecoder = new ResourceDrawableDecoder(context2);
-        DecodeFormat decodeFormat2 = decodeFormat;
         ResourceLoader.StreamFactory resourceLoaderStreamFactory = new ResourceLoader.StreamFactory(resources);
         ResourceLoader.UriFactory resourceLoaderUriFactory = new ResourceLoader.UriFactory(resources);
         ResourceLoader.FileDescriptorFactory resourceLoaderFileDescriptorFactory = new ResourceLoader.FileDescriptorFactory(resources);
         ResourceLoader.AssetFileDescriptorFactory resourceLoaderAssetFileDescriptorFactory = new ResourceLoader.AssetFileDescriptorFactory(resources);
+        Class<byte[]> cls2 = cls;
         BitmapEncoder bitmapEncoder = new BitmapEncoder(arrayPool3);
         BitmapBytesTranscoder bitmapBytesTranscoder = new BitmapBytesTranscoder();
-        ResourceLoader.AssetFileDescriptorFactory resourceLoaderAssetFileDescriptorFactory2 = resourceLoaderAssetFileDescriptorFactory;
+        GifDrawableBytesTranscoder gifDrawableBytesTranscoder = new GifDrawableBytesTranscoder();
+        Registry registry3 = registry2;
+        ByteBufferBitmapDecoder byteBufferBitmapDecoder2 = byteBufferBitmapDecoder;
         ResourceLoader.FileDescriptorFactory resourceLoaderFileDescriptorFactory2 = resourceLoaderFileDescriptorFactory;
         ResourceLoader.UriFactory resourceLoaderUriFactory2 = resourceLoaderUriFactory;
-        ResourceLoader.FileDescriptorFactory fileDescriptorFactory = resourceLoaderFileDescriptorFactory2;
-        ResourceLoader.AssetFileDescriptorFactory resourceLoaderAssetFileDescriptorFactory3 = resourceLoaderAssetFileDescriptorFactory2;
-        ResourceLoader.UriFactory resourceLoaderUriFactory3 = resourceLoaderUriFactory2;
-        ContentResolver contentResolver = context.getContentResolver();
+        ResourceLoader.AssetFileDescriptorFactory resourceLoaderAssetFileDescriptorFactory2 = resourceLoaderAssetFileDescriptorFactory;
         Context context3 = context;
-        BitmapBytesTranscoder bitmapBytesTranscoder2 = bitmapBytesTranscoder;
-        ByteBufferGifDecoder byteBufferGifDecoder2 = byteBufferGifDecoder;
-        ContentResolver contentResolver2 = contentResolver;
-        GifDrawableBytesTranscoder gifDrawableBytesTranscoder = new GifDrawableBytesTranscoder();
-        this.registry.append(ByteBuffer.class, new ByteBufferEncoder()).append(InputStream.class, new StreamEncoder(arrayPool3)).append(Registry.BUCKET_BITMAP, ByteBuffer.class, Bitmap.class, byteBufferBitmapDecoder).append(Registry.BUCKET_BITMAP, InputStream.class, Bitmap.class, streamBitmapDecoder).append(Registry.BUCKET_BITMAP, ParcelFileDescriptor.class, Bitmap.class, parcelFileDescriptorVideoDecoder).append(Registry.BUCKET_BITMAP, AssetFileDescriptor.class, Bitmap.class, VideoDecoder.asset(bitmapPool2)).append(Bitmap.class, Bitmap.class, UnitModelLoader.Factory.getInstance()).append(Registry.BUCKET_BITMAP, Bitmap.class, Bitmap.class, new UnitBitmapDecoder()).append(Bitmap.class, bitmapEncoder).append(Registry.BUCKET_BITMAP_DRAWABLE, ByteBuffer.class, BitmapDrawable.class, new BitmapDrawableDecoder(resources, byteBufferBitmapDecoder)).append(Registry.BUCKET_BITMAP_DRAWABLE, InputStream.class, BitmapDrawable.class, new BitmapDrawableDecoder(resources, streamBitmapDecoder)).append(Registry.BUCKET_BITMAP_DRAWABLE, ParcelFileDescriptor.class, BitmapDrawable.class, new BitmapDrawableDecoder(resources, parcelFileDescriptorVideoDecoder)).append(BitmapDrawable.class, new BitmapDrawableEncoder(bitmapPool3, bitmapEncoder)).append(Registry.BUCKET_GIF, InputStream.class, GifDrawable.class, new StreamGifDecoder(imageHeaderParsers, byteBufferGifDecoder, arrayPool3)).append(Registry.BUCKET_GIF, ByteBuffer.class, GifDrawable.class, byteBufferGifDecoder).append(GifDrawable.class, new GifDrawableEncoder()).append(GifDecoder.class, GifDecoder.class, UnitModelLoader.Factory.getInstance()).append(Registry.BUCKET_BITMAP, GifDecoder.class, Bitmap.class, new GifFrameResourceDecoder(bitmapPool3)).append(Uri.class, Drawable.class, resourceDrawableDecoder).append(Uri.class, Bitmap.class, new ResourceBitmapDecoder(resourceDrawableDecoder, bitmapPool3)).register((DataRewinder.Factory<?>) new ByteBufferRewinder.Factory()).append(File.class, ByteBuffer.class, new ByteBufferFileLoader.Factory()).append(File.class, InputStream.class, new FileLoader.StreamFactory()).append(File.class, File.class, new FileDecoder()).append(File.class, ParcelFileDescriptor.class, new FileLoader.FileDescriptorFactory()).append(File.class, File.class, UnitModelLoader.Factory.getInstance()).register((DataRewinder.Factory<?>) new InputStreamRewinder.Factory(arrayPool3)).append(Integer.TYPE, InputStream.class, resourceLoaderStreamFactory).append(Integer.TYPE, ParcelFileDescriptor.class, resourceLoaderFileDescriptorFactory2).append(Integer.class, InputStream.class, resourceLoaderStreamFactory).append(Integer.class, ParcelFileDescriptor.class, resourceLoaderFileDescriptorFactory2).append(Integer.class, Uri.class, resourceLoaderUriFactory2).append(Integer.TYPE, AssetFileDescriptor.class, resourceLoaderAssetFileDescriptorFactory3).append(Integer.class, AssetFileDescriptor.class, resourceLoaderAssetFileDescriptorFactory3).append(Integer.TYPE, Uri.class, resourceLoaderUriFactory2).append(String.class, InputStream.class, new DataUrlLoader.StreamFactory()).append(Uri.class, InputStream.class, new DataUrlLoader.StreamFactory()).append(String.class, InputStream.class, new StringLoader.StreamFactory()).append(String.class, ParcelFileDescriptor.class, new StringLoader.FileDescriptorFactory()).append(String.class, AssetFileDescriptor.class, new StringLoader.AssetFileDescriptorFactory()).append(Uri.class, InputStream.class, new HttpUriLoader.Factory()).append(Uri.class, InputStream.class, new AssetUriLoader.StreamFactory(context.getAssets())).append(Uri.class, ParcelFileDescriptor.class, new AssetUriLoader.FileDescriptorFactory(context.getAssets())).append(Uri.class, InputStream.class, new MediaStoreImageThumbLoader.Factory(context3)).append(Uri.class, InputStream.class, new MediaStoreVideoThumbLoader.Factory(context3)).append(Uri.class, InputStream.class, new UriLoader.StreamFactory(contentResolver)).append(Uri.class, ParcelFileDescriptor.class, new UriLoader.FileDescriptorFactory(contentResolver)).append(Uri.class, AssetFileDescriptor.class, new UriLoader.AssetFileDescriptorFactory(contentResolver)).append(Uri.class, InputStream.class, new UrlUriLoader.StreamFactory()).append(URL.class, InputStream.class, new UrlLoader.StreamFactory()).append(Uri.class, File.class, new MediaStoreFileLoader.Factory(context3)).append(GlideUrl.class, InputStream.class, new HttpGlideUrlLoader.Factory()).append(byte[].class, ByteBuffer.class, new ByteArrayLoader.ByteBufferFactory()).append(byte[].class, InputStream.class, new ByteArrayLoader.StreamFactory()).append(Uri.class, Uri.class, UnitModelLoader.Factory.getInstance()).append(Drawable.class, Drawable.class, UnitModelLoader.Factory.getInstance()).append(Drawable.class, Drawable.class, new UnitDrawableDecoder()).register(Bitmap.class, BitmapDrawable.class, new BitmapDrawableTranscoder(resources)).register(Bitmap.class, byte[].class, bitmapBytesTranscoder2).register(Drawable.class, byte[].class, new DrawableBytesTranscoder(bitmapPool3, bitmapBytesTranscoder2, gifDrawableBytesTranscoder)).register(GifDrawable.class, byte[].class, gifDrawableBytesTranscoder);
-        StreamBitmapDecoder streamBitmapDecoder2 = streamBitmapDecoder;
-        ByteBufferBitmapDecoder byteBufferBitmapDecoder2 = byteBufferBitmapDecoder;
-        Registry registry2 = this.registry;
-        ResourceDecoder<ParcelFileDescriptor, Bitmap> resourceDecoder = parcelFileDescriptorVideoDecoder;
-        GifDrawableBytesTranscoder gifDrawableBytesTranscoder2 = gifDrawableBytesTranscoder;
-        ByteBufferGifDecoder byteBufferGifDecoder3 = byteBufferGifDecoder2;
+        ContentResolver contentResolver = context.getContentResolver();
+        Class<byte[]> cls3 = cls2;
         ResourceDrawableDecoder resourceDrawableDecoder2 = resourceDrawableDecoder;
-        Registry registry3 = registry2;
+        BitmapBytesTranscoder bitmapBytesTranscoder2 = bitmapBytesTranscoder;
+        GifDrawableBytesTranscoder gifDrawableBytesTranscoder2 = gifDrawableBytesTranscoder;
+        registry2.append(ByteBuffer.class, new ByteBufferEncoder()).append(InputStream.class, new StreamEncoder(arrayPool3)).append(Registry.BUCKET_BITMAP, ByteBuffer.class, Bitmap.class, byteBufferBitmapDecoder).append(Registry.BUCKET_BITMAP, InputStream.class, Bitmap.class, streamBitmapDecoder).append(Registry.BUCKET_BITMAP, ParcelFileDescriptor.class, Bitmap.class, parcelFileDescriptorVideoDecoder).append(Registry.BUCKET_BITMAP, AssetFileDescriptor.class, Bitmap.class, VideoDecoder.asset(bitmapPool2)).append(Bitmap.class, Bitmap.class, UnitModelLoader.Factory.getInstance()).append(Registry.BUCKET_BITMAP, Bitmap.class, Bitmap.class, new UnitBitmapDecoder()).append(Bitmap.class, bitmapEncoder).append(Registry.BUCKET_BITMAP_DRAWABLE, ByteBuffer.class, BitmapDrawable.class, new BitmapDrawableDecoder(resources, byteBufferBitmapDecoder)).append(Registry.BUCKET_BITMAP_DRAWABLE, InputStream.class, BitmapDrawable.class, new BitmapDrawableDecoder(resources, streamBitmapDecoder)).append(Registry.BUCKET_BITMAP_DRAWABLE, ParcelFileDescriptor.class, BitmapDrawable.class, new BitmapDrawableDecoder(resources, parcelFileDescriptorVideoDecoder)).append(BitmapDrawable.class, new BitmapDrawableEncoder(bitmapPool3, bitmapEncoder)).append(Registry.BUCKET_GIF, InputStream.class, GifDrawable.class, new StreamGifDecoder(imageHeaderParsers, byteBufferGifDecoder, arrayPool3)).append(Registry.BUCKET_GIF, ByteBuffer.class, GifDrawable.class, byteBufferGifDecoder).append(GifDrawable.class, new GifDrawableEncoder()).append(GifDecoder.class, GifDecoder.class, UnitModelLoader.Factory.getInstance()).append(Registry.BUCKET_BITMAP, GifDecoder.class, Bitmap.class, new GifFrameResourceDecoder(bitmapPool3)).append(Uri.class, Drawable.class, resourceDrawableDecoder).append(Uri.class, Bitmap.class, new ResourceBitmapDecoder(resourceDrawableDecoder, bitmapPool3)).register((DataRewinder.Factory<?>) new ByteBufferRewinder.Factory()).append(File.class, ByteBuffer.class, new ByteBufferFileLoader.Factory()).append(File.class, InputStream.class, new FileLoader.StreamFactory()).append(File.class, File.class, new FileDecoder()).append(File.class, ParcelFileDescriptor.class, new FileLoader.FileDescriptorFactory()).append(File.class, File.class, UnitModelLoader.Factory.getInstance()).register((DataRewinder.Factory<?>) new InputStreamRewinder.Factory(arrayPool3)).append(Integer.TYPE, InputStream.class, resourceLoaderStreamFactory).append(Integer.TYPE, ParcelFileDescriptor.class, resourceLoaderFileDescriptorFactory2).append(Integer.class, InputStream.class, resourceLoaderStreamFactory).append(Integer.class, ParcelFileDescriptor.class, resourceLoaderFileDescriptorFactory2).append(Integer.class, Uri.class, resourceLoaderUriFactory2).append(Integer.TYPE, AssetFileDescriptor.class, resourceLoaderAssetFileDescriptorFactory2).append(Integer.class, AssetFileDescriptor.class, resourceLoaderAssetFileDescriptorFactory2).append(Integer.TYPE, Uri.class, resourceLoaderUriFactory2).append(String.class, InputStream.class, new DataUrlLoader.StreamFactory()).append(Uri.class, InputStream.class, new DataUrlLoader.StreamFactory()).append(String.class, InputStream.class, new StringLoader.StreamFactory()).append(String.class, ParcelFileDescriptor.class, new StringLoader.FileDescriptorFactory()).append(String.class, AssetFileDescriptor.class, new StringLoader.AssetFileDescriptorFactory()).append(Uri.class, InputStream.class, new HttpUriLoader.Factory()).append(Uri.class, InputStream.class, new AssetUriLoader.StreamFactory(context.getAssets())).append(Uri.class, ParcelFileDescriptor.class, new AssetUriLoader.FileDescriptorFactory(context.getAssets())).append(Uri.class, InputStream.class, new MediaStoreImageThumbLoader.Factory(context3)).append(Uri.class, InputStream.class, new MediaStoreVideoThumbLoader.Factory(context3)).append(Uri.class, InputStream.class, new UriLoader.StreamFactory(contentResolver)).append(Uri.class, ParcelFileDescriptor.class, new UriLoader.FileDescriptorFactory(contentResolver)).append(Uri.class, AssetFileDescriptor.class, new UriLoader.AssetFileDescriptorFactory(contentResolver)).append(Uri.class, InputStream.class, new UrlUriLoader.StreamFactory()).append(URL.class, InputStream.class, new UrlLoader.StreamFactory()).append(Uri.class, File.class, new MediaStoreFileLoader.Factory(context3)).append(GlideUrl.class, InputStream.class, new HttpGlideUrlLoader.Factory()).append(cls3, ByteBuffer.class, new ByteArrayLoader.ByteBufferFactory()).append(cls3, InputStream.class, new ByteArrayLoader.StreamFactory()).append(Uri.class, Uri.class, UnitModelLoader.Factory.getInstance()).append(Drawable.class, Drawable.class, UnitModelLoader.Factory.getInstance()).append(Drawable.class, Drawable.class, new UnitDrawableDecoder()).register(Bitmap.class, BitmapDrawable.class, new BitmapDrawableTranscoder(resources)).register(Bitmap.class, cls3, bitmapBytesTranscoder2).register(Drawable.class, cls3, new DrawableBytesTranscoder(bitmapPool3, bitmapBytesTranscoder2, gifDrawableBytesTranscoder2)).register(GifDrawable.class, cls3, gifDrawableBytesTranscoder2);
+        ResourceDecoder<ParcelFileDescriptor, Bitmap> resourceDecoder = parcelFileDescriptorVideoDecoder;
+        BitmapEncoder bitmapEncoder2 = bitmapEncoder;
+        ByteBufferGifDecoder byteBufferGifDecoder2 = byteBufferGifDecoder;
+        BitmapBytesTranscoder bitmapBytesTranscoder3 = bitmapBytesTranscoder2;
+        Registry registry4 = registry3;
         List<ImageHeaderParser> list = imageHeaderParsers;
         Resources resources2 = resources;
+        StreamBitmapDecoder streamBitmapDecoder2 = streamBitmapDecoder;
         ResourceLoader.StreamFactory streamFactory = resourceLoaderStreamFactory;
-        ResourceLoader.UriFactory uriFactory = resourceLoaderUriFactory3;
-        BitmapBytesTranscoder bitmapBytesTranscoder3 = bitmapBytesTranscoder2;
-        ResourceLoader.AssetFileDescriptorFactory assetFileDescriptorFactory = resourceLoaderAssetFileDescriptorFactory3;
-        this.glideContext = new GlideContext(context, arrayPool2, registry3, new ImageViewTargetFactory(), defaultRequestOptions, defaultTransitionOptions, defaultRequestListeners, engine2, isLoggingRequestOriginsEnabled, logLevel);
+        ResourceLoader.UriFactory uriFactory = resourceLoaderUriFactory2;
+        this.glideContext = new GlideContext(context, arrayPool2, registry4, new ImageViewTargetFactory(), defaultRequestOptions, defaultTransitionOptions, defaultRequestListeners, engine2, isLoggingRequestOriginsEnabled, logLevel);
     }
 
-    @NonNull
     public BitmapPool getBitmapPool() {
         return this.bitmapPool;
     }
 
-    @NonNull
     public ArrayPool getArrayPool() {
         return this.arrayPool;
     }
 
-    @NonNull
     public Context getContext() {
         return this.glideContext.getBaseContext();
     }
@@ -350,12 +336,11 @@ public class Glide implements ComponentCallbacks2 {
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public GlideContext getGlideContext() {
         return this.glideContext;
     }
 
-    public void preFillBitmapPool(@NonNull PreFillType.Builder... bitmapAttributeBuilders) {
+    public void preFillBitmapPool(PreFillType.Builder... bitmapAttributeBuilders) {
         this.bitmapPreFiller.preFill(bitmapAttributeBuilders);
     }
 
@@ -378,13 +363,11 @@ public class Glide implements ComponentCallbacks2 {
         this.engine.clearDiskCache();
     }
 
-    @NonNull
     public RequestManagerRetriever getRequestManagerRetriever() {
         return this.requestManagerRetriever;
     }
 
-    @NonNull
-    public MemoryCategory setMemoryCategory(@NonNull MemoryCategory memoryCategory2) {
+    public MemoryCategory setMemoryCategory(MemoryCategory memoryCategory2) {
         Util.assertMainThread();
         this.memoryCache.setSizeMultiplier(memoryCategory2.getMultiplier());
         this.bitmapPool.setSizeMultiplier(memoryCategory2.getMultiplier());
@@ -393,50 +376,42 @@ public class Glide implements ComponentCallbacks2 {
         return oldCategory;
     }
 
-    @NonNull
-    private static RequestManagerRetriever getRetriever(@Nullable Context context) {
+    private static RequestManagerRetriever getRetriever(Context context) {
         Preconditions.checkNotNull(context, "You cannot start a load on a not yet attached View or a Fragment where getActivity() returns null (which usually occurs when getActivity() is called before the Fragment is attached or after the Fragment is destroyed).");
         return get(context).getRequestManagerRetriever();
     }
 
-    @NonNull
-    public static RequestManager with(@NonNull Context context) {
+    public static RequestManager with(Context context) {
         return getRetriever(context).get(context);
     }
 
-    @NonNull
-    public static RequestManager with(@NonNull Activity activity) {
+    public static RequestManager with(Activity activity) {
         return getRetriever(activity).get(activity);
     }
 
-    @NonNull
-    public static RequestManager with(@NonNull FragmentActivity activity) {
+    public static RequestManager with(FragmentActivity activity) {
         return getRetriever(activity).get(activity);
     }
 
-    @NonNull
-    public static RequestManager with(@NonNull Fragment fragment) {
+    public static RequestManager with(Fragment fragment) {
         return getRetriever(fragment.getActivity()).get(fragment);
     }
 
     @Deprecated
-    @NonNull
-    public static RequestManager with(@NonNull android.app.Fragment fragment) {
+    public static RequestManager with(android.app.Fragment fragment) {
         return getRetriever(fragment.getActivity()).get(fragment);
     }
 
-    @NonNull
-    public static RequestManager with(@NonNull View view) {
+    public static RequestManager with(View view) {
         return getRetriever(view.getContext()).get(view);
     }
 
-    @NonNull
     public Registry getRegistry() {
         return this.registry;
     }
 
     /* access modifiers changed from: package-private */
-    public boolean removeFromManagers(@NonNull Target<?> target) {
+    public boolean removeFromManagers(Target<?> target) {
         synchronized (this.managers) {
             for (RequestManager requestManager : this.managers) {
                 if (requestManager.untrack(target)) {

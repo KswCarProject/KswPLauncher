@@ -3,8 +3,6 @@ package com.bumptech.glide.load.data.mediastore;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import com.bumptech.glide.load.ImageHeaderParser;
@@ -91,8 +89,7 @@ class ThumbnailStreamOpener {
         }
     }
 
-    @Nullable
-    private String getPath(@NonNull Uri uri) {
+    private String getPath(Uri uri) {
         Cursor cursor = this.query.query(uri);
         if (cursor != null) {
             try {

@@ -1,8 +1,6 @@
 package com.wits.ksw.launcher.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,32 +13,28 @@ public class BcViewPager extends ViewPager {
     /* access modifiers changed from: private */
     public static final String TAG = BcViewPager.class.getName();
 
-    public BcViewPager(@NonNull Context context) {
+    public BcViewPager(Context context) {
         this(context, (AttributeSet) null);
     }
 
-    public BcViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public BcViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         setPageTransformer(true, new ViewPager.PageTransformer() {
-            public void transformPage(@NonNull View view, float postion) {
-                String access$000 = BcViewPager.TAG;
-                Log.i(access$000, "transformPage: postion=" + postion);
+            public void transformPage(View view, float postion) {
+                Log.i(BcViewPager.TAG, "transformPage: postion=" + postion);
             }
         });
         addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public void onPageScrolled(int postion, float v, int i1) {
-                String access$000 = BcViewPager.TAG;
-                Log.i(access$000, "onPageScrolled: " + postion);
+                Log.i(BcViewPager.TAG, "onPageScrolled: " + postion);
             }
 
             public void onPageSelected(int postion) {
-                String access$000 = BcViewPager.TAG;
-                Log.i(access$000, "onPageSelected: ----------------" + postion);
+                Log.i(BcViewPager.TAG, "onPageSelected: ----------------" + postion);
             }
 
             public void onPageScrollStateChanged(int postion) {
-                String access$000 = BcViewPager.TAG;
-                Log.i(access$000, "onPageScrollStateChanged: " + postion);
+                Log.i(BcViewPager.TAG, "onPageScrollStateChanged: " + postion);
             }
         });
     }

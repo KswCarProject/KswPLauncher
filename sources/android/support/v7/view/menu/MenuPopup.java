@@ -2,8 +2,6 @@ package android.support.v7.view.menu;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +41,7 @@ abstract class MenuPopup implements ShowableListMenu, MenuPresenter, AdapterView
         return this.mEpicenterBounds;
     }
 
-    public void initForMenu(@NonNull Context context, @Nullable MenuBuilder menu) {
+    public void initForMenu(Context context, MenuBuilder menu) {
     }
 
     public MenuView getMenuView(ViewGroup root) {

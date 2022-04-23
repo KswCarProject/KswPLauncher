@@ -1,6 +1,5 @@
 package butterknife;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.util.Log;
@@ -214,7 +213,6 @@ public final class ButterKnife {
         }
     }
 
-    @TargetApi(14)
     public static <T extends View, V> void apply(List<T> list, Property<? super T, V> setter, V value) {
         int count = list.size();
         for (int i = 0; i < count; i++) {

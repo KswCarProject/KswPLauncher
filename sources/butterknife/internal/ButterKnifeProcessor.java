@@ -15,6 +15,8 @@ import butterknife.OnTextChanged;
 import butterknife.OnTouch;
 import butterknife.Optional;
 import butterknife.internal.ListenerClass;
+import com.ibm.icu.text.PluralRules;
+import com.ibm.icu.text.SymbolTable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -177,7 +179,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v3, resolved type: javax.lang.model.type.TypeMirror} */
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r8v14, resolved type: javax.lang.model.type.DeclaredType} */
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v4, resolved type: javax.lang.model.type.TypeMirror} */
-    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v10, resolved type: java.lang.Object} */
+    /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r13v6, resolved type: java.lang.Object} */
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v5, resolved type: javax.lang.model.type.TypeMirror} */
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r6v6, resolved type: javax.lang.model.type.TypeMirror} */
     /* JADX DEBUG: Multi-variable search result rejected for TypeSearchVarInfo{r8v16, resolved type: javax.lang.model.type.ArrayType} */
@@ -199,8 +201,8 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             javax.lang.model.type.TypeKind r8 = r4.getKind()
             javax.lang.model.type.TypeKind r9 = javax.lang.model.type.TypeKind.ARRAY
             r10 = 2
-            r11 = 0
-            r12 = 1
+            r11 = 1
+            r12 = 0
             if (r8 != r9) goto L_0x002a
             r8 = r4
             javax.lang.model.type.ArrayType r8 = (javax.lang.model.type.ArrayType) r8
@@ -215,31 +217,31 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             javax.lang.model.type.DeclaredType r8 = (javax.lang.model.type.DeclaredType) r8
             java.util.List r9 = r8.getTypeArguments()
             int r13 = r9.size()
-            if (r13 == r12) goto L_0x0054
-            java.lang.String r13 = "@InjectViews List must have a generic component. (%s.%s)"
-            java.lang.Object[] r14 = new java.lang.Object[r10]
-            javax.lang.model.element.Name r15 = r3.getQualifiedName()
-            r14[r11] = r15
-            javax.lang.model.element.Name r15 = r17.getSimpleName()
-            r14[r12] = r15
-            r0.error(r1, r13, r14)
+            if (r13 == r11) goto L_0x0054
+            java.lang.Object[] r13 = new java.lang.Object[r10]
+            javax.lang.model.element.Name r14 = r3.getQualifiedName()
+            r13[r12] = r14
+            javax.lang.model.element.Name r14 = r17.getSimpleName()
+            r13[r11] = r14
+            java.lang.String r14 = "@InjectViews List must have a generic component. (%s.%s)"
+            r0.error(r1, r14, r13)
             r2 = 1
             goto L_0x005b
         L_0x0054:
-            java.lang.Object r13 = r9.get(r11)
+            java.lang.Object r13 = r9.get(r12)
             r6 = r13
             javax.lang.model.type.TypeMirror r6 = (javax.lang.model.type.TypeMirror) r6
         L_0x005b:
             butterknife.internal.CollectionBinding$Kind r7 = butterknife.internal.CollectionBinding.Kind.LIST
             goto L_0x0072
         L_0x005e:
-            java.lang.String r8 = "@InjectViews must be a List or array. (%s.%s)"
-            java.lang.Object[] r9 = new java.lang.Object[r10]
-            javax.lang.model.element.Name r13 = r3.getQualifiedName()
-            r9[r11] = r13
-            javax.lang.model.element.Name r13 = r17.getSimpleName()
-            r9[r12] = r13
-            r0.error(r1, r8, r9)
+            java.lang.Object[] r8 = new java.lang.Object[r10]
+            javax.lang.model.element.Name r9 = r3.getQualifiedName()
+            r8[r12] = r9
+            javax.lang.model.element.Name r9 = r17.getSimpleName()
+            r8[r11] = r9
+            java.lang.String r9 = "@InjectViews must be a List or array. (%s.%s)"
+            r0.error(r1, r9, r8)
             r2 = 1
         L_0x0072:
             boolean r8 = r6 instanceof javax.lang.model.type.TypeVariable
@@ -252,13 +254,13 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             java.lang.String r8 = "android.view.View"
             boolean r8 = r0.isSubtypeOfType(r6, r8)
             if (r8 != 0) goto L_0x009b
-            java.lang.String r8 = "@InjectViews type must extend from View. (%s.%s)"
-            java.lang.Object[] r9 = new java.lang.Object[r10]
-            javax.lang.model.element.Name r13 = r3.getQualifiedName()
-            r9[r11] = r13
-            javax.lang.model.element.Name r13 = r17.getSimpleName()
-            r9[r12] = r13
-            r0.error(r1, r8, r9)
+            java.lang.Object[] r8 = new java.lang.Object[r10]
+            javax.lang.model.element.Name r9 = r3.getQualifiedName()
+            r8[r12] = r9
+            javax.lang.model.element.Name r9 = r17.getSimpleName()
+            r8[r11] = r9
+            java.lang.String r9 = "@InjectViews type must extend from View. (%s.%s)"
+            r0.error(r1, r9, r8)
             r2 = 1
         L_0x009b:
             java.lang.Class<butterknife.InjectViews> r8 = butterknife.InjectViews.class
@@ -276,24 +278,24 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             int[] r9 = r9.value()
             int r13 = r9.length
             if (r13 != 0) goto L_0x00d2
-            java.lang.String r13 = "@InjectViews must specify at least one ID. (%s.%s)"
             java.lang.Object[] r10 = new java.lang.Object[r10]
-            javax.lang.model.element.Name r14 = r3.getQualifiedName()
-            r10[r11] = r14
-            javax.lang.model.element.Name r11 = r17.getSimpleName()
-            r10[r12] = r11
-            r0.error(r1, r13, r10)
+            javax.lang.model.element.Name r13 = r3.getQualifiedName()
+            r10[r12] = r13
+            javax.lang.model.element.Name r12 = r17.getSimpleName()
+            r10[r11] = r12
+            java.lang.String r11 = "@InjectViews must specify at least one ID. (%s.%s)"
+            r0.error(r1, r11, r10)
             return
         L_0x00d2:
+            if (r6 == 0) goto L_0x00fa
             java.lang.String r10 = r6.toString()
             java.lang.Class<butterknife.Optional> r13 = butterknife.Optional.class
             java.lang.annotation.Annotation r13 = r1.getAnnotation(r13)
-            if (r13 != 0) goto L_0x00e0
-            goto L_0x00e1
-        L_0x00e0:
-            r12 = r11
+            if (r13 != 0) goto L_0x00e1
+            goto L_0x00e2
         L_0x00e1:
             r11 = r12
+        L_0x00e2:
             r12 = r18
             butterknife.internal.ViewInjector r13 = r0.getOrCreateTargetClass(r12, r3)
             butterknife.internal.CollectionBinding r14 = new butterknife.internal.CollectionBinding
@@ -303,6 +305,12 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             r0 = r19
             r0.add(r15)
             return
+        L_0x00fa:
+            r12 = r18
+            r0 = r19
+            java.lang.AssertionError r10 = new java.lang.AssertionError
+            r10.<init>()
+            throw r10
         */
         throw new UnsupportedOperationException("Method not decompiled: butterknife.internal.ButterKnifeProcessor.parseInjectViews(javax.lang.model.element.Element, java.util.Map, java.util.Set):void");
     }
@@ -334,9 +342,9 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
         Class<? extends Annotation> cls = annotationClass;
         Element element2 = element;
         if (!(element2 instanceof ExecutableElement) || element.getKind() != ElementKind.METHOD) {
-            Map<TypeElement, ViewInjector> map = targetClassMap;
             Set<String> set = erasedTargetNames;
-            Class<? extends Annotation> cls2 = cls;
+            Element element3 = element2;
+            Map<TypeElement, ViewInjector> map = targetClassMap;
             throw new IllegalStateException(String.format("@%s annotation must be on a method.", new Object[]{annotationClass.getSimpleName()}));
         }
         ExecutableElement executableElement = (ExecutableElement) element2;
@@ -347,13 +355,12 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
             int[] ids = (int[]) annotationValue.invoke(annotation, new Object[0]);
             String name = executableElement.getSimpleName().toString();
             boolean required = element2.getAnnotation(Optional.class) == null;
-            int hasError = isValidForGeneratedCode(cls, "methods", element2);
-            Set<Integer> seenIds = new LinkedHashSet<>();
-            int hasError2 = hasError;
+            boolean hasError = isValidForGeneratedCode(cls, "methods", element2);
+            LinkedHashSet linkedHashSet = new LinkedHashSet();
             for (int id : ids) {
-                if (!seenIds.add(Integer.valueOf(id))) {
+                if (!linkedHashSet.add(Integer.valueOf(id))) {
                     error(element2, "@%s annotation for method contains duplicate ID %d. (%s.%s)", annotationClass.getSimpleName(), Integer.valueOf(id), enclosingElement.getQualifiedName(), element.getSimpleName());
-                    hasError2 = true;
+                    hasError = true;
                 }
             }
             ListenerClass listener = (ListenerClass) cls.getAnnotation(ListenerClass.class);
@@ -366,11 +373,6 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
                         Method method2 = annotationCallback;
                         method = (ListenerMethod) callback.getDeclaringClass().getField(callback.name()).getAnnotation(ListenerMethod.class);
                         if (method == null) {
-                            Map<TypeElement, ViewInjector> map2 = targetClassMap;
-                            Annotation annotation2 = annotation;
-                            ListenerMethod[] listenerMethodArr = methods;
-                            Set<Integer> set2 = seenIds;
-                            Set<String> set3 = erasedTargetNames;
                             throw new IllegalStateException(String.format("No @%s defined on @%s's %s.%s.", new Object[]{ListenerMethod.class.getSimpleName(), annotationClass.getSimpleName(), callback.getDeclaringClass().getSimpleName(), callback.name()}));
                         }
                     } else if (listener.callbacks() == ListenerClass.NONE.class) {
@@ -381,36 +383,37 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
                         throw new IllegalStateException(String.format("Both method() and callback() defined on @%s.", new Object[]{annotationClass.getSimpleName()}));
                     }
                     List<? extends VariableElement> methodParameters = executableElement.getParameters();
-                    Annotation annotation3 = annotation;
+                    Annotation annotation2 = annotation;
                     if (methodParameters.size() > method.parameters().length) {
-                        ListenerMethod[] listenerMethodArr2 = methods;
                         error(element2, "@%s methods can have at most %s parameter(s). (%s.%s)", annotationClass.getSimpleName(), Integer.valueOf(method.parameters().length), enclosingElement.getQualifiedName(), element.getSimpleName());
-                        hasError2 = true;
+                        hasError = true;
                     }
                     TypeVariable returnType = executableElement.getReturnType();
                     if (returnType instanceof TypeVariable) {
                         returnType = returnType.getUpperBound();
                     }
+                    TypeMirror typeMirror = returnType;
                     if (!returnType.toString().equals(method.returnType())) {
                         error(element2, "@%s methods must have a '%s' return type. (%s.%s)", annotationClass.getSimpleName(), method.returnType(), enclosingElement.getQualifiedName(), element.getSimpleName());
-                        hasError2 = true;
+                        hasError = true;
                     }
-                    if (hasError2 == 0) {
+                    if (!hasError) {
                         Parameter[] parameters = Parameter.NONE;
                         if (!methodParameters.isEmpty()) {
                             parameters = new Parameter[methodParameters.size()];
-                            TypeMirror typeMirror = returnType;
+                            boolean z = hasError;
                             BitSet methodParameterUsed = new BitSet(methodParameters.size());
                             String[] parameterTypes2 = method.parameters();
+                            LinkedHashSet linkedHashSet2 = linkedHashSet;
                             int i = 0;
                             while (true) {
-                                Set<Integer> seenIds2 = seenIds;
-                                int hasError3 = hasError2;
-                                int i2 = i;
-                                if (i2 >= methodParameters.size()) {
+                                ListenerMethod[] methods2 = methods;
+                                if (i >= methodParameters.size()) {
+                                    Parameter[] parameterArr = parameters;
+                                    String[] strArr = parameterTypes2;
                                     break;
                                 }
-                                VariableElement methodParameter = (VariableElement) methodParameters.get(i2);
+                                VariableElement methodParameter = (VariableElement) methodParameters.get(i);
                                 TypeVariable methodParameterType = methodParameter.asType();
                                 VariableElement variableElement = methodParameter;
                                 if (methodParameterType instanceof TypeVariable) {
@@ -423,114 +426,82 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
                                         break;
                                     } else if (!methodParameterUsed.get(j) && isSubtypeOfType(methodParameterType, parameterTypes2[j])) {
                                         parameterTypes = parameterTypes2;
-                                        parameters[i2] = new Parameter(j, methodParameterType.toString());
+                                        parameters[i] = new Parameter(j, methodParameterType.toString());
                                         methodParameterUsed.set(j);
                                         break;
                                     } else {
                                         j++;
+                                        Element element4 = element;
                                         parameterTypes2 = parameterTypes2;
-                                        Element element3 = element;
                                     }
                                 }
-                                if (parameters[i2] == null) {
+                                if (parameters[i] == null) {
                                     StringBuilder builder = new StringBuilder();
-                                    builder.append("Unable to match @");
-                                    builder.append(annotationClass.getSimpleName());
-                                    builder.append(" method arguments. (");
-                                    builder.append(enclosingElement.getQualifiedName());
-                                    builder.append('.');
-                                    builder.append(element.getSimpleName());
-                                    builder.append(')');
+                                    builder.append("Unable to match @").append(annotationClass.getSimpleName()).append(" method arguments. (").append(enclosingElement.getQualifiedName()).append('.').append(element.getSimpleName()).append(')');
                                     int j2 = 0;
                                     while (j2 < parameters.length) {
                                         Parameter parameter = parameters[j2];
                                         TypeMirror methodParameterType2 = methodParameterType;
-                                        builder.append("\n\n  Parameter #");
-                                        builder.append(j2 + 1);
-                                        builder.append(": ");
-                                        builder.append(((VariableElement) methodParameters.get(j2)).asType().toString());
-                                        builder.append("\n    ");
+                                        Parameter[] parameters2 = parameters;
+                                        List<? extends VariableElement> methodParameters2 = methodParameters;
+                                        builder.append("\n\n  Parameter #").append(j2 + 1).append(PluralRules.KEYWORD_RULE_SEPARATOR).append(((VariableElement) methodParameters.get(j2)).asType().toString()).append("\n    ");
                                         if (parameter == null) {
                                             builder.append("did not match any listener parameters");
                                         } else {
-                                            builder.append("matched listener parameter #");
-                                            builder.append(parameter.getListenerPosition() + 1);
-                                            builder.append(": ");
-                                            builder.append(parameter.getType());
+                                            builder.append("matched listener parameter #").append(parameter.getListenerPosition() + 1).append(PluralRules.KEYWORD_RULE_SEPARATOR).append(parameter.getType());
                                         }
                                         j2++;
                                         methodParameterType = methodParameterType2;
-                                    }
-                                    builder.append("\n\nMethods may have up to ");
-                                    builder.append(method.parameters().length);
-                                    builder.append(" parameter(s):\n");
-                                    String[] parameters2 = method.parameters();
-                                    int length = parameters2.length;
-                                    int i3 = 0;
-                                    while (i3 < length) {
-                                        List<? extends VariableElement> methodParameters2 = methodParameters;
-                                        String parameterType = parameters2[i3];
-                                        builder.append("\n  ");
-                                        builder.append(parameterType);
-                                        i3++;
+                                        parameters = parameters2;
                                         methodParameters = methodParameters2;
-                                        parameters2 = parameters2;
+                                    }
+                                    List<? extends VariableElement> list = methodParameters;
+                                    Parameter[] parameterArr2 = parameters;
+                                    builder.append("\n\nMethods may have up to ").append(method.parameters().length).append(" parameter(s):\n");
+                                    for (String parameterType : method.parameters()) {
+                                        builder.append("\n  ").append(parameterType);
                                     }
                                     builder.append("\n\nThese may be listed in any order but will be searched for from top to bottom.");
                                     error(executableElement, builder.toString(), new Object[0]);
                                     return;
                                 }
-                                i = i2 + 1;
-                                seenIds = seenIds2;
-                                hasError2 = hasError3;
+                                List<? extends VariableElement> list2 = methodParameters;
+                                Parameter[] parameterArr3 = parameters;
+                                i++;
+                                Class<? extends Annotation> cls2 = annotationClass;
+                                Element element5 = element;
+                                methods = methods2;
                                 parameterTypes2 = parameterTypes;
-                                Class<? extends Annotation> cls3 = annotationClass;
-                                Element element4 = element;
                             }
                         } else {
-                            TypeMirror typeMirror2 = returnType;
-                            Set<Integer> set4 = seenIds;
-                            int i4 = hasError2;
+                            boolean z2 = hasError;
+                            LinkedHashSet linkedHashSet3 = linkedHashSet;
+                            ListenerMethod[] listenerMethodArr = methods;
                         }
                         ListenerBinding binding = new ListenerBinding(name, Arrays.asList(parameters), required);
                         ViewInjector viewInjector = getOrCreateTargetClass(targetClassMap, enclosingElement);
-                        int length2 = ids.length;
-                        int i5 = 0;
-                        while (i5 < length2) {
-                            int id2 = ids[i5];
+                        int length = ids.length;
+                        int i2 = 0;
+                        while (i2 < length) {
+                            int id2 = ids[i2];
                             if (!viewInjector.addListener(id2, listener, method, binding)) {
                                 error(element, "Multiple @%s methods declared for ID %s in %s.", annotationClass.getSimpleName(), Integer.valueOf(id2), enclosingElement.getQualifiedName());
                                 return;
                             } else {
-                                Element element5 = element;
-                                i5++;
+                                Element element6 = element;
+                                i2++;
                             }
                         }
-                        Element element6 = element;
+                        Element element7 = element;
                         erasedTargetNames.add(enclosingElement.toString());
                         return;
                     }
                     return;
                 }
-                Map<TypeElement, ViewInjector> map3 = targetClassMap;
-                Annotation annotation4 = annotation;
-                Method method5 = annotationValue;
-                ListenerMethod[] listenerMethodArr3 = methods;
-                Set<Integer> set5 = seenIds;
-                Set<String> set6 = erasedTargetNames;
                 throw new IllegalStateException(String.format("Multiple listener methods specified on @%s.", new Object[]{annotationClass.getSimpleName()}));
             }
-            Map<TypeElement, ViewInjector> map4 = targetClassMap;
-            Set<String> set7 = erasedTargetNames;
-            Annotation annotation5 = annotation;
-            Method method6 = annotationValue;
-            Set<Integer> set8 = seenIds;
             throw new IllegalStateException(String.format("No @%s defined on @%s.", new Object[]{ListenerClass.class.getSimpleName(), annotationClass.getSimpleName()}));
         }
-        Map<TypeElement, ViewInjector> map5 = targetClassMap;
-        Set<String> set9 = erasedTargetNames;
-        Annotation annotation6 = annotation;
-        Method method7 = annotationValue;
         throw new IllegalStateException(String.format("@%s annotation value() type not int[].", new Object[]{annotationClass}));
     }
 
@@ -586,7 +557,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
     private static String getClassName(TypeElement type, String packageName) {
-        return type.getQualifiedName().toString().substring(packageName.length() + 1).replace('.', '$');
+        return type.getQualifiedName().toString().substring(packageName.length() + 1).replace('.', SymbolTable.SYMBOL_REF);
     }
 
     private String findParentFqcn(TypeElement typeElement, Set<String> parents) {

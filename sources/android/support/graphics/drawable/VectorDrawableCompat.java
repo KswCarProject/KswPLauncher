@@ -19,10 +19,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.ComplexColorCompat;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v4.graphics.PathParser;
@@ -134,7 +130,7 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         this.mVectorState = new VectorDrawableCompatState();
     }
 
-    VectorDrawableCompat(@NonNull VectorDrawableCompatState state) {
+    VectorDrawableCompat(VectorDrawableCompatState state) {
         this.mAllowCaching = true;
         this.mTmpFloats = new float[9];
         this.mTmpMatrix = new Matrix();
@@ -175,7 +171,10 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
         copyBounds(this.mTmpBounds);
         if (this.mTmpBounds.width() > 0 && this.mTmpBounds.height() > 0) {
-            ColorFilter colorFilter = this.mColorFilter == null ? this.mTintFilter : this.mColorFilter;
+            ColorFilter colorFilter = this.mColorFilter;
+            if (colorFilter == null) {
+                colorFilter = this.mTintFilter;
+            }
             canvas.getMatrix(this.mTmpMatrix);
             this.mTmpMatrix.getValues(this.mTmpFloats);
             float canvasScaleX = Math.abs(this.mTmpFloats[0]);
@@ -276,11 +275,42 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
+    /* JADX WARNING: Code restructure failed: missing block: B:6:0x0011, code lost:
+        r0 = r1.mVectorState;
+     */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
     public boolean isStateful() {
-        if (this.mDelegateDrawable != null) {
-            return this.mDelegateDrawable.isStateful();
-        }
-        return super.isStateful() || (this.mVectorState != null && (this.mVectorState.isStateful() || (this.mVectorState.mTint != null && this.mVectorState.mTint.isStateful())));
+        /*
+            r1 = this;
+            android.graphics.drawable.Drawable r0 = r1.mDelegateDrawable
+            if (r0 == 0) goto L_0x000b
+            android.graphics.drawable.Drawable r0 = r1.mDelegateDrawable
+            boolean r0 = r0.isStateful()
+            return r0
+        L_0x000b:
+            boolean r0 = super.isStateful()
+            if (r0 != 0) goto L_0x002e
+            android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableCompatState r0 = r1.mVectorState
+            if (r0 == 0) goto L_0x002c
+            boolean r0 = r0.isStateful()
+            if (r0 != 0) goto L_0x002e
+            android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableCompatState r0 = r1.mVectorState
+            android.content.res.ColorStateList r0 = r0.mTint
+            if (r0 == 0) goto L_0x002c
+            android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableCompatState r0 = r1.mVectorState
+            android.content.res.ColorStateList r0 = r0.mTint
+            boolean r0 = r0.isStateful()
+            if (r0 == 0) goto L_0x002c
+            goto L_0x002e
+        L_0x002c:
+            r0 = 0
+            goto L_0x002f
+        L_0x002e:
+            r0 = 1
+        L_0x002f:
+            return r0
+        */
+        throw new UnsupportedOperationException("Method not decompiled: android.support.graphics.drawable.VectorDrawableCompat.isStateful():boolean");
     }
 
     /* access modifiers changed from: protected */
@@ -346,9 +376,9 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public float getPixelSize() {
-        if (this.mVectorState == null || this.mVectorState.mVPathRenderer == null || this.mVectorState.mVPathRenderer.mBaseWidth == 0.0f || this.mVectorState.mVPathRenderer.mBaseHeight == 0.0f || this.mVectorState.mVPathRenderer.mViewportHeight == 0.0f || this.mVectorState.mVPathRenderer.mViewportWidth == 0.0f) {
+        VectorDrawableCompatState vectorDrawableCompatState = this.mVectorState;
+        if (vectorDrawableCompatState == null || vectorDrawableCompatState.mVPathRenderer == null || this.mVectorState.mVPathRenderer.mBaseWidth == 0.0f || this.mVectorState.mVPathRenderer.mBaseHeight == 0.0f || this.mVectorState.mVPathRenderer.mViewportHeight == 0.0f || this.mVectorState.mVPathRenderer.mViewportWidth == 0.0f) {
             return 1.0f;
         }
         float intrinsicWidth = this.mVectorState.mVPathRenderer.mBaseWidth;
@@ -356,18 +386,19 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         return Math.min(this.mVectorState.mVPathRenderer.mViewportWidth / intrinsicWidth, this.mVectorState.mVPathRenderer.mViewportHeight / intrinsicHeight);
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:12:0x0035 A[Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }] */
-    /* JADX WARNING: Removed duplicated region for block: B:14:0x003a A[Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }] */
-    @android.support.annotation.Nullable
+    /* JADX WARNING: Removed duplicated region for block: B:12:0x0039 A[Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }] */
+    /* JADX WARNING: Removed duplicated region for block: B:14:0x003e A[Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public static android.support.graphics.drawable.VectorDrawableCompat create(@android.support.annotation.NonNull android.content.res.Resources r5, @android.support.annotation.DrawableRes int r6, @android.support.annotation.Nullable android.content.res.Resources.Theme r7) {
+    public static android.support.graphics.drawable.VectorDrawableCompat create(android.content.res.Resources r7, int r8, android.content.res.Resources.Theme r9) {
         /*
-            int r0 = android.os.Build.VERSION.SDK_INT
-            r1 = 24
-            if (r0 < r1) goto L_0x001f
+            java.lang.String r0 = "parser error"
+            java.lang.String r1 = "VectorDrawableCompat"
+            int r2 = android.os.Build.VERSION.SDK_INT
+            r3 = 24
+            if (r2 < r3) goto L_0x0023
             android.support.graphics.drawable.VectorDrawableCompat r0 = new android.support.graphics.drawable.VectorDrawableCompat
             r0.<init>()
-            android.graphics.drawable.Drawable r1 = android.support.v4.content.res.ResourcesCompat.getDrawable(r5, r6, r7)
+            android.graphics.drawable.Drawable r1 = android.support.v4.content.res.ResourcesCompat.getDrawable(r7, r8, r9)
             r0.mDelegateDrawable = r1
             android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableDelegateState r1 = new android.support.graphics.drawable.VectorDrawableCompat$VectorDrawableDelegateState
             android.graphics.drawable.Drawable r2 = r0.mDelegateDrawable
@@ -375,38 +406,34 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             r1.<init>(r2)
             r0.mCachedConstantStateDelegate = r1
             return r0
-        L_0x001f:
-            android.content.res.XmlResourceParser r0 = r5.getXml(r6)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }
-            android.util.AttributeSet r1 = android.util.Xml.asAttributeSet(r0)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }
-        L_0x0027:
-            int r2 = r0.next()     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }
-            r3 = r2
-            r4 = 2
-            if (r2 == r4) goto L_0x0033
-            r2 = 1
-            if (r3 == r2) goto L_0x0033
-            goto L_0x0027
-        L_0x0033:
-            if (r3 != r4) goto L_0x003a
-            android.support.graphics.drawable.VectorDrawableCompat r2 = createFromXmlInner(r5, r0, r1, r7)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }
-            return r2
-        L_0x003a:
-            org.xmlpull.v1.XmlPullParserException r2 = new org.xmlpull.v1.XmlPullParserException     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }
-            java.lang.String r4 = "No start tag found"
-            r2.<init>(r4)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }
-            throw r2     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0042 }
-        L_0x0042:
-            r0 = move-exception
-            java.lang.String r1 = "VectorDrawableCompat"
-            java.lang.String r2 = "parser error"
-            android.util.Log.e(r1, r2, r0)
-            goto L_0x0054
+        L_0x0023:
+            android.content.res.XmlResourceParser r2 = r7.getXml(r8)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
+            android.util.AttributeSet r3 = android.util.Xml.asAttributeSet(r2)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
+        L_0x002b:
+            int r4 = r2.next()     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
+            r5 = r4
+            r6 = 2
+            if (r4 == r6) goto L_0x0037
+            r4 = 1
+            if (r5 == r4) goto L_0x0037
+            goto L_0x002b
+        L_0x0037:
+            if (r5 != r6) goto L_0x003e
+            android.support.graphics.drawable.VectorDrawableCompat r0 = createFromXmlInner(r7, r2, r3, r9)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
+            return r0
+        L_0x003e:
+            org.xmlpull.v1.XmlPullParserException r4 = new org.xmlpull.v1.XmlPullParserException     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
+            java.lang.String r6 = "No start tag found"
+            r4.<init>(r6)     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
+            throw r4     // Catch:{ XmlPullParserException -> 0x004b, IOException -> 0x0046 }
+        L_0x0046:
+            r2 = move-exception
+            android.util.Log.e(r1, r0, r2)
+            goto L_0x0050
         L_0x004b:
-            r0 = move-exception
-            java.lang.String r1 = "VectorDrawableCompat"
-            java.lang.String r2 = "parser error"
-            android.util.Log.e(r1, r2, r0)
-        L_0x0054:
+            r2 = move-exception
+            android.util.Log.e(r1, r0, r2)
+        L_0x0050:
             r0 = 0
             return r0
         */
@@ -448,16 +475,13 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
     }
 
     private static PorterDuff.Mode parseTintModeCompat(int value, PorterDuff.Mode defaultMode) {
-        if (value == 3) {
-            return PorterDuff.Mode.SRC_OVER;
-        }
-        if (value == 5) {
-            return PorterDuff.Mode.SRC_IN;
-        }
-        if (value == 9) {
-            return PorterDuff.Mode.SRC_ATOP;
-        }
         switch (value) {
+            case 3:
+                return PorterDuff.Mode.SRC_OVER;
+            case 5:
+                return PorterDuff.Mode.SRC_IN;
+            case 9:
+                return PorterDuff.Mode.SRC_ATOP;
             case 14:
                 return PorterDuff.Mode.MULTIPLY;
             case 15:
@@ -556,29 +580,18 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
     }
 
     private void printGroupTree(VGroup currentGroup, int level) {
-        int i = 0;
         String indent = "";
-        for (int i2 = 0; i2 < level; i2++) {
+        for (int i = 0; i < level; i++) {
             indent = indent + "    ";
         }
         Log.v(LOGTAG, indent + "current group is :" + currentGroup.getGroupName() + " rotation is " + currentGroup.mRotate);
-        StringBuilder sb = new StringBuilder();
-        sb.append(indent);
-        sb.append("matrix is :");
-        sb.append(currentGroup.getLocalMatrix().toString());
-        Log.v(LOGTAG, sb.toString());
-        while (true) {
-            int i3 = i;
-            if (i3 < currentGroup.mChildren.size()) {
-                VObject child = currentGroup.mChildren.get(i3);
-                if (child instanceof VGroup) {
-                    printGroupTree((VGroup) child, level + 1);
-                } else {
-                    ((VPath) child).printVPath(level + 1);
-                }
-                i = i3 + 1;
+        Log.v(LOGTAG, indent + "matrix is :" + currentGroup.getLocalMatrix().toString());
+        for (int i2 = 0; i2 < currentGroup.mChildren.size(); i2++) {
+            VObject child = currentGroup.mChildren.get(i2);
+            if (child instanceof VGroup) {
+                printGroupTree((VGroup) child, level + 1);
             } else {
-                return;
+                ((VPath) child).printVPath(level + 1);
             }
         }
     }
@@ -640,7 +653,6 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
     }
 
-    @RequiresApi(24)
     private static class VectorDrawableDelegateState extends Drawable.ConstantState {
         private final Drawable.ConstantState mDelegateState;
 
@@ -721,8 +733,9 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
                 return null;
             }
             if (this.mTempPaint == null) {
-                this.mTempPaint = new Paint();
-                this.mTempPaint.setFilterBitmap(true);
+                Paint paint = new Paint();
+                this.mTempPaint = paint;
+                paint.setFilterBitmap(true);
             }
             this.mTempPaint.setAlpha(this.mVPathRenderer.getRootAlpha());
             this.mTempPaint.setColorFilter(filter);
@@ -769,12 +782,10 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             this.mVPathRenderer = new VPathRenderer();
         }
 
-        @NonNull
         public Drawable newDrawable() {
             return new VectorDrawableCompat(this);
         }
 
-        @NonNull
         public Drawable newDrawable(Resources res) {
             return new VectorDrawableCompat(this);
         }
@@ -853,8 +864,9 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             this.mRootAlpha = 255;
             this.mRootName = null;
             this.mIsStateful = null;
-            this.mVGTargetsMap = new ArrayMap<>();
-            this.mRootGroup = new VGroup(copy.mRootGroup, this.mVGTargetsMap);
+            ArrayMap<String, Object> arrayMap = new ArrayMap<>();
+            this.mVGTargetsMap = arrayMap;
+            this.mRootGroup = new VGroup(copy.mRootGroup, arrayMap);
             this.mPath = new Path(copy.mPath);
             this.mRenderPath = new Path(copy.mRenderPath);
             this.mBaseWidth = copy.mBaseWidth;
@@ -864,8 +876,9 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             this.mChangingConfigurations = copy.mChangingConfigurations;
             this.mRootAlpha = copy.mRootAlpha;
             this.mRootName = copy.mRootName;
-            if (copy.mRootName != null) {
-                this.mVGTargetsMap.put(copy.mRootName, this);
+            String str = copy.mRootName;
+            if (str != null) {
+                arrayMap.put(str, this);
             }
             this.mIsStateful = copy.mIsStateful;
         }
@@ -875,22 +888,15 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             vGroup.mStackedMatrix.set(currentMatrix);
             vGroup.mStackedMatrix.preConcat(vGroup.mLocalMatrix);
             canvas.save();
-            int i = 0;
-            while (true) {
-                int i2 = i;
-                if (i2 < vGroup.mChildren.size()) {
-                    VObject child = vGroup.mChildren.get(i2);
-                    if (child instanceof VGroup) {
-                        drawGroupTree((VGroup) child, vGroup.mStackedMatrix, canvas, w, h, filter);
-                    } else if (child instanceof VPath) {
-                        drawPath(currentGroup, (VPath) child, canvas, w, h, filter);
-                    }
-                    i = i2 + 1;
-                } else {
-                    canvas.restore();
-                    return;
+            for (int i = 0; i < vGroup.mChildren.size(); i++) {
+                VObject child = vGroup.mChildren.get(i);
+                if (child instanceof VGroup) {
+                    drawGroupTree((VGroup) child, vGroup.mStackedMatrix, canvas, w, h, filter);
+                } else if (child instanceof VPath) {
+                    drawPath(currentGroup, (VPath) child, canvas, w, h, filter);
                 }
             }
+            canvas.restore();
         }
 
         public void draw(Canvas canvas, int w, int h, ColorFilter filter) {
@@ -949,8 +955,9 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
                 if (fullPath.mFillColor.willDraw()) {
                     ComplexColorCompat fill = fullPath.mFillColor;
                     if (this.mFillPaint == null) {
-                        this.mFillPaint = new Paint(1);
-                        this.mFillPaint.setStyle(Paint.Style.FILL);
+                        Paint paint = new Paint(1);
+                        this.mFillPaint = paint;
+                        paint.setStyle(Paint.Style.FILL);
                     }
                     Paint fillPaint = this.mFillPaint;
                     if (fill.isGradient()) {
@@ -968,8 +975,9 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
                 if (fullPath.mStrokeColor.willDraw()) {
                     ComplexColorCompat strokeColor = fullPath.mStrokeColor;
                     if (this.mStrokePaint == null) {
-                        this.mStrokePaint = new Paint(1);
-                        this.mStrokePaint.setStyle(Paint.Style.STROKE);
+                        Paint paint2 = new Paint(1);
+                        this.mStrokePaint = paint2;
+                        paint2.setStyle(Paint.Style.STROKE);
                     }
                     Paint strokePaint = this.mStrokePaint;
                     if (fullPath.mStrokeLineJoin != null) {
@@ -1036,22 +1044,34 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
     private static class VGroup extends VObject {
         int mChangingConfigurations;
-        final ArrayList<VObject> mChildren = new ArrayList<>();
-        private String mGroupName = null;
-        final Matrix mLocalMatrix = new Matrix();
-        private float mPivotX = 0.0f;
-        private float mPivotY = 0.0f;
-        float mRotate = 0.0f;
-        private float mScaleX = 1.0f;
-        private float mScaleY = 1.0f;
-        final Matrix mStackedMatrix = new Matrix();
+        final ArrayList<VObject> mChildren;
+        private String mGroupName;
+        final Matrix mLocalMatrix;
+        private float mPivotX;
+        private float mPivotY;
+        float mRotate;
+        private float mScaleX;
+        private float mScaleY;
+        final Matrix mStackedMatrix;
         private int[] mThemeAttrs;
-        private float mTranslateX = 0.0f;
-        private float mTranslateY = 0.0f;
+        private float mTranslateX;
+        private float mTranslateY;
 
         public VGroup(VGroup copy, ArrayMap<String, Object> targetsMap) {
             super();
             VPath newPath;
+            this.mStackedMatrix = new Matrix();
+            this.mChildren = new ArrayList<>();
+            this.mRotate = 0.0f;
+            this.mPivotX = 0.0f;
+            this.mPivotY = 0.0f;
+            this.mScaleX = 1.0f;
+            this.mScaleY = 1.0f;
+            this.mTranslateX = 0.0f;
+            this.mTranslateY = 0.0f;
+            Matrix matrix = new Matrix();
+            this.mLocalMatrix = matrix;
+            this.mGroupName = null;
             this.mRotate = copy.mRotate;
             this.mPivotX = copy.mPivotX;
             this.mPivotY = copy.mPivotY;
@@ -1060,12 +1080,13 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
             this.mTranslateX = copy.mTranslateX;
             this.mTranslateY = copy.mTranslateY;
             this.mThemeAttrs = copy.mThemeAttrs;
-            this.mGroupName = copy.mGroupName;
+            String str = copy.mGroupName;
+            this.mGroupName = str;
             this.mChangingConfigurations = copy.mChangingConfigurations;
-            if (this.mGroupName != null) {
-                targetsMap.put(this.mGroupName, this);
+            if (str != null) {
+                targetsMap.put(str, this);
             }
-            this.mLocalMatrix.set(copy.mLocalMatrix);
+            matrix.set(copy.mLocalMatrix);
             ArrayList<VObject> children = copy.mChildren;
             for (int i = 0; i < children.size(); i++) {
                 VObject vObject = children.get(i);
@@ -1089,6 +1110,17 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
         public VGroup() {
             super();
+            this.mStackedMatrix = new Matrix();
+            this.mChildren = new ArrayList<>();
+            this.mRotate = 0.0f;
+            this.mPivotX = 0.0f;
+            this.mPivotY = 0.0f;
+            this.mScaleX = 1.0f;
+            this.mScaleY = 1.0f;
+            this.mTranslateX = 0.0f;
+            this.mTranslateY = 0.0f;
+            this.mLocalMatrix = new Matrix();
+            this.mGroupName = null;
         }
 
         public String getGroupName() {
@@ -1243,15 +1275,12 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
         public String nodesToString(PathParser.PathDataNode[] nodes) {
             String result = " ";
-            int i = 0;
-            while (i < nodes.length) {
+            for (int i = 0; i < nodes.length; i++) {
+                result = result + nodes[i].mType + ":";
                 float[] params = nodes[i].mParams;
-                String result2 = result + nodes[i].mType + ":";
                 for (int j = 0; j < params.length; j++) {
-                    result2 = result2 + params[j] + ",";
+                    result = result + params[j] + ",";
                 }
-                i++;
-                result = result2;
             }
             return result;
         }
@@ -1265,8 +1294,9 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
 
         public void toPath(Path path) {
             path.reset();
-            if (this.mNodes != null) {
-                PathParser.PathDataNode.nodesToPath(this.mNodes, path);
+            PathParser.PathDataNode[] pathDataNodeArr = this.mNodes;
+            if (pathDataNodeArr != null) {
+                PathParser.PathDataNode.nodesToPath(pathDataNodeArr, path);
             }
         }
 
@@ -1442,7 +1472,6 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
 
         /* access modifiers changed from: package-private */
-        @ColorInt
         public int getStrokeColor() {
             return this.mStrokeColor.getColor();
         }
@@ -1473,7 +1502,6 @@ public class VectorDrawableCompat extends VectorDrawableCommon {
         }
 
         /* access modifiers changed from: package-private */
-        @ColorInt
         public int getFillColor() {
             return this.mFillColor.getColor();
         }

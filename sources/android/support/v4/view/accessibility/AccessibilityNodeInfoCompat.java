@@ -3,9 +3,6 @@ package android.support.v4.view.accessibility;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import java.util.ArrayList;
@@ -62,7 +59,6 @@ public class AccessibilityNodeInfoCompat {
     private static final String ROLE_DESCRIPTION_KEY = "AccessibilityNodeInfo.roleDescription";
     private static final String TOOLTIP_TEXT_KEY = "androidx.view.accessibility.AccessibilityNodeInfoCompat.TOOLTIP_TEXT_KEY";
     private final AccessibilityNodeInfo mInfo;
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public int mParentVirtualDescendantId = -1;
 
     public static class AccessibilityActionCompat {
@@ -318,7 +314,7 @@ public class AccessibilityNodeInfoCompat {
         this.mInfo = info;
     }
 
-    public static AccessibilityNodeInfoCompat wrap(@NonNull AccessibilityNodeInfo info) {
+    public static AccessibilityNodeInfoCompat wrap(AccessibilityNodeInfo info) {
         return new AccessibilityNodeInfoCompat(info);
     }
 
@@ -774,7 +770,6 @@ public class AccessibilityNodeInfoCompat {
         }
     }
 
-    @Nullable
     public CharSequence getHintText() {
         if (Build.VERSION.SDK_INT >= 26) {
             return this.mInfo.getHintText();
@@ -785,7 +780,7 @@ public class AccessibilityNodeInfoCompat {
         return null;
     }
 
-    public void setHintText(@Nullable CharSequence hintText) {
+    public void setHintText(CharSequence hintText) {
         if (Build.VERSION.SDK_INT >= 26) {
             this.mInfo.setHintText(hintText);
         } else if (Build.VERSION.SDK_INT >= 19) {
@@ -1006,7 +1001,6 @@ public class AccessibilityNodeInfoCompat {
         }
     }
 
-    @Nullable
     public CharSequence getTooltipText() {
         if (Build.VERSION.SDK_INT >= 28) {
             return this.mInfo.getTooltipText();
@@ -1017,7 +1011,7 @@ public class AccessibilityNodeInfoCompat {
         return null;
     }
 
-    public void setTooltipText(@Nullable CharSequence tooltipText) {
+    public void setTooltipText(CharSequence tooltipText) {
         if (Build.VERSION.SDK_INT >= 28) {
             this.mInfo.setTooltipText(tooltipText);
         } else if (Build.VERSION.SDK_INT >= 19) {
@@ -1025,7 +1019,7 @@ public class AccessibilityNodeInfoCompat {
         }
     }
 
-    public void setPaneTitle(@Nullable CharSequence paneTitle) {
+    public void setPaneTitle(CharSequence paneTitle) {
         if (Build.VERSION.SDK_INT >= 28) {
             this.mInfo.setPaneTitle(paneTitle);
         } else if (Build.VERSION.SDK_INT >= 19) {
@@ -1033,7 +1027,6 @@ public class AccessibilityNodeInfoCompat {
         }
     }
 
-    @Nullable
     public CharSequence getPaneTitle() {
         if (Build.VERSION.SDK_INT >= 28) {
             return this.mInfo.getPaneTitle();
@@ -1103,7 +1096,6 @@ public class AccessibilityNodeInfoCompat {
         return false;
     }
 
-    @Nullable
     public CharSequence getRoleDescription() {
         if (Build.VERSION.SDK_INT >= 19) {
             return this.mInfo.getExtras().getCharSequence(ROLE_DESCRIPTION_KEY);
@@ -1111,17 +1103,18 @@ public class AccessibilityNodeInfoCompat {
         return null;
     }
 
-    public void setRoleDescription(@Nullable CharSequence roleDescription) {
+    public void setRoleDescription(CharSequence roleDescription) {
         if (Build.VERSION.SDK_INT >= 19) {
             this.mInfo.getExtras().putCharSequence(ROLE_DESCRIPTION_KEY, roleDescription);
         }
     }
 
     public int hashCode() {
-        if (this.mInfo == null) {
+        AccessibilityNodeInfo accessibilityNodeInfo = this.mInfo;
+        if (accessibilityNodeInfo == null) {
             return 0;
         }
-        return this.mInfo.hashCode();
+        return accessibilityNodeInfo.hashCode();
     }
 
     public boolean equals(Object obj) {
@@ -1132,11 +1125,12 @@ public class AccessibilityNodeInfoCompat {
             return false;
         }
         AccessibilityNodeInfoCompat other = (AccessibilityNodeInfoCompat) obj;
-        if (this.mInfo == null) {
+        AccessibilityNodeInfo accessibilityNodeInfo = this.mInfo;
+        if (accessibilityNodeInfo == null) {
             if (other.mInfo != null) {
                 return false;
             }
-        } else if (!this.mInfo.equals(other.mInfo)) {
+        } else if (!accessibilityNodeInfo.equals(other.mInfo)) {
             return false;
         }
         return true;
@@ -1150,34 +1144,20 @@ public class AccessibilityNodeInfoCompat {
         builder.append("; boundsInParent: " + bounds);
         getBoundsInScreen(bounds);
         builder.append("; boundsInScreen: " + bounds);
-        builder.append("; packageName: ");
-        builder.append(getPackageName());
-        builder.append("; className: ");
-        builder.append(getClassName());
-        builder.append("; text: ");
-        builder.append(getText());
-        builder.append("; contentDescription: ");
-        builder.append(getContentDescription());
-        builder.append("; viewId: ");
-        builder.append(getViewIdResourceName());
-        builder.append("; checkable: ");
-        builder.append(isCheckable());
-        builder.append("; checked: ");
-        builder.append(isChecked());
-        builder.append("; focusable: ");
-        builder.append(isFocusable());
-        builder.append("; focused: ");
-        builder.append(isFocused());
-        builder.append("; selected: ");
-        builder.append(isSelected());
-        builder.append("; clickable: ");
-        builder.append(isClickable());
-        builder.append("; longClickable: ");
-        builder.append(isLongClickable());
-        builder.append("; enabled: ");
-        builder.append(isEnabled());
-        builder.append("; password: ");
-        builder.append(isPassword());
+        builder.append("; packageName: ").append(getPackageName());
+        builder.append("; className: ").append(getClassName());
+        builder.append("; text: ").append(getText());
+        builder.append("; contentDescription: ").append(getContentDescription());
+        builder.append("; viewId: ").append(getViewIdResourceName());
+        builder.append("; checkable: ").append(isCheckable());
+        builder.append("; checked: ").append(isChecked());
+        builder.append("; focusable: ").append(isFocusable());
+        builder.append("; focused: ").append(isFocused());
+        builder.append("; selected: ").append(isSelected());
+        builder.append("; clickable: ").append(isClickable());
+        builder.append("; longClickable: ").append(isLongClickable());
+        builder.append("; enabled: ").append(isEnabled());
+        builder.append("; password: ").append(isPassword());
         builder.append("; scrollable: " + isScrollable());
         builder.append("; [");
         int actionBits = getActions();
@@ -1201,7 +1181,7 @@ public class AccessibilityNodeInfoCompat {
             if (value) {
                 i = property;
             }
-            extras.putInt(BOOLEAN_PROPERTY_KEY, booleanProperties | i);
+            extras.putInt(BOOLEAN_PROPERTY_KEY, i | booleanProperties);
         }
     }
 

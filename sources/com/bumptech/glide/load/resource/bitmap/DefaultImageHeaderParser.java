@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.resource.bitmap;
 
-import android.support.annotation.NonNull;
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
@@ -51,31 +50,28 @@ public final class DefaultImageHeaderParser implements ImageHeaderParser {
         long skip(long j) throws IOException;
     }
 
-    @NonNull
-    public ImageHeaderParser.ImageType getType(@NonNull InputStream is) throws IOException {
+    public ImageHeaderParser.ImageType getType(InputStream is) throws IOException {
         return getType((Reader) new StreamReader((InputStream) Preconditions.checkNotNull(is)));
     }
 
-    @NonNull
-    public ImageHeaderParser.ImageType getType(@NonNull ByteBuffer byteBuffer) throws IOException {
+    public ImageHeaderParser.ImageType getType(ByteBuffer byteBuffer) throws IOException {
         return getType((Reader) new ByteBufferReader((ByteBuffer) Preconditions.checkNotNull(byteBuffer)));
     }
 
-    public int getOrientation(@NonNull InputStream is, @NonNull ArrayPool byteArrayPool) throws IOException {
+    public int getOrientation(InputStream is, ArrayPool byteArrayPool) throws IOException {
         return getOrientation((Reader) new StreamReader((InputStream) Preconditions.checkNotNull(is)), (ArrayPool) Preconditions.checkNotNull(byteArrayPool));
     }
 
-    public int getOrientation(@NonNull ByteBuffer byteBuffer, @NonNull ArrayPool byteArrayPool) throws IOException {
+    public int getOrientation(ByteBuffer byteBuffer, ArrayPool byteArrayPool) throws IOException {
         return getOrientation((Reader) new ByteBufferReader((ByteBuffer) Preconditions.checkNotNull(byteBuffer)), (ArrayPool) Preconditions.checkNotNull(byteArrayPool));
     }
 
-    @NonNull
     private ImageHeaderParser.ImageType getType(Reader reader) throws IOException {
         int firstTwoBytes = reader.getUInt16();
         if (firstTwoBytes == EXIF_MAGIC_NUMBER) {
             return ImageHeaderParser.ImageType.JPEG;
         }
-        int firstFourBytes = ((firstTwoBytes << 16) & SupportMenu.CATEGORY_MASK) | (reader.getUInt16() & SupportMenu.USER_MASK);
+        int firstFourBytes = ((firstTwoBytes << 16) & SupportMenu.CATEGORY_MASK) | (reader.getUInt16() & 65535);
         if (firstFourBytes == PNG_HEADER) {
             reader.skip(21);
             return reader.getByte() >= 3 ? ImageHeaderParser.ImageType.PNG_A : ImageHeaderParser.ImageType.PNG;
@@ -86,7 +82,7 @@ public final class DefaultImageHeaderParser implements ImageHeaderParser {
                 return ImageHeaderParser.ImageType.UNKNOWN;
             }
             reader.skip(4);
-            if ((((reader.getUInt16() << 16) & SupportMenu.CATEGORY_MASK) | (reader.getUInt16() & SupportMenu.USER_MASK)) != WEBP_HEADER) {
+            if ((((reader.getUInt16() << 16) & SupportMenu.CATEGORY_MASK) | (reader.getUInt16() & 65535)) != WEBP_HEADER) {
                 return ImageHeaderParser.ImageType.UNKNOWN;
             }
             int fourthFourBytes = (-65536 & (reader.getUInt16() << 16)) | (65535 & reader.getUInt16());
@@ -150,12 +146,17 @@ public final class DefaultImageHeaderParser implements ImageHeaderParser {
         if (!result) {
             return result;
         }
-        for (int i = 0; i < JPEG_EXIF_SEGMENT_PREAMBLE_BYTES.length; i++) {
-            if (exifData[i] != JPEG_EXIF_SEGMENT_PREAMBLE_BYTES[i]) {
+        int i = 0;
+        while (true) {
+            byte[] bArr = JPEG_EXIF_SEGMENT_PREAMBLE_BYTES;
+            if (i >= bArr.length) {
+                return result;
+            }
+            if (exifData[i] != bArr[i]) {
                 return false;
             }
+            i++;
         }
-        return result;
     }
 
     private int moveToExifSegmentAndGetLength(Reader reader) throws IOException {
@@ -181,7 +182,7 @@ public final class DefaultImageHeaderParser implements ImageHeaderParser {
                 return -1;
             }
             segmentLength = reader.getUInt16() - 2;
-            if (segmentType == EXIF_SEGMENT_TYPE) {
+            if (segmentType == 225) {
                 return segmentLength;
             }
             skipped = reader.skip((long) segmentLength);
@@ -194,71 +195,84 @@ public final class DefaultImageHeaderParser implements ImageHeaderParser {
 
     private static int parseExifSegment(RandomAccessReader segmentData) {
         ByteOrder byteOrder;
-        int componentCount;
+        int i;
         RandomAccessReader randomAccessReader = segmentData;
         int headerOffsetSize = JPEG_EXIF_SEGMENT_PREAMBLE.length();
         short byteOrderIdentifier = randomAccessReader.getInt16(headerOffsetSize);
-        int i = 3;
-        if (byteOrderIdentifier == INTEL_TIFF_MAGIC_NUMBER) {
-            byteOrder = ByteOrder.LITTLE_ENDIAN;
-        } else if (byteOrderIdentifier != MOTOROLA_TIFF_MAGIC_NUMBER) {
-            if (Log.isLoggable(TAG, 3)) {
-                Log.d(TAG, "Unknown endianness = " + byteOrderIdentifier);
-            }
-            byteOrder = ByteOrder.BIG_ENDIAN;
-        } else {
-            byteOrder = ByteOrder.BIG_ENDIAN;
+        int i2 = 3;
+        switch (byteOrderIdentifier) {
+            case INTEL_TIFF_MAGIC_NUMBER /*18761*/:
+                byteOrder = ByteOrder.LITTLE_ENDIAN;
+                break;
+            case MOTOROLA_TIFF_MAGIC_NUMBER /*19789*/:
+                byteOrder = ByteOrder.BIG_ENDIAN;
+                break;
+            default:
+                if (Log.isLoggable(TAG, 3)) {
+                    Log.d(TAG, "Unknown endianness = " + byteOrderIdentifier);
+                }
+                byteOrder = ByteOrder.BIG_ENDIAN;
+                break;
         }
         randomAccessReader.order(byteOrder);
         int firstIfdOffset = randomAccessReader.getInt32(headerOffsetSize + 4) + headerOffsetSize;
         int tagCount = randomAccessReader.getInt16(firstIfdOffset);
-        int i2 = 0;
-        while (i2 < tagCount) {
-            int tagOffset = calcTagOffset(firstIfdOffset, i2);
+        int i3 = 0;
+        while (i3 < tagCount) {
+            int tagOffset = calcTagOffset(firstIfdOffset, i3);
             int tagType = randomAccessReader.getInt16(tagOffset);
-            if (tagType == ORIENTATION_TAG_TYPE) {
+            if (tagType != ORIENTATION_TAG_TYPE) {
+                i = i2;
+            } else {
                 int formatCode = randomAccessReader.getInt16(tagOffset + 2);
                 if (formatCode < 1 || formatCode > 12) {
-                    componentCount = 3;
+                    i = 3;
                     if (Log.isLoggable(TAG, 3)) {
                         Log.d(TAG, "Got invalid format code = " + formatCode);
                     }
-                    i2++;
-                    i = componentCount;
                 } else {
-                    int componentCount2 = randomAccessReader.getInt32(tagOffset + 4);
-                    if (componentCount2 >= 0) {
-                        if (Log.isLoggable(TAG, i)) {
-                            Log.d(TAG, "Got tagIndex=" + i2 + " tagType=" + tagType + " formatCode=" + formatCode + " componentCount=" + componentCount2);
+                    int componentCount = randomAccessReader.getInt32(tagOffset + 4);
+                    if (componentCount >= 0) {
+                        if (Log.isLoggable(TAG, i2)) {
+                            Log.d(TAG, "Got tagIndex=" + i3 + " tagType=" + tagType + " formatCode=" + formatCode + " componentCount=" + componentCount);
                         }
-                        int byteCount = BYTES_PER_FORMAT[formatCode] + componentCount2;
+                        int byteCount = BYTES_PER_FORMAT[formatCode] + componentCount;
                         if (byteCount <= 4) {
                             int tagValueOffset = tagOffset + 8;
                             if (tagValueOffset < 0 || tagValueOffset > segmentData.length()) {
                                 if (Log.isLoggable(TAG, 3)) {
                                     Log.d(TAG, "Illegal tagValueOffset=" + tagValueOffset + " tagType=" + tagType);
+                                    i = 3;
+                                } else {
+                                    i = 3;
                                 }
                             } else if (byteCount >= 0 && tagValueOffset + byteCount <= segmentData.length()) {
                                 return randomAccessReader.getInt16(tagValueOffset);
                             } else {
-                                if (Log.isLoggable(TAG, i)) {
+                                if (Log.isLoggable(TAG, 3)) {
                                     Log.d(TAG, "Illegal number of bytes for TI tag data tagType=" + tagType);
+                                    i = 3;
+                                } else {
+                                    i = 3;
                                 }
                             }
-                            componentCount = 3;
-                            i2++;
-                            i = componentCount;
-                        } else if (Log.isLoggable(TAG, i)) {
+                        } else if (Log.isLoggable(TAG, i2)) {
                             Log.d(TAG, "Got byte count > 4, not orientation, continuing, formatCode=" + formatCode);
+                            i = i2;
+                        } else {
+                            i = i2;
                         }
-                    } else if (Log.isLoggable(TAG, i)) {
+                    } else if (Log.isLoggable(TAG, i2)) {
                         Log.d(TAG, "Negative tiff component count");
+                        i = i2;
+                    } else {
+                        i = i2;
                     }
                 }
             }
-            componentCount = i;
-            i2++;
-            i = componentCount;
+            i3++;
+            i2 = i;
+            randomAccessReader = segmentData;
         }
         return -1;
     }
@@ -327,7 +341,8 @@ public final class DefaultImageHeaderParser implements ImageHeaderParser {
 
         public long skip(long total) {
             int toSkip = (int) Math.min((long) this.byteBuffer.remaining(), total);
-            this.byteBuffer.position(this.byteBuffer.position() + toSkip);
+            ByteBuffer byteBuffer2 = this.byteBuffer;
+            byteBuffer2.position(byteBuffer2.position() + toSkip);
             return (long) toSkip;
         }
 

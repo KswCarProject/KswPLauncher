@@ -2,27 +2,20 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
     private static final SparseIntArray sViewsWithIds = null;
-    @Nullable
-    private final View.OnClickListener mCallback139;
-    @Nullable
-    private final View.OnClickListener mCallback140;
-    @Nullable
-    private final View.OnClickListener mCallback141;
+    private final View.OnClickListener mCallback41;
+    private final View.OnClickListener mCallback42;
+    private final View.OnClickListener mCallback43;
     private long mDirtyFlags;
 
-    public UgHomeOneBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public UgHomeOneBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -34,9 +27,9 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         this.ugHomeMusicVaiw.setTag((Object) null);
         this.ugHomeNaviVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback140 = new OnClickListener(this, 2);
-        this.mCallback141 = new OnClickListener(this, 3);
-        this.mCallback139 = new OnClickListener(this, 1);
+        this.mCallback43 = new OnClickListener(this, 3);
+        this.mCallback41 = new OnClickListener(this, 1);
+        this.mCallback42 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -56,20 +49,20 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(19);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
@@ -87,19 +80,19 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeBtVaiw.setOnClickListener(this.mCallback140);
-            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback141);
-            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback139);
+            this.ugHomeBtVaiw.setOnClickListener(this.mCallback42);
+            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback43);
+            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback41);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = false;
+        boolean viewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openNaviApp(callbackArg_0);
@@ -108,8 +101,8 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
                 return;
             case 2:
                 LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel2 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openBtApp(callbackArg_0);
@@ -118,11 +111,11 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
                 return;
             case 3:
                 LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel3 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
-                    viewModel3.openMusic(callbackArg_0);
+                    viewModel3.openMusicMulti(callbackArg_0);
                     return;
                 }
                 return;

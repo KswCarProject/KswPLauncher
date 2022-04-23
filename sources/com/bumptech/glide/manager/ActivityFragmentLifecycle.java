@@ -1,6 +1,5 @@
 package com.bumptech.glide.manager;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.util.Util;
 import java.util.Collections;
 import java.util.Set;
@@ -14,7 +13,7 @@ class ActivityFragmentLifecycle implements Lifecycle {
     ActivityFragmentLifecycle() {
     }
 
-    public void addListener(@NonNull LifecycleListener listener) {
+    public void addListener(LifecycleListener listener) {
         this.lifecycleListeners.add(listener);
         if (this.isDestroyed) {
             listener.onDestroy();
@@ -25,7 +24,7 @@ class ActivityFragmentLifecycle implements Lifecycle {
         }
     }
 
-    public void removeListener(@NonNull LifecycleListener listener) {
+    public void removeListener(LifecycleListener listener) {
         this.lifecycleListeners.remove(listener);
     }
 

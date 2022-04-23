@@ -2,15 +2,53 @@ package android.support.constraint.solver;
 
 import android.support.constraint.solver.LinearSystem;
 import android.support.constraint.solver.SolverVariable;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ArrayRow implements LinearSystem.Row {
     private static final boolean DEBUG = false;
-    private static final float epsilon = 0.001f;
+    private static final boolean FULL_NEW_CHECK = false;
     float constantValue = 0.0f;
     boolean isSimpleDefinition = false;
     boolean used = false;
     SolverVariable variable = null;
-    public final ArrayLinkedVariables variables;
+    public ArrayRowVariables variables;
+    ArrayList<SolverVariable> variablesToUpdate = new ArrayList<>();
+
+    public interface ArrayRowVariables {
+        void add(SolverVariable solverVariable, float f, boolean z);
+
+        void clear();
+
+        boolean contains(SolverVariable solverVariable);
+
+        void display();
+
+        void divideByAmount(float f);
+
+        float get(SolverVariable solverVariable);
+
+        int getCurrentSize();
+
+        SolverVariable getVariable(int i);
+
+        float getVariableValue(int i);
+
+        int indexOf(SolverVariable solverVariable);
+
+        void invert();
+
+        void put(SolverVariable solverVariable, float f);
+
+        float remove(SolverVariable solverVariable, boolean z);
+
+        int sizeInBytes();
+
+        float use(ArrayRow arrayRow, boolean z);
+    }
+
+    public ArrayRow() {
+    }
 
     public ArrayRow(Cache cache) {
         this.variables = new ArrayLinkedVariables(this, cache);
@@ -18,7 +56,8 @@ public class ArrayRow implements LinearSystem.Row {
 
     /* access modifiers changed from: package-private */
     public boolean hasKeyVariable() {
-        return this.variable != null && (this.variable.mType == SolverVariable.Type.UNRESTRICTED || this.constantValue >= 0.0f);
+        SolverVariable solverVariable = this.variable;
+        return solverVariable != null && (solverVariable.mType == SolverVariable.Type.UNRESTRICTED || this.constantValue >= 0.0f);
     }
 
     public String toString() {
@@ -40,7 +79,7 @@ public class ArrayRow implements LinearSystem.Row {
             s3 = s3 + this.constantValue;
             addedVariable = true;
         }
-        int count = this.variables.currentSize;
+        int count = this.variables.getCurrentSize();
         for (int i = 0; i < count; i++) {
             SolverVariable v = this.variables.getVariable(i);
             if (v != null) {
@@ -67,10 +106,10 @@ public class ArrayRow implements LinearSystem.Row {
                 }
             }
         }
-        if (addedVariable) {
-            return s2;
+        if (!addedVariable) {
+            return s2 + "0.0";
         }
-        return s2 + "0.0";
+        return s2;
     }
 
     public void reset() {
@@ -82,7 +121,7 @@ public class ArrayRow implements LinearSystem.Row {
 
     /* access modifiers changed from: package-private */
     public boolean hasVariable(SolverVariable v) {
-        return this.variables.containsKey(v);
+        return this.variables.contains(v);
     }
 
     /* access modifiers changed from: package-private */
@@ -250,9 +289,9 @@ public class ArrayRow implements LinearSystem.Row {
             this.variables.put(variableB, 1.0f);
             this.constantValue = (float) marginA;
         } else if (bias >= 1.0f) {
-            this.variables.put(variableC, -1.0f);
-            this.variables.put(variableD, 1.0f);
-            this.constantValue = (float) marginB;
+            this.variables.put(variableD, -1.0f);
+            this.variables.put(variableC, 1.0f);
+            this.constantValue = (float) (-marginB);
         } else {
             this.variables.put(variableA, (1.0f - bias) * 1.0f);
             this.variables.put(variableB, (1.0f - bias) * -1.0f);
@@ -272,9 +311,8 @@ public class ArrayRow implements LinearSystem.Row {
     }
 
     /* access modifiers changed from: package-private */
-    public ArrayRow createRowDimensionPercent(SolverVariable variableA, SolverVariable variableB, SolverVariable variableC, float percent) {
+    public ArrayRow createRowDimensionPercent(SolverVariable variableA, SolverVariable variableC, float percent) {
         this.variables.put(variableA, -1.0f);
-        this.variables.put(variableB, 1.0f - percent);
         this.variables.put(variableC, percent);
         return this;
     }
@@ -307,8 +345,9 @@ public class ArrayRow implements LinearSystem.Row {
 
     /* access modifiers changed from: package-private */
     public void ensurePositiveConstant() {
-        if (this.constantValue < 0.0f) {
-            this.constantValue *= -1.0f;
+        float f = this.constantValue;
+        if (f < 0.0f) {
+            this.constantValue = f * -1.0f;
             this.variables.invert();
         }
     }
@@ -316,27 +355,75 @@ public class ArrayRow implements LinearSystem.Row {
     /* access modifiers changed from: package-private */
     public boolean chooseSubject(LinearSystem system) {
         boolean addedExtra = false;
-        SolverVariable pivotCandidate = this.variables.chooseSubject(system);
+        SolverVariable pivotCandidate = chooseSubjectInVariables(system);
         if (pivotCandidate == null) {
             addedExtra = true;
         } else {
             pivot(pivotCandidate);
         }
-        if (this.variables.currentSize == 0) {
+        if (this.variables.getCurrentSize() == 0) {
             this.isSimpleDefinition = true;
         }
         return addedExtra;
     }
 
     /* access modifiers changed from: package-private */
-    public SolverVariable pickPivot(SolverVariable exclude) {
-        return this.variables.getPivotCandidate((boolean[]) null, exclude);
+    public SolverVariable chooseSubjectInVariables(LinearSystem system) {
+        SolverVariable restrictedCandidate = null;
+        SolverVariable unrestrictedCandidate = null;
+        float unrestrictedCandidateAmount = 0.0f;
+        float restrictedCandidateAmount = 0.0f;
+        boolean unrestrictedCandidateIsNew = false;
+        boolean restrictedCandidateIsNew = false;
+        int currentSize = this.variables.getCurrentSize();
+        for (int i = 0; i < currentSize; i++) {
+            float amount = this.variables.getVariableValue(i);
+            SolverVariable variable2 = this.variables.getVariable(i);
+            if (variable2.mType == SolverVariable.Type.UNRESTRICTED) {
+                if (unrestrictedCandidate == null) {
+                    unrestrictedCandidate = variable2;
+                    unrestrictedCandidateAmount = amount;
+                    unrestrictedCandidateIsNew = isNew(variable2, system);
+                } else if (unrestrictedCandidateAmount > amount) {
+                    unrestrictedCandidate = variable2;
+                    unrestrictedCandidateAmount = amount;
+                    unrestrictedCandidateIsNew = isNew(variable2, system);
+                } else if (!unrestrictedCandidateIsNew && isNew(variable2, system)) {
+                    unrestrictedCandidate = variable2;
+                    unrestrictedCandidateAmount = amount;
+                    unrestrictedCandidateIsNew = true;
+                }
+            } else if (unrestrictedCandidate == null && amount < 0.0f) {
+                if (restrictedCandidate == null) {
+                    restrictedCandidate = variable2;
+                    restrictedCandidateAmount = amount;
+                    restrictedCandidateIsNew = isNew(variable2, system);
+                } else if (restrictedCandidateAmount > amount) {
+                    restrictedCandidate = variable2;
+                    restrictedCandidateAmount = amount;
+                    restrictedCandidateIsNew = isNew(variable2, system);
+                } else if (!restrictedCandidateIsNew && isNew(variable2, system)) {
+                    restrictedCandidate = variable2;
+                    restrictedCandidateAmount = amount;
+                    restrictedCandidateIsNew = true;
+                }
+            }
+        }
+        if (unrestrictedCandidate != null) {
+            return unrestrictedCandidate;
+        }
+        return restrictedCandidate;
+    }
+
+    private boolean isNew(SolverVariable variable2, LinearSystem system) {
+        return variable2.usageInRowCount <= 1;
     }
 
     /* access modifiers changed from: package-private */
     public void pivot(SolverVariable v) {
-        if (this.variable != null) {
-            this.variables.put(this.variable, -1.0f);
+        SolverVariable solverVariable = this.variable;
+        if (solverVariable != null) {
+            this.variables.put(solverVariable, -1.0f);
             this.variable = null;
         }
         float amount = this.variables.remove(v, true) * -1.0f;
@@ -348,11 +435,66 @@ public class ArrayRow implements LinearSystem.Row {
     }
 
     public boolean isEmpty() {
-        return this.variable == null && this.constantValue == 0.0f && this.variables.currentSize == 0;
+        return this.variable == null && this.constantValue == 0.0f && this.variables.getCurrentSize() == 0;
+    }
+
+    public void updateFromRow(ArrayRow definition, boolean removeFromDefinition) {
+        this.constantValue += definition.constantValue * this.variables.use(definition, removeFromDefinition);
+        if (removeFromDefinition) {
+            definition.variable.removeFromRow(this);
+        }
+    }
+
+    public void updateFromFinalVariable(LinearSystem system, SolverVariable variable2, boolean removeFromDefinition) {
+        if (variable2.isFinalValue) {
+            this.constantValue += variable2.computedValue * this.variables.get(variable2);
+            this.variables.remove(variable2, removeFromDefinition);
+            if (removeFromDefinition) {
+                variable2.removeFromRow(this);
+            }
+        }
+    }
+
+    private SolverVariable pickPivotInVariables(boolean[] avoid, SolverVariable exclude) {
+        float value = 0.0f;
+        SolverVariable pivot = null;
+        SolverVariable pivotSlack = null;
+        float valueSlack = 0.0f;
+        int currentSize = this.variables.getCurrentSize();
+        for (int i = 0; i < currentSize; i++) {
+            float currentValue = this.variables.getVariableValue(i);
+            if (currentValue < 0.0f) {
+                SolverVariable v = this.variables.getVariable(i);
+                if ((avoid == null || !avoid[v.id]) && v != exclude) {
+                    if (1 != 0) {
+                        if ((v.mType == SolverVariable.Type.SLACK || v.mType == SolverVariable.Type.ERROR) && currentValue < value) {
+                            value = currentValue;
+                            pivot = v;
+                        }
+                    } else if (v.mType == SolverVariable.Type.SLACK) {
+                        if (currentValue < valueSlack) {
+                            valueSlack = currentValue;
+                            pivotSlack = v;
+                        }
+                    } else if (v.mType == SolverVariable.Type.ERROR && currentValue < value) {
+                        value = currentValue;
+                        pivot = v;
+                    }
+                }
+            }
+        }
+        if (1 != 0) {
+            return pivot;
+        }
+        return pivot != null ? pivot : pivotSlack;
+    }
+
+    public SolverVariable pickPivot(SolverVariable exclude) {
+        return pickPivotInVariables((boolean[]) null, exclude);
     }
 
     public SolverVariable getPivotCandidate(LinearSystem system, boolean[] avoid) {
-        return this.variables.getPivotCandidate(avoid, (SolverVariable) null);
+        return pickPivotInVariables(avoid, (SolverVariable) null);
     }
 
     public void clear() {
@@ -366,7 +508,7 @@ public class ArrayRow implements LinearSystem.Row {
             ArrayRow copiedRow = (ArrayRow) row;
             this.variable = null;
             this.variables.clear();
-            for (int i = 0; i < copiedRow.variables.currentSize; i++) {
+            for (int i = 0; i < copiedRow.variables.getCurrentSize(); i++) {
                 this.variables.add(copiedRow.variables.getVariable(i), copiedRow.variables.getVariableValue(i), true);
             }
         }
@@ -390,5 +532,34 @@ public class ArrayRow implements LinearSystem.Row {
 
     public SolverVariable getKey() {
         return this.variable;
+    }
+
+    public void updateFromSystem(LinearSystem system) {
+        if (system.mRows.length != 0) {
+            boolean done = false;
+            while (!done) {
+                int currentSize = this.variables.getCurrentSize();
+                for (int i = 0; i < currentSize; i++) {
+                    SolverVariable variable2 = this.variables.getVariable(i);
+                    if (variable2.definitionId != -1 || variable2.isFinalValue) {
+                        this.variablesToUpdate.add(variable2);
+                    }
+                }
+                if (this.variablesToUpdate.size() > 0) {
+                    Iterator<SolverVariable> it = this.variablesToUpdate.iterator();
+                    while (it.hasNext()) {
+                        SolverVariable variable3 = it.next();
+                        if (variable3.isFinalValue) {
+                            updateFromFinalVariable(system, variable3, true);
+                        } else {
+                            updateFromRow(system.mRows[variable3.definitionId], true);
+                        }
+                    }
+                    this.variablesToUpdate.clear();
+                } else {
+                    done = true;
+                }
+            }
+        }
     }
 }

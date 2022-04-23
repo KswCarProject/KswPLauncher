@@ -1,9 +1,6 @@
 package com.bumptech.glide.load.engine;
 
 import android.os.Process;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.EngineResource;
 import com.bumptech.glide.util.Preconditions;
@@ -17,9 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 final class ActiveResources {
-    @VisibleForTesting
     final Map<Key, ResourceWeakReference> activeEngineResources;
-    @Nullable
     private volatile DequeuedResourceCallback cb;
     private final boolean isActiveResourceRetentionAllowed;
     private volatile boolean isShutdown;
@@ -27,14 +22,13 @@ final class ActiveResources {
     private final Executor monitorClearedResourcesExecutor;
     private final ReferenceQueue<EngineResource<?>> resourceReferenceQueue;
 
-    @VisibleForTesting
     interface DequeuedResourceCallback {
         void onResourceDequeued();
     }
 
     ActiveResources(boolean isActiveResourceRetentionAllowed2) {
         this(isActiveResourceRetentionAllowed2, Executors.newSingleThreadExecutor(new ThreadFactory() {
-            public Thread newThread(@NonNull final Runnable r) {
+            public Thread newThread(final Runnable r) {
                 return new Thread(new Runnable() {
                     public void run() {
                         Process.setThreadPriority(10);
@@ -45,7 +39,6 @@ final class ActiveResources {
         }));
     }
 
-    @VisibleForTesting
     ActiveResources(boolean isActiveResourceRetentionAllowed2, Executor monitorClearedResourcesExecutor2) {
         this.activeEngineResources = new HashMap();
         this.resourceReferenceQueue = new ReferenceQueue<>();
@@ -87,7 +80,6 @@ final class ActiveResources {
     /* JADX WARNING: Code restructure failed: missing block: B:12:0x001a, code lost:
         return r1;
      */
-    @android.support.annotation.Nullable
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public synchronized com.bumptech.glide.load.engine.EngineResource<?> get(com.bumptech.glide.load.Key r3) {
         /*
@@ -117,7 +109,7 @@ final class ActiveResources {
     }
 
     /* access modifiers changed from: package-private */
-    public void cleanupActiveReference(@NonNull ResourceWeakReference ref) {
+    public void cleanupActiveReference(ResourceWeakReference ref) {
         synchronized (this.listener) {
             synchronized (this) {
                 this.activeEngineResources.remove(ref.key);
@@ -148,28 +140,25 @@ final class ActiveResources {
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public void setDequeuedResourceCallback(DequeuedResourceCallback cb2) {
         this.cb = cb2;
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public void shutdown() {
         this.isShutdown = true;
-        if (this.monitorClearedResourcesExecutor instanceof ExecutorService) {
-            com.bumptech.glide.util.Executors.shutdownAndAwaitTermination((ExecutorService) this.monitorClearedResourcesExecutor);
+        Executor executor = this.monitorClearedResourcesExecutor;
+        if (executor instanceof ExecutorService) {
+            com.bumptech.glide.util.Executors.shutdownAndAwaitTermination((ExecutorService) executor);
         }
     }
 
-    @VisibleForTesting
     static final class ResourceWeakReference extends WeakReference<EngineResource<?>> {
         final boolean isCacheable;
         final Key key;
-        @Nullable
         Resource<?> resource;
 
-        ResourceWeakReference(@NonNull Key key2, @NonNull EngineResource<?> referent, @NonNull ReferenceQueue<? super EngineResource<?>> queue, boolean isActiveResourceRetentionAllowed) {
+        ResourceWeakReference(Key key2, EngineResource<?> referent, ReferenceQueue<? super EngineResource<?>> queue, boolean isActiveResourceRetentionAllowed) {
             super(referent, queue);
             this.key = (Key) Preconditions.checkNotNull(key2);
             this.resource = (!referent.isCacheable() || !isActiveResourceRetentionAllowed) ? null : (Resource) Preconditions.checkNotNull(referent.getResource());

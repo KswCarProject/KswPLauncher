@@ -11,8 +11,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 
 public abstract class RoundedBitmapDrawable extends Drawable {
@@ -31,12 +29,10 @@ public abstract class RoundedBitmapDrawable extends Drawable {
     private final Matrix mShaderMatrix = new Matrix();
     private int mTargetDensity = 160;
 
-    @NonNull
     public final Paint getPaint() {
         return this.mPaint;
     }
 
-    @Nullable
     public final Bitmap getBitmap() {
         return this.mBitmap;
     }
@@ -46,11 +42,11 @@ public abstract class RoundedBitmapDrawable extends Drawable {
         this.mBitmapHeight = this.mBitmap.getScaledHeight(this.mTargetDensity);
     }
 
-    public void setTargetDensity(@NonNull Canvas canvas) {
+    public void setTargetDensity(Canvas canvas) {
         setTargetDensity(canvas.getDensity());
     }
 
-    public void setTargetDensity(@NonNull DisplayMetrics metrics) {
+    public void setTargetDensity(DisplayMetrics metrics) {
         setTargetDensity(metrics.densityDpi);
     }
 
@@ -131,15 +127,17 @@ public abstract class RoundedBitmapDrawable extends Drawable {
         }
     }
 
-    public void draw(@NonNull Canvas canvas) {
+    public void draw(Canvas canvas) {
         Bitmap bitmap = this.mBitmap;
         if (bitmap != null) {
             updateDstRect();
             if (this.mPaint.getShader() == null) {
                 canvas.drawBitmap(bitmap, (Rect) null, this.mDstRect, this.mPaint);
-            } else {
-                canvas.drawRoundRect(this.mDstRectF, this.mCornerRadius, this.mCornerRadius, this.mPaint);
+                return;
             }
+            RectF rectF = this.mDstRectF;
+            float f = this.mCornerRadius;
+            canvas.drawRoundRect(rectF, f, f, this.mPaint);
         }
     }
 
@@ -230,9 +228,9 @@ public abstract class RoundedBitmapDrawable extends Drawable {
             this.mTargetDensity = res.getDisplayMetrics().densityDpi;
         }
         this.mBitmap = bitmap;
-        if (this.mBitmap != null) {
+        if (bitmap != null) {
             computeBitmapSize();
-            this.mBitmapShader = new BitmapShader(this.mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             return;
         }
         this.mBitmapHeight = -1;

@@ -1,7 +1,6 @@
 package com.wits.ksw.settings.utlis_view;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -14,12 +13,12 @@ public class RtlLinearLayout extends LinearLayout {
         init();
     }
 
-    public RtlLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public RtlLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public RtlLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RtlLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

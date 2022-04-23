@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -227,16 +226,14 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
         if (deltaY != 0) {
             view.setTranslationY((float) (-deltaY));
         }
-        ArrayList<MoveInfo> arrayList = this.mPendingMoves;
-        MoveInfo moveInfo = r0;
-        MoveInfo moveInfo2 = new MoveInfo(holder, fromX2, fromY2, toX, toY);
-        arrayList.add(moveInfo);
+        this.mPendingMoves.add(new MoveInfo(holder, fromX2, fromY2, toX, toY));
         return true;
     }
 
     /* access modifiers changed from: package-private */
     public void animateMoveImpl(RecyclerView.ViewHolder holder, int fromX, int fromY, int toX, int toY) {
-        View view = holder.itemView;
+        RecyclerView.ViewHolder viewHolder = holder;
+        View view = viewHolder.itemView;
         int deltaX = toX - fromX;
         int deltaY = toY - fromY;
         if (deltaX != 0) {
@@ -246,18 +243,15 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
             view.animate().translationY(0.0f);
         }
         ViewPropertyAnimator animation = view.animate();
-        this.mMoveAnimations.add(holder);
-        final RecyclerView.ViewHolder viewHolder = holder;
+        this.mMoveAnimations.add(viewHolder);
+        final RecyclerView.ViewHolder viewHolder2 = holder;
         final int i = deltaX;
-        AnonymousClass6 r7 = r0;
         final View view2 = view;
-        View view3 = view;
-        ViewPropertyAnimator duration = animation.setDuration(getMoveDuration());
         final int i2 = deltaY;
         final ViewPropertyAnimator viewPropertyAnimator = animation;
-        AnonymousClass6 r0 = new AnimatorListenerAdapter() {
+        animation.setDuration(getMoveDuration()).setListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animator) {
-                DefaultItemAnimator.this.dispatchMoveStarting(viewHolder);
+                DefaultItemAnimator.this.dispatchMoveStarting(viewHolder2);
             }
 
             public void onAnimationCancel(Animator animator) {
@@ -271,12 +265,11 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
 
             public void onAnimationEnd(Animator animator) {
                 viewPropertyAnimator.setListener((Animator.AnimatorListener) null);
-                DefaultItemAnimator.this.dispatchMoveFinished(viewHolder);
-                DefaultItemAnimator.this.mMoveAnimations.remove(viewHolder);
+                DefaultItemAnimator.this.dispatchMoveFinished(viewHolder2);
+                DefaultItemAnimator.this.mMoveAnimations.remove(viewHolder2);
                 DefaultItemAnimator.this.dispatchFinishedWhenDone();
             }
-        };
-        duration.setListener(r7).start();
+        }).start();
     }
 
     public boolean animateChange(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder, int fromX, int fromY, int toX, int toY) {
@@ -300,11 +293,9 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
             viewHolder2.itemView.setTranslationY((float) (-deltaY));
             viewHolder2.itemView.setAlpha(0.0f);
         }
+        ArrayList<ChangeInfo> arrayList = this.mPendingChanges;
         float f = prevTranslationX;
         ChangeInfo changeInfo = r7;
-        float f2 = prevTranslationY;
-        ArrayList<ChangeInfo> arrayList = this.mPendingChanges;
-        int i = deltaY;
         ChangeInfo changeInfo2 = new ChangeInfo(oldHolder, newHolder, fromX, fromY, toX, toY);
         arrayList.add(changeInfo);
         return true;
@@ -556,7 +547,7 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
         }
     }
 
-    public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull List<Object> payloads) {
+    public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder, List<Object> payloads) {
         return !payloads.isEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads);
     }
 }

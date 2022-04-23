@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
+import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
 import android.support.v7.appcompat.R;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuView;
@@ -19,7 +19,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ActionMenuItemView extends AppCompatTextView implements MenuView.ItemView, View.OnClickListener, ActionMenuView.ActionMenuChildView {
     private static final int MAX_ICON_SIZE = 32;
     private static final String TAG = "ActionMenuItemView";
@@ -94,15 +93,17 @@ public class ActionMenuItemView extends AppCompatTextView implements MenuView.It
     }
 
     public boolean onTouchEvent(MotionEvent e) {
-        if (!this.mItemData.hasSubMenu() || this.mForwardingListener == null || !this.mForwardingListener.onTouch(this, e)) {
+        ForwardingListener forwardingListener;
+        if (!this.mItemData.hasSubMenu() || (forwardingListener = this.mForwardingListener) == null || !forwardingListener.onTouch(this, e)) {
             return super.onTouchEvent(e);
         }
         return true;
     }
 
     public void onClick(View v) {
-        if (this.mItemInvoker != null) {
-            this.mItemInvoker.invokeItem(this.mItemData);
+        MenuBuilder.ItemInvoker itemInvoker = this.mItemInvoker;
+        if (itemInvoker != null) {
+            itemInvoker.invokeItem(this.mItemData);
         }
     }
 
@@ -127,8 +128,9 @@ public class ActionMenuItemView extends AppCompatTextView implements MenuView.It
     public void setExpandedFormat(boolean expandedFormat) {
         if (this.mExpandedFormat != expandedFormat) {
             this.mExpandedFormat = expandedFormat;
-            if (this.mItemData != null) {
-                this.mItemData.actionFormatChanged();
+            MenuItemImpl menuItemImpl = this.mItemData;
+            if (menuItemImpl != null) {
+                menuItemImpl.actionFormatChanged();
             }
         }
     }
@@ -164,13 +166,14 @@ public class ActionMenuItemView extends AppCompatTextView implements MenuView.It
         if (icon != null) {
             int width = icon.getIntrinsicWidth();
             int height = icon.getIntrinsicHeight();
-            if (width > this.mMaxIconSize) {
-                float scale = ((float) this.mMaxIconSize) / ((float) width);
+            int i = this.mMaxIconSize;
+            if (width > i) {
+                float scale = ((float) i) / ((float) width);
                 width = this.mMaxIconSize;
                 height = (int) (((float) height) * scale);
             }
-            if (height > this.mMaxIconSize) {
-                float scale2 = ((float) this.mMaxIconSize) / ((float) height);
+            if (height > i) {
+                float scale2 = ((float) i) / ((float) height);
                 height = this.mMaxIconSize;
                 width = (int) (((float) width) * scale2);
             }
@@ -206,9 +209,10 @@ public class ActionMenuItemView extends AppCompatTextView implements MenuView.It
 
     /* access modifiers changed from: protected */
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int i;
         boolean textVisible = hasText();
-        if (textVisible && this.mSavedPaddingLeft >= 0) {
-            super.setPadding(this.mSavedPaddingLeft, getPaddingTop(), getPaddingRight(), getPaddingBottom());
+        if (textVisible && (i = this.mSavedPaddingLeft) >= 0) {
+            super.setPadding(i, getPaddingTop(), getPaddingRight(), getPaddingBottom());
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
@@ -216,7 +220,7 @@ public class ActionMenuItemView extends AppCompatTextView implements MenuView.It
         int oldMeasuredWidth = getMeasuredWidth();
         int targetWidth = widthMode == Integer.MIN_VALUE ? Math.min(widthSize, this.mMinWidth) : this.mMinWidth;
         if (widthMode != 1073741824 && this.mMinWidth > 0 && oldMeasuredWidth < targetWidth) {
-            super.onMeasure(View.MeasureSpec.makeMeasureSpec(targetWidth, 1073741824), heightMeasureSpec);
+            super.onMeasure(View.MeasureSpec.makeMeasureSpec(targetWidth, BasicMeasure.EXACTLY), heightMeasureSpec);
         }
         if (!textVisible && this.mIcon != null) {
             super.setPadding((getMeasuredWidth() - this.mIcon.getBounds().width()) / 2, getPaddingTop(), getPaddingRight(), getPaddingBottom());

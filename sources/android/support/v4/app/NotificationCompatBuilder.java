@@ -5,7 +5,6 @@ import android.app.RemoteInput;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RestrictTo;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class NotificationCompatBuilder implements NotificationBuilderWithBuilderAccessor {
     private final List<Bundle> mActionExtrasList = new ArrayList();
     private RemoteViews mBigContentView;
@@ -197,14 +195,17 @@ class NotificationCompatBuilder implements NotificationBuilderWithBuilderAccesso
         } else if (Build.VERSION.SDK_INT >= 21) {
             this.mBuilder.setExtras(this.mExtras);
             Notification notification2 = this.mBuilder.build();
-            if (this.mContentView != null) {
-                notification2.contentView = this.mContentView;
+            RemoteViews remoteViews = this.mContentView;
+            if (remoteViews != null) {
+                notification2.contentView = remoteViews;
             }
-            if (this.mBigContentView != null) {
-                notification2.bigContentView = this.mBigContentView;
+            RemoteViews remoteViews2 = this.mBigContentView;
+            if (remoteViews2 != null) {
+                notification2.bigContentView = remoteViews2;
             }
-            if (this.mHeadsUpContentView != null) {
-                notification2.headsUpContentView = this.mHeadsUpContentView;
+            RemoteViews remoteViews3 = this.mHeadsUpContentView;
+            if (remoteViews3 != null) {
+                notification2.headsUpContentView = remoteViews3;
             }
             if (this.mGroupAlertBehavior != 0) {
                 if (!(notification2.getGroup() == null || (notification2.flags & 512) == 0 || this.mGroupAlertBehavior != 2)) {
@@ -218,11 +219,13 @@ class NotificationCompatBuilder implements NotificationBuilderWithBuilderAccesso
         } else if (Build.VERSION.SDK_INT >= 20) {
             this.mBuilder.setExtras(this.mExtras);
             Notification notification3 = this.mBuilder.build();
-            if (this.mContentView != null) {
-                notification3.contentView = this.mContentView;
+            RemoteViews remoteViews4 = this.mContentView;
+            if (remoteViews4 != null) {
+                notification3.contentView = remoteViews4;
             }
-            if (this.mBigContentView != null) {
-                notification3.bigContentView = this.mBigContentView;
+            RemoteViews remoteViews5 = this.mBigContentView;
+            if (remoteViews5 != null) {
+                notification3.bigContentView = remoteViews5;
             }
             if (this.mGroupAlertBehavior != 0) {
                 if (!(notification3.getGroup() == null || (notification3.flags & 512) == 0 || this.mGroupAlertBehavior != 2)) {
@@ -240,11 +243,13 @@ class NotificationCompatBuilder implements NotificationBuilderWithBuilderAccesso
             }
             this.mBuilder.setExtras(this.mExtras);
             Notification notification4 = this.mBuilder.build();
-            if (this.mContentView != null) {
-                notification4.contentView = this.mContentView;
+            RemoteViews remoteViews6 = this.mContentView;
+            if (remoteViews6 != null) {
+                notification4.contentView = remoteViews6;
             }
-            if (this.mBigContentView != null) {
-                notification4.bigContentView = this.mBigContentView;
+            RemoteViews remoteViews7 = this.mBigContentView;
+            if (remoteViews7 != null) {
+                notification4.bigContentView = remoteViews7;
             }
             return notification4;
         } else if (Build.VERSION.SDK_INT < 16) {
@@ -263,11 +268,13 @@ class NotificationCompatBuilder implements NotificationBuilderWithBuilderAccesso
             if (actionExtrasMap2 != null) {
                 NotificationCompat.getExtras(notification5).putSparseParcelableArray(NotificationCompatExtras.EXTRA_ACTION_EXTRAS, actionExtrasMap2);
             }
-            if (this.mContentView != null) {
-                notification5.contentView = this.mContentView;
+            RemoteViews remoteViews8 = this.mContentView;
+            if (remoteViews8 != null) {
+                notification5.contentView = remoteViews8;
             }
-            if (this.mBigContentView != null) {
-                notification5.bigContentView = this.mBigContentView;
+            RemoteViews remoteViews9 = this.mBigContentView;
+            if (remoteViews9 != null) {
+                notification5.bigContentView = remoteViews9;
             }
             return notification5;
         }

@@ -1,15 +1,11 @@
 package android.databinding.adapters;
 
-import android.databinding.BindingAdapter;
-import android.support.annotation.RestrictTo;
 import android.widget.AbsSpinner;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 import java.util.List;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public class AbsSpinnerBindingAdapter {
-    @BindingAdapter({"android:entries"})
     public static <T extends CharSequence> void setEntries(AbsSpinner view, T[] entries) {
         if (entries != null) {
             SpinnerAdapter oldAdapter = view.getAdapter();
@@ -39,7 +35,6 @@ public class AbsSpinnerBindingAdapter {
         view.setAdapter((SpinnerAdapter) null);
     }
 
-    @BindingAdapter({"android:entries"})
     public static <T> void setEntries(AbsSpinner view, List<T> entries) {
         if (entries != null) {
             SpinnerAdapter oldAdapter = view.getAdapter();

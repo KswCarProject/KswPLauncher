@@ -52,7 +52,8 @@ public class ScanDevList {
                 if (!ScanDevList.this.isScanDev) {
                     boolean unused = ScanDevList.this.isScanDev = true;
                     for (String paca : naviList) {
-                        ScanDevList.this.isAvilible(context, paca, ScanDevList.this.devList);
+                        ScanDevList scanDevList = ScanDevList.this;
+                        scanDevList.isAvilible(context, paca, scanDevList.devList);
                     }
                 }
                 boolean unused2 = ScanDevList.this.isScanDev = false;
@@ -67,7 +68,8 @@ public class ScanDevList {
             public void run() {
                 if (!ScanDevList.this.isScanPlay) {
                     boolean unused = ScanDevList.this.isScanPlay = true;
-                    ScanDevList.this.scanPlayApp(context, defPlayApp, ScanDevList.this.playAppList);
+                    ScanDevList scanDevList = ScanDevList.this;
+                    scanDevList.scanPlayApp(context, defPlayApp, scanDevList.playAppList);
                 }
                 boolean unused2 = ScanDevList.this.isScanPlay = false;
             }

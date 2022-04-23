@@ -1,6 +1,5 @@
 package android.databinding;
 
-import android.annotation.TargetApi;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
@@ -16,9 +15,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.LongSparseArray;
 import android.util.SparseArray;
@@ -26,8 +22,10 @@ import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.util.SparseLongArray;
 import android.view.Choreographer;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.viewbinding.ViewBinding;
 import com.android.databinding.library.R;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
@@ -35,7 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ViewDataBinding extends BaseObservable {
+public abstract class ViewDataBinding extends BaseObservable implements ViewBinding {
     private static final int BINDING_NUMBER_START = BINDING_TAG_PREFIX.length();
     public static final String BINDING_TAG_PREFIX = "binding_";
     private static final CreateWeakListener CREATE_LIST_LISTENER = new CreateWeakListener() {
@@ -97,25 +95,12 @@ public abstract class ViewDataBinding extends BaseObservable {
     private WeakListener[] mLocalFieldObservers;
     private OnStartListener mOnStartListener;
     /* access modifiers changed from: private */
-    public boolean mPendingRebind = false;
+    public boolean mPendingRebind;
     private CallbackRegistry<OnRebindCallback, ViewDataBinding, Void> mRebindCallbacks;
     /* access modifiers changed from: private */
-    public boolean mRebindHalted = false;
+    public boolean mRebindHalted;
     /* access modifiers changed from: private */
-    public final Runnable mRebindRunnable = new Runnable() {
-        public void run() {
-            synchronized (this) {
-                boolean unused = ViewDataBinding.this.mPendingRebind = false;
-            }
-            ViewDataBinding.processReferenceQueue();
-            if (Build.VERSION.SDK_INT < 19 || ViewDataBinding.this.mRoot.isAttachedToWindow()) {
-                ViewDataBinding.this.executePendingBindings();
-                return;
-            }
-            ViewDataBinding.this.mRoot.removeOnAttachStateChangeListener(ViewDataBinding.ROOT_REATTACHED_LISTENER);
-            ViewDataBinding.this.mRoot.addOnAttachStateChangeListener(ViewDataBinding.ROOT_REATTACHED_LISTENER);
-        }
-    };
+    public final Runnable mRebindRunnable;
     /* access modifiers changed from: private */
     public final View mRoot;
     private Handler mUIThreadHandler;
@@ -144,14 +129,13 @@ public abstract class ViewDataBinding extends BaseObservable {
     /* access modifiers changed from: protected */
     public abstract boolean onFieldChange(int i, Object obj, int i2);
 
-    public abstract boolean setVariable(int i, @Nullable Object obj);
+    public abstract boolean setVariable(int i, Object obj);
 
     static {
         if (Build.VERSION.SDK_INT < 19) {
             ROOT_REATTACHED_LISTENER = null;
         } else {
             ROOT_REATTACHED_LISTENER = new View.OnAttachStateChangeListener() {
-                @TargetApi(19)
                 public void onViewAttachedToWindow(View v) {
                     ViewDataBinding.getBinding(v).mRebindRunnable.run();
                     v.removeOnAttachStateChangeListener(this);
@@ -164,6 +148,22 @@ public abstract class ViewDataBinding extends BaseObservable {
     }
 
     protected ViewDataBinding(DataBindingComponent bindingComponent, View root, int localFieldCount) {
+        this.mRebindRunnable = new Runnable() {
+            public void run() {
+                synchronized (this) {
+                    boolean unused = ViewDataBinding.this.mPendingRebind = false;
+                }
+                ViewDataBinding.processReferenceQueue();
+                if (Build.VERSION.SDK_INT < 19 || ViewDataBinding.this.mRoot.isAttachedToWindow()) {
+                    ViewDataBinding.this.executePendingBindings();
+                    return;
+                }
+                ViewDataBinding.this.mRoot.removeOnAttachStateChangeListener(ViewDataBinding.ROOT_REATTACHED_LISTENER);
+                ViewDataBinding.this.mRoot.addOnAttachStateChangeListener(ViewDataBinding.ROOT_REATTACHED_LISTENER);
+            }
+        };
+        this.mPendingRebind = false;
+        this.mRebindHalted = false;
         this.mBindingComponent = bindingComponent;
         this.mLocalFieldObservers = new WeakListener[localFieldCount];
         this.mRoot = root;
@@ -182,6 +182,20 @@ public abstract class ViewDataBinding extends BaseObservable {
         }
     }
 
+    protected ViewDataBinding(Object bindingComponent, View root, int localFieldCount) {
+        this(checkAndCastToBindingComponent(bindingComponent), root, localFieldCount);
+    }
+
+    private static DataBindingComponent checkAndCastToBindingComponent(Object bindingComponent) {
+        if (bindingComponent == null) {
+            return null;
+        }
+        if (bindingComponent instanceof DataBindingComponent) {
+            return (DataBindingComponent) bindingComponent;
+        }
+        throw new IllegalArgumentException("The provided bindingComponent parameter must be an instance of DataBindingComponent. See  https://issuetracker.google.com/issues/116541301 for details of why this parameter is not defined as DataBindingComponent");
+    }
+
     /* access modifiers changed from: protected */
     public void setRootTag(View view) {
         view.setTag(R.id.dataBinding, this);
@@ -198,11 +212,11 @@ public abstract class ViewDataBinding extends BaseObservable {
         return SDK_INT;
     }
 
-    @MainThread
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
-        if (this.mLifecycleOwner != lifecycleOwner) {
-            if (this.mLifecycleOwner != null) {
-                this.mLifecycleOwner.getLifecycle().removeObserver(this.mOnStartListener);
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        LifecycleOwner lifecycleOwner2 = this.mLifecycleOwner;
+        if (lifecycleOwner2 != lifecycleOwner) {
+            if (lifecycleOwner2 != null) {
+                lifecycleOwner2.getLifecycle().removeObserver(this.mOnStartListener);
             }
             this.mLifecycleOwner = lifecycleOwner;
             if (lifecycleOwner != null) {
@@ -219,24 +233,30 @@ public abstract class ViewDataBinding extends BaseObservable {
         }
     }
 
-    public void addOnRebindCallback(@NonNull OnRebindCallback listener) {
+    public LifecycleOwner getLifecycleOwner() {
+        return this.mLifecycleOwner;
+    }
+
+    public void addOnRebindCallback(OnRebindCallback listener) {
         if (this.mRebindCallbacks == null) {
             this.mRebindCallbacks = new CallbackRegistry<>(REBIND_NOTIFIER);
         }
         this.mRebindCallbacks.add(listener);
     }
 
-    public void removeOnRebindCallback(@NonNull OnRebindCallback listener) {
-        if (this.mRebindCallbacks != null) {
-            this.mRebindCallbacks.remove(listener);
+    public void removeOnRebindCallback(OnRebindCallback listener) {
+        CallbackRegistry<OnRebindCallback, ViewDataBinding, Void> callbackRegistry = this.mRebindCallbacks;
+        if (callbackRegistry != null) {
+            callbackRegistry.remove(listener);
         }
     }
 
     public void executePendingBindings() {
-        if (this.mContainingBinding == null) {
+        ViewDataBinding viewDataBinding = this.mContainingBinding;
+        if (viewDataBinding == null) {
             executeBindingsInternal();
         } else {
-            this.mContainingBinding.executePendingBindings();
+            viewDataBinding.executePendingBindings();
         }
     }
 
@@ -246,16 +266,18 @@ public abstract class ViewDataBinding extends BaseObservable {
         } else if (hasPendingBindings()) {
             this.mIsExecutingPendingBindings = true;
             this.mRebindHalted = false;
-            if (this.mRebindCallbacks != null) {
-                this.mRebindCallbacks.notifyCallbacks(this, 1, null);
+            CallbackRegistry<OnRebindCallback, ViewDataBinding, Void> callbackRegistry = this.mRebindCallbacks;
+            if (callbackRegistry != null) {
+                callbackRegistry.notifyCallbacks(this, 1, null);
                 if (this.mRebindHalted) {
                     this.mRebindCallbacks.notifyCallbacks(this, 2, null);
                 }
             }
             if (!this.mRebindHalted) {
                 executeBindings();
-                if (this.mRebindCallbacks != null) {
-                    this.mRebindCallbacks.notifyCallbacks(this, 3, null);
+                CallbackRegistry<OnRebindCallback, ViewDataBinding, Void> callbackRegistry2 = this.mRebindCallbacks;
+                if (callbackRegistry2 != null) {
+                    callbackRegistry2.notifyCallbacks(this, 3, null);
                 }
             }
             this.mIsExecutingPendingBindings = false;
@@ -286,7 +308,6 @@ public abstract class ViewDataBinding extends BaseObservable {
         return null;
     }
 
-    @NonNull
     public View getRoot() {
         return this.mRoot;
     }
@@ -308,23 +329,14 @@ public abstract class ViewDataBinding extends BaseObservable {
     }
 
     /* access modifiers changed from: protected */
-    /* JADX WARNING: Code restructure failed: missing block: B:12:0x0017, code lost:
-        if (r2.mLifecycleOwner == null) goto L_0x002c;
+    /* JADX WARNING: Code restructure failed: missing block: B:17:0x002a, code lost:
+        if (USE_CHOREOGRAPHER == false) goto L_0x0034;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:14:0x0029, code lost:
-        if (r2.mLifecycleOwner.getLifecycle().getCurrentState().isAtLeast(android.arch.lifecycle.Lifecycle.State.STARTED) != false) goto L_0x002c;
+    /* JADX WARNING: Code restructure failed: missing block: B:18:0x002c, code lost:
+        r3.mChoreographer.postFrameCallback(r3.mFrameCallback);
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:15:0x002b, code lost:
-        return;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:17:0x002e, code lost:
-        if (USE_CHOREOGRAPHER == false) goto L_0x0038;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:18:0x0030, code lost:
-        r2.mChoreographer.postFrameCallback(r2.mFrameCallback);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:19:0x0038, code lost:
-        r2.mUIThreadHandler.post(r2.mRebindRunnable);
+    /* JADX WARNING: Code restructure failed: missing block: B:19:0x0034, code lost:
+        r3.mUIThreadHandler.post(r3.mRebindRunnable);
      */
     /* JADX WARNING: Code restructure failed: missing block: B:27:?, code lost:
         return;
@@ -335,48 +347,46 @@ public abstract class ViewDataBinding extends BaseObservable {
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public void requestRebind() {
         /*
-            r2 = this;
-            android.databinding.ViewDataBinding r0 = r2.mContainingBinding
-            if (r0 == 0) goto L_0x000a
-            android.databinding.ViewDataBinding r0 = r2.mContainingBinding
+            r3 = this;
+            android.databinding.ViewDataBinding r0 = r3.mContainingBinding
+            if (r0 == 0) goto L_0x0008
             r0.requestRebind()
-            goto L_0x003f
-        L_0x000a:
-            monitor-enter(r2)
-            boolean r0 = r2.mPendingRebind     // Catch:{ all -> 0x0040 }
-            if (r0 == 0) goto L_0x0011
-            monitor-exit(r2)     // Catch:{ all -> 0x0040 }
+            goto L_0x003b
+        L_0x0008:
+            android.arch.lifecycle.LifecycleOwner r0 = r3.mLifecycleOwner
+            if (r0 == 0) goto L_0x001d
+            android.arch.lifecycle.Lifecycle r1 = r0.getLifecycle()
+            android.arch.lifecycle.Lifecycle$State r1 = r1.getCurrentState()
+            android.arch.lifecycle.Lifecycle$State r2 = android.arch.lifecycle.Lifecycle.State.STARTED
+            boolean r2 = r1.isAtLeast(r2)
+            if (r2 != 0) goto L_0x001d
             return
-        L_0x0011:
-            r0 = 1
-            r2.mPendingRebind = r0     // Catch:{ all -> 0x0040 }
-            monitor-exit(r2)     // Catch:{ all -> 0x0040 }
-            android.arch.lifecycle.LifecycleOwner r0 = r2.mLifecycleOwner
-            if (r0 == 0) goto L_0x002c
-            android.arch.lifecycle.LifecycleOwner r0 = r2.mLifecycleOwner
-            android.arch.lifecycle.Lifecycle r0 = r0.getLifecycle()
-            android.arch.lifecycle.Lifecycle$State r0 = r0.getCurrentState()
-            android.arch.lifecycle.Lifecycle$State r1 = android.arch.lifecycle.Lifecycle.State.STARTED
-            boolean r1 = r0.isAtLeast(r1)
-            if (r1 != 0) goto L_0x002c
+        L_0x001d:
+            monitor-enter(r3)
+            boolean r1 = r3.mPendingRebind     // Catch:{ all -> 0x003c }
+            if (r1 == 0) goto L_0x0024
+            monitor-exit(r3)     // Catch:{ all -> 0x003c }
             return
-        L_0x002c:
-            boolean r0 = USE_CHOREOGRAPHER
-            if (r0 == 0) goto L_0x0038
-            android.view.Choreographer r0 = r2.mChoreographer
-            android.view.Choreographer$FrameCallback r1 = r2.mFrameCallback
-            r0.postFrameCallback(r1)
-            goto L_0x003f
-        L_0x0038:
-            android.os.Handler r0 = r2.mUIThreadHandler
-            java.lang.Runnable r1 = r2.mRebindRunnable
-            r0.post(r1)
-        L_0x003f:
+        L_0x0024:
+            r1 = 1
+            r3.mPendingRebind = r1     // Catch:{ all -> 0x003c }
+            monitor-exit(r3)     // Catch:{ all -> 0x003c }
+            boolean r1 = USE_CHOREOGRAPHER
+            if (r1 == 0) goto L_0x0034
+            android.view.Choreographer r1 = r3.mChoreographer
+            android.view.Choreographer$FrameCallback r2 = r3.mFrameCallback
+            r1.postFrameCallback(r2)
+            goto L_0x003b
+        L_0x0034:
+            android.os.Handler r1 = r3.mUIThreadHandler
+            java.lang.Runnable r2 = r3.mRebindRunnable
+            r1.post(r2)
+        L_0x003b:
             return
-        L_0x0040:
-            r0 = move-exception
-            monitor-exit(r2)     // Catch:{ all -> 0x0040 }
-            throw r0
+        L_0x003c:
+            r1 = move-exception
+            monitor-exit(r3)     // Catch:{ all -> 0x003c }
+            throw r1
         */
         throw new UnsupportedOperationException("Method not decompiled: android.databinding.ViewDataBinding.requestRebind():void");
     }
@@ -446,16 +456,17 @@ public abstract class ViewDataBinding extends BaseObservable {
             if (listener == null) {
                 listener = listenerCreator.create(this, localFieldId);
                 this.mLocalFieldObservers[localFieldId] = listener;
-                if (this.mLifecycleOwner != null) {
-                    listener.setLifecycleOwner(this.mLifecycleOwner);
+                LifecycleOwner lifecycleOwner = this.mLifecycleOwner;
+                if (lifecycleOwner != null) {
+                    listener.setLifecycleOwner(lifecycleOwner);
                 }
             }
             listener.setTarget(observable);
         }
     }
 
-    protected static ViewDataBinding bind(DataBindingComponent bindingComponent, View view, int layoutId) {
-        return DataBindingUtil.bind(bindingComponent, view, layoutId);
+    protected static ViewDataBinding bind(Object bindingComponent, View view, int layoutId) {
+        return DataBindingUtil.bind(checkAndCastToBindingComponent(bindingComponent), view, layoutId);
     }
 
     protected static Object[] mapBindings(DataBindingComponent bindingComponent, View root, int numBindings, IncludedLayouts includes, SparseIntArray viewsWithIds) {
@@ -690,7 +701,6 @@ public abstract class ViewDataBinding extends BaseObservable {
         }
     }
 
-    @TargetApi(16)
     protected static <T> T getFromList(LongSparseArray<T> list, int index) {
         if (list == null || index < 0) {
             return null;
@@ -698,7 +708,6 @@ public abstract class ViewDataBinding extends BaseObservable {
         return list.get((long) index);
     }
 
-    @TargetApi(16)
     protected static <T> void setTo(LongSparseArray<T> list, int index, T value) {
         if (list != null && index >= 0 && index < list.size()) {
             list.put((long) index, value);
@@ -744,7 +753,6 @@ public abstract class ViewDataBinding extends BaseObservable {
         }
     }
 
-    @TargetApi(18)
     protected static long getFromList(SparseLongArray list, int index) {
         if (list == null || index < 0) {
             return 0;
@@ -752,7 +760,6 @@ public abstract class ViewDataBinding extends BaseObservable {
         return list.get(index);
     }
 
-    @TargetApi(18)
     protected static void setTo(SparseLongArray list, int index, long value) {
         if (list != null && index >= 0 && index < list.size()) {
             list.put(index, value);
@@ -848,32 +855,26 @@ public abstract class ViewDataBinding extends BaseObservable {
 
     protected static Object[] mapBindings(DataBindingComponent bindingComponent, View[] roots, int numBindings, IncludedLayouts includes, SparseIntArray viewsWithIds) {
         Object[] bindings = new Object[numBindings];
-        int i = 0;
-        while (true) {
-            int i2 = i;
-            if (i2 >= roots.length) {
-                return bindings;
-            }
-            mapBindings(bindingComponent, roots[i2], bindings, includes, viewsWithIds, true);
-            i = i2 + 1;
+        for (View mapBindings : roots) {
+            mapBindings(bindingComponent, mapBindings, bindings, includes, viewsWithIds, true);
         }
+        return bindings;
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:50:0x008f  */
-    /* JADX WARNING: Removed duplicated region for block: B:77:0x012b  */
-    /* JADX WARNING: Removed duplicated region for block: B:78:0x0140  */
+    /* JADX WARNING: Removed duplicated region for block: B:76:0x0131  */
+    /* JADX WARNING: Removed duplicated region for block: B:77:0x0143  */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static void mapBindings(android.databinding.DataBindingComponent r24, android.view.View r25, java.lang.Object[] r26, android.databinding.ViewDataBinding.IncludedLayouts r27, android.util.SparseIntArray r28, boolean r29) {
+    private static void mapBindings(android.databinding.DataBindingComponent r23, android.view.View r24, java.lang.Object[] r25, android.databinding.ViewDataBinding.IncludedLayouts r26, android.util.SparseIntArray r27, boolean r28) {
         /*
-            r6 = r24
-            r7 = r25
-            r8 = r27
-            r9 = r28
-            android.databinding.ViewDataBinding r10 = getBinding(r25)
+            r6 = r23
+            r7 = r24
+            r8 = r26
+            r9 = r27
+            android.databinding.ViewDataBinding r10 = getBinding(r24)
             if (r10 == 0) goto L_0x000f
             return
         L_0x000f:
-            java.lang.Object r11 = r25.getTag()
+            java.lang.Object r11 = r24.getTag()
             boolean r0 = r11 instanceof java.lang.String
             if (r0 == 0) goto L_0x001b
             r0 = r11
@@ -884,12 +885,12 @@ public abstract class ViewDataBinding extends BaseObservable {
         L_0x001c:
             r12 = r0
             r0 = 0
+            java.lang.String r13 = "layout"
             r1 = -1
-            if (r29 == 0) goto L_0x0053
-            if (r12 == 0) goto L_0x0053
-            java.lang.String r2 = "layout"
-            boolean r2 = r12.startsWith(r2)
-            if (r2 == 0) goto L_0x0053
+            if (r28 == 0) goto L_0x0052
+            if (r12 == 0) goto L_0x0052
+            boolean r2 = r12.startsWith(r13)
+            if (r2 == 0) goto L_0x0052
             r2 = 95
             int r2 = r12.lastIndexOf(r2)
             if (r2 <= 0) goto L_0x004e
@@ -898,9 +899,9 @@ public abstract class ViewDataBinding extends BaseObservable {
             if (r3 == 0) goto L_0x004e
             int r3 = r2 + 1
             int r3 = parseTagInt(r12, r3)
-            r4 = r26[r3]
+            r4 = r25[r3]
             if (r4 != 0) goto L_0x0047
-            r26[r3] = r7
+            r25[r3] = r7
         L_0x0047:
             if (r8 != 0) goto L_0x004b
             r4 = r1
@@ -911,160 +912,165 @@ public abstract class ViewDataBinding extends BaseObservable {
             r0 = 1
             goto L_0x004f
         L_0x004e:
-            r4 = r1
+            r4 = -1
         L_0x004f:
-            r2 = r4
-        L_0x0051:
-            r13 = r0
-            goto L_0x0073
-        L_0x0053:
-            if (r12 == 0) goto L_0x0071
+            r14 = r0
+            r15 = r4
+            goto L_0x0075
+        L_0x0052:
+            if (r12 == 0) goto L_0x0072
             java.lang.String r2 = "binding_"
             boolean r2 = r12.startsWith(r2)
-            if (r2 == 0) goto L_0x0071
+            if (r2 == 0) goto L_0x0072
             int r2 = BINDING_NUMBER_START
             int r2 = parseTagInt(r12, r2)
-            r3 = r26[r2]
-            if (r3 != 0) goto L_0x0069
-            r26[r2] = r7
-        L_0x0069:
+            r3 = r25[r2]
+            if (r3 != 0) goto L_0x0068
+            r25[r2] = r7
+        L_0x0068:
             r0 = 1
-            if (r8 != 0) goto L_0x006e
+            if (r8 != 0) goto L_0x006d
             r3 = r1
-            goto L_0x006f
-        L_0x006e:
+            goto L_0x006e
+        L_0x006d:
             r3 = r2
-        L_0x006f:
-            r2 = r3
-            goto L_0x0051
-        L_0x0071:
-            r13 = r0
-            r2 = r1
-        L_0x0073:
-            r5 = r2
-            if (r13 != 0) goto L_0x008b
-            int r0 = r25.getId()
-            if (r0 <= 0) goto L_0x008b
-            if (r9 == 0) goto L_0x008b
+        L_0x006e:
+            r4 = r3
+            r14 = r0
+            r15 = r4
+            goto L_0x0075
+        L_0x0072:
+            r4 = -1
+            r14 = r0
+            r15 = r4
+        L_0x0075:
+            if (r14 != 0) goto L_0x008c
+            int r0 = r24.getId()
+            if (r0 <= 0) goto L_0x008c
+            if (r9 == 0) goto L_0x008c
             int r1 = r9.get(r0, r1)
             r2 = r1
-            if (r1 < 0) goto L_0x008b
-            r1 = r26[r2]
-            if (r1 != 0) goto L_0x008b
-            r26[r2] = r7
-        L_0x008b:
+            if (r1 < 0) goto L_0x008c
+            r1 = r25[r2]
+            if (r1 != 0) goto L_0x008c
+            r25[r2] = r7
+        L_0x008c:
             boolean r0 = r7 instanceof android.view.ViewGroup
-            if (r0 == 0) goto L_0x0157
-            r4 = r7
-            android.view.ViewGroup r4 = (android.view.ViewGroup) r4
-            int r3 = r4.getChildCount()
+            if (r0 == 0) goto L_0x015a
+            r5 = r7
+            android.view.ViewGroup r5 = (android.view.ViewGroup) r5
+            int r4 = r5.getChildCount()
             r0 = 0
-            r14 = 0
-            r1 = r0
-            r0 = r14
-        L_0x009a:
-            if (r0 >= r3) goto L_0x0157
-            android.view.View r2 = r4.getChildAt(r0)
-            r15 = 0
-            if (r5 < 0) goto L_0x0122
-            r16 = r3
-            java.lang.Object r3 = r2.getTag()
-            boolean r3 = r3 instanceof java.lang.String
-            if (r3 == 0) goto L_0x011f
-            java.lang.Object r3 = r2.getTag()
-            java.lang.String r3 = (java.lang.String) r3
-            java.lang.String r7 = "_0"
-            boolean r7 = r3.endsWith(r7)
-            if (r7 == 0) goto L_0x011f
-            java.lang.String r7 = "layout"
-            boolean r7 = r3.startsWith(r7)
-            if (r7 == 0) goto L_0x011f
-            r7 = 47
-            int r7 = r3.indexOf(r7)
-            if (r7 <= 0) goto L_0x011f
-            int r7 = findIncludeIndex(r3, r1, r8, r5)
-            if (r7 < 0) goto L_0x011f
-            r15 = 1
-            int r1 = r7 + 1
-            r17 = r1
-            int[][] r1 = r8.indexes
-            r1 = r1[r5]
-            r1 = r1[r7]
-            r18 = r3
-            int[][] r3 = r8.layoutIds
-            r3 = r3[r5]
-            r3 = r3[r7]
-            r19 = r5
-            int r5 = findLastMatching(r4, r0)
-            if (r5 != r0) goto L_0x00f4
-            android.databinding.ViewDataBinding r20 = android.databinding.DataBindingUtil.bind((android.databinding.DataBindingComponent) r6, (android.view.View) r2, (int) r3)
-            r26[r1] = r20
-        L_0x00f2:
-            r7 = r0
-            goto L_0x0129
+            r1 = 0
+        L_0x0099:
+            if (r1 >= r4) goto L_0x0156
+            android.view.View r3 = r5.getChildAt(r1)
+            r2 = 0
+            if (r15 < 0) goto L_0x0128
+            r16 = r2
+            java.lang.Object r2 = r3.getTag()
+            boolean r2 = r2 instanceof java.lang.String
+            if (r2 == 0) goto L_0x0125
+            java.lang.Object r2 = r3.getTag()
+            java.lang.String r2 = (java.lang.String) r2
+            r17 = r4
+            java.lang.String r4 = "_0"
+            boolean r4 = r2.endsWith(r4)
+            if (r4 == 0) goto L_0x0122
+            boolean r4 = r2.startsWith(r13)
+            if (r4 == 0) goto L_0x011f
+            r4 = 47
+            int r4 = r2.indexOf(r4)
+            if (r4 <= 0) goto L_0x011f
+            int r4 = findIncludeIndex(r2, r0, r8, r15)
+            if (r4 < 0) goto L_0x011a
+            r16 = 1
+            int r0 = r4 + 1
+            r18 = r0
+            int[][] r0 = r8.indexes
+            r0 = r0[r15]
+            r0 = r0[r4]
+            r19 = r2
+            int[][] r2 = r8.layoutIds
+            r2 = r2[r15]
+            r2 = r2[r4]
+            r20 = r4
+            int r4 = findLastMatching(r5, r1)
+            if (r4 != r1) goto L_0x00f4
+            android.databinding.ViewDataBinding r21 = android.databinding.DataBindingUtil.bind((android.databinding.DataBindingComponent) r6, (android.view.View) r3, (int) r2)
+            r25[r0] = r21
+            r7 = r1
+            goto L_0x012f
         L_0x00f4:
-            int r20 = r5 - r0
-            r21 = r5
-            int r5 = r20 + 1
-            r22 = r7
-            android.view.View[] r7 = new android.view.View[r5]
-            r20 = r14
+            int r21 = r4 - r1
+            r22 = r4
+            int r4 = r21 + 1
+            android.view.View[] r7 = new android.view.View[r4]
+            r21 = 0
+            r8 = r21
         L_0x0100:
-            r23 = r20
-            r8 = r23
-            if (r8 >= r5) goto L_0x0115
-            int r9 = r0 + r8
-            android.view.View r9 = r4.getChildAt(r9)
+            if (r8 >= r4) goto L_0x010f
+            int r9 = r1 + r8
+            android.view.View r9 = r5.getChildAt(r9)
             r7[r8] = r9
-            int r20 = r8 + 1
-            r8 = r27
-            r9 = r28
+            int r8 = r8 + 1
+            r9 = r27
             goto L_0x0100
-        L_0x0115:
-            android.databinding.ViewDataBinding r8 = android.databinding.DataBindingUtil.bind((android.databinding.DataBindingComponent) r6, (android.view.View[]) r7, (int) r3)
-            r26[r1] = r8
-            int r8 = r5 + -1
-            int r0 = r0 + r8
-            goto L_0x00f2
+        L_0x010f:
+            android.databinding.ViewDataBinding r8 = android.databinding.DataBindingUtil.bind((android.databinding.DataBindingComponent) r6, (android.view.View[]) r7, (int) r2)
+            r25[r0] = r8
+            int r8 = r4 + -1
+            int r1 = r1 + r8
+            r7 = r1
+            goto L_0x012f
+        L_0x011a:
+            r19 = r2
+            r20 = r4
+            goto L_0x012c
         L_0x011f:
-            r19 = r5
-            goto L_0x0126
+            r19 = r2
+            goto L_0x012c
         L_0x0122:
-            r16 = r3
+            r19 = r2
+            goto L_0x012c
+        L_0x0125:
+            r17 = r4
+            goto L_0x012c
+        L_0x0128:
+            r16 = r2
+            r17 = r4
+        L_0x012c:
+            r18 = r0
+            r7 = r1
+        L_0x012f:
+            if (r16 != 0) goto L_0x0143
+            r8 = 0
+            r0 = r23
+            r1 = r3
+            r2 = r25
+            r9 = r3
+            r3 = r26
+            r4 = r27
             r19 = r5
-        L_0x0126:
-            r7 = r0
-            r17 = r1
-        L_0x0129:
-            if (r15 != 0) goto L_0x0140
-            r5 = 0
-            r0 = r24
-            r1 = r2
-            r8 = r2
-            r2 = r26
-            r9 = r16
-            r3 = r27
-            r16 = r4
-            r4 = r28
-            r18 = r19
+            r5 = r8
             mapBindings(r0, r1, r2, r3, r4, r5)
             goto L_0x0146
-        L_0x0140:
-            r9 = r16
-            r18 = r19
-            r16 = r4
+        L_0x0143:
+            r9 = r3
+            r19 = r5
         L_0x0146:
-            int r0 = r7 + 1
-            r3 = r9
-            r4 = r16
-            r1 = r17
-            r5 = r18
-            r7 = r25
-            r8 = r27
-            r9 = r28
-            goto L_0x009a
-        L_0x0157:
-            r18 = r5
+            int r1 = r7 + 1
+            r7 = r24
+            r8 = r26
+            r9 = r27
+            r4 = r17
+            r0 = r18
+            r5 = r19
+            goto L_0x0099
+        L_0x0156:
+            r17 = r4
+            r19 = r5
+        L_0x015a:
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: android.databinding.ViewDataBinding.mapBindings(android.databinding.DataBindingComponent, android.view.View, java.lang.Object[], android.databinding.ViewDataBinding$IncludedLayouts, android.util.SparseIntArray, boolean):void");
@@ -1117,8 +1123,9 @@ public abstract class ViewDataBinding extends BaseObservable {
     }
 
     private static int parseTagInt(String str, int startIndex) {
+        int end = str.length();
         int val = 0;
-        for (int i = startIndex; i < str.length(); i++) {
+        for (int i = startIndex; i < end; i++) {
             val = (val * 10) + (str.charAt(i) - '0');
         }
         return val;
@@ -1136,6 +1143,10 @@ public abstract class ViewDataBinding extends BaseObservable {
                 ((WeakListener) ref).unregister();
             }
         }
+    }
+
+    protected static <T extends ViewDataBinding> T inflateInternal(LayoutInflater inflater, int layoutId, ViewGroup parent, boolean attachToParent, Object bindingComponent) {
+        return DataBindingUtil.inflate(inflater, layoutId, parent, attachToParent, checkAndCastToBindingComponent(bindingComponent));
     }
 
     private static class WeakListener<T> extends WeakReference<ViewDataBinding> {
@@ -1156,15 +1167,16 @@ public abstract class ViewDataBinding extends BaseObservable {
         public void setTarget(T object) {
             unregister();
             this.mTarget = object;
-            if (this.mTarget != null) {
-                this.mObservable.addListener(this.mTarget);
+            if (object != null) {
+                this.mObservable.addListener(object);
             }
         }
 
         public boolean unregister() {
             boolean unregistered = false;
-            if (this.mTarget != null) {
-                this.mObservable.removeListener(this.mTarget);
+            T t = this.mTarget;
+            if (t != null) {
+                this.mObservable.removeListener(t);
                 unregistered = true;
             }
             this.mTarget = null;
@@ -1319,8 +1331,9 @@ public abstract class ViewDataBinding extends BaseObservable {
         }
 
         public void addListener(LiveData<?> target) {
-            if (this.mLifecycleOwner != null) {
-                target.observe(this.mLifecycleOwner, this);
+            LifecycleOwner lifecycleOwner = this.mLifecycleOwner;
+            if (lifecycleOwner != null) {
+                target.observe(lifecycleOwner, this);
             }
         }
 
@@ -1328,8 +1341,11 @@ public abstract class ViewDataBinding extends BaseObservable {
             target.removeObserver(this);
         }
 
-        public void onChanged(@Nullable Object o) {
-            this.mListener.getBinder().handleFieldChange(this.mListener.mLocalFieldId, this.mListener.getTarget(), 0);
+        public void onChanged(Object o) {
+            ViewDataBinding binder = this.mListener.getBinder();
+            if (binder != null) {
+                binder.handleFieldChange(this.mListener.mLocalFieldId, this.mListener.getTarget(), 0);
+            }
         }
     }
 
@@ -1365,13 +1381,19 @@ public abstract class ViewDataBinding extends BaseObservable {
         }
     }
 
-    public class OnStartListener implements LifecycleObserver {
-        private OnStartListener() {
+    static class OnStartListener implements LifecycleObserver {
+        final WeakReference<ViewDataBinding> mBinding;
+
+        private OnStartListener(ViewDataBinding binding) {
+            this.mBinding = new WeakReference<>(binding);
         }
 
         @OnLifecycleEvent(Lifecycle.Event.ON_START)
         public void onStart() {
-            ViewDataBinding.this.executePendingBindings();
+            ViewDataBinding dataBinding = (ViewDataBinding) this.mBinding.get();
+            if (dataBinding != null) {
+                dataBinding.executePendingBindings();
+            }
         }
     }
 }

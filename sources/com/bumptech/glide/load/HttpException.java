@@ -1,6 +1,5 @@
 package com.bumptech.glide.load;
 
-import android.support.annotation.Nullable;
 import java.io.IOException;
 
 public final class HttpException extends IOException {
@@ -20,7 +19,7 @@ public final class HttpException extends IOException {
         this(message, statusCode2, (Throwable) null);
     }
 
-    public HttpException(String message, int statusCode2, @Nullable Throwable cause) {
+    public HttpException(String message, int statusCode2, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode2;
     }

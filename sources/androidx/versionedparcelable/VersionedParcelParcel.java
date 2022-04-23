@@ -5,10 +5,8 @@ import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 import android.util.SparseIntArray;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 class VersionedParcelParcel extends VersionedParcel {
     private static final boolean DEBUG = false;
     private static final String TAG = "VersionedParcelParcel";
@@ -31,21 +29,23 @@ class VersionedParcelParcel extends VersionedParcel {
         this.mParcel = p;
         this.mOffset = offset;
         this.mEnd = end;
-        this.mNextRead = this.mOffset;
+        this.mNextRead = offset;
         this.mPrefix = prefix;
     }
 
     private int readUntilField(int fieldId) {
-        while (this.mNextRead < this.mEnd) {
-            this.mParcel.setDataPosition(this.mNextRead);
-            int size = this.mParcel.readInt();
-            int fid = this.mParcel.readInt();
-            this.mNextRead += size;
-            if (fid == fieldId) {
-                return this.mParcel.dataPosition();
+        int fid;
+        do {
+            int i = this.mNextRead;
+            if (i >= this.mEnd) {
+                return -1;
             }
-        }
-        return -1;
+            this.mParcel.setDataPosition(i);
+            int size = this.mParcel.readInt();
+            fid = this.mParcel.readInt();
+            this.mNextRead += size;
+        } while (fid != fieldId);
+        return this.mParcel.dataPosition();
     }
 
     public boolean readField(int fieldId) {
@@ -66,8 +66,9 @@ class VersionedParcelParcel extends VersionedParcel {
     }
 
     public void closeField() {
-        if (this.mCurrentField >= 0) {
-            int currentFieldPosition = this.mPositionLookup.get(this.mCurrentField);
+        int i = this.mCurrentField;
+        if (i >= 0) {
+            int currentFieldPosition = this.mPositionLookup.get(i);
             int position = this.mParcel.dataPosition();
             this.mParcel.setDataPosition(currentFieldPosition);
             this.mParcel.writeInt(position - currentFieldPosition);
@@ -78,8 +79,11 @@ class VersionedParcelParcel extends VersionedParcel {
     /* access modifiers changed from: protected */
     public VersionedParcel createSubParcel() {
         Parcel parcel = this.mParcel;
-        int dataPosition = this.mParcel.dataPosition();
-        int i = this.mNextRead == this.mOffset ? this.mEnd : this.mNextRead;
+        int dataPosition = parcel.dataPosition();
+        int i = this.mNextRead;
+        if (i == this.mOffset) {
+            i = this.mEnd;
+        }
         return new VersionedParcelParcel(parcel, dataPosition, i, this.mPrefix + "  ");
     }
 

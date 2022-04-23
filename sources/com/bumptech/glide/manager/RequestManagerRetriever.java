@@ -1,6 +1,5 @@
 package com.bumptech.glide.manager;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
@@ -12,9 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
@@ -29,13 +25,11 @@ import java.util.Map;
 
 public class RequestManagerRetriever implements Handler.Callback {
     private static final RequestManagerFactory DEFAULT_FACTORY = new RequestManagerFactory() {
-        @NonNull
-        public RequestManager build(@NonNull Glide glide, @NonNull Lifecycle lifecycle, @NonNull RequestManagerTreeNode requestManagerTreeNode, @NonNull Context context) {
+        public RequestManager build(Glide glide, Lifecycle lifecycle, RequestManagerTreeNode requestManagerTreeNode, Context context) {
             return new RequestManager(glide, lifecycle, requestManagerTreeNode, context);
         }
     };
     private static final String FRAGMENT_INDEX_KEY = "key";
-    @VisibleForTesting
     static final String FRAGMENT_TAG = "com.bumptech.glide.manager";
     private static final int ID_REMOVE_FRAGMENT_MANAGER = 1;
     private static final int ID_REMOVE_SUPPORT_FRAGMENT_MANAGER = 2;
@@ -43,26 +37,22 @@ public class RequestManagerRetriever implements Handler.Callback {
     private volatile RequestManager applicationManager;
     private final RequestManagerFactory factory;
     private final Handler handler;
-    @VisibleForTesting
     final Map<FragmentManager, RequestManagerFragment> pendingRequestManagerFragments = new HashMap();
-    @VisibleForTesting
     final Map<android.support.v4.app.FragmentManager, SupportRequestManagerFragment> pendingSupportRequestManagerFragments = new HashMap();
     private final Bundle tempBundle = new Bundle();
     private final ArrayMap<View, Fragment> tempViewToFragment = new ArrayMap<>();
     private final ArrayMap<View, android.support.v4.app.Fragment> tempViewToSupportFragment = new ArrayMap<>();
 
     public interface RequestManagerFactory {
-        @NonNull
-        RequestManager build(@NonNull Glide glide, @NonNull Lifecycle lifecycle, @NonNull RequestManagerTreeNode requestManagerTreeNode, @NonNull Context context);
+        RequestManager build(Glide glide, Lifecycle lifecycle, RequestManagerTreeNode requestManagerTreeNode, Context context);
     }
 
-    public RequestManagerRetriever(@Nullable RequestManagerFactory factory2) {
+    public RequestManagerRetriever(RequestManagerFactory factory2) {
         this.factory = factory2 != null ? factory2 : DEFAULT_FACTORY;
         this.handler = new Handler(Looper.getMainLooper(), this);
     }
 
-    @NonNull
-    private RequestManager getApplicationManager(@NonNull Context context) {
+    private RequestManager getApplicationManager(Context context) {
         if (this.applicationManager == null) {
             synchronized (this) {
                 if (this.applicationManager == null) {
@@ -73,8 +63,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         return this.applicationManager;
     }
 
-    @NonNull
-    public RequestManager get(@NonNull Context context) {
+    public RequestManager get(Context context) {
         if (context != null) {
             if (Util.isOnMainThread() && !(context instanceof Application)) {
                 if (context instanceof FragmentActivity) {
@@ -92,8 +81,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         throw new IllegalArgumentException("You cannot start a load on a null Context");
     }
 
-    @NonNull
-    public RequestManager get(@NonNull FragmentActivity activity) {
+    public RequestManager get(FragmentActivity activity) {
         if (Util.isOnBackgroundThread()) {
             return get(activity.getApplicationContext());
         }
@@ -101,8 +89,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         return supportFragmentGet(activity, activity.getSupportFragmentManager(), (android.support.v4.app.Fragment) null, isActivityVisible(activity));
     }
 
-    @NonNull
-    public RequestManager get(@NonNull android.support.v4.app.Fragment fragment) {
+    public RequestManager get(android.support.v4.app.Fragment fragment) {
         Preconditions.checkNotNull(fragment.getActivity(), "You cannot start a load on a fragment before it is attached or after it is destroyed");
         if (Util.isOnBackgroundThread()) {
             return get(fragment.getActivity().getApplicationContext());
@@ -110,8 +97,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         return supportFragmentGet(fragment.getActivity(), fragment.getChildFragmentManager(), fragment, fragment.isVisible());
     }
 
-    @NonNull
-    public RequestManager get(@NonNull Activity activity) {
+    public RequestManager get(Activity activity) {
         if (Util.isOnBackgroundThread()) {
             return get(activity.getApplicationContext());
         }
@@ -119,8 +105,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         return fragmentGet(activity, activity.getFragmentManager(), (Fragment) null, isActivityVisible(activity));
     }
 
-    @NonNull
-    public RequestManager get(@NonNull View view) {
+    public RequestManager get(View view) {
         if (Util.isOnBackgroundThread()) {
             return get(view.getContext().getApplicationContext());
         }
@@ -141,7 +126,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         return get(fragment2);
     }
 
-    private static void findAllSupportFragmentsWithViews(@Nullable Collection<android.support.v4.app.Fragment> topLevelFragments, @NonNull Map<View, android.support.v4.app.Fragment> result) {
+    private static void findAllSupportFragmentsWithViews(Collection<android.support.v4.app.Fragment> topLevelFragments, Map<View, android.support.v4.app.Fragment> result) {
         if (topLevelFragments != null) {
             for (android.support.v4.app.Fragment fragment : topLevelFragments) {
                 if (!(fragment == null || fragment.getView() == null)) {
@@ -154,9 +139,8 @@ public class RequestManagerRetriever implements Handler.Callback {
 
     /* JADX WARNING: type inference failed for: r3v6, types: [android.view.ViewParent] */
     /* JADX WARNING: Multi-variable type inference failed */
-    @android.support.annotation.Nullable
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private android.support.v4.app.Fragment findSupportFragment(@android.support.annotation.NonNull android.view.View r5, @android.support.annotation.NonNull android.support.v4.app.FragmentActivity r6) {
+    private android.support.v4.app.Fragment findSupportFragment(android.view.View r5, android.support.v4.app.FragmentActivity r6) {
         /*
             r4 = this;
             android.support.v4.util.ArrayMap<android.view.View, android.support.v4.app.Fragment> r0 = r4.tempViewToSupportFragment
@@ -168,39 +152,37 @@ public class RequestManagerRetriever implements Handler.Callback {
             r0 = 0
             r1 = 16908290(0x1020002, float:2.3877235E-38)
             android.view.View r1 = r6.findViewById(r1)
-            r2 = r0
-            r0 = r5
-        L_0x001d:
-            boolean r3 = r0.equals(r1)
-            if (r3 != 0) goto L_0x003f
+            r2 = r5
+        L_0x001c:
+            boolean r3 = r2.equals(r1)
+            if (r3 != 0) goto L_0x003e
             android.support.v4.util.ArrayMap<android.view.View, android.support.v4.app.Fragment> r3 = r4.tempViewToSupportFragment
-            java.lang.Object r3 = r3.get(r0)
-            r2 = r3
-            android.support.v4.app.Fragment r2 = (android.support.v4.app.Fragment) r2
-            if (r2 == 0) goto L_0x002f
-            goto L_0x003f
-        L_0x002f:
-            android.view.ViewParent r3 = r0.getParent()
-            boolean r3 = r3 instanceof android.view.View
-            if (r3 == 0) goto L_0x003f
-            android.view.ViewParent r3 = r0.getParent()
+            java.lang.Object r3 = r3.get(r2)
             r0 = r3
-            android.view.View r0 = (android.view.View) r0
-            goto L_0x001d
-        L_0x003f:
+            android.support.v4.app.Fragment r0 = (android.support.v4.app.Fragment) r0
+            if (r0 == 0) goto L_0x002e
+            goto L_0x003e
+        L_0x002e:
+            android.view.ViewParent r3 = r2.getParent()
+            boolean r3 = r3 instanceof android.view.View
+            if (r3 == 0) goto L_0x003e
+            android.view.ViewParent r3 = r2.getParent()
+            r2 = r3
+            android.view.View r2 = (android.view.View) r2
+            goto L_0x001c
+        L_0x003e:
             android.support.v4.util.ArrayMap<android.view.View, android.support.v4.app.Fragment> r3 = r4.tempViewToSupportFragment
             r3.clear()
-            return r2
+            return r0
         */
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.manager.RequestManagerRetriever.findSupportFragment(android.view.View, android.support.v4.app.FragmentActivity):android.support.v4.app.Fragment");
     }
 
     /* JADX WARNING: type inference failed for: r3v6, types: [android.view.ViewParent] */
     /* JADX WARNING: Multi-variable type inference failed */
-    @android.support.annotation.Nullable
     @java.lang.Deprecated
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    private android.app.Fragment findFragment(@android.support.annotation.NonNull android.view.View r5, @android.support.annotation.NonNull android.app.Activity r6) {
+    private android.app.Fragment findFragment(android.view.View r5, android.app.Activity r6) {
         /*
             r4 = this;
             android.support.v4.util.ArrayMap<android.view.View, android.app.Fragment> r0 = r4.tempViewToFragment
@@ -211,36 +193,34 @@ public class RequestManagerRetriever implements Handler.Callback {
             r0 = 0
             r1 = 16908290(0x1020002, float:2.3877235E-38)
             android.view.View r1 = r6.findViewById(r1)
-            r2 = r0
-            r0 = r5
-        L_0x0018:
-            boolean r3 = r0.equals(r1)
-            if (r3 != 0) goto L_0x003a
+            r2 = r5
+        L_0x0017:
+            boolean r3 = r2.equals(r1)
+            if (r3 != 0) goto L_0x0039
             android.support.v4.util.ArrayMap<android.view.View, android.app.Fragment> r3 = r4.tempViewToFragment
-            java.lang.Object r3 = r3.get(r0)
-            r2 = r3
-            android.app.Fragment r2 = (android.app.Fragment) r2
-            if (r2 == 0) goto L_0x002a
-            goto L_0x003a
-        L_0x002a:
-            android.view.ViewParent r3 = r0.getParent()
-            boolean r3 = r3 instanceof android.view.View
-            if (r3 == 0) goto L_0x003a
-            android.view.ViewParent r3 = r0.getParent()
+            java.lang.Object r3 = r3.get(r2)
             r0 = r3
-            android.view.View r0 = (android.view.View) r0
-            goto L_0x0018
-        L_0x003a:
+            android.app.Fragment r0 = (android.app.Fragment) r0
+            if (r0 == 0) goto L_0x0029
+            goto L_0x0039
+        L_0x0029:
+            android.view.ViewParent r3 = r2.getParent()
+            boolean r3 = r3 instanceof android.view.View
+            if (r3 == 0) goto L_0x0039
+            android.view.ViewParent r3 = r2.getParent()
+            r2 = r3
+            android.view.View r2 = (android.view.View) r2
+            goto L_0x0017
+        L_0x0039:
             android.support.v4.util.ArrayMap<android.view.View, android.app.Fragment> r3 = r4.tempViewToFragment
             r3.clear()
-            return r2
+            return r0
         */
         throw new UnsupportedOperationException("Method not decompiled: com.bumptech.glide.manager.RequestManagerRetriever.findFragment(android.view.View, android.app.Activity):android.app.Fragment");
     }
 
-    @TargetApi(26)
     @Deprecated
-    private void findAllFragmentsWithViews(@NonNull FragmentManager fragmentManager, @NonNull ArrayMap<View, Fragment> result) {
+    private void findAllFragmentsWithViews(FragmentManager fragmentManager, ArrayMap<View, Fragment> result) {
         if (Build.VERSION.SDK_INT >= 26) {
             for (Fragment fragment : fragmentManager.getFragments()) {
                 if (fragment.getView() != null) {
@@ -254,7 +234,7 @@ public class RequestManagerRetriever implements Handler.Callback {
     }
 
     @Deprecated
-    private void findAllFragmentsWithViewsPreO(@NonNull FragmentManager fragmentManager, @NonNull ArrayMap<View, Fragment> result) {
+    private void findAllFragmentsWithViewsPreO(FragmentManager fragmentManager, ArrayMap<View, Fragment> result) {
         int index = 0;
         while (true) {
             int index2 = index + 1;
@@ -278,8 +258,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         }
     }
 
-    @Nullable
-    private Activity findActivity(@NonNull Context context) {
+    private Activity findActivity(Context context) {
         if (context instanceof Activity) {
             return (Activity) context;
         }
@@ -289,17 +268,14 @@ public class RequestManagerRetriever implements Handler.Callback {
         return null;
     }
 
-    @TargetApi(17)
-    private static void assertNotDestroyed(@NonNull Activity activity) {
+    private static void assertNotDestroyed(Activity activity) {
         if (Build.VERSION.SDK_INT >= 17 && activity.isDestroyed()) {
             throw new IllegalArgumentException("You cannot start a load for a destroyed activity");
         }
     }
 
-    @TargetApi(17)
     @Deprecated
-    @NonNull
-    public RequestManager get(@NonNull Fragment fragment) {
+    public RequestManager get(Fragment fragment) {
         if (fragment.getActivity() == null) {
             throw new IllegalArgumentException("You cannot start a load on a fragment before it is attached");
         } else if (Util.isOnBackgroundThread() || Build.VERSION.SDK_INT < 17) {
@@ -311,13 +287,11 @@ public class RequestManagerRetriever implements Handler.Callback {
 
     /* access modifiers changed from: package-private */
     @Deprecated
-    @NonNull
     public RequestManagerFragment getRequestManagerFragment(Activity activity) {
         return getRequestManagerFragment(activity.getFragmentManager(), (Fragment) null, isActivityVisible(activity));
     }
 
-    @NonNull
-    private RequestManagerFragment getRequestManagerFragment(@NonNull FragmentManager fm, @Nullable Fragment parentHint, boolean isParentVisible) {
+    private RequestManagerFragment getRequestManagerFragment(FragmentManager fm, Fragment parentHint, boolean isParentVisible) {
         RequestManagerFragment current = (RequestManagerFragment) fm.findFragmentByTag(FRAGMENT_TAG);
         if (current == null && (current = this.pendingRequestManagerFragments.get(fm)) == null) {
             current = new RequestManagerFragment();
@@ -333,8 +307,7 @@ public class RequestManagerRetriever implements Handler.Callback {
     }
 
     @Deprecated
-    @NonNull
-    private RequestManager fragmentGet(@NonNull Context context, @NonNull FragmentManager fm, @Nullable Fragment parentHint, boolean isParentVisible) {
+    private RequestManager fragmentGet(Context context, FragmentManager fm, Fragment parentHint, boolean isParentVisible) {
         RequestManagerFragment current = getRequestManagerFragment(fm, parentHint, isParentVisible);
         RequestManager requestManager = current.getRequestManager();
         if (requestManager != null) {
@@ -346,7 +319,6 @@ public class RequestManagerRetriever implements Handler.Callback {
     }
 
     /* access modifiers changed from: package-private */
-    @NonNull
     public SupportRequestManagerFragment getSupportRequestManagerFragment(FragmentActivity activity) {
         return getSupportRequestManagerFragment(activity.getSupportFragmentManager(), (android.support.v4.app.Fragment) null, isActivityVisible(activity));
     }
@@ -355,8 +327,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         return !activity.isFinishing();
     }
 
-    @NonNull
-    private SupportRequestManagerFragment getSupportRequestManagerFragment(@NonNull android.support.v4.app.FragmentManager fm, @Nullable android.support.v4.app.Fragment parentHint, boolean isParentVisible) {
+    private SupportRequestManagerFragment getSupportRequestManagerFragment(android.support.v4.app.FragmentManager fm, android.support.v4.app.Fragment parentHint, boolean isParentVisible) {
         SupportRequestManagerFragment current = (SupportRequestManagerFragment) fm.findFragmentByTag(FRAGMENT_TAG);
         if (current == null && (current = this.pendingSupportRequestManagerFragments.get(fm)) == null) {
             current = new SupportRequestManagerFragment();
@@ -371,8 +342,7 @@ public class RequestManagerRetriever implements Handler.Callback {
         return current;
     }
 
-    @NonNull
-    private RequestManager supportFragmentGet(@NonNull Context context, @NonNull android.support.v4.app.FragmentManager fm, @Nullable android.support.v4.app.Fragment parentHint, boolean isParentVisible) {
+    private RequestManager supportFragmentGet(Context context, android.support.v4.app.FragmentManager fm, android.support.v4.app.Fragment parentHint, boolean isParentVisible) {
         SupportRequestManagerFragment current = getSupportRequestManagerFragment(fm, parentHint, isParentVisible);
         RequestManager requestManager = current.getRequestManager();
         if (requestManager != null) {

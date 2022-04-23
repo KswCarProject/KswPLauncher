@@ -1,7 +1,5 @@
 package com.bumptech.glide.provider;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import com.bumptech.glide.util.MultiClassKey;
 import java.util.List;
@@ -11,8 +9,7 @@ public class ModelToResourceClassCache {
     private final ArrayMap<MultiClassKey, List<Class<?>>> registeredResourceClassCache = new ArrayMap<>();
     private final AtomicReference<MultiClassKey> resourceClassKeyRef = new AtomicReference<>();
 
-    @Nullable
-    public List<Class<?>> get(@NonNull Class<?> modelClass, @NonNull Class<?> resourceClass, @NonNull Class<?> transcodeClass) {
+    public List<Class<?>> get(Class<?> modelClass, Class<?> resourceClass, Class<?> transcodeClass) {
         List<Class<?>> result;
         MultiClassKey key = this.resourceClassKeyRef.getAndSet((Object) null);
         if (key == null) {
@@ -27,7 +24,7 @@ public class ModelToResourceClassCache {
         return result;
     }
 
-    public void put(@NonNull Class<?> modelClass, @NonNull Class<?> resourceClass, @NonNull Class<?> transcodeClass, @NonNull List<Class<?>> resourceClasses) {
+    public void put(Class<?> modelClass, Class<?> resourceClass, Class<?> transcodeClass, List<Class<?>> resourceClasses) {
         synchronized (this.registeredResourceClassCache) {
             this.registeredResourceClassCache.put(new MultiClassKey(modelClass, resourceClass, transcodeClass), resourceClasses);
         }

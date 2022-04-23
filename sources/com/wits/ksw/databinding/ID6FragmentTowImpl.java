@@ -2,8 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -11,26 +9,25 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ID6FragmentTowImpl extends ID6FragmentTow {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
 
     static {
-        sViewsWithIds.put(R.id.id6_video_iamge_view, 1);
-        sViewsWithIds.put(R.id.id6_video_mess, 2);
-        sViewsWithIds.put(R.id.id6_car_image_view, 3);
-        sViewsWithIds.put(R.id.id6_car_text_view, 4);
-        sViewsWithIds.put(R.id.id6_car_mess, 5);
-        sViewsWithIds.put(R.id.id6_browser_image_view, 6);
-        sViewsWithIds.put(R.id.id6_browser_text_view, 7);
-        sViewsWithIds.put(R.id.id6_browser_mess, 8);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.id6_video_iamge_view, 1);
+        sparseIntArray.put(R.id.id6_video_mess, 2);
+        sparseIntArray.put(R.id.id6_car_image_view, 3);
+        sparseIntArray.put(R.id.id6_car_text_view, 4);
+        sparseIntArray.put(R.id.id6_car_mess, 5);
+        sparseIntArray.put(R.id.id6_browser_image_view, 6);
+        sparseIntArray.put(R.id.id6_browser_text_view, 7);
+        sparseIntArray.put(R.id.id6_browser_mess, 8);
     }
 
-    public ID6FragmentTowImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ID6FragmentTowImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
     }
 
@@ -38,8 +35,9 @@ public class ID6FragmentTowImpl extends ID6FragmentTow {
     private ID6FragmentTowImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0, bindings[6], bindings[8], bindings[7], bindings[3], bindings[5], bindings[4], bindings[1], bindings[2]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
         View view = root;
         setRootTag(root);
         invalidateAll();
@@ -61,15 +59,15 @@ public class ID6FragmentTowImpl extends ID6FragmentTow {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
     }
 

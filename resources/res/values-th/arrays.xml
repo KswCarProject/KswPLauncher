@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>การนำทาง</item>
+        <item>วิดีโอ</item>
+        <item>เพลง</item>
+        <item>โทรศัพท์</item>
+        <item>เมนู NTG</item>
+        <item>แดชบอร์ด</item>
+        <item>PhoneLink</item>
+        <item>ไฟล์เบราว์เซอร์</item>
+        <item>เครื่องบันทึกภาพ</item>
+        <item>การตั้งค่า</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>การนำทาง</item>
+        <item>เพลง</item>
+        <item>โทรศัพท์</item>
+        <item>เมนู NTG</item>
+        <item>การตั้งค่า</item>
+        <item>วิดีโอ</item>
+        <item>ไฟล์เบราว์เซอร์</item>
+        <item>PhoneLink</item>
+        <item>แดชบอร์ด</item>
+        <item>เครื่องบันทึกภาพ</item>
+    </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>การนำทาง</item>
+        <item>เพลง</item>
+        <item>โทรศัพท์</item>
+        <item>เมนู NTG</item>
+        <item>การตั้งค่า</item>
+        <item>วิดีโอ</item>
+        <item>แอพพลิเคชัน</item>
+        <item>PhoneLink</item>
+        <item>แดชบอร์ด</item>
+        <item>เครื่องบันทึกภาพ</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>การนำทาง</item>
+        <item>เพลง</item>
+        <item>โทรศัพท์</item>
+        <item>เมนู NTG</item>
+        <item>การตั้งค่า</item>
+        <item>วิดีโอ</item>
+        <item>แอป</item>
+        <item>PhoneLink</item>
+        <item>แดชบอร์ด</item>
+        <item>เครื่องบันทึกภาพ</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>ม.ค.</item>
+        <item>ก.พ.</item>
+        <item>มี.ค.</item>
+        <item>เม.ย.</item>
+        <item>พฤษภาคม</item>
+        <item>มิถุนายน</item>
+        <item>กรกฎาคม</item>
+        <item>ส.ค.</item>
+        <item>กันยายน</item>
+        <item>ต.ค.</item>
+        <item>พ.ย.</item>
+        <item>ธันวาคม</item>
+    </array>
+    <array name="set_factory">
+        <item>ฟังก์ชั่น</item>
+        <item>ยานพาหนะ</item>
+        <item>แสดงรถยนต์</item>
+        <item>สามารถโปรโตคอล</item>
+        <item>MIC ได้รับ</item>
+        <item>การกำหนดค่า UI</item>
+        <item>นำเข้าโปรไฟล์</item>
+        <item>โลโก้บูต</item>
+    </array>
+    <array name="set_function">
+        <item>ระบบ</item>
+        <item>การนำทาง</item>
+        <item>ปริมาณ</item>
+        <item>เสียง</item>
+        <item>ภาษา</item>
+        <item>เวลา</item>
+        <item>ข้อมูลระบบ</item>
+        <item>Android</item>
+        <item>โรงงาน</item>
+    </array>
+    <array name="set_id6_function">
+        <item>การนำทาง</item>
+        <item>ระบบ</item>
+        <item>ปริมาณ</item>
+        <item>เสียง</item>
+        <item>ภาษา</item>
+        <item>เวลา</item>
+        <item>ข้อมูลระบบ</item>
+        <item>Android</item>
+        <item>โรงงาน</item>
+    </array>
+    <array name="set_land_rover_function">
+        <item>ระบบ</item>
+        <item>การนำทาง</item>
+        <item>ปริมาณ</item>
+        <item>ภาษา</item>
+        <item>เวลา</item>
+        <item>ข้อมูลระบบ</item>
+        <item>Android</item>
+        <item>โรงงาน</item>
+    </array>
+</resources>

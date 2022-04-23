@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import com.wits.ksw.settings.id7.bean.MapBean;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.ksw.settings.utlis_view.ScanNaviList;
@@ -15,7 +14,7 @@ public class NaviVm extends AndroidViewModel {
     private Context context = getApplication();
     public MutableLiveData<List<MapBean>> naviList = new MutableLiveData<>();
 
-    public NaviVm(@NonNull Application application) {
+    public NaviVm(Application application) {
         super(application);
         ScanNaviList.getInstance().setMapListScanListener(new ScanNaviList.OnMapListScanListener() {
             public void onScanFinish(List<MapBean> mapList) {

@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,21 +24,21 @@ import com.wits.ksw.settings.id7.bean.MapBean;
 import com.wits.ksw.settings.romeo.adapter.FunctionAdapter;
 import com.wits.ksw.settings.romeo.interfaces.IUpdateListBg;
 import com.wits.ksw.settings.romeo.interfaces.IUpdateTwoLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetFactoryLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetLanguageLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetNaviLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetSystemInfoLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetSystemLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetTimeLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetToAndSysLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetVocModeLayout;
-import com.wits.ksw.settings.romeo.layout_one.SetVoiceLayout;
-import com.wits.ksw.settings.romeo.layout_two.NaviTwo;
-import com.wits.ksw.settings.romeo.layout_two.SetImageTwo;
-import com.wits.ksw.settings.romeo.layout_two.SetSystemTwo;
-import com.wits.ksw.settings.romeo.layout_two.SetVocModelTwo;
-import com.wits.ksw.settings.romeo.layout_two.SetVoiceTwo;
-import com.wits.ksw.settings.romeo.layout_two.TimeSetTwo;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetFactoryLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetLanguageLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetNaviLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetSystemInfoLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetSystemLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetTimeLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetToAndSysLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetVocModeLayout;
+import com.wits.ksw.settings.romeo.layout_one.RomeoSetVoiceLayout;
+import com.wits.ksw.settings.romeo.layout_two.RomeoNaviTwo;
+import com.wits.ksw.settings.romeo.layout_two.RomeoSetImageTwo;
+import com.wits.ksw.settings.romeo.layout_two.RomeoSetSystemTwo;
+import com.wits.ksw.settings.romeo.layout_two.RomeoSetVocModelTwo;
+import com.wits.ksw.settings.romeo.layout_two.RomeoSetVoiceTwo;
+import com.wits.ksw.settings.romeo.layout_two.RomeoTimeSetTwo;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.ksw.settings.utlis_view.ScanNaviList;
 import com.wits.pms.statuscontrol.PowerManagerApp;
@@ -61,33 +58,30 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     private FrameLayout frame_OneLayout;
     private FrameLayout frame_TwoLayout;
     Handler handler = new Handler() {
-        @RequiresApi(api = 24)
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            int i = msg.what;
-            if (i != 0) {
-                switch (i) {
-                    case 2:
-                        if (TextUtils.equals(RomeoSettingsActivity.this.defPwd, (String) msg.obj)) {
-                            RomeoSettingsActivity.this.startActivity(new Intent(RomeoSettingsActivity.this, FactoryActivity.class));
-                            RomeoSettingsActivity.this.finish();
-                            return;
-                        }
-                        RomeoSettingsActivity.this.setFactoryLayout.SetTextEEro();
+            switch (msg.what) {
+                case 0:
+                    RomeoSettingsActivity.this.initOneLayout();
+                    RomeoSettingsActivity.this.initTwoLayout();
+                    return;
+                case 2:
+                    if (TextUtils.equals(RomeoSettingsActivity.this.defPwd, (String) msg.obj)) {
+                        RomeoSettingsActivity.this.startActivity(new Intent(RomeoSettingsActivity.this, FactoryActivity.class));
+                        RomeoSettingsActivity.this.finish();
                         return;
-                    case 3:
-                        if (RomeoSettingsActivity.this.naviTwo != null) {
-                            Log.d("Navi", "updateList: " + RomeoSettingsActivity.this.mapList.size());
-                            RomeoSettingsActivity.this.naviTwo.updateMapList(RomeoSettingsActivity.this.mapList);
-                            return;
-                        }
+                    }
+                    RomeoSettingsActivity.this.romeoSetFactoryLayout.SetTextEEro();
+                    return;
+                case 3:
+                    if (RomeoSettingsActivity.this.romeoNaviTwo != null) {
+                        Log.d("Navi", "updateList: " + RomeoSettingsActivity.this.mapList.size());
+                        RomeoSettingsActivity.this.romeoNaviTwo.updateMapList(RomeoSettingsActivity.this.mapList);
                         return;
-                    default:
-                        return;
-                }
-            } else {
-                RomeoSettingsActivity.this.initOneLayout();
-                RomeoSettingsActivity.this.initTwoLayout();
+                    }
+                    return;
+                default:
+                    return;
             }
         }
     };
@@ -97,9 +91,24 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     /* access modifiers changed from: private */
     public List<MapBean> mapList = new ArrayList();
     /* access modifiers changed from: private */
-    public NaviTwo naviTwo;
-    /* access modifiers changed from: private */
     public RecyclerView recyclerView;
+    /* access modifiers changed from: private */
+    public RomeoNaviTwo romeoNaviTwo;
+    /* access modifiers changed from: private */
+    public RomeoSetFactoryLayout romeoSetFactoryLayout;
+    private RomeoSetImageTwo romeoSetImageTwo;
+    private RomeoSetLanguageLayout romeoSetLanguageLayout;
+    private RomeoSetNaviLayout romeoSetNaviLayout;
+    private RomeoSetSystemInfoLayout romeoSetSystemInfoLayout;
+    private RomeoSetSystemLayout romeoSetSystemLayout;
+    private RomeoSetSystemTwo romeoSetSystemTwo;
+    private RomeoSetTimeLayout romeoSetTimeLayout;
+    private RomeoSetToAndSysLayout romeoSetToAndSysLayout;
+    private RomeoSetVocModeLayout romeoSetVocModeLayout;
+    private RomeoSetVocModelTwo romeoSetVocModelTwo;
+    private RomeoSetVoiceLayout romeoSetVoiceLayout;
+    private RomeoSetVoiceTwo romeoSetVoiceTwo;
+    private RomeoTimeSetTwo romeoTimeSetTwo;
     private ImageView romeo_indicator_1;
     private ImageView romeo_indicator_2;
     private ImageView romeo_indicator_3;
@@ -124,26 +133,10 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     private ImageView romeo_settings_list4;
     private ImageView romeo_settings_list5;
     private ImageView romeo_settings_list6;
-    /* access modifiers changed from: private */
-    public SetFactoryLayout setFactoryLayout;
-    private SetImageTwo setImageTwo;
-    private SetLanguageLayout setLanguageLayout;
-    private SetNaviLayout setNaviLayout;
-    private SetSystemInfoLayout setSystemInfoLayout;
-    private SetSystemLayout setSystemLayout;
-    private SetSystemTwo setSystemTwo;
-    private SetTimeLayout setTimeLayout;
-    private SetToAndSysLayout setToAndSysLayout;
-    private SetVocModeLayout setVocModeLayout;
-    private SetVocModelTwo setVocModelTwo;
-    private SetVoiceLayout setVoiceLayout;
-    private SetVoiceTwo setVoiceTwo;
-    private TimeSetTwo timeSetTwo;
     private String voiceData;
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_romeo_settings);
         initData();
@@ -152,13 +145,11 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        String str = this.TAG;
-        Log.d(str, "onWindowFocusChanged hasFocus=" + hasFocus + " first=" + this.first);
+        Log.d(this.TAG, "onWindowFocusChanged hasFocus=" + hasFocus + " first=" + this.first);
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {
-        String str = this.TAG;
-        Log.d(str, "dispatchKeyEvent keyCode=" + event.getKeyCode() + " first=" + this.first + " hasFocus=" + this.recyclerView.hasFocus() + " action=" + event.getAction());
+        Log.d(this.TAG, "dispatchKeyEvent keyCode=" + event.getKeyCode() + " first=" + this.first + " hasFocus=" + this.recyclerView.hasFocus() + " action=" + event.getAction());
         if (event.getKeyCode() == 22 && event.getAction() == 1 && this.recyclerView.hasFocus()) {
             this.frame_OneLayout.requestFocus();
         }
@@ -169,7 +160,6 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
         return super.dispatchKeyEvent(event);
     }
 
-    @RequiresApi(api = 24)
     public void skipItem() {
         if (TextUtils.equals("voic", this.voiceData)) {
             initOneLayout();
@@ -188,7 +178,6 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
                 fb2.setIscheck(false);
             }
             this.data.get(3).setIscheck(true);
-            FunctionAdapter functionAdapter2 = this.adapter;
         }
     }
 
@@ -206,7 +195,6 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     /* access modifiers changed from: protected */
-    @RequiresApi(api = 24)
     public void onResume() {
         super.onResume();
         ScanNaviList.getInstance().setMapListScanListener(this);
@@ -222,68 +210,76 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void initOneLayout() {
-        if (this.setSystemLayout == null) {
-            this.setSystemLayout = new SetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
-            this.setSystemLayout.registIUpdateListBg(this);
+        if (this.romeoSetSystemLayout == null) {
+            RomeoSetSystemLayout romeoSetSystemLayout2 = new RomeoSetSystemLayout(this);
+            this.romeoSetSystemLayout = romeoSetSystemLayout2;
+            romeoSetSystemLayout2.registIUpdateTwoLayout(this);
+            this.romeoSetSystemLayout.registIUpdateListBg(this);
         }
-        if (this.setNaviLayout == null) {
-            this.setNaviLayout = new SetNaviLayout(this);
-            this.setNaviLayout.registIUpdateTwoLayout(this);
+        if (this.romeoSetNaviLayout == null) {
+            RomeoSetNaviLayout romeoSetNaviLayout2 = new RomeoSetNaviLayout(this);
+            this.romeoSetNaviLayout = romeoSetNaviLayout2;
+            romeoSetNaviLayout2.registIUpdateTwoLayout(this);
         }
-        if (this.setVoiceLayout == null) {
-            this.setVoiceLayout = new SetVoiceLayout(this);
-            this.setVoiceLayout.registIUpdateTwoLayout(this);
-            this.setVoiceLayout.registIUpdateListBg(this);
+        if (this.romeoSetVoiceLayout == null) {
+            RomeoSetVoiceLayout romeoSetVoiceLayout2 = new RomeoSetVoiceLayout(this);
+            this.romeoSetVoiceLayout = romeoSetVoiceLayout2;
+            romeoSetVoiceLayout2.registIUpdateTwoLayout(this);
+            this.romeoSetVoiceLayout.registIUpdateListBg(this);
         }
-        if (this.setVocModeLayout == null) {
-            this.setVocModeLayout = new SetVocModeLayout(this);
-            this.setVocModeLayout.registIUpdateTwoLayout(this);
+        if (this.romeoSetVocModeLayout == null) {
+            RomeoSetVocModeLayout romeoSetVocModeLayout2 = new RomeoSetVocModeLayout(this);
+            this.romeoSetVocModeLayout = romeoSetVocModeLayout2;
+            romeoSetVocModeLayout2.registIUpdateTwoLayout(this);
         }
-        if (this.setLanguageLayout == null) {
-            this.setLanguageLayout = new SetLanguageLayout(this);
-            this.setLanguageLayout.registIUpdateListBg(this);
+        if (this.romeoSetLanguageLayout == null) {
+            RomeoSetLanguageLayout romeoSetLanguageLayout2 = new RomeoSetLanguageLayout(this);
+            this.romeoSetLanguageLayout = romeoSetLanguageLayout2;
+            romeoSetLanguageLayout2.registIUpdateListBg(this);
         }
-        if (this.setToAndSysLayout == null) {
-            this.setToAndSysLayout = new SetToAndSysLayout(this);
-            this.setToAndSysLayout.registIUpdateListBg(this);
+        if (this.romeoSetToAndSysLayout == null) {
+            RomeoSetToAndSysLayout romeoSetToAndSysLayout2 = new RomeoSetToAndSysLayout(this);
+            this.romeoSetToAndSysLayout = romeoSetToAndSysLayout2;
+            romeoSetToAndSysLayout2.registIUpdateListBg(this);
         }
-        if (this.setTimeLayout == null) {
-            this.setTimeLayout = new SetTimeLayout(this);
-            this.setTimeLayout.registIUpdateTwoLayout(this);
-            this.setTimeLayout.registIUpdateListBg(this);
+        if (this.romeoSetTimeLayout == null) {
+            RomeoSetTimeLayout romeoSetTimeLayout2 = new RomeoSetTimeLayout(this);
+            this.romeoSetTimeLayout = romeoSetTimeLayout2;
+            romeoSetTimeLayout2.registIUpdateTwoLayout(this);
+            this.romeoSetTimeLayout.registIUpdateListBg(this);
         }
-        if (this.setSystemInfoLayout == null) {
-            this.setSystemInfoLayout = new SetSystemInfoLayout(this);
-            this.setSystemInfoLayout.registIUpdateListBg(this);
+        if (this.romeoSetSystemInfoLayout == null) {
+            RomeoSetSystemInfoLayout romeoSetSystemInfoLayout2 = new RomeoSetSystemInfoLayout(this);
+            this.romeoSetSystemInfoLayout = romeoSetSystemInfoLayout2;
+            romeoSetSystemInfoLayout2.registIUpdateListBg(this);
         }
-        if (this.setFactoryLayout == null) {
-            this.setFactoryLayout = new SetFactoryLayout(this, this.handler);
+        if (this.romeoSetFactoryLayout == null) {
+            this.romeoSetFactoryLayout = new RomeoSetFactoryLayout(this, this.handler);
         }
     }
 
     /* access modifiers changed from: private */
     public void initTwoLayout() {
-        if (this.setSystemTwo == null) {
-            this.setSystemTwo = new SetSystemTwo(this);
+        if (this.romeoSetSystemTwo == null) {
+            this.romeoSetSystemTwo = new RomeoSetSystemTwo(this);
         }
-        if (this.naviTwo == null) {
-            this.naviTwo = new NaviTwo(this);
-            this.naviTwo.registIUpdateListBg(this);
+        if (this.romeoNaviTwo == null) {
+            RomeoNaviTwo romeoNaviTwo2 = new RomeoNaviTwo(this);
+            this.romeoNaviTwo = romeoNaviTwo2;
+            romeoNaviTwo2.registIUpdateListBg(this);
         }
-        if (this.setImageTwo == null) {
-            this.setImageTwo = new SetImageTwo(this);
+        if (this.romeoSetImageTwo == null) {
+            this.romeoSetImageTwo = new RomeoSetImageTwo(this);
         }
-        if (this.setVocModelTwo == null) {
-            this.setVocModelTwo = new SetVocModelTwo(this);
+        if (this.romeoSetVocModelTwo == null) {
+            this.romeoSetVocModelTwo = new RomeoSetVocModelTwo(this);
         }
-        if (this.timeSetTwo == null) {
-            this.timeSetTwo = new TimeSetTwo(this);
+        if (this.romeoTimeSetTwo == null) {
+            this.romeoTimeSetTwo = new RomeoTimeSetTwo(this);
         }
-        if (this.setVoiceTwo == null) {
-            this.setVoiceTwo = new SetVoiceTwo(this);
+        if (this.romeoSetVoiceTwo == null) {
+            this.romeoSetVoiceTwo = new RomeoSetVoiceTwo(this);
         }
     }
 
@@ -319,9 +315,8 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     /* access modifiers changed from: private */
-    public void changeDistance(@NonNull RecyclerView recyclerView2) {
-        String str = this.TAG;
-        Log.d(str, "calculateTranslate count=" + recyclerView2.getChildCount());
+    public void changeDistance(RecyclerView recyclerView2) {
+        Log.d(this.TAG, "calculateTranslate count=" + recyclerView2.getChildCount());
         for (int i = 0; i < recyclerView2.getChildCount(); i++) {
             recyclerView2.getChildAt(i).setPadding(KswUtils.calculateTranslate(recyclerView2.getChildAt(i).getTop(), KswUtils.dip2px(this, 428.0f), i, this), 0, 0, 0);
         }
@@ -581,42 +576,41 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
         this.romeo_indicator_4 = (ImageView) findViewById(R.id.romeo_indicator_4);
         this.romeo_indicator_5 = (ImageView) findViewById(R.id.romeo_indicator_5);
         this.romeo_indicator_6 = (ImageView) findViewById(R.id.romeo_indicator_6);
-        this.layoutManager = new LinearLayoutManager(this);
-        this.layoutManager.setOrientation(1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        this.layoutManager = linearLayoutManager;
+        linearLayoutManager.setOrientation(1);
         this.recyclerView.setLayoutManager(this.layoutManager);
         this.recyclerView.setItemViewCacheSize(0);
         new FixLinearSnapHelper().attachToRecyclerView(this.recyclerView);
-        this.adapter = new FunctionAdapter(this, this.data);
-        this.recyclerView.setAdapter(this.adapter);
+        FunctionAdapter functionAdapter = new FunctionAdapter(this, this.data);
+        this.adapter = functionAdapter;
+        this.recyclerView.setAdapter(functionAdapter);
         new DividerItemDecoration(this, 1).setDrawable(ContextCompat.getDrawable(this, R.drawable.lexus_settings_line_left));
         this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 RomeoSettingsActivity.this.changeDistance(recyclerView);
             }
         });
         this.adapter.registOnItemBgChangeListener(new FunctionAdapter.OnItemBgChangeListener() {
             public void onChangeItemSelect(int top, int type, int position) {
-                String access$700 = RomeoSettingsActivity.this.TAG;
-                Log.d(access$700, "onChangeItemSelect top=" + top + " type=" + type + " position=" + position);
+                Log.d(RomeoSettingsActivity.this.TAG, "onChangeItemSelect top=" + top + " type=" + type + " position=" + position);
                 if (position == 6) {
                     LinearLayoutManager layoutManager = (LinearLayoutManager) RomeoSettingsActivity.this.recyclerView.getLayoutManager();
                     layoutManager.scrollToPositionWithOffset(2, 0);
                     layoutManager.setStackFromEnd(true);
                     top = 428;
-                    String access$7002 = RomeoSettingsActivity.this.TAG;
-                    Log.d(access$7002, "onChangeItemSelect top/=" + 428 + " type=" + type + " position=" + position);
+                    Log.d(RomeoSettingsActivity.this.TAG, "onChangeItemSelect top/=" + 428 + " type=" + type + " position=" + position);
                 } else if (position == 1) {
                     LinearLayoutManager layoutManager2 = (LinearLayoutManager) RomeoSettingsActivity.this.recyclerView.getLayoutManager();
                     layoutManager2.scrollToPositionWithOffset(0, 0);
                     layoutManager2.setStackFromEnd(true);
                     top = 107;
-                    String access$7003 = RomeoSettingsActivity.this.TAG;
-                    Log.d(access$7003, "onChangeItemSelect top/=" + 107 + " type=" + type + " position=" + position);
+                    Log.d(RomeoSettingsActivity.this.TAG, "onChangeItemSelect top/=" + 107 + " type=" + type + " position=" + position);
                 }
                 RomeoSettingsActivity.this.changeItemSelect(top, type);
             }
@@ -626,7 +620,6 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
             }
         });
         this.adapter.registOnFunctionClickListener(new FunctionAdapter.OnFunctionClickListener() {
-            @RequiresApi(api = 24)
             public void functonClick(int pos) {
                 String[] stringArray = RomeoSettingsActivity.this.getResources().getStringArray(R.array.set_function);
                 int arrayPos = pos;
@@ -644,125 +637,133 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
         });
         this.frame_OneLayout = (FrameLayout) findViewById(R.id.frame_OneLayout);
         this.frame_TwoLayout = (FrameLayout) findViewById(R.id.frame_TwoLayout);
-        if (this.setSystemLayout == null) {
-            this.setSystemLayout = new SetSystemLayout(this);
-            this.setSystemLayout.registIUpdateTwoLayout(this);
-            this.setSystemLayout.registIUpdateListBg(this);
+        if (this.romeoSetSystemLayout == null) {
+            RomeoSetSystemLayout romeoSetSystemLayout2 = new RomeoSetSystemLayout(this);
+            this.romeoSetSystemLayout = romeoSetSystemLayout2;
+            romeoSetSystemLayout2.registIUpdateTwoLayout(this);
+            this.romeoSetSystemLayout.registIUpdateListBg(this);
         }
-        this.frame_OneLayout.addView(this.setSystemLayout);
-        if (this.setSystemTwo == null) {
-            this.setSystemTwo = new SetSystemTwo(this);
+        this.frame_OneLayout.addView(this.romeoSetSystemLayout);
+        if (this.romeoSetSystemTwo == null) {
+            this.romeoSetSystemTwo = new RomeoSetSystemTwo(this);
         }
-        this.frame_TwoLayout.addView(this.setSystemTwo);
+        this.frame_TwoLayout.addView(this.romeoSetSystemTwo);
     }
 
     /* access modifiers changed from: private */
-    @RequiresApi(api = 24)
     public void setOneLayout(int type) {
         this.frame_OneLayout.removeAllViews();
         this.frame_TwoLayout.removeAllViews();
         this.frame_TwoLayout.setVisibility(type == 7 ? 8 : 0);
         switch (type) {
             case 0:
-                if (this.setSystemLayout == null) {
-                    this.setSystemLayout = new SetSystemLayout(this);
-                    this.setSystemLayout.registIUpdateTwoLayout(this);
-                    this.setSystemLayout.registIUpdateListBg(this);
+                if (this.romeoSetSystemLayout == null) {
+                    RomeoSetSystemLayout romeoSetSystemLayout2 = new RomeoSetSystemLayout(this);
+                    this.romeoSetSystemLayout = romeoSetSystemLayout2;
+                    romeoSetSystemLayout2.registIUpdateTwoLayout(this);
+                    this.romeoSetSystemLayout.registIUpdateListBg(this);
                 }
-                if (this.setSystemTwo == null) {
-                    this.setSystemTwo = new SetSystemTwo(this);
+                if (this.romeoSetSystemTwo == null) {
+                    this.romeoSetSystemTwo = new RomeoSetSystemTwo(this);
                 }
-                this.frame_OneLayout.addView(this.setSystemLayout);
-                this.setSystemLayout.resetTextColor();
-                this.frame_TwoLayout.addView(this.setSystemTwo);
+                this.frame_OneLayout.addView(this.romeoSetSystemLayout);
+                this.romeoSetSystemLayout.resetTextColor();
+                this.frame_TwoLayout.addView(this.romeoSetSystemTwo);
                 break;
             case 1:
-                if (this.setNaviLayout == null) {
-                    this.setNaviLayout = new SetNaviLayout(this);
-                    this.setNaviLayout.registIUpdateTwoLayout(this);
+                if (this.romeoSetNaviLayout == null) {
+                    RomeoSetNaviLayout romeoSetNaviLayout2 = new RomeoSetNaviLayout(this);
+                    this.romeoSetNaviLayout = romeoSetNaviLayout2;
+                    romeoSetNaviLayout2.registIUpdateTwoLayout(this);
                 }
-                if (this.naviTwo == null) {
-                    this.naviTwo = new NaviTwo(this);
-                    this.naviTwo.registIUpdateListBg(this);
+                if (this.romeoNaviTwo == null) {
+                    RomeoNaviTwo romeoNaviTwo2 = new RomeoNaviTwo(this);
+                    this.romeoNaviTwo = romeoNaviTwo2;
+                    romeoNaviTwo2.registIUpdateListBg(this);
                 }
-                if (this.setImageTwo == null) {
-                    this.setImageTwo = new SetImageTwo(this);
+                if (this.romeoSetImageTwo == null) {
+                    this.romeoSetImageTwo = new RomeoSetImageTwo(this);
                 }
-                this.setImageTwo.setResource(R.drawable.romeo_settings_icon2);
-                this.frame_OneLayout.addView(this.naviTwo);
-                this.setNaviLayout.resetTextColor();
-                this.frame_TwoLayout.addView(this.setImageTwo);
+                this.romeoSetImageTwo.setResource(R.drawable.romeo_settings_icon2);
+                this.frame_OneLayout.addView(this.romeoNaviTwo);
+                this.romeoSetNaviLayout.resetTextColor();
+                this.frame_TwoLayout.addView(this.romeoSetImageTwo);
                 break;
             case 2:
-                if (this.setVoiceLayout == null) {
-                    this.setVoiceLayout = new SetVoiceLayout(this);
-                    this.setVoiceLayout.registIUpdateListBg(this);
+                if (this.romeoSetVoiceLayout == null) {
+                    RomeoSetVoiceLayout romeoSetVoiceLayout2 = new RomeoSetVoiceLayout(this);
+                    this.romeoSetVoiceLayout = romeoSetVoiceLayout2;
+                    romeoSetVoiceLayout2.registIUpdateListBg(this);
                 }
-                if (this.setVoiceTwo == null) {
-                    this.setVoiceTwo = new SetVoiceTwo(this);
+                if (this.romeoSetVoiceTwo == null) {
+                    this.romeoSetVoiceTwo = new RomeoSetVoiceTwo(this);
                 }
-                this.frame_OneLayout.addView(this.setVoiceLayout);
-                this.setVoiceLayout.resetTextColor();
-                this.frame_TwoLayout.addView(this.setVoiceTwo);
+                this.frame_OneLayout.addView(this.romeoSetVoiceLayout);
+                this.romeoSetVoiceLayout.resetTextColor();
+                this.frame_TwoLayout.addView(this.romeoSetVoiceTwo);
                 break;
             case 3:
-                if (this.setLanguageLayout == null) {
-                    this.setLanguageLayout = new SetLanguageLayout(this);
-                    this.setLanguageLayout.registIUpdateListBg(this);
+                if (this.romeoSetLanguageLayout == null) {
+                    RomeoSetLanguageLayout romeoSetLanguageLayout2 = new RomeoSetLanguageLayout(this);
+                    this.romeoSetLanguageLayout = romeoSetLanguageLayout2;
+                    romeoSetLanguageLayout2.registIUpdateListBg(this);
                 }
-                if (this.setImageTwo == null) {
-                    this.setImageTwo = new SetImageTwo(this);
+                if (this.romeoSetImageTwo == null) {
+                    this.romeoSetImageTwo = new RomeoSetImageTwo(this);
                 }
-                this.setImageTwo.setResource(R.drawable.romeo_settings_icon4);
-                this.frame_OneLayout.addView(this.setLanguageLayout);
-                this.frame_TwoLayout.addView(this.setImageTwo);
+                this.romeoSetImageTwo.setResource(R.drawable.romeo_settings_icon4);
+                this.frame_OneLayout.addView(this.romeoSetLanguageLayout);
+                this.frame_TwoLayout.addView(this.romeoSetImageTwo);
                 break;
             case 4:
-                if (this.setTimeLayout == null) {
-                    this.setTimeLayout = new SetTimeLayout(this);
-                    this.setTimeLayout.registIUpdateTwoLayout(this);
-                    this.setTimeLayout.registIUpdateListBg(this);
+                if (this.romeoSetTimeLayout == null) {
+                    RomeoSetTimeLayout romeoSetTimeLayout2 = new RomeoSetTimeLayout(this);
+                    this.romeoSetTimeLayout = romeoSetTimeLayout2;
+                    romeoSetTimeLayout2.registIUpdateTwoLayout(this);
+                    this.romeoSetTimeLayout.registIUpdateListBg(this);
                 }
-                if (this.timeSetTwo == null) {
-                    this.timeSetTwo = new TimeSetTwo(this);
+                if (this.romeoTimeSetTwo == null) {
+                    this.romeoTimeSetTwo = new RomeoTimeSetTwo(this);
                 }
-                this.frame_OneLayout.addView(this.setTimeLayout);
-                this.setTimeLayout.resetTextColor();
-                this.frame_TwoLayout.addView(this.timeSetTwo);
+                this.frame_OneLayout.addView(this.romeoSetTimeLayout);
+                this.romeoSetTimeLayout.resetTextColor();
+                this.frame_TwoLayout.addView(this.romeoTimeSetTwo);
                 break;
             case 5:
-                if (this.setSystemInfoLayout == null) {
-                    this.setSystemInfoLayout = new SetSystemInfoLayout(this);
-                    this.setSystemInfoLayout.registIUpdateListBg(this);
+                if (this.romeoSetSystemInfoLayout == null) {
+                    RomeoSetSystemInfoLayout romeoSetSystemInfoLayout2 = new RomeoSetSystemInfoLayout(this);
+                    this.romeoSetSystemInfoLayout = romeoSetSystemInfoLayout2;
+                    romeoSetSystemInfoLayout2.registIUpdateListBg(this);
                 }
-                if (this.setImageTwo == null) {
-                    this.setImageTwo = new SetImageTwo(this);
+                if (this.romeoSetImageTwo == null) {
+                    this.romeoSetImageTwo = new RomeoSetImageTwo(this);
                 }
-                this.setImageTwo.setResource(R.drawable.romeo_settings_icon6);
-                this.frame_OneLayout.addView(this.setSystemInfoLayout);
-                this.frame_TwoLayout.addView(this.setImageTwo);
+                this.romeoSetImageTwo.setResource(R.drawable.romeo_settings_icon6);
+                this.frame_OneLayout.addView(this.romeoSetSystemInfoLayout);
+                this.frame_TwoLayout.addView(this.romeoSetImageTwo);
                 break;
             case 6:
-                if (this.setToAndSysLayout == null) {
-                    this.setToAndSysLayout = new SetToAndSysLayout(this);
-                    this.setToAndSysLayout.registIUpdateListBg(this);
+                if (this.romeoSetToAndSysLayout == null) {
+                    RomeoSetToAndSysLayout romeoSetToAndSysLayout2 = new RomeoSetToAndSysLayout(this);
+                    this.romeoSetToAndSysLayout = romeoSetToAndSysLayout2;
+                    romeoSetToAndSysLayout2.registIUpdateListBg(this);
                 }
-                if (this.setImageTwo == null) {
-                    this.setImageTwo = new SetImageTwo(this);
+                if (this.romeoSetImageTwo == null) {
+                    this.romeoSetImageTwo = new RomeoSetImageTwo(this);
                 }
-                this.setImageTwo.setResource(R.drawable.romeo_settings_icon7);
-                this.frame_OneLayout.addView(this.setToAndSysLayout);
-                this.frame_TwoLayout.addView(this.setImageTwo);
+                this.romeoSetImageTwo.setResource(R.drawable.romeo_settings_icon7);
+                this.frame_OneLayout.addView(this.romeoSetToAndSysLayout);
+                this.frame_TwoLayout.addView(this.romeoSetImageTwo);
                 break;
             case 7:
-                if (this.setFactoryLayout == null) {
-                    this.setFactoryLayout = new SetFactoryLayout(this, this.handler);
+                if (this.romeoSetFactoryLayout == null) {
+                    this.romeoSetFactoryLayout = new RomeoSetFactoryLayout(this, this.handler);
                 }
-                if (this.setImageTwo == null) {
-                    this.setImageTwo = new SetImageTwo(this);
+                if (this.romeoSetImageTwo == null) {
+                    this.romeoSetImageTwo = new RomeoSetImageTwo(this);
                 }
-                this.frame_OneLayout.addView(this.setFactoryLayout);
-                this.frame_TwoLayout.addView(this.setImageTwo);
+                this.frame_OneLayout.addView(this.romeoSetFactoryLayout);
+                this.frame_TwoLayout.addView(this.romeoSetImageTwo);
                 this.frame_TwoLayout.setVisibility(0);
                 break;
         }
@@ -770,33 +771,32 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     public void updateTwoLayout(int type, int shwoIndex) {
-        String str = this.TAG;
-        Log.d(str, "updateTwoLayout type=" + type + " shwoIndex=" + shwoIndex);
+        Log.d(this.TAG, "updateTwoLayout type=" + type + " shwoIndex=" + shwoIndex);
         switch (type) {
             case 1:
-                this.setSystemTwo.showLayout(shwoIndex);
-                this.setSystemTwo.invalidate();
-                this.setSystemTwo.requestFocus();
+                this.romeoSetSystemTwo.showLayout(shwoIndex);
+                this.romeoSetSystemTwo.invalidate();
+                this.romeoSetSystemTwo.requestFocus();
                 return;
             case 2:
-                this.naviTwo.showLayout(shwoIndex);
-                this.naviTwo.invalidate();
-                this.naviTwo.requestFocus();
+                this.romeoNaviTwo.showLayout(shwoIndex);
+                this.romeoNaviTwo.invalidate();
+                this.romeoNaviTwo.requestFocus();
                 return;
             case 3:
-                this.setVocModelTwo.showLayout(shwoIndex);
-                this.setVocModelTwo.invalidate();
-                this.setVocModelTwo.requestFocus();
+                this.romeoSetVocModelTwo.showLayout(shwoIndex);
+                this.romeoSetVocModelTwo.invalidate();
+                this.romeoSetVocModelTwo.requestFocus();
                 return;
             case 4:
-                this.timeSetTwo.showLayout(shwoIndex);
-                this.timeSetTwo.invalidate();
-                this.timeSetTwo.requestFocus();
+                this.romeoTimeSetTwo.showLayout(shwoIndex);
+                this.romeoTimeSetTwo.invalidate();
+                this.romeoTimeSetTwo.requestFocus();
                 return;
             case 5:
-                this.setVoiceTwo.showLayout(shwoIndex);
-                this.setVoiceTwo.invalidate();
-                this.setVoiceTwo.requestFocus();
+                this.romeoSetVoiceTwo.showLayout(shwoIndex);
+                this.romeoSetVoiceTwo.invalidate();
+                this.romeoSetVoiceTwo.requestFocus();
                 return;
             default:
                 return;
@@ -810,8 +810,7 @@ public class RomeoSettingsActivity extends BaseActivity implements IUpdateTwoLay
     }
 
     public void updateListBg(int top, int type) {
-        String str = this.TAG;
-        Log.d(str, "updateListBg top=" + top + " type=" + type);
+        Log.d(this.TAG, "updateListBg top=" + top + " type=" + type);
         changeListItemSelect(top, type);
     }
 }

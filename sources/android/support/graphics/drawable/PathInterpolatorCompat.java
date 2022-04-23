@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v4.graphics.PathParser;
 import android.util.AttributeSet;
@@ -13,7 +12,6 @@ import android.view.InflateException;
 import android.view.animation.Interpolator;
 import org.xmlpull.v1.XmlPullParser;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class PathInterpolatorCompat implements Interpolator {
     public static final double EPSILON = 1.0E-5d;
     public static final int MAX_NUM_POINTS = 3000;
@@ -73,7 +71,6 @@ public class PathInterpolatorCompat implements Interpolator {
     }
 
     private void initPath(Path path) {
-        int i = 0;
         PathMeasure pathMeasure = new PathMeasure(path, false);
         float pathLength = pathMeasure.getLength();
         int numPoints = Math.min(MAX_NUM_POINTS, ((int) (pathLength / PRECISION)) + 1);
@@ -81,23 +78,25 @@ public class PathInterpolatorCompat implements Interpolator {
             this.mX = new float[numPoints];
             this.mY = new float[numPoints];
             float[] position = new float[2];
-            for (int i2 = 0; i2 < numPoints; i2++) {
-                pathMeasure.getPosTan((((float) i2) * pathLength) / ((float) (numPoints - 1)), position, (float[]) null);
-                this.mX[i2] = position[0];
-                this.mY[i2] = position[1];
+            for (int i = 0; i < numPoints; i++) {
+                pathMeasure.getPosTan((((float) i) * pathLength) / ((float) (numPoints - 1)), position, (float[]) null);
+                this.mX[i] = position[0];
+                this.mY[i] = position[1];
             }
             if (((double) Math.abs(this.mX[0])) > 1.0E-5d || ((double) Math.abs(this.mY[0])) > 1.0E-5d || ((double) Math.abs(this.mX[numPoints - 1] - 1.0f)) > 1.0E-5d || ((double) Math.abs(this.mY[numPoints - 1] - 1.0f)) > 1.0E-5d) {
                 throw new IllegalArgumentException("The Path must start at (0,0) and end at (1,1) start: " + this.mX[0] + "," + this.mY[0] + " end:" + this.mX[numPoints - 1] + "," + this.mY[numPoints - 1]);
             }
             float prevX = 0.0f;
             int componentIndex = 0;
-            while (i < numPoints) {
+            int i2 = 0;
+            while (i2 < numPoints) {
+                float[] fArr = this.mX;
                 int componentIndex2 = componentIndex + 1;
-                float x = this.mX[componentIndex];
+                float x = fArr[componentIndex];
                 if (x >= prevX) {
-                    this.mX[i] = x;
+                    fArr[i2] = x;
                     prevX = x;
-                    i++;
+                    i2++;
                     componentIndex = componentIndex2;
                 } else {
                     throw new IllegalArgumentException("The Path cannot loop back on itself, x :" + x);
@@ -128,11 +127,13 @@ public class PathInterpolatorCompat implements Interpolator {
                 startIndex = midIndex;
             }
         }
-        float xRange = this.mX[endIndex] - this.mX[startIndex];
+        float[] fArr = this.mX;
+        float xRange = fArr[endIndex] - fArr[startIndex];
         if (xRange == 0.0f) {
             return this.mY[startIndex];
         }
-        float startY = this.mY[startIndex];
-        return ((this.mY[endIndex] - startY) * ((t - this.mX[startIndex]) / xRange)) + startY;
+        float[] fArr2 = this.mY;
+        float startY = fArr2[startIndex];
+        return ((fArr2[endIndex] - startY) * ((t - fArr[startIndex]) / xRange)) + startY;
     }
 }

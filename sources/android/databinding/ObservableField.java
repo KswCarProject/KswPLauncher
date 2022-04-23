@@ -1,6 +1,5 @@
 package android.databinding;
 
-import android.support.annotation.Nullable;
 import java.io.Serializable;
 
 public class ObservableField<T> extends BaseObservableField implements Serializable {
@@ -18,7 +17,6 @@ public class ObservableField<T> extends BaseObservableField implements Serializa
         super(dependencies);
     }
 
-    @Nullable
     public T get() {
         return this.mValue;
     }

@@ -9,8 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.support.graphics.drawable.Animatable2Compat;
 import android.view.Gravity;
 import com.bumptech.glide.Glide;
@@ -54,7 +52,6 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         this.state = (GifState) Preconditions.checkNotNull(state2);
     }
 
-    @VisibleForTesting
     GifDrawable(GifFrameLoader frameLoader, Paint paint2) {
         this(new GifState(frameLoader));
         this.paint = paint2;
@@ -161,7 +158,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         this.applyGravity = true;
     }
 
-    public void draw(@NonNull Canvas canvas) {
+    public void draw(Canvas canvas) {
         if (!this.isRecycled) {
             if (this.applyGravity) {
                 Gravity.apply(119, getIntrinsicWidth(), getIntrinsicHeight(), getBounds(), getDestRect());
@@ -215,15 +212,17 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         if (getFrameIndex() == getFrameCount() - 1) {
             this.loopCount++;
         }
-        if (this.maxLoopCount != -1 && this.loopCount >= this.maxLoopCount) {
+        int i = this.maxLoopCount;
+        if (i != -1 && this.loopCount >= i) {
             notifyAnimationEndToListeners();
             stop();
         }
     }
 
     private void notifyAnimationEndToListeners() {
-        if (this.animationCallbacks != null) {
-            int size = this.animationCallbacks.size();
+        List<Animatable2Compat.AnimationCallback> list = this.animationCallbacks;
+        if (list != null) {
+            int size = list.size();
             for (int i = 0; i < size; i++) {
                 this.animationCallbacks.get(i).onAnimationEnd(this);
             }
@@ -259,7 +258,7 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         }
     }
 
-    public void registerAnimationCallback(@NonNull Animatable2Compat.AnimationCallback animationCallback) {
+    public void registerAnimationCallback(Animatable2Compat.AnimationCallback animationCallback) {
         if (animationCallback != null) {
             if (this.animationCallbacks == null) {
                 this.animationCallbacks = new ArrayList();
@@ -268,33 +267,32 @@ public class GifDrawable extends Drawable implements GifFrameLoader.FrameCallbac
         }
     }
 
-    public boolean unregisterAnimationCallback(@NonNull Animatable2Compat.AnimationCallback animationCallback) {
-        if (this.animationCallbacks == null || animationCallback == null) {
+    public boolean unregisterAnimationCallback(Animatable2Compat.AnimationCallback animationCallback) {
+        List<Animatable2Compat.AnimationCallback> list = this.animationCallbacks;
+        if (list == null || animationCallback == null) {
             return false;
         }
-        return this.animationCallbacks.remove(animationCallback);
+        return list.remove(animationCallback);
     }
 
     public void clearAnimationCallbacks() {
-        if (this.animationCallbacks != null) {
-            this.animationCallbacks.clear();
+        List<Animatable2Compat.AnimationCallback> list = this.animationCallbacks;
+        if (list != null) {
+            list.clear();
         }
     }
 
     static final class GifState extends Drawable.ConstantState {
-        @VisibleForTesting
         final GifFrameLoader frameLoader;
 
         GifState(GifFrameLoader frameLoader2) {
             this.frameLoader = frameLoader2;
         }
 
-        @NonNull
         public Drawable newDrawable(Resources res) {
             return newDrawable();
         }
 
-        @NonNull
         public Drawable newDrawable() {
             return new GifDrawable(this);
         }

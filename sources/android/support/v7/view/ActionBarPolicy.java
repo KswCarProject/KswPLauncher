@@ -5,12 +5,10 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.annotation.RestrictTo;
 import android.support.v7.appcompat.R;
 import android.util.AttributeSet;
 import android.view.ViewConfiguration;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class ActionBarPolicy {
     private Context mContext;
 

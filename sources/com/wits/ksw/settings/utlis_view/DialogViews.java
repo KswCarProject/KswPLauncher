@@ -1,13 +1,15 @@
 package com.wits.ksw.settings.utlis_view;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,6 +21,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.wits.ksw.KswApplication;
+import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.settings.id7.bean.DevBean;
 import com.wits.ksw.settings.view_adapter.ListChoseAdapter;
@@ -30,15 +34,13 @@ import java.util.List;
 
 public class DialogViews extends Dialog {
     /* access modifiers changed from: private */
-    @SuppressLint({"HandlerLeak"})
     public Handler dialogHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
                     DialogViews.this.mcuProgBar.setProgress(DialogViews.this.size);
-                    TextView access$700 = DialogViews.this.mcuTvPro;
-                    access$700.setText(DialogViews.this.size + "%");
+                    DialogViews.this.mcuTvPro.setText(DialogViews.this.size + "%");
                     return;
                 case 1:
                     if (((double) DialogViews.this.size) < 0.5d) {
@@ -87,11 +89,26 @@ public class DialogViews extends Dialog {
     private String updateFilePath = "";
     private Window window;
 
-    public DialogViews(@NonNull Context context) {
+    public DialogViews(Context context) {
         super(context);
         this.m_con = context;
-        this.window = getWindow();
-        this.lp = this.window.getAttributes();
+        Window window2 = getWindow();
+        this.window = window2;
+        this.lp = window2.getAttributes();
+    }
+
+    public void qrCode(Bitmap bitmap) {
+        Log.d("qrCode", "show qrCode");
+        View view = LayoutInflater.from(this.m_con).inflate(R.layout.dialog_qrcode, (ViewGroup) null);
+        setContentView(view);
+        this.window.setGravity(17);
+        view.findViewById(R.id.qr_root).setBackground(new BitmapDrawable((Resources) null, bitmap));
+        this.lp.x = 10;
+        this.lp.y = 10;
+        this.lp.width = UtilsInfo.dip2px(this.m_con, 300.0f);
+        this.lp.height = UtilsInfo.dip2px(this.m_con, 300.0f);
+        this.window.setAttributes(this.lp);
+        show();
     }
 
     public void isQuestView(String msgToast, final Handler handler) {
@@ -119,6 +136,7 @@ public class DialogViews extends Dialog {
     }
 
     public void isUpdateLogo(String msgToast, final String path) {
+        Log.d("UiSelect", "updateLogo path : " + path);
         setContentView(LayoutInflater.from(this.m_con).inflate(R.layout.dialog_file_list, (ViewGroup) null));
         this.window.setGravity(17);
         this.window.setSoftInputMode(2);
@@ -204,31 +222,42 @@ public class DialogViews extends Dialog {
     /* access modifiers changed from: private */
     public void updateDefXml() {
         File[] itemFile;
-        for (String sp : FileUtils.getExtSdUsbPathList()) {
-            for (File fs : new File(sp).listFiles()) {
-                if (fs.isDirectory() && fs.getName().toLowerCase().equals("oem") && (itemFile = fs.listFiles()) != null && itemFile.length > 0) {
-                    int length = itemFile.length;
-                    int i = 0;
-                    while (true) {
-                        if (i >= length) {
-                            break;
+        try {
+            for (String sp : FileUtils.getSDPath(getContext())) {
+                for (File fs : new File(sp).listFiles()) {
+                    if (fs.isDirectory() && fs.getName().toLowerCase().equals("oem") && (itemFile = fs.listFiles()) != null && itemFile.length > 0) {
+                        int length = itemFile.length;
+                        int i = 0;
+                        while (true) {
+                            if (i >= length) {
+                                break;
+                            }
+                            File is = itemFile[i];
+                            if (this.fileName.equals(is.getName())) {
+                                this.updateFilePath = is.getAbsolutePath();
+                                break;
+                            }
+                            i++;
                         }
-                        File is = itemFile[i];
-                        if (this.fileName.equals(is.getName())) {
-                            this.updateFilePath = is.getAbsolutePath();
-                            break;
-                        }
-                        i++;
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(KswApplication.TAG, "updateDefXml: error" + e.toString());
         }
         if (TextUtils.isEmpty(this.updateFilePath)) {
-            ToastUtils.showToastShort(this.m_con, this.m_con.getString(R.string.dialog_update2));
+            Context context = this.m_con;
+            ToastUtils.showToastShort(context, context.getString(R.string.dialog_update2));
             return;
         }
         Log.d("FactoryUpdate", "====factory path======:" + this.updateFilePath);
         WitsCommand.sendCommand(1, 200, this.updateFilePath);
+        MainActivity.mainActivity.finish();
+        Intent intent = new Intent();
+        intent.setClass(KswApplication.appContext, MainActivity.class);
+        intent.addFlags(268435456);
+        KswApplication.appContext.startActivity(intent);
         System.exit(0);
     }
 
@@ -258,7 +287,7 @@ public class DialogViews extends Dialog {
 
     /* access modifiers changed from: private */
     public void updateLogoFile() {
-        for (String sp : FileUtils.getExtSdUsbPathList()) {
+        for (String sp : FileUtils.getSDPath(getContext())) {
             File[] files = new File(sp).listFiles();
             if (files != null) {
                 for (File fs : files) {
@@ -269,13 +298,15 @@ public class DialogViews extends Dialog {
             }
         }
         if (TextUtils.isEmpty(this.logoPath)) {
-            ToastUtils.showToastShort(this.m_con, this.m_con.getString(R.string.text_logo_input_non));
+            Context context = this.m_con;
+            ToastUtils.showToastShort(context, context.getString(R.string.text_logo_input_non));
             return;
         }
         Log.d("logoUpdate", "====logo path======:" + this.logoPath);
         try {
             if (FileUtils.copyFile(this.logoPath, this.m_con)) {
-                ToastUtils.showToastShort(this.m_con, this.m_con.getResources().getString(R.string.text_logo_input_ok));
+                Context context2 = this.m_con;
+                ToastUtils.showToastShort(context2, context2.getResources().getString(R.string.text_logo_input_ok));
             }
             this.dialogHandler.sendEmptyMessageDelayed(4, 1000);
         } catch (Exception e) {
@@ -331,8 +362,10 @@ public class DialogViews extends Dialog {
     public void updateMcu(String msgToast) {
         File[] itemFile;
         this.fileName = "ksw_mcu.bin";
-        for (String sp : FileUtils.getExtSdUsbPathList()) {
-            File[] files = new File(sp).listFiles();
+        for (String sp : FileUtils.getSDPath(getContext())) {
+            File file = new File(sp);
+            Log.i("FileUtil", " file.read = " + file.canRead());
+            File[] files = file.listFiles();
             int length = files.length;
             int i = 0;
             while (true) {
@@ -366,7 +399,8 @@ public class DialogViews extends Dialog {
             this.updateFilePath = "/sdcard/ksw_mcu.bin";
         }
         if (TextUtils.isEmpty(this.updateFilePath)) {
-            ToastUtils.showToastShort(this.m_con, this.m_con.getString(R.string.dialog_update2));
+            Context context = this.m_con;
+            ToastUtils.showToastShort(context, context.getString(R.string.dialog_update2));
             return;
         }
         setContentView(LayoutInflater.from(this.m_con).inflate(R.layout.dialog_mcu_up, (ViewGroup) null));

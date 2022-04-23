@@ -4,6 +4,16 @@
     </style>
     <style name="AlertDialog.AppCompat.Light">
     </style>
+    <style name="AlertDialog.SkinCompat">
+        <item name="android:layout">@layout/skin_alert_dialog</item>
+        <item name="listItemLayout">@layout/skin_select_dialog_item</item>
+        <item name="listLayout">@layout/skin_select_dialog</item>
+        <item name="multiChoiceItemLayout">@layout/skin_select_dialog_multichoice</item>
+        <item name="singleChoiceItemLayout">@layout/skin_select_dialog_singlechoice</item>
+    </style>
+    <style name="AlertDialogTheme">
+        <item name="android:height">360dp</item>
+    </style>
     <style name="Animation">
         <item name="android:activityOpenEnterAnimation">@null</item>
         <item name="android:activityOpenExitAnimation">@null</item>
@@ -43,7 +53,7 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
     <style name="AudiHomeItemWidthHeight">
-        <item name="android:layout_width">280dp</item>
+        <item name="android:layout_width">250dp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
     <style name="AudiText">
@@ -78,6 +88,13 @@
     <style name="Base.Animation.AppCompat.Tooltip">
         <item name="android:windowEnterAnimation">@anim/abc_tooltip_enter</item>
         <item name="android:windowExitAnimation">@anim/abc_tooltip_exit</item>
+    </style>
+    <style name="Base.CardView">
+        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardMaxElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardUseCompatPadding">false</item>
     </style>
     <style name="Base.DialogWindowTitle.AppCompat">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
@@ -953,6 +970,15 @@
     <style name="BaseActivityTheme">
         <item name="android:excludeFromRecents">true</item>
     </style>
+    <style name="CardView">
+        <item name="cardBackgroundColor">?unknown_attr_ref: 10104e2</item>
+    </style>
+    <style name="CardView.Dark">
+        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+    </style>
+    <style name="CardView.Light">
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
+    </style>
     <style name="DayAppTheme">
         <item name="android:windowBackground">@android:color/white</item>
     </style>
@@ -1393,6 +1419,56 @@
     <style name="ad_eq_bt">
         <item name="android:background">@drawable/audi_eq_btn_selector</item>
     </style>
+    <style name="als_id7_ui_skin_dialogAnimStyle">
+        <item name="android:windowEnterAnimation">@anim/alpha_in</item>
+        <item name="android:windowExitAnimation">@anim/alpha_out</item>
+    </style>
+    <style name="audi_mib3_item_txt_style">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginTop">9dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="audi_mib3_set_checkbox">
+        <item name="android:background">@drawable/audi_mib3_set_item_ripple</item>
+        <item name="android:paddingLeft">90dp</item>
+        <item name="android:paddingRight">28dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:button">@null</item>
+        <item name="android:thumb">@null</item>
+    </style>
+    <style name="audi_mib3_set_default_text">
+        <item name="android:textSize">21sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="audi_mib3_set_info_item">
+        <item name="android:gravity">clip_horizontal</item>
+        <item name="android:background">@drawable/audi_mib3_set_item_ripple</item>
+        <item name="android:paddingLeft">90dp</item>
+        <item name="android:paddingRight">28dp</item>
+    </style>
+    <style name="audi_mib3_set_item">
+        <item name="android:textColor">@color/audi_mib3_item_text_color</item>
+        <item name="android:gravity">clip_horizontal</item>
+        <item name="android:background">@drawable/audi_mib3_set_item_ripple</item>
+        <item name="android:paddingLeft">19dp</item>
+        <item name="android:paddingRight">17dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:drawableRight">@drawable/audi_mib3_settings_icon</item>
+        <item name="android:drawablePadding">17dp</item>
+    </style>
+    <style name="audi_mib3_set_item_sub">
+        <item name="android:textColor">@color/audi_item_text_color</item>
+        <item name="android:gravity">clip_horizontal</item>
+        <item name="android:background">@drawable/audi_mib3_set_item_ripple</item>
+        <item name="android:paddingLeft">90dp</item>
+        <item name="android:paddingRight">17dp</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:drawableRight">@drawable/audi_mib3_settings_icon</item>
+        <item name="android:drawablePadding">17dp</item>
+    </style>
     <style name="audi_set_checkbox">
         <item name="android:background">@drawable/audi_set_item_selector</item>
         <item name="android:paddingLeft">45dp</item>
@@ -1420,6 +1496,19 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:drawableRight">@drawable/audi_set_item_icon_selector</item>
     </style>
+    <style name="benzMbux2021_DialogTheme">
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="benzMbux2021_dialogAnimStyle">
+        <item name="android:windowEnterAnimation">@anim/benz_mbux_2021_dialog_anim_in</item>
+        <item name="android:windowExitAnimation">@anim/benz_mbux_2021_dialog_anim_out</item>
+    </style>
     <style name="bwm_nbt_style">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/color1</item>
@@ -1431,14 +1520,73 @@
         <item name="android:layout_height">51dp</item>
         <item name="android:paddingStart">100dp</item>
     </style>
+    <style name="dialog_style">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:title">@null</item>
+        <item name="android:dialogTitle">@null</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
     <style name="ids6_style">
         <item name="android:statusBarColor">@color/ids6_status_color</item>
     </style>
+    <style name="land_rover_main_text_style">
+        <item name="android:textSize">27sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">55dp</item>
+        <item name="android:maxWidth">210dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_marginStart">90dp</item>
+    </style>
     <style name="land_rover_settings_sec_item">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">#ffffff</item>
         <item name="android:background">@drawable/ksw_land_rover_seting_mp_bg</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">65dp</item>
         <item name="android:paddingStart">28dp</item>
         <item name="android:paddingEnd">34dp</item>
+    </style>
+    <style name="lexusLsAppItemIconStyle">
+        <item name="android:layout_width">58dp</item>
+        <item name="android:layout_height">58dp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+    <style name="lexusLsAppItemStyle">
+        <item name="android:gravity">left|center_horizontal|clip_horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="lexusLsBottomIvStyle">
+        <item name="android:layout_width">@dimen/dimen_lexus_ls_bottom_iv_width</item>
+        <item name="android:layout_height">@dimen/dimen_lexus_ls_bottom_iv_height</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+    <style name="lexusLsBottomTxStyle">
+        <item name="android:textSize">23sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">left|center_horizontal|clip_horizontal</item>
+        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+    <style name="style_pemp_menu_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">left|center_horizontal|clip_horizontal</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="textAllCaps">false</item>
     </style>
 </resources>

@@ -1,10 +1,8 @@
 package android.support.v4.util;
 
-import android.support.annotation.RestrictTo;
 import android.util.Log;
 import java.io.Writer;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class LogWriter extends Writer {
     private StringBuilder mBuilder = new StringBuilder(128);
     private final String mTag;
@@ -35,7 +33,8 @@ public class LogWriter extends Writer {
     private void flushBuilder() {
         if (this.mBuilder.length() > 0) {
             Log.d(this.mTag, this.mBuilder.toString());
-            this.mBuilder.delete(0, this.mBuilder.length());
+            StringBuilder sb = this.mBuilder;
+            sb.delete(0, sb.length());
         }
     }
 }

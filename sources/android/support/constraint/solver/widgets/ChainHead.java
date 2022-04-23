@@ -10,14 +10,19 @@ public class ChainHead {
     protected ConstraintWidget mFirstVisibleWidget;
     protected boolean mHasComplexMatchWeights;
     protected boolean mHasDefinedWeights;
+    protected boolean mHasRatio;
     protected boolean mHasUndefinedWeights;
     protected ConstraintWidget mHead;
     private boolean mIsRtl = false;
     protected ConstraintWidget mLast;
     protected ConstraintWidget mLastMatchConstraintWidget;
     protected ConstraintWidget mLastVisibleWidget;
+    boolean mOptimizable;
     private int mOrientation;
+    int mTotalMargins;
+    int mTotalSize;
     protected float mTotalWeight = 0.0f;
+    int mVisibleWidgets;
     protected ArrayList<ConstraintWidget> mWeightedMatchConstraintsWidgets;
     protected int mWidgetsCount;
     protected int mWidgetsMatchCount;
@@ -36,50 +41,78 @@ public class ChainHead {
         ConstraintWidget next;
         int offset = this.mOrientation * 2;
         ConstraintWidget lastVisited = this.mFirst;
+        boolean z = true;
+        this.mOptimizable = true;
         ConstraintWidget widget = this.mFirst;
-        boolean z = false;
         ConstraintWidget constraintWidget = this.mFirst;
-        ConstraintWidget lastVisited2 = lastVisited;
         boolean done = false;
         while (!done) {
             this.mWidgetsCount++;
             widget.mNextChainWidget[this.mOrientation] = null;
             widget.mListNextMatchConstraintsWidget[this.mOrientation] = null;
             if (widget.getVisibility() != 8) {
+                this.mVisibleWidgets++;
+                if (widget.getDimensionBehaviour(this.mOrientation) != ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT) {
+                    this.mTotalSize += widget.getLength(this.mOrientation);
+                }
+                int margin = this.mTotalSize + widget.mListAnchors[offset].getMargin();
+                this.mTotalSize = margin;
+                this.mTotalSize = margin + widget.mListAnchors[offset + 1].getMargin();
+                int margin2 = this.mTotalMargins + widget.mListAnchors[offset].getMargin();
+                this.mTotalMargins = margin2;
+                this.mTotalMargins = margin2 + widget.mListAnchors[offset + 1].getMargin();
                 if (this.mFirstVisibleWidget == null) {
                     this.mFirstVisibleWidget = widget;
                 }
                 this.mLastVisibleWidget = widget;
-                if (widget.mListDimensionBehaviors[this.mOrientation] == ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT && (widget.mResolvedMatchConstraintDefault[this.mOrientation] == 0 || widget.mResolvedMatchConstraintDefault[this.mOrientation] == 3 || widget.mResolvedMatchConstraintDefault[this.mOrientation] == 2)) {
-                    this.mWidgetsMatchCount++;
-                    float weight = widget.mWeight[this.mOrientation];
-                    if (weight > 0.0f) {
-                        this.mTotalWeight += widget.mWeight[this.mOrientation];
-                    }
-                    if (isMatchConstraintEqualityCandidate(widget, this.mOrientation)) {
-                        if (weight < 0.0f) {
-                            this.mHasUndefinedWeights = true;
-                        } else {
-                            this.mHasDefinedWeights = true;
+                if (widget.mListDimensionBehaviors[this.mOrientation] == ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT) {
+                    if (widget.mResolvedMatchConstraintDefault[this.mOrientation] == 0 || widget.mResolvedMatchConstraintDefault[this.mOrientation] == 3 || widget.mResolvedMatchConstraintDefault[this.mOrientation] == 2) {
+                        this.mWidgetsMatchCount++;
+                        float weight = widget.mWeight[this.mOrientation];
+                        if (weight > 0.0f) {
+                            this.mTotalWeight += widget.mWeight[this.mOrientation];
                         }
-                        if (this.mWeightedMatchConstraintsWidgets == null) {
-                            this.mWeightedMatchConstraintsWidgets = new ArrayList<>();
+                        if (isMatchConstraintEqualityCandidate(widget, this.mOrientation)) {
+                            if (weight < 0.0f) {
+                                this.mHasUndefinedWeights = true;
+                            } else {
+                                this.mHasDefinedWeights = true;
+                            }
+                            if (this.mWeightedMatchConstraintsWidgets == null) {
+                                this.mWeightedMatchConstraintsWidgets = new ArrayList<>();
+                            }
+                            this.mWeightedMatchConstraintsWidgets.add(widget);
                         }
-                        this.mWeightedMatchConstraintsWidgets.add(widget);
+                        if (this.mFirstMatchConstraintWidget == null) {
+                            this.mFirstMatchConstraintWidget = widget;
+                        }
+                        ConstraintWidget constraintWidget2 = this.mLastMatchConstraintWidget;
+                        if (constraintWidget2 != null) {
+                            constraintWidget2.mListNextMatchConstraintsWidget[this.mOrientation] = widget;
+                        }
+                        this.mLastMatchConstraintWidget = widget;
                     }
-                    if (this.mFirstMatchConstraintWidget == null) {
-                        this.mFirstMatchConstraintWidget = widget;
+                    if (this.mOrientation == 0) {
+                        if (widget.mMatchConstraintDefaultWidth != 0) {
+                            this.mOptimizable = false;
+                        } else if (!(widget.mMatchConstraintMinWidth == 0 && widget.mMatchConstraintMaxWidth == 0)) {
+                            this.mOptimizable = false;
+                        }
+                    } else if (widget.mMatchConstraintDefaultHeight != 0) {
+                        this.mOptimizable = false;
+                    } else if (!(widget.mMatchConstraintMinHeight == 0 && widget.mMatchConstraintMaxHeight == 0)) {
+                        this.mOptimizable = false;
                     }
-                    if (this.mLastMatchConstraintWidget != null) {
-                        this.mLastMatchConstraintWidget.mListNextMatchConstraintsWidget[this.mOrientation] = widget;
+                    if (widget.mDimensionRatio != 0.0f) {
+                        this.mOptimizable = false;
+                        this.mHasRatio = true;
                     }
-                    this.mLastMatchConstraintWidget = widget;
                 }
             }
-            if (lastVisited2 != widget) {
-                lastVisited2.mNextChainWidget[this.mOrientation] = widget;
+            if (lastVisited != widget) {
+                lastVisited.mNextChainWidget[this.mOrientation] = widget;
             }
-            lastVisited2 = widget;
+            lastVisited = widget;
             ConstraintAnchor nextAnchor = widget.mListAnchors[offset + 1].mTarget;
             if (nextAnchor != null) {
                 next = nextAnchor.mOwner;
@@ -95,14 +128,22 @@ public class ChainHead {
                 done = true;
             }
         }
+        ConstraintWidget constraintWidget3 = this.mFirstVisibleWidget;
+        if (constraintWidget3 != null) {
+            this.mTotalSize -= constraintWidget3.mListAnchors[offset].getMargin();
+        }
+        ConstraintWidget constraintWidget4 = this.mLastVisibleWidget;
+        if (constraintWidget4 != null) {
+            this.mTotalSize -= constraintWidget4.mListAnchors[offset + 1].getMargin();
+        }
         this.mLast = widget;
         if (this.mOrientation != 0 || !this.mIsRtl) {
             this.mHead = this.mFirst;
         } else {
-            this.mHead = this.mLast;
+            this.mHead = widget;
         }
-        if (this.mHasDefinedWeights && this.mHasUndefinedWeights) {
-            z = true;
+        if (!this.mHasDefinedWeights || !this.mHasUndefinedWeights) {
+            z = false;
         }
         this.mHasComplexMatchWeights = z;
     }

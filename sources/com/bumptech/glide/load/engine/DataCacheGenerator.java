@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -32,37 +31,33 @@ class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallba
     }
 
     public boolean startNext() {
-        boolean started;
         while (true) {
-            boolean started2 = false;
             if (this.modelLoaders == null || !hasNextModelLoader()) {
-                this.sourceIdIndex++;
-                if (this.sourceIdIndex >= this.cacheKeys.size()) {
+                int i = this.sourceIdIndex + 1;
+                this.sourceIdIndex = i;
+                if (i >= this.cacheKeys.size()) {
                     return false;
                 }
                 Key sourceId = this.cacheKeys.get(this.sourceIdIndex);
-                this.cacheFile = this.helper.getDiskCache().get(new DataCacheKey(sourceId, this.helper.getSignature()));
-                if (this.cacheFile != null) {
+                File file = this.helper.getDiskCache().get(new DataCacheKey(sourceId, this.helper.getSignature()));
+                this.cacheFile = file;
+                if (file != null) {
                     this.sourceKey = sourceId;
-                    this.modelLoaders = this.helper.getModelLoaders(this.cacheFile);
+                    this.modelLoaders = this.helper.getModelLoaders(file);
                     this.modelLoaderIndex = 0;
                 }
             } else {
                 this.loadData = null;
-                while (true) {
-                    started = started2;
-                    if (started || !hasNextModelLoader()) {
-                        return started;
-                    }
+                boolean started = false;
+                while (!started && hasNextModelLoader()) {
                     List<ModelLoader<File, ?>> list = this.modelLoaders;
-                    int i = this.modelLoaderIndex;
-                    this.modelLoaderIndex = i + 1;
-                    this.loadData = list.get(i).buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
+                    int i2 = this.modelLoaderIndex;
+                    this.modelLoaderIndex = i2 + 1;
+                    this.loadData = list.get(i2).buildLoadData(this.cacheFile, this.helper.getWidth(), this.helper.getHeight(), this.helper.getOptions());
                     if (this.loadData != null && this.helper.hasLoadPath(this.loadData.fetcher.getDataClass())) {
                         started = true;
                         this.loadData.fetcher.loadData(this.helper.getPriority(), this);
                     }
-                    started2 = started;
                 }
                 return started;
             }
@@ -84,7 +79,7 @@ class DataCacheGenerator implements DataFetcherGenerator, DataFetcher.DataCallba
         this.cb.onDataFetcherReady(this.sourceKey, data, this.loadData.fetcher, DataSource.DATA_DISK_CACHE, this.sourceKey);
     }
 
-    public void onLoadFailed(@NonNull Exception e) {
+    public void onLoadFailed(Exception e) {
         this.cb.onDataFetcherFailed(this.sourceKey, e, this.loadData.fetcher, DataSource.DATA_DISK_CACHE);
     }
 }

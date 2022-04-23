@@ -48,12 +48,14 @@ class PathInterpolatorApi14 implements Interpolator {
                 startIndex = midIndex;
             }
         }
-        float xRange = this.mX[endIndex] - this.mX[startIndex];
+        float[] fArr = this.mX;
+        float xRange = fArr[endIndex] - fArr[startIndex];
         if (xRange == 0.0f) {
             return this.mY[startIndex];
         }
-        float startY = this.mY[startIndex];
-        return ((this.mY[endIndex] - startY) * ((t - this.mX[startIndex]) / xRange)) + startY;
+        float[] fArr2 = this.mY;
+        float startY = fArr2[startIndex];
+        return ((fArr2[endIndex] - startY) * ((t - fArr[startIndex]) / xRange)) + startY;
     }
 
     private static Path createQuad(float controlX, float controlY) {

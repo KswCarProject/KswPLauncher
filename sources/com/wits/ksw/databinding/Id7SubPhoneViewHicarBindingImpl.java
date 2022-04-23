@@ -5,8 +5,6 @@ import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.TextViewBindingAdapter;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
@@ -14,19 +12,18 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback62;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback73;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.textView2, 3);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.textView2, 3);
     }
 
-    public Id7SubPhoneViewHicarBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public Id7SubPhoneViewHicarBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -37,7 +34,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
         this.carImageView.setTag((Object) null);
         this.phoneConnectionTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback62 = new OnClickListener(this, 1);
+        this.mCallback73 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -57,29 +54,31 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (8 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (9 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setNaviViewModel(@Nullable LauncherViewModel NaviViewModel) {
+    public void setNaviViewModel(LauncherViewModel NaviViewModel) {
         this.mNaviViewModel = NaviViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(9);
         super.requestRebind();
     }
 
     /* access modifiers changed from: protected */
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-        if (localFieldId != 0) {
-            return false;
+        switch (localFieldId) {
+            case 0:
+                return onChangeNaviViewModelBtState((ObservableField) object, fieldId);
+            default:
+                return false;
         }
-        return onChangeNaviViewModelBtState((ObservableField) object, fieldId);
     }
 
     private boolean onChangeNaviViewModelBtState(ObservableField<String> observableField, int fieldId) {
@@ -100,9 +99,9 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
             this.mDirtyFlags = 0;
         }
         ObservableField<String> naviViewModelBtState = null;
+        LauncherViewModel naviViewModel = this.mNaviViewModel;
         String naviViewModelBtStateGet = null;
         View.OnFocusChangeListener naviViewModelCarViewFocusChangeListener = null;
-        LauncherViewModel naviViewModel = this.mNaviViewModel;
         if ((dirtyFlags & 7) != 0) {
             if (naviViewModel != null) {
                 naviViewModelBtState = naviViewModel.btState;
@@ -116,7 +115,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
             }
         }
         if ((4 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback62);
+            this.carImageView.setOnClickListener(this.mCallback73);
         }
         if ((dirtyFlags & 6) != 0) {
             this.carImageView.setOnFocusChangeListener(naviViewModelCarViewFocusChangeListener);

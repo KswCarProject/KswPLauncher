@@ -1,17 +1,14 @@
 package com.bumptech.glide.load.engine.cache;
 
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.VisibleForTesting;
 import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import com.bumptech.glide.util.Preconditions;
 
 public final class MemorySizeCalculator {
-    @VisibleForTesting
     static final int BYTES_PER_ARGB_8888_PIXEL = 4;
     private static final int LOW_MEMORY_BYTE_ARRAY_POOL_DIVISOR = 2;
     private static final String TAG = "MemorySizeCalculator";
@@ -39,7 +36,7 @@ public final class MemorySizeCalculator {
         int screenSize = builder.screenDimensions.getWidthPixels() * builder.screenDimensions.getHeightPixels() * 4;
         int targetBitmapPoolSize = Math.round(((float) screenSize) * builder.bitmapPoolScreens);
         int targetMemoryCacheSize = Math.round(((float) screenSize) * builder.memoryCacheScreens);
-        int availableSize = maxSize - this.arrayPoolSize;
+        int availableSize = maxSize - i;
         if (targetMemoryCacheSize + targetBitmapPoolSize <= availableSize) {
             this.memoryCacheSize = targetMemoryCacheSize;
             this.bitmapPoolSize = targetBitmapPoolSize;
@@ -49,22 +46,7 @@ public final class MemorySizeCalculator {
             this.bitmapPoolSize = Math.round(builder.bitmapPoolScreens * part);
         }
         if (Log.isLoggable(TAG, 3)) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Calculation complete, Calculated memory cache size: ");
-            sb.append(toMb(this.memoryCacheSize));
-            sb.append(", pool size: ");
-            sb.append(toMb(this.bitmapPoolSize));
-            sb.append(", byte array size: ");
-            sb.append(toMb(this.arrayPoolSize));
-            sb.append(", memory class limited? ");
-            sb.append(targetMemoryCacheSize + targetBitmapPoolSize > maxSize);
-            sb.append(", max size: ");
-            sb.append(toMb(maxSize));
-            sb.append(", memoryClass: ");
-            sb.append(builder.activityManager.getMemoryClass());
-            sb.append(", isLowMemoryDevice: ");
-            sb.append(isLowMemoryDevice(builder.activityManager));
-            Log.d(TAG, sb.toString());
+            Log.d(TAG, "Calculation complete, Calculated memory cache size: " + toMb(this.memoryCacheSize) + ", pool size: " + toMb(this.bitmapPoolSize) + ", byte array size: " + toMb(i) + ", memory class limited? " + (targetMemoryCacheSize + targetBitmapPoolSize > maxSize) + ", max size: " + toMb(maxSize) + ", memoryClass: " + builder.activityManager.getMemoryClass() + ", isLowMemoryDevice: " + isLowMemoryDevice(builder.activityManager));
         }
     }
 
@@ -81,14 +63,21 @@ public final class MemorySizeCalculator {
     }
 
     private static int getMaxSize(ActivityManager activityManager, float maxSizeMultiplier, float lowMemoryMaxSizeMultiplier) {
-        return Math.round(((float) (activityManager.getMemoryClass() * 1024 * 1024)) * (isLowMemoryDevice(activityManager) ? lowMemoryMaxSizeMultiplier : maxSizeMultiplier));
+        float f;
+        boolean isLowMemoryDevice = isLowMemoryDevice(activityManager);
+        float memoryClass = (float) (activityManager.getMemoryClass() * 1024 * 1024);
+        if (isLowMemoryDevice) {
+            f = lowMemoryMaxSizeMultiplier;
+        } else {
+            f = maxSizeMultiplier;
+        }
+        return Math.round(memoryClass * f);
     }
 
     private String toMb(int bytes) {
         return Formatter.formatFileSize(this.context, (long) bytes);
     }
 
-    @TargetApi(19)
     static boolean isLowMemoryDevice(ActivityManager activityManager) {
         if (Build.VERSION.SDK_INT >= 19) {
             return activityManager.isLowRamDevice();
@@ -101,7 +90,6 @@ public final class MemorySizeCalculator {
         static final int BITMAP_POOL_TARGET_SCREENS = (Build.VERSION.SDK_INT < 26 ? 4 : 1);
         static final float LOW_MEMORY_MAX_SIZE_MULTIPLIER = 0.33f;
         static final float MAX_SIZE_MULTIPLIER = 0.4f;
-        @VisibleForTesting
         static final int MEMORY_CACHE_TARGET_SCREENS = 2;
         ActivityManager activityManager;
         int arrayPoolSizeBytes = 4194304;
@@ -151,14 +139,12 @@ public final class MemorySizeCalculator {
         }
 
         /* access modifiers changed from: package-private */
-        @VisibleForTesting
         public Builder setActivityManager(ActivityManager activityManager2) {
             this.activityManager = activityManager2;
             return this;
         }
 
         /* access modifiers changed from: package-private */
-        @VisibleForTesting
         public Builder setScreenDimensions(ScreenDimensions screenDimensions2) {
             this.screenDimensions = screenDimensions2;
             return this;

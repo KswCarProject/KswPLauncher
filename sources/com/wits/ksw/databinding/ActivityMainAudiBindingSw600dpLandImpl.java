@@ -5,8 +5,6 @@ import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -16,57 +14,54 @@ import com.wits.ksw.launcher.model.AudiViewModel;
 import com.wits.ksw.launcher.view.LoopRotarySwitchView;
 
 public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBinding {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = new ViewDataBinding.IncludedLayouts(38);
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final RelativeLayout mboundView0;
-    @Nullable
     private final AudiRightLogoBinding mboundView01;
-    @Nullable
     private final AudiRightCarinfoBinding mboundView02;
-    @Nullable
     private final AudiRightNaviBinding mboundView03;
-    @Nullable
     private final AudiRightMediaBinding mboundView04;
 
     static {
-        sIncludes.setIncludes(0, new String[]{"audi_right_logo", "audi_right_carinfo", "audi_right_navi", "audi_right_media"}, new int[]{4, 5, 6, 7}, new int[]{R.layout.audi_right_logo, R.layout.audi_right_carinfo, R.layout.audi_right_navi, R.layout.audi_right_media});
-        sViewsWithIds.put(R.id.rl_navi, 8);
-        sViewsWithIds.put(R.id.iv_navi, 9);
-        sViewsWithIds.put(R.id.tv_navi, 10);
-        sViewsWithIds.put(R.id.rl_bt, 11);
-        sViewsWithIds.put(R.id.iv_bt, 12);
-        sViewsWithIds.put(R.id.tv_bt, 13);
-        sViewsWithIds.put(R.id.rl_music, 14);
-        sViewsWithIds.put(R.id.iv_music, 15);
-        sViewsWithIds.put(R.id.tv_music, 16);
-        sViewsWithIds.put(R.id.rl_settings, 17);
-        sViewsWithIds.put(R.id.iv_settings, 18);
-        sViewsWithIds.put(R.id.tv_settings, 19);
-        sViewsWithIds.put(R.id.rl_video, 20);
-        sViewsWithIds.put(R.id.iv_video, 21);
-        sViewsWithIds.put(R.id.tv_video, 22);
-        sViewsWithIds.put(R.id.rl_dashboard, 23);
-        sViewsWithIds.put(R.id.iv_dashboard, 24);
-        sViewsWithIds.put(R.id.rl_easyconnection, 25);
-        sViewsWithIds.put(R.id.iv_easyconnection, 26);
-        sViewsWithIds.put(R.id.tv_easyconnection, 27);
-        sViewsWithIds.put(R.id.rl_dvr, 28);
-        sViewsWithIds.put(R.id.iv_dvr, 29);
-        sViewsWithIds.put(R.id.tv_dvr, 30);
-        sViewsWithIds.put(R.id.rl_car, 31);
-        sViewsWithIds.put(R.id.iv_car, 32);
-        sViewsWithIds.put(R.id.tv_car, 33);
-        sViewsWithIds.put(R.id.rl_apps, 34);
-        sViewsWithIds.put(R.id.iv_apps, 35);
-        sViewsWithIds.put(R.id.tv_apps, 36);
-        sViewsWithIds.put(R.id.date, 37);
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(38);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"audi_right_logo", "audi_right_carinfo", "audi_right_navi", "audi_right_media"}, new int[]{4, 5, 6, 7}, new int[]{R.layout.audi_right_logo, R.layout.audi_right_carinfo, R.layout.audi_right_navi, R.layout.audi_right_media});
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.rl_navi, 8);
+        sparseIntArray.put(R.id.iv_navi, 9);
+        sparseIntArray.put(R.id.tv_navi, 10);
+        sparseIntArray.put(R.id.rl_bt, 11);
+        sparseIntArray.put(R.id.iv_bt, 12);
+        sparseIntArray.put(R.id.tv_bt, 13);
+        sparseIntArray.put(R.id.rl_music, 14);
+        sparseIntArray.put(R.id.iv_music, 15);
+        sparseIntArray.put(R.id.tv_music, 16);
+        sparseIntArray.put(R.id.rl_settings, 17);
+        sparseIntArray.put(R.id.iv_settings, 18);
+        sparseIntArray.put(R.id.tv_settings, 19);
+        sparseIntArray.put(R.id.rl_video, 20);
+        sparseIntArray.put(R.id.iv_video, 21);
+        sparseIntArray.put(R.id.tv_video, 22);
+        sparseIntArray.put(R.id.rl_dashboard, 23);
+        sparseIntArray.put(R.id.iv_dashboard, 24);
+        sparseIntArray.put(R.id.rl_easyconnection, 25);
+        sparseIntArray.put(R.id.iv_easyconnection, 26);
+        sparseIntArray.put(R.id.tv_easyconnection, 27);
+        sparseIntArray.put(R.id.rl_dvr, 28);
+        sparseIntArray.put(R.id.iv_dvr, 29);
+        sparseIntArray.put(R.id.tv_dvr, 30);
+        sparseIntArray.put(R.id.rl_car, 31);
+        sparseIntArray.put(R.id.iv_car, 32);
+        sparseIntArray.put(R.id.tv_car, 33);
+        sparseIntArray.put(R.id.rl_apps, 34);
+        sparseIntArray.put(R.id.iv_apps, 35);
+        sparseIntArray.put(R.id.tv_apps, 36);
+        sparseIntArray.put(R.id.date, 37);
     }
 
-    public ActivityMainAudiBindingSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainAudiBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 38, sIncludes, sViewsWithIds));
     }
 
@@ -76,16 +71,21 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
         this.MLoopRotarySwitchView.setTag((Object) null);
         this.ivGuang.setTag((Object) null);
         this.kswA4LAudiChe.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView01 = bindings[4];
-        setContainedBinding(this.mboundView01);
-        this.mboundView02 = bindings[5];
-        setContainedBinding(this.mboundView02);
-        this.mboundView03 = bindings[6];
-        setContainedBinding(this.mboundView03);
-        this.mboundView04 = bindings[7];
-        setContainedBinding(this.mboundView04);
+        RelativeLayout relativeLayout = bindings[0];
+        this.mboundView0 = relativeLayout;
+        relativeLayout.setTag((Object) null);
+        AudiRightLogoBinding audiRightLogoBinding = bindings[4];
+        this.mboundView01 = audiRightLogoBinding;
+        setContainedBinding(audiRightLogoBinding);
+        AudiRightCarinfoBinding audiRightCarinfoBinding = bindings[5];
+        this.mboundView02 = audiRightCarinfoBinding;
+        setContainedBinding(audiRightCarinfoBinding);
+        AudiRightNaviBinding audiRightNaviBinding = bindings[6];
+        this.mboundView03 = audiRightNaviBinding;
+        setContainedBinding(audiRightNaviBinding);
+        AudiRightMediaBinding audiRightMediaBinding = bindings[7];
+        this.mboundView04 = audiRightMediaBinding;
+        setContainedBinding(audiRightMediaBinding);
         setRootTag(root);
         invalidateAll();
     }
@@ -172,7 +172,7 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
         throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.ActivityMainAudiBindingSw600dpLandImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -180,7 +180,7 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
         return true;
     }
 
-    public void setVm(@Nullable AudiViewModel Vm) {
+    public void setVm(AudiViewModel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 4;
@@ -189,7 +189,7 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
         super.requestRebind();
     }
 
-    public void setLifecycleOwner(@Nullable LifecycleOwner lifecycleOwner) {
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         super.setLifecycleOwner(lifecycleOwner);
         this.mboundView01.setLifecycleOwner(lifecycleOwner);
         this.mboundView02.setLifecycleOwner(lifecycleOwner);
@@ -201,15 +201,15 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeVmCarBgPicId((ObservableInt) object, fieldId);
-            case 1:
                 return onChangeVmCarPicId((ObservableInt) object, fieldId);
+            case 1:
+                return onChangeVmCarBgPicId((ObservableInt) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeVmCarBgPicId(ObservableInt VmCarBgPicId, int fieldId) {
+    private boolean onChangeVmCarPicId(ObservableInt VmCarPicId, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -219,7 +219,7 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
         return true;
     }
 
-    private boolean onChangeVmCarPicId(ObservableInt VmCarPicId, int fieldId) {
+    private boolean onChangeVmCarBgPicId(ObservableInt VmCarBgPicId, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -236,13 +236,13 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        AudiViewModel vm = this.mVm;
         int vmCarBgPicIdGet = 0;
-        int vmCarPicIdGet = 0;
+        AudiViewModel vm = this.mVm;
         LoopRotarySwitchView.OnItemSelectedListener vmOnItemSelectedListener = null;
-        LoopRotarySwitchView.OnItemClickListener vmOnItemClickListener = null;
-        ObservableInt vmCarBgPicId = null;
         ObservableInt vmCarPicId = null;
+        LoopRotarySwitchView.OnItemClickListener vmOnItemClickListener = null;
+        int vmCarPicIdGet = 0;
+        ObservableInt vmCarBgPicId = null;
         if ((15 & dirtyFlags) != 0) {
             if (!((dirtyFlags & 12) == 0 || vm == null)) {
                 vmOnItemSelectedListener = vm.OnItemSelectedListener;
@@ -250,20 +250,20 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
             }
             if ((dirtyFlags & 13) != 0) {
                 if (vm != null) {
-                    vmCarBgPicId = vm.carBgPicId;
+                    vmCarPicId = vm.carPicId;
                 }
-                updateRegistration(0, (Observable) vmCarBgPicId);
-                if (vmCarBgPicId != null) {
-                    vmCarBgPicIdGet = vmCarBgPicId.get();
+                updateRegistration(0, (Observable) vmCarPicId);
+                if (vmCarPicId != null) {
+                    vmCarPicIdGet = vmCarPicId.get();
                 }
             }
             if ((dirtyFlags & 14) != 0) {
                 if (vm != null) {
-                    vmCarPicId = vm.carPicId;
+                    vmCarBgPicId = vm.carBgPicId;
                 }
-                updateRegistration(1, (Observable) vmCarPicId);
-                if (vmCarPicId != null) {
-                    vmCarPicIdGet = vmCarPicId.get();
+                updateRegistration(1, (Observable) vmCarBgPicId);
+                if (vmCarBgPicId != null) {
+                    vmCarBgPicIdGet = vmCarBgPicId.get();
                 }
             }
         }
@@ -275,10 +275,10 @@ public class ActivityMainAudiBindingSw600dpLandImpl extends ActivityMainAudiBind
             this.mboundView03.setVm(vm);
             this.mboundView04.setVm(vm);
         }
-        if ((13 & dirtyFlags) != 0) {
+        if ((14 & dirtyFlags) != 0) {
             BaseBindingModel.srcImage(this.ivGuang, vmCarBgPicIdGet);
         }
-        if ((dirtyFlags & 14) != 0) {
+        if ((dirtyFlags & 13) != 0) {
             BaseBindingModel.srcImage(this.kswA4LAudiChe, vmCarPicIdGet);
         }
         executeBindingsOn(this.mboundView01);

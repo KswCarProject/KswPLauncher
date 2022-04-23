@@ -4,10 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.view.KeyEventDispatcher;
 import android.support.v7.appcompat.R;
 import android.support.v7.view.ActionMode;
@@ -55,7 +51,7 @@ public class AppCompatDialog extends Dialog implements AppCompatCallback {
         return getDelegate().getSupportActionBar();
     }
 
-    public void setContentView(@LayoutRes int layoutResID) {
+    public void setContentView(int layoutResID) {
         getDelegate().setContentView(layoutResID);
     }
 
@@ -67,8 +63,7 @@ public class AppCompatDialog extends Dialog implements AppCompatCallback {
         getDelegate().setContentView(view, params);
     }
 
-    @Nullable
-    public <T extends View> T findViewById(@IdRes int id) {
+    public <T extends View> T findViewById(int id) {
         return getDelegate().findViewById(id);
     }
 
@@ -96,7 +91,6 @@ public class AppCompatDialog extends Dialog implements AppCompatCallback {
         return getDelegate().requestWindowFeature(featureId);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     public void invalidateOptionsMenu() {
         getDelegate().invalidateOptionsMenu();
     }
@@ -123,7 +117,6 @@ public class AppCompatDialog extends Dialog implements AppCompatCallback {
     public void onSupportActionModeFinished(ActionMode mode) {
     }
 
-    @Nullable
     public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
         return null;
     }

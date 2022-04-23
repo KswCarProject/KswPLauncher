@@ -1,14 +1,12 @@
 package android.support.v4.content;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import java.util.ArrayList;
 
 public final class MimeTypeFilter {
     private MimeTypeFilter() {
     }
 
-    private static boolean mimeTypeAgainstFilter(@NonNull String[] mimeTypeParts, @NonNull String[] filterParts) {
+    private static boolean mimeTypeAgainstFilter(String[] mimeTypeParts, String[] filterParts) {
         if (filterParts.length != 2) {
             throw new IllegalArgumentException("Ill-formatted MIME type filter. Must be type/subtype.");
         } else if (filterParts[0].isEmpty() || filterParts[1].isEmpty()) {
@@ -23,15 +21,14 @@ public final class MimeTypeFilter {
         }
     }
 
-    public static boolean matches(@Nullable String mimeType, @NonNull String filter) {
+    public static boolean matches(String mimeType, String filter) {
         if (mimeType == null) {
             return false;
         }
         return mimeTypeAgainstFilter(mimeType.split("/"), filter.split("/"));
     }
 
-    @Nullable
-    public static String matches(@Nullable String mimeType, @NonNull String[] filters) {
+    public static String matches(String mimeType, String[] filters) {
         if (mimeType == null) {
             return null;
         }
@@ -44,8 +41,7 @@ public final class MimeTypeFilter {
         return null;
     }
 
-    @Nullable
-    public static String matches(@Nullable String[] mimeTypes, @NonNull String filter) {
+    public static String matches(String[] mimeTypes, String filter) {
         if (mimeTypes == null) {
             return null;
         }
@@ -58,8 +54,7 @@ public final class MimeTypeFilter {
         return null;
     }
 
-    @NonNull
-    public static String[] matchesMany(@Nullable String[] mimeTypes, @NonNull String filter) {
+    public static String[] matchesMany(String[] mimeTypes, String filter) {
         if (mimeTypes == null) {
             return new String[0];
         }

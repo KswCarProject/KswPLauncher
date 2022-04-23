@@ -5,9 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
@@ -39,7 +36,6 @@ class GifFrameLoader {
     private boolean isLoadPending;
     private boolean isRunning;
     private DelayTarget next;
-    @Nullable
     private OnEveryFrameListener onEveryFrameListener;
     private DelayTarget pendingTarget;
     private RequestBuilder<Bitmap> requestBuilder;
@@ -51,7 +47,6 @@ class GifFrameLoader {
         void onFrameReady();
     }
 
-    @VisibleForTesting
     interface OnEveryFrameListener {
         void onFrameReady();
     }
@@ -145,8 +140,9 @@ class GifFrameLoader {
 
     /* access modifiers changed from: package-private */
     public int getCurrentIndex() {
-        if (this.current != null) {
-            return this.current.index;
+        DelayTarget delayTarget = this.current;
+        if (delayTarget != null) {
+            return delayTarget.index;
         }
         return -1;
     }
@@ -187,16 +183,19 @@ class GifFrameLoader {
         this.callbacks.clear();
         recycleFirstFrame();
         stop();
-        if (this.current != null) {
-            this.requestManager.clear((Target<?>) this.current);
+        DelayTarget delayTarget = this.current;
+        if (delayTarget != null) {
+            this.requestManager.clear((Target<?>) delayTarget);
             this.current = null;
         }
-        if (this.next != null) {
-            this.requestManager.clear((Target<?>) this.next);
+        DelayTarget delayTarget2 = this.next;
+        if (delayTarget2 != null) {
+            this.requestManager.clear((Target<?>) delayTarget2);
             this.next = null;
         }
-        if (this.pendingTarget != null) {
-            this.requestManager.clear((Target<?>) this.pendingTarget);
+        DelayTarget delayTarget3 = this.pendingTarget;
+        if (delayTarget3 != null) {
+            this.requestManager.clear((Target<?>) delayTarget3);
             this.pendingTarget = null;
         }
         this.gifDecoder.clear();
@@ -205,7 +204,8 @@ class GifFrameLoader {
 
     /* access modifiers changed from: package-private */
     public Bitmap getCurrentFrame() {
-        return this.current != null ? this.current.getResource() : this.firstFrame;
+        DelayTarget delayTarget = this.current;
+        return delayTarget != null ? delayTarget.getResource() : this.firstFrame;
     }
 
     private void loadNextFrame() {
@@ -230,8 +230,9 @@ class GifFrameLoader {
     }
 
     private void recycleFirstFrame() {
-        if (this.firstFrame != null) {
-            this.bitmapPool.put(this.firstFrame);
+        Bitmap bitmap = this.firstFrame;
+        if (bitmap != null) {
+            this.bitmapPool.put(bitmap);
             this.firstFrame = null;
         }
     }
@@ -240,23 +241,23 @@ class GifFrameLoader {
     public void setNextStartFromFirstFrame() {
         Preconditions.checkArgument(!this.isRunning, "Can't restart a running animation");
         this.startFromFirstFrame = true;
-        if (this.pendingTarget != null) {
-            this.requestManager.clear((Target<?>) this.pendingTarget);
+        DelayTarget delayTarget = this.pendingTarget;
+        if (delayTarget != null) {
+            this.requestManager.clear((Target<?>) delayTarget);
             this.pendingTarget = null;
         }
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
-    public void setOnEveryFrameReadyListener(@Nullable OnEveryFrameListener onEveryFrameListener2) {
+    public void setOnEveryFrameReadyListener(OnEveryFrameListener onEveryFrameListener2) {
         this.onEveryFrameListener = onEveryFrameListener2;
     }
 
     /* access modifiers changed from: package-private */
-    @VisibleForTesting
     public void onFrameReady(DelayTarget delayTarget) {
-        if (this.onEveryFrameListener != null) {
-            this.onEveryFrameListener.onFrameReady();
+        OnEveryFrameListener onEveryFrameListener2 = this.onEveryFrameListener;
+        if (onEveryFrameListener2 != null) {
+            onEveryFrameListener2.onFrameReady();
         }
         this.isLoadPending = false;
         if (this.isCleared) {
@@ -299,7 +300,6 @@ class GifFrameLoader {
         }
     }
 
-    @VisibleForTesting
     static class DelayTarget extends SimpleTarget<Bitmap> {
         private final Handler handler;
         final int index;
@@ -317,7 +317,7 @@ class GifFrameLoader {
             return this.resource;
         }
 
-        public void onResourceReady(@NonNull Bitmap resource2, @Nullable Transition<? super Bitmap> transition) {
+        public void onResourceReady(Bitmap resource2, Transition<? super Bitmap> transition) {
             this.resource = resource2;
             this.handler.sendMessageAtTime(this.handler.obtainMessage(1, this), this.targetTime);
         }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:oneshot="true">
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_1_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_2_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_3_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_4_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_5_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_6_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_7_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_8_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_9_f"/>
+    <item android:duration="@integer/anim_dur_time" android:drawable="@drawable/audi_mib3_main_icon_car_1_f"/>
+</animation-list>

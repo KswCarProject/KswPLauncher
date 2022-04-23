@@ -1,10 +1,9 @@
 package com.bumptech.glide.load.engine;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Key;
+import com.ibm.icu.text.PluralRules;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -19,7 +18,6 @@ public final class GlideException extends Exception {
     private Class<?> dataClass;
     private DataSource dataSource;
     private String detailMessage;
-    @Nullable
     private Exception exception;
     private Key key;
 
@@ -49,11 +47,10 @@ public final class GlideException extends Exception {
         this.dataClass = dataClass2;
     }
 
-    public void setOrigin(@Nullable Exception exception2) {
+    public void setOrigin(Exception exception2) {
         this.exception = exception2;
     }
 
-    @Nullable
     public Exception getOrigin() {
         return this.exception;
     }
@@ -108,29 +105,12 @@ public final class GlideException extends Exception {
     }
 
     public String getMessage() {
-        String str;
-        String str2;
-        String str3;
-        StringBuilder sb = new StringBuilder(71);
-        sb.append(this.detailMessage);
-        if (this.dataClass != null) {
-            str = ", " + this.dataClass;
-        } else {
-            str = "";
-        }
-        sb.append(str);
-        if (this.dataSource != null) {
-            str2 = ", " + this.dataSource;
-        } else {
-            str2 = "";
-        }
-        sb.append(str2);
+        String str = "";
+        StringBuilder append = new StringBuilder(71).append(this.detailMessage).append(this.dataClass != null ? ", " + this.dataClass : str).append(this.dataSource != null ? ", " + this.dataSource : str);
         if (this.key != null) {
-            str3 = ", " + this.key;
-        } else {
-            str3 = "";
+            str = ", " + this.key;
         }
-        StringBuilder result = sb.append(str3);
+        StringBuilder result = append.append(str);
         List<Throwable> rootCauses = getRootCauses();
         if (rootCauses.isEmpty()) {
             return result.toString();
@@ -138,16 +118,10 @@ public final class GlideException extends Exception {
         if (rootCauses.size() == 1) {
             result.append("\nThere was 1 cause:");
         } else {
-            result.append("\nThere were ");
-            result.append(rootCauses.size());
-            result.append(" causes:");
+            result.append("\nThere were ").append(rootCauses.size()).append(" causes:");
         }
         for (Throwable cause : rootCauses) {
-            result.append(10);
-            result.append(cause.getClass().getName());
-            result.append('(');
-            result.append(cause.getMessage());
-            result.append(')');
+            result.append(10).append(cause.getClass().getName()).append('(').append(cause.getMessage()).append(')');
         }
         result.append("\n call GlideException#logRootCauses(String) for more detail");
         return result.toString();
@@ -155,7 +129,7 @@ public final class GlideException extends Exception {
 
     private static void appendExceptionMessage(Throwable t, Appendable appendable) {
         try {
-            appendable.append(t.getClass().toString()).append(": ").append(t.getMessage()).append(10);
+            appendable.append(t.getClass().toString()).append(PluralRules.KEYWORD_RULE_SEPARATOR).append(t.getMessage()).append(10);
         } catch (IOException e) {
             throw new RuntimeException(t);
         }
@@ -206,12 +180,12 @@ public final class GlideException extends Exception {
             return this;
         }
 
-        public Appendable append(@Nullable CharSequence charSequence) throws IOException {
+        public Appendable append(CharSequence charSequence) throws IOException {
             CharSequence charSequence2 = safeSequence(charSequence);
             return append(charSequence2, 0, charSequence2.length());
         }
 
-        public Appendable append(@Nullable CharSequence charSequence, int start, int end) throws IOException {
+        public Appendable append(CharSequence charSequence, int start, int end) throws IOException {
             CharSequence charSequence2 = safeSequence(charSequence);
             boolean z = false;
             if (this.printedNewLine) {
@@ -226,8 +200,7 @@ public final class GlideException extends Exception {
             return this;
         }
 
-        @NonNull
-        private CharSequence safeSequence(@Nullable CharSequence sequence) {
+        private CharSequence safeSequence(CharSequence sequence) {
             if (sequence == null) {
                 return "";
             }

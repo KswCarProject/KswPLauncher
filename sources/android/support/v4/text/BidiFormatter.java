@@ -5,9 +5,9 @@ import java.util.Locale;
 
 public final class BidiFormatter {
     private static final int DEFAULT_FLAGS = 2;
-    static final BidiFormatter DEFAULT_LTR_INSTANCE = new BidiFormatter(false, 2, DEFAULT_TEXT_DIRECTION_HEURISTIC);
-    static final BidiFormatter DEFAULT_RTL_INSTANCE = new BidiFormatter(true, 2, DEFAULT_TEXT_DIRECTION_HEURISTIC);
-    static final TextDirectionHeuristicCompat DEFAULT_TEXT_DIRECTION_HEURISTIC = TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR;
+    static final BidiFormatter DEFAULT_LTR_INSTANCE;
+    static final BidiFormatter DEFAULT_RTL_INSTANCE;
+    static final TextDirectionHeuristicCompat DEFAULT_TEXT_DIRECTION_HEURISTIC;
     private static final int DIR_LTR = -1;
     private static final int DIR_RTL = 1;
     private static final int DIR_UNKNOWN = 0;
@@ -23,6 +23,13 @@ public final class BidiFormatter {
     private final TextDirectionHeuristicCompat mDefaultTextDirectionHeuristicCompat;
     private final int mFlags;
     private final boolean mIsRtlContext;
+
+    static {
+        TextDirectionHeuristicCompat textDirectionHeuristicCompat = TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR;
+        DEFAULT_TEXT_DIRECTION_HEURISTIC = textDirectionHeuristicCompat;
+        DEFAULT_LTR_INSTANCE = new BidiFormatter(false, 2, textDirectionHeuristicCompat);
+        DEFAULT_RTL_INSTANCE = new BidiFormatter(true, 2, textDirectionHeuristicCompat);
+    }
 
     public static final class Builder {
         private int mFlags;
@@ -224,49 +231,45 @@ public final class BidiFormatter {
         /* access modifiers changed from: package-private */
         public int getEntryDir() {
             this.charIndex = 0;
-            int embeddingLevelDir = 0;
             int embeddingLevel = 0;
+            int embeddingLevelDir = 0;
             int firstNonEmptyEmbeddingLevel = 0;
             while (this.charIndex < this.length && firstNonEmptyEmbeddingLevel == 0) {
-                byte dirTypeForward = dirTypeForward();
-                if (dirTypeForward != 9) {
-                    switch (dirTypeForward) {
-                        case 0:
-                            if (embeddingLevel != 0) {
-                                firstNonEmptyEmbeddingLevel = embeddingLevel;
-                                break;
-                            } else {
-                                return -1;
-                            }
-                        case 1:
-                        case 2:
-                            if (embeddingLevel != 0) {
-                                firstNonEmptyEmbeddingLevel = embeddingLevel;
-                                break;
-                            } else {
-                                return 1;
-                            }
-                        default:
-                            switch (dirTypeForward) {
-                                case 14:
-                                case 15:
-                                    embeddingLevel++;
-                                    embeddingLevelDir = -1;
-                                    break;
-                                case 16:
-                                case 17:
-                                    embeddingLevel++;
-                                    embeddingLevelDir = 1;
-                                    break;
-                                case 18:
-                                    embeddingLevel--;
-                                    embeddingLevelDir = 0;
-                                    break;
-                                default:
-                                    firstNonEmptyEmbeddingLevel = embeddingLevel;
-                                    break;
-                            }
-                    }
+                switch (dirTypeForward()) {
+                    case 0:
+                        if (embeddingLevel != 0) {
+                            firstNonEmptyEmbeddingLevel = embeddingLevel;
+                            break;
+                        } else {
+                            return -1;
+                        }
+                    case 1:
+                    case 2:
+                        if (embeddingLevel != 0) {
+                            firstNonEmptyEmbeddingLevel = embeddingLevel;
+                            break;
+                        } else {
+                            return 1;
+                        }
+                    case 9:
+                        break;
+                    case 14:
+                    case 15:
+                        embeddingLevel++;
+                        embeddingLevelDir = -1;
+                        break;
+                    case 16:
+                    case 17:
+                        embeddingLevel++;
+                        embeddingLevelDir = 1;
+                        break;
+                    case 18:
+                        embeddingLevel--;
+                        embeddingLevelDir = 0;
+                        break;
+                    default:
+                        firstNonEmptyEmbeddingLevel = embeddingLevel;
+                        break;
                 }
             }
             if (firstNonEmptyEmbeddingLevel == 0) {
@@ -307,62 +310,58 @@ public final class BidiFormatter {
             int embeddingLevel = 0;
             int lastNonEmptyEmbeddingLevel = 0;
             while (this.charIndex > 0) {
-                byte dirTypeBackward = dirTypeBackward();
-                if (dirTypeBackward != 9) {
-                    switch (dirTypeBackward) {
-                        case 0:
-                            if (embeddingLevel != 0) {
-                                if (lastNonEmptyEmbeddingLevel != 0) {
-                                    break;
-                                } else {
-                                    lastNonEmptyEmbeddingLevel = embeddingLevel;
-                                    break;
-                                }
+                switch (dirTypeBackward()) {
+                    case 0:
+                        if (embeddingLevel != 0) {
+                            if (lastNonEmptyEmbeddingLevel != 0) {
+                                break;
                             } else {
-                                return -1;
+                                lastNonEmptyEmbeddingLevel = embeddingLevel;
+                                break;
                             }
-                        case 1:
-                        case 2:
-                            if (embeddingLevel != 0) {
-                                if (lastNonEmptyEmbeddingLevel != 0) {
-                                    break;
-                                } else {
-                                    lastNonEmptyEmbeddingLevel = embeddingLevel;
-                                    break;
-                                }
+                        } else {
+                            return -1;
+                        }
+                    case 1:
+                    case 2:
+                        if (embeddingLevel != 0) {
+                            if (lastNonEmptyEmbeddingLevel != 0) {
+                                break;
                             } else {
-                                return 1;
+                                lastNonEmptyEmbeddingLevel = embeddingLevel;
+                                break;
                             }
-                        default:
-                            switch (dirTypeBackward) {
-                                case 14:
-                                case 15:
-                                    if (lastNonEmptyEmbeddingLevel != embeddingLevel) {
-                                        embeddingLevel--;
-                                        break;
-                                    } else {
-                                        return -1;
-                                    }
-                                case 16:
-                                case 17:
-                                    if (lastNonEmptyEmbeddingLevel != embeddingLevel) {
-                                        embeddingLevel--;
-                                        break;
-                                    } else {
-                                        return 1;
-                                    }
-                                case 18:
-                                    embeddingLevel++;
-                                    break;
-                                default:
-                                    if (lastNonEmptyEmbeddingLevel != 0) {
-                                        break;
-                                    } else {
-                                        lastNonEmptyEmbeddingLevel = embeddingLevel;
-                                        break;
-                                    }
-                            }
-                    }
+                        } else {
+                            return 1;
+                        }
+                    case 9:
+                        break;
+                    case 14:
+                    case 15:
+                        if (lastNonEmptyEmbeddingLevel != embeddingLevel) {
+                            embeddingLevel--;
+                            break;
+                        } else {
+                            return -1;
+                        }
+                    case 16:
+                    case 17:
+                        if (lastNonEmptyEmbeddingLevel != embeddingLevel) {
+                            embeddingLevel--;
+                            break;
+                        } else {
+                            return 1;
+                        }
+                    case 18:
+                        embeddingLevel++;
+                        break;
+                    default:
+                        if (lastNonEmptyEmbeddingLevel != 0) {
+                            break;
+                        } else {
+                            lastNonEmptyEmbeddingLevel = embeddingLevel;
+                            break;
+                        }
                 }
             }
             return 0;
@@ -374,8 +373,9 @@ public final class BidiFormatter {
 
         /* access modifiers changed from: package-private */
         public byte dirTypeForward() {
-            this.lastChar = this.text.charAt(this.charIndex);
-            if (Character.isHighSurrogate(this.lastChar)) {
+            char charAt = this.text.charAt(this.charIndex);
+            this.lastChar = charAt;
+            if (Character.isHighSurrogate(charAt)) {
                 int codePoint = Character.codePointAt(this.text, this.charIndex);
                 this.charIndex += Character.charCount(codePoint);
                 return Character.getDirectionality(codePoint);
@@ -385,10 +385,11 @@ public final class BidiFormatter {
             if (!this.isHtml) {
                 return dirType;
             }
-            if (this.lastChar == '<') {
+            char c = this.lastChar;
+            if (c == '<') {
                 return skipTagForward();
             }
-            if (this.lastChar == '&') {
+            if (c == '&') {
                 return skipEntityForward();
             }
             return dirType;
@@ -396,8 +397,9 @@ public final class BidiFormatter {
 
         /* access modifiers changed from: package-private */
         public byte dirTypeBackward() {
-            this.lastChar = this.text.charAt(this.charIndex - 1);
-            if (Character.isLowSurrogate(this.lastChar)) {
+            char charAt = this.text.charAt(this.charIndex - 1);
+            this.lastChar = charAt;
+            if (Character.isLowSurrogate(charAt)) {
                 int codePoint = Character.codePointBefore(this.text, this.charIndex);
                 this.charIndex -= Character.charCount(codePoint);
                 return Character.getDirectionality(codePoint);
@@ -407,68 +409,81 @@ public final class BidiFormatter {
             if (!this.isHtml) {
                 return dirType;
             }
-            if (this.lastChar == '>') {
+            char c = this.lastChar;
+            if (c == '>') {
                 return skipTagBackward();
             }
-            if (this.lastChar == ';') {
+            if (c == ';') {
                 return skipEntityBackward();
             }
             return dirType;
         }
 
         private byte skipTagForward() {
+            char charAt;
             int initialCharIndex = this.charIndex;
-            while (this.charIndex < this.length) {
-                CharSequence charSequence = this.text;
+            while (true) {
                 int i = this.charIndex;
-                this.charIndex = i + 1;
-                this.lastChar = charSequence.charAt(i);
-                if (this.lastChar == '>') {
-                    return 12;
-                }
-                if (this.lastChar == '\"' || this.lastChar == '\'') {
-                    char quote = this.lastChar;
-                    while (this.charIndex < this.length) {
-                        CharSequence charSequence2 = this.text;
-                        int i2 = this.charIndex;
-                        this.charIndex = i2 + 1;
-                        char charAt = charSequence2.charAt(i2);
-                        this.lastChar = charAt;
-                        if (charAt == quote) {
-                            break;
-                        }
+                if (i < this.length) {
+                    CharSequence charSequence = this.text;
+                    this.charIndex = i + 1;
+                    char charAt2 = charSequence.charAt(i);
+                    this.lastChar = charAt2;
+                    if (charAt2 == '>') {
+                        return 12;
                     }
+                    if (charAt2 == '\"' || charAt2 == '\'') {
+                        char quote = this.lastChar;
+                        do {
+                            int i2 = this.charIndex;
+                            if (i2 >= this.length) {
+                                break;
+                            }
+                            CharSequence charSequence2 = this.text;
+                            this.charIndex = i2 + 1;
+                            charAt = charSequence2.charAt(i2);
+                            this.lastChar = charAt;
+                        } while (charAt != quote);
+                    }
+                } else {
+                    this.charIndex = initialCharIndex;
+                    this.lastChar = '<';
+                    return 13;
                 }
             }
-            this.charIndex = initialCharIndex;
-            this.lastChar = '<';
-            return 13;
         }
 
         private byte skipTagBackward() {
+            char charAt;
             int initialCharIndex = this.charIndex;
-            while (this.charIndex > 0) {
+            while (true) {
+                int i = this.charIndex;
+                if (i <= 0) {
+                    break;
+                }
                 CharSequence charSequence = this.text;
-                int i = this.charIndex - 1;
-                this.charIndex = i;
-                this.lastChar = charSequence.charAt(i);
-                if (this.lastChar == '<') {
+                int i2 = i - 1;
+                this.charIndex = i2;
+                char charAt2 = charSequence.charAt(i2);
+                this.lastChar = charAt2;
+                if (charAt2 == '<') {
                     return 12;
                 }
-                if (this.lastChar == '>') {
+                if (charAt2 == '>') {
                     break;
-                } else if (this.lastChar == '\"' || this.lastChar == '\'') {
+                } else if (charAt2 == '\"' || charAt2 == '\'') {
                     char quote = this.lastChar;
-                    while (this.charIndex > 0) {
-                        CharSequence charSequence2 = this.text;
-                        int i2 = this.charIndex - 1;
-                        this.charIndex = i2;
-                        char charAt = charSequence2.charAt(i2);
-                        this.lastChar = charAt;
-                        if (charAt == quote) {
+                    do {
+                        int i3 = this.charIndex;
+                        if (i3 <= 0) {
                             break;
                         }
-                    }
+                        CharSequence charSequence2 = this.text;
+                        int i4 = i3 - 1;
+                        this.charIndex = i4;
+                        charAt = charSequence2.charAt(i4);
+                        this.lastChar = charAt;
+                    } while (charAt != quote);
                 }
             }
             this.charIndex = initialCharIndex;
@@ -477,34 +492,37 @@ public final class BidiFormatter {
         }
 
         private byte skipEntityForward() {
-            while (this.charIndex < this.length) {
-                CharSequence charSequence = this.text;
+            char charAt;
+            do {
                 int i = this.charIndex;
-                this.charIndex = i + 1;
-                char charAt = charSequence.charAt(i);
-                this.lastChar = charAt;
-                if (charAt == ';') {
+                if (i >= this.length) {
                     return 12;
                 }
-            }
+                CharSequence charSequence = this.text;
+                this.charIndex = i + 1;
+                charAt = charSequence.charAt(i);
+                this.lastChar = charAt;
+            } while (charAt != ';');
             return 12;
         }
 
         private byte skipEntityBackward() {
+            char charAt;
             int initialCharIndex = this.charIndex;
-            while (this.charIndex > 0) {
+            do {
+                int i = this.charIndex;
+                if (i <= 0) {
+                    break;
+                }
                 CharSequence charSequence = this.text;
-                int i = this.charIndex - 1;
-                this.charIndex = i;
-                this.lastChar = charSequence.charAt(i);
-                if (this.lastChar != '&') {
-                    if (this.lastChar == ';') {
-                        break;
-                    }
-                } else {
+                int i2 = i - 1;
+                this.charIndex = i2;
+                charAt = charSequence.charAt(i2);
+                this.lastChar = charAt;
+                if (charAt == '&') {
                     return 12;
                 }
-            }
+            } while (charAt != ';');
             this.charIndex = initialCharIndex;
             this.lastChar = ';';
             return 13;

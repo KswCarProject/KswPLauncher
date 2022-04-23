@@ -49,30 +49,42 @@ public class LandroverSetFactoryLayout extends RelativeLayout implements View.On
 
     private void initView(View view) {
         this.tv_showPwd = (TextView) view.findViewById(R.id.tv_showPwd);
-        this.img_btn1 = (ImageView) view.findViewById(R.id.img_btn1);
-        this.img_btn1.setOnClickListener(this);
-        this.img_btn2 = (ImageView) view.findViewById(R.id.img_btn2);
-        this.img_btn2.setOnClickListener(this);
-        this.img_btn3 = (ImageView) view.findViewById(R.id.img_btn3);
-        this.img_btn3.setOnClickListener(this);
-        this.img_btn4 = (ImageView) view.findViewById(R.id.img_btn4);
-        this.img_btn4.setOnClickListener(this);
-        this.img_btn5 = (ImageView) view.findViewById(R.id.img_btn5);
-        this.img_btn5.setOnClickListener(this);
-        this.img_btn6 = (ImageView) view.findViewById(R.id.img_btn6);
-        this.img_btn6.setOnClickListener(this);
-        this.img_btn7 = (ImageView) view.findViewById(R.id.img_btn7);
-        this.img_btn7.setOnClickListener(this);
-        this.img_btn8 = (ImageView) view.findViewById(R.id.img_btn8);
-        this.img_btn8.setOnClickListener(this);
-        this.img_btn9 = (ImageView) view.findViewById(R.id.img_btn9);
-        this.img_btn9.setOnClickListener(this);
-        this.img_btn0 = (ImageView) view.findViewById(R.id.img_btn0);
-        this.img_btn0.setOnClickListener(this);
-        this.img_enter = (ImageView) view.findViewById(R.id.img_enter);
-        this.img_enter.setOnClickListener(this);
-        this.img_del = (ImageView) view.findViewById(R.id.img_del);
-        this.img_del.setOnClickListener(this);
+        ImageView imageView = (ImageView) view.findViewById(R.id.img_btn1);
+        this.img_btn1 = imageView;
+        imageView.setOnClickListener(this);
+        ImageView imageView2 = (ImageView) view.findViewById(R.id.img_btn2);
+        this.img_btn2 = imageView2;
+        imageView2.setOnClickListener(this);
+        ImageView imageView3 = (ImageView) view.findViewById(R.id.img_btn3);
+        this.img_btn3 = imageView3;
+        imageView3.setOnClickListener(this);
+        ImageView imageView4 = (ImageView) view.findViewById(R.id.img_btn4);
+        this.img_btn4 = imageView4;
+        imageView4.setOnClickListener(this);
+        ImageView imageView5 = (ImageView) view.findViewById(R.id.img_btn5);
+        this.img_btn5 = imageView5;
+        imageView5.setOnClickListener(this);
+        ImageView imageView6 = (ImageView) view.findViewById(R.id.img_btn6);
+        this.img_btn6 = imageView6;
+        imageView6.setOnClickListener(this);
+        ImageView imageView7 = (ImageView) view.findViewById(R.id.img_btn7);
+        this.img_btn7 = imageView7;
+        imageView7.setOnClickListener(this);
+        ImageView imageView8 = (ImageView) view.findViewById(R.id.img_btn8);
+        this.img_btn8 = imageView8;
+        imageView8.setOnClickListener(this);
+        ImageView imageView9 = (ImageView) view.findViewById(R.id.img_btn9);
+        this.img_btn9 = imageView9;
+        imageView9.setOnClickListener(this);
+        ImageView imageView10 = (ImageView) view.findViewById(R.id.img_btn0);
+        this.img_btn0 = imageView10;
+        imageView10.setOnClickListener(this);
+        ImageView imageView11 = (ImageView) view.findViewById(R.id.img_enter);
+        this.img_enter = imageView11;
+        imageView11.setOnClickListener(this);
+        ImageView imageView12 = (ImageView) view.findViewById(R.id.img_del);
+        this.img_del = imageView12;
+        imageView12.setOnClickListener(this);
         this.img_del.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View view) {
                 if (LandroverSetFactoryLayout.this.pwdInput.length() <= 0) {
@@ -87,78 +99,80 @@ public class LandroverSetFactoryLayout extends RelativeLayout implements View.On
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_btn0:
+            case R.id.img_btn0 /*2131296844*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("0");
                     break;
                 }
                 break;
-            case R.id.img_btn1:
+            case R.id.img_btn1 /*2131296845*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("1");
                     break;
                 }
                 break;
-            case R.id.img_btn2:
+            case R.id.img_btn2 /*2131296846*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("2");
                     break;
                 }
                 break;
-            case R.id.img_btn3:
+            case R.id.img_btn3 /*2131296847*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("3");
                     break;
                 }
                 break;
-            case R.id.img_btn4:
+            case R.id.img_btn4 /*2131296848*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("4");
                     break;
                 }
                 break;
-            case R.id.img_btn5:
+            case R.id.img_btn5 /*2131296849*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("5");
                     break;
                 }
                 break;
-            case R.id.img_btn6:
+            case R.id.img_btn6 /*2131296850*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("6");
                     break;
                 }
                 break;
-            case R.id.img_btn7:
+            case R.id.img_btn7 /*2131296851*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("7");
                     break;
                 }
                 break;
-            case R.id.img_btn8:
+            case R.id.img_btn8 /*2131296852*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("8");
                     break;
                 }
                 break;
-            case R.id.img_btn9:
+            case R.id.img_btn9 /*2131296853*/:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("9");
                     break;
                 }
                 break;
-            case R.id.img_del:
+            case R.id.img_del /*2131296854*/:
                 if (this.pwdInput.length() > 0) {
-                    this.pwdInput.deleteCharAt(this.pwdInput.length() - 1);
+                    StringBuffer stringBuffer = this.pwdInput;
+                    stringBuffer.deleteCharAt(stringBuffer.length() - 1);
                     break;
                 }
                 break;
-            case R.id.img_enter:
+            case R.id.img_enter /*2131296855*/:
                 Message message = new Message();
                 message.obj = this.pwdInput.toString();
                 message.what = 2;
                 if (this.pwdInput.length() > 0) {
-                    this.pwdInput.delete(0, this.pwdInput.length());
+                    StringBuffer stringBuffer2 = this.pwdInput;
+                    stringBuffer2.delete(0, stringBuffer2.length());
                     this.tv_showPwd.setText(this.pwdInput.toString());
                 }
                 this.handler.sendMessage(message);

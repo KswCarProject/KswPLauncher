@@ -6,9 +6,6 @@ import android.os.IBinder;
 import android.os.IInterface;
 import android.os.NetworkOnMainThreadException;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.util.ArraySet;
 import android.util.Size;
 import android.util.SizeF;
@@ -26,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public abstract class VersionedParcel {
     private static final int EX_BAD_PARCELABLE = -2;
     private static final int EX_ILLEGAL_ARGUMENT = -3;
@@ -263,7 +259,6 @@ public abstract class VersionedParcel {
         writeInt(val);
     }
 
-    @RequiresApi(api = 21)
     public void writeSize(Size val, int fieldId) {
         setOutputField(fieldId);
         writeBoolean(val != null);
@@ -273,7 +268,6 @@ public abstract class VersionedParcel {
         }
     }
 
-    @RequiresApi(api = 21)
     public void writeSizeF(SizeF val, int fieldId) {
         setOutputField(fieldId);
         writeBoolean(val != null);
@@ -778,8 +772,12 @@ public abstract class VersionedParcel {
         writeInt(code);
         if (code != 0) {
             writeString(e.getMessage());
-            if (code == EX_PARCELABLE) {
-                writeParcelable((Parcelable) e);
+            switch (code) {
+                case EX_PARCELABLE /*-9*/:
+                    writeParcelable((Parcelable) e);
+                    return;
+                default:
+                    return;
             }
         } else if (e instanceof RuntimeException) {
             throw ((RuntimeException) e);
@@ -809,8 +807,7 @@ public abstract class VersionedParcel {
         return createException(code, msg);
     }
 
-    @NonNull
-    protected static Throwable getRootCause(@NonNull Throwable t) {
+    protected static Throwable getRootCause(Throwable t) {
         while (t.getCause() != null) {
             t = t.getCause();
         }
@@ -847,7 +844,6 @@ public abstract class VersionedParcel {
         return (byte) (readInt() & 255);
     }
 
-    @RequiresApi(api = 21)
     public Size readSize(Size def, int fieldId) {
         if (!readField(fieldId)) {
             return def;
@@ -858,7 +854,6 @@ public abstract class VersionedParcel {
         return null;
     }
 
-    @RequiresApi(api = 21)
     public SizeF readSizeF(SizeF def, int fieldId) {
         if (!readField(fieldId)) {
             return def;
@@ -1072,8 +1067,9 @@ public abstract class VersionedParcel {
     }
 
     protected static <T extends VersionedParcelable> T readFromParcel(String parcelCls, VersionedParcel versionedParcel) {
+        Class<VersionedParcel> cls = VersionedParcel.class;
         try {
-            return (VersionedParcelable) Class.forName(parcelCls, true, VersionedParcel.class.getClassLoader()).getDeclaredMethod("read", new Class[]{VersionedParcel.class}).invoke((Object) null, new Object[]{versionedParcel});
+            return (VersionedParcelable) Class.forName(parcelCls, true, cls.getClassLoader()).getDeclaredMethod("read", new Class[]{cls}).invoke((Object) null, new Object[]{versionedParcel});
         } catch (IllegalAccessException e) {
             throw new RuntimeException("VersionedParcel encountered IllegalAccessException", e);
         } catch (InvocationTargetException e2) {

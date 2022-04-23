@@ -2,8 +2,6 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
@@ -11,20 +9,19 @@ import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class Id7SubCarViewBindingSw600dpLandImpl extends Id7SubCarViewBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback95;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback263;
     private long mDirtyFlags;
 
     static {
-        sViewsWithIds.put(R.id.textView2, 2);
-        sViewsWithIds.put(R.id.textView3, 3);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.textView2, 2);
+        sparseIntArray.put(R.id.textView3, 3);
     }
 
-    public Id7SubCarViewBindingSw600dpLandImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public Id7SubCarViewBindingSw600dpLandImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 4, sIncludes, sViewsWithIds));
     }
 
@@ -34,7 +31,7 @@ public class Id7SubCarViewBindingSw600dpLandImpl extends Id7SubCarViewBinding im
         this.carConstraintLayout.setTag((Object) null);
         this.carImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback95 = new OnClickListener(this, 1);
+        this.mCallback263 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -54,20 +51,20 @@ public class Id7SubCarViewBindingSw600dpLandImpl extends Id7SubCarViewBinding im
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (21 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (2 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setCarViewModel(@Nullable LauncherViewModel CarViewModel) {
+    public void setCarViewModel(LauncherViewModel CarViewModel) {
         this.mCarViewModel = CarViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(21);
+        notifyPropertyChanged(2);
         super.requestRebind();
     }
 
@@ -89,7 +86,7 @@ public class Id7SubCarViewBindingSw600dpLandImpl extends Id7SubCarViewBinding im
             carViewModelCarViewFocusChangeListener = carViewModel.carViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback95);
+            this.carImageView.setOnClickListener(this.mCallback263);
         }
         if ((3 & dirtyFlags) != 0) {
             this.carImageView.setOnFocusChangeListener(carViewModelCarViewFocusChangeListener);

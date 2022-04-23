@@ -1,8 +1,6 @@
 package com.bumptech.glide.load.resource.bitmap;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import com.bumptech.glide.load.EncodeStrategy;
 import com.bumptech.glide.load.Option;
@@ -23,10 +21,9 @@ public class BitmapEncoder implements ResourceEncoder<Bitmap> {
     public static final Option<Bitmap.CompressFormat> COMPRESSION_FORMAT = Option.memory("com.bumptech.glide.load.resource.bitmap.BitmapEncoder.CompressionFormat");
     public static final Option<Integer> COMPRESSION_QUALITY = Option.memory("com.bumptech.glide.load.resource.bitmap.BitmapEncoder.CompressionQuality", 90);
     private static final String TAG = "BitmapEncoder";
-    @Nullable
     private final ArrayPool arrayPool;
 
-    public BitmapEncoder(@NonNull ArrayPool arrayPool2) {
+    public BitmapEncoder(ArrayPool arrayPool2) {
         this.arrayPool = arrayPool2;
     }
 
@@ -35,7 +32,7 @@ public class BitmapEncoder implements ResourceEncoder<Bitmap> {
         this.arrayPool = null;
     }
 
-    public boolean encode(@NonNull Resource<Bitmap> resource, @NonNull File file, @NonNull Options options) {
+    public boolean encode(Resource<Bitmap> resource, File file, Options options) {
         OutputStream os;
         Bitmap bitmap = resource.get();
         Bitmap.CompressFormat format = getFormat(bitmap, options);
@@ -53,9 +50,11 @@ public class BitmapEncoder implements ResourceEncoder<Bitmap> {
                 bitmap.compress(format, quality, os2);
                 os2.close();
                 success = true;
-                try {
-                    os2.close();
-                } catch (IOException e) {
+                if (os2 != null) {
+                    try {
+                        os2.close();
+                    } catch (IOException e) {
+                    }
                 }
             } catch (IOException e2) {
                 if (Log.isLoggable(TAG, 3)) {
@@ -87,8 +86,7 @@ public class BitmapEncoder implements ResourceEncoder<Bitmap> {
         return Bitmap.CompressFormat.JPEG;
     }
 
-    @NonNull
-    public EncodeStrategy getEncodeStrategy(@NonNull Options options) {
+    public EncodeStrategy getEncodeStrategy(Options options) {
         return EncodeStrategy.TRANSFORMED;
     }
 }

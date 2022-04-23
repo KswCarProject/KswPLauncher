@@ -5,9 +5,6 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import com.bumptech.glide.load.Option;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.ResourceDecoder;
@@ -20,12 +17,11 @@ import java.security.MessageDigest;
 public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
     private static final MediaMetadataRetrieverFactory DEFAULT_FACTORY = new MediaMetadataRetrieverFactory();
     public static final long DEFAULT_FRAME = -1;
-    @VisibleForTesting
     static final int DEFAULT_FRAME_OPTION = 2;
     public static final Option<Integer> FRAME_OPTION = Option.disk("com.bumptech.glide.load.resource.bitmap.VideoBitmapDecode.FrameOption", 2, new Option.CacheKeyUpdater<Integer>() {
         private final ByteBuffer buffer = ByteBuffer.allocate(4);
 
-        public void update(@NonNull byte[] keyBytes, @NonNull Integer value, @NonNull MessageDigest messageDigest) {
+        public void update(byte[] keyBytes, Integer value, MessageDigest messageDigest) {
             if (value != null) {
                 messageDigest.update(keyBytes);
                 synchronized (this.buffer) {
@@ -39,7 +35,7 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
     public static final Option<Long> TARGET_FRAME = Option.disk("com.bumptech.glide.load.resource.bitmap.VideoBitmapDecode.TargetFrame", -1L, new Option.CacheKeyUpdater<Long>() {
         private final ByteBuffer buffer = ByteBuffer.allocate(8);
 
-        public void update(@NonNull byte[] keyBytes, @NonNull Long value, @NonNull MessageDigest messageDigest) {
+        public void update(byte[] keyBytes, Long value, MessageDigest messageDigest) {
             messageDigest.update(keyBytes);
             synchronized (this.buffer) {
                 this.buffer.position(0);
@@ -51,7 +47,6 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
     private final MediaMetadataRetrieverFactory factory;
     private final MediaMetadataRetrieverInitializer<T> initializer;
 
-    @VisibleForTesting
     interface MediaMetadataRetrieverInitializer<T> {
         void initialize(MediaMetadataRetriever mediaMetadataRetriever, T t);
     }
@@ -68,36 +63,39 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
         this(bitmapPool2, initializer2, DEFAULT_FACTORY);
     }
 
-    @VisibleForTesting
     VideoDecoder(BitmapPool bitmapPool2, MediaMetadataRetrieverInitializer<T> initializer2, MediaMetadataRetrieverFactory factory2) {
         this.bitmapPool = bitmapPool2;
         this.initializer = initializer2;
         this.factory = factory2;
     }
 
-    public boolean handles(@NonNull T t, @NonNull Options options) {
+    public boolean handles(T t, Options options) {
         return true;
     }
 
-    public Resource<Bitmap> decode(@NonNull T resource, int outWidth, int outHeight, @NonNull Options options) throws IOException {
+    public Resource<Bitmap> decode(T resource, int outWidth, int outHeight, Options options) throws IOException {
+        Integer frameOption;
+        DownsampleStrategy downsampleStrategy;
         Options options2 = options;
         long frameTimeMicros = ((Long) options2.get(TARGET_FRAME)).longValue();
         if (frameTimeMicros >= 0 || frameTimeMicros == -1) {
-            int frameOption = (Integer) options2.get(FRAME_OPTION);
-            if (frameOption == null) {
+            Integer frameOption2 = (Integer) options2.get(FRAME_OPTION);
+            if (frameOption2 == null) {
                 frameOption = 2;
+            } else {
+                frameOption = frameOption2;
             }
-            Integer frameOption2 = frameOption;
-            DownsampleStrategy downsampleStrategy = (DownsampleStrategy) options2.get(DownsampleStrategy.OPTION);
-            if (downsampleStrategy == null) {
+            DownsampleStrategy downsampleStrategy2 = (DownsampleStrategy) options2.get(DownsampleStrategy.OPTION);
+            if (downsampleStrategy2 == null) {
                 downsampleStrategy = DownsampleStrategy.DEFAULT;
+            } else {
+                downsampleStrategy = downsampleStrategy2;
             }
-            DownsampleStrategy downsampleStrategy2 = downsampleStrategy;
             MediaMetadataRetriever mediaMetadataRetriever = this.factory.build();
             try {
                 try {
                     this.initializer.initialize(mediaMetadataRetriever, resource);
-                    Bitmap result = decodeFrame(mediaMetadataRetriever, frameTimeMicros, frameOption2.intValue(), outWidth, outHeight, downsampleStrategy2);
+                    Bitmap result = decodeFrame(mediaMetadataRetriever, frameTimeMicros, frameOption.intValue(), outWidth, outHeight, downsampleStrategy);
                     mediaMetadataRetriever.release();
                     return BitmapResource.obtain(result, this.bitmapPool);
                 } catch (RuntimeException e) {
@@ -125,7 +123,6 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
         }
     }
 
-    @Nullable
     private static Bitmap decodeFrame(MediaMetadataRetriever mediaMetadataRetriever, long frameTimeMicros, int frameOption, int outWidth, int outHeight, DownsampleStrategy strategy) {
         Bitmap result = null;
         if (!(Build.VERSION.SDK_INT < 27 || outWidth == Integer.MIN_VALUE || outHeight == Integer.MIN_VALUE || strategy == DownsampleStrategy.NONE)) {
@@ -139,20 +136,19 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
 
     /* JADX WARNING: Removed duplicated region for block: B:18:0x0062  */
     /* JADX WARNING: Removed duplicated region for block: B:20:? A[RETURN, SYNTHETIC] */
-    @android.annotation.TargetApi(27)
     /* Code decompiled incorrectly, please refer to instructions dump. */
     private static android.graphics.Bitmap decodeScaledFrame(android.media.MediaMetadataRetriever r14, long r15, int r17, int r18, int r19, com.bumptech.glide.load.resource.bitmap.DownsampleStrategy r20) {
         /*
             r7 = r14
             r0 = 18
-            java.lang.String r0 = r14.extractMetadata(r0)     // Catch:{ Throwable -> 0x0052 }
-            int r0 = java.lang.Integer.parseInt(r0)     // Catch:{ Throwable -> 0x0052 }
+            java.lang.String r0 = r14.extractMetadata(r0)     // Catch:{ all -> 0x0052 }
+            int r0 = java.lang.Integer.parseInt(r0)     // Catch:{ all -> 0x0052 }
             r1 = 19
-            java.lang.String r1 = r14.extractMetadata(r1)     // Catch:{ Throwable -> 0x0052 }
-            int r1 = java.lang.Integer.parseInt(r1)     // Catch:{ Throwable -> 0x0052 }
+            java.lang.String r1 = r14.extractMetadata(r1)     // Catch:{ all -> 0x0052 }
+            int r1 = java.lang.Integer.parseInt(r1)     // Catch:{ all -> 0x0052 }
             r2 = 24
-            java.lang.String r2 = r14.extractMetadata(r2)     // Catch:{ Throwable -> 0x0052 }
-            int r2 = java.lang.Integer.parseInt(r2)     // Catch:{ Throwable -> 0x0052 }
+            java.lang.String r2 = r14.extractMetadata(r2)     // Catch:{ all -> 0x0052 }
+            int r2 = java.lang.Integer.parseInt(r2)     // Catch:{ all -> 0x0052 }
             r8 = r2
             r2 = 90
             if (r8 == r2) goto L_0x002b
@@ -166,23 +162,23 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
             r2 = r0
             r0 = r1
             r1 = r2
-            goto L_0x0029
+            r9 = r1
         L_0x002f:
             r10 = r18
             r11 = r19
             r12 = r20
-            float r1 = r12.getScaleFactor(r0, r9, r10, r11)     // Catch:{ Throwable -> 0x0050 }
+            float r1 = r12.getScaleFactor(r0, r9, r10, r11)     // Catch:{ all -> 0x0050 }
             r13 = r1
-            float r1 = (float) r0     // Catch:{ Throwable -> 0x0050 }
+            float r1 = (float) r0     // Catch:{ all -> 0x0050 }
             float r1 = r1 * r13
-            int r5 = java.lang.Math.round(r1)     // Catch:{ Throwable -> 0x0050 }
-            float r1 = (float) r9     // Catch:{ Throwable -> 0x0050 }
+            int r5 = java.lang.Math.round(r1)     // Catch:{ all -> 0x0050 }
+            float r1 = (float) r9     // Catch:{ all -> 0x0050 }
             float r1 = r1 * r13
-            int r6 = java.lang.Math.round(r1)     // Catch:{ Throwable -> 0x0050 }
+            int r6 = java.lang.Math.round(r1)     // Catch:{ all -> 0x0050 }
             r1 = r14
             r2 = r15
             r4 = r17
-            android.graphics.Bitmap r1 = r1.getScaledFrameAtTime(r2, r4, r5, r6)     // Catch:{ Throwable -> 0x0050 }
+            android.graphics.Bitmap r1 = r1.getScaledFrameAtTime(r2, r4, r5, r6)     // Catch:{ all -> 0x0050 }
             return r1
         L_0x0050:
             r0 = move-exception
@@ -193,14 +189,13 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
             r11 = r19
             r12 = r20
         L_0x0059:
-            java.lang.String r1 = "VideoDecoder"
-            r2 = 3
-            boolean r1 = android.util.Log.isLoggable(r1, r2)
-            if (r1 == 0) goto L_0x0069
-            java.lang.String r1 = "VideoDecoder"
-            java.lang.String r2 = "Exception trying to decode frame on oreo+"
-            android.util.Log.d(r1, r2, r0)
-        L_0x0069:
+            r1 = 3
+            java.lang.String r2 = "VideoDecoder"
+            boolean r1 = android.util.Log.isLoggable(r2, r1)
+            if (r1 == 0) goto L_0x0067
+            java.lang.String r1 = "Exception trying to decode frame on oreo+"
+            android.util.Log.d(r2, r1, r0)
+        L_0x0067:
             r1 = 0
             return r1
         */
@@ -211,7 +206,6 @@ public class VideoDecoder<T> implements ResourceDecoder<T, Bitmap> {
         return mediaMetadataRetriever.getFrameAtTime(frameTimeMicros, frameOption);
     }
 
-    @VisibleForTesting
     static class MediaMetadataRetrieverFactory {
         MediaMetadataRetrieverFactory() {
         }

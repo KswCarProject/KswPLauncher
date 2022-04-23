@@ -1,7 +1,6 @@
 package com.bumptech.glide.load;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.engine.Resource;
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -11,7 +10,7 @@ public class MultiTransformation<T> implements Transformation<T> {
     private final Collection<? extends Transformation<T>> transformations;
 
     @SafeVarargs
-    public MultiTransformation(@NonNull Transformation<T>... transformations2) {
+    public MultiTransformation(Transformation<T>... transformations2) {
         if (transformations2.length != 0) {
             this.transformations = Arrays.asList(transformations2);
             return;
@@ -19,7 +18,7 @@ public class MultiTransformation<T> implements Transformation<T> {
         throw new IllegalArgumentException("MultiTransformation must contain at least one Transformation");
     }
 
-    public MultiTransformation(@NonNull Collection<? extends Transformation<T>> transformationList) {
+    public MultiTransformation(Collection<? extends Transformation<T>> transformationList) {
         if (!transformationList.isEmpty()) {
             this.transformations = transformationList;
             return;
@@ -27,8 +26,7 @@ public class MultiTransformation<T> implements Transformation<T> {
         throw new IllegalArgumentException("MultiTransformation must contain at least one Transformation");
     }
 
-    @NonNull
-    public Resource<T> transform(@NonNull Context context, @NonNull Resource<T> resource, int outWidth, int outHeight) {
+    public Resource<T> transform(Context context, Resource<T> resource, int outWidth, int outHeight) {
         Resource<T> previous = resource;
         for (Transformation<T> transformation : this.transformations) {
             Resource<T> transformed = transformation.transform(context, previous, outWidth, outHeight);
@@ -51,7 +49,7 @@ public class MultiTransformation<T> implements Transformation<T> {
         return this.transformations.hashCode();
     }
 
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
         for (Transformation<T> transformation : this.transformations) {
             transformation.updateDiskCacheKey(messageDigest);
         }

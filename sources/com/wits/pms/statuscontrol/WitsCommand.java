@@ -2,6 +2,7 @@ package com.wits.pms.statuscontrol;
 
 import android.os.RemoteException;
 import com.google.gson.Gson;
+import com.wits.pms.statuscontrol.McuStatus;
 
 public class WitsCommand {
     public static final int BT_TYPE = 3;
@@ -151,6 +152,7 @@ public class WitsCommand {
         public static final int IMPORT_CONFIG = 220;
         public static final int INTERCEPT_KEY = 130;
         public static final int KEY_VOLTAGE = 702;
+        public static final int KSW_MCU_MSG = 699;
         public static final int LIGHT_CONTROL_COLOR = 701;
         public static final int LOC_SWITCH = 136;
         public static final int LOW_OR_HIGH_POWER_VOLTAGE_SHUTDOWN = 206;
@@ -284,5 +286,9 @@ public class WitsCommand {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void sendMcuCommand(McuStatus.KswMcuMsg mcuMsg) {
+        sendCommand(1, SystemCommand.KSW_MCU_MSG, new Gson().toJson((Object) mcuMsg));
     }
 }

@@ -33,21 +33,16 @@ public final class TextDirectionHeuristicsCompat {
     static int isRtlTextOrFormat(int directionality) {
         switch (directionality) {
             case 0:
+            case 14:
+            case 15:
                 return 1;
             case 1:
             case 2:
+            case 16:
+            case 17:
                 return 0;
             default:
-                switch (directionality) {
-                    case 14:
-                    case 15:
-                        return 1;
-                    case 16:
-                    case 17:
-                        return 0;
-                    default:
-                        return 2;
-                }
+                return 2;
         }
     }
 

@@ -8,9 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.FloatRange;
-import android.support.annotation.RestrictTo;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.appcompat.R;
 import android.util.AttributeSet;
@@ -29,23 +26,24 @@ public class DrawerArrowDrawable extends Drawable {
     private float mBarLength;
     private int mDirection = 2;
     private float mMaxCutForBarSize;
-    private final Paint mPaint = new Paint();
+    private final Paint mPaint;
     private final Path mPath = new Path();
     private float mProgress;
     private final int mSize;
     private boolean mSpin;
     private boolean mVerticalMirror = false;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ArrowDirection {
     }
 
     public DrawerArrowDrawable(Context context) {
-        this.mPaint.setStyle(Paint.Style.STROKE);
-        this.mPaint.setStrokeJoin(Paint.Join.MITER);
-        this.mPaint.setStrokeCap(Paint.Cap.BUTT);
-        this.mPaint.setAntiAlias(true);
+        Paint paint = new Paint();
+        this.mPaint = paint;
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.MITER);
+        paint.setStrokeCap(Paint.Cap.BUTT);
+        paint.setAntiAlias(true);
         TypedArray a = context.getTheme().obtainStyledAttributes((AttributeSet) null, R.styleable.DrawerArrowToggle, R.attr.drawerArrowStyle, R.style.Base_Widget_AppCompat_DrawerArrowToggle);
         setColor(a.getColor(R.styleable.DrawerArrowToggle_color, 0));
         setBarThickness(a.getDimension(R.styleable.DrawerArrowToggle_thickness, 0.0f));
@@ -91,14 +89,13 @@ public class DrawerArrowDrawable extends Drawable {
         }
     }
 
-    public void setColor(@ColorInt int color) {
+    public void setColor(int color) {
         if (color != this.mPaint.getColor()) {
             this.mPaint.setColor(color);
             invalidateSelf();
         }
     }
 
-    @ColorInt
     public int getColor() {
         return this.mPaint.getColor();
     }
@@ -156,34 +153,36 @@ public class DrawerArrowDrawable extends Drawable {
     }
 
     public void draw(Canvas canvas) {
+        boolean flipToPointRight;
         Canvas canvas2 = canvas;
         Rect bounds = getBounds();
-        int i = this.mDirection;
-        boolean flipToPointRight = false;
-        if (i != 3) {
-            switch (i) {
-                case 0:
-                    flipToPointRight = false;
-                    break;
-                case 1:
-                    flipToPointRight = true;
-                    break;
-                default:
-                    if (DrawableCompat.getLayoutDirection(this) == 1) {
-                        flipToPointRight = true;
-                        break;
-                    }
-                    break;
-            }
-        } else if (DrawableCompat.getLayoutDirection(this) == 0) {
-            flipToPointRight = true;
+        boolean z = false;
+        switch (this.mDirection) {
+            case 0:
+                flipToPointRight = false;
+                break;
+            case 1:
+                flipToPointRight = true;
+                break;
+            case 3:
+                if (DrawableCompat.getLayoutDirection(this) == 0) {
+                    z = true;
+                }
+                flipToPointRight = z;
+                break;
+            default:
+                if (DrawableCompat.getLayoutDirection(this) == 1) {
+                    z = true;
+                }
+                flipToPointRight = z;
+                break;
         }
-        boolean flipToPointRight2 = flipToPointRight;
-        float arrowHeadBarLength = lerp(this.mBarLength, (float) Math.sqrt((double) (this.mArrowHeadLength * this.mArrowHeadLength * 2.0f)), this.mProgress);
+        float f = this.mArrowHeadLength;
+        float arrowHeadBarLength = lerp(this.mBarLength, (float) Math.sqrt((double) (f * f * 2.0f)), this.mProgress);
         float arrowShaftLength = lerp(this.mBarLength, this.mArrowShaftLength, this.mProgress);
         float arrowShaftCut = (float) Math.round(lerp(0.0f, this.mMaxCutForBarSize, this.mProgress));
         float rotation = lerp(0.0f, ARROW_HEAD_ANGLE, this.mProgress);
-        float canvasRotate = lerp(flipToPointRight2 ? 0.0f : -180.0f, flipToPointRight2 ? 180.0f : 0.0f, this.mProgress);
+        float canvasRotate = lerp(flipToPointRight ? 0.0f : -180.0f, flipToPointRight ? 180.0f : 0.0f, this.mProgress);
         float arrowWidth = (float) Math.round(((double) arrowHeadBarLength) * Math.cos((double) rotation));
         float arrowHeight = (float) Math.round(((double) arrowHeadBarLength) * Math.sin((double) rotation));
         this.mPath.rewind();
@@ -198,13 +197,15 @@ public class DrawerArrowDrawable extends Drawable {
         this.mPath.close();
         canvas.save();
         float barThickness = this.mPaint.getStrokeWidth();
-        float f = arrowHeadBarLength;
-        canvas2.translate((float) bounds.centerX(), ((float) ((((int) ((((float) bounds.height()) - (3.0f * barThickness)) - (this.mBarGap * 2.0f))) / 4) * 2)) + (1.5f * barThickness) + this.mBarGap);
+        float height = ((float) bounds.height()) - (3.0f * barThickness);
+        float f2 = this.mBarGap;
+        canvas2.translate((float) bounds.centerX(), ((float) ((((int) (height - (2.0f * f2))) / 4) * 2)) + (1.5f * barThickness) + f2);
         if (this.mSpin) {
-            canvas2.rotate(((float) (this.mVerticalMirror ^ flipToPointRight2 ? -1 : 1)) * canvasRotate);
-        } else if (flipToPointRight2) {
+            canvas2.rotate(((float) (this.mVerticalMirror ^ flipToPointRight ? -1 : 1)) * canvasRotate);
+        } else if (flipToPointRight) {
             canvas2.rotate(180.0f);
         }
+        Rect rect = bounds;
         canvas2.drawPath(this.mPath, this.mPaint);
         canvas.restore();
     }
@@ -233,12 +234,11 @@ public class DrawerArrowDrawable extends Drawable {
         return -3;
     }
 
-    @FloatRange(from = 0.0d, to = 1.0d)
     public float getProgress() {
         return this.mProgress;
     }
 
-    public void setProgress(@FloatRange(from = 0.0d, to = 1.0d) float progress) {
+    public void setProgress(float progress) {
         if (this.mProgress != progress) {
             this.mProgress = progress;
             invalidateSelf();

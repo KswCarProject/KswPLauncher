@@ -1,7 +1,6 @@
 package android.support.v4.text;
 
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,7 +33,6 @@ public final class ICUCompat {
         }
     }
 
-    @Nullable
     public static String maximizeAndGetScript(Locale locale) {
         if (Build.VERSION.SDK_INT >= 21) {
             try {
@@ -57,8 +55,9 @@ public final class ICUCompat {
 
     private static String getScript(String localeStr) {
         try {
-            if (sGetScriptMethod != null) {
-                return (String) sGetScriptMethod.invoke((Object) null, new Object[]{localeStr});
+            Method method = sGetScriptMethod;
+            if (method != null) {
+                return (String) method.invoke((Object) null, new Object[]{localeStr});
             }
         } catch (IllegalAccessException e) {
             Log.w(TAG, e);
@@ -71,8 +70,9 @@ public final class ICUCompat {
     private static String addLikelySubtags(Locale locale) {
         String localeStr = locale.toString();
         try {
-            if (sAddLikelySubtagsMethod != null) {
-                return (String) sAddLikelySubtagsMethod.invoke((Object) null, new Object[]{localeStr});
+            Method method = sAddLikelySubtagsMethod;
+            if (method != null) {
+                return (String) method.invoke((Object) null, new Object[]{localeStr});
             }
         } catch (IllegalAccessException e) {
             Log.w(TAG, e);

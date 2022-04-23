@@ -1,9 +1,7 @@
 package android.support.v4.os;
 
-import android.support.annotation.RestrictTo;
 import java.util.Locale;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 final class LocaleHelper {
     static Locale forLanguageTag(String str) {
         if (str.contains("-")) {

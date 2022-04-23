@@ -1,10 +1,8 @@
 package androidx.media;
 
-import android.support.annotation.RestrictTo;
 import android.support.v4.media.AudioAttributesCompat;
 import androidx.versionedparcelable.VersionedParcel;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY})
 public final class AudioAttributesCompatParcelizer {
     public static AudioAttributesCompat read(VersionedParcel parcel) {
         AudioAttributesCompat obj = new AudioAttributesCompat();

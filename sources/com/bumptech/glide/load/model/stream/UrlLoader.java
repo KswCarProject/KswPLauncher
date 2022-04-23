@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.model.stream;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
@@ -16,16 +15,15 @@ public class UrlLoader implements ModelLoader<URL, InputStream> {
         this.glideUrlLoader = glideUrlLoader2;
     }
 
-    public ModelLoader.LoadData<InputStream> buildLoadData(@NonNull URL model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<InputStream> buildLoadData(URL model, int width, int height, Options options) {
         return this.glideUrlLoader.buildLoadData(new GlideUrl(model), width, height, options);
     }
 
-    public boolean handles(@NonNull URL model) {
+    public boolean handles(URL model) {
         return true;
     }
 
     public static class StreamFactory implements ModelLoaderFactory<URL, InputStream> {
-        @NonNull
         public ModelLoader<URL, InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new UrlLoader(multiFactory.build(GlideUrl.class, InputStream.class));
         }

@@ -19,8 +19,9 @@ public class AppCompatSeekBar extends SeekBar {
 
     public AppCompatSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.mAppCompatSeekBarHelper = new AppCompatSeekBarHelper(this);
-        this.mAppCompatSeekBarHelper.loadFromAttributes(attrs, defStyleAttr);
+        AppCompatSeekBarHelper appCompatSeekBarHelper = new AppCompatSeekBarHelper(this);
+        this.mAppCompatSeekBarHelper = appCompatSeekBarHelper;
+        appCompatSeekBarHelper.loadFromAttributes(attrs, defStyleAttr);
     }
 
     /* access modifiers changed from: protected */

@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.resource.gif;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.load.engine.Initializable;
 import com.bumptech.glide.load.resource.drawable.DrawableResource;
 
@@ -9,7 +8,6 @@ public class GifDrawableResource extends DrawableResource<GifDrawable> implement
         super(drawable);
     }
 
-    @NonNull
     public Class<GifDrawable> getResourceClass() {
         return GifDrawable.class;
     }

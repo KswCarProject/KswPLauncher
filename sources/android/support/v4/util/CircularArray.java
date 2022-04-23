@@ -7,14 +7,16 @@ public final class CircularArray<E> {
     private int mTail;
 
     private void doubleCapacity() {
-        int n = this.mElements.length;
-        int r = n - this.mHead;
+        E[] eArr = this.mElements;
+        int n = eArr.length;
+        int i = this.mHead;
+        int r = n - i;
         int newCapacity = n << 1;
         if (newCapacity >= 0) {
-            E[] eArr = new Object[newCapacity];
-            System.arraycopy(this.mElements, this.mHead, eArr, 0, r);
-            System.arraycopy(this.mElements, 0, eArr, r, this.mHead);
-            this.mElements = (Object[]) eArr;
+            E[] eArr2 = new Object[newCapacity];
+            System.arraycopy(eArr, i, eArr2, 0, r);
+            System.arraycopy(this.mElements, 0, eArr2, r, this.mHead);
+            this.mElements = (Object[]) eArr2;
             this.mHead = 0;
             this.mTail = n;
             this.mCapacityBitmask = newCapacity - 1;
@@ -45,36 +47,45 @@ public final class CircularArray<E> {
     }
 
     public void addFirst(E e) {
-        this.mHead = (this.mHead - 1) & this.mCapacityBitmask;
-        this.mElements[this.mHead] = e;
-        if (this.mHead == this.mTail) {
+        int i = (this.mHead - 1) & this.mCapacityBitmask;
+        this.mHead = i;
+        this.mElements[i] = e;
+        if (i == this.mTail) {
             doubleCapacity();
         }
     }
 
     public void addLast(E e) {
-        this.mElements[this.mTail] = e;
-        this.mTail = (this.mTail + 1) & this.mCapacityBitmask;
-        if (this.mTail == this.mHead) {
+        E[] eArr = this.mElements;
+        int i = this.mTail;
+        eArr[i] = e;
+        int i2 = this.mCapacityBitmask & (i + 1);
+        this.mTail = i2;
+        if (i2 == this.mHead) {
             doubleCapacity();
         }
     }
 
     public E popFirst() {
-        if (this.mHead != this.mTail) {
-            E result = this.mElements[this.mHead];
-            this.mElements[this.mHead] = null;
-            this.mHead = (this.mHead + 1) & this.mCapacityBitmask;
+        int i = this.mHead;
+        if (i != this.mTail) {
+            E[] eArr = this.mElements;
+            E result = eArr[i];
+            eArr[i] = null;
+            this.mHead = (i + 1) & this.mCapacityBitmask;
             return result;
         }
         throw new ArrayIndexOutOfBoundsException();
     }
 
     public E popLast() {
-        if (this.mHead != this.mTail) {
-            int t = (this.mTail - 1) & this.mCapacityBitmask;
-            E result = this.mElements[t];
-            this.mElements[t] = null;
+        int i = this.mHead;
+        int i2 = this.mTail;
+        if (i != i2) {
+            int t = this.mCapacityBitmask & (i2 - 1);
+            E[] eArr = this.mElements;
+            E result = eArr[t];
+            eArr[t] = null;
             this.mTail = t;
             return result;
         }
@@ -89,18 +100,20 @@ public final class CircularArray<E> {
         if (numOfElements > 0) {
             if (numOfElements <= size()) {
                 int end = this.mElements.length;
-                if (numOfElements < end - this.mHead) {
-                    end = this.mHead + numOfElements;
+                int i = this.mHead;
+                if (numOfElements < end - i) {
+                    end = i + numOfElements;
                 }
-                for (int i = this.mHead; i < end; i++) {
-                    this.mElements[i] = null;
+                for (int i2 = this.mHead; i2 < end; i2++) {
+                    this.mElements[i2] = null;
                 }
-                int removed = end - this.mHead;
+                int i3 = this.mHead;
+                int removed = end - i3;
                 int numOfElements2 = numOfElements - removed;
-                this.mHead = (this.mHead + removed) & this.mCapacityBitmask;
+                this.mHead = (i3 + removed) & this.mCapacityBitmask;
                 if (numOfElements2 > 0) {
-                    for (int i2 = 0; i2 < numOfElements2; i2++) {
-                        this.mElements[i2] = null;
+                    for (int i4 = 0; i4 < numOfElements2; i4++) {
+                        this.mElements[i4] = null;
                     }
                     this.mHead = numOfElements2;
                     return;
@@ -112,23 +125,32 @@ public final class CircularArray<E> {
     }
 
     public void removeFromEnd(int numOfElements) {
+        int i;
         if (numOfElements > 0) {
             if (numOfElements <= size()) {
                 int start = 0;
-                if (numOfElements < this.mTail) {
-                    start = this.mTail - numOfElements;
+                int i2 = this.mTail;
+                if (numOfElements < i2) {
+                    start = i2 - numOfElements;
                 }
-                for (int i = start; i < this.mTail; i++) {
-                    this.mElements[i] = null;
+                int i3 = start;
+                while (true) {
+                    i = this.mTail;
+                    if (i3 >= i) {
+                        break;
+                    }
+                    this.mElements[i3] = null;
+                    i3++;
                 }
-                int removed = this.mTail - start;
-                int numOfElements2 = numOfElements - removed;
-                this.mTail -= removed;
+                int i4 = i - start;
+                int numOfElements2 = numOfElements - i4;
+                this.mTail = i - i4;
                 if (numOfElements2 > 0) {
-                    this.mTail = this.mElements.length;
-                    int newTail = this.mTail - numOfElements2;
-                    for (int i2 = newTail; i2 < this.mTail; i2++) {
-                        this.mElements[i2] = null;
+                    int length = this.mElements.length;
+                    this.mTail = length;
+                    int newTail = length - numOfElements2;
+                    for (int i5 = newTail; i5 < this.mTail; i5++) {
+                        this.mElements[i5] = null;
                     }
                     this.mTail = newTail;
                     return;
@@ -140,15 +162,18 @@ public final class CircularArray<E> {
     }
 
     public E getFirst() {
-        if (this.mHead != this.mTail) {
-            return this.mElements[this.mHead];
+        int i = this.mHead;
+        if (i != this.mTail) {
+            return this.mElements[i];
         }
         throw new ArrayIndexOutOfBoundsException();
     }
 
     public E getLast() {
-        if (this.mHead != this.mTail) {
-            return this.mElements[(this.mTail - 1) & this.mCapacityBitmask];
+        int i = this.mHead;
+        int i2 = this.mTail;
+        if (i != i2) {
+            return this.mElements[(i2 - 1) & this.mCapacityBitmask];
         }
         throw new ArrayIndexOutOfBoundsException();
     }

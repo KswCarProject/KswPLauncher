@@ -60,8 +60,9 @@ public final class DisplayCutoutCompat {
             return false;
         }
         DisplayCutoutCompat other = (DisplayCutoutCompat) o;
-        if (this.mDisplayCutout != null) {
-            return this.mDisplayCutout.equals(other.mDisplayCutout);
+        Object obj = this.mDisplayCutout;
+        if (obj != null) {
+            return obj.equals(other.mDisplayCutout);
         }
         if (other.mDisplayCutout == null) {
             return true;
@@ -70,10 +71,11 @@ public final class DisplayCutoutCompat {
     }
 
     public int hashCode() {
-        if (this.mDisplayCutout == null) {
+        Object obj = this.mDisplayCutout;
+        if (obj == null) {
             return 0;
         }
-        return this.mDisplayCutout.hashCode();
+        return obj.hashCode();
     }
 
     public String toString() {

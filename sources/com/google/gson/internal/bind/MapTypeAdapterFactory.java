@@ -18,7 +18,6 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +91,6 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
         }
 
         public void write(JsonWriter out, Map<K, V> map) throws IOException {
-            int i;
             if (map == null) {
                 out.nullValue();
             } else if (!MapTypeAdapterFactory.this.complexMapKeySerialization) {
@@ -106,50 +104,29 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
                 boolean hasComplexKeys = false;
                 List<JsonElement> keys = new ArrayList<>(map.size());
                 List<V> values = new ArrayList<>(map.size());
-                Iterator i$ = map.entrySet().iterator();
-                while (true) {
-                    i = 0;
-                    if (!i$.hasNext()) {
-                        break;
-                    }
-                    Map.Entry<K, V> entry2 = i$.next();
+                for (Map.Entry<K, V> entry2 : map.entrySet()) {
                     JsonElement keyElement = this.keyTypeAdapter.toJsonTree(entry2.getKey());
                     keys.add(keyElement);
                     values.add(entry2.getValue());
-                    if (keyElement.isJsonArray() || keyElement.isJsonObject()) {
-                        i = 1;
-                    }
-                    hasComplexKeys |= i;
+                    hasComplexKeys |= keyElement.isJsonArray() || keyElement.isJsonObject();
                 }
                 if (hasComplexKeys) {
                     out.beginArray();
-                    while (true) {
-                        int i2 = i;
-                        if (i2 < keys.size()) {
-                            out.beginArray();
-                            Streams.write(keys.get(i2), out);
-                            this.valueTypeAdapter.write(out, values.get(i2));
-                            out.endArray();
-                            i = i2 + 1;
-                        } else {
-                            out.endArray();
-                            return;
-                        }
+                    for (int i = 0; i < keys.size(); i++) {
+                        out.beginArray();
+                        Streams.write(keys.get(i), out);
+                        this.valueTypeAdapter.write(out, values.get(i));
+                        out.endArray();
                     }
-                } else {
-                    out.beginObject();
-                    while (true) {
-                        int i3 = i;
-                        if (i3 < keys.size()) {
-                            out.name(keyToString(keys.get(i3)));
-                            this.valueTypeAdapter.write(out, values.get(i3));
-                            i = i3 + 1;
-                        } else {
-                            out.endObject();
-                            return;
-                        }
-                    }
+                    out.endArray();
+                    return;
                 }
+                out.beginObject();
+                for (int i2 = 0; i2 < keys.size(); i2++) {
+                    out.name(keyToString(keys.get(i2)));
+                    this.valueTypeAdapter.write(out, values.get(i2));
+                }
+                out.endObject();
             }
         }
 

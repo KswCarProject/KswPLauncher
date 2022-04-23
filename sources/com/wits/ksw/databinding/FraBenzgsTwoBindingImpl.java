@@ -2,10 +2,9 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
+import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -14,35 +13,30 @@ import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.view.benzgs.BenzGsViewMoel;
 
 public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
     private final RelativeLayout mboundView1;
-    @NonNull
     private final RelativeLayout mboundView2;
-    @NonNull
     private final RelativeLayout mboundView3;
-    @NonNull
     private final RelativeLayout mboundView4;
-    @NonNull
     private final RelativeLayout mboundView6;
 
     static {
-        sViewsWithIds.put(R.id.benz_gs_home_vide_hint, 7);
-        sViewsWithIds.put(R.id.benz_gs_home_vide, 8);
-        sViewsWithIds.put(R.id.benz_gs_home_filema_hint, 9);
-        sViewsWithIds.put(R.id.benz_gs_home_filema, 10);
-        sViewsWithIds.put(R.id.benz_gs_home_plink_hint, 11);
-        sViewsWithIds.put(R.id.benz_gs_home_plink, 12);
-        sViewsWithIds.put(R.id.benz_gs_home_dash, 13);
-        sViewsWithIds.put(R.id.benz_gs_home_browser_hint, 14);
-        sViewsWithIds.put(R.id.benz_gs_home_browser, 15);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.benz_gs_home_vide_hint, 7);
+        sparseIntArray.put(R.id.benz_gs_home_vide, 8);
+        sparseIntArray.put(R.id.benz_gs_home_filema_hint, 9);
+        sparseIntArray.put(R.id.benz_gs_home_filema, 10);
+        sparseIntArray.put(R.id.benz_gs_home_plink_hint, 11);
+        sparseIntArray.put(R.id.benz_gs_home_plink, 12);
+        sparseIntArray.put(R.id.benz_gs_home_dash, 13);
+        sparseIntArray.put(R.id.benz_gs_home_browser_hint, 14);
+        sparseIntArray.put(R.id.benz_gs_home_browser, 15);
     }
 
-    public FraBenzgsTwoBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public FraBenzgsTwoBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 16, sIncludes, sViewsWithIds));
     }
 
@@ -52,16 +46,21 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
         this.mDirtyFlags = -1;
         this.benzGsHomeDashHint.setTag((Object) null);
         this.benzgsHomeTwo.setTag((Object) null);
-        this.mboundView1 = bindings[1];
-        this.mboundView1.setTag((Object) null);
-        this.mboundView2 = bindings[2];
-        this.mboundView2.setTag((Object) null);
-        this.mboundView3 = bindings[3];
-        this.mboundView3.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
-        this.mboundView6 = bindings[6];
-        this.mboundView6.setTag((Object) null);
+        RelativeLayout relativeLayout = bindings[1];
+        this.mboundView1 = relativeLayout;
+        relativeLayout.setTag((Object) null);
+        RelativeLayout relativeLayout2 = bindings[2];
+        this.mboundView2 = relativeLayout2;
+        relativeLayout2.setTag((Object) null);
+        RelativeLayout relativeLayout3 = bindings[3];
+        this.mboundView3 = relativeLayout3;
+        relativeLayout3.setTag((Object) null);
+        RelativeLayout relativeLayout4 = bindings[4];
+        this.mboundView4 = relativeLayout4;
+        relativeLayout4.setTag((Object) null);
+        RelativeLayout relativeLayout5 = bindings[6];
+        this.mboundView6 = relativeLayout5;
+        relativeLayout5.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -82,7 +81,7 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
+    public boolean setVariable(int variableId, Object variable) {
         if (17 != variableId) {
             return false;
         }
@@ -90,7 +89,7 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
         return true;
     }
 
-    public void setVm(@Nullable BenzGsViewMoel Vm) {
+    public void setVm(BenzGsViewMoel Vm) {
         this.mVm = Vm;
         synchronized (this) {
             this.mDirtyFlags |= 4;
@@ -105,7 +104,7 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
             case 0:
                 return onChangeVmIndex((ObservableInt) object, fieldId);
             case 1:
-                return onChangeVmCarInfoOilValue((ObservableInt) object, fieldId);
+                return onChangeVmCarInfoOilValue((ObservableField) object, fieldId);
             default:
                 return false;
         }
@@ -121,7 +120,7 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
         return true;
     }
 
-    private boolean onChangeVmCarInfoOilValue(ObservableInt VmCarInfoOilValue, int fieldId) {
+    private boolean onChangeVmCarInfoOilValue(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -138,16 +137,16 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
+        boolean vmIndexInt6 = false;
+        boolean vmIndexInt8 = false;
+        String vmCarInfoOilValueGet = null;
         ObservableInt vmIndex = null;
         BenzGsViewMoel vm = this.mVm;
         boolean vmIndexInt5 = false;
-        boolean vmIndexInt8 = false;
-        int vmCarInfoOilValueGet = 0;
-        boolean vmIndexInt6 = false;
+        boolean vmIndexInt7 = false;
+        ObservableField<String> vmCarInfoOilValue = null;
         int vmIndexGet = 0;
         boolean vmIndexInt9 = false;
-        boolean vmIndexInt7 = false;
-        ObservableInt vmCarInfoOilValue = null;
         if ((dirtyFlags & 13) != 0) {
             if (vm != null) {
                 vmIndex = vm.index;
@@ -156,11 +155,11 @@ public class FraBenzgsTwoBindingImpl extends FraBenzgsTwoBinding {
             if (vmIndex != null) {
                 vmIndexGet = vmIndex.get();
             }
-            vmIndexInt5 = vmIndexGet == 5;
-            vmIndexInt8 = vmIndexGet == 8;
             vmIndexInt6 = vmIndexGet == 6;
-            vmIndexInt9 = vmIndexGet == 9;
+            vmIndexInt8 = vmIndexGet == 8;
+            vmIndexInt5 = vmIndexGet == 5;
             vmIndexInt7 = vmIndexGet == 7;
+            vmIndexInt9 = vmIndexGet == 9;
         }
         if ((dirtyFlags & 10) != 0) {
             CarInfo vmCarInfo = BenzGsViewMoel.carInfo;

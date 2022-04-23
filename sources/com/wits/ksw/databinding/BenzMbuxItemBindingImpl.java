@@ -5,8 +5,6 @@ import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,27 +14,22 @@ import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.benzmbux.BenzMbuxBean;
 
 public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback154;
-    @Nullable
-    private final View.OnClickListener mCallback155;
-    @Nullable
-    private final View.OnClickListener mCallback156;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback204;
+    private final View.OnClickListener mCallback205;
+    private final View.OnClickListener mCallback206;
     private long mDirtyFlags;
-    @NonNull
     private final ImageView mboundView3;
-    @NonNull
     private final ImageView mboundView4;
 
     static {
-        sViewsWithIds.put(R.id.space, 5);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.space, 5);
     }
 
-    public BenzMbuxItemBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public BenzMbuxItemBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 6, sIncludes, sViewsWithIds));
     }
 
@@ -45,15 +38,17 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         this.mDirtyFlags = -1;
         this.benzMbuxImageView.setTag((Object) null);
         this.benzMbuxTextView.setTag((Object) null);
-        this.mboundView3 = bindings[3];
-        this.mboundView3.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
+        ImageView imageView = bindings[3];
+        this.mboundView3 = imageView;
+        imageView.setTag((Object) null);
+        ImageView imageView2 = bindings[4];
+        this.mboundView4 = imageView2;
+        imageView2.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback156 = new OnClickListener(this, 3);
-        this.mCallback154 = new OnClickListener(this, 1);
-        this.mCallback155 = new OnClickListener(this, 2);
+        this.mCallback205 = new OnClickListener(this, 2);
+        this.mCallback206 = new OnClickListener(this, 3);
+        this.mCallback204 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -73,11 +68,11 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (1 == variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (11 == variableId) {
             setListItem((BenzMbuxBean) variable);
             return true;
-        } else if (14 != variableId) {
+        } else if (15 != variableId) {
             return false;
         } else {
             setVieModel((BcVieModel) variable);
@@ -85,21 +80,21 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         }
     }
 
-    public void setListItem(@Nullable BenzMbuxBean ListItem) {
+    public void setListItem(BenzMbuxBean ListItem) {
         this.mListItem = ListItem;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(1);
+        notifyPropertyChanged(11);
         super.requestRebind();
     }
 
-    public void setVieModel(@Nullable BcVieModel VieModel) {
+    public void setVieModel(BcVieModel VieModel) {
         this.mVieModel = VieModel;
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(14);
+        notifyPropertyChanged(15);
         super.requestRebind();
     }
 
@@ -118,19 +113,19 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         BenzMbuxBean listItem = this.mListItem;
         Drawable listItemAppIcon = null;
         BcVieModel bcVieModel = this.mVieModel;
-        Drawable listItemSubIcon1 = null;
         String listItemAppLable = null;
+        Drawable listItemSubIcon1 = null;
         Drawable listItemSubIcon2 = null;
         if (!((dirtyFlags & 5) == 0 || listItem == null)) {
             listItemAppIcon = listItem.getAppIcon();
-            listItemSubIcon1 = listItem.getSubIcon1();
             listItemAppLable = listItem.getAppLable();
+            listItemSubIcon1 = listItem.getSubIcon1();
             listItemSubIcon2 = listItem.getSubIcon2();
         }
         if ((4 & dirtyFlags) != 0) {
-            this.benzMbuxImageView.setOnClickListener(this.mCallback154);
-            this.mboundView3.setOnClickListener(this.mCallback155);
-            this.mboundView4.setOnClickListener(this.mCallback156);
+            this.benzMbuxImageView.setOnClickListener(this.mCallback204);
+            this.mboundView3.setOnClickListener(this.mCallback205);
+            this.mboundView4.setOnClickListener(this.mCallback206);
         }
         if ((5 & dirtyFlags) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.benzMbuxImageView, listItemAppIcon);
@@ -141,13 +136,13 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean vieModelJavaLangObjectNull = false;
+        boolean vieModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 BenzMbuxBean listItem = this.mListItem;
                 BcVieModel vieModel = this.mVieModel;
-                if (vieModel != null) {
-                    vieModelJavaLangObjectNull = true;
+                if (vieModel == null) {
+                    vieModelJavaLangObjectNull = false;
                 }
                 if (vieModelJavaLangObjectNull) {
                     vieModel.onMbuxHomeItemClick(callbackArg_0, listItem);
@@ -157,8 +152,8 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
             case 2:
                 BenzMbuxBean listItem2 = this.mListItem;
                 BcVieModel vieModel2 = this.mVieModel;
-                if (vieModel2 != null) {
-                    vieModelJavaLangObjectNull = true;
+                if (vieModel2 == null) {
+                    vieModelJavaLangObjectNull = false;
                 }
                 if (vieModelJavaLangObjectNull) {
                     vieModel2.onMbuxHomeItemClick(this.benzMbuxImageView, listItem2);
@@ -168,8 +163,8 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
             case 3:
                 BenzMbuxBean listItem3 = this.mListItem;
                 BcVieModel vieModel3 = this.mVieModel;
-                if (vieModel3 != null) {
-                    vieModelJavaLangObjectNull = true;
+                if (vieModel3 == null) {
+                    vieModelJavaLangObjectNull = false;
                 }
                 if (vieModelJavaLangObjectNull) {
                     vieModel3.onMbuxHomeItemClick(this.benzMbuxImageView, listItem3);

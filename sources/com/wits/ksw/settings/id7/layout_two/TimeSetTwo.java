@@ -83,16 +83,16 @@ public class TimeSetTwo extends RelativeLayout implements RadioGroup.OnCheckedCh
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_sync1:
+            case R.id.rdb_sync1 /*2131297195*/:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
                 return;
-            case R.id.rdb_sync2:
+            case R.id.rdb_sync2 /*2131297196*/:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
                 return;
-            case R.id.rdb_zhis1:
+            case R.id.rdb_zhis1 /*2131297203*/:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                 return;
-            case R.id.rdb_zhis2:
+            case R.id.rdb_zhis2 /*2131297204*/:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
                 return;
             default:

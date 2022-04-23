@@ -57,18 +57,21 @@ abstract class BaseMenuWrapper<T> extends BaseWrapper<T> {
 
     /* access modifiers changed from: package-private */
     public final void internalClear() {
-        if (this.mMenuItems != null) {
-            this.mMenuItems.clear();
+        Map<SupportMenuItem, MenuItem> map = this.mMenuItems;
+        if (map != null) {
+            map.clear();
         }
-        if (this.mSubMenus != null) {
-            this.mSubMenus.clear();
+        Map<SupportSubMenu, SubMenu> map2 = this.mSubMenus;
+        if (map2 != null) {
+            map2.clear();
         }
     }
 
     /* access modifiers changed from: package-private */
     public final void internalRemoveGroup(int groupId) {
-        if (this.mMenuItems != null) {
-            Iterator<SupportMenuItem> iterator = this.mMenuItems.keySet().iterator();
+        Map<SupportMenuItem, MenuItem> map = this.mMenuItems;
+        if (map != null) {
+            Iterator<SupportMenuItem> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
                 if (groupId == iterator.next().getGroupId()) {
                     iterator.remove();
@@ -79,8 +82,9 @@ abstract class BaseMenuWrapper<T> extends BaseWrapper<T> {
 
     /* access modifiers changed from: package-private */
     public final void internalRemoveItem(int id) {
-        if (this.mMenuItems != null) {
-            Iterator<SupportMenuItem> iterator = this.mMenuItems.keySet().iterator();
+        Map<SupportMenuItem, MenuItem> map = this.mMenuItems;
+        if (map != null) {
+            Iterator<SupportMenuItem> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
                 if (id == iterator.next().getItemId()) {
                     iterator.remove();

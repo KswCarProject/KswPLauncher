@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,15 +78,15 @@ public class Ntg6SystemInfoLayout extends RelativeLayout implements View.OnClick
     }
 
     private void initView(View view) {
-        String pingtai;
         this.dialogViews = new DialogViews(this.context);
         this.img_TwoBack = (ImageView) view.findViewById(R.id.img_TwoBack);
         try {
             String mvformat = String.format(getResources().getString(R.string.text_8), new Object[]{McuUtil.getMcuVersion()});
             SpannableString ss1 = new SpannableString(mvformat);
             ss1.setSpan(new RelativeSizeSpan(0.7f), getResources().getString(R.string.text_8).length() - 2, mvformat.length(), 17);
-            this.tv_infoMcuv = (TextView) view.findViewById(R.id.tv_infoMcuv);
-            this.tv_infoMcuv.setText(ss1);
+            TextView textView = (TextView) view.findViewById(R.id.tv_infoMcuv);
+            this.tv_infoMcuv = textView;
+            textView.setText(ss1);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -99,52 +98,26 @@ public class Ntg6SystemInfoLayout extends RelativeLayout implements View.OnClick
         String avformat = String.format(getResources().getString(R.string.text_9), new Object[]{getVersion()});
         SpannableString ss2 = new SpannableString(avformat);
         ss2.setSpan(new RelativeSizeSpan(0.7f), getResources().getString(R.string.text_9).length() - 2, avformat.length(), 17);
-        this.tv_infoAppv = (TextView) view.findViewById(R.id.tv_infoAppv);
-        this.tv_infoAppv.setText(ss2);
-        String svformat = String.format(getResources().getString(R.string.text_10), new Object[]{Build.VERSION.RELEASE});
-        this.tv_infoSysv = (TextView) view.findViewById(R.id.tv_infoSysv);
-        if (!TextUtils.isEmpty(UtilsInfo.getBaseband_Ver())) {
-            String substring = UtilsInfo.getBaseband_Ver().substring(0, 4);
-            int index_NA = UtilsInfo.getBaseband_Ver().indexOf("NA");
-            int index_platform_M506 = UtilsInfo.getBaseband_Ver().indexOf("M506");
-            int index_platform_M501 = UtilsInfo.getBaseband_Ver().indexOf("M501");
-            int index_platform_8953 = UtilsInfo.getBaseband_Ver().indexOf("8953");
-            int index_platform_8937 = UtilsInfo.getBaseband_Ver().indexOf("8937");
-            if (index_platform_M506 > -1) {
-                pingtai = "M506";
-            } else if (index_platform_M501 > -1) {
-                pingtai = "8953";
-            } else if (index_platform_8953 > -1) {
-                pingtai = "8953";
-            } else if (index_platform_8937 > -1) {
-                pingtai = "8937";
-            } else {
-                pingtai = "8953";
+        TextView textView2 = (TextView) view.findViewById(R.id.tv_infoAppv);
+        this.tv_infoAppv = textView2;
+        textView2.setText(ss2);
+        String svformat = String.format(getResources().getString(R.string.text_10), new Object[]{UtilsInfo.getSettingsVersion(this.context) + "-" + UtilsInfo.getIMEI()});
+        SpannableString ss3 = new SpannableString(svformat);
+        ss3.setSpan(new RelativeSizeSpan(0.7f), getResources().getString(R.string.text_10).length() - 2, svformat.length(), 17);
+        TextView textView3 = (TextView) view.findViewById(R.id.tv_infoSysv);
+        this.tv_infoSysv = textView3;
+        textView3.setText(ss3);
+        this.tv_infoSysv.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                UtilsInfo.showQRCode(Ntg6SystemInfoLayout.this.context);
             }
-            TextView textView = this.tv_infoSysv;
-            textView.setText(svformat + "-" + pingtai);
-            if (index_NA > -1) {
-                if (index_platform_M501 > -1) {
-                    TextView textView2 = this.tv_infoSysv;
-                    textView2.setText(svformat + "-" + pingtai + "NA-1");
-                } else {
-                    TextView textView3 = this.tv_infoSysv;
-                    textView3.setText(svformat + "-" + pingtai + "NA");
-                }
-            } else if (index_platform_M501 > -1) {
-                TextView textView4 = this.tv_infoSysv;
-                textView4.setText(svformat + "-" + pingtai + "EA-1");
-            } else {
-                TextView textView5 = this.tv_infoSysv;
-                textView5.setText(svformat + "-" + pingtai + "EA");
-            }
-        } else {
-            this.tv_infoSysv.setText(svformat);
-        }
-        this.tv_infoMcuUp = (TextView) view.findViewById(R.id.tv_infoMcuUp);
-        this.tv_infoMcuUp.setOnClickListener(this);
-        this.tv_infoSysRest = (TextView) view.findViewById(R.id.tv_infoSysRest);
-        this.tv_infoSysRest.setOnClickListener(this);
+        });
+        TextView textView4 = (TextView) view.findViewById(R.id.tv_infoMcuUp);
+        this.tv_infoMcuUp = textView4;
+        textView4.setOnClickListener(this);
+        TextView textView5 = (TextView) view.findViewById(R.id.tv_infoSysRest);
+        this.tv_infoSysRest = textView5;
+        textView5.setOnClickListener(this);
         this.img_TwoBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Ntg6SystemInfoLayout.this.fhandler.sendEmptyMessage(1);
@@ -163,11 +136,15 @@ public class Ntg6SystemInfoLayout extends RelativeLayout implements View.OnClick
     }
 
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.tv_infoMcuUp) {
-            this.dialogViews.updateMcu(this.context.getString(R.string.update_mcu_file));
-        } else if (id == R.id.tv_infoSysRest) {
-            this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
+        switch (v.getId()) {
+            case R.id.tv_infoMcuUp /*2131297579*/:
+                this.dialogViews.updateMcu(this.context.getString(R.string.update_mcu_file));
+                return;
+            case R.id.tv_infoSysRest /*2131297582*/:
+                this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
+                return;
+            default:
+                return;
         }
     }
 }

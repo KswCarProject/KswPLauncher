@@ -1,8 +1,6 @@
 package com.bumptech.glide.load.resource.transcode;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.resource.bytes.BytesResource;
@@ -16,13 +14,12 @@ public class BitmapBytesTranscoder implements ResourceTranscoder<Bitmap, byte[]>
         this(Bitmap.CompressFormat.JPEG, 100);
     }
 
-    public BitmapBytesTranscoder(@NonNull Bitmap.CompressFormat compressFormat2, int quality2) {
+    public BitmapBytesTranscoder(Bitmap.CompressFormat compressFormat2, int quality2) {
         this.compressFormat = compressFormat2;
         this.quality = quality2;
     }
 
-    @Nullable
-    public Resource<byte[]> transcode(@NonNull Resource<Bitmap> toTranscode, @NonNull Options options) {
+    public Resource<byte[]> transcode(Resource<Bitmap> toTranscode, Options options) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         toTranscode.get().compress(this.compressFormat, this.quality, os);
         toTranscode.recycle();

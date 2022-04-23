@@ -1,6 +1,5 @@
 package android.support.v7.view.menu;
 
-import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import java.util.ArrayList;
 
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 public class MenuAdapter extends BaseAdapter {
     MenuBuilder mAdapterMenu;
     private int mExpandedIndex = -1;
@@ -47,7 +45,8 @@ public class MenuAdapter extends BaseAdapter {
 
     public MenuItemImpl getItem(int position) {
         ArrayList<MenuItemImpl> items = this.mOverflowOnly ? this.mAdapterMenu.getNonActionItems() : this.mAdapterMenu.getVisibleItems();
-        if (this.mExpandedIndex >= 0 && position >= this.mExpandedIndex) {
+        int i = this.mExpandedIndex;
+        if (i >= 0 && position >= i) {
             position++;
         }
         return items.get(position);

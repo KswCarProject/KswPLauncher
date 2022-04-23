@@ -11,8 +11,6 @@ import android.databinding.adapters.SeekBarBindingAdapter;
 import android.databinding.adapters.TextViewBindingAdapter;
 import android.databinding.adapters.ViewBindingAdapter;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -27,62 +25,41 @@ import com.wits.ksw.launcher.model.DashboardViewModel;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback39;
-    @Nullable
-    private final View.OnClickListener mCallback40;
-    @Nullable
-    private final View.OnClickListener mCallback41;
-    @Nullable
-    private final View.OnClickListener mCallback42;
-    @Nullable
-    private final View.OnClickListener mCallback43;
-    @Nullable
-    private final View.OnClickListener mCallback44;
-    @Nullable
-    private final View.OnClickListener mCallback45;
-    @Nullable
-    private final View.OnClickListener mCallback46;
-    @Nullable
-    private final View.OnClickListener mCallback47;
-    @Nullable
-    private final View.OnClickListener mCallback48;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback228;
+    private final View.OnClickListener mCallback229;
+    private final View.OnClickListener mCallback230;
+    private final View.OnClickListener mCallback231;
+    private final View.OnClickListener mCallback232;
+    private final View.OnClickListener mCallback233;
+    private final View.OnClickListener mCallback234;
+    private final View.OnClickListener mCallback235;
+    private final View.OnClickListener mCallback236;
+    private final View.OnClickListener mCallback237;
     private long mDirtyFlags;
-    @NonNull
     private final LinearLayout mboundView0;
-    @NonNull
     private final LinearLayout mboundView1;
-    @NonNull
     private final TextView mboundView10;
-    @NonNull
     private final TextView mboundView11;
-    @NonNull
     private final TextView mboundView14;
-    @NonNull
     private final TextView mboundView15;
-    @NonNull
     private final ImageView mboundView17;
-    @NonNull
     private final LinearLayout mboundView2;
-    @NonNull
     private final LinearLayout mboundView3;
-    @NonNull
     private final LinearLayout mboundView4;
-    @NonNull
     private final TextView mboundView8;
 
     static {
-        sViewsWithIds.put(R.id.seat_ll, 19);
-        sViewsWithIds.put(R.id.seat_belt_btn, 20);
-        sViewsWithIds.put(R.id.seat_btn, 21);
-        sViewsWithIds.put(R.id.s_view, 22);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.seat_ll, 19);
+        sparseIntArray.put(R.id.seat_belt_btn, 20);
+        sparseIntArray.put(R.id.seat_btn, 21);
+        sparseIntArray.put(R.id.s_view, 22);
     }
 
-    public ActivityMainAlsId6BindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainAlsId6BindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 23, sIncludes, sViewsWithIds));
     }
 
@@ -91,28 +68,39 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         this.mDirtyFlags = -1;
         this.appLl.setTag((Object) null);
         this.dashbroadLl.setTag((Object) null);
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView1 = bindings[1];
-        this.mboundView1.setTag((Object) null);
-        this.mboundView10 = bindings[10];
-        this.mboundView10.setTag((Object) null);
-        this.mboundView11 = bindings[11];
-        this.mboundView11.setTag((Object) null);
-        this.mboundView14 = bindings[14];
-        this.mboundView14.setTag((Object) null);
-        this.mboundView15 = bindings[15];
-        this.mboundView15.setTag((Object) null);
-        this.mboundView17 = bindings[17];
-        this.mboundView17.setTag((Object) null);
-        this.mboundView2 = bindings[2];
-        this.mboundView2.setTag((Object) null);
-        this.mboundView3 = bindings[3];
-        this.mboundView3.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
-        this.mboundView8 = bindings[8];
-        this.mboundView8.setTag((Object) null);
+        LinearLayout linearLayout = bindings[0];
+        this.mboundView0 = linearLayout;
+        linearLayout.setTag((Object) null);
+        LinearLayout linearLayout2 = bindings[1];
+        this.mboundView1 = linearLayout2;
+        linearLayout2.setTag((Object) null);
+        TextView textView = bindings[10];
+        this.mboundView10 = textView;
+        textView.setTag((Object) null);
+        TextView textView2 = bindings[11];
+        this.mboundView11 = textView2;
+        textView2.setTag((Object) null);
+        TextView textView3 = bindings[14];
+        this.mboundView14 = textView3;
+        textView3.setTag((Object) null);
+        TextView textView4 = bindings[15];
+        this.mboundView15 = textView4;
+        textView4.setTag((Object) null);
+        ImageView imageView = bindings[17];
+        this.mboundView17 = imageView;
+        imageView.setTag((Object) null);
+        LinearLayout linearLayout3 = bindings[2];
+        this.mboundView2 = linearLayout3;
+        linearLayout3.setTag((Object) null);
+        LinearLayout linearLayout4 = bindings[3];
+        this.mboundView3 = linearLayout4;
+        linearLayout4.setTag((Object) null);
+        LinearLayout linearLayout5 = bindings[4];
+        this.mboundView4 = linearLayout5;
+        linearLayout5.setTag((Object) null);
+        TextView textView5 = bindings[8];
+        this.mboundView8 = textView5;
+        textView5.setTag((Object) null);
         this.musicLl.setTag((Object) null);
         this.naviLl.setTag((Object) null);
         this.phoneLl.setTag((Object) null);
@@ -120,16 +108,16 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         this.seekBar.setTag((Object) null);
         this.videoLl.setTag((Object) null);
         setRootTag(root);
-        this.mCallback39 = new OnClickListener(this, 1);
-        this.mCallback43 = new OnClickListener(this, 5);
-        this.mCallback42 = new OnClickListener(this, 4);
-        this.mCallback44 = new OnClickListener(this, 6);
-        this.mCallback40 = new OnClickListener(this, 2);
-        this.mCallback41 = new OnClickListener(this, 3);
-        this.mCallback47 = new OnClickListener(this, 9);
-        this.mCallback48 = new OnClickListener(this, 10);
-        this.mCallback45 = new OnClickListener(this, 7);
-        this.mCallback46 = new OnClickListener(this, 8);
+        this.mCallback237 = new OnClickListener(this, 10);
+        this.mCallback233 = new OnClickListener(this, 6);
+        this.mCallback229 = new OnClickListener(this, 2);
+        this.mCallback234 = new OnClickListener(this, 7);
+        this.mCallback230 = new OnClickListener(this, 3);
+        this.mCallback235 = new OnClickListener(this, 8);
+        this.mCallback231 = new OnClickListener(this, 4);
+        this.mCallback228 = new OnClickListener(this, 1);
+        this.mCallback236 = new OnClickListener(this, 9);
+        this.mCallback232 = new OnClickListener(this, 5);
         invalidateAll();
     }
 
@@ -149,20 +137,20 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 512;
         }
-        notifyPropertyChanged(19);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
@@ -170,21 +158,21 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeViewModelMediaInfoMusicAtist((ObservableField) object, fieldId);
-            case 1:
-                return onChangeViewModelMediaInfoMusicAlbum((ObservableField) object, fieldId);
-            case 2:
-                return onChangeViewModelMediaInfoMaxProgress((ObservableInt) object, fieldId);
-            case 3:
-                return onChangeViewModelCarInfoSeatBeltpValue((ObservableField) object, fieldId);
-            case 4:
-                return onChangeViewModelMediaInfoPic((ObservableField) object, fieldId);
-            case 5:
                 return onChangeViewModelMediaInfoProgress((ObservableInt) object, fieldId);
-            case 6:
+            case 1:
+                return onChangeViewModelMediaInfoMusicAtist((ObservableField) object, fieldId);
+            case 2:
+                return onChangeViewModelMediaInfoMusicAlbum((ObservableField) object, fieldId);
+            case 3:
+                return onChangeViewModelMediaInfoMaxProgress((ObservableInt) object, fieldId);
+            case 4:
                 return onChangeViewModelBtState((ObservableField) object, fieldId);
-            case 7:
+            case 5:
+                return onChangeViewModelCarInfoSeatBeltpValue((ObservableField) object, fieldId);
+            case 6:
                 return onChangeViewModelCarInfoTurnSpeedAnge((ObservableFloat) object, fieldId);
+            case 7:
+                return onChangeViewModelMediaInfoPic((ObservableField) object, fieldId);
             case 8:
                 return onChangeViewModelCarInfoBrakeValue((ObservableField) object, fieldId);
             default:
@@ -192,7 +180,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         }
     }
 
-    private boolean onChangeViewModelMediaInfoMusicAtist(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeViewModelMediaInfoProgress(ObservableInt ViewModelMediaInfoProgress, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -202,7 +190,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         return true;
     }
 
-    private boolean onChangeViewModelMediaInfoMusicAlbum(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeViewModelMediaInfoMusicAtist(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -212,7 +200,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         return true;
     }
 
-    private boolean onChangeViewModelMediaInfoMaxProgress(ObservableInt ViewModelMediaInfoMaxProgress, int fieldId) {
+    private boolean onChangeViewModelMediaInfoMusicAlbum(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -222,7 +210,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeViewModelMediaInfoMaxProgress(ObservableInt ViewModelMediaInfoMaxProgress, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -232,7 +220,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         return true;
     }
 
-    private boolean onChangeViewModelMediaInfoPic(ObservableField<BitmapDrawable> observableField, int fieldId) {
+    private boolean onChangeViewModelBtState(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -242,7 +230,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         return true;
     }
 
-    private boolean onChangeViewModelMediaInfoProgress(ObservableInt ViewModelMediaInfoProgress, int fieldId) {
+    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -252,7 +240,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         return true;
     }
 
-    private boolean onChangeViewModelBtState(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoTurnSpeedAnge(ObservableFloat ViewModelCarInfoTurnSpeedAnge, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -262,7 +250,7 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoTurnSpeedAnge(ObservableFloat ViewModelCarInfoTurnSpeedAnge, int fieldId) {
+    private boolean onChangeViewModelMediaInfoPic(ObservableField<BitmapDrawable> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -285,147 +273,157 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
-        ObservableField<Boolean> viewModelCarInfoBrakeValue;
         float viewModelCarInfoTurnSpeedAngeGet;
-        ObservableInt viewModelMediaInfoProgress;
+        String viewModelMediaInfoMusicAlbumGet;
         int viewModelMediaInfoMaxProgressGet;
-        float viewModelCarInfoTurnSpeedAngeGet2;
-        String viewModelCarInfoBrakeValueMboundView11AndroidStringKswId7Brake2MboundView11AndroidStringKswId7Brake1;
-        String viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1;
-        ObservableField<String> viewModelMediaInfoMusicAtist;
-        String viewModelMediaInfoMusicAlbumJavaLangObjectNullMboundView14AndroidStringKswIdf7UnkonwAlbumViewModelMediaInfoMusicAlbum;
-        String str;
-        String viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12;
-        ObservableField<Boolean> viewModelCarInfoBrakeValue2;
+        BitmapDrawable viewModelMediaInfoPicGet;
         long dirtyFlags2;
-        Resources resources;
+        String viewModelCarInfoBrakeValueMboundView11AndroidStringKswId7Brake2MboundView11AndroidStringKswId7Brake1;
+        float viewModelCarInfoTurnSpeedAngeGet2;
+        String viewModelBtStateGet;
+        String viewModelMediaInfoMusicAtistJavaLangObjectNullMboundView15AndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist;
+        String str;
+        ObservableField<String> viewModelBtState;
+        String viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1;
+        ObservableField<Boolean> viewModelCarInfoBrakeValue;
         int i;
+        Resources resources;
         ObservableFloat viewModelCarInfoTurnSpeedAnge;
         ObservableField<Boolean> viewModelCarInfoSeatBeltpValue;
         long dirtyFlags3;
-        Resources resources2;
-        int i2;
+        String str2;
+        String viewModelMediaInfoMusicAlbumGet2;
+        String viewModelMediaInfoMusicAlbumGet3;
         ObservableField<BitmapDrawable> viewModelMediaInfoPic;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        String viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt13 = null;
-        ObservableField<String> viewModelMediaInfoMusicAtist2 = null;
+        boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = false;
+        String viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12 = null;
+        ObservableInt viewModelMediaInfoProgress = null;
+        ObservableField<String> viewModelMediaInfoMusicAtist = null;
         ObservableField<String> viewModelMediaInfoMusicAlbum = null;
         ObservableInt viewModelMediaInfoMaxProgress = null;
+        String viewModelMediaInfoMusicAlbumJavaLangObjectNullMboundView14AndroidStringKswIdf7UnkonwAlbumViewModelMediaInfoMusicAlbum = null;
         int viewModelMediaInfoProgressGet = 0;
         View.OnFocusChangeListener viewModelVideoViewFocusChangeListener = null;
-        String viewModelMediaInfoMusicAtistJavaLangObjectNullMboundView15AndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = null;
-        BitmapDrawable viewModelMediaInfoPicGet = null;
-        String viewModelBtStateGet = null;
-        int viewModelMediaInfoMaxProgressGet2 = 0;
-        boolean viewModelMediaInfoMusicAlbumJavaLangObjectNull = false;
-        String viewModelMediaInfoMusicAlbumGet = null;
         boolean viewModelMediaInfoMusicAtistJavaLangObjectNull = false;
         Boolean viewModelCarInfoSeatBeltpValueGet = null;
         String viewModelMediaInfoMusicAtistGet = null;
+        int viewModelMediaInfoMaxProgressGet2 = 0;
         Boolean viewModelCarInfoBrakeValueGet = null;
+        boolean viewModelMediaInfoMusicAlbumJavaLangObjectNull = false;
         LauncherViewModel viewModel = this.mViewModel;
-        if ((dirtyFlags & 1079) != 0) {
+        if ((dirtyFlags & 1167) != 0) {
             viewModelCarInfoTurnSpeedAngeGet = 0.0f;
             MediaInfo viewModelMediaInfo = LauncherViewModel.mediaInfo;
-            viewModelCarInfoBrakeValue = null;
             if ((dirtyFlags & 1025) != 0) {
                 if (viewModelMediaInfo != null) {
-                    viewModelMediaInfoMusicAtist2 = viewModelMediaInfo.musicAtist;
+                    viewModelMediaInfoProgress = viewModelMediaInfo.progress;
                 }
-                updateRegistration(0, (Observable) viewModelMediaInfoMusicAtist2);
-                if (viewModelMediaInfoMusicAtist2 != null) {
-                    viewModelMediaInfoMusicAtistGet = viewModelMediaInfoMusicAtist2.get();
+                updateRegistration(0, (Observable) viewModelMediaInfoProgress);
+                if (viewModelMediaInfoProgress != null) {
+                    viewModelMediaInfoProgressGet = viewModelMediaInfoProgress.get();
                 }
-                boolean viewModelMediaInfoMusicAtistJavaLangObjectNull2 = viewModelMediaInfoMusicAtistGet == null;
-                if ((dirtyFlags & 1025) != 0) {
-                    if (viewModelMediaInfoMusicAtistJavaLangObjectNull2) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
-                    } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
-                    }
-                }
-                viewModelMediaInfoMusicAtistJavaLangObjectNull = viewModelMediaInfoMusicAtistJavaLangObjectNull2;
             }
             if ((dirtyFlags & 1026) != 0) {
                 if (viewModelMediaInfo != null) {
-                    viewModelMediaInfoMusicAlbum = viewModelMediaInfo.musicAlbum;
+                    viewModelMediaInfoMusicAtist = viewModelMediaInfo.musicAtist;
                 }
-                updateRegistration(1, (Observable) viewModelMediaInfoMusicAlbum);
-                if (viewModelMediaInfoMusicAlbum != null) {
-                    viewModelMediaInfoMusicAlbumGet = viewModelMediaInfoMusicAlbum.get();
+                updateRegistration(1, (Observable) viewModelMediaInfoMusicAtist);
+                if (viewModelMediaInfoMusicAtist != null) {
+                    viewModelMediaInfoMusicAtistGet = viewModelMediaInfoMusicAtist.get();
                 }
-                boolean viewModelMediaInfoMusicAlbumJavaLangObjectNull2 = viewModelMediaInfoMusicAlbumGet == null;
+                viewModelMediaInfoMusicAtistJavaLangObjectNull = viewModelMediaInfoMusicAtistGet == null;
                 if ((dirtyFlags & 1026) != 0) {
-                    if (viewModelMediaInfoMusicAlbumJavaLangObjectNull2) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
-                    } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
-                    }
+                    dirtyFlags = viewModelMediaInfoMusicAtistJavaLangObjectNull ? dirtyFlags | PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH : dirtyFlags | PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
                 }
-                viewModelMediaInfoMusicAlbumJavaLangObjectNull = viewModelMediaInfoMusicAlbumJavaLangObjectNull2;
             }
             if ((dirtyFlags & 1028) != 0) {
                 if (viewModelMediaInfo != null) {
+                    viewModelMediaInfoMusicAlbum = viewModelMediaInfo.musicAlbum;
+                }
+                updateRegistration(2, (Observable) viewModelMediaInfoMusicAlbum);
+                if (viewModelMediaInfoMusicAlbum != null) {
+                    viewModelMediaInfoMusicAlbumGet2 = viewModelMediaInfoMusicAlbum.get();
+                } else {
+                    viewModelMediaInfoMusicAlbumGet2 = null;
+                }
+                boolean viewModelMediaInfoMusicAlbumJavaLangObjectNull2 = viewModelMediaInfoMusicAlbumGet2 == null;
+                if ((dirtyFlags & 1028) == 0) {
+                    viewModelMediaInfoMusicAlbumJavaLangObjectNull = viewModelMediaInfoMusicAlbumJavaLangObjectNull2;
+                } else if (viewModelMediaInfoMusicAlbumJavaLangObjectNull2) {
+                    dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
+                    viewModelMediaInfoMusicAlbumJavaLangObjectNull = viewModelMediaInfoMusicAlbumJavaLangObjectNull2;
+                } else {
+                    dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+                    viewModelMediaInfoMusicAlbumJavaLangObjectNull = viewModelMediaInfoMusicAlbumJavaLangObjectNull2;
+                }
+            } else {
+                viewModelMediaInfoMusicAlbumGet2 = null;
+            }
+            if ((dirtyFlags & 1032) != 0) {
+                if (viewModelMediaInfo != null) {
                     viewModelMediaInfoMaxProgress = viewModelMediaInfo.maxProgress;
                 }
-                updateRegistration(2, (Observable) viewModelMediaInfoMaxProgress);
+                viewModelMediaInfoMusicAlbumGet3 = viewModelMediaInfoMusicAlbumGet2;
+                updateRegistration(3, (Observable) viewModelMediaInfoMaxProgress);
                 if (viewModelMediaInfoMaxProgress != null) {
                     viewModelMediaInfoMaxProgressGet2 = viewModelMediaInfoMaxProgress.get();
                 }
+            } else {
+                viewModelMediaInfoMusicAlbumGet3 = viewModelMediaInfoMusicAlbumGet2;
             }
-            if ((dirtyFlags & 1040) != 0) {
+            if ((dirtyFlags & 1152) != 0) {
                 if (viewModelMediaInfo != null) {
                     viewModelMediaInfoPic = viewModelMediaInfo.pic;
                 } else {
                     viewModelMediaInfoPic = null;
                 }
-                updateRegistration(4, (Observable) viewModelMediaInfoPic);
+                MediaInfo viewModelMediaInfo2 = viewModelMediaInfo;
+                updateRegistration(7, (Observable) viewModelMediaInfoPic);
                 if (viewModelMediaInfoPic != null) {
                     ObservableField<BitmapDrawable> observableField = viewModelMediaInfoPic;
                     viewModelMediaInfoPicGet = viewModelMediaInfoPic.get();
+                    viewModelMediaInfoMusicAlbumGet = viewModelMediaInfoMusicAlbumGet3;
+                    viewModelMediaInfoMaxProgressGet = viewModelMediaInfoMaxProgressGet2;
+                    MediaInfo mediaInfo = viewModelMediaInfo2;
                 } else {
                     ObservableField<BitmapDrawable> observableField2 = viewModelMediaInfoPic;
+                    viewModelMediaInfoPicGet = null;
+                    viewModelMediaInfoMusicAlbumGet = viewModelMediaInfoMusicAlbumGet3;
+                    viewModelMediaInfoMaxProgressGet = viewModelMediaInfoMaxProgressGet2;
+                    MediaInfo mediaInfo2 = viewModelMediaInfo2;
                 }
-            }
-            if ((dirtyFlags & 1056) != 0) {
-                if (viewModelMediaInfo != null) {
-                    viewModelMediaInfoProgress = viewModelMediaInfo.progress;
-                } else {
-                    viewModelMediaInfoProgress = null;
-                }
-                updateRegistration(5, (Observable) viewModelMediaInfoProgress);
-                if (viewModelMediaInfoProgress != null) {
-                    viewModelMediaInfoProgressGet = viewModelMediaInfoProgress.get();
-                }
-                viewModelMediaInfoMaxProgressGet = viewModelMediaInfoMaxProgressGet2;
             } else {
+                MediaInfo viewModelMediaInfo3 = viewModelMediaInfo;
+                viewModelMediaInfoPicGet = null;
+                viewModelMediaInfoMusicAlbumGet = viewModelMediaInfoMusicAlbumGet3;
                 viewModelMediaInfoMaxProgressGet = viewModelMediaInfoMaxProgressGet2;
-                viewModelMediaInfoProgress = null;
+                MediaInfo mediaInfo3 = viewModelMediaInfo3;
             }
         } else {
             viewModelCarInfoTurnSpeedAngeGet = 0.0f;
-            viewModelCarInfoBrakeValue = null;
+            viewModelMediaInfoPicGet = null;
             viewModelMediaInfoMaxProgressGet = 0;
-            viewModelMediaInfoProgress = null;
+            viewModelMediaInfoMusicAlbumGet = null;
         }
-        if ((dirtyFlags & 1416) != 0) {
+        if ((dirtyFlags & 1376) != 0) {
             CarInfo viewModelCarInfo = LauncherViewModel.carInfo;
-            if ((dirtyFlags & 1032) != 0) {
+            if ((dirtyFlags & 1056) != 0) {
                 if (viewModelCarInfo != null) {
-                    ObservableInt observableInt = viewModelMediaInfoProgress;
                     viewModelCarInfoSeatBeltpValue = viewModelCarInfo.seatBeltpValue;
                 } else {
                     viewModelCarInfoSeatBeltpValue = null;
                 }
-                updateRegistration(3, (Observable) viewModelCarInfoSeatBeltpValue);
+                ObservableInt observableInt = viewModelMediaInfoProgress;
+                updateRegistration(5, (Observable) viewModelCarInfoSeatBeltpValue);
                 if (viewModelCarInfoSeatBeltpValue != null) {
                     viewModelCarInfoSeatBeltpValueGet = viewModelCarInfoSeatBeltpValue.get();
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet = ViewDataBinding.safeUnbox(viewModelCarInfoSeatBeltpValueGet);
-                if ((dirtyFlags & 1032) != 0) {
+                if ((dirtyFlags & 1056) != 0) {
                     if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet) {
                         dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
                     } else {
@@ -434,54 +432,53 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 }
                 if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet) {
                     dirtyFlags3 = dirtyFlags;
-                    resources2 = this.mboundView10.getResources();
-                    i2 = R.string.ksw_id7_seatbelt2;
+                    str2 = this.mboundView10.getResources().getString(R.string.ksw_id7_seatbelt2);
                 } else {
                     dirtyFlags3 = dirtyFlags;
-                    resources2 = this.mboundView10.getResources();
-                    i2 = R.string.ksw_id7_seatbelt1;
+                    str2 = this.mboundView10.getResources().getString(R.string.ksw_id7_seatbelt1);
                 }
                 ObservableField<Boolean> observableField3 = viewModelCarInfoSeatBeltpValue;
-                boolean z = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet;
-                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt13 = resources2.getString(i2);
+                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12 = str2;
                 dirtyFlags = dirtyFlags3;
+            } else {
+                ObservableInt observableInt2 = viewModelMediaInfoProgress;
             }
-            if ((dirtyFlags & 1152) != 0) {
+            if ((dirtyFlags & 1088) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoTurnSpeedAnge = viewModelCarInfo.turnSpeedAnge;
                 } else {
                     viewModelCarInfoTurnSpeedAnge = null;
                 }
-                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt13;
-                updateRegistration(7, (Observable) viewModelCarInfoTurnSpeedAnge);
+                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12;
+                updateRegistration(6, (Observable) viewModelCarInfoTurnSpeedAnge);
                 if (viewModelCarInfoTurnSpeedAnge != null) {
-                    ObservableFloat observableFloat = viewModelCarInfoTurnSpeedAnge;
                     viewModelCarInfoTurnSpeedAngeGet = viewModelCarInfoTurnSpeedAnge.get();
+                    ObservableFloat observableFloat = viewModelCarInfoTurnSpeedAnge;
                 } else {
                     ObservableFloat observableFloat2 = viewModelCarInfoTurnSpeedAnge;
                 }
             } else {
-                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt13;
+                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12;
             }
             if ((dirtyFlags & 1280) != 0) {
                 if (viewModelCarInfo != null) {
-                    viewModelCarInfoBrakeValue2 = viewModelCarInfo.brakeValue;
+                    viewModelCarInfoBrakeValue = viewModelCarInfo.brakeValue;
                 } else {
-                    viewModelCarInfoBrakeValue2 = viewModelCarInfoBrakeValue;
+                    viewModelCarInfoBrakeValue = null;
                 }
-                updateRegistration(8, (Observable) viewModelCarInfoBrakeValue2);
-                if (viewModelCarInfoBrakeValue2 != null) {
-                    viewModelCarInfoBrakeValueGet = viewModelCarInfoBrakeValue2.get();
+                updateRegistration(8, (Observable) viewModelCarInfoBrakeValue);
+                if (viewModelCarInfoBrakeValue != null) {
+                    viewModelCarInfoBrakeValueGet = viewModelCarInfoBrakeValue.get();
                 }
-                boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
+                boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
                 if ((dirtyFlags & 1280) != 0) {
-                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
+                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
                     } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
                     }
                 }
-                if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet) {
+                if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2) {
                     dirtyFlags2 = dirtyFlags;
                     resources = this.mboundView11.getResources();
                     i = R.string.ksw_id7_brake2;
@@ -490,112 +487,113 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                     resources = this.mboundView11.getResources();
                     i = R.string.ksw_id7_brake1;
                 }
-                ObservableField<Boolean> observableField4 = viewModelCarInfoBrakeValue2;
-                CarInfo carInfo = viewModelCarInfo;
-                boolean z2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet;
+                ObservableField<Boolean> observableField4 = viewModelCarInfoBrakeValue;
                 viewModelCarInfoBrakeValueMboundView11AndroidStringKswId7Brake2MboundView11AndroidStringKswId7Brake1 = resources.getString(i);
+                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1;
                 viewModelCarInfoTurnSpeedAngeGet2 = viewModelCarInfoTurnSpeedAngeGet;
-                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12;
-                dirtyFlags = dirtyFlags2;
+                CarInfo carInfo = viewModelCarInfo;
+                androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2;
             } else {
-                CarInfo carInfo2 = viewModelCarInfo;
+                dirtyFlags2 = dirtyFlags;
                 viewModelCarInfoBrakeValueMboundView11AndroidStringKswId7Brake2MboundView11AndroidStringKswId7Brake1 = null;
+                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1;
                 viewModelCarInfoTurnSpeedAngeGet2 = viewModelCarInfoTurnSpeedAngeGet;
-                viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1 = viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12;
+                CarInfo carInfo2 = viewModelCarInfo;
+                androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = false;
             }
         } else {
+            ObservableInt observableInt3 = viewModelMediaInfoProgress;
+            dirtyFlags2 = dirtyFlags;
             viewModelCarInfoBrakeValueMboundView11AndroidStringKswId7Brake2MboundView11AndroidStringKswId7Brake1 = null;
             viewModelCarInfoTurnSpeedAngeGet2 = viewModelCarInfoTurnSpeedAngeGet;
-            viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1 = null;
         }
-        if ((dirtyFlags & 1600) != 0) {
-            if (!((dirtyFlags & 1536) == 0 || viewModel == null)) {
+        if ((dirtyFlags2 & 1552) != 0) {
+            if (!((dirtyFlags2 & 1536) == 0 || viewModel == null)) {
                 viewModelVideoViewFocusChangeListener = viewModel.videoViewFocusChangeListener;
             }
             if (viewModel != null) {
-                ObservableField<String> observableField5 = viewModelMediaInfoMusicAtist2;
-                viewModelMediaInfoMusicAtist = viewModel.btState;
+                viewModelBtState = viewModel.btState;
             } else {
-                viewModelMediaInfoMusicAtist = null;
+                viewModelBtState = null;
             }
             LauncherViewModel launcherViewModel = viewModel;
-            updateRegistration(6, (Observable) viewModelMediaInfoMusicAtist);
-            if (viewModelMediaInfoMusicAtist != null) {
-                viewModelBtStateGet = viewModelMediaInfoMusicAtist.get();
-            }
-        } else {
-            ObservableField<String> observableField6 = viewModelMediaInfoMusicAtist2;
-            viewModelMediaInfoMusicAtist = null;
-        }
-        if ((dirtyFlags & 1025) != 0) {
-            if (viewModelMediaInfoMusicAtistJavaLangObjectNull) {
-                ObservableField<String> observableField7 = viewModelMediaInfoMusicAtist;
-                str = this.mboundView15.getResources().getString(R.string.ksw_idf7_unknow_artis);
+            updateRegistration(4, (Observable) viewModelBtState);
+            if (viewModelBtState != null) {
+                ObservableField<String> observableField5 = viewModelBtState;
+                viewModelBtStateGet = viewModelBtState.get();
             } else {
-                ObservableField<String> viewModelBtState = viewModelMediaInfoMusicAtist;
-                str = viewModelMediaInfoMusicAtistGet;
+                ObservableField<String> observableField6 = viewModelBtState;
+                viewModelBtStateGet = null;
             }
-            viewModelMediaInfoMusicAtistJavaLangObjectNullMboundView15AndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = str;
         } else {
-            ObservableField<String> viewModelBtState2 = viewModelMediaInfoMusicAtist;
+            viewModelBtStateGet = null;
         }
-        if ((dirtyFlags & 1026) != 0) {
-            viewModelMediaInfoMusicAlbumJavaLangObjectNullMboundView14AndroidStringKswIdf7UnkonwAlbumViewModelMediaInfoMusicAlbum = viewModelMediaInfoMusicAlbumJavaLangObjectNull ? this.mboundView14.getResources().getString(R.string.ksw_idf7_unkonw_album) : viewModelMediaInfoMusicAlbumGet;
+        if ((dirtyFlags2 & 1028) != 0) {
+            if (viewModelMediaInfoMusicAlbumJavaLangObjectNull) {
+                boolean z = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet;
+                str = this.mboundView14.getResources().getString(R.string.ksw_idf7_unkonw_album);
+            } else {
+                str = viewModelMediaInfoMusicAlbumGet;
+            }
+            viewModelMediaInfoMusicAlbumJavaLangObjectNullMboundView14AndroidStringKswIdf7UnkonwAlbumViewModelMediaInfoMusicAlbum = str;
+        }
+        if ((dirtyFlags2 & 1026) != 0) {
+            viewModelMediaInfoMusicAtistJavaLangObjectNullMboundView15AndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = viewModelMediaInfoMusicAtistJavaLangObjectNull ? this.mboundView15.getResources().getString(R.string.ksw_idf7_unknow_artis) : viewModelMediaInfoMusicAtistGet;
         } else {
-            viewModelMediaInfoMusicAlbumJavaLangObjectNullMboundView14AndroidStringKswIdf7UnkonwAlbumViewModelMediaInfoMusicAlbum = null;
+            viewModelMediaInfoMusicAtistJavaLangObjectNullMboundView15AndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist = null;
         }
-        if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID) != 0) {
-            ObservableField<String> observableField8 = viewModelMediaInfoMusicAlbum;
-            this.appLl.setOnClickListener(this.mCallback48);
-            this.dashbroadLl.setOnClickListener(this.mCallback46);
-            this.mboundView1.setOnClickListener(this.mCallback39);
-            this.mboundView2.setOnClickListener(this.mCallback40);
-            this.mboundView3.setOnClickListener(this.mCallback41);
-            this.mboundView4.setOnClickListener(this.mCallback42);
-            this.musicLl.setOnClickListener(this.mCallback47);
-            this.naviLl.setOnClickListener(this.mCallback43);
-            this.phoneLl.setOnClickListener(this.mCallback45);
-            this.videoLl.setOnClickListener(this.mCallback44);
+        if ((dirtyFlags2 & PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID) != 0) {
+            ObservableField<String> observableField7 = viewModelMediaInfoMusicAtist;
+            this.appLl.setOnClickListener(this.mCallback237);
+            this.dashbroadLl.setOnClickListener(this.mCallback235);
+            this.mboundView1.setOnClickListener(this.mCallback228);
+            this.mboundView2.setOnClickListener(this.mCallback229);
+            this.mboundView3.setOnClickListener(this.mCallback230);
+            this.mboundView4.setOnClickListener(this.mCallback231);
+            this.musicLl.setOnClickListener(this.mCallback236);
+            this.naviLl.setOnClickListener(this.mCallback232);
+            this.phoneLl.setOnClickListener(this.mCallback234);
+            this.videoLl.setOnClickListener(this.mCallback233);
         }
-        if ((dirtyFlags & 1032) != 0) {
-            TextViewBindingAdapter.setText(this.mboundView10, viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt1);
+        if ((dirtyFlags2 & 1056) != 0) {
+            TextViewBindingAdapter.setText(this.mboundView10, viewModelCarInfoSeatBeltpValueMboundView10AndroidStringKswId7Seatbelt2MboundView10AndroidStringKswId7Seatbelt12);
         }
-        if ((dirtyFlags & 1280) != 0) {
+        if ((dirtyFlags2 & 1280) != 0) {
             TextViewBindingAdapter.setText(this.mboundView11, viewModelCarInfoBrakeValueMboundView11AndroidStringKswId7Brake2MboundView11AndroidStringKswId7Brake1);
         }
-        if ((dirtyFlags & 1026) != 0) {
+        if ((dirtyFlags2 & 1028) != 0) {
             TextViewBindingAdapter.setText(this.mboundView14, viewModelMediaInfoMusicAlbumJavaLangObjectNullMboundView14AndroidStringKswIdf7UnkonwAlbumViewModelMediaInfoMusicAlbum);
         }
-        if ((dirtyFlags & 1025) != 0) {
+        if ((dirtyFlags2 & 1026) != 0) {
             TextViewBindingAdapter.setText(this.mboundView15, viewModelMediaInfoMusicAtistJavaLangObjectNullMboundView15AndroidStringKswIdf7UnknowArtisViewModelMediaInfoMusicAtist);
         }
-        if ((dirtyFlags & 1040) != 0) {
+        if ((dirtyFlags2 & 1152) != 0) {
             ViewBindingAdapter.setBackground(this.mboundView17, viewModelMediaInfoPicGet);
         }
-        if ((dirtyFlags & 1600) != 0) {
+        if ((dirtyFlags2 & 1552) != 0) {
             TextViewBindingAdapter.setText(this.mboundView8, viewModelBtStateGet);
         }
-        if ((dirtyFlags & 1152) != 0) {
+        if ((dirtyFlags2 & 1088) != 0) {
             DashboardViewModel.setRotation(this.pointerImageView, viewModelCarInfoTurnSpeedAngeGet2);
         }
-        if ((dirtyFlags & 1028) != 0) {
+        if ((dirtyFlags2 & 1032) != 0) {
             this.seekBar.setMax(viewModelMediaInfoMaxProgressGet);
         }
-        if ((dirtyFlags & 1056) != 0) {
+        if ((dirtyFlags2 & 1025) != 0) {
             SeekBarBindingAdapter.setProgress(this.seekBar, viewModelMediaInfoProgressGet);
         }
-        if ((dirtyFlags & 1536) != 0) {
+        if ((dirtyFlags2 & 1536) != 0) {
             this.videoLl.setOnFocusChangeListener(viewModelVideoViewFocusChangeListener);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = false;
+        boolean viewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openShouJiHuLian(callbackArg_0);
@@ -604,8 +602,8 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 return;
             case 2:
                 LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel2 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openDvr(callbackArg_0);
@@ -614,8 +612,8 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 return;
             case 3:
                 LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel3 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openSettings(callbackArg_0);
@@ -624,8 +622,8 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 return;
             case 4:
                 LauncherViewModel viewModel4 = this.mViewModel;
-                if (viewModel4 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel4 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel4.openCar(callbackArg_0);
@@ -634,8 +632,8 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 return;
             case 5:
                 LauncherViewModel viewModel5 = this.mViewModel;
-                if (viewModel5 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel5 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel5.openNaviApp(callbackArg_0);
@@ -644,18 +642,18 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 return;
             case 6:
                 LauncherViewModel viewModel6 = this.mViewModel;
-                if (viewModel6 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel6 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
-                    viewModel6.openVideo(callbackArg_0);
+                    viewModel6.openVideoMulti(callbackArg_0);
                     return;
                 }
                 return;
             case 7:
                 LauncherViewModel viewModel7 = this.mViewModel;
-                if (viewModel7 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel7 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel7.openBtApp(callbackArg_0);
@@ -664,8 +662,8 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 return;
             case 8:
                 LauncherViewModel viewModel8 = this.mViewModel;
-                if (viewModel8 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel8 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel8.openDashboard(callbackArg_0);
@@ -674,18 +672,18 @@ public class ActivityMainAlsId6BindingImpl extends ActivityMainAlsId6Binding imp
                 return;
             case 9:
                 LauncherViewModel viewModel9 = this.mViewModel;
-                if (viewModel9 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel9 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
-                    viewModel9.openChoseMusic(callbackArg_0);
+                    viewModel9.openMusicMulti(callbackArg_0);
                     return;
                 }
                 return;
             case 10:
                 LauncherViewModel viewModel10 = this.mViewModel;
-                if (viewModel10 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel10 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel10.openApps(callbackArg_0);

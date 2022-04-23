@@ -7,8 +7,7 @@ import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.databinding.adapters.ImageViewBindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
 import com.wits.ksw.R;
@@ -17,24 +16,22 @@ import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.ControlBean;
 
 public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback102;
-    @Nullable
-    private final View.OnClickListener mCallback103;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback223;
+    private final View.OnClickListener mCallback224;
     private long mDirtyFlags;
-    private OnClickListenerImpl mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl1 mMBcVieModelOpenAppsAndroidViewViewOnClickListener;
+    private OnClickListenerImpl1 mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl mMBcVieModelOpenAppsAndroidViewViewOnClickListener;
 
     static {
-        sViewsWithIds.put(R.id.constraintLayout2, 6);
-        sViewsWithIds.put(R.id.CustomBcItemBgImageView, 7);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.constraintLayout2, 6);
+        sparseIntArray.put(R.id.CustomBcItemBgImageView, 7);
     }
 
-    public ActivityMainBcBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainBcBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 8, sIncludes, sViewsWithIds));
     }
 
@@ -49,8 +46,8 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
         this.linearLayout3.setTag((Object) null);
         this.recyclerView2.setTag((Object) null);
         setRootTag(root);
-        this.mCallback102 = new OnClickListener(this, 1);
-        this.mCallback103 = new OnClickListener(this, 2);
+        this.mCallback223 = new OnClickListener(this, 1);
+        this.mCallback224 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -70,20 +67,20 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (2 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (12 != variableId) {
             return false;
         }
         setMBcVieModel((BcVieModel) variable);
         return true;
     }
 
-    public void setMBcVieModel(@Nullable BcVieModel MBcVieModel) {
+    public void setMBcVieModel(BcVieModel MBcVieModel) {
         this.mMBcVieModel = MBcVieModel;
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(2);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -91,17 +88,17 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeMBcVieModelBcPagePosition((ObservableInt) object, fieldId);
+                return onChangeMBcVieModelControlBeanBenzControlPanelState((ObservableBoolean) object, fieldId);
             case 1:
                 return onChangeMBcVieModelControlBeanControlPanelClose((ObservableBoolean) object, fieldId);
             case 2:
-                return onChangeMBcVieModelControlBeanBenzControlPanelState((ObservableBoolean) object, fieldId);
+                return onChangeMBcVieModelBcPagePosition((ObservableInt) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeMBcVieModelBcPagePosition(ObservableInt MBcVieModelBcPagePosition, int fieldId) {
+    private boolean onChangeMBcVieModelControlBeanBenzControlPanelState(ObservableBoolean MBcVieModelControlBeanBenzControlPanelState, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -121,7 +118,7 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanBenzControlPanelState(ObservableBoolean MBcVieModelControlBeanBenzControlPanelState, int fieldId) {
+    private boolean onChangeMBcVieModelBcPagePosition(ObservableInt MBcVieModelBcPagePosition, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -134,58 +131,58 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
-        ControlBean mBcVieModelControlBean;
-        boolean mBcVieModelControlBeanBenzControlPanelStateGet;
-        Drawable drawable;
-        OnClickListenerImpl onClickListenerImpl;
-        OnClickListenerImpl1 onClickListenerImpl1;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        boolean mBcVieModelControlBeanBenzControlPanelStateGet2 = false;
-        ObservableInt mBcVieModelBcPagePosition = null;
-        int mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = 0;
-        View.OnClickListener mBcVieModelOnControlClickAndroidViewViewOnClickListener = null;
-        ObservableBoolean mBcVieModelControlBeanControlPanelClose = null;
-        Drawable mBcVieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = null;
-        BcVieModel mBcVieModel = this.mMBcVieModel;
-        boolean mBcVieModelControlBeanControlPanelCloseGet = false;
+        boolean mBcVieModelControlBeanBenzControlPanelStateGet = false;
         View.OnClickListener mBcVieModelOpenAppsAndroidViewViewOnClickListener = null;
         ObservableBoolean mBcVieModelControlBeanBenzControlPanelState = null;
         int mBcVieModelBcPagePositionGet = 0;
+        ObservableBoolean mBcVieModelControlBeanControlPanelClose = null;
+        Drawable mBcVieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = null;
+        ControlBean mBcVieModelControlBean = null;
+        ObservableInt mBcVieModelBcPagePosition = null;
+        int mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = 0;
+        View.OnClickListener mBcVieModelOnControlClickAndroidViewViewOnClickListener = null;
+        BcVieModel mBcVieModel = this.mMBcVieModel;
+        boolean mBcVieModelControlBeanControlPanelCloseGet = false;
         if ((dirtyFlags & 31) != 0) {
-            if ((dirtyFlags & 25) != 0) {
-                if (mBcVieModel != null) {
-                    mBcVieModelBcPagePosition = mBcVieModel.bcPagePosition;
-                }
-                updateRegistration(0, (Observable) mBcVieModelBcPagePosition);
-                if (mBcVieModelBcPagePosition != null) {
-                    mBcVieModelBcPagePositionGet = mBcVieModelBcPagePosition.get();
-                }
-            }
             if (!((dirtyFlags & 24) == 0 || mBcVieModel == null)) {
-                if (this.mMBcVieModelOnControlClickAndroidViewViewOnClickListener == null) {
+                OnClickListenerImpl onClickListenerImpl = this.mMBcVieModelOpenAppsAndroidViewViewOnClickListener;
+                if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
-                    this.mMBcVieModelOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl;
-                } else {
-                    onClickListenerImpl = this.mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
+                    this.mMBcVieModelOpenAppsAndroidViewViewOnClickListener = onClickListenerImpl;
                 }
-                View.OnClickListener mBcVieModelOnControlClickAndroidViewViewOnClickListener2 = onClickListenerImpl.setValue(mBcVieModel);
-                if (this.mMBcVieModelOpenAppsAndroidViewViewOnClickListener == null) {
+                View.OnClickListener mBcVieModelOpenAppsAndroidViewViewOnClickListener2 = onClickListenerImpl.setValue(mBcVieModel);
+                OnClickListenerImpl1 onClickListenerImpl1 = this.mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
+                if (onClickListenerImpl1 == null) {
                     onClickListenerImpl1 = new OnClickListenerImpl1();
-                    this.mMBcVieModelOpenAppsAndroidViewViewOnClickListener = onClickListenerImpl1;
-                } else {
-                    onClickListenerImpl1 = this.mMBcVieModelOpenAppsAndroidViewViewOnClickListener;
+                    this.mMBcVieModelOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl1;
                 }
-                mBcVieModelOpenAppsAndroidViewViewOnClickListener = onClickListenerImpl1.setValue(mBcVieModel);
-                mBcVieModelOnControlClickAndroidViewViewOnClickListener = mBcVieModelOnControlClickAndroidViewViewOnClickListener2;
+                mBcVieModelOpenAppsAndroidViewViewOnClickListener = mBcVieModelOpenAppsAndroidViewViewOnClickListener2;
+                mBcVieModelOnControlClickAndroidViewViewOnClickListener = onClickListenerImpl1.setValue(mBcVieModel);
             }
-            if ((dirtyFlags & 30) != 0) {
+            if ((27 & dirtyFlags) != 0) {
                 if (mBcVieModel != null) {
                     mBcVieModelControlBean = mBcVieModel.controlBean;
-                } else {
-                    mBcVieModelControlBean = null;
+                }
+                if ((dirtyFlags & 25) != 0) {
+                    if (mBcVieModelControlBean != null) {
+                        mBcVieModelControlBeanBenzControlPanelState = mBcVieModelControlBean.benzControlPanelState;
+                    }
+                    updateRegistration(0, (Observable) mBcVieModelControlBeanBenzControlPanelState);
+                    if (mBcVieModelControlBeanBenzControlPanelState != null) {
+                        mBcVieModelControlBeanBenzControlPanelStateGet = mBcVieModelControlBeanBenzControlPanelState.get();
+                    }
+                    if ((dirtyFlags & 25) != 0) {
+                        if (mBcVieModelControlBeanBenzControlPanelStateGet) {
+                            dirtyFlags |= 64;
+                        } else {
+                            dirtyFlags |= 32;
+                        }
+                    }
+                    mBcVieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = AppCompatResources.getDrawable(this.controlBtn.getContext(), mBcVieModelControlBeanBenzControlPanelStateGet ? R.drawable.ntg55_ctrlpanel_down_selector : R.drawable.ntg55_ctrlpanel_up_selector);
                 }
                 if ((dirtyFlags & 26) != 0) {
                     if (mBcVieModelControlBean != null) {
@@ -197,40 +194,21 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
                     }
                     if ((dirtyFlags & 26) != 0) {
                         if (mBcVieModelControlBeanControlPanelCloseGet) {
-                            dirtyFlags |= 64;
-                        } else {
-                            dirtyFlags |= 32;
-                        }
-                    }
-                    mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = mBcVieModelControlBeanControlPanelCloseGet ? 8 : 0;
-                }
-                if ((dirtyFlags & 28) != 0) {
-                    if (mBcVieModelControlBean != null) {
-                        mBcVieModelControlBeanBenzControlPanelState = mBcVieModelControlBean.benzControlPanelState;
-                    }
-                    updateRegistration(2, (Observable) mBcVieModelControlBeanBenzControlPanelState);
-                    if (mBcVieModelControlBeanBenzControlPanelState != null) {
-                        mBcVieModelControlBeanBenzControlPanelStateGet2 = mBcVieModelControlBeanBenzControlPanelState.get();
-                    }
-                    if ((dirtyFlags & 28) != 0) {
-                        if (mBcVieModelControlBeanBenzControlPanelStateGet2) {
                             dirtyFlags |= 256;
                         } else {
                             dirtyFlags |= 128;
                         }
                     }
-                    if (mBcVieModelControlBeanBenzControlPanelStateGet2) {
-                        mBcVieModelControlBeanBenzControlPanelStateGet = mBcVieModelControlBeanBenzControlPanelStateGet2;
-                        drawable = getDrawableFromResource(this.controlBtn, R.drawable.ntg55_ctrlpanel_down_selector);
-                    } else {
-                        mBcVieModelControlBeanBenzControlPanelStateGet = mBcVieModelControlBeanBenzControlPanelStateGet2;
-                        drawable = getDrawableFromResource(this.controlBtn, R.drawable.ntg55_ctrlpanel_up_selector);
-                    }
-                    mBcVieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector = drawable;
-                    ControlBean controlBean = mBcVieModelControlBean;
-                    boolean z = mBcVieModelControlBeanBenzControlPanelStateGet;
-                } else {
-                    ControlBean controlBean2 = mBcVieModelControlBean;
+                    mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE = mBcVieModelControlBeanControlPanelCloseGet ? 8 : 0;
+                }
+            }
+            if ((dirtyFlags & 28) != 0) {
+                if (mBcVieModel != null) {
+                    mBcVieModelBcPagePosition = mBcVieModel.bcPagePosition;
+                }
+                updateRegistration(2, (Observable) mBcVieModelBcPagePosition);
+                if (mBcVieModelBcPagePosition != null) {
+                    mBcVieModelBcPagePositionGet = mBcVieModelBcPagePosition.get();
                 }
             }
         }
@@ -239,16 +217,16 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
             this.controlBtn.setOnClickListener(mBcVieModelOnControlClickAndroidViewViewOnClickListener);
         }
         if ((16 & dirtyFlags) != 0) {
-            this.bcArrowLeftButton.setOnClickListener(this.mCallback102);
-            this.bcArrowRightButton.setOnClickListener(this.mCallback103);
+            this.bcArrowLeftButton.setOnClickListener(this.mCallback223);
+            this.bcArrowRightButton.setOnClickListener(this.mCallback224);
         }
         if ((dirtyFlags & 26) != 0) {
             this.controlBtn.setVisibility(mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE);
         }
-        if ((dirtyFlags & 28) != 0) {
+        if ((dirtyFlags & 25) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.controlBtn, mBcVieModelControlBeanBenzControlPanelStateControlBtnAndroidDrawableNtg55CtrlpanelDownSelectorControlBtnAndroidDrawableNtg55CtrlpanelUpSelector);
         }
-        if ((dirtyFlags & 25) != 0) {
+        if ((dirtyFlags & 28) != 0) {
             this.recyclerView2.smoothScrollToPosition(mBcVieModelBcPagePositionGet);
         }
     }
@@ -265,7 +243,7 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
         }
 
         public void onClick(View arg0) {
-            this.value.onControlClick(arg0);
+            this.value.openApps(arg0);
         }
     }
 
@@ -281,17 +259,17 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
         }
 
         public void onClick(View arg0) {
-            this.value.openApps(arg0);
+            this.value.onControlClick(arg0);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean mBcVieModelJavaLangObjectNull = false;
+        boolean mBcVieModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 BcVieModel mBcVieModel = this.mMBcVieModel;
-                if (mBcVieModel != null) {
-                    mBcVieModelJavaLangObjectNull = true;
+                if (mBcVieModel == null) {
+                    mBcVieModelJavaLangObjectNull = false;
                 }
                 if (mBcVieModelJavaLangObjectNull) {
                     mBcVieModel.switchToFirstView();
@@ -300,8 +278,8 @@ public class ActivityMainBcBindingImpl extends ActivityMainBcBinding implements 
                 return;
             case 2:
                 BcVieModel mBcVieModel2 = this.mMBcVieModel;
-                if (mBcVieModel2 != null) {
-                    mBcVieModelJavaLangObjectNull = true;
+                if (mBcVieModel2 == null) {
+                    mBcVieModelJavaLangObjectNull = false;
                 }
                 if (mBcVieModelJavaLangObjectNull) {
                     mBcVieModel2.switchToSecondView();

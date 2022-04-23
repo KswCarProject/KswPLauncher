@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import android.support.constraint.solver.widgets.analyzer.BasicMeasure;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v4.widget.ListViewAutoScrollHelper;
@@ -43,8 +43,9 @@ class DropDownListView extends ListView {
         this.mHijackFocus = hijackFocus;
         setCacheColorHint(0);
         try {
-            this.mIsChildViewEnabled = AbsListView.class.getDeclaredField("mIsChildViewEnabled");
-            this.mIsChildViewEnabled.setAccessible(true);
+            Field declaredField = AbsListView.class.getDeclaredField("mIsChildViewEnabled");
+            this.mIsChildViewEnabled = declaredField;
+            declaredField.setAccessible(true);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -67,8 +68,9 @@ class DropDownListView extends ListView {
     }
 
     public void setSelector(Drawable sel) {
-        this.mSelector = sel != null ? new GateKeeperDrawable(sel) : null;
-        super.setSelector(this.mSelector);
+        GateKeeperDrawable gateKeeperDrawable = sel != null ? new GateKeeperDrawable(sel) : null;
+        this.mSelector = gateKeeperDrawable;
+        super.setSelector(gateKeeperDrawable);
         Rect padding = new Rect();
         if (sel != null) {
             sel.getPadding(padding);
@@ -95,11 +97,14 @@ class DropDownListView extends ListView {
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == 0) {
-            this.mMotionPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
+        switch (ev.getAction()) {
+            case 0:
+                this.mMotionPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
+                break;
         }
-        if (this.mResolveHoverRunnable != null) {
-            this.mResolveHoverRunnable.cancel();
+        ResolveHoverRunnable resolveHoverRunnable = this.mResolveHoverRunnable;
+        if (resolveHoverRunnable != null) {
+            resolveHoverRunnable.cancel();
         }
         return super.onTouchEvent(ev);
     }
@@ -151,19 +156,19 @@ class DropDownListView extends ListView {
         }
         int returnedHeight = paddingTop + paddingBottom;
         int dividerHeight = (reportedDividerHeight <= 0 || divider == null) ? 0 : reportedDividerHeight;
+        int prevHeightWithoutPartialChild = 0;
         View child = null;
         int viewType = 0;
         int count = adapter.getCount();
-        int prevHeightWithoutPartialChild = 0;
-        int returnedHeight2 = returnedHeight;
         int i3 = 0;
         while (i3 < count) {
-            int newType = adapter.getItemViewType(i3);
-            if (newType != viewType) {
-                child = null;
-                viewType = newType;
-            }
             int paddingTop2 = paddingTop;
+            int paddingTop3 = adapter.getItemViewType(i3);
+            if (paddingTop3 != viewType) {
+                child = null;
+                viewType = paddingTop3;
+            }
+            int i4 = paddingTop3;
             child = adapter.getView(i3, child, this);
             ViewGroup.LayoutParams childLp2 = child.getLayoutParams();
             if (childLp2 == null) {
@@ -175,34 +180,33 @@ class DropDownListView extends ListView {
             int paddingBottom2 = paddingBottom;
             if (childLp.height > 0) {
                 ViewGroup.LayoutParams layoutParams = childLp;
-                heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(childLp.height, 1073741824);
+                heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(childLp.height, BasicMeasure.EXACTLY);
             } else {
                 heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, 0);
             }
             child.measure(widthMeasureSpec, heightMeasureSpec);
             child.forceLayout();
             if (i3 > 0) {
-                returnedHeight2 += dividerHeight;
+                returnedHeight += dividerHeight;
             }
-            returnedHeight2 += child.getMeasuredHeight();
-            if (returnedHeight2 >= i) {
-                return (i2 < 0 || i3 <= i2 || prevHeightWithoutPartialChild <= 0 || returnedHeight2 == i) ? i : prevHeightWithoutPartialChild;
+            returnedHeight += child.getMeasuredHeight();
+            if (returnedHeight >= i) {
+                return (i2 < 0 || i3 <= i2 || prevHeightWithoutPartialChild <= 0 || returnedHeight == i) ? i : prevHeightWithoutPartialChild;
             }
             if (i2 >= 0 && i3 >= i2) {
-                prevHeightWithoutPartialChild = returnedHeight2;
+                prevHeightWithoutPartialChild = returnedHeight;
             }
             i3++;
             paddingTop = paddingTop2;
             paddingBottom = paddingBottom2;
         }
-        int i4 = paddingBottom;
-        int paddingTop3 = widthMeasureSpec;
-        return returnedHeight2;
+        return returnedHeight;
     }
 
     private void setSelectorEnabled(boolean enabled) {
-        if (this.mSelector != null) {
-            this.mSelector.setEnabled(enabled);
+        GateKeeperDrawable gateKeeperDrawable = this.mSelector;
+        if (gateKeeperDrawable != null) {
+            gateKeeperDrawable.setEnabled(enabled);
         }
     }
 
@@ -251,14 +255,15 @@ class DropDownListView extends ListView {
         }
     }
 
-    public boolean onHoverEvent(@NonNull MotionEvent ev) {
+    public boolean onHoverEvent(MotionEvent ev) {
         if (Build.VERSION.SDK_INT < 26) {
             return super.onHoverEvent(ev);
         }
         int action = ev.getActionMasked();
         if (action == 10 && this.mResolveHoverRunnable == null) {
-            this.mResolveHoverRunnable = new ResolveHoverRunnable();
-            this.mResolveHoverRunnable.post();
+            ResolveHoverRunnable resolveHoverRunnable = new ResolveHoverRunnable();
+            this.mResolveHoverRunnable = resolveHoverRunnable;
+            resolveHoverRunnable.post();
         }
         boolean handled = super.onHoverEvent(ev);
         if (action == 9 || action == 7) {
@@ -323,8 +328,11 @@ class DropDownListView extends ListView {
             }
             this.mScrollHelper.setEnabled(true);
             this.mScrollHelper.onTouch(this, event);
-        } else if (this.mScrollHelper != null) {
-            this.mScrollHelper.setEnabled(false);
+        } else {
+            ListViewAutoScrollHelper listViewAutoScrollHelper = this.mScrollHelper;
+            if (listViewAutoScrollHelper != null) {
+                listViewAutoScrollHelper.setEnabled(false);
+            }
         }
         return handledEvent;
     }
@@ -409,8 +417,9 @@ class DropDownListView extends ListView {
         if (motionView != null) {
             motionView.setPressed(false);
         }
-        if (this.mClickAnimation != null) {
-            this.mClickAnimation.cancel();
+        ViewPropertyAnimatorCompat viewPropertyAnimatorCompat = this.mClickAnimation;
+        if (viewPropertyAnimatorCompat != null) {
+            viewPropertyAnimatorCompat.cancel();
             this.mClickAnimation = null;
         }
     }
@@ -425,7 +434,8 @@ class DropDownListView extends ListView {
             setPressed(true);
         }
         layoutChildren();
-        if (!(this.mMotionPosition == -1 || (motionView = getChildAt(this.mMotionPosition - getFirstVisiblePosition())) == null || motionView == child || !motionView.isPressed())) {
+        int i = this.mMotionPosition;
+        if (!(i == -1 || (motionView = getChildAt(i - getFirstVisiblePosition())) == null || motionView == child || !motionView.isPressed())) {
             motionView.setPressed(false);
         }
         this.mMotionPosition = position;

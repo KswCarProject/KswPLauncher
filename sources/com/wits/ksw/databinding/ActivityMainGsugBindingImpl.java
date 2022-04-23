@@ -2,58 +2,49 @@ package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.SparseIntArray;
 import android.view.View;
-import android.widget.ImageView;
 import com.wits.ksw.R;
 import com.wits.ksw.generated.callback.OnClickListener;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding implements OnClickListener.Listener {
-    @Nullable
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
-    @Nullable
-    private final View.OnClickListener mCallback24;
-    @Nullable
-    private final View.OnClickListener mCallback25;
-    @Nullable
-    private final View.OnClickListener mCallback26;
-    @Nullable
-    private final View.OnClickListener mCallback27;
+    private static final SparseIntArray sViewsWithIds;
+    private final View.OnClickListener mCallback88;
+    private final View.OnClickListener mCallback89;
+    private final View.OnClickListener mCallback90;
+    private final View.OnClickListener mCallback91;
     private long mDirtyFlags;
-    @NonNull
     private final ConstraintLayout mboundView0;
-    @NonNull
-    private final ImageView mboundView4;
 
     static {
-        sViewsWithIds.put(R.id.ugViewPage, 5);
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.ugViewPage, 5);
     }
 
-    public ActivityMainGsugBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
+    public ActivityMainGsugBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 6, sIncludes, sViewsWithIds));
     }
 
+    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private ActivityMainGsugBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[1], bindings[2], bindings[3], bindings[5]);
+        super(bindingComponent, root, 0, bindings[4], bindings[1], bindings[2], bindings[3], bindings[5]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
-        this.mboundView4 = bindings[4];
-        this.mboundView4.setTag((Object) null);
+        this.appsButton.setTag((Object) null);
+        ConstraintLayout constraintLayout = bindings[0];
+        this.mboundView0 = constraintLayout;
+        constraintLayout.setTag((Object) null);
         this.musicButton.setTag((Object) null);
         this.naviButton.setTag((Object) null);
         this.settingButton.setTag((Object) null);
         setRootTag(root);
-        this.mCallback27 = new OnClickListener(this, 4);
-        this.mCallback25 = new OnClickListener(this, 2);
-        this.mCallback26 = new OnClickListener(this, 3);
-        this.mCallback24 = new OnClickListener(this, 1);
+        this.mCallback89 = new OnClickListener(this, 2);
+        this.mCallback88 = new OnClickListener(this, 1);
+        this.mCallback90 = new OnClickListener(this, 3);
+        this.mCallback91 = new OnClickListener(this, 4);
         invalidateAll();
     }
 
@@ -73,20 +64,20 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
         }
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (19 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setViewModel(@Nullable LauncherViewModel ViewModel) {
+    public void setViewModel(LauncherViewModel ViewModel) {
         this.mViewModel = ViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(19);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
@@ -104,20 +95,20 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.mboundView4.setOnClickListener(this.mCallback27);
-            this.musicButton.setOnClickListener(this.mCallback24);
-            this.naviButton.setOnClickListener(this.mCallback25);
-            this.settingButton.setOnClickListener(this.mCallback26);
+            this.appsButton.setOnClickListener(this.mCallback91);
+            this.musicButton.setOnClickListener(this.mCallback88);
+            this.naviButton.setOnClickListener(this.mCallback89);
+            this.settingButton.setOnClickListener(this.mCallback90);
         }
     }
 
     public final void _internalCallbackOnClick(int sourceId, View callbackArg_0) {
-        boolean viewModelJavaLangObjectNull = false;
+        boolean viewModelJavaLangObjectNull = true;
         switch (sourceId) {
             case 1:
                 LauncherViewModel viewModel = this.mViewModel;
-                if (viewModel != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel.openChoseMusic(callbackArg_0);
@@ -126,8 +117,8 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
                 return;
             case 2:
                 LauncherViewModel viewModel2 = this.mViewModel;
-                if (viewModel2 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel2 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel2.openNaviApp(callbackArg_0);
@@ -136,8 +127,8 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
                 return;
             case 3:
                 LauncherViewModel viewModel3 = this.mViewModel;
-                if (viewModel3 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel3 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel3.openSettings(callbackArg_0);
@@ -146,8 +137,8 @@ public class ActivityMainGsugBindingImpl extends ActivityMainGsugBinding impleme
                 return;
             case 4:
                 LauncherViewModel viewModel4 = this.mViewModel;
-                if (viewModel4 != null) {
-                    viewModelJavaLangObjectNull = true;
+                if (viewModel4 == null) {
+                    viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
                     viewModel4.openApps(callbackArg_0);

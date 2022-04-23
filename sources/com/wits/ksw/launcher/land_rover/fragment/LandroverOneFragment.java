@@ -3,37 +3,36 @@ package com.wits.ksw.launcher.land_rover.fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.wits.ksw.R;
-import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
 public class LandroverOneFragment extends Fragment {
     private com.wits.ksw.databinding.LandroverOneFragment binding;
-    private LauncherViewModel viewModel;
+    private LandroverViewModel viewModel;
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i("CarFragment", "onCreate: CarFragment");
-        this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
+        this.viewModel = (LandroverViewModel) ViewModelProviders.of(getActivity()).get(LandroverViewModel.class);
     }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.viewModel.hicar.set(false);
-        this.binding = (com.wits.ksw.databinding.LandroverOneFragment) DataBindingUtil.inflate(inflater, R.layout.landrover_main_fragment_one, (ViewGroup) null, false);
-        return this.binding.getRoot();
+        com.wits.ksw.databinding.LandroverOneFragment landroverOneFragment = (com.wits.ksw.databinding.LandroverOneFragment) DataBindingUtil.inflate(inflater, R.layout.landrover_main_fragment_one, (ViewGroup) null, false);
+        this.binding = landroverOneFragment;
+        return landroverOneFragment.getRoot();
     }
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (this.binding != null) {
-            this.binding.setViewModel(this.viewModel);
+        com.wits.ksw.databinding.LandroverOneFragment landroverOneFragment = this.binding;
+        if (landroverOneFragment != null) {
+            landroverOneFragment.setViewModel(this.viewModel);
         }
     }
 

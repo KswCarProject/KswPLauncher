@@ -5,10 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.CancellationSignal;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.FontResourcesParserCompat;
 import android.support.v4.provider.FontsContractCompat;
 import android.support.v4.util.SimpleArrayMap;
@@ -20,8 +16,6 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-@RequiresApi(24)
-@RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
 class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
     private static final String ADD_FONT_WEIGHT_STYLE_METHOD = "addFontWeightStyle";
     private static final String CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD = "createFromFamiliesWithDefault";
@@ -36,19 +30,32 @@ class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
     }
 
     static {
-        Constructor fontFamilyCtor;
-        Method createFromFamiliesWithDefaultMethod;
-        Class fontFamilyClass;
         Method addFontMethod;
+        Constructor fontFamilyCtor;
+        Class fontFamilyClass;
+        Method createFromFamiliesWithDefaultMethod;
         try {
             fontFamilyClass = Class.forName(FONT_FAMILY_CLASS);
             try {
                 fontFamilyCtor = fontFamilyClass.getConstructor(new Class[0]);
                 try {
                     addFontMethod = fontFamilyClass.getMethod(ADD_FONT_WEIGHT_STYLE_METHOD, new Class[]{ByteBuffer.class, Integer.TYPE, List.class, Integer.TYPE, Boolean.TYPE});
-                    createFromFamiliesWithDefaultMethod = Typeface.class.getMethod(CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD, new Class[]{Array.newInstance(fontFamilyClass, 1).getClass()});
-                } catch (ClassNotFoundException | NoSuchMethodException e) {
-                    e = e;
+                    try {
+                        createFromFamiliesWithDefaultMethod = Typeface.class.getMethod(CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD, new Class[]{Array.newInstance(fontFamilyClass, 1).getClass()});
+                    } catch (ClassNotFoundException | NoSuchMethodException e) {
+                        e = e;
+                        Log.e(TAG, e.getClass().getName(), e);
+                        fontFamilyClass = null;
+                        fontFamilyCtor = null;
+                        addFontMethod = null;
+                        createFromFamiliesWithDefaultMethod = null;
+                        sFontFamilyCtor = fontFamilyCtor;
+                        sFontFamily = fontFamilyClass;
+                        sAddFontWeightStyle = addFontMethod;
+                        sCreateFromFamiliesWithDefault = createFromFamiliesWithDefaultMethod;
+                    }
+                } catch (ClassNotFoundException | NoSuchMethodException e2) {
+                    e = e2;
                     Log.e(TAG, e.getClass().getName(), e);
                     fontFamilyClass = null;
                     fontFamilyCtor = null;
@@ -59,8 +66,8 @@ class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
                     sAddFontWeightStyle = addFontMethod;
                     sCreateFromFamiliesWithDefault = createFromFamiliesWithDefaultMethod;
                 }
-            } catch (ClassNotFoundException | NoSuchMethodException e2) {
-                e = e2;
+            } catch (ClassNotFoundException | NoSuchMethodException e3) {
+                e = e3;
                 Log.e(TAG, e.getClass().getName(), e);
                 fontFamilyClass = null;
                 fontFamilyCtor = null;
@@ -71,8 +78,8 @@ class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
                 sAddFontWeightStyle = addFontMethod;
                 sCreateFromFamiliesWithDefault = createFromFamiliesWithDefaultMethod;
             }
-        } catch (ClassNotFoundException | NoSuchMethodException e3) {
-            e = e3;
+        } catch (ClassNotFoundException | NoSuchMethodException e4) {
+            e = e4;
             Log.e(TAG, e.getClass().getName(), e);
             fontFamilyClass = null;
             fontFamilyCtor = null;
@@ -90,10 +97,11 @@ class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
     }
 
     public static boolean isUsable() {
-        if (sAddFontWeightStyle == null) {
+        Method method = sAddFontWeightStyle;
+        if (method == null) {
             Log.w(TAG, "Unable to collect necessary private methods.Fallback to legacy implementation.");
         }
-        return sAddFontWeightStyle != null;
+        return method != null;
     }
 
     private static Object newFamily() {
@@ -122,7 +130,7 @@ class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
         }
     }
 
-    public Typeface createFromFontInfo(Context context, @Nullable CancellationSignal cancellationSignal, @NonNull FontsContractCompat.FontInfo[] fonts, int style) {
+    public Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fonts, int style) {
         Object family = newFamily();
         SimpleArrayMap<Uri, ByteBuffer> bufferCache = new SimpleArrayMap<>();
         for (FontsContractCompat.FontInfo font : fonts) {

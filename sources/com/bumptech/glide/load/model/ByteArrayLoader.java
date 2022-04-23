@@ -1,6 +1,5 @@
 package com.bumptech.glide.load.model;
 
-import android.support.annotation.NonNull;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Options;
@@ -24,11 +23,11 @@ public class ByteArrayLoader<Data> implements ModelLoader<byte[], Data> {
         this.converter = converter2;
     }
 
-    public ModelLoader.LoadData<Data> buildLoadData(@NonNull byte[] model, int width, int height, @NonNull Options options) {
+    public ModelLoader.LoadData<Data> buildLoadData(byte[] model, int width, int height, Options options) {
         return new ModelLoader.LoadData<>(new ObjectKey(model), new Fetcher(model, this.converter));
     }
 
-    public boolean handles(@NonNull byte[] model) {
+    public boolean handles(byte[] model) {
         return true;
     }
 
@@ -41,7 +40,7 @@ public class ByteArrayLoader<Data> implements ModelLoader<byte[], Data> {
             this.converter = converter2;
         }
 
-        public void loadData(@NonNull Priority priority, @NonNull DataFetcher.DataCallback<? super Data> callback) {
+        public void loadData(Priority priority, DataFetcher.DataCallback<? super Data> callback) {
             callback.onDataReady(this.converter.convert(this.model));
         }
 
@@ -51,20 +50,17 @@ public class ByteArrayLoader<Data> implements ModelLoader<byte[], Data> {
         public void cancel() {
         }
 
-        @NonNull
         public Class<Data> getDataClass() {
             return this.converter.getDataClass();
         }
 
-        @NonNull
         public DataSource getDataSource() {
             return DataSource.LOCAL;
         }
     }
 
     public static class ByteBufferFactory implements ModelLoaderFactory<byte[], ByteBuffer> {
-        @NonNull
-        public ModelLoader<byte[], ByteBuffer> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<byte[], ByteBuffer> build(MultiModelLoaderFactory multiFactory) {
             return new ByteArrayLoader(new Converter<ByteBuffer>() {
                 public ByteBuffer convert(byte[] model) {
                     return ByteBuffer.wrap(model);
@@ -81,8 +77,7 @@ public class ByteArrayLoader<Data> implements ModelLoader<byte[], Data> {
     }
 
     public static class StreamFactory implements ModelLoaderFactory<byte[], InputStream> {
-        @NonNull
-        public ModelLoader<byte[], InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<byte[], InputStream> build(MultiModelLoaderFactory multiFactory) {
             return new ByteArrayLoader(new Converter<InputStream>() {
                 public InputStream convert(byte[] model) {
                     return new ByteArrayInputStream(model);

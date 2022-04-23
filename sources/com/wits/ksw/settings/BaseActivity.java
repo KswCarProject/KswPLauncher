@@ -5,14 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 
 public class BaseActivity extends AppCompatActivity {
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = getWindow();
@@ -40,5 +39,27 @@ public class BaseActivity extends AppCompatActivity {
             Class.forName("android.app.ActivityManager").getMethod("forceStopPackage", new Class[]{String.class}).invoke(am, new Object[]{pkgName});
         } catch (Exception e) {
         }
+    }
+
+    public void setStatusBarTranslucent() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = getWindow();
+            window.addFlags(Integer.MIN_VALUE);
+            window.clearFlags(67108864);
+            window.setStatusBarColor(0);
+            window.getDecorView().setSystemUiVisibility(1280);
+        }
+    }
+
+    public void setFull() {
+        if (Build.VERSION.SDK_INT >= 19) {
+            getWindow().addFlags(67108864);
+            getWindow().addFlags(134217728);
+        }
+    }
+
+    public void setFullAndTranslucent() {
+        setFull();
+        setStatusBarTranslucent();
     }
 }

@@ -86,112 +86,110 @@ public interface IPowerManagerAppService extends IInterface {
         }
 
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-            if (code != 1598968902) {
-                switch (code) {
-                    case 1:
-                        data.enforceInterface(DESCRIPTOR);
-                        boolean _result = sendCommand(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result);
-                        return true;
-                    case 2:
-                        data.enforceInterface(DESCRIPTOR);
-                        boolean _result2 = sendStatus(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result2);
-                        return true;
-                    case 3:
-                        data.enforceInterface(DESCRIPTOR);
-                        registerCmdListener(ICmdListener.Stub.asInterface(data.readStrongBinder()));
-                        reply.writeNoException();
-                        return true;
-                    case 4:
-                        data.enforceInterface(DESCRIPTOR);
-                        unregisterCmdListener(ICmdListener.Stub.asInterface(data.readStrongBinder()));
-                        reply.writeNoException();
-                        return true;
-                    case 5:
-                        data.enforceInterface(DESCRIPTOR);
-                        registerObserver(data.readString(), IContentObserver.Stub.asInterface(data.readStrongBinder()));
-                        reply.writeNoException();
-                        return true;
-                    case 6:
-                        data.enforceInterface(DESCRIPTOR);
-                        unregisterObserver(IContentObserver.Stub.asInterface(data.readStrongBinder()));
-                        reply.writeNoException();
-                        return true;
-                    case 7:
-                        data.enforceInterface(DESCRIPTOR);
-                        boolean _result3 = getStatusBoolean(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result3);
-                        return true;
-                    case 8:
-                        data.enforceInterface(DESCRIPTOR);
-                        int _result4 = getStatusInt(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result4);
-                        return true;
-                    case 9:
-                        data.enforceInterface(DESCRIPTOR);
-                        String _result5 = getStatusString(data.readString());
-                        reply.writeNoException();
-                        reply.writeString(_result5);
-                        return true;
-                    case 10:
-                        data.enforceInterface(DESCRIPTOR);
-                        int _result6 = getSettingsInt(data.readString());
-                        reply.writeNoException();
-                        reply.writeInt(_result6);
-                        return true;
-                    case 11:
-                        data.enforceInterface(DESCRIPTOR);
-                        String _result7 = getSettingsString(data.readString());
-                        reply.writeNoException();
-                        reply.writeString(_result7);
-                        return true;
-                    case 12:
-                        data.enforceInterface(DESCRIPTOR);
-                        setSettingsInt(data.readString(), data.readInt());
-                        reply.writeNoException();
-                        return true;
-                    case 13:
-                        data.enforceInterface(DESCRIPTOR);
-                        setSettingsString(data.readString(), data.readString());
-                        reply.writeNoException();
-                        return true;
-                    case 14:
-                        data.enforceInterface(DESCRIPTOR);
-                        addIntStatus(data.readString(), data.readInt());
-                        reply.writeNoException();
-                        return true;
-                    case 15:
-                        data.enforceInterface(DESCRIPTOR);
-                        addBooleanStatus(data.readString(), data.readInt() != 0);
-                        reply.writeNoException();
-                        return true;
-                    case 16:
-                        data.enforceInterface(DESCRIPTOR);
-                        addStringStatus(data.readString(), data.readString());
-                        reply.writeNoException();
-                        return true;
-                    case 17:
-                        data.enforceInterface(DESCRIPTOR);
-                        saveJsonConfig(data.readString(), data.readString());
-                        reply.writeNoException();
-                        return true;
-                    case 18:
-                        data.enforceInterface(DESCRIPTOR);
-                        String _result8 = getJsonConfig(data.readString());
-                        reply.writeNoException();
-                        reply.writeString(_result8);
-                        return true;
-                    default:
-                        return super.onTransact(code, data, reply, flags);
-                }
-            } else {
-                reply.writeString(DESCRIPTOR);
-                return true;
+            switch (code) {
+                case 1:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result = sendCommand(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result);
+                    return true;
+                case 2:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result2 = sendStatus(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result2);
+                    return true;
+                case 3:
+                    data.enforceInterface(DESCRIPTOR);
+                    registerCmdListener(ICmdListener.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 4:
+                    data.enforceInterface(DESCRIPTOR);
+                    unregisterCmdListener(ICmdListener.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 5:
+                    data.enforceInterface(DESCRIPTOR);
+                    registerObserver(data.readString(), IContentObserver.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 6:
+                    data.enforceInterface(DESCRIPTOR);
+                    unregisterObserver(IContentObserver.Stub.asInterface(data.readStrongBinder()));
+                    reply.writeNoException();
+                    return true;
+                case 7:
+                    data.enforceInterface(DESCRIPTOR);
+                    boolean _result3 = getStatusBoolean(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result3);
+                    return true;
+                case 8:
+                    data.enforceInterface(DESCRIPTOR);
+                    int _result4 = getStatusInt(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result4);
+                    return true;
+                case 9:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _result5 = getStatusString(data.readString());
+                    reply.writeNoException();
+                    reply.writeString(_result5);
+                    return true;
+                case 10:
+                    data.enforceInterface(DESCRIPTOR);
+                    int _result6 = getSettingsInt(data.readString());
+                    reply.writeNoException();
+                    reply.writeInt(_result6);
+                    return true;
+                case 11:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _result7 = getSettingsString(data.readString());
+                    reply.writeNoException();
+                    reply.writeString(_result7);
+                    return true;
+                case 12:
+                    data.enforceInterface(DESCRIPTOR);
+                    setSettingsInt(data.readString(), data.readInt());
+                    reply.writeNoException();
+                    return true;
+                case 13:
+                    data.enforceInterface(DESCRIPTOR);
+                    setSettingsString(data.readString(), data.readString());
+                    reply.writeNoException();
+                    return true;
+                case 14:
+                    data.enforceInterface(DESCRIPTOR);
+                    addIntStatus(data.readString(), data.readInt());
+                    reply.writeNoException();
+                    return true;
+                case 15:
+                    data.enforceInterface(DESCRIPTOR);
+                    addBooleanStatus(data.readString(), data.readInt() != 0);
+                    reply.writeNoException();
+                    return true;
+                case 16:
+                    data.enforceInterface(DESCRIPTOR);
+                    addStringStatus(data.readString(), data.readString());
+                    reply.writeNoException();
+                    return true;
+                case 17:
+                    data.enforceInterface(DESCRIPTOR);
+                    saveJsonConfig(data.readString(), data.readString());
+                    reply.writeNoException();
+                    return true;
+                case 18:
+                    data.enforceInterface(DESCRIPTOR);
+                    String _result8 = getJsonConfig(data.readString());
+                    reply.writeNoException();
+                    reply.writeString(_result8);
+                    return true;
+                case 1598968902:
+                    reply.writeString(DESCRIPTOR);
+                    return true;
+                default:
+                    return super.onTransact(code, data, reply, flags);
             }
         }
 
@@ -435,7 +433,7 @@ public interface IPowerManagerAppService extends IInterface {
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
                     _data.writeString(key);
-                    _data.writeInt(value);
+                    _data.writeInt(value ? 1 : 0);
                     this.mRemote.transact(15, _data, _reply, 0);
                     _reply.readException();
                 } finally {

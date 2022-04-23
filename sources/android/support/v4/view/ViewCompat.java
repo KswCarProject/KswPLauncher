@@ -1,7 +1,6 @@
 package android.support.v4.view;
 
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.res.ColorStateList;
 import android.graphics.Matrix;
@@ -11,14 +10,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Px;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.UiThread;
 import android.support.compat.R;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
@@ -107,22 +98,18 @@ public class ViewCompat {
     private static WeakHashMap<View, String> sTransitionNameMap;
     private static WeakHashMap<View, ViewPropertyAnimatorCompat> sViewPropertyAnimatorMap = null;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface FocusDirection {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface FocusRealDirection {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface FocusRelativeDirection {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface NestedScrollType {
     }
@@ -131,12 +118,10 @@ public class ViewCompat {
         boolean onUnhandledKeyEvent(View view, KeyEvent keyEvent);
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ScrollAxis {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ScrollIndicators {
     }
@@ -184,49 +169,49 @@ public class ViewCompat {
         v.onInitializeAccessibilityEvent(event);
     }
 
-    public static void onInitializeAccessibilityNodeInfo(@NonNull View v, AccessibilityNodeInfoCompat info) {
+    public static void onInitializeAccessibilityNodeInfo(View v, AccessibilityNodeInfoCompat info) {
         v.onInitializeAccessibilityNodeInfo(info.unwrap());
     }
 
-    public static void setAccessibilityDelegate(@NonNull View v, AccessibilityDelegateCompat delegate) {
+    public static void setAccessibilityDelegate(View v, AccessibilityDelegateCompat delegate) {
         v.setAccessibilityDelegate(delegate == null ? null : delegate.getBridge());
     }
 
-    public static void setAutofillHints(@NonNull View v, @Nullable String... autofillHints) {
+    public static void setAutofillHints(View v, String... autofillHints) {
         if (Build.VERSION.SDK_INT >= 26) {
             v.setAutofillHints(autofillHints);
         }
     }
 
-    @SuppressLint({"InlinedApi"})
-    public static int getImportantForAutofill(@NonNull View v) {
+    public static int getImportantForAutofill(View v) {
         if (Build.VERSION.SDK_INT >= 26) {
             return v.getImportantForAutofill();
         }
         return 0;
     }
 
-    public static void setImportantForAutofill(@NonNull View v, int mode) {
+    public static void setImportantForAutofill(View v, int mode) {
         if (Build.VERSION.SDK_INT >= 26) {
             v.setImportantForAutofill(mode);
         }
     }
 
-    public static boolean isImportantForAutofill(@NonNull View v) {
+    public static boolean isImportantForAutofill(View v) {
         if (Build.VERSION.SDK_INT >= 26) {
             return v.isImportantForAutofill();
         }
         return true;
     }
 
-    public static boolean hasAccessibilityDelegate(@NonNull View v) {
+    public static boolean hasAccessibilityDelegate(View v) {
         if (sAccessibilityDelegateCheckFailed) {
             return false;
         }
         if (sAccessibilityDelegateField == null) {
             try {
-                sAccessibilityDelegateField = View.class.getDeclaredField("mAccessibilityDelegate");
-                sAccessibilityDelegateField.setAccessible(true);
+                Field declaredField = View.class.getDeclaredField("mAccessibilityDelegate");
+                sAccessibilityDelegateField = declaredField;
+                declaredField.setAccessible(true);
             } catch (Throwable th) {
                 sAccessibilityDelegateCheckFailed = true;
                 return false;
@@ -243,20 +228,20 @@ public class ViewCompat {
         }
     }
 
-    public static boolean hasTransientState(@NonNull View view) {
+    public static boolean hasTransientState(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.hasTransientState();
         }
         return false;
     }
 
-    public static void setHasTransientState(@NonNull View view, boolean hasTransientState) {
+    public static void setHasTransientState(View view, boolean hasTransientState) {
         if (Build.VERSION.SDK_INT >= 16) {
             view.setHasTransientState(hasTransientState);
         }
     }
 
-    public static void postInvalidateOnAnimation(@NonNull View view) {
+    public static void postInvalidateOnAnimation(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             view.postInvalidateOnAnimation();
         } else {
@@ -264,7 +249,7 @@ public class ViewCompat {
         }
     }
 
-    public static void postInvalidateOnAnimation(@NonNull View view, int left, int top, int right, int bottom) {
+    public static void postInvalidateOnAnimation(View view, int left, int top, int right, int bottom) {
         if (Build.VERSION.SDK_INT >= 16) {
             view.postInvalidateOnAnimation(left, top, right, bottom);
         } else {
@@ -272,7 +257,7 @@ public class ViewCompat {
         }
     }
 
-    public static void postOnAnimation(@NonNull View view, Runnable action) {
+    public static void postOnAnimation(View view, Runnable action) {
         if (Build.VERSION.SDK_INT >= 16) {
             view.postOnAnimation(action);
         } else {
@@ -280,7 +265,7 @@ public class ViewCompat {
         }
     }
 
-    public static void postOnAnimationDelayed(@NonNull View view, Runnable action, long delayMillis) {
+    public static void postOnAnimationDelayed(View view, Runnable action, long delayMillis) {
         if (Build.VERSION.SDK_INT >= 16) {
             view.postOnAnimationDelayed(action, delayMillis);
         } else {
@@ -288,14 +273,14 @@ public class ViewCompat {
         }
     }
 
-    public static int getImportantForAccessibility(@NonNull View view) {
+    public static int getImportantForAccessibility(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.getImportantForAccessibility();
         }
         return 0;
     }
 
-    public static void setImportantForAccessibility(@NonNull View view, int mode) {
+    public static void setImportantForAccessibility(View view, int mode) {
         if (Build.VERSION.SDK_INT >= 19) {
             view.setImportantForAccessibility(mode);
         } else if (Build.VERSION.SDK_INT >= 16) {
@@ -306,21 +291,21 @@ public class ViewCompat {
         }
     }
 
-    public static boolean isImportantForAccessibility(@NonNull View view) {
+    public static boolean isImportantForAccessibility(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.isImportantForAccessibility();
         }
         return true;
     }
 
-    public static boolean performAccessibilityAction(@NonNull View view, int action, Bundle arguments) {
+    public static boolean performAccessibilityAction(View view, int action, Bundle arguments) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.performAccessibilityAction(action, arguments);
         }
         return false;
     }
 
-    public static AccessibilityNodeProviderCompat getAccessibilityNodeProvider(@NonNull View view) {
+    public static AccessibilityNodeProviderCompat getAccessibilityNodeProvider(View view) {
         AccessibilityNodeProvider provider;
         if (Build.VERSION.SDK_INT < 16 || (provider = view.getAccessibilityNodeProvider()) == null) {
             return null;
@@ -343,20 +328,20 @@ public class ViewCompat {
         return view.getLayerType();
     }
 
-    public static int getLabelFor(@NonNull View view) {
+    public static int getLabelFor(View view) {
         if (Build.VERSION.SDK_INT >= 17) {
             return view.getLabelFor();
         }
         return 0;
     }
 
-    public static void setLabelFor(@NonNull View view, @IdRes int labeledId) {
+    public static void setLabelFor(View view, int labeledId) {
         if (Build.VERSION.SDK_INT >= 17) {
             view.setLabelFor(labeledId);
         }
     }
 
-    public static void setLayerPaint(@NonNull View view, Paint paint) {
+    public static void setLayerPaint(View view, Paint paint) {
         if (Build.VERSION.SDK_INT >= 17) {
             view.setLayerPaint(paint);
             return;
@@ -365,28 +350,27 @@ public class ViewCompat {
         view.invalidate();
     }
 
-    public static int getLayoutDirection(@NonNull View view) {
+    public static int getLayoutDirection(View view) {
         if (Build.VERSION.SDK_INT >= 17) {
             return view.getLayoutDirection();
         }
         return 0;
     }
 
-    public static void setLayoutDirection(@NonNull View view, int layoutDirection) {
+    public static void setLayoutDirection(View view, int layoutDirection) {
         if (Build.VERSION.SDK_INT >= 17) {
             view.setLayoutDirection(layoutDirection);
         }
     }
 
-    public static ViewParent getParentForAccessibility(@NonNull View view) {
+    public static ViewParent getParentForAccessibility(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.getParentForAccessibility();
         }
         return view.getParent();
     }
 
-    @NonNull
-    public static <T extends View> T requireViewById(@NonNull View view, @IdRes int id) {
+    public static <T extends View> T requireViewById(View view, int id) {
         if (Build.VERSION.SDK_INT >= 28) {
             return view.requireViewById(id);
         }
@@ -427,36 +411,34 @@ public class ViewCompat {
         return View.combineMeasuredStates(curState, newState);
     }
 
-    public static int getAccessibilityLiveRegion(@NonNull View view) {
+    public static int getAccessibilityLiveRegion(View view) {
         if (Build.VERSION.SDK_INT >= 19) {
             return view.getAccessibilityLiveRegion();
         }
         return 0;
     }
 
-    public static void setAccessibilityLiveRegion(@NonNull View view, int mode) {
+    public static void setAccessibilityLiveRegion(View view, int mode) {
         if (Build.VERSION.SDK_INT >= 19) {
             view.setAccessibilityLiveRegion(mode);
         }
     }
 
-    @Px
-    public static int getPaddingStart(@NonNull View view) {
+    public static int getPaddingStart(View view) {
         if (Build.VERSION.SDK_INT >= 17) {
             return view.getPaddingStart();
         }
         return view.getPaddingLeft();
     }
 
-    @Px
-    public static int getPaddingEnd(@NonNull View view) {
+    public static int getPaddingEnd(View view) {
         if (Build.VERSION.SDK_INT >= 17) {
             return view.getPaddingEnd();
         }
         return view.getPaddingRight();
     }
 
-    public static void setPaddingRelative(@NonNull View view, @Px int start, @Px int top, @Px int end, @Px int bottom) {
+    public static void setPaddingRelative(View view, int start, int top, int end, int bottom) {
         if (Build.VERSION.SDK_INT >= 17) {
             view.setPaddingRelative(start, top, end, bottom);
         } else {
@@ -474,7 +456,7 @@ public class ViewCompat {
         sTempDetachBound = true;
     }
 
-    public static void dispatchStartTemporaryDetach(@NonNull View view) {
+    public static void dispatchStartTemporaryDetach(View view) {
         if (Build.VERSION.SDK_INT >= 24) {
             view.dispatchStartTemporaryDetach();
             return;
@@ -482,9 +464,10 @@ public class ViewCompat {
         if (!sTempDetachBound) {
             bindTempDetach();
         }
-        if (sDispatchStartTemporaryDetach != null) {
+        Method method = sDispatchStartTemporaryDetach;
+        if (method != null) {
             try {
-                sDispatchStartTemporaryDetach.invoke(view, new Object[0]);
+                method.invoke(view, new Object[0]);
             } catch (Exception e) {
                 Log.d(TAG, "Error calling dispatchStartTemporaryDetach", e);
             }
@@ -493,7 +476,7 @@ public class ViewCompat {
         }
     }
 
-    public static void dispatchFinishTemporaryDetach(@NonNull View view) {
+    public static void dispatchFinishTemporaryDetach(View view) {
         if (Build.VERSION.SDK_INT >= 24) {
             view.dispatchFinishTemporaryDetach();
             return;
@@ -501,9 +484,10 @@ public class ViewCompat {
         if (!sTempDetachBound) {
             bindTempDetach();
         }
-        if (sDispatchFinishTemporaryDetach != null) {
+        Method method = sDispatchFinishTemporaryDetach;
+        if (method != null) {
             try {
-                sDispatchFinishTemporaryDetach.invoke(view, new Object[0]);
+                method.invoke(view, new Object[0]);
             } catch (Exception e) {
                 Log.d(TAG, "Error calling dispatchFinishTemporaryDetach", e);
             }
@@ -522,58 +506,60 @@ public class ViewCompat {
         return view.getTranslationY();
     }
 
-    @Nullable
     @Deprecated
     public static Matrix getMatrix(View view) {
         return view.getMatrix();
     }
 
-    public static int getMinimumWidth(@NonNull View view) {
+    public static int getMinimumWidth(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.getMinimumWidth();
         }
         if (!sMinWidthFieldFetched) {
             try {
-                sMinWidthField = View.class.getDeclaredField("mMinWidth");
-                sMinWidthField.setAccessible(true);
+                Field declaredField = View.class.getDeclaredField("mMinWidth");
+                sMinWidthField = declaredField;
+                declaredField.setAccessible(true);
             } catch (NoSuchFieldException e) {
             }
             sMinWidthFieldFetched = true;
         }
-        if (sMinWidthField == null) {
+        Field field = sMinWidthField;
+        if (field == null) {
             return 0;
         }
         try {
-            return ((Integer) sMinWidthField.get(view)).intValue();
+            return ((Integer) field.get(view)).intValue();
         } catch (Exception e2) {
             return 0;
         }
     }
 
-    public static int getMinimumHeight(@NonNull View view) {
+    public static int getMinimumHeight(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.getMinimumHeight();
         }
         if (!sMinHeightFieldFetched) {
             try {
-                sMinHeightField = View.class.getDeclaredField("mMinHeight");
-                sMinHeightField.setAccessible(true);
+                Field declaredField = View.class.getDeclaredField("mMinHeight");
+                sMinHeightField = declaredField;
+                declaredField.setAccessible(true);
             } catch (NoSuchFieldException e) {
             }
             sMinHeightFieldFetched = true;
         }
-        if (sMinHeightField == null) {
+        Field field = sMinHeightField;
+        if (field == null) {
             return 0;
         }
         try {
-            return ((Integer) sMinHeightField.get(view)).intValue();
+            return ((Integer) field.get(view)).intValue();
         } catch (Exception e2) {
             return 0;
         }
     }
 
-    @NonNull
-    public static ViewPropertyAnimatorCompat animate(@NonNull View view) {
+    public static ViewPropertyAnimatorCompat animate(View view) {
         if (sViewPropertyAnimatorMap == null) {
             sViewPropertyAnimatorMap = new WeakHashMap<>();
         }
@@ -597,7 +583,7 @@ public class ViewCompat {
     }
 
     @Deprecated
-    public static void setAlpha(View view, @FloatRange(from = 0.0d, to = 1.0d) float value) {
+    public static void setAlpha(View view, float value) {
         view.setAlpha(value);
     }
 
@@ -691,33 +677,33 @@ public class ViewCompat {
         return view.getY();
     }
 
-    public static void setElevation(@NonNull View view, float elevation) {
+    public static void setElevation(View view, float elevation) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setElevation(elevation);
         }
     }
 
-    public static float getElevation(@NonNull View view) {
+    public static float getElevation(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.getElevation();
         }
         return 0.0f;
     }
 
-    public static void setTranslationZ(@NonNull View view, float translationZ) {
+    public static void setTranslationZ(View view, float translationZ) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setTranslationZ(translationZ);
         }
     }
 
-    public static float getTranslationZ(@NonNull View view) {
+    public static float getTranslationZ(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.getTranslationZ();
         }
         return 0.0f;
     }
 
-    public static void setTransitionName(@NonNull View view, String transitionName) {
+    public static void setTransitionName(View view, String transitionName) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setTransitionName(transitionName);
             return;
@@ -728,25 +714,25 @@ public class ViewCompat {
         sTransitionNameMap.put(view, transitionName);
     }
 
-    @Nullable
-    public static String getTransitionName(@NonNull View view) {
+    public static String getTransitionName(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.getTransitionName();
         }
-        if (sTransitionNameMap == null) {
+        WeakHashMap<View, String> weakHashMap = sTransitionNameMap;
+        if (weakHashMap == null) {
             return null;
         }
-        return sTransitionNameMap.get(view);
+        return weakHashMap.get(view);
     }
 
-    public static int getWindowSystemUiVisibility(@NonNull View view) {
+    public static int getWindowSystemUiVisibility(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.getWindowSystemUiVisibility();
         }
         return 0;
     }
 
-    public static void requestApplyInsets(@NonNull View view) {
+    public static void requestApplyInsets(View view) {
         if (Build.VERSION.SDK_INT >= 20) {
             view.requestApplyInsets();
         } else if (Build.VERSION.SDK_INT >= 16) {
@@ -776,7 +762,7 @@ public class ViewCompat {
         }
     }
 
-    public static boolean getFitsSystemWindows(@NonNull View v) {
+    public static boolean getFitsSystemWindows(View v) {
         if (Build.VERSION.SDK_INT >= 16) {
             return v.getFitsSystemWindows();
         }
@@ -793,7 +779,7 @@ public class ViewCompat {
         v.jumpDrawablesToCurrentState();
     }
 
-    public static void setOnApplyWindowInsetsListener(@NonNull View v, final OnApplyWindowInsetsListener listener) {
+    public static void setOnApplyWindowInsetsListener(View v, final OnApplyWindowInsetsListener listener) {
         if (Build.VERSION.SDK_INT < 21) {
             return;
         }
@@ -808,7 +794,7 @@ public class ViewCompat {
         }
     }
 
-    public static WindowInsetsCompat onApplyWindowInsets(@NonNull View view, WindowInsetsCompat insets) {
+    public static WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
         if (Build.VERSION.SDK_INT < 21) {
             return insets;
         }
@@ -820,7 +806,7 @@ public class ViewCompat {
         return WindowInsetsCompat.wrap(unwrapped);
     }
 
-    public static WindowInsetsCompat dispatchApplyWindowInsets(@NonNull View view, WindowInsetsCompat insets) {
+    public static WindowInsetsCompat dispatchApplyWindowInsets(View view, WindowInsetsCompat insets) {
         if (Build.VERSION.SDK_INT < 21) {
             return insets;
         }
@@ -842,21 +828,21 @@ public class ViewCompat {
         view.setActivated(activated);
     }
 
-    public static boolean hasOverlappingRendering(@NonNull View view) {
+    public static boolean hasOverlappingRendering(View view) {
         if (Build.VERSION.SDK_INT >= 16) {
             return view.hasOverlappingRendering();
         }
         return true;
     }
 
-    public static boolean isPaddingRelative(@NonNull View view) {
+    public static boolean isPaddingRelative(View view) {
         if (Build.VERSION.SDK_INT >= 17) {
             return view.isPaddingRelative();
         }
         return false;
     }
 
-    public static void setBackground(@NonNull View view, @Nullable Drawable background) {
+    public static void setBackground(View view, Drawable background) {
         if (Build.VERSION.SDK_INT >= 16) {
             view.setBackground(background);
         } else {
@@ -864,7 +850,7 @@ public class ViewCompat {
         }
     }
 
-    public static ColorStateList getBackgroundTintList(@NonNull View view) {
+    public static ColorStateList getBackgroundTintList(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.getBackgroundTintList();
         }
@@ -874,7 +860,7 @@ public class ViewCompat {
         return null;
     }
 
-    public static void setBackgroundTintList(@NonNull View view, ColorStateList tintList) {
+    public static void setBackgroundTintList(View view, ColorStateList tintList) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setBackgroundTintList(tintList);
             if (Build.VERSION.SDK_INT == 21) {
@@ -892,7 +878,7 @@ public class ViewCompat {
         }
     }
 
-    public static PorterDuff.Mode getBackgroundTintMode(@NonNull View view) {
+    public static PorterDuff.Mode getBackgroundTintMode(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.getBackgroundTintMode();
         }
@@ -902,7 +888,7 @@ public class ViewCompat {
         return null;
     }
 
-    public static void setBackgroundTintMode(@NonNull View view, PorterDuff.Mode mode) {
+    public static void setBackgroundTintMode(View view, PorterDuff.Mode mode) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setBackgroundTintMode(mode);
             if (Build.VERSION.SDK_INT == 21) {
@@ -920,7 +906,7 @@ public class ViewCompat {
         }
     }
 
-    public static void setNestedScrollingEnabled(@NonNull View view, boolean enabled) {
+    public static void setNestedScrollingEnabled(View view, boolean enabled) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setNestedScrollingEnabled(enabled);
         } else if (view instanceof NestedScrollingChild) {
@@ -928,7 +914,7 @@ public class ViewCompat {
         }
     }
 
-    public static boolean isNestedScrollingEnabled(@NonNull View view) {
+    public static boolean isNestedScrollingEnabled(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.isNestedScrollingEnabled();
         }
@@ -938,7 +924,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean startNestedScroll(@NonNull View view, int axes) {
+    public static boolean startNestedScroll(View view, int axes) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.startNestedScroll(axes);
         }
@@ -948,7 +934,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static void stopNestedScroll(@NonNull View view) {
+    public static void stopNestedScroll(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.stopNestedScroll();
         } else if (view instanceof NestedScrollingChild) {
@@ -956,7 +942,7 @@ public class ViewCompat {
         }
     }
 
-    public static boolean hasNestedScrollingParent(@NonNull View view) {
+    public static boolean hasNestedScrollingParent(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.hasNestedScrollingParent();
         }
@@ -966,7 +952,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean dispatchNestedScroll(@NonNull View view, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow) {
+    public static boolean dispatchNestedScroll(View view, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow);
         }
@@ -976,7 +962,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean dispatchNestedPreScroll(@NonNull View view, int dx, int dy, @Nullable int[] consumed, @Nullable int[] offsetInWindow) {
+    public static boolean dispatchNestedPreScroll(View view, int dx, int dy, int[] consumed, int[] offsetInWindow) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
         }
@@ -986,7 +972,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean startNestedScroll(@NonNull View view, int axes, int type) {
+    public static boolean startNestedScroll(View view, int axes, int type) {
         if (view instanceof NestedScrollingChild2) {
             return ((NestedScrollingChild2) view).startNestedScroll(axes, type);
         }
@@ -996,7 +982,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static void stopNestedScroll(@NonNull View view, int type) {
+    public static void stopNestedScroll(View view, int type) {
         if (view instanceof NestedScrollingChild2) {
             ((NestedScrollingChild2) view).stopNestedScroll(type);
         } else if (type == 0) {
@@ -1004,7 +990,7 @@ public class ViewCompat {
         }
     }
 
-    public static boolean hasNestedScrollingParent(@NonNull View view, int type) {
+    public static boolean hasNestedScrollingParent(View view, int type) {
         if (view instanceof NestedScrollingChild2) {
             ((NestedScrollingChild2) view).hasNestedScrollingParent(type);
             return false;
@@ -1015,7 +1001,7 @@ public class ViewCompat {
         }
     }
 
-    public static boolean dispatchNestedScroll(@NonNull View view, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, @Nullable int[] offsetInWindow, int type) {
+    public static boolean dispatchNestedScroll(View view, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int[] offsetInWindow, int type) {
         if (view instanceof NestedScrollingChild2) {
             return ((NestedScrollingChild2) view).dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, offsetInWindow, type);
         }
@@ -1025,7 +1011,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean dispatchNestedPreScroll(@NonNull View view, int dx, int dy, @Nullable int[] consumed, @Nullable int[] offsetInWindow, int type) {
+    public static boolean dispatchNestedPreScroll(View view, int dx, int dy, int[] consumed, int[] offsetInWindow, int type) {
         if (view instanceof NestedScrollingChild2) {
             return ((NestedScrollingChild2) view).dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, type);
         }
@@ -1035,7 +1021,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean dispatchNestedFling(@NonNull View view, float velocityX, float velocityY, boolean consumed) {
+    public static boolean dispatchNestedFling(View view, float velocityX, float velocityY, boolean consumed) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.dispatchNestedFling(velocityX, velocityY, consumed);
         }
@@ -1045,7 +1031,7 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean dispatchNestedPreFling(@NonNull View view, float velocityX, float velocityY) {
+    public static boolean dispatchNestedPreFling(View view, float velocityX, float velocityY) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.dispatchNestedPreFling(velocityX, velocityY);
         }
@@ -1055,41 +1041,41 @@ public class ViewCompat {
         return false;
     }
 
-    public static boolean isInLayout(@NonNull View view) {
+    public static boolean isInLayout(View view) {
         if (Build.VERSION.SDK_INT >= 18) {
             return view.isInLayout();
         }
         return false;
     }
 
-    public static boolean isLaidOut(@NonNull View view) {
+    public static boolean isLaidOut(View view) {
         if (Build.VERSION.SDK_INT >= 19) {
             return view.isLaidOut();
         }
         return view.getWidth() > 0 && view.getHeight() > 0;
     }
 
-    public static boolean isLayoutDirectionResolved(@NonNull View view) {
+    public static boolean isLayoutDirectionResolved(View view) {
         if (Build.VERSION.SDK_INT >= 19) {
             return view.isLayoutDirectionResolved();
         }
         return false;
     }
 
-    public static float getZ(@NonNull View view) {
+    public static float getZ(View view) {
         if (Build.VERSION.SDK_INT >= 21) {
             return view.getZ();
         }
         return 0.0f;
     }
 
-    public static void setZ(@NonNull View view, float z) {
+    public static void setZ(View view, float z) {
         if (Build.VERSION.SDK_INT >= 21) {
             view.setZ(z);
         }
     }
 
-    public static void offsetTopAndBottom(@NonNull View view, int offset) {
+    public static void offsetTopAndBottom(View view, int offset) {
         if (Build.VERSION.SDK_INT >= 23) {
             view.offsetTopAndBottom(offset);
         } else if (Build.VERSION.SDK_INT >= 21) {
@@ -1121,7 +1107,7 @@ public class ViewCompat {
         }
     }
 
-    public static void offsetLeftAndRight(@NonNull View view, int offset) {
+    public static void offsetLeftAndRight(View view, int offset) {
         if (Build.VERSION.SDK_INT >= 23) {
             view.offsetLeftAndRight(offset);
         } else if (Build.VERSION.SDK_INT >= 21) {
@@ -1159,61 +1145,59 @@ public class ViewCompat {
         view.setTranslationY(y);
     }
 
-    public static void setClipBounds(@NonNull View view, Rect clipBounds) {
+    public static void setClipBounds(View view, Rect clipBounds) {
         if (Build.VERSION.SDK_INT >= 18) {
             view.setClipBounds(clipBounds);
         }
     }
 
-    @Nullable
-    public static Rect getClipBounds(@NonNull View view) {
+    public static Rect getClipBounds(View view) {
         if (Build.VERSION.SDK_INT >= 18) {
             return view.getClipBounds();
         }
         return null;
     }
 
-    public static boolean isAttachedToWindow(@NonNull View view) {
+    public static boolean isAttachedToWindow(View view) {
         if (Build.VERSION.SDK_INT >= 19) {
             return view.isAttachedToWindow();
         }
         return view.getWindowToken() != null;
     }
 
-    public static boolean hasOnClickListeners(@NonNull View view) {
+    public static boolean hasOnClickListeners(View view) {
         if (Build.VERSION.SDK_INT >= 15) {
             return view.hasOnClickListeners();
         }
         return false;
     }
 
-    public static void setScrollIndicators(@NonNull View view, int indicators) {
+    public static void setScrollIndicators(View view, int indicators) {
         if (Build.VERSION.SDK_INT >= 23) {
             view.setScrollIndicators(indicators);
         }
     }
 
-    public static void setScrollIndicators(@NonNull View view, int indicators, int mask) {
+    public static void setScrollIndicators(View view, int indicators, int mask) {
         if (Build.VERSION.SDK_INT >= 23) {
             view.setScrollIndicators(indicators, mask);
         }
     }
 
-    public static int getScrollIndicators(@NonNull View view) {
+    public static int getScrollIndicators(View view) {
         if (Build.VERSION.SDK_INT >= 23) {
             return view.getScrollIndicators();
         }
         return 0;
     }
 
-    public static void setPointerIcon(@NonNull View view, PointerIconCompat pointerIcon) {
+    public static void setPointerIcon(View view, PointerIconCompat pointerIcon) {
         if (Build.VERSION.SDK_INT >= 24) {
             view.setPointerIcon((PointerIcon) (pointerIcon != null ? pointerIcon.getPointerIcon() : null));
         }
     }
 
-    @Nullable
-    public static Display getDisplay(@NonNull View view) {
+    public static Display getDisplay(View view) {
         if (Build.VERSION.SDK_INT >= 17) {
             return view.getDisplay();
         }
@@ -1223,91 +1207,91 @@ public class ViewCompat {
         return null;
     }
 
-    public static void setTooltipText(@NonNull View view, @Nullable CharSequence tooltipText) {
+    public static void setTooltipText(View view, CharSequence tooltipText) {
         if (Build.VERSION.SDK_INT >= 26) {
             view.setTooltipText(tooltipText);
         }
     }
 
-    public static boolean startDragAndDrop(@NonNull View v, ClipData data, View.DragShadowBuilder shadowBuilder, Object localState, int flags) {
+    public static boolean startDragAndDrop(View v, ClipData data, View.DragShadowBuilder shadowBuilder, Object localState, int flags) {
         if (Build.VERSION.SDK_INT >= 24) {
             return v.startDragAndDrop(data, shadowBuilder, localState, flags);
         }
         return v.startDrag(data, shadowBuilder, localState, flags);
     }
 
-    public static void cancelDragAndDrop(@NonNull View v) {
+    public static void cancelDragAndDrop(View v) {
         if (Build.VERSION.SDK_INT >= 24) {
             v.cancelDragAndDrop();
         }
     }
 
-    public static void updateDragShadow(@NonNull View v, View.DragShadowBuilder shadowBuilder) {
+    public static void updateDragShadow(View v, View.DragShadowBuilder shadowBuilder) {
         if (Build.VERSION.SDK_INT >= 24) {
             v.updateDragShadow(shadowBuilder);
         }
     }
 
-    public static int getNextClusterForwardId(@NonNull View view) {
+    public static int getNextClusterForwardId(View view) {
         if (Build.VERSION.SDK_INT >= 26) {
             return view.getNextClusterForwardId();
         }
         return -1;
     }
 
-    public static void setNextClusterForwardId(@NonNull View view, int nextClusterForwardId) {
+    public static void setNextClusterForwardId(View view, int nextClusterForwardId) {
         if (Build.VERSION.SDK_INT >= 26) {
             view.setNextClusterForwardId(nextClusterForwardId);
         }
     }
 
-    public static boolean isKeyboardNavigationCluster(@NonNull View view) {
+    public static boolean isKeyboardNavigationCluster(View view) {
         if (Build.VERSION.SDK_INT >= 26) {
             return view.isKeyboardNavigationCluster();
         }
         return false;
     }
 
-    public static void setKeyboardNavigationCluster(@NonNull View view, boolean isCluster) {
+    public static void setKeyboardNavigationCluster(View view, boolean isCluster) {
         if (Build.VERSION.SDK_INT >= 26) {
             view.setKeyboardNavigationCluster(isCluster);
         }
     }
 
-    public static boolean isFocusedByDefault(@NonNull View view) {
+    public static boolean isFocusedByDefault(View view) {
         if (Build.VERSION.SDK_INT >= 26) {
             return view.isFocusedByDefault();
         }
         return false;
     }
 
-    public static void setFocusedByDefault(@NonNull View view, boolean isFocusedByDefault) {
+    public static void setFocusedByDefault(View view, boolean isFocusedByDefault) {
         if (Build.VERSION.SDK_INT >= 26) {
             view.setFocusedByDefault(isFocusedByDefault);
         }
     }
 
-    public static View keyboardNavigationClusterSearch(@NonNull View view, View currentCluster, int direction) {
+    public static View keyboardNavigationClusterSearch(View view, View currentCluster, int direction) {
         if (Build.VERSION.SDK_INT >= 26) {
             return view.keyboardNavigationClusterSearch(currentCluster, direction);
         }
         return null;
     }
 
-    public static void addKeyboardNavigationClusters(@NonNull View view, @NonNull Collection<View> views, int direction) {
+    public static void addKeyboardNavigationClusters(View view, Collection<View> views, int direction) {
         if (Build.VERSION.SDK_INT >= 26) {
             view.addKeyboardNavigationClusters(views, direction);
         }
     }
 
-    public static boolean restoreDefaultFocus(@NonNull View view) {
+    public static boolean restoreDefaultFocus(View view) {
         if (Build.VERSION.SDK_INT >= 26) {
             return view.restoreDefaultFocus();
         }
         return view.requestFocus();
     }
 
-    public static boolean hasExplicitFocusable(@NonNull View view) {
+    public static boolean hasExplicitFocusable(View view) {
         if (Build.VERSION.SDK_INT >= 26) {
             return view.hasExplicitFocusable();
         }
@@ -1315,22 +1299,24 @@ public class ViewCompat {
     }
 
     public static int generateViewId() {
+        AtomicInteger atomicInteger;
         int result;
         int newValue;
         if (Build.VERSION.SDK_INT >= 17) {
             return View.generateViewId();
         }
         do {
-            result = sNextGeneratedId.get();
+            atomicInteger = sNextGeneratedId;
+            result = atomicInteger.get();
             newValue = result + 1;
             if (newValue > 16777215) {
                 newValue = 1;
             }
-        } while (!sNextGeneratedId.compareAndSet(result, newValue));
+        } while (!atomicInteger.compareAndSet(result, newValue));
         return result;
     }
 
-    public static void addOnUnhandledKeyEventListener(@NonNull View v, @NonNull OnUnhandledKeyEventListenerCompat listener) {
+    public static void addOnUnhandledKeyEventListener(View v, OnUnhandledKeyEventListenerCompat listener) {
         if (Build.VERSION.SDK_INT >= 28) {
             Map<OnUnhandledKeyEventListenerCompat, View.OnUnhandledKeyEventListener> viewListeners = (Map) v.getTag(R.id.tag_unhandled_key_listeners);
             if (viewListeners == null) {
@@ -1353,7 +1339,7 @@ public class ViewCompat {
         }
     }
 
-    public static void removeOnUnhandledKeyEventListener(@NonNull View v, @NonNull OnUnhandledKeyEventListenerCompat listener) {
+    public static void removeOnUnhandledKeyEventListener(View v, OnUnhandledKeyEventListenerCompat listener) {
         View.OnUnhandledKeyEventListener fwListener;
         if (Build.VERSION.SDK_INT >= 28) {
             Map<OnUnhandledKeyEventListenerCompat, View.OnUnhandledKeyEventListener> viewListeners = (Map) v.getTag(R.id.tag_unhandled_key_listeners);
@@ -1375,7 +1361,6 @@ public class ViewCompat {
     protected ViewCompat() {
     }
 
-    @RequiresApi(28)
     private static class OnUnhandledKeyEventListenerWrapper implements View.OnUnhandledKeyEventListener {
         private OnUnhandledKeyEventListenerCompat mCompatListener;
 
@@ -1388,7 +1373,6 @@ public class ViewCompat {
         }
     }
 
-    @UiThread
     static boolean dispatchUnhandledKeyEventBeforeHierarchy(View root, KeyEvent evt) {
         if (Build.VERSION.SDK_INT >= 28) {
             return false;
@@ -1396,7 +1380,6 @@ public class ViewCompat {
         return UnhandledKeyEventManager.at(root).preDispatch(evt);
     }
 
-    @UiThread
     static boolean dispatchUnhandledKeyEventBeforeCallback(View root, KeyEvent evt) {
         if (Build.VERSION.SDK_INT >= 28) {
             return false;
@@ -1408,7 +1391,6 @@ public class ViewCompat {
         private static final ArrayList<WeakReference<View>> sViewsWithListeners = new ArrayList<>();
         private SparseArray<WeakReference<View>> mCapturedKeys = null;
         private WeakReference<KeyEvent> mLastDispatchedPreViewKeyEvent = null;
-        @Nullable
         private WeakHashMap<View, Boolean> mViewsContainingListeners = null;
 
         UnhandledKeyEventManager() {
@@ -1446,9 +1428,9 @@ public class ViewCompat {
             return consumer != null;
         }
 
-        @Nullable
         private View dispatchInOrder(View view, KeyEvent event) {
-            if (this.mViewsContainingListeners == null || !this.mViewsContainingListeners.containsKey(view)) {
+            WeakHashMap<View, Boolean> weakHashMap = this.mViewsContainingListeners;
+            if (weakHashMap == null || !weakHashMap.containsKey(view)) {
                 return null;
             }
             if (view instanceof ViewGroup) {
@@ -1469,7 +1451,8 @@ public class ViewCompat {
         /* access modifiers changed from: package-private */
         public boolean preDispatch(KeyEvent event) {
             int idx;
-            if (this.mLastDispatchedPreViewKeyEvent != null && this.mLastDispatchedPreViewKeyEvent.get() == event) {
+            WeakReference<KeyEvent> weakReference = this.mLastDispatchedPreViewKeyEvent;
+            if (weakReference != null && weakReference.get() == event) {
                 return false;
             }
             this.mLastDispatchedPreViewKeyEvent = new WeakReference<>(event);
@@ -1492,7 +1475,7 @@ public class ViewCompat {
             return true;
         }
 
-        private boolean onUnhandledKeyEvent(@NonNull View v, @NonNull KeyEvent event) {
+        private boolean onUnhandledKeyEvent(View v, KeyEvent event) {
             ArrayList<OnUnhandledKeyEventListenerCompat> viewListeners = (ArrayList) v.getTag(R.id.tag_unhandled_key_listeners);
             if (viewListeners == null) {
                 return false;
@@ -1506,8 +1489,9 @@ public class ViewCompat {
         }
 
         static void registerListeningView(View v) {
-            synchronized (sViewsWithListeners) {
-                Iterator<WeakReference<View>> it = sViewsWithListeners.iterator();
+            ArrayList<WeakReference<View>> arrayList = sViewsWithListeners;
+            synchronized (arrayList) {
+                Iterator<WeakReference<View>> it = arrayList.iterator();
                 while (it.hasNext()) {
                     if (it.next().get() == v) {
                         return;
@@ -1519,28 +1503,37 @@ public class ViewCompat {
 
         static void unregisterListeningView(View v) {
             synchronized (sViewsWithListeners) {
-                for (int i = 0; i < sViewsWithListeners.size(); i++) {
-                    if (sViewsWithListeners.get(i).get() == v) {
-                        sViewsWithListeners.remove(i);
+                int i = 0;
+                while (true) {
+                    ArrayList<WeakReference<View>> arrayList = sViewsWithListeners;
+                    if (i >= arrayList.size()) {
                         return;
                     }
+                    if (arrayList.get(i).get() == v) {
+                        arrayList.remove(i);
+                        return;
+                    }
+                    i++;
                 }
             }
         }
 
         private void recalcViewsWithUnhandled() {
-            if (this.mViewsContainingListeners != null) {
-                this.mViewsContainingListeners.clear();
+            WeakHashMap<View, Boolean> weakHashMap = this.mViewsContainingListeners;
+            if (weakHashMap != null) {
+                weakHashMap.clear();
             }
-            if (!sViewsWithListeners.isEmpty()) {
-                synchronized (sViewsWithListeners) {
+            ArrayList<WeakReference<View>> arrayList = sViewsWithListeners;
+            if (!arrayList.isEmpty()) {
+                synchronized (arrayList) {
                     if (this.mViewsContainingListeners == null) {
                         this.mViewsContainingListeners = new WeakHashMap<>();
                     }
-                    for (int i = sViewsWithListeners.size() - 1; i >= 0; i--) {
-                        View v = (View) sViewsWithListeners.get(i).get();
+                    for (int i = arrayList.size() - 1; i >= 0; i--) {
+                        ArrayList<WeakReference<View>> arrayList2 = sViewsWithListeners;
+                        View v = (View) arrayList2.get(i).get();
                         if (v == null) {
-                            sViewsWithListeners.remove(i);
+                            arrayList2.remove(i);
                         } else {
                             this.mViewsContainingListeners.put(v, Boolean.TRUE);
                             for (ViewParent nxt = v.getParent(); nxt instanceof View; nxt = nxt.getParent()) {

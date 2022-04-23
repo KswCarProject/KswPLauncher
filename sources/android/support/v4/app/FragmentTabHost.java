@@ -5,8 +5,6 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -26,15 +24,12 @@ public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListe
     private final ArrayList<TabInfo> mTabs = new ArrayList<>();
 
     static final class TabInfo {
-        @Nullable
         final Bundle args;
-        @NonNull
         final Class<?> clss;
         Fragment fragment;
-        @NonNull
         final String tag;
 
-        TabInfo(@NonNull String _tag, @NonNull Class<?> _class, @Nullable Bundle _args) {
+        TabInfo(String _tag, Class<?> _class, Bundle _args) {
             this.tag = _tag;
             this.clss = _class;
             this.args = _args;
@@ -118,7 +113,7 @@ public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListe
             ll.addView(fl, new LinearLayout.LayoutParams(0, 0, 0.0f));
             FrameLayout fl2 = new FrameLayout(context);
             this.mRealTabContent = fl2;
-            this.mRealTabContent.setId(this.mContainerId);
+            fl2.setId(this.mContainerId);
             ll.addView(fl2, new LinearLayout.LayoutParams(-1, 0, 1.0f));
         }
     }
@@ -151,8 +146,9 @@ public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListe
 
     private void ensureContent() {
         if (this.mRealTabContent == null) {
-            this.mRealTabContent = (FrameLayout) findViewById(this.mContainerId);
-            if (this.mRealTabContent == null) {
+            FrameLayout frameLayout = (FrameLayout) findViewById(this.mContainerId);
+            this.mRealTabContent = frameLayout;
+            if (frameLayout == null) {
                 throw new IllegalStateException("No tab content FrameLayout found for id " + this.mContainerId);
             }
         }
@@ -162,7 +158,7 @@ public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListe
         this.mOnTabChangeListener = l;
     }
 
-    public void addTab(@NonNull TabHost.TabSpec tabSpec, @NonNull Class<?> clss, @Nullable Bundle args) {
+    public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
         tabSpec.setContent(new DummyTabFactory(this.mContext));
         String tag = tabSpec.getTag();
         TabInfo info = new TabInfo(tag, clss, args);
@@ -235,19 +231,20 @@ public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListe
         if (this.mAttached && (ft = doTabChanged(tabId, (FragmentTransaction) null)) != null) {
             ft.commit();
         }
-        if (this.mOnTabChangeListener != null) {
-            this.mOnTabChangeListener.onTabChanged(tabId);
+        TabHost.OnTabChangeListener onTabChangeListener = this.mOnTabChangeListener;
+        if (onTabChangeListener != null) {
+            onTabChangeListener.onTabChanged(tabId);
         }
     }
 
-    @Nullable
-    private FragmentTransaction doTabChanged(@Nullable String tag, @Nullable FragmentTransaction ft) {
+    private FragmentTransaction doTabChanged(String tag, FragmentTransaction ft) {
         TabInfo newTab = getTabInfoForTag(tag);
         if (this.mLastTab != newTab) {
             if (ft == null) {
                 ft = this.mFragmentManager.beginTransaction();
             }
-            if (!(this.mLastTab == null || this.mLastTab.fragment == null)) {
+            TabInfo tabInfo = this.mLastTab;
+            if (!(tabInfo == null || tabInfo.fragment == null)) {
                 ft.detach(this.mLastTab.fragment);
             }
             if (newTab != null) {
@@ -263,7 +260,6 @@ public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListe
         return ft;
     }
 
-    @Nullable
     private TabInfo getTabInfoForTag(String tabId) {
         int count = this.mTabs.size();
         for (int i = 0; i < count; i++) {

@@ -44,10 +44,11 @@ public class ScanNaviList {
     }
 
     public List<MapBean> getMapList() {
-        if (this.mapList == null) {
+        List<MapBean> list = this.mapList;
+        if (list == null) {
             return new ArrayList();
         }
-        return this.mapList;
+        return list;
     }
 
     public synchronized void scanList(final List<String> naviList, String naviDefual2, final Context context) {
@@ -68,9 +69,11 @@ public class ScanNaviList {
                     Log.i("naviSCAN", "run: apps size = " + apps.size());
                     Log.i("naviSCAN", "run: naviList size = " + naviList.size());
                     for (String paca : naviList) {
-                        ScanNaviList.this.isAvilible(context, paca, ScanNaviList.this.tempList, apps);
+                        ScanNaviList scanNaviList = ScanNaviList.this;
+                        scanNaviList.isAvilible(context, paca, scanNaviList.tempList, apps);
                     }
-                    List unused2 = ScanNaviList.this.mapList = ScanNaviList.this.tempList;
+                    ScanNaviList scanNaviList2 = ScanNaviList.this;
+                    List unused2 = scanNaviList2.mapList = scanNaviList2.tempList;
                     Log.i("naviSCAN", "run: map size " + ScanNaviList.this.tempList.size());
                     if (ScanNaviList.this.mapListScanListener != null) {
                         ScanNaviList.this.mapListScanListener.onScanFinish(ScanNaviList.this.tempList);

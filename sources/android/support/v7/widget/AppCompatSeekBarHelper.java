@@ -4,7 +4,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.appcompat.R;
@@ -46,9 +45,10 @@ class AppCompatSeekBarHelper extends AppCompatProgressBarHelper {
     }
 
     /* access modifiers changed from: package-private */
-    public void setTickMark(@Nullable Drawable tickMark) {
-        if (this.mTickMark != null) {
-            this.mTickMark.setCallback((Drawable.Callback) null);
+    public void setTickMark(Drawable tickMark) {
+        Drawable drawable = this.mTickMark;
+        if (drawable != null) {
+            drawable.setCallback((Drawable.Callback) null);
         }
         this.mTickMark = tickMark;
         if (tickMark != null) {
@@ -63,45 +63,44 @@ class AppCompatSeekBarHelper extends AppCompatProgressBarHelper {
     }
 
     /* access modifiers changed from: package-private */
-    @Nullable
     public Drawable getTickMark() {
         return this.mTickMark;
     }
 
     /* access modifiers changed from: package-private */
-    public void setTickMarkTintList(@Nullable ColorStateList tint) {
+    public void setTickMarkTintList(ColorStateList tint) {
         this.mTickMarkTintList = tint;
         this.mHasTickMarkTint = true;
         applyTickMarkTint();
     }
 
     /* access modifiers changed from: package-private */
-    @Nullable
     public ColorStateList getTickMarkTintList() {
         return this.mTickMarkTintList;
     }
 
     /* access modifiers changed from: package-private */
-    public void setTickMarkTintMode(@Nullable PorterDuff.Mode tintMode) {
+    public void setTickMarkTintMode(PorterDuff.Mode tintMode) {
         this.mTickMarkTintMode = tintMode;
         this.mHasTickMarkTintMode = true;
         applyTickMarkTint();
     }
 
     /* access modifiers changed from: package-private */
-    @Nullable
     public PorterDuff.Mode getTickMarkTintMode() {
         return this.mTickMarkTintMode;
     }
 
     private void applyTickMarkTint() {
-        if (this.mTickMark == null) {
+        Drawable drawable = this.mTickMark;
+        if (drawable == null) {
             return;
         }
         if (this.mHasTickMarkTint || this.mHasTickMarkTintMode) {
-            this.mTickMark = DrawableCompat.wrap(this.mTickMark.mutate());
+            Drawable wrap = DrawableCompat.wrap(drawable.mutate());
+            this.mTickMark = wrap;
             if (this.mHasTickMarkTint) {
-                DrawableCompat.setTintList(this.mTickMark, this.mTickMarkTintList);
+                DrawableCompat.setTintList(wrap, this.mTickMarkTintList);
             }
             if (this.mHasTickMarkTintMode) {
                 DrawableCompat.setTintMode(this.mTickMark, this.mTickMarkTintMode);
@@ -114,8 +113,9 @@ class AppCompatSeekBarHelper extends AppCompatProgressBarHelper {
 
     /* access modifiers changed from: package-private */
     public void jumpDrawablesToCurrentState() {
-        if (this.mTickMark != null) {
-            this.mTickMark.jumpToCurrentState();
+        Drawable drawable = this.mTickMark;
+        if (drawable != null) {
+            drawable.jumpToCurrentState();
         }
     }
 

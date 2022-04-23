@@ -4,7 +4,6 @@ import android.media.Rating;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 import android.util.Log;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -32,12 +31,10 @@ public final class RatingCompat implements Parcelable {
     private final int mRatingStyle;
     private final float mRatingValue;
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface StarStyle {
     }
 
-    @RestrictTo({RestrictTo.Scope.LIBRARY_GROUP})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Style {
     }
@@ -49,17 +46,14 @@ public final class RatingCompat implements Parcelable {
 
     public String toString() {
         String str;
-        StringBuilder sb = new StringBuilder();
-        sb.append("Rating:style=");
-        sb.append(this.mRatingStyle);
-        sb.append(" rating=");
-        if (this.mRatingValue < 0.0f) {
+        StringBuilder append = new StringBuilder().append("Rating:style=").append(this.mRatingStyle).append(" rating=");
+        float f = this.mRatingValue;
+        if (f < 0.0f) {
             str = "unrated";
         } else {
-            str = String.valueOf(this.mRatingValue);
+            str = String.valueOf(f);
         }
-        sb.append(str);
-        return sb.toString();
+        return append.append(str).toString();
     }
 
     public int describeContents() {
@@ -202,7 +196,8 @@ public final class RatingCompat implements Parcelable {
     public Object getRating() {
         if (this.mRatingObj == null && Build.VERSION.SDK_INT >= 19) {
             if (isRated()) {
-                switch (this.mRatingStyle) {
+                int i = this.mRatingStyle;
+                switch (i) {
                     case 1:
                         this.mRatingObj = Rating.newHeartRating(hasHeart());
                         break;
@@ -212,7 +207,7 @@ public final class RatingCompat implements Parcelable {
                     case 3:
                     case 4:
                     case 5:
-                        this.mRatingObj = Rating.newStarRating(this.mRatingStyle, getStarRating());
+                        this.mRatingObj = Rating.newStarRating(i, getStarRating());
                         break;
                     case 6:
                         this.mRatingObj = Rating.newPercentageRating(getPercentRating());

@@ -2,21 +2,21 @@ package com.wits.ksw.settings.audi;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.wits.ksw.R;
 import com.wits.ksw.settings.BaseActivity;
 
 public class AudiSubActivity extends BaseActivity {
-    @InjectView(2131230807)
     RelativeLayout contentLayout;
+    public TextView tv_title_set;
 
     /* access modifiers changed from: protected */
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((int) R.layout.activity_audi_sub);
+        this.tv_title_set = (TextView) findViewById(R.id.tv_title_set);
         ButterKnife.inject((Activity) this);
     }
 }

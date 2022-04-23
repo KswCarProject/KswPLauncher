@@ -1,41 +1,47 @@
 package com.wits.ksw.databinding;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.databinding.DataBindingComponent;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseIntArray;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import com.wits.ksw.R;
-import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
 public class LandroverMainBindingImpl extends LandroverMainBinding {
-    @Nullable
-    private static final ViewDataBinding.IncludedLayouts sIncludes = null;
-    @Nullable
-    private static final SparseIntArray sViewsWithIds = new SparseIntArray();
+    private static final ViewDataBinding.IncludedLayouts sIncludes;
+    private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    @NonNull
-    private final RelativeLayout mboundView0;
+    private final LandroverMainBottomLayBinding mboundView0;
+    private final LinearLayout mboundView01;
 
     static {
-        sViewsWithIds.put(R.id.viewPager, 1);
-        sViewsWithIds.put(R.id.icon_left, 2);
-        sViewsWithIds.put(R.id.icon_right, 3);
-        sViewsWithIds.put(R.id.indicato1, 4);
-        sViewsWithIds.put(R.id.indicato2, 5);
+        ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(7);
+        sIncludes = includedLayouts;
+        includedLayouts.setIncludes(0, new String[]{"landrover_main_bottom_lay"}, new int[]{1}, new int[]{R.layout.landrover_main_bottom_lay});
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        sViewsWithIds = sparseIntArray;
+        sparseIntArray.put(R.id.icon_left, 2);
+        sparseIntArray.put(R.id.icon_right, 3);
+        sparseIntArray.put(R.id.indicato1, 4);
+        sparseIntArray.put(R.id.indicato2, 5);
+        sparseIntArray.put(R.id.viewPager, 6);
     }
 
-    public LandroverMainBindingImpl(@Nullable DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 6, sIncludes, sViewsWithIds));
+    public LandroverMainBindingImpl(DataBindingComponent bindingComponent, View root) {
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 7, sIncludes, sViewsWithIds));
     }
 
     private LandroverMainBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[2], bindings[3], bindings[4], bindings[5], bindings[1]);
+        super(bindingComponent, root, 0, bindings[2], bindings[3], bindings[4], bindings[5], bindings[6]);
         this.mDirtyFlags = -1;
-        this.mboundView0 = bindings[0];
-        this.mboundView0.setTag((Object) null);
+        LandroverMainBottomLayBinding landroverMainBottomLayBinding = bindings[1];
+        this.mboundView0 = landroverMainBottomLayBinding;
+        setContainedBinding(landroverMainBottomLayBinding);
+        LinearLayout linearLayout = bindings[0];
+        this.mboundView01 = linearLayout;
+        linearLayout.setTag((Object) null);
         setRootTag(root);
         invalidateAll();
     }
@@ -44,28 +50,68 @@ public class LandroverMainBindingImpl extends LandroverMainBinding {
         synchronized (this) {
             this.mDirtyFlags = 2;
         }
+        this.mboundView0.invalidateAll();
         requestRebind();
     }
 
+    /* JADX WARNING: Code restructure failed: missing block: B:10:0x0016, code lost:
+        return false;
+     */
+    /* JADX WARNING: Code restructure failed: missing block: B:8:0x0013, code lost:
+        if (r4.mboundView0.hasPendingBindings() == false) goto L_0x0016;
+     */
+    /* JADX WARNING: Code restructure failed: missing block: B:9:0x0015, code lost:
+        return true;
+     */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
     public boolean hasPendingBindings() {
-        synchronized (this) {
-            if (this.mDirtyFlags != 0) {
-                return true;
-            }
-            return false;
-        }
+        /*
+            r4 = this;
+            monitor-enter(r4)
+            long r0 = r4.mDirtyFlags     // Catch:{ all -> 0x0018 }
+            r2 = 0
+            int r0 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1))
+            r1 = 1
+            if (r0 == 0) goto L_0x000c
+            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
+            return r1
+        L_0x000c:
+            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
+            com.wits.ksw.databinding.LandroverMainBottomLayBinding r0 = r4.mboundView0
+            boolean r0 = r0.hasPendingBindings()
+            if (r0 == 0) goto L_0x0016
+            return r1
+        L_0x0016:
+            r0 = 0
+            return r0
+        L_0x0018:
+            r0 = move-exception
+            monitor-exit(r4)     // Catch:{ all -> 0x0018 }
+            throw r0
+        */
+        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.LandroverMainBindingImpl.hasPendingBindings():boolean");
     }
 
-    public boolean setVariable(int variableId, @Nullable Object variable) {
-        if (18 != variableId) {
+    public boolean setVariable(int variableId, Object variable) {
+        if (4 != variableId) {
             return false;
         }
-        setLauncherViewModel((LauncherViewModel) variable);
+        setLauncherViewModel((LandroverViewModel) variable);
         return true;
     }
 
-    public void setLauncherViewModel(@Nullable LauncherViewModel LauncherViewModel) {
+    public void setLauncherViewModel(LandroverViewModel LauncherViewModel) {
         this.mLauncherViewModel = LauncherViewModel;
+        synchronized (this) {
+            this.mDirtyFlags |= 1;
+        }
+        notifyPropertyChanged(4);
+        super.requestRebind();
+    }
+
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        super.setLifecycleOwner(lifecycleOwner);
+        this.mboundView0.setLifecycleOwner(lifecycleOwner);
     }
 
     /* access modifiers changed from: protected */
@@ -75,9 +121,15 @@ public class LandroverMainBindingImpl extends LandroverMainBinding {
 
     /* access modifiers changed from: protected */
     public void executeBindings() {
+        long dirtyFlags;
         synchronized (this) {
-            long dirtyFlags = this.mDirtyFlags;
+            dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
+        LandroverViewModel launcherViewModel = this.mLauncherViewModel;
+        if ((3 & dirtyFlags) != 0) {
+            this.mboundView0.setLauncherViewModel(launcherViewModel);
+        }
+        executeBindingsOn(this.mboundView0);
     }
 }
