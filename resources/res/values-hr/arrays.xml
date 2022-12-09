@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="bc_home_netg6_als_6208_item_text_array">
+        <item>Navigacija</item>
+        <item>Video</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>NTG izbornik</item>
+        <item>Nadzorna ploča</item>
+        <item>Telefonska veza</item>
+        <item>Upravitelj datoteka</item>
+        <item>DVR</item>
+        <item>Postavke</item>
+    </array>
+    <array name="bc_item_text_array">
+        <item>Navigacija</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>NTG izbornik</item>
+        <item>Postavke</item>
+        <item>Video</item>
+        <item>Upravitelj datoteka</item>
+        <item>Telefonska veza</item>
+        <item>Nadzorna ploča</item>
+        <item>DVR</item>
+    </array>
+    <array name="bc_ntg5_item_text_array">
+        <item>Navigacija</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>NTG izbornik</item>
+        <item>Postavke</item>
+        <item>Video</item>
+        <item>Aplikacije</item>
+        <item>Telefonska veza</item>
+        <item>Nadzorna ploča</item>
+        <item>DVR</item>
+    </array>
+    <array name="benz_mbux_home_item_array">
+        <item>Navigacija</item>
+        <item>Glazba</item>
+        <item>Telefon</item>
+        <item>NTG izbornik</item>
+        <item>Postavke</item>
+        <item>Video</item>
+        <item>Aplikacije</item>
+        <item>Telefonska veza</item>
+        <item>Nadzorna ploča</item>
+        <item>DVR</item>
+    </array>
+    <array name="ksw_id7_months">
+        <item>sij</item>
+        <item>velj</item>
+        <item>ožu</item>
+        <item>tra</item>
+        <item>svi</item>
+        <item>lip</item>
+        <item>srp</item>
+        <item>kol</item>
+        <item>ruj</item>
+        <item>lis</item>
+        <item>stu</item>
+        <item>pro</item>
+    </array>
+    <array name="set_factory">
+        <item>Funkcije</item>
+        <item>Vozilo</item>
+        <item>Zaslon</item>
+        <item>CAN protokol</item>
+        <item>MIC jačina</item>
+        <item>Tema izbornika</item>
+        <item>Odabir logotipa</item>
+        <item>Uvoz profila</item>
+    </array>
+    <array name="set_function">
+        <item>Sustav</item>
+        <item>Navigacija</item>
+        <item>Glasnoća</item>
+        <item>Zvuk</item>
+        <item>Jezik</item>
+        <item>Vrijeme</item>
+        <item>Sistem info</item>
+        <item>Android</item>
+        <item>Tvornički</item>
+    </array>
+    <array name="set_id6_function">
+        <item>Navigacija</item>
+        <item>Sustav</item>
+        <item>Glasnoća</item>
+        <item>Zvuk</item>
+        <item>Jezik</item>
+        <item>Vrijeme</item>
+        <item>Sistem info</item>
+        <item>Android</item>
+        <item>Tvornički</item>
+    </array>
+    <array name="set_land_rover_function">
+        <item>Sustav</item>
+        <item>Navigacija</item>
+        <item>Glasnoća</item>
+        <item>Jezik</item>
+        <item>Vrijeme</item>
+        <item>Sistem info</item>
+        <item>Android</item>
+        <item>Tvornički</item>
+    </array>
+</resources>
