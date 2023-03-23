@@ -50,7 +50,7 @@ public class AlertDialogLayout extends LinearLayoutCompat {
                 }
             }
         }
-        int i4 = View.MeasureSpec.getMode(heightMeasureSpec);
+        int heightMode = View.MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = View.MeasureSpec.getSize(heightMeasureSpec);
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
         int childState = 0;
@@ -71,12 +71,12 @@ public class AlertDialogLayout extends LinearLayoutCompat {
         }
         int middleHeight = 0;
         if (middlePanel != null) {
-            if (i4 == 0) {
+            if (heightMode == 0) {
                 View view = topPanel;
                 childHeightSpec = 0;
             } else {
                 View view2 = topPanel;
-                childHeightSpec = View.MeasureSpec.makeMeasureSpec(Math.max(0, heightSize - usedHeight), i4);
+                childHeightSpec = View.MeasureSpec.makeMeasureSpec(Math.max(0, heightSize - usedHeight), heightMode);
             }
             middlePanel.measure(i, childHeightSpec);
             middleHeight = middlePanel.getMeasuredHeight();
@@ -99,24 +99,24 @@ public class AlertDialogLayout extends LinearLayoutCompat {
         if (middlePanel != null && remainingHeight > 0) {
             int heightToGive2 = remainingHeight;
             int remainingHeight2 = remainingHeight - heightToGive2;
-            int childHeightSpec2 = View.MeasureSpec.makeMeasureSpec(middleHeight + heightToGive2, i4);
-            middlePanel.measure(i, childHeightSpec2);
+            int remainingHeight3 = View.MeasureSpec.makeMeasureSpec(middleHeight + heightToGive2, heightMode);
+            middlePanel.measure(i, remainingHeight3);
             usedHeight = (usedHeight - middleHeight) + middlePanel.getMeasuredHeight();
-            int i5 = childHeightSpec2;
+            int i4 = remainingHeight3;
             childState = View.combineMeasuredStates(childState, middlePanel.getMeasuredState());
             remainingHeight = remainingHeight2;
         }
         int maxWidth = 0;
-        int i6 = remainingHeight;
-        int i7 = 0;
-        while (i7 < count) {
-            View child2 = getChildAt(i7);
+        int i5 = remainingHeight;
+        int i6 = 0;
+        while (i6 < count) {
+            View child2 = getChildAt(i6);
             View buttonPanel2 = buttonPanel;
             View middlePanel2 = middlePanel;
             if (child2.getVisibility() != 8) {
                 maxWidth = Math.max(maxWidth, child2.getMeasuredWidth());
             }
-            i7++;
+            i6++;
             buttonPanel = buttonPanel2;
             middlePanel = middlePanel2;
         }

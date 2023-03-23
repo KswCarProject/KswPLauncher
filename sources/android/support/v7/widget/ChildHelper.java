@@ -303,7 +303,7 @@ class ChildHelper {
                 return;
             }
             long j = this.mData;
-            boolean lastBit = (LAST_BIT & j) != 0;
+            boolean lastBit = (Long.MIN_VALUE & j) != 0;
             long mask = (1 << index) - 1;
             this.mData = (j & mask) | ((j & (~mask)) << 1);
             if (value) {

@@ -1,0 +1,71 @@
+package com.wits.ksw.launcher.view;
+
+import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.os.RemoteException;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.wits.ksw.BuildConfig;
+import com.wits.ksw.MainActivity;
+import com.wits.ksw.R;
+import com.wits.ksw.databinding.MediaFragmentBindingV2;
+import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.model.MediaImpl;
+import com.wits.pms.IContentObserver;
+import com.wits.pms.statuscontrol.PowerManagerApp;
+
+public class MediaFragmentV2 extends Fragment {
+    private static final String TAG = "KswApplication";
+    private MediaFragmentBindingV2 binding;
+    private MainActivity mainActivity;
+    private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() {
+        public void onChange() throws RemoteException {
+            try {
+                String topApp = PowerManagerApp.getStatusString("topApp");
+                Log.i("KswApplication", "onChange: topApp=" + topApp);
+                if (TextUtils.equals(topApp, BuildConfig.APPLICATION_ID)) {
+                    MediaImpl.getInstance().initData();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    private LauncherViewModel viewModel;
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mainActivity = (MainActivity) activity;
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i("aa", "onCreate: MediaFragment");
+        this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MediaFragmentBindingV2 mediaFragmentBindingV2 = (MediaFragmentBindingV2) DataBindingUtil.inflate(inflater, R.layout.id7_v2_fragment_media, (ViewGroup) null, false);
+        this.binding = mediaFragmentBindingV2;
+        return mediaFragmentBindingV2.getRoot();
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        this.binding.setMediaViewModel(this.viewModel);
+        PowerManagerApp.registerIContentObserver("topApp", this.topAppContentObserver);
+        Log.i("KswApplication", "onActivityCreated: registerIContentObserver topApp ");
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        PowerManagerApp.unRegisterIContentObserver(this.topAppContentObserver);
+        Log.i("KswApplication", "onDestroy: unRegisterIContentObserver topApp");
+    }
+}

@@ -26,15 +26,16 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
         sparseIntArray.put(R.id.audiSysInfParentPanel, 9);
         sparseIntArray.put(R.id.audioSysInfoMcuUpdata, 10);
         sparseIntArray.put(R.id.audioSysInfoRestoreFactory, 11);
-        sparseIntArray.put(R.id.v_divider, 12);
+        sparseIntArray.put(R.id.audioSysInfoUpDateFactory, 12);
+        sparseIntArray.put(R.id.v_divider, 13);
     }
 
     public AudiMib3SysinfoBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 13, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 14, sIncludes, sViewsWithIds));
     }
 
     private AudiMib3SysinfoBindingHdpi1920x720Impl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 5, bindings[9], bindings[2], bindings[1], bindings[3], bindings[4], bindings[10], bindings[5], bindings[11], bindings[8], bindings[6], bindings[7], bindings[12]);
+        super(bindingComponent, root, 5, bindings[9], bindings[2], bindings[1], bindings[3], bindings[4], bindings[10], bindings[5], bindings[11], bindings[12], bindings[8], bindings[6], bindings[7], bindings[13]);
         this.mDirtyFlags = -1;
         this.audiSysInfoAppVer.setTag((Object) null);
         this.audiSysInfoMcuVer.setTag((Object) null);
@@ -65,7 +66,7 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SettingViewModel) variable);
@@ -77,7 +78,7 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 
@@ -89,11 +90,11 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
             case 1:
                 return onChangeVmNandflash((ObservableField) object, fieldId);
             case 2:
-                return onChangeVmMcuVer((ObservableField) object, fieldId);
-            case 3:
                 return onChangeVmSystemVersion((ObservableField) object, fieldId);
-            case 4:
+            case 3:
                 return onChangeVmRamVer((ObservableField) object, fieldId);
+            case 4:
+                return onChangeVmMcuVer((ObservableField) object, fieldId);
             default:
                 return false;
         }
@@ -119,7 +120,7 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
         return true;
     }
 
-    private boolean onChangeVmMcuVer(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmSystemVersion(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -129,7 +130,7 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
         return true;
     }
 
-    private boolean onChangeVmSystemVersion(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmRamVer(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -139,7 +140,7 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
         return true;
     }
 
-    private boolean onChangeVmRamVer(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeVmMcuVer(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -158,15 +159,15 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
         }
         ObservableField<String> vmAppVer = null;
         ObservableField<String> vmNandflash = null;
-        String vmSystemVersionGet = null;
-        String vmNandflashGet = null;
-        ObservableField<String> vmMcuVer = null;
         ObservableField<String> vmSystemVersion = null;
         AudiMib3SettingViewModel vm = this.mVm;
         ObservableField<String> vmRamVer = null;
+        String vmAppVerGet = null;
+        String vmSystemVersionGet = null;
+        String vmNandflashGet = null;
+        ObservableField<String> vmMcuVer = null;
         String vmMcuVerGet = null;
         String vmRamVerGet = null;
-        String vmAppVerGet = null;
         if ((dirtyFlags & 127) != 0) {
             if ((dirtyFlags & 97) != 0) {
                 if (vm != null) {
@@ -188,45 +189,45 @@ public class AudiMib3SysinfoBindingHdpi1920x720Impl extends AudiMib3SysinfoBindi
             }
             if ((dirtyFlags & 100) != 0) {
                 if (vm != null) {
-                    vmMcuVer = vm.mcuVer;
-                }
-                updateRegistration(2, (Observable) vmMcuVer);
-                if (vmMcuVer != null) {
-                    vmMcuVerGet = vmMcuVer.get();
-                }
-            }
-            if ((dirtyFlags & 104) != 0) {
-                if (vm != null) {
                     vmSystemVersion = vm.systemVersion;
                 }
-                updateRegistration(3, (Observable) vmSystemVersion);
+                updateRegistration(2, (Observable) vmSystemVersion);
                 if (vmSystemVersion != null) {
                     vmSystemVersionGet = vmSystemVersion.get();
                 }
             }
-            if ((dirtyFlags & 112) != 0) {
+            if ((dirtyFlags & 104) != 0) {
                 if (vm != null) {
                     vmRamVer = vm.ramVer;
                 }
-                updateRegistration(4, (Observable) vmRamVer);
+                updateRegistration(3, (Observable) vmRamVer);
                 if (vmRamVer != null) {
                     vmRamVerGet = vmRamVer.get();
+                }
+            }
+            if ((dirtyFlags & 112) != 0) {
+                if (vm != null) {
+                    vmMcuVer = vm.mcuVer;
+                }
+                updateRegistration(4, (Observable) vmMcuVer);
+                if (vmMcuVer != null) {
+                    vmMcuVerGet = vmMcuVer.get();
                 }
             }
         }
         if ((dirtyFlags & 97) != 0) {
             TextViewBindingAdapter.setText(this.audiSysInfoAppVer, vmAppVerGet);
         }
-        if ((dirtyFlags & 100) != 0) {
+        if ((dirtyFlags & 112) != 0) {
             TextViewBindingAdapter.setText(this.audiSysInfoMcuVer, vmMcuVerGet);
         }
-        if ((dirtyFlags & 104) != 0) {
+        if ((dirtyFlags & 100) != 0) {
             TextViewBindingAdapter.setText(this.audiSysInfoSysVer, vmSystemVersionGet);
         }
         if ((dirtyFlags & 98) != 0) {
             TextViewBindingAdapter.setText(this.audioSysInfoFlash, vmNandflashGet);
         }
-        if ((dirtyFlags & 112) != 0) {
+        if ((dirtyFlags & 104) != 0) {
             TextViewBindingAdapter.setText(this.audioSysInfoRam, vmRamVerGet);
         }
     }

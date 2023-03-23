@@ -32,10 +32,16 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
     }
 
     public LinkedTreeMap(Comparator<? super K> comparator2) {
+        Comparator comparator3;
         this.size = 0;
         this.modCount = 0;
         this.header = new Node<>();
-        this.comparator = comparator2 != null ? comparator2 : NATURAL_ORDER;
+        if (comparator2 != null) {
+            comparator3 = comparator2;
+        } else {
+            comparator3 = NATURAL_ORDER;
+        }
+        this.comparator = comparator3;
     }
 
     public int size() {
@@ -84,14 +90,24 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
     /* access modifiers changed from: package-private */
     public Node<K, V> find(K key, boolean create) {
         Node<K, V> created;
+        Comparable<Object> comparableKey;
+        int i;
         Comparator<? super K> comparator2 = this.comparator;
         Node<K, V> nearest = this.root;
         int comparison = 0;
         if (nearest != null) {
-            Comparable<Object> comparableKey = comparator2 == NATURAL_ORDER ? key : null;
+            if (comparator2 == NATURAL_ORDER) {
+                comparableKey = key;
+            } else {
+                comparableKey = null;
+            }
             while (true) {
-                K k = nearest.key;
-                comparison = comparableKey != null ? comparableKey.compareTo(k) : comparator2.compare(key, k);
+                if (comparableKey != null) {
+                    i = comparableKey.compareTo(nearest.key);
+                } else {
+                    i = comparator2.compare(key, nearest.key);
+                }
+                comparison = i;
                 if (comparison == 0) {
                     return nearest;
                 }
@@ -393,33 +409,35 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
                 r4 = this;
                 boolean r0 = r5 instanceof java.util.Map.Entry
                 r1 = 0
-                if (r0 == 0) goto L_0x0034
+                if (r0 == 0) goto L_0x0036
                 r0 = r5
                 java.util.Map$Entry r0 = (java.util.Map.Entry) r0
                 K r2 = r4.key
                 if (r2 != 0) goto L_0x0013
                 java.lang.Object r2 = r0.getKey()
-                if (r2 != 0) goto L_0x0033
+                if (r2 != 0) goto L_0x0034
                 goto L_0x001d
             L_0x0013:
                 java.lang.Object r3 = r0.getKey()
                 boolean r2 = r2.equals(r3)
-                if (r2 == 0) goto L_0x0033
+                if (r2 == 0) goto L_0x0034
             L_0x001d:
                 V r2 = r4.value
                 if (r2 != 0) goto L_0x0028
                 java.lang.Object r2 = r0.getValue()
-                if (r2 != 0) goto L_0x0033
+                if (r2 != 0) goto L_0x0034
                 goto L_0x0032
             L_0x0028:
                 java.lang.Object r3 = r0.getValue()
                 boolean r2 = r2.equals(r3)
-                if (r2 == 0) goto L_0x0033
+                if (r2 == 0) goto L_0x0034
             L_0x0032:
                 r1 = 1
-            L_0x0033:
-                return r1
+                goto L_0x0035
             L_0x0034:
+            L_0x0035:
+                return r1
+            L_0x0036:
                 return r1
             */
             throw new UnsupportedOperationException("Method not decompiled: com.google.gson.internal.LinkedTreeMap.Node.equals(java.lang.Object):boolean");
@@ -463,12 +481,11 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
 
     private abstract class LinkedTreeMapIterator<T> implements Iterator<T> {
         int expectedModCount;
-        Node<K, V> lastReturned;
+        Node<K, V> lastReturned = null;
         Node<K, V> next;
 
-        private LinkedTreeMapIterator() {
+        LinkedTreeMapIterator() {
             this.next = LinkedTreeMap.this.header.next;
-            this.lastReturned = null;
             this.expectedModCount = LinkedTreeMap.this.modCount;
         }
 
@@ -540,7 +557,7 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
         }
     }
 
-    class KeySet extends AbstractSet<K> {
+    final class KeySet extends AbstractSet<K> {
         KeySet() {
         }
 

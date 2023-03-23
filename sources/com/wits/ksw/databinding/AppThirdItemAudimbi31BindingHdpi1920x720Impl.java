@@ -49,7 +49,7 @@ public class AppThirdItemAudimbi31BindingHdpi1920x720Impl extends AppThirdItemAu
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 != variableId) {
+        if (20 != variableId) {
             return false;
         }
         setListItem((LexusLsAppSelBean) variable);

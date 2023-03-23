@@ -11,7 +11,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class AlsId7UiVideoSubViewBindingHdpi1920x720Impl extends AlsId7UiVideoSubViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback262;
+    private final View.OnClickListener mCallback350;
     private long mDirtyFlags;
 
     static {
@@ -31,7 +31,7 @@ public class AlsId7UiVideoSubViewBindingHdpi1920x720Impl extends AlsId7UiVideoSu
         this.videoConstraintLayout.setTag((Object) null);
         this.videoImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback262 = new OnClickListener(this, 1);
+        this.mCallback350 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -52,7 +52,7 @@ public class AlsId7UiVideoSubViewBindingHdpi1920x720Impl extends AlsId7UiVideoSu
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (6 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
@@ -64,7 +64,7 @@ public class AlsId7UiVideoSubViewBindingHdpi1920x720Impl extends AlsId7UiVideoSu
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(6);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 
@@ -86,7 +86,7 @@ public class AlsId7UiVideoSubViewBindingHdpi1920x720Impl extends AlsId7UiVideoSu
             mediaViewModelVideoViewFocusChangeListener = mediaViewModel.videoViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.videoImageView.setOnClickListener(this.mCallback262);
+            this.videoImageView.setOnClickListener(this.mCallback350);
         }
         if ((3 & dirtyFlags) != 0) {
             this.videoImageView.setOnFocusChangeListener(mediaViewModelVideoViewFocusChangeListener);

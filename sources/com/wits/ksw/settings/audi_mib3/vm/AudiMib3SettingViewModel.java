@@ -25,7 +25,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class AudiMib3SettingViewModel extends AndroidViewModel {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AudiMib3SettingViewModel.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AudiMib3SettingViewModel.class.getSimpleName());
     public ObservableField<String> appVer = new ObservableField<>();
     private Context context;
     public ObservableBoolean is24Hour = new ObservableBoolean();
@@ -36,11 +36,11 @@ public class AudiMib3SettingViewModel extends AndroidViewModel {
     public RadioGroup.OnCheckedChangeListener on24HourChangeListener = new RadioGroup.OnCheckedChangeListener() {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
-                case R.id.audi_mib3_12_time /*2131296387*/:
+                case R.id.audi_mib3_12_time /*2131296394*/:
                     Log.d(AudiMib3SettingViewModel.TAG, "onCheckedChanged: 12小时制");
                     FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                     break;
-                case R.id.audi_mib3_24_time /*2131296388*/:
+                case R.id.audi_mib3_24_time /*2131296395*/:
                     Log.d(AudiMib3SettingViewModel.TAG, "onCheckedChanged: 24小时制");
                     FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
                     break;
@@ -51,11 +51,11 @@ public class AudiMib3SettingViewModel extends AndroidViewModel {
     public RadioGroup.OnCheckedChangeListener onTimeMoedlChangeListener = new RadioGroup.OnCheckedChangeListener() {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
-                case R.id.audi_mib3_android_time /*2131296389*/:
+                case R.id.audi_mib3_android_time /*2131296396*/:
                     Log.d(AudiMib3SettingViewModel.TAG, "onCheckedChanged: android时间");
                     FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
                     break;
-                case R.id.audi_mib3_car_time /*2131296390*/:
+                case R.id.audi_mib3_car_time /*2131296397*/:
                     Log.d(AudiMib3SettingViewModel.TAG, "onCheckedChanged: 原车时间");
                     FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
                     break;

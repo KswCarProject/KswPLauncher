@@ -56,7 +56,7 @@ public class ActivityAudiMib3SoundBindingHdpi1920x720Impl extends ActivityAudiMi
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3VolumeViewModel) variable);

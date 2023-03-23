@@ -57,208 +57,208 @@ public abstract class SplineSet {
         /*
             int r0 = r1.hashCode()
             switch(r0) {
-                case -1249320806: goto L_0x00ae;
-                case -1249320805: goto L_0x00a4;
-                case -1225497657: goto L_0x0099;
-                case -1225497656: goto L_0x008e;
-                case -1225497655: goto L_0x0083;
-                case -1001078227: goto L_0x0078;
-                case -908189618: goto L_0x006d;
-                case -908189617: goto L_0x0062;
-                case -797520672: goto L_0x0057;
-                case -760884510: goto L_0x004c;
-                case -760884509: goto L_0x0041;
-                case -40300674: goto L_0x0036;
-                case -4379043: goto L_0x002b;
-                case 37232917: goto L_0x0020;
-                case 92909918: goto L_0x0015;
+                case -1249320806: goto L_0x00b6;
+                case -1249320805: goto L_0x00ac;
+                case -1225497657: goto L_0x00a0;
+                case -1225497656: goto L_0x0094;
+                case -1225497655: goto L_0x0088;
+                case -1001078227: goto L_0x007d;
+                case -908189618: goto L_0x0072;
+                case -908189617: goto L_0x0067;
+                case -797520672: goto L_0x005b;
+                case -760884510: goto L_0x004f;
+                case -760884509: goto L_0x0043;
+                case -40300674: goto L_0x0038;
+                case -4379043: goto L_0x002d;
+                case 37232917: goto L_0x0021;
+                case 92909918: goto L_0x0016;
                 case 156108012: goto L_0x0009;
                 default: goto L_0x0007;
             }
         L_0x0007:
-            goto L_0x00b8
+            goto L_0x00c0
         L_0x0009:
             java.lang.String r0 = "waveOffset"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 10
-            goto L_0x00b9
-        L_0x0015:
+            goto L_0x00c1
+        L_0x0016:
             java.lang.String r0 = "alpha"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 0
-            goto L_0x00b9
-        L_0x0020:
+            goto L_0x00c1
+        L_0x0021:
             java.lang.String r0 = "transitionPathRotate"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 7
-            goto L_0x00b9
-        L_0x002b:
+            goto L_0x00c1
+        L_0x002d:
             java.lang.String r0 = "elevation"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 1
-            goto L_0x00b9
-        L_0x0036:
+            goto L_0x00c1
+        L_0x0038:
             java.lang.String r0 = "rotation"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 2
-            goto L_0x00b9
-        L_0x0041:
+            goto L_0x00c1
+        L_0x0043:
             java.lang.String r0 = "transformPivotY"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 6
-            goto L_0x00b9
-        L_0x004c:
+            goto L_0x00c1
+        L_0x004f:
             java.lang.String r0 = "transformPivotX"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 5
-            goto L_0x00b9
-        L_0x0057:
+            goto L_0x00c1
+        L_0x005b:
             java.lang.String r0 = "waveVariesBy"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 11
-            goto L_0x00b9
-        L_0x0062:
+            goto L_0x00c1
+        L_0x0067:
             java.lang.String r0 = "scaleY"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 9
-            goto L_0x00b9
-        L_0x006d:
+            goto L_0x00c1
+        L_0x0072:
             java.lang.String r0 = "scaleX"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 8
-            goto L_0x00b9
-        L_0x0078:
+            goto L_0x00c1
+        L_0x007d:
             java.lang.String r0 = "progress"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 15
-            goto L_0x00b9
-        L_0x0083:
+            goto L_0x00c1
+        L_0x0088:
             java.lang.String r0 = "translationZ"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 14
-            goto L_0x00b9
-        L_0x008e:
+            goto L_0x00c1
+        L_0x0094:
             java.lang.String r0 = "translationY"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 13
-            goto L_0x00b9
-        L_0x0099:
+            goto L_0x00c1
+        L_0x00a0:
             java.lang.String r0 = "translationX"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 12
-            goto L_0x00b9
-        L_0x00a4:
+            goto L_0x00c1
+        L_0x00ac:
             java.lang.String r0 = "rotationY"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 4
-            goto L_0x00b9
-        L_0x00ae:
+            goto L_0x00c1
+        L_0x00b6:
             java.lang.String r0 = "rotationX"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 3
-            goto L_0x00b9
-        L_0x00b8:
+            goto L_0x00c1
+        L_0x00c0:
             r0 = -1
-        L_0x00b9:
+        L_0x00c1:
             switch(r0) {
-                case 0: goto L_0x0118;
-                case 1: goto L_0x0112;
-                case 2: goto L_0x010c;
-                case 3: goto L_0x0106;
-                case 4: goto L_0x0100;
-                case 5: goto L_0x00fa;
-                case 6: goto L_0x00f4;
-                case 7: goto L_0x00ee;
-                case 8: goto L_0x00e8;
-                case 9: goto L_0x00e2;
-                case 10: goto L_0x00dc;
-                case 11: goto L_0x00d6;
-                case 12: goto L_0x00d0;
-                case 13: goto L_0x00ca;
-                case 14: goto L_0x00c4;
-                case 15: goto L_0x00be;
-                default: goto L_0x00bc;
+                case 0: goto L_0x0120;
+                case 1: goto L_0x011a;
+                case 2: goto L_0x0114;
+                case 3: goto L_0x010e;
+                case 4: goto L_0x0108;
+                case 5: goto L_0x0102;
+                case 6: goto L_0x00fc;
+                case 7: goto L_0x00f6;
+                case 8: goto L_0x00f0;
+                case 9: goto L_0x00ea;
+                case 10: goto L_0x00e4;
+                case 11: goto L_0x00de;
+                case 12: goto L_0x00d8;
+                case 13: goto L_0x00d2;
+                case 14: goto L_0x00cc;
+                case 15: goto L_0x00c6;
+                default: goto L_0x00c4;
             }
-        L_0x00bc:
+        L_0x00c4:
             r0 = 0
             return r0
-        L_0x00be:
+        L_0x00c6:
             android.support.constraint.motion.SplineSet$ProgressSet r0 = new android.support.constraint.motion.SplineSet$ProgressSet
             r0.<init>()
             return r0
-        L_0x00c4:
+        L_0x00cc:
             android.support.constraint.motion.SplineSet$TranslationZset r0 = new android.support.constraint.motion.SplineSet$TranslationZset
             r0.<init>()
             return r0
-        L_0x00ca:
+        L_0x00d2:
             android.support.constraint.motion.SplineSet$TranslationYset r0 = new android.support.constraint.motion.SplineSet$TranslationYset
             r0.<init>()
             return r0
-        L_0x00d0:
+        L_0x00d8:
             android.support.constraint.motion.SplineSet$TranslationXset r0 = new android.support.constraint.motion.SplineSet$TranslationXset
             r0.<init>()
             return r0
-        L_0x00d6:
+        L_0x00de:
             android.support.constraint.motion.SplineSet$AlphaSet r0 = new android.support.constraint.motion.SplineSet$AlphaSet
             r0.<init>()
             return r0
-        L_0x00dc:
+        L_0x00e4:
             android.support.constraint.motion.SplineSet$AlphaSet r0 = new android.support.constraint.motion.SplineSet$AlphaSet
             r0.<init>()
             return r0
-        L_0x00e2:
+        L_0x00ea:
             android.support.constraint.motion.SplineSet$ScaleYset r0 = new android.support.constraint.motion.SplineSet$ScaleYset
             r0.<init>()
             return r0
-        L_0x00e8:
+        L_0x00f0:
             android.support.constraint.motion.SplineSet$ScaleXset r0 = new android.support.constraint.motion.SplineSet$ScaleXset
             r0.<init>()
             return r0
-        L_0x00ee:
+        L_0x00f6:
             android.support.constraint.motion.SplineSet$PathRotate r0 = new android.support.constraint.motion.SplineSet$PathRotate
             r0.<init>()
             return r0
-        L_0x00f4:
+        L_0x00fc:
             android.support.constraint.motion.SplineSet$PivotYset r0 = new android.support.constraint.motion.SplineSet$PivotYset
             r0.<init>()
             return r0
-        L_0x00fa:
+        L_0x0102:
             android.support.constraint.motion.SplineSet$PivotXset r0 = new android.support.constraint.motion.SplineSet$PivotXset
             r0.<init>()
             return r0
-        L_0x0100:
+        L_0x0108:
             android.support.constraint.motion.SplineSet$RotationYset r0 = new android.support.constraint.motion.SplineSet$RotationYset
             r0.<init>()
             return r0
-        L_0x0106:
+        L_0x010e:
             android.support.constraint.motion.SplineSet$RotationXset r0 = new android.support.constraint.motion.SplineSet$RotationXset
             r0.<init>()
             return r0
-        L_0x010c:
+        L_0x0114:
             android.support.constraint.motion.SplineSet$RotationSet r0 = new android.support.constraint.motion.SplineSet$RotationSet
             r0.<init>()
             return r0
-        L_0x0112:
+        L_0x011a:
             android.support.constraint.motion.SplineSet$ElevationSet r0 = new android.support.constraint.motion.SplineSet$ElevationSet
             r0.<init>()
             return r0
-        L_0x0118:
+        L_0x0120:
             android.support.constraint.motion.SplineSet$AlphaSet r0 = new android.support.constraint.motion.SplineSet$AlphaSet
             r0.<init>()
             return r0

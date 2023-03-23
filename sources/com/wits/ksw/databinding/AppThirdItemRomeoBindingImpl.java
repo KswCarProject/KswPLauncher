@@ -56,7 +56,7 @@ public class AppThirdItemRomeoBindingImpl extends AppThirdItemRomeoBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 != variableId) {
+        if (20 != variableId) {
             return false;
         }
         setListItem((LexusLsAppSelBean) variable);
@@ -68,7 +68,7 @@ public class AppThirdItemRomeoBindingImpl extends AppThirdItemRomeoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(20);
         super.requestRebind();
     }
 

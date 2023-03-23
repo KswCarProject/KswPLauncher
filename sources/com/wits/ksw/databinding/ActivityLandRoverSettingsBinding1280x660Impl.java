@@ -92,7 +92,7 @@ public class ActivityLandRoverSettingsBinding1280x660Impl extends ActivityLandRo
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (4 != variableId) {
+        if (7 != variableId) {
             return false;
         }
         setLauncherViewModel((LandroverViewModel) variable);
@@ -104,7 +104,7 @@ public class ActivityLandRoverSettingsBinding1280x660Impl extends ActivityLandRo
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(4);
+        notifyPropertyChanged(7);
         super.requestRebind();
     }
 

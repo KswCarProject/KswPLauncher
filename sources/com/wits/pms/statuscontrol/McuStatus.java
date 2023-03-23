@@ -95,44 +95,460 @@ public class McuStatus {
         return keys;
     }
 
-    public static class AirControl {
-
-        public enum AcKeyType {
-            dual,
-            backMistSwitch,
-            frontMistSwitch,
-            loop,
-            AC_Switch,
-            isOpen,
-            NULL2,
-            NULL1,
-            speedAdd,
-            speedReduce,
-            windDirect,
-            leftTmpAdd,
-            leftTmpReduce,
-            rightTmpAdd,
-            rightTmpReduce,
-            autoSwitch
-        }
-
-        public static void pressKey(AcKeyType type) {
-            byte data1 = 0;
-            byte data2 = 0;
-            int index = type.ordinal();
-            if (index >= 8) {
-                data2 = (byte) ((1 << (index - 8)) + 0);
-            } else {
-                data1 = (byte) ((1 << index) + 0);
-            }
-            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIRCON_CONTROL, data1 + "," + data2);
-        }
-    }
-
     public static void main(String... arg) {
         try {
             new String("yA��".getBytes(), "Unicode");
         } catch (UnsupportedEncodingException e) {
+        }
+    }
+
+    public int getSystemMode() {
+        return this.systemMode;
+    }
+
+    public void setSystemMode(int systemMode2) {
+        this.systemMode = systemMode2;
+    }
+
+    public String getMcuVerison() {
+        return this.mcuVerison;
+    }
+
+    public void setMcuVerison(String mcuVerison2) {
+        this.mcuVerison = mcuVerison2;
+    }
+
+    public CarData getCarData() {
+        return this.carData;
+    }
+
+    public void setCarData(CarData carData2) {
+        this.carData = carData2;
+    }
+
+    public ACData getAcData() {
+        return this.acData;
+    }
+
+    public void setAcData(ACData acData2) {
+        this.acData = acData2;
+    }
+
+    public class CarData {
+        public static final int AHEAD_COVER = 8;
+        public static final int BACK_COVER = 4;
+        public static final int LEFT_AHEAD = 16;
+        public static final int LEFT_BACK = 64;
+        public static final int RIGHT_AHEAD = 32;
+        public static final int RIGHT_BACK = 128;
+        public float airTemperature;
+        public float averSpeed;
+        public int carDoor;
+        public int distanceUnitType;
+        public int engineTurnS;
+        public boolean handbrake;
+        public int mileage;
+        public int oilSum;
+        public int oilUnitType;
+        public float oilWear;
+        public boolean safetyBelt;
+        public int speed;
+        public int temperatureUnitType;
+
+        public CarData() {
+        }
+
+        public boolean isOpen(int type) {
+            return (this.carDoor & type) != 0;
+        }
+
+        public int getCarDoor() {
+            return this.carDoor;
+        }
+
+        public void setCarDoor(int carDoor2) {
+            this.carDoor = carDoor2;
+        }
+
+        public boolean isHandbrake() {
+            return this.handbrake;
+        }
+
+        public void setHandbrake(boolean handbrake2) {
+            this.handbrake = handbrake2;
+        }
+
+        public boolean isSafetyBelt() {
+            return this.safetyBelt;
+        }
+
+        public void setSafetyBelt(boolean safetyBelt2) {
+            this.safetyBelt = safetyBelt2;
+        }
+
+        public int getMileage() {
+            return this.mileage;
+        }
+
+        public void setMileage(int mileage2) {
+            this.mileage = mileage2;
+        }
+
+        public float getOilWear() {
+            return this.oilWear;
+        }
+
+        public void setOilWear(float oilWear2) {
+            this.oilWear = oilWear2;
+        }
+
+        public int getOilSum() {
+            return this.oilSum;
+        }
+
+        public void setOilSum(int oilSum2) {
+            this.oilSum = oilSum2;
+        }
+
+        public float getAverSpeed() {
+            return this.averSpeed;
+        }
+
+        public void setAverSpeed(float averSpeed2) {
+            this.averSpeed = averSpeed2;
+        }
+
+        public int getSpeed() {
+            return this.speed;
+        }
+
+        public void setSpeed(int speed2) {
+            this.speed = speed2;
+        }
+
+        public int getEngineTurnS() {
+            return this.engineTurnS;
+        }
+
+        public void setEngineTurnS(int engineTurnS2) {
+            this.engineTurnS = engineTurnS2;
+        }
+
+        public float getAirTemperature() {
+            return this.airTemperature;
+        }
+
+        public void setAirTemperature(float airTemperature2) {
+            this.airTemperature = airTemperature2;
+        }
+
+        public int getDistanceUnitType() {
+            return this.distanceUnitType;
+        }
+
+        public void setDistanceUnitType(int distanceUnitType2) {
+            this.distanceUnitType = distanceUnitType2;
+        }
+
+        public int getTemperatureUnitType() {
+            return this.temperatureUnitType;
+        }
+
+        public void setTemperatureUnitType(int temperatureUnitType2) {
+            this.temperatureUnitType = temperatureUnitType2;
+        }
+
+        public int getOilUnitType() {
+            return this.oilUnitType;
+        }
+
+        public void setOilUnitType(int oilUnitType2) {
+            this.oilUnitType = oilUnitType2;
+        }
+    }
+
+    public static class BenzData {
+        public static final int AIR_MATIC_STATUS = 2;
+        public static final int AUXILIARY_RADAR = 3;
+        public static final int HIGH_CHASSIS_SWITCH = 1;
+        public boolean airBagSystem;
+        public int airMaticStatus;
+        public boolean auxiliaryRadar;
+        public boolean highChassisSwitch;
+        public int key3;
+        public int light1 = 0;
+        public int light2 = 0;
+        public int pressButton;
+
+        public boolean isHighChassisSwitch() {
+            return this.highChassisSwitch;
+        }
+
+        public void setHighChassisSwitch(boolean highChassisSwitch2) {
+            this.highChassisSwitch = highChassisSwitch2;
+        }
+
+        public int getAirMaticStatus() {
+            return this.airMaticStatus;
+        }
+
+        public void setAirMaticStatus(int airMaticStatus2) {
+            this.airMaticStatus = airMaticStatus2;
+        }
+
+        public boolean isAuxiliaryRadar() {
+            return this.auxiliaryRadar;
+        }
+
+        public void setAuxiliaryRadar(boolean auxiliaryRadar2) {
+            this.auxiliaryRadar = auxiliaryRadar2;
+        }
+
+        public int getLight1() {
+            return this.light1;
+        }
+
+        public void setLight1(int light12) {
+            this.light1 = light12;
+        }
+
+        public int getLight2() {
+            return this.light2;
+        }
+
+        public void setLight2(int light22) {
+            this.light2 = light22;
+        }
+
+        public int getKey3() {
+            return this.key3;
+        }
+
+        public void setKey3(int key32) {
+            this.key3 = key32;
+        }
+
+        public boolean isAirBagSystem() {
+            return this.airBagSystem;
+        }
+
+        public void setAirBagSystem(boolean airBagSystem2) {
+            this.airBagSystem = airBagSystem2;
+        }
+
+        public int getPressButton() {
+            return this.pressButton;
+        }
+
+        public void setPressButton(int pressButton2) {
+            this.pressButton = pressButton2;
+        }
+
+        public void pressButton(int which) {
+            this.pressButton = which;
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, getJson());
+            this.pressButton = 0;
+        }
+
+        public static BenzData getStatusFromJson(String jsonArg) {
+            return (BenzData) new Gson().fromJson(jsonArg, BenzData.class);
+        }
+
+        public String getJson() {
+            return new Gson().toJson((Object) this);
+        }
+    }
+
+    public static final class KswMcuMsg {
+        public int cmdType;
+        public byte[] data;
+
+        public KswMcuMsg(int cmdType2, byte... data2) {
+            this.cmdType = cmdType2;
+            this.data = data2;
+        }
+
+        public static KswMcuMsg getMsgFormJson(String jsonArg) {
+            return (KswMcuMsg) new Gson().fromJson(jsonArg, KswMcuMsg.class);
+        }
+    }
+
+    public static class EqData {
+        public int BAL;
+        public int BAS;
+        public int FAD;
+        public int MID;
+        public int TRE;
+        public String changeVol;
+        public int volume;
+
+        public static EqData parseDataFromJson(String jsonArg) {
+            return (EqData) new Gson().fromJson(jsonArg, EqData.class);
+        }
+    }
+
+    public static class DiscStatus {
+        public boolean[] discInsert;
+        public int range;
+        public String status;
+
+        public static DiscStatus parseInfoFromJson(String json) {
+            return (DiscStatus) new Gson().fromJson(json, DiscStatus.class);
+        }
+    }
+
+    public static class MediaPlayStatus {
+        public static final int TYPE_AM = 1;
+        public static final int TYPE_AUX = 20;
+        public static final int TYPE_BT_MUSIC = 21;
+        public static final int TYPE_DISC = 16;
+        public static final int TYPE_FM = 0;
+        public static final int TYPE_MP3 = 18;
+        public static final int TYPE_USB = 17;
+        public boolean ALS;
+        public boolean RAND;
+        public boolean RPT;
+        public boolean SCAN;
+        public boolean ST;
+        public String status;
+        public int type;
+
+        public static MediaPlayStatus parseInfoFromJson(String json) {
+            return (MediaPlayStatus) new Gson().fromJson(json, MediaPlayStatus.class);
+        }
+    }
+
+    public static class MediaStringInfo {
+        public String album;
+        public String artist;
+        public String folderName;
+        public int min;
+        public String name;
+        public int sec;
+
+        public static MediaStringInfo parseInfoFromJson(String json) {
+            return (MediaStringInfo) new Gson().fromJson(json, MediaStringInfo.class);
+        }
+    }
+
+    public static class MediaData {
+        public static final int TYPE_AUX = 20;
+        public static final int TYPE_BT = 21;
+        public static final int TYPE_DISC = 16;
+        public static final int TYPE_FM = 1;
+        public static final int TYPE_MODE = 64;
+        public static final int TYPE_MP3 = 18;
+        public static final int TYPE_USB = 17;
+        public boolean ALS;
+        public boolean RAND;
+        public boolean RPT;
+        public boolean SCAN;
+        public boolean ST;
+        public Disc disc = new Disc();
+        public DVD dvd = new DVD();
+        public Fm fm = new Fm();
+        public MODE mode = new MODE();
+        public MP3 mp3 = new MP3();
+        public String status;
+        public int type;
+        public Usb usb = new Usb();
+
+        public static class DVD extends BaseMediaInfo {
+            public int chapterNumber;
+            public int min;
+            public int sec;
+            public int totalChapter;
+        }
+
+        public static class Disc extends BaseMediaInfo {
+            public int min;
+            public int number;
+            public int sec;
+            public int track;
+        }
+
+        public static class Fm {
+            public String freq;
+            public String name;
+            public int preFreq;
+        }
+
+        public static class MODE extends BaseMediaInfo {
+            public boolean ASL;
+            public boolean PAUSE;
+            public boolean RAND;
+            public boolean RPT;
+            public boolean SCAN;
+            public boolean ST;
+        }
+
+        public static class MP3 extends BaseMediaInfo {
+            public int fileNumber;
+            public int folderNumber;
+            public int min;
+            public int sec;
+        }
+
+        public static class Usb extends BaseMediaInfo {
+            public int fileNumber;
+            public int folderNumber;
+            public int min;
+            public int sec;
+        }
+
+        public BaseMediaInfo getCurrentMediaInfo() {
+            int i = this.type;
+            if (i != 0) {
+                switch (i) {
+                    case 1:
+                    case 20:
+                    case 21:
+                        return null;
+                    case 16:
+                        return this.disc;
+                    case 17:
+                        return this.usb;
+                    case 18:
+                        return this.mp3;
+                    case 64:
+                        return this.mode;
+                }
+            }
+            return null;
+        }
+
+        public static MediaData parseDataFromJson(String json) {
+            return (MediaData) new Gson().fromJson(json, MediaData.class);
+        }
+
+        public static class BaseMediaInfo {
+            public String album = "";
+            public String artist = "";
+            public String folderName = "";
+            public String name = "";
+
+            public void reset() {
+                this.name = "";
+                this.artist = "";
+                this.album = "";
+                this.folderName = "";
+            }
+        }
+    }
+
+    public static class CarBluetoothStatus {
+        public int batteryStatus;
+        public int callSignal;
+        public boolean isCalling;
+        public int min;
+        public String name;
+        public boolean playingMusic;
+        public int sec;
+        public String settingsInfo;
+        public int times;
+
+        public static CarBluetoothStatus parseInfoFromJson(String json) {
+            return (CarBluetoothStatus) new Gson().fromJson(json, CarBluetoothStatus.class);
         }
     }
 
@@ -277,453 +693,37 @@ public class McuStatus {
         }
     }
 
-    public static class CarBluetoothStatus {
-        public int batteryStatus;
-        public int callSignal;
-        public boolean isCalling;
-        public int min;
-        public String name;
-        public boolean playingMusic;
-        public int sec;
-        public String settingsInfo;
-        public int times;
+    public static class AirControl {
 
-        public static CarBluetoothStatus parseInfoFromJson(String json) {
-            return (CarBluetoothStatus) new Gson().fromJson(json, CarBluetoothStatus.class);
-        }
-    }
-
-    public static class MediaData {
-        public static final int TYPE_AUX = 20;
-        public static final int TYPE_BT = 21;
-        public static final int TYPE_DISC = 16;
-        public static final int TYPE_FM = 1;
-        public static final int TYPE_MODE = 64;
-        public static final int TYPE_MP3 = 18;
-        public static final int TYPE_USB = 17;
-        public boolean ALS;
-        public boolean RAND;
-        public boolean RPT;
-        public boolean SCAN;
-        public boolean ST;
-        public Disc disc = new Disc();
-        public DVD dvd = new DVD();
-        public Fm fm = new Fm();
-        public MODE mode = new MODE();
-        public MP3 mp3 = new MP3();
-        public String status;
-        public int type;
-        public Usb usb = new Usb();
-
-        public static class DVD extends BaseMediaInfo {
-            public int chapterNumber;
-            public int min;
-            public int sec;
-            public int totalChapter;
+        public enum AcKeyType {
+            dual,
+            backMistSwitch,
+            frontMistSwitch,
+            loop,
+            AC_Switch,
+            isOpen,
+            NULL2,
+            NULL1,
+            speedAdd,
+            speedReduce,
+            windDirect,
+            leftTmpAdd,
+            leftTmpReduce,
+            rightTmpAdd,
+            rightTmpReduce,
+            autoSwitch
         }
 
-        public static class Disc extends BaseMediaInfo {
-            public int min;
-            public int number;
-            public int sec;
-            public int track;
-        }
-
-        public static class Fm {
-            public String freq;
-            public String name;
-            public int preFreq;
-        }
-
-        public static class MODE extends BaseMediaInfo {
-            public boolean ASL;
-            public boolean PAUSE;
-            public boolean RAND;
-            public boolean RPT;
-            public boolean SCAN;
-            public boolean ST;
-        }
-
-        public static class MP3 extends BaseMediaInfo {
-            public int fileNumber;
-            public int folderNumber;
-            public int min;
-            public int sec;
-        }
-
-        public static class Usb extends BaseMediaInfo {
-            public int fileNumber;
-            public int folderNumber;
-            public int min;
-            public int sec;
-        }
-
-        public BaseMediaInfo getCurrentMediaInfo() {
-            int i = this.type;
-            if (i != 0) {
-                switch (i) {
-                    case 1:
-                    case 20:
-                    case 21:
-                        return null;
-                    case 16:
-                        return this.disc;
-                    case 17:
-                        return this.usb;
-                    case 18:
-                        return this.mp3;
-                    case 64:
-                        return this.mode;
-                }
+        public static void pressKey(AcKeyType type) {
+            byte data1 = 0;
+            byte data2 = 0;
+            int index = type.ordinal();
+            if (index >= 8) {
+                data2 = (byte) ((1 << (index - 8)) + 0);
+            } else {
+                data1 = (byte) ((1 << index) + 0);
             }
-            return null;
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIRCON_CONTROL, data1 + "," + data2);
         }
-
-        public static class BaseMediaInfo {
-            public String album = "";
-            public String artist = "";
-            public String folderName = "";
-            public String name = "";
-
-            public void reset() {
-                this.name = "";
-                this.artist = "";
-                this.album = "";
-                this.folderName = "";
-            }
-        }
-
-        public static MediaData parseDataFromJson(String json) {
-            return (MediaData) new Gson().fromJson(json, MediaData.class);
-        }
-    }
-
-    public static class MediaStringInfo {
-        public String album;
-        public String artist;
-        public String folderName;
-        public int min;
-        public String name;
-        public int sec;
-
-        public static MediaStringInfo parseInfoFromJson(String json) {
-            return (MediaStringInfo) new Gson().fromJson(json, MediaStringInfo.class);
-        }
-    }
-
-    public static class MediaPlayStatus {
-        public static final int TYPE_AM = 1;
-        public static final int TYPE_AUX = 20;
-        public static final int TYPE_BT_MUSIC = 21;
-        public static final int TYPE_DISC = 16;
-        public static final int TYPE_FM = 0;
-        public static final int TYPE_MP3 = 18;
-        public static final int TYPE_USB = 17;
-        public boolean ALS;
-        public boolean RAND;
-        public boolean RPT;
-        public boolean SCAN;
-        public boolean ST;
-        public String status;
-        public int type;
-
-        public static MediaPlayStatus parseInfoFromJson(String json) {
-            return (MediaPlayStatus) new Gson().fromJson(json, MediaPlayStatus.class);
-        }
-    }
-
-    public static class DiscStatus {
-        public boolean[] discInsert;
-        public int range;
-        public String status;
-
-        public static DiscStatus parseInfoFromJson(String json) {
-            return (DiscStatus) new Gson().fromJson(json, DiscStatus.class);
-        }
-    }
-
-    public static class EqData {
-        public int BAL;
-        public int BAS;
-        public int FAD;
-        public int MID;
-        public int TRE;
-        public String changeVol;
-        public int volume;
-
-        public static EqData parseDataFromJson(String jsonArg) {
-            return (EqData) new Gson().fromJson(jsonArg, EqData.class);
-        }
-    }
-
-    public static final class KswMcuMsg {
-        public int cmdType;
-        public byte[] data;
-
-        public KswMcuMsg(int cmdType2, byte... data2) {
-            this.cmdType = cmdType2;
-            this.data = data2;
-        }
-
-        public static KswMcuMsg getMsgFormJson(String jsonArg) {
-            return (KswMcuMsg) new Gson().fromJson(jsonArg, KswMcuMsg.class);
-        }
-    }
-
-    public static class BenzData {
-        public static final int AIR_MATIC_STATUS = 2;
-        public static final int AUXILIARY_RADAR = 3;
-        public static final int HIGH_CHASSIS_SWITCH = 1;
-        public boolean airBagSystem;
-        public int airMaticStatus;
-        public boolean auxiliaryRadar;
-        public boolean highChassisSwitch;
-        public int key3;
-        public int light1 = 0;
-        public int light2 = 0;
-        public int pressButton;
-
-        public boolean isHighChassisSwitch() {
-            return this.highChassisSwitch;
-        }
-
-        public void setHighChassisSwitch(boolean highChassisSwitch2) {
-            this.highChassisSwitch = highChassisSwitch2;
-        }
-
-        public int getAirMaticStatus() {
-            return this.airMaticStatus;
-        }
-
-        public void setAirMaticStatus(int airMaticStatus2) {
-            this.airMaticStatus = airMaticStatus2;
-        }
-
-        public boolean isAuxiliaryRadar() {
-            return this.auxiliaryRadar;
-        }
-
-        public void setAuxiliaryRadar(boolean auxiliaryRadar2) {
-            this.auxiliaryRadar = auxiliaryRadar2;
-        }
-
-        public int getLight1() {
-            return this.light1;
-        }
-
-        public void setLight1(int light12) {
-            this.light1 = light12;
-        }
-
-        public int getLight2() {
-            return this.light2;
-        }
-
-        public void setLight2(int light22) {
-            this.light2 = light22;
-        }
-
-        public int getKey3() {
-            return this.key3;
-        }
-
-        public void setKey3(int key32) {
-            this.key3 = key32;
-        }
-
-        public boolean isAirBagSystem() {
-            return this.airBagSystem;
-        }
-
-        public void setAirBagSystem(boolean airBagSystem2) {
-            this.airBagSystem = airBagSystem2;
-        }
-
-        public int getPressButton() {
-            return this.pressButton;
-        }
-
-        public void setPressButton(int pressButton2) {
-            this.pressButton = pressButton2;
-        }
-
-        public void pressButton(int which) {
-            this.pressButton = which;
-            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, getJson());
-            this.pressButton = 0;
-        }
-
-        public static BenzData getStatusFromJson(String jsonArg) {
-            return (BenzData) new Gson().fromJson(jsonArg, BenzData.class);
-        }
-
-        public String getJson() {
-            return new Gson().toJson((Object) this);
-        }
-    }
-
-    public class CarData {
-        public static final int AHEAD_COVER = 8;
-        public static final int BACK_COVER = 4;
-        public static final int LEFT_AHEAD = 16;
-        public static final int LEFT_BACK = 64;
-        public static final int RIGHT_AHEAD = 32;
-        public static final int RIGHT_BACK = 128;
-        public float airTemperature;
-        public float averSpeed;
-        public int carDoor;
-        public int distanceUnitType;
-        public int engineTurnS;
-        public boolean handbrake;
-        public int mileage;
-        public int oilSum;
-        public int oilUnitType;
-        public float oilWear;
-        public boolean safetyBelt;
-        public int speed;
-        public int temperatureUnitType;
-
-        public CarData() {
-        }
-
-        public boolean isOpen(int type) {
-            return (this.carDoor & type) != 0;
-        }
-
-        public int getCarDoor() {
-            return this.carDoor;
-        }
-
-        public void setCarDoor(int carDoor2) {
-            this.carDoor = carDoor2;
-        }
-
-        public boolean isHandbrake() {
-            return this.handbrake;
-        }
-
-        public void setHandbrake(boolean handbrake2) {
-            this.handbrake = handbrake2;
-        }
-
-        public boolean isSafetyBelt() {
-            return this.safetyBelt;
-        }
-
-        public void setSafetyBelt(boolean safetyBelt2) {
-            this.safetyBelt = safetyBelt2;
-        }
-
-        public int getMileage() {
-            return this.mileage;
-        }
-
-        public void setMileage(int mileage2) {
-            this.mileage = mileage2;
-        }
-
-        public float getOilWear() {
-            return this.oilWear;
-        }
-
-        public void setOilWear(float oilWear2) {
-            this.oilWear = oilWear2;
-        }
-
-        public int getOilSum() {
-            return this.oilSum;
-        }
-
-        public void setOilSum(int oilSum2) {
-            this.oilSum = oilSum2;
-        }
-
-        public float getAverSpeed() {
-            return this.averSpeed;
-        }
-
-        public void setAverSpeed(float averSpeed2) {
-            this.averSpeed = averSpeed2;
-        }
-
-        public int getSpeed() {
-            return this.speed;
-        }
-
-        public void setSpeed(int speed2) {
-            this.speed = speed2;
-        }
-
-        public int getEngineTurnS() {
-            return this.engineTurnS;
-        }
-
-        public void setEngineTurnS(int engineTurnS2) {
-            this.engineTurnS = engineTurnS2;
-        }
-
-        public float getAirTemperature() {
-            return this.airTemperature;
-        }
-
-        public void setAirTemperature(float airTemperature2) {
-            this.airTemperature = airTemperature2;
-        }
-
-        public int getDistanceUnitType() {
-            return this.distanceUnitType;
-        }
-
-        public void setDistanceUnitType(int distanceUnitType2) {
-            this.distanceUnitType = distanceUnitType2;
-        }
-
-        public int getTemperatureUnitType() {
-            return this.temperatureUnitType;
-        }
-
-        public void setTemperatureUnitType(int temperatureUnitType2) {
-            this.temperatureUnitType = temperatureUnitType2;
-        }
-
-        public int getOilUnitType() {
-            return this.oilUnitType;
-        }
-
-        public void setOilUnitType(int oilUnitType2) {
-            this.oilUnitType = oilUnitType2;
-        }
-    }
-
-    public int getSystemMode() {
-        return this.systemMode;
-    }
-
-    public void setSystemMode(int systemMode2) {
-        this.systemMode = systemMode2;
-    }
-
-    public String getMcuVerison() {
-        return this.mcuVerison;
-    }
-
-    public void setMcuVerison(String mcuVerison2) {
-        this.mcuVerison = mcuVerison2;
-    }
-
-    public CarData getCarData() {
-        return this.carData;
-    }
-
-    public void setCarData(CarData carData2) {
-        this.carData = carData2;
-    }
-
-    public ACData getAcData() {
-        return this.acData;
-    }
-
-    public void setAcData(ACData acData2) {
-        this.acData = acData2;
     }
 }

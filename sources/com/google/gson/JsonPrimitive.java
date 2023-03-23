@@ -6,56 +6,35 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public final class JsonPrimitive extends JsonElement {
-    private static final Class<?>[] PRIMITIVE_TYPES = {Integer.TYPE, Long.TYPE, Short.TYPE, Float.TYPE, Double.TYPE, Byte.TYPE, Boolean.TYPE, Character.TYPE, Integer.class, Long.class, Short.class, Float.class, Double.class, Byte.class, Boolean.class, Character.class};
-    private Object value;
+    private final Object value;
 
     public JsonPrimitive(Boolean bool) {
-        setValue(bool);
+        this.value = C$Gson$Preconditions.checkNotNull(bool);
     }
 
     public JsonPrimitive(Number number) {
-        setValue(number);
+        this.value = C$Gson$Preconditions.checkNotNull(number);
     }
 
     public JsonPrimitive(String string) {
-        setValue(string);
+        this.value = C$Gson$Preconditions.checkNotNull(string);
     }
 
     public JsonPrimitive(Character c) {
-        setValue(c);
+        this.value = ((Character) C$Gson$Preconditions.checkNotNull(c)).toString();
     }
 
-    JsonPrimitive(Object primitive) {
-        setValue(primitive);
-    }
-
-    /* access modifiers changed from: package-private */
     public JsonPrimitive deepCopy() {
         return this;
-    }
-
-    /* access modifiers changed from: package-private */
-    public void setValue(Object primitive) {
-        if (primitive instanceof Character) {
-            this.value = String.valueOf(((Character) primitive).charValue());
-            return;
-        }
-        C$Gson$Preconditions.checkArgument((primitive instanceof Number) || isPrimitiveOrString(primitive));
-        this.value = primitive;
     }
 
     public boolean isBoolean() {
         return this.value instanceof Boolean;
     }
 
-    /* access modifiers changed from: package-private */
-    public Boolean getAsBooleanWrapper() {
-        return (Boolean) this.value;
-    }
-
     public boolean getAsBoolean() {
         if (isBoolean()) {
-            return getAsBooleanWrapper().booleanValue();
+            return ((Boolean) this.value).booleanValue();
         }
         return Boolean.parseBoolean(getAsString());
     }
@@ -78,7 +57,7 @@ public final class JsonPrimitive extends JsonElement {
             return getAsNumber().toString();
         }
         if (isBoolean()) {
-            return getAsBooleanWrapper().toString();
+            return ((Boolean) this.value).toString();
         }
         return (String) this.value;
     }
@@ -119,19 +98,6 @@ public final class JsonPrimitive extends JsonElement {
 
     public char getAsCharacter() {
         return getAsString().charAt(0);
-    }
-
-    private static boolean isPrimitiveOrString(Object target) {
-        if (target instanceof String) {
-            return true;
-        }
-        Class<?> classOfPrimitive = target.getClass();
-        for (Class<?> standardPrimitive : PRIMITIVE_TYPES) {
-            if (standardPrimitive.isAssignableFrom(classOfPrimitive)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public int hashCode() {

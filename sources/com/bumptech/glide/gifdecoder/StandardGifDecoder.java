@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.Iterator;
+import kotlin.UByte;
 
 public class StandardGifDecoder implements GifDecoder {
     private static final int BYTES_PER_INTEGER = 4;
@@ -466,7 +467,7 @@ public class StandardGifDecoder implements GifDecoder {
                 int downsampledIH2 = downsampledIH;
                 byte byteCurrentColorIndex = mainPixels2[sx];
                 int downsampledIY2 = downsampledIY;
-                byte downsampledIY3 = byteCurrentColorIndex & 255;
+                byte downsampledIY3 = byteCurrentColorIndex & UByte.MAX_VALUE;
                 if (downsampledIY3 != transparentColorIndex) {
                     int color = act2[downsampledIY3];
                     if (color != 0) {
@@ -880,7 +881,7 @@ public class StandardGifDecoder implements GifDecoder {
     }
 
     private int readByte() {
-        return this.rawData.get() & 255;
+        return this.rawData.get() & UByte.MAX_VALUE;
     }
 
     private int readBlock() {

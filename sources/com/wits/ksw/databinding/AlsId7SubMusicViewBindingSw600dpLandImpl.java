@@ -23,10 +23,10 @@ import com.wits.ksw.launcher.bean.MediaInfo;
 public class AlsId7SubMusicViewBindingSw600dpLandImpl extends AlsId7SubMusicViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback44;
-    private final View.OnClickListener mCallback45;
-    private final View.OnClickListener mCallback46;
-    private final View.OnClickListener mCallback47;
+    private final View.OnClickListener mCallback212;
+    private final View.OnClickListener mCallback213;
+    private final View.OnClickListener mCallback214;
+    private final View.OnClickListener mCallback215;
     private long mDirtyFlags;
 
     static {
@@ -56,10 +56,10 @@ public class AlsId7SubMusicViewBindingSw600dpLandImpl extends AlsId7SubMusicView
         this.seekBar.setTag((Object) null);
         this.totalTimeTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback47 = new OnClickListener(this, 4);
-        this.mCallback44 = new OnClickListener(this, 1);
-        this.mCallback45 = new OnClickListener(this, 2);
-        this.mCallback46 = new OnClickListener(this, 3);
+        this.mCallback213 = new OnClickListener(this, 2);
+        this.mCallback214 = new OnClickListener(this, 3);
+        this.mCallback215 = new OnClickListener(this, 4);
+        this.mCallback212 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -80,7 +80,7 @@ public class AlsId7SubMusicViewBindingSw600dpLandImpl extends AlsId7SubMusicView
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setMusicPhoneViewModel((AlsID7ViewModel) variable);
@@ -92,7 +92,7 @@ public class AlsId7SubMusicViewBindingSw600dpLandImpl extends AlsId7SubMusicView
         synchronized (this) {
             this.mDirtyFlags |= 512;
         }
-        notifyPropertyChanged(7);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -476,10 +476,10 @@ public class AlsId7SubMusicViewBindingSw600dpLandImpl extends AlsId7SubMusicView
         }
         if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID) != 0) {
             String str4 = musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNullArtistTextViewAndroidStringKswIdf7UnknowArtisMusicPhoneViewModelMediaInfoMusicAtist;
-            this.btnMusicNext.setOnClickListener(this.mCallback47);
-            this.btnMusicPause.setOnClickListener(this.mCallback46);
-            this.btnMusicPrev.setOnClickListener(this.mCallback45);
-            this.imageFrameLayout.setOnClickListener(this.mCallback44);
+            this.btnMusicNext.setOnClickListener(this.mCallback215);
+            this.btnMusicPause.setOnClickListener(this.mCallback214);
+            this.btnMusicPrev.setOnClickListener(this.mCallback213);
+            this.imageFrameLayout.setOnClickListener(this.mCallback212);
         }
         if ((dirtyFlags & 1025) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.btnMusicPause, musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay);

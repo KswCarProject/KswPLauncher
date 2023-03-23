@@ -22,18 +22,24 @@ import com.wits.ksw.databinding.ActivityDashBoardAudiMib3FyBinding;
 import com.wits.ksw.databinding.ActivityDashBoardLcBinding;
 import com.wits.ksw.databinding.ActivityDashBoardLexusBinding;
 import com.wits.ksw.databinding.ActivityNtg6DashBoardBinding;
+import com.wits.ksw.databinding.BmwId8DashboardLayoutNewBinding;
 import com.wits.ksw.databinding.DasoardBind;
 import com.wits.ksw.databinding.SevenDasoardBind;
 import com.wits.ksw.launcher.base.BaseThemeActivity;
 import com.wits.ksw.launcher.model.DashboardViewModel;
+import com.wits.ksw.launcher.model.McuImpl;
 import com.wits.ksw.launcher.utils.KeyUtils;
+import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
+import skin.support.content.res.SkinCompatResources;
 
 public class DashboardActivity extends BaseThemeActivity {
-    private static final String TAG = "ID7仪表盘";
+    /* access modifiers changed from: private */
+    public static final String TAG = DashboardActivity.class.getSimpleName();
     private int carManufacturer;
+    private BmwId8DashboardLayoutNewBinding mBmwId8NewBinding;
     String screenFile = "";
     private Handler screenHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -60,6 +66,11 @@ public class DashboardActivity extends BaseThemeActivity {
         initCarManufacturer();
         KeyUtils.pressKey(391);
         super.onCreate(savedInstanceState);
+    }
+
+    /* access modifiers changed from: protected */
+    public void initUIKSWID7View() {
+        initBmwid7UiView();
     }
 
     private void initCarManufacturer() {
@@ -152,6 +163,16 @@ public class DashboardActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initBenz_MBUX_2021_KSW_View() {
+        initBcUiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBenz_MBUX_2021_KSW_View_V2() {
+        initBcUiView();
+    }
+
+    /* access modifiers changed from: protected */
     public void initBenz_MBUX_2021_View2() {
         initBcUiView();
     }
@@ -162,12 +183,22 @@ public class DashboardActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initUI_NTG6_FY_ViewV2() {
+        initBcUiView();
+    }
+
+    /* access modifiers changed from: protected */
     public void initAudiView() {
         initUI();
     }
 
     /* access modifiers changed from: protected */
     public void initAudiMbi3View() {
+        initAudiMib3UI();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initAudiMbi3ViewV2() {
         initAudiMib3UI();
     }
 
@@ -214,6 +245,11 @@ public class DashboardActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initLexusLsDragV2() {
+        initLexus();
+    }
+
+    /* access modifiers changed from: protected */
     public void initBwmID7Hicar() {
         initBmwid7UiView();
     }
@@ -229,7 +265,17 @@ public class DashboardActivity extends BaseThemeActivity {
     }
 
     /* access modifiers changed from: protected */
+    public void initCommonUIKSWMBUX1024View() {
+        initBcUiView();
+    }
+
+    /* access modifiers changed from: protected */
     public void initAlsId7UI() {
+        initBmwid7UiView();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initAlsId7UI_V2() {
         initBmwid7UiView();
     }
 
@@ -250,6 +296,37 @@ public class DashboardActivity extends BaseThemeActivity {
     /* access modifiers changed from: protected */
     public void initAudi_mib3_FyUiView() {
         initAudiMib3FyUI();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initAudi_mib3_Fy_V2_UiView() {
+        initAudiMib3FyUI();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initAudiMib3Ty() {
+        initAudiMib3UI();
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBmwId8UiView() {
+        setActivityFull();
+        BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = (BmwId8DashboardLayoutNewBinding) DataBindingUtil.setContentView(this, R.layout.bmw_id8_dashboard_layout_new);
+        this.mBmwId8NewBinding = bmwId8DashboardLayoutNewBinding;
+        bmwId8DashboardLayoutNewBinding.setViewModel(this.viewMode);
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBmwId8GsUiView() {
+        setActivityFull();
+        BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = (BmwId8DashboardLayoutNewBinding) DataBindingUtil.setContentView(this, R.layout.bmw_id8_dashboard_layout_new);
+        this.mBmwId8NewBinding = bmwId8DashboardLayoutNewBinding;
+        bmwId8DashboardLayoutNewBinding.setViewModel(this.viewMode);
+    }
+
+    /* access modifiers changed from: protected */
+    public void initBmwid7V2UiView() {
+        initBmwid7UiView();
     }
 
     private void initAudiMib3FyUI() {
@@ -448,15 +525,42 @@ public class DashboardActivity extends BaseThemeActivity {
     /* access modifiers changed from: protected */
     public void onResume() {
         super.onResume();
-        if (UiThemeUtils.isLEXUS_LS_UI(this)) {
-            this.screenHandler.sendEmptyMessageDelayed(666, 1800);
+        try {
+            if (UiThemeUtils.isLEXUS_LS_UI(this) || UiThemeUtils.isLEXUS_LS_UI_V2(this)) {
+                this.screenHandler.sendEmptyMessageDelayed(666, 1800);
+            }
+            if (UiThemeUtils.isLEXUS_UI(this)) {
+                McuImpl.getInstance().getCarInfo().unitEnImg.set(Boolean.valueOf(KswUtils.ismph()));
+            }
+            if (UiThemeUtils.isBMW_ID8_UI(this) || UiThemeUtils.isUI_GS_ID8(this)) {
+                BmwId8DashboardLayoutNewBinding bmwId8DashboardLayoutNewBinding = this.mBmwId8NewBinding;
+                if (bmwId8DashboardLayoutNewBinding != null) {
+                    bmwId8DashboardLayoutNewBinding.bmwId8DashboardLay.setBackground(SkinCompatResources.getDrawable(this, R.drawable.id8_dashboard_bg_new));
+                    this.mBmwId8NewBinding.bmwId8DashboardMusicLay.bmwId8DashboardMusicName.setTextColor(SkinCompatResources.getColor(this, R.color.id8_main_style_color));
+                    this.mBmwId8NewBinding.bmwId8DashboardLeftBg.setBackground(SkinCompatResources.getDrawable(this, R.drawable.id8_dashboard_bg_l_new));
+                    this.mBmwId8NewBinding.bmwId8DashboardRightBg.setBackground(SkinCompatResources.getDrawable(this, R.drawable.id8_dashboard_bg_r_new));
+                }
+                boolean isPlay = PowerManagerApp.getManager().getStatusBoolean("play");
+                int lastMode = PowerManagerApp.getStatusInt("lastMode");
+                Log.e(TAG, " isPlay " + isPlay + " lastMode " + lastMode);
+                if (lastMode == 1 && isPlay) {
+                    this.viewMode.dashBoardMusicShow.set(Boolean.valueOf(isPlay));
+                }
+            }
+            if (KswUtils.ismph()) {
+                McuImpl.getInstance().getCarInfo().speedUnit.set("mph");
+            } else {
+                McuImpl.getInstance().getCarInfo().speedUnit.set("km/h");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     /* access modifiers changed from: protected */
     public void onPause() {
         super.onPause();
-        if (UiThemeUtils.isLEXUS_LS_UI(this)) {
+        if (UiThemeUtils.isLEXUS_LS_UI(this) || UiThemeUtils.isLEXUS_LS_UI_V2(this)) {
             this.screenHandler.removeMessages(666);
         }
     }

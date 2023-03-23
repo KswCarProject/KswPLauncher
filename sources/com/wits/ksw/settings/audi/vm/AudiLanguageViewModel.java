@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class AudiLanguageViewModel extends AndroidViewModel {
-    private static final String TAG = ("KSWLauncher." + AudiLanguageViewModel.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + AudiLanguageViewModel.class.getSimpleName());
     private ContentObserver contentObserver = new ContentObserver(new Handler()) {
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);

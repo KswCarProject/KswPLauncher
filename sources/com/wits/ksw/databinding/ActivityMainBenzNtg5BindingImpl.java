@@ -51,7 +51,7 @@ public class ActivityMainBenzNtg5BindingImpl extends ActivityMainBenzNtg5Binding
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (12 != variableId) {
+        if (21 != variableId) {
             return false;
         }
         setMBcVieModel((BcNTG5ViewModel) variable);
@@ -63,7 +63,7 @@ public class ActivityMainBenzNtg5BindingImpl extends ActivityMainBenzNtg5Binding
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(21);
         super.requestRebind();
     }
 

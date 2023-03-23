@@ -107,22 +107,22 @@ public class LandroverNaviTwo extends RelativeLayout {
         this.rdg_naviv.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_naviv1 /*2131297186*/:
+                    case R.id.rdb_naviv1 /*2131297452*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 0);
                         return;
-                    case R.id.rdb_naviv2 /*2131297187*/:
+                    case R.id.rdb_naviv2 /*2131297453*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 1);
                         return;
-                    case R.id.rdb_naviv3 /*2131297188*/:
+                    case R.id.rdb_naviv3 /*2131297454*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 2);
                         return;
-                    case R.id.rdb_naviv4 /*2131297189*/:
+                    case R.id.rdb_naviv4 /*2131297455*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 3);
                         return;
-                    case R.id.rdb_naviv5 /*2131297190*/:
+                    case R.id.rdb_naviv5 /*2131297456*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 4);
                         return;
-                    case R.id.rdb_naviv6 /*2131297191*/:
+                    case R.id.rdb_naviv6 /*2131297457*/:
                         FileUtils.savaIntData(KeyConfig.NAVI_VOICE_MIX, 5);
                         return;
                     default:

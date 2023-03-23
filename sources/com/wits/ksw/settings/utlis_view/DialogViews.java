@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.id7.bean.DevBean;
 import com.wits.ksw.settings.view_adapter.ListChoseAdapter;
 import com.wits.pms.ksw.OnMcuUpdateProgressListener;
@@ -63,6 +65,9 @@ public class DialogViews extends Dialog {
                     DialogViews.this.dialogHandler.sendEmptyMessageDelayed(2, 2000);
                     return;
                 case 4:
+                    if (UiThemeUtils.isUI_GS_ID8(DialogViews.this.m_con)) {
+                        Settings.System.putInt(DialogViews.this.m_con.getContentResolver(), "memory_mode_for_freedom", 1);
+                    }
                     System.exit(0);
                     return;
                 default:
@@ -74,6 +79,7 @@ public class DialogViews extends Dialog {
     public int errorFlag = -1;
     private String fileName;
     private String logoPath = "";
+    private String logoZipName = "mylogo.zip";
     private WindowManager.LayoutParams lp;
     /* access modifiers changed from: private */
     public Context m_con;
@@ -258,6 +264,9 @@ public class DialogViews extends Dialog {
         intent.setClass(KswApplication.appContext, MainActivity.class);
         intent.addFlags(268435456);
         KswApplication.appContext.startActivity(intent);
+        if (UiThemeUtils.isUI_GS_ID8(this.m_con)) {
+            Settings.System.putInt(this.m_con.getContentResolver(), "memory_mode_for_freedom", 1);
+        }
         System.exit(0);
     }
 
@@ -287,11 +296,17 @@ public class DialogViews extends Dialog {
 
     /* access modifiers changed from: private */
     public void updateLogoFile() {
-        for (String sp : FileUtils.getSDPath(getContext())) {
+        List<String> rootList = FileUtils.getSDPath(getContext());
+        if (Build.VERSION.RELEASE.equals("12")) {
+            this.logoZipName = "mylogo12.zip";
+        } else if (Build.VERSION.RELEASE.equals("13")) {
+            this.logoZipName = "mylogo13.zip";
+        }
+        for (String sp : rootList) {
             File[] files = new File(sp).listFiles();
             if (files != null) {
                 for (File fs : files) {
-                    if (fs.getName().toLowerCase().equals("mylogo.zip")) {
+                    if (fs.getName().toLowerCase().equals(this.logoZipName)) {
                         this.logoPath = fs.getAbsolutePath();
                     }
                 }

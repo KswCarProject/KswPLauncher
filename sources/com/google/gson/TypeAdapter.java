@@ -40,10 +40,14 @@ public abstract class TypeAdapter<T> {
         };
     }
 
-    public final String toJson(T value) throws IOException {
+    public final String toJson(T value) {
         StringWriter stringWriter = new StringWriter();
-        toJson(stringWriter, value);
-        return stringWriter.toString();
+        try {
+            toJson(stringWriter, value);
+            return stringWriter.toString();
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
     }
 
     public final JsonElement toJsonTree(T value) {

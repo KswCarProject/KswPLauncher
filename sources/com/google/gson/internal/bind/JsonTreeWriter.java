@@ -131,6 +131,14 @@ public final class JsonTreeWriter extends JsonWriter {
         return this;
     }
 
+    public JsonWriter value(Boolean value) throws IOException {
+        if (value == null) {
+            return nullValue();
+        }
+        put(new JsonPrimitive(value));
+        return this;
+    }
+
     public JsonWriter value(double value) throws IOException {
         if (isLenient() || (!Double.isNaN(value) && !Double.isInfinite(value))) {
             put(new JsonPrimitive((Number) Double.valueOf(value)));

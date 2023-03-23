@@ -137,35 +137,46 @@ public class BenzMbux2021FragmentTwo extends BenzMbux2021BaseFragment implements
     }
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (event.getAction() != 0) {
-            return false;
-        }
-        Log.i(TAG, "benz2021 onKey: " + keyCode);
-        if (keyCode == 20 || keyCode == 22) {
-            if (v == this.binding.videoItemview) {
-                setItemSelected(this.binding.musicItemview);
-                return false;
-            } else if (v == this.binding.musicItemview) {
-                setItemSelected(this.binding.setItemview);
-                return false;
-            } else if (v != this.binding.setItemview) {
+        if (event.getAction() == 0) {
+            Log.i(TAG, "benz2021 onKey: " + keyCode);
+            if (keyCode == 20 || keyCode == 22) {
+                if (v == this.binding.videoItemview) {
+                    setItemSelected(this.binding.musicItemview);
+                    return false;
+                } else if (v == this.binding.musicItemview) {
+                    setItemSelected(this.binding.setItemview);
+                    return false;
+                } else if (v != this.binding.setItemview) {
+                    return false;
+                } else {
+                    this.mainActivity.viewPagerBenzMbux2021.setCurrentItem(2);
+                    return true;
+                }
+            } else if (keyCode != 19 && keyCode != 21) {
                 return false;
             } else {
-                this.mainActivity.viewPagerBenzMbux2021.setCurrentItem(2);
-                return true;
+                if (v == this.binding.setItemview) {
+                    setItemSelected(this.binding.musicItemview);
+                    return false;
+                } else if (v != this.binding.musicItemview) {
+                    return false;
+                } else {
+                    setItemSelected(this.binding.videoItemview);
+                    return false;
+                }
             }
-        } else if (keyCode != 19 && keyCode != 21) {
+        } else if (keyCode == 66) {
             return false;
         } else {
-            if (v == this.binding.setItemview) {
-                setItemSelected(this.binding.musicItemview);
-                return false;
-            } else if (v != this.binding.musicItemview) {
-                return false;
-            } else {
+            Log.i(TAG, "benz2021 onKey: " + keyCode);
+            if (v == this.binding.videoItemview) {
                 setItemSelected(this.binding.videoItemview);
-                return false;
+            } else if (v == this.binding.musicItemview) {
+                setItemSelected(this.binding.musicItemview);
+            } else if (v == this.binding.setItemview) {
+                setItemSelected(this.binding.setItemview);
             }
+            return true;
         }
     }
 }

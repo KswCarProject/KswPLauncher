@@ -151,31 +151,46 @@ public class BenzMbux2021FragmentOne extends BenzMbux2021BaseFragment implements
     }
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (event.getAction() != 0) {
-            return false;
-        }
-        Log.i(TAG, "benz2021 onKey: " + keyCode);
-        if (keyCode == 20 || keyCode == 22) {
-            if (v == this.binding.btItemview) {
-                setItemSelected(this.binding.naviItemview);
-                return false;
-            } else if (v != this.binding.naviItemview) {
+        if (event.getAction() == 0) {
+            Log.i(TAG, "benz2021 onKey: " + keyCode);
+            if (keyCode == 20 || keyCode == 22) {
+                if (v == this.binding.btItemview) {
+                    setItemSelected(this.binding.naviItemview);
+                    return false;
+                } else if (v != this.binding.naviItemview) {
+                    return false;
+                } else {
+                    setItemSelected(this.binding.carItemview);
+                    return false;
+                }
+            } else if (keyCode != 19 && keyCode != 21) {
                 return false;
             } else {
-                setItemSelected(this.binding.carItemview);
-                return false;
+                if (v == this.binding.carItemview) {
+                    setItemSelected(this.binding.naviItemview);
+                    return false;
+                } else if (v != this.binding.naviItemview) {
+                    return false;
+                } else {
+                    setItemSelected(this.binding.btItemview);
+                    return false;
+                }
             }
-        } else if (keyCode != 19 && keyCode != 21) {
+        } else if (keyCode == 66) {
             return false;
         } else {
-            if (v == this.binding.carItemview) {
-                setItemSelected(this.binding.naviItemview);
-                return false;
-            } else if (v != this.binding.naviItemview) {
-                return false;
-            } else {
+            Log.i(TAG, "benz2021 onKey: " + keyCode);
+            if (v == this.binding.btItemview) {
                 setItemSelected(this.binding.btItemview);
-                return false;
+                return true;
+            } else if (v == this.binding.naviItemview) {
+                setItemSelected(this.binding.naviItemview);
+                return true;
+            } else if (v != this.binding.carItemview) {
+                return true;
+            } else {
+                setItemSelected(this.binding.carItemview);
+                return true;
             }
         }
     }

@@ -12,11 +12,11 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class MainActivityImpl extends MainActivity implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback14;
     private final View.OnClickListener mCallback15;
     private final View.OnClickListener mCallback16;
     private final View.OnClickListener mCallback17;
     private final View.OnClickListener mCallback18;
+    private final View.OnClickListener mCallback19;
     private long mDirtyFlags;
     private final ConstraintLayout mboundView0;
 
@@ -48,11 +48,11 @@ public class MainActivityImpl extends MainActivity implements OnClickListener.Li
         this.menuButton4.setTag((Object) null);
         this.menuButton5.setTag((Object) null);
         setRootTag(root);
-        this.mCallback16 = new OnClickListener(this, 3);
-        this.mCallback17 = new OnClickListener(this, 4);
-        this.mCallback14 = new OnClickListener(this, 1);
-        this.mCallback15 = new OnClickListener(this, 2);
-        this.mCallback18 = new OnClickListener(this, 5);
+        this.mCallback16 = new OnClickListener(this, 2);
+        this.mCallback17 = new OnClickListener(this, 3);
+        this.mCallback15 = new OnClickListener(this, 1);
+        this.mCallback18 = new OnClickListener(this, 4);
+        this.mCallback19 = new OnClickListener(this, 5);
         invalidateAll();
     }
 
@@ -73,7 +73,7 @@ public class MainActivityImpl extends MainActivity implements OnClickListener.Li
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (4 != variableId) {
+        if (7 != variableId) {
             return false;
         }
         setLauncherViewModel((LauncherViewModel) variable);
@@ -85,7 +85,7 @@ public class MainActivityImpl extends MainActivity implements OnClickListener.Li
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(4);
+        notifyPropertyChanged(7);
         super.requestRebind();
     }
 
@@ -103,11 +103,11 @@ public class MainActivityImpl extends MainActivity implements OnClickListener.Li
         }
         LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.menuButton1.setOnClickListener(this.mCallback16);
-            this.menuButton2.setOnClickListener(this.mCallback15);
-            this.menuButton3.setOnClickListener(this.mCallback14);
-            this.menuButton4.setOnClickListener(this.mCallback17);
-            this.menuButton5.setOnClickListener(this.mCallback18);
+            this.menuButton1.setOnClickListener(this.mCallback17);
+            this.menuButton2.setOnClickListener(this.mCallback16);
+            this.menuButton3.setOnClickListener(this.mCallback15);
+            this.menuButton4.setOnClickListener(this.mCallback18);
+            this.menuButton5.setOnClickListener(this.mCallback19);
         }
     }
 

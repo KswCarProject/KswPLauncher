@@ -11,15 +11,16 @@ import android.widget.TextView;
 import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.BenzControlBind;
-import com.wits.ksw.launcher.model.BcVieModel;
+import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.ScreenUtil;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.launcher.view.ColorArcProgressBar;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.WitsCommand;
 
 public class Ntg6ControlView {
-    private static final String TAG = ("KSWLauncher." + Ntg6ControlView.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + Ntg6ControlView.class.getSimpleName());
     private static Ntg6ControlView instance;
     private BenzControlBind benzControlBind;
     private PopupWindow brightnessPopupWindow;
@@ -39,22 +40,25 @@ public class Ntg6ControlView {
         return ntg6ControlView;
     }
 
-    public void showBenzControl(Context context, final BcVieModel bcVieModel, View view) {
-        BenzControlBind benzControlBind2 = (BenzControlBind) DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.ntg6_control_popup, (ViewGroup) null, false);
-        this.benzControlBind = benzControlBind2;
-        benzControlBind2.setMBcVieModel(bcVieModel);
+    public void showBenzControl(Context context, final LauncherViewModel launcherViewModel, View view) {
         int width = UtilsInfo.dip2px(context, 175.0f);
         int height = UtilsInfo.dip2px(context, 378.0f);
         Log.i(TAG, "showBenzControl: width:" + width + "\theight:" + height);
-        PopupWindow popupWindow2 = new PopupWindow(this.benzControlBind.getRoot(), width, height, true);
-        this.popupWindow = popupWindow2;
-        popupWindow2.showAsDropDown(view, -view.getLeft(), -view.getTop());
+        BenzControlBind benzControlBind2 = (BenzControlBind) DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.ntg6_control_popup, (ViewGroup) null, false);
+        this.benzControlBind = benzControlBind2;
+        benzControlBind2.setLauncherViewModel(launcherViewModel);
+        this.popupWindow = new PopupWindow(this.benzControlBind.getRoot(), width, height, true);
+        if (UiThemeUtils.isUI_KSW_ID7(context) || UiThemeUtils.isUI_KSW_MBUX_1024(context)) {
+            this.popupWindow.showAsDropDown(view, -view.getLeft(), (-view.getTop()) - view.getHeight());
+        } else {
+            this.popupWindow.showAsDropDown(view, -view.getLeft(), -view.getTop());
+        }
         this.popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
-                bcVieModel.controlBean.benzControlPanelState.set(false);
+                launcherViewModel.controlBean.benzControlPanelState.set(false);
             }
         });
-        bcVieModel.controlBean.benzControlPanelState.set(true);
+        launcherViewModel.controlBean.benzControlPanelState.set(true);
     }
 
     public void dismiss() {
@@ -70,7 +74,7 @@ public class Ntg6ControlView {
         return popupWindow2 != null && popupWindow2.isShowing();
     }
 
-    public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final BcVieModel bcVieModel, int light) {
+    public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final LauncherViewModel launcherViewModel, int light) {
         Log.d(TAG, " showBenzBrightnessDialog light " + light);
         View layout = LayoutInflater.from(context).inflate(R.layout.ntg6_brightness_control_popup, (ViewGroup) null);
         View closeImage = layout.findViewById(R.id.closeImage);
@@ -82,11 +86,11 @@ public class Ntg6ControlView {
         this.brightnessPopupWindow.showAsDropDown(this.benzControlBind.controlBtn1, (this.benzControlBind.controlBtn1.getRight() / 2) + 20, this.benzControlBind.controlBtn1.getTop() - 20);
         this.brightnessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
-                Log.i("", "onDismiss: " + bcVieModel.controlBean.leftBrightnessAdjus.get());
-                if (bcVieModel.controlBean.leftBrightnessAdjus.get()) {
-                    bcVieModel.controlBean.leftBrightnessAdjus.set(false);
-                } else if (bcVieModel.controlBean.rightBrightnessAdjus.get()) {
-                    bcVieModel.controlBean.rightBrightnessAdjus.set(false);
+                Log.i("", "onDismiss: " + launcherViewModel.controlBean.leftBrightnessAdjus.get());
+                if (launcherViewModel.controlBean.leftBrightnessAdjus.get()) {
+                    launcherViewModel.controlBean.leftBrightnessAdjus.set(false);
+                } else if (launcherViewModel.controlBean.rightBrightnessAdjus.get()) {
+                    launcherViewModel.controlBean.rightBrightnessAdjus.set(false);
                 }
             }
         });
@@ -152,23 +156,23 @@ public class Ntg6ControlView {
         this.brightnessPopupWindow = null;
     }
 
-    public void showBenzBrightnessControl(Context context, final McuStatus.BenzData benzData, final BcVieModel bcVieModel) {
+    public void showBenzBrightnessControl(Context context, final McuStatus.BenzData benzData, final LauncherViewModel launcherViewModel) {
         View layout = LayoutInflater.from(context).inflate(R.layout.ntg6_control_brightness_popup, (ViewGroup) null);
         final TextView brightnessTextView = (TextView) layout.findViewById(R.id.brightness);
         ColorArcProgressBar progressBar = (ColorArcProgressBar) layout.findViewById(R.id.brightnessSeekBar);
         View closeControl = layout.findViewById(R.id.closeControl);
-        if (bcVieModel.controlBean.leftBrightnessAdjus.get()) {
+        if (launcherViewModel.controlBean.leftBrightnessAdjus.get()) {
             brightnessTextView.setText("" + benzData.light1);
-            bcVieModel.controlBean.brightness.set(benzData.light1);
+            launcherViewModel.controlBean.brightness.set(benzData.light1);
             progressBar.setProgress((float) benzData.light1);
             Log.i(KswApplication.TAG, "showBenzBrightnessControl: 左仪表亮度值=" + benzData.light1);
-        } else if (bcVieModel.controlBean.rightBrightnessAdjus.get()) {
+        } else if (launcherViewModel.controlBean.rightBrightnessAdjus.get()) {
             brightnessTextView.setText("" + benzData.light2);
-            bcVieModel.controlBean.brightness.set(benzData.light2);
+            launcherViewModel.controlBean.brightness.set(benzData.light2);
             progressBar.setProgress((float) benzData.light2);
             Log.i(KswApplication.TAG, "showBenzBrightnessControl:  右仪表亮度值=" + benzData.light2);
         }
-        this.benzControlBind.setMBcVieModel(bcVieModel);
+        this.benzControlBind.setLauncherViewModel(launcherViewModel);
         int w = 214;
         int h = 214;
         int xoff = 120;
@@ -183,18 +187,18 @@ public class Ntg6ControlView {
         this.brightnessPopupWindow.showAsDropDown(this.benzControlBind.controlBtn1, xoff, 0, 48);
         this.brightnessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
-                Log.i("", "onDismiss: " + bcVieModel.controlBean.leftBrightnessAdjus.get());
-                if (bcVieModel.controlBean.leftBrightnessAdjus.get()) {
-                    bcVieModel.controlBean.leftBrightnessAdjus.set(false);
-                } else if (bcVieModel.controlBean.rightBrightnessAdjus.get()) {
-                    bcVieModel.controlBean.rightBrightnessAdjus.set(false);
+                Log.i("", "onDismiss: " + launcherViewModel.controlBean.leftBrightnessAdjus.get());
+                if (launcherViewModel.controlBean.leftBrightnessAdjus.get()) {
+                    launcherViewModel.controlBean.leftBrightnessAdjus.set(false);
+                } else if (launcherViewModel.controlBean.rightBrightnessAdjus.get()) {
+                    launcherViewModel.controlBean.rightBrightnessAdjus.set(false);
                 }
             }
         });
         progressBar.setOnSeekArcChangeListener(new ColorArcProgressBar.OnSeekArcChangeListener() {
             public void onProgressChanged(ColorArcProgressBar seekArc, int progress, boolean fromUser) {
                 Log.i(KswApplication.TAG, "onProgressChanged: progress= " + progress);
-                bcVieModel.controlBean.brightness.set(progress);
+                launcherViewModel.controlBean.brightness.set(progress);
                 brightnessTextView.setText("" + progress);
             }
 
@@ -203,11 +207,11 @@ public class Ntg6ControlView {
 
             public void onStopTrackingTouch(ColorArcProgressBar seekArc) {
                 int progress = seekArc.getPressed();
-                if (bcVieModel.controlBean.leftBrightnessAdjus.get()) {
+                if (launcherViewModel.controlBean.leftBrightnessAdjus.get()) {
                     benzData.light1 = progress;
                     WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
                     Log.i(KswApplication.TAG, "onStopTrackingTouch: 写左仪表亮度值=" + progress);
-                } else if (bcVieModel.controlBean.rightBrightnessAdjus.get()) {
+                } else if (launcherViewModel.controlBean.rightBrightnessAdjus.get()) {
                     benzData.light2 = progress;
                     WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, benzData.getJson());
                     Log.i(KswApplication.TAG, "onStopTrackingTouch: 写右仪表亮度值=" + progress);

@@ -74,7 +74,7 @@ public class AudiMib3AuxBindingHdpi1920x720Impl extends AudiMib3AuxBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SystemViewModel) variable);
@@ -86,7 +86,7 @@ public class AudiMib3AuxBindingHdpi1920x720Impl extends AudiMib3AuxBinding {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

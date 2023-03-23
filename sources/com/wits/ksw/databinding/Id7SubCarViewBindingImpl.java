@@ -11,7 +11,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback87;
+    private final View.OnClickListener mCallback53;
     private long mDirtyFlags;
 
     static {
@@ -31,7 +31,7 @@ public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements On
         this.carConstraintLayout.setTag((Object) null);
         this.carImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback87 = new OnClickListener(this, 1);
+        this.mCallback53 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -52,7 +52,7 @@ public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements On
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (2 != variableId) {
+        if (3 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
@@ -64,7 +64,7 @@ public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements On
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(2);
+        notifyPropertyChanged(3);
         super.requestRebind();
     }
 
@@ -86,7 +86,7 @@ public class Id7SubCarViewBindingImpl extends Id7SubCarViewBinding implements On
             carViewModelCarViewFocusChangeListener = carViewModel.carViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback87);
+            this.carImageView.setOnClickListener(this.mCallback53);
         }
         if ((3 & dirtyFlags) != 0) {
             this.carImageView.setOnFocusChangeListener(carViewModelCarViewFocusChangeListener);

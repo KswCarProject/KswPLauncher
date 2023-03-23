@@ -254,7 +254,7 @@ public final class Edits {
             return next(this.onlyChanges_);
         }
 
-        /* JADX WARNING: Incorrect type for immutable var: ssa=char, code=int, for r0v3, types: [int, char] */
+        /* JADX WARNING: Incorrect type for immutable var: ssa=char, code=int, for r0v3, types: [char, int] */
         /* Code decompiled incorrectly, please refer to instructions dump. */
         private boolean next(boolean r10) {
             /*

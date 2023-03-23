@@ -79,7 +79,7 @@ public class AudiMib3BrightnessBindingHdpi1920x720Impl extends AudiMib3Brightnes
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SystemViewModel) variable);
@@ -91,7 +91,7 @@ public class AudiMib3BrightnessBindingHdpi1920x720Impl extends AudiMib3Brightnes
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

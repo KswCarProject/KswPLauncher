@@ -75,46 +75,46 @@ public class BwmNbtModel extends LauncherViewModel implements View.OnFocusChange
 
     private void focusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
-            case R.id.app_ll /*2131296339*/:
+            case R.id.app_ll /*2131296346*/:
                 if (hasFocus) {
                     refrshBg(0);
                     return;
                 }
                 return;
-            case R.id.dashbroad_ll /*2131296623*/:
+            case R.id.dashbroad_ll /*2131296783*/:
                 if (hasFocus) {
                     refrshBg(6);
                     return;
                 }
                 return;
-            case R.id.music_ll /*2131297083*/:
+            case R.id.music_ll /*2131297341*/:
                 if (hasFocus) {
                     refrshBg(2);
                     return;
                 }
                 return;
-            case R.id.navi_ll /*2131297105*/:
+            case R.id.navi_ll /*2131297365*/:
                 if (hasFocus) {
                     refrshBg(1);
                     return;
                 }
                 return;
-            case R.id.phone_ll /*2131297140*/:
+            case R.id.phone_ll /*2131297402*/:
                 if (hasFocus) {
                     refrshBg(4);
                     return;
                 }
                 return;
-            case R.id.rl_car /*2131297327*/:
+            case R.id.rl_car /*2131297607*/:
                 refrshBg(5);
                 return;
-            case R.id.rl_settings /*2131297334*/:
+            case R.id.rl_settings /*2131297615*/:
                 if (hasFocus) {
                     refrshBg(7);
                     return;
                 }
                 return;
-            case R.id.video_ll /*2131297676*/:
+            case R.id.video_ll /*2131298003*/:
                 if (hasFocus) {
                     refrshBg(3);
                     return;
@@ -127,35 +127,35 @@ public class BwmNbtModel extends LauncherViewModel implements View.OnFocusChange
 
     public void onNbtClick(View v) {
         switch (v.getId()) {
-            case R.id.app_ll /*2131296339*/:
+            case R.id.app_ll /*2131296346*/:
                 refrshBg(0);
                 openApps(v);
                 return;
-            case R.id.dashbroad_ll /*2131296623*/:
+            case R.id.dashbroad_ll /*2131296783*/:
                 refrshBg(6);
                 openDashboard(v);
                 return;
-            case R.id.music_ll /*2131297083*/:
+            case R.id.music_ll /*2131297341*/:
                 refrshBg(2);
                 openMusicMulti(v);
                 return;
-            case R.id.navi_ll /*2131297105*/:
+            case R.id.navi_ll /*2131297365*/:
                 refrshBg(1);
                 openNaviApp(v);
                 return;
-            case R.id.phone_ll /*2131297140*/:
+            case R.id.phone_ll /*2131297402*/:
                 refrshBg(4);
                 openBtApp(v);
                 return;
-            case R.id.rl_car /*2131297327*/:
+            case R.id.rl_car /*2131297607*/:
                 refrshBg(5);
                 openCar(v);
                 return;
-            case R.id.rl_settings /*2131297334*/:
+            case R.id.rl_settings /*2131297615*/:
                 refrshBg(7);
                 openSettings(v);
                 return;
-            case R.id.video_ll /*2131297676*/:
+            case R.id.video_ll /*2131298003*/:
                 refrshBg(3);
                 openVideoMulti(v);
                 return;

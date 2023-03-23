@@ -1,53 +1,78 @@
 package com.google.gson.internal;
 
 import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Primitives {
-    private static final Map<Class<?>, Class<?>> PRIMITIVE_TO_WRAPPER_TYPE;
-    private static final Map<Class<?>, Class<?>> WRAPPER_TO_PRIMITIVE_TYPE;
-
     private Primitives() {
     }
 
-    static {
-        Map<Class<?>, Class<?>> primToWrap = new HashMap<>(16);
-        Map<Class<?>, Class<?>> wrapToPrim = new HashMap<>(16);
-        add(primToWrap, wrapToPrim, Boolean.TYPE, Boolean.class);
-        add(primToWrap, wrapToPrim, Byte.TYPE, Byte.class);
-        add(primToWrap, wrapToPrim, Character.TYPE, Character.class);
-        add(primToWrap, wrapToPrim, Double.TYPE, Double.class);
-        add(primToWrap, wrapToPrim, Float.TYPE, Float.class);
-        add(primToWrap, wrapToPrim, Integer.TYPE, Integer.class);
-        add(primToWrap, wrapToPrim, Long.TYPE, Long.class);
-        add(primToWrap, wrapToPrim, Short.TYPE, Short.class);
-        add(primToWrap, wrapToPrim, Void.TYPE, Void.class);
-        PRIMITIVE_TO_WRAPPER_TYPE = Collections.unmodifiableMap(primToWrap);
-        WRAPPER_TO_PRIMITIVE_TYPE = Collections.unmodifiableMap(wrapToPrim);
-    }
-
-    private static void add(Map<Class<?>, Class<?>> forward, Map<Class<?>, Class<?>> backward, Class<?> key, Class<?> value) {
-        forward.put(key, value);
-        backward.put(value, key);
-    }
-
     public static boolean isPrimitive(Type type) {
-        return PRIMITIVE_TO_WRAPPER_TYPE.containsKey(type);
+        return (type instanceof Class) && ((Class) type).isPrimitive();
     }
 
     public static boolean isWrapperType(Type type) {
-        return WRAPPER_TO_PRIMITIVE_TYPE.containsKey(C$Gson$Preconditions.checkNotNull(type));
+        return type == Integer.class || type == Float.class || type == Byte.class || type == Double.class || type == Long.class || type == Character.class || type == Boolean.class || type == Short.class || type == Void.class;
     }
 
     public static <T> Class<T> wrap(Class<T> type) {
-        Class<T> wrapped = PRIMITIVE_TO_WRAPPER_TYPE.get(C$Gson$Preconditions.checkNotNull(type));
-        return wrapped == null ? type : wrapped;
+        if (type == Integer.TYPE) {
+            return Integer.class;
+        }
+        if (type == Float.TYPE) {
+            return Float.class;
+        }
+        if (type == Byte.TYPE) {
+            return Byte.class;
+        }
+        if (type == Double.TYPE) {
+            return Double.class;
+        }
+        if (type == Long.TYPE) {
+            return Long.class;
+        }
+        if (type == Character.TYPE) {
+            return Character.class;
+        }
+        if (type == Boolean.TYPE) {
+            return Boolean.class;
+        }
+        if (type == Short.TYPE) {
+            return Short.class;
+        }
+        if (type == Void.TYPE) {
+            return Void.class;
+        }
+        return type;
     }
 
     public static <T> Class<T> unwrap(Class<T> type) {
-        Class<T> unwrapped = WRAPPER_TO_PRIMITIVE_TYPE.get(C$Gson$Preconditions.checkNotNull(type));
-        return unwrapped == null ? type : unwrapped;
+        if (type == Integer.class) {
+            return Integer.TYPE;
+        }
+        if (type == Float.class) {
+            return Float.TYPE;
+        }
+        if (type == Byte.class) {
+            return Byte.TYPE;
+        }
+        if (type == Double.class) {
+            return Double.TYPE;
+        }
+        if (type == Long.class) {
+            return Long.TYPE;
+        }
+        if (type == Character.class) {
+            return Character.TYPE;
+        }
+        if (type == Boolean.class) {
+            return Boolean.TYPE;
+        }
+        if (type == Short.class) {
+            return Short.TYPE;
+        }
+        if (type == Void.class) {
+            return Void.TYPE;
+        }
+        return type;
     }
 }

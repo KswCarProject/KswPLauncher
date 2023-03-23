@@ -15,16 +15,16 @@ import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
 public class AudiPasswordBindingSw600dpLandImpl extends AudiPasswordBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback277;
-    private final View.OnClickListener mCallback278;
-    private final View.OnClickListener mCallback279;
-    private final View.OnClickListener mCallback280;
-    private final View.OnClickListener mCallback281;
-    private final View.OnClickListener mCallback282;
-    private final View.OnClickListener mCallback283;
-    private final View.OnClickListener mCallback284;
-    private final View.OnClickListener mCallback285;
-    private final View.OnClickListener mCallback286;
+    private final View.OnClickListener mCallback180;
+    private final View.OnClickListener mCallback181;
+    private final View.OnClickListener mCallback182;
+    private final View.OnClickListener mCallback183;
+    private final View.OnClickListener mCallback184;
+    private final View.OnClickListener mCallback185;
+    private final View.OnClickListener mCallback186;
+    private final View.OnClickListener mCallback187;
+    private final View.OnClickListener mCallback188;
+    private final View.OnClickListener mCallback189;
     private long mDirtyFlags;
     private OnClickListenerImpl mVmOnDeleteClickAndroidViewViewOnClickListener;
     private OnLongClickListenerImpl mVmOnDeleteLongClickAndroidViewViewOnLongClickListener;
@@ -61,16 +61,16 @@ public class AudiPasswordBindingSw600dpLandImpl extends AudiPasswordBinding impl
         this.mboundView1 = textView;
         textView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback279 = new OnClickListener(this, 3);
-        this.mCallback277 = new OnClickListener(this, 1);
-        this.mCallback285 = new OnClickListener(this, 9);
-        this.mCallback283 = new OnClickListener(this, 7);
-        this.mCallback281 = new OnClickListener(this, 5);
-        this.mCallback278 = new OnClickListener(this, 2);
-        this.mCallback286 = new OnClickListener(this, 10);
-        this.mCallback284 = new OnClickListener(this, 8);
-        this.mCallback282 = new OnClickListener(this, 6);
-        this.mCallback280 = new OnClickListener(this, 4);
+        this.mCallback188 = new OnClickListener(this, 9);
+        this.mCallback186 = new OnClickListener(this, 7);
+        this.mCallback184 = new OnClickListener(this, 5);
+        this.mCallback182 = new OnClickListener(this, 3);
+        this.mCallback180 = new OnClickListener(this, 1);
+        this.mCallback189 = new OnClickListener(this, 10);
+        this.mCallback187 = new OnClickListener(this, 8);
+        this.mCallback185 = new OnClickListener(this, 6);
+        this.mCallback183 = new OnClickListener(this, 4);
+        this.mCallback181 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -91,7 +91,7 @@ public class AudiPasswordBindingSw600dpLandImpl extends AudiPasswordBinding impl
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiSettingViewModel) variable);
@@ -103,7 +103,7 @@ public class AudiPasswordBindingSw600dpLandImpl extends AudiPasswordBinding impl
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 
@@ -163,16 +163,16 @@ public class AudiPasswordBindingSw600dpLandImpl extends AudiPasswordBinding impl
             }
         }
         if ((4 & dirtyFlags) != 0) {
-            this.audiKey0.setOnClickListener(this.mCallback277);
-            this.audiKey1.setOnClickListener(this.mCallback278);
-            this.audiKey2.setOnClickListener(this.mCallback279);
-            this.audiKey3.setOnClickListener(this.mCallback280);
-            this.audiKey4.setOnClickListener(this.mCallback281);
-            this.audiKey5.setOnClickListener(this.mCallback282);
-            this.audiKey6.setOnClickListener(this.mCallback283);
-            this.audiKey7.setOnClickListener(this.mCallback284);
-            this.audiKey8.setOnClickListener(this.mCallback285);
-            this.audiKey9.setOnClickListener(this.mCallback286);
+            this.audiKey0.setOnClickListener(this.mCallback180);
+            this.audiKey1.setOnClickListener(this.mCallback181);
+            this.audiKey2.setOnClickListener(this.mCallback182);
+            this.audiKey3.setOnClickListener(this.mCallback183);
+            this.audiKey4.setOnClickListener(this.mCallback184);
+            this.audiKey5.setOnClickListener(this.mCallback185);
+            this.audiKey6.setOnClickListener(this.mCallback186);
+            this.audiKey7.setOnClickListener(this.mCallback187);
+            this.audiKey8.setOnClickListener(this.mCallback188);
+            this.audiKey9.setOnClickListener(this.mCallback189);
         }
         if ((dirtyFlags & 6) != 0) {
             this.audiKeyDelete.setOnClickListener(vmOnDeleteClickAndroidViewViewOnClickListener);

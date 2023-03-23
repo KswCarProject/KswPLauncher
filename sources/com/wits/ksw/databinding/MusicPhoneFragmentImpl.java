@@ -102,7 +102,7 @@ public class MusicPhoneFragmentImpl extends MusicPhoneFragment {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setMusicPhoneViewModel((AlsID7ViewModel) variable);
@@ -114,7 +114,7 @@ public class MusicPhoneFragmentImpl extends MusicPhoneFragment {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(7);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 

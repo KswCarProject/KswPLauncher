@@ -14,7 +14,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback264;
+    private final View.OnClickListener mCallback352;
     private long mDirtyFlags;
 
     static {
@@ -43,7 +43,7 @@ public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implement
         this.seekBar.setTag((Object) null);
         this.totalTimeTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback264 = new OnClickListener(this, 1);
+        this.mCallback352 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -64,7 +64,7 @@ public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implement
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (6 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
@@ -76,7 +76,7 @@ public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implement
         synchronized (this) {
             this.mDirtyFlags |= 256;
         }
-        notifyPropertyChanged(6);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 
@@ -539,7 +539,7 @@ public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implement
             android.widget.TextView r4 = r1.artistTextView
             android.content.res.Resources r4 = r4.getResources()
             r49 = r10
-            r10 = 2131558750(0x7f0d015e, float:1.8742825E38)
+            r10 = 2131558823(0x7f0d01a7, float:1.8742973E38)
             java.lang.String r4 = r4.getString(r10)
             goto L_0x022e
         L_0x0228:
@@ -561,7 +561,7 @@ public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implement
             android.widget.TextView r10 = r1.albumTextView
             android.content.res.Resources r10 = r10.getResources()
             r17 = r11
-            r11 = 2131558751(0x7f0d015f, float:1.8742827E38)
+            r11 = 2131558824(0x7f0d01a8, float:1.8742975E38)
             java.lang.String r10 = r10.getString(r11)
             goto L_0x0253
         L_0x024f:
@@ -580,7 +580,7 @@ public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implement
             if (r23 == 0) goto L_0x026f
             android.widget.TextView r10 = r1.nameTextView
             android.content.res.Resources r10 = r10.getResources()
-            r11 = 2131558752(0x7f0d0160, float:1.8742829E38)
+            r11 = 2131558825(0x7f0d01a9, float:1.8742977E38)
             java.lang.String r10 = r10.getString(r11)
             goto L_0x0270
         L_0x026f:
@@ -616,7 +616,7 @@ public class Id7SubMusicViewBindingImpl extends Id7SubMusicViewBinding implement
             if (r11 == 0) goto L_0x02aa
             com.wits.ksw.launcher.view.CustomBmwMusicLayout r11 = r1.imageFrameLayout
             r21 = r0
-            android.view.View$OnClickListener r0 = r1.mCallback264
+            android.view.View$OnClickListener r0 = r1.mCallback352
             r11.setOnClickListener(r0)
             goto L_0x02ac
         L_0x02aa:

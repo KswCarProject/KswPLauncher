@@ -55,7 +55,7 @@ public class AudiMib3MainLeftBindingMdpi1280x480Impl extends AudiMib3MainLeftBin
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);

@@ -4,7 +4,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.ibm.icu.text.SymbolTable;
 import java.util.Map;
 
 public final class Code39Writer extends OneDimensionalCodeWriter {
@@ -93,7 +92,7 @@ public final class Code39Writer extends OneDimensionalCodeWriter {
                     break;
                 default:
                     if (character <= 26) {
-                        extendedContent.append(SymbolTable.SYMBOL_REF);
+                        extendedContent.append('$');
                         extendedContent.append((char) ((character - 1) + 65));
                         break;
                     } else if (character < ' ') {

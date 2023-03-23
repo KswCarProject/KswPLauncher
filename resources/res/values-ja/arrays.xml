@@ -27,26 +27,26 @@
     <array name="bc_ntg5_item_text_array">
         <item>ナビゲーション</item>
         <item>音楽</item>
-        <item>テレフォン</item>
-        <item>NTGメニュー</item>
+        <item>電話</item>
+        <item>車両情報</item>
         <item>設定</item>
         <item>ビデオ</item>
-        <item>アプリ</item>
-        <item>ミラーリング</item>
+        <item>Androidアプリ</item>
+        <item>スマホリンク</item>
         <item>ダッシュボード</item>
-        <item>DVR</item>
+        <item>ドライブレコーダー</item>
     </array>
     <array name="benz_mbux_home_item_array">
-        <item>ナビ</item>
+        <item>ナビゲーション</item>
         <item>音楽</item>
         <item>電話</item>
         <item>車両情報</item>
         <item>設定</item>
         <item>ビデオ</item>
-        <item>アプリ</item>
-        <item>ミラーリング</item>
+        <item>Androidアプリ</item>
+        <item>スマホリンク</item>
         <item>ダッシュボード</item>
-        <item>DVR</item>
+        <item>ドライブレコーダー</item>
     </array>
     <array name="ksw_id7_months">
         <item>一月</item>
@@ -63,11 +63,12 @@
         <item>十二月</item>
     </array>
     <array name="set_factory">
-        <item>機能</item>
+        <item>機能構成</item>
         <item>車両構成</item>
         <item>ディスプレイ解像度</item>
         <item>CANタイプ</item>
         <item>MIC 利得</item>
+        <item>バックオフ時間構成</item>
         <item>UI選択</item>
         <item>プロファイルのインポート</item>
         <item>ブートロゴ</item>
@@ -84,22 +85,22 @@
         <item>工場設定</item>
     </array>
     <array name="set_id6_function">
-        <item>ナビ設定</item>
+        <item>ナビゲーション設定</item>
         <item>システム設定</item>
         <item>音量設定</item>
-        <item>音場設定</item>
+        <item>サウンド設定</item>
         <item>言語設定</item>
-        <item>時間設定</item>
+        <item>時刻設定</item>
         <item>システム情報</item>
         <item>Android設定</item>
         <item>工場設定</item>
     </array>
     <array name="set_land_rover_function">
         <item>システム設定</item>
-        <item>ナビ設定</item>
+        <item>ナビゲーション設定</item>
         <item>音量設定</item>
         <item>言語設定</item>
-        <item>時間設定</item>
+        <item>時刻設定</item>
         <item>システム情報</item>
         <item>Android設定</item>
         <item>工場設定</item>

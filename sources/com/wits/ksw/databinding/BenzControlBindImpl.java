@@ -1,5 +1,6 @@
 package com.wits.ksw.databinding;
 
+import android.content.Context;
 import android.databinding.DataBindingComponent;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
@@ -14,17 +15,17 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import com.wits.ksw.R;
-import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.model.ControlBean;
+import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class BenzControlBindImpl extends BenzControlBind {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
-    private OnClickListenerImpl mMBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl2 mMBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl1 mMBcVieModelOnSportClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl3 mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
+    private OnClickListenerImpl2 mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl3 mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl mLauncherViewModelOnSportClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl1 mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener;
 
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
@@ -70,19 +71,19 @@ public class BenzControlBindImpl extends BenzControlBind {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (12 != variableId) {
+        if (19 != variableId) {
             return false;
         }
-        setMBcVieModel((BcVieModel) variable);
+        setLauncherViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setMBcVieModel(BcVieModel MBcVieModel) {
-        this.mMBcVieModel = MBcVieModel;
+    public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
+        this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 64;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(19);
         super.requestRebind();
     }
 
@@ -90,23 +91,23 @@ public class BenzControlBindImpl extends BenzControlBind {
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeMBcVieModelControlBeanChassis((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanRightBrightnessAdjus((ObservableBoolean) object, fieldId);
             case 1:
-                return onChangeMBcVieModelControlBeanPassairbar((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanSport((ObservableBoolean) object, fieldId);
             case 2:
-                return onChangeMBcVieModelControlBeanLeftBrightnessAdjus((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanRdarAssistance((ObservableBoolean) object, fieldId);
             case 3:
-                return onChangeMBcVieModelControlBeanSport((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanLeftBrightnessAdjus((ObservableBoolean) object, fieldId);
             case 4:
-                return onChangeMBcVieModelControlBeanRightBrightnessAdjus((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanPassairbar((ObservableBoolean) object, fieldId);
             case 5:
-                return onChangeMBcVieModelControlBeanRdarAssistance((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanChassis((ObservableBoolean) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeMBcVieModelControlBeanChassis(ObservableBoolean MBcVieModelControlBeanChassis, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanRightBrightnessAdjus(ObservableBoolean LauncherViewModelControlBeanRightBrightnessAdjus, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -116,7 +117,7 @@ public class BenzControlBindImpl extends BenzControlBind {
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanPassairbar(ObservableBoolean MBcVieModelControlBeanPassairbar, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanSport(ObservableBoolean LauncherViewModelControlBeanSport, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -126,7 +127,7 @@ public class BenzControlBindImpl extends BenzControlBind {
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanLeftBrightnessAdjus(ObservableBoolean MBcVieModelControlBeanLeftBrightnessAdjus, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanRdarAssistance(ObservableBoolean LauncherViewModelControlBeanRdarAssistance, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -136,7 +137,7 @@ public class BenzControlBindImpl extends BenzControlBind {
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanSport(ObservableBoolean MBcVieModelControlBeanSport, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanLeftBrightnessAdjus(ObservableBoolean LauncherViewModelControlBeanLeftBrightnessAdjus, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -146,7 +147,7 @@ public class BenzControlBindImpl extends BenzControlBind {
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanRightBrightnessAdjus(ObservableBoolean MBcVieModelControlBeanRightBrightnessAdjus, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanPassairbar(ObservableBoolean LauncherViewModelControlBeanPassairbar, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -156,7 +157,7 @@ public class BenzControlBindImpl extends BenzControlBind {
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanRdarAssistance(ObservableBoolean MBcVieModelControlBeanRdarAssistance, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanChassis(ObservableBoolean LauncherViewModelControlBeanChassis, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -169,314 +170,268 @@ public class BenzControlBindImpl extends BenzControlBind {
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
-        Drawable mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff;
-        View.OnClickListener mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
-        Drawable mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff;
-        CompoundButton.OnCheckedChangeListener mBcVieModelRightOnCheckedChangeListener;
-        boolean mBcVieModelControlBeanLeftBrightnessAdjusGet;
-        CompoundButton.OnCheckedChangeListener mBcVieModelLeftOnCheckedChangeListener;
-        boolean mBcVieModelControlBeanRightBrightnessAdjusGet;
-        ObservableBoolean mBcVieModelControlBeanChassis;
-        ControlBean mBcVieModelControlBean;
-        ObservableBoolean mBcVieModelControlBeanChassis2;
-        ObservableBoolean mBcVieModelControlBeanChassis3;
-        ObservableBoolean mBcVieModelControlBeanRdarAssistance;
-        ControlBean mBcVieModelControlBean2;
-        Drawable drawable;
-        ObservableBoolean mBcVieModelControlBeanRightBrightnessAdjus;
-        ObservableBoolean mBcVieModelControlBeanSport;
+        CompoundButton.OnCheckedChangeListener launcherViewModelRightOnCheckedChangeListener;
+        Drawable launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff;
+        boolean launcherViewModelControlBeanRightBrightnessAdjusGet;
+        Drawable launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff;
+        ObservableBoolean launcherViewModelControlBeanRightBrightnessAdjus;
+        ControlBean launcherViewModelControlBean;
+        ObservableBoolean launcherViewModelControlBeanPassairbar;
+        ObservableBoolean launcherViewModelControlBeanRightBrightnessAdjus2;
+        ObservableBoolean launcherViewModelControlBeanPassairbar2;
+        ObservableBoolean launcherViewModelControlBeanChassis;
         long dirtyFlags2;
-        Drawable drawable2;
+        int i;
+        Context context;
         long dirtyFlags3;
-        Drawable drawable3;
-        long dirtyFlags4;
-        Drawable drawable4;
+        Drawable drawable;
+        ObservableBoolean launcherViewModelControlBeanLeftBrightnessAdjus;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
         }
-        Drawable mBcVieModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = null;
-        Drawable mBcVieModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff = null;
-        View.OnClickListener mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = null;
-        View.OnClickListener mBcVieModelOnSportClickAndroidViewViewOnClickListener = null;
-        ObservableBoolean mBcVieModelControlBeanPassairbar = null;
-        boolean mBcVieModelControlBeanSportGet = false;
-        boolean mBcVieModelControlBeanChassisGet = false;
-        View.OnClickListener mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener = null;
-        boolean mBcVieModelControlBeanRdarAssistanceGet = false;
-        ObservableBoolean mBcVieModelControlBeanLeftBrightnessAdjus = null;
-        CompoundButton.OnCheckedChangeListener mBcVieModelRightOnCheckedChangeListener2 = null;
-        boolean mBcVieModelControlBeanLeftBrightnessAdjusGet2 = false;
-        boolean mBcVieModelControlBeanRightBrightnessAdjusGet2 = false;
-        CompoundButton.OnCheckedChangeListener mBcVieModelRightOnCheckedChangeListener3 = null;
-        Drawable mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2 = null;
-        View.OnClickListener mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2 = null;
-        boolean mBcVieModelControlBeanPassairbarGet = false;
-        BcVieModel mBcVieModel = this.mMBcVieModel;
+        Drawable launcherViewModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff = null;
+        ObservableBoolean launcherViewModelControlBeanSport = null;
+        View.OnClickListener launcherViewModelOnSportClickAndroidViewViewOnClickListener = null;
+        View.OnClickListener launcherViewModelShowBrightnessDialogAndroidViewViewOnClickListener = null;
+        boolean launcherViewModelControlBeanLeftBrightnessAdjusGet = false;
+        CompoundButton.OnCheckedChangeListener launcherViewModelLeftOnCheckedChangeListener = null;
+        Drawable launcherViewModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = null;
+        View.OnClickListener launcherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = null;
+        ObservableBoolean launcherViewModelControlBeanRdarAssistance = null;
+        View.OnClickListener launcherViewModelOnHighChasssisClickAndroidViewViewOnClickListener = null;
+        boolean launcherViewModelControlBeanRightBrightnessAdjusGet2 = false;
+        boolean launcherViewModelControlBeanSportGet = false;
+        Drawable launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2 = null;
+        boolean launcherViewModelControlBeanRdarAssistanceGet = false;
+        Drawable launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2 = null;
+        boolean launcherViewModelControlBeanPassairbarGet = false;
+        CompoundButton.OnCheckedChangeListener launcherViewModelRightOnCheckedChangeListener2 = null;
+        boolean launcherViewModelControlBeanChassisGet = false;
+        LauncherViewModel launcherViewModel = this.mLauncherViewModel;
         if ((dirtyFlags & 255) != 0) {
             if ((dirtyFlags & 192) == 0) {
-                mBcVieModelControlBeanChassis = null;
-            } else if (mBcVieModel != null) {
-                OnClickListenerImpl onClickListenerImpl = this.mMBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
+                launcherViewModelControlBeanRightBrightnessAdjus = null;
+            } else if (launcherViewModel != null) {
+                launcherViewModelControlBeanRightBrightnessAdjus = null;
+                OnClickListenerImpl onClickListenerImpl = this.mLauncherViewModelOnSportClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl == null) {
                     onClickListenerImpl = new OnClickListenerImpl();
-                    this.mMBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = onClickListenerImpl;
+                    this.mLauncherViewModelOnSportClickAndroidViewViewOnClickListener = onClickListenerImpl;
                 }
-                mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = onClickListenerImpl.setValue(mBcVieModel);
-                OnClickListenerImpl1 onClickListenerImpl1 = this.mMBcVieModelOnSportClickAndroidViewViewOnClickListener;
+                launcherViewModelOnSportClickAndroidViewViewOnClickListener = onClickListenerImpl.setValue(launcherViewModel);
+                OnClickListenerImpl1 onClickListenerImpl1 = this.mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener;
                 if (onClickListenerImpl1 == null) {
                     onClickListenerImpl1 = new OnClickListenerImpl1();
-                    this.mMBcVieModelOnSportClickAndroidViewViewOnClickListener = onClickListenerImpl1;
+                    this.mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener = onClickListenerImpl1;
                 }
-                mBcVieModelOnSportClickAndroidViewViewOnClickListener = onClickListenerImpl1.setValue(mBcVieModel);
-                OnClickListenerImpl2 onClickListenerImpl2 = this.mMBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener;
+                launcherViewModelShowBrightnessDialogAndroidViewViewOnClickListener = onClickListenerImpl1.setValue(launcherViewModel);
+                launcherViewModelLeftOnCheckedChangeListener = launcherViewModel.leftOnCheckedChangeListener;
+                OnClickListenerImpl2 onClickListenerImpl2 = this.mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl2 == null) {
                     onClickListenerImpl2 = new OnClickListenerImpl2();
-                    this.mMBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener = onClickListenerImpl2;
+                    this.mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = onClickListenerImpl2;
                 }
-                mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener = onClickListenerImpl2.setValue(mBcVieModel);
-                CompoundButton.OnCheckedChangeListener mBcVieModelLeftOnCheckedChangeListener2 = mBcVieModel.leftOnCheckedChangeListener;
-                mBcVieModelControlBeanChassis = null;
-                CompoundButton.OnCheckedChangeListener mBcVieModelRightOnCheckedChangeListener4 = mBcVieModel.rightOnCheckedChangeListener;
-                OnClickListenerImpl3 onClickListenerImpl3 = this.mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
+                launcherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = onClickListenerImpl2.setValue(launcherViewModel);
+                OnClickListenerImpl3 onClickListenerImpl3 = this.mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener;
                 if (onClickListenerImpl3 == null) {
                     onClickListenerImpl3 = new OnClickListenerImpl3();
-                    this.mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = onClickListenerImpl3;
+                    this.mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener = onClickListenerImpl3;
                 }
-                mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2 = onClickListenerImpl3.setValue(mBcVieModel);
-                mBcVieModelRightOnCheckedChangeListener3 = mBcVieModelRightOnCheckedChangeListener4;
-                mBcVieModelRightOnCheckedChangeListener2 = mBcVieModelLeftOnCheckedChangeListener2;
+                launcherViewModelOnHighChasssisClickAndroidViewViewOnClickListener = onClickListenerImpl3.setValue(launcherViewModel);
+                launcherViewModelRightOnCheckedChangeListener2 = launcherViewModel.rightOnCheckedChangeListener;
             } else {
-                mBcVieModelControlBeanChassis = null;
+                launcherViewModelControlBeanRightBrightnessAdjus = null;
             }
-            if (mBcVieModel != null) {
-                mBcVieModelControlBean = mBcVieModel.controlBean;
+            if (launcherViewModel != null) {
+                launcherViewModelControlBean = launcherViewModel.controlBean;
             } else {
-                mBcVieModelControlBean = null;
+                launcherViewModelControlBean = null;
             }
-            BcVieModel bcVieModel = mBcVieModel;
             if ((dirtyFlags & 193) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanChassis2 = mBcVieModelControlBean.chassis;
+                if (launcherViewModelControlBean != null) {
+                    LauncherViewModel launcherViewModel2 = launcherViewModel;
+                    launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBean.rightBrightnessAdjus;
                 } else {
-                    mBcVieModelControlBeanChassis2 = mBcVieModelControlBeanChassis;
+                    launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBeanRightBrightnessAdjus;
                 }
-                updateRegistration(0, (Observable) mBcVieModelControlBeanChassis2);
-                if (mBcVieModelControlBeanChassis2 != null) {
-                    mBcVieModelControlBeanChassisGet = mBcVieModelControlBeanChassis2.get();
+                launcherViewModelControlBeanPassairbar = null;
+                updateRegistration(0, (Observable) launcherViewModelControlBeanRightBrightnessAdjus2);
+                if (launcherViewModelControlBeanRightBrightnessAdjus2 != null) {
+                    launcherViewModelControlBeanRightBrightnessAdjusGet2 = launcherViewModelControlBeanRightBrightnessAdjus2.get();
                 }
-                if ((dirtyFlags & 193) != 0) {
-                    if (mBcVieModelControlBeanChassisGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
-                    } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-                    }
-                }
-                if (mBcVieModelControlBeanChassisGet) {
-                    dirtyFlags4 = dirtyFlags;
-                    drawable4 = AppCompatResources.getDrawable(this.controlBtn1.getContext(), R.drawable.ntg55_ctrlpanel_btn_on);
-                } else {
-                    dirtyFlags4 = dirtyFlags;
-                    drawable4 = AppCompatResources.getDrawable(this.controlBtn1.getContext(), R.drawable.ntg55_ctrlpanel_btn_off);
-                }
-                mBcVieModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff = drawable4;
-                dirtyFlags = dirtyFlags4;
             } else {
-                mBcVieModelControlBeanChassis2 = mBcVieModelControlBeanChassis;
+                launcherViewModelControlBeanPassairbar = null;
+                launcherViewModelControlBeanRightBrightnessAdjus2 = launcherViewModelControlBeanRightBrightnessAdjus;
             }
+            ObservableBoolean launcherViewModelControlBeanRightBrightnessAdjus3 = launcherViewModelControlBeanRightBrightnessAdjus2;
             if ((dirtyFlags & 194) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanPassairbar = mBcVieModelControlBean.passairbar;
+                if (launcherViewModelControlBean != null) {
+                    launcherViewModelControlBeanSport = launcherViewModelControlBean.sport;
                 }
-                updateRegistration(1, (Observable) mBcVieModelControlBeanPassairbar);
-                if (mBcVieModelControlBeanPassairbar != null) {
-                    mBcVieModelControlBeanPassairbarGet = mBcVieModelControlBeanPassairbar.get();
+                updateRegistration(1, (Observable) launcherViewModelControlBeanSport);
+                if (launcherViewModelControlBeanSport != null) {
+                    launcherViewModelControlBeanSportGet = launcherViewModelControlBeanSport.get();
                 }
                 if ((dirtyFlags & 194) != 0) {
-                    if (mBcVieModelControlBeanPassairbarGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
-                    } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
-                    }
-                }
-                if (mBcVieModelControlBeanPassairbarGet) {
-                    dirtyFlags3 = dirtyFlags;
-                    drawable3 = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_on);
-                } else {
-                    dirtyFlags3 = dirtyFlags;
-                    drawable3 = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_off);
-                }
-                mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2 = drawable3;
-                dirtyFlags = dirtyFlags3;
-            }
-            if ((dirtyFlags & 196) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanLeftBrightnessAdjus = mBcVieModelControlBean.leftBrightnessAdjus;
-                }
-                updateRegistration(2, (Observable) mBcVieModelControlBeanLeftBrightnessAdjus);
-                if (mBcVieModelControlBeanLeftBrightnessAdjus != null) {
-                    mBcVieModelControlBeanLeftBrightnessAdjusGet2 = mBcVieModelControlBeanLeftBrightnessAdjus.get();
-                }
-            }
-            if ((dirtyFlags & 200) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanSport = mBcVieModelControlBean.sport;
-                } else {
-                    mBcVieModelControlBeanSport = null;
-                }
-                mBcVieModelControlBeanChassis3 = mBcVieModelControlBeanChassis2;
-                updateRegistration(3, (Observable) mBcVieModelControlBeanSport);
-                if (mBcVieModelControlBeanSport != null) {
-                    mBcVieModelControlBeanSportGet = mBcVieModelControlBeanSport.get();
-                }
-                if ((dirtyFlags & 200) != 0) {
-                    if (mBcVieModelControlBeanSportGet) {
-                        dirtyFlags |= 512;
-                    } else {
-                        dirtyFlags |= 256;
-                    }
-                }
-                if (mBcVieModelControlBeanSportGet) {
-                    dirtyFlags2 = dirtyFlags;
-                    drawable2 = AppCompatResources.getDrawable(this.controlBtn2.getContext(), R.drawable.ntg55_ctrlpanel_btn_on);
-                } else {
-                    dirtyFlags2 = dirtyFlags;
-                    drawable2 = AppCompatResources.getDrawable(this.controlBtn2.getContext(), R.drawable.ntg55_ctrlpanel_btn_off);
-                }
-                mBcVieModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = drawable2;
-                ObservableBoolean observableBoolean = mBcVieModelControlBeanSport;
-                dirtyFlags = dirtyFlags2;
-            } else {
-                mBcVieModelControlBeanChassis3 = mBcVieModelControlBeanChassis2;
-            }
-            if ((dirtyFlags & 208) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanRightBrightnessAdjus = mBcVieModelControlBean.rightBrightnessAdjus;
-                } else {
-                    mBcVieModelControlBeanRightBrightnessAdjus = null;
-                }
-                updateRegistration(4, (Observable) mBcVieModelControlBeanRightBrightnessAdjus);
-                if (mBcVieModelControlBeanRightBrightnessAdjus != null) {
-                    mBcVieModelControlBeanRightBrightnessAdjusGet2 = mBcVieModelControlBeanRightBrightnessAdjus.get();
-                    ObservableBoolean observableBoolean2 = mBcVieModelControlBeanRightBrightnessAdjus;
-                } else {
-                    ObservableBoolean observableBoolean3 = mBcVieModelControlBeanRightBrightnessAdjus;
-                }
-            }
-            if ((dirtyFlags & 224) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanRdarAssistance = mBcVieModelControlBean.rdarAssistance;
-                } else {
-                    mBcVieModelControlBeanRdarAssistance = null;
-                }
-                updateRegistration(5, (Observable) mBcVieModelControlBeanRdarAssistance);
-                if (mBcVieModelControlBeanRdarAssistance != null) {
-                    mBcVieModelControlBeanRdarAssistanceGet = mBcVieModelControlBeanRdarAssistance.get();
-                }
-                if ((dirtyFlags & 224) != 0) {
-                    if (mBcVieModelControlBeanRdarAssistanceGet) {
+                    if (launcherViewModelControlBeanSportGet) {
                         dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
                     } else {
                         dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
                     }
                 }
-                if (mBcVieModelControlBeanRdarAssistanceGet) {
-                    mBcVieModelControlBean2 = mBcVieModelControlBean;
-                    drawable = AppCompatResources.getDrawable(this.controlBtn3.getContext(), R.drawable.ntg55_ctrlpanel_btn_on);
-                } else {
-                    mBcVieModelControlBean2 = mBcVieModelControlBean;
-                    drawable = AppCompatResources.getDrawable(this.controlBtn3.getContext(), R.drawable.ntg55_ctrlpanel_btn_off);
+                launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2 = launcherViewModelControlBeanSportGet ? AppCompatResources.getDrawable(this.controlBtn2.getContext(), R.drawable.ntg55_ctrlpanel_btn_on) : AppCompatResources.getDrawable(this.controlBtn2.getContext(), R.drawable.ntg55_ctrlpanel_btn_off);
+            }
+            if ((dirtyFlags & 196) != 0) {
+                if (launcherViewModelControlBean != null) {
+                    launcherViewModelControlBeanRdarAssistance = launcherViewModelControlBean.rdarAssistance;
                 }
-                Drawable mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2 = drawable;
-                ObservableBoolean observableBoolean4 = mBcVieModelControlBeanRdarAssistance;
-                mBcVieModelLeftOnCheckedChangeListener = mBcVieModelRightOnCheckedChangeListener2;
-                mBcVieModelControlBeanLeftBrightnessAdjusGet = mBcVieModelControlBeanLeftBrightnessAdjusGet2;
-                mBcVieModelControlBeanRightBrightnessAdjusGet = mBcVieModelControlBeanRightBrightnessAdjusGet2;
-                ObservableBoolean observableBoolean5 = mBcVieModelControlBeanChassis3;
-                ControlBean controlBean = mBcVieModelControlBean2;
-                ObservableBoolean observableBoolean6 = mBcVieModelControlBeanPassairbar;
-                boolean mBcVieModelControlBeanRightBrightnessAdjusGet3 = mBcVieModelControlBeanSportGet;
-                mBcVieModelRightOnCheckedChangeListener = mBcVieModelRightOnCheckedChangeListener3;
-                mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2;
-                boolean z = mBcVieModelControlBeanChassisGet;
-                boolean z2 = mBcVieModelControlBeanRdarAssistanceGet;
-                mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2;
-                mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2;
+                updateRegistration(2, (Observable) launcherViewModelControlBeanRdarAssistance);
+                if (launcherViewModelControlBeanRdarAssistance != null) {
+                    launcherViewModelControlBeanRdarAssistanceGet = launcherViewModelControlBeanRdarAssistance.get();
+                }
+                if ((dirtyFlags & 196) != 0) {
+                    if (launcherViewModelControlBeanRdarAssistanceGet) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+                    } else {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+                    }
+                }
+                launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2 = AppCompatResources.getDrawable(this.controlBtn3.getContext(), launcherViewModelControlBeanRdarAssistanceGet ? R.drawable.ntg55_ctrlpanel_btn_on : R.drawable.ntg55_ctrlpanel_btn_off);
+            }
+            if ((dirtyFlags & 200) != 0) {
+                if (launcherViewModelControlBean != null) {
+                    launcherViewModelControlBeanLeftBrightnessAdjus = launcherViewModelControlBean.leftBrightnessAdjus;
+                } else {
+                    launcherViewModelControlBeanLeftBrightnessAdjus = null;
+                }
+                updateRegistration(3, (Observable) launcherViewModelControlBeanLeftBrightnessAdjus);
+                if (launcherViewModelControlBeanLeftBrightnessAdjus != null) {
+                    launcherViewModelControlBeanLeftBrightnessAdjusGet = launcherViewModelControlBeanLeftBrightnessAdjus.get();
+                    ObservableBoolean observableBoolean = launcherViewModelControlBeanLeftBrightnessAdjus;
+                } else {
+                    ObservableBoolean observableBoolean2 = launcherViewModelControlBeanLeftBrightnessAdjus;
+                }
+            }
+            if ((dirtyFlags & 208) != 0) {
+                if (launcherViewModelControlBean != null) {
+                    launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBean.passairbar;
+                } else {
+                    launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBeanPassairbar;
+                }
+                updateRegistration(4, (Observable) launcherViewModelControlBeanPassairbar2);
+                if (launcherViewModelControlBeanPassairbar2 != null) {
+                    launcherViewModelControlBeanPassairbarGet = launcherViewModelControlBeanPassairbar2.get();
+                }
+                if ((dirtyFlags & 208) != 0) {
+                    if (launcherViewModelControlBeanPassairbarGet) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+                    } else {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+                    }
+                }
+                if (launcherViewModelControlBeanPassairbarGet) {
+                    dirtyFlags3 = dirtyFlags;
+                    drawable = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_on);
+                } else {
+                    dirtyFlags3 = dirtyFlags;
+                    drawable = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_off);
+                }
+                launcherViewModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = drawable;
+                dirtyFlags = dirtyFlags3;
             } else {
-                ControlBean mBcVieModelControlBean3 = mBcVieModelControlBean;
-                mBcVieModelLeftOnCheckedChangeListener = mBcVieModelRightOnCheckedChangeListener2;
-                mBcVieModelControlBeanLeftBrightnessAdjusGet = mBcVieModelControlBeanLeftBrightnessAdjusGet2;
-                mBcVieModelControlBeanRightBrightnessAdjusGet = mBcVieModelControlBeanRightBrightnessAdjusGet2;
-                ObservableBoolean observableBoolean7 = mBcVieModelControlBeanChassis3;
-                ControlBean controlBean2 = mBcVieModelControlBean3;
-                ObservableBoolean observableBoolean8 = mBcVieModelControlBeanPassairbar;
-                boolean mBcVieModelControlBeanRightBrightnessAdjusGet4 = mBcVieModelControlBeanSportGet;
-                mBcVieModelRightOnCheckedChangeListener = mBcVieModelRightOnCheckedChangeListener3;
-                mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2;
-                boolean z3 = mBcVieModelControlBeanChassisGet;
-                mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2;
-                mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = null;
+                launcherViewModelControlBeanPassairbar2 = launcherViewModelControlBeanPassairbar;
+            }
+            if ((dirtyFlags & 224) != 0) {
+                if (launcherViewModelControlBean != null) {
+                    launcherViewModelControlBeanChassis = launcherViewModelControlBean.chassis;
+                } else {
+                    launcherViewModelControlBeanChassis = null;
+                }
+                ControlBean launcherViewModelControlBean2 = launcherViewModelControlBean;
+                updateRegistration(5, (Observable) launcherViewModelControlBeanChassis);
+                if (launcherViewModelControlBeanChassis != null) {
+                    launcherViewModelControlBeanChassisGet = launcherViewModelControlBeanChassis.get();
+                }
+                if ((dirtyFlags & 224) != 0) {
+                    if (launcherViewModelControlBeanChassisGet) {
+                        dirtyFlags |= 512;
+                    } else {
+                        dirtyFlags |= 256;
+                    }
+                }
+                if (launcherViewModelControlBeanChassisGet) {
+                    context = this.controlBtn1.getContext();
+                    dirtyFlags2 = dirtyFlags;
+                    i = R.drawable.ntg55_ctrlpanel_btn_on;
+                } else {
+                    dirtyFlags2 = dirtyFlags;
+                    context = this.controlBtn1.getContext();
+                    i = R.drawable.ntg55_ctrlpanel_btn_off;
+                }
+                launcherViewModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff = AppCompatResources.getDrawable(context, i);
+                ObservableBoolean observableBoolean3 = launcherViewModelControlBeanChassis;
+                launcherViewModelControlBeanRightBrightnessAdjusGet = launcherViewModelControlBeanRightBrightnessAdjusGet2;
+                launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2;
+                ObservableBoolean observableBoolean4 = launcherViewModelControlBeanRightBrightnessAdjus3;
+                ControlBean controlBean = launcherViewModelControlBean2;
+                dirtyFlags = dirtyFlags2;
+                ObservableBoolean observableBoolean5 = launcherViewModelControlBeanPassairbar2;
+                launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2;
+                ObservableBoolean observableBoolean6 = launcherViewModelControlBeanSport;
+                launcherViewModelRightOnCheckedChangeListener = launcherViewModelRightOnCheckedChangeListener2;
+            } else {
+                ControlBean launcherViewModelControlBean3 = launcherViewModelControlBean;
+                launcherViewModelControlBeanRightBrightnessAdjusGet = launcherViewModelControlBeanRightBrightnessAdjusGet2;
+                launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff2;
+                ObservableBoolean observableBoolean7 = launcherViewModelControlBeanRightBrightnessAdjus3;
+                ControlBean controlBean2 = launcherViewModelControlBean3;
+                ObservableBoolean observableBoolean8 = launcherViewModelControlBeanPassairbar2;
+                launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff2;
+                ObservableBoolean observableBoolean9 = launcherViewModelControlBeanSport;
+                launcherViewModelRightOnCheckedChangeListener = launcherViewModelRightOnCheckedChangeListener2;
             }
         } else {
-            BcVieModel bcVieModel2 = mBcVieModel;
-            mBcVieModelLeftOnCheckedChangeListener = null;
-            mBcVieModelControlBeanLeftBrightnessAdjusGet = false;
-            mBcVieModelControlBeanRightBrightnessAdjusGet = false;
-            mBcVieModelRightOnCheckedChangeListener = null;
-            mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = null;
-            mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = null;
-            mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = null;
+            LauncherViewModel launcherViewModel3 = launcherViewModel;
+            launcherViewModelControlBeanRightBrightnessAdjusGet = false;
+            launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff = null;
+            launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff = null;
+            launcherViewModelRightOnCheckedChangeListener = null;
         }
         if ((dirtyFlags & 192) != 0) {
-            ObservableBoolean observableBoolean9 = mBcVieModelControlBeanLeftBrightnessAdjus;
-            this.brightnessBtnLeft.setOnClickListener(mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener);
-            this.brightnessBtnRight.setOnClickListener(mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener);
-            this.checkBox.setOnCheckedChangeListener(mBcVieModelLeftOnCheckedChangeListener);
-            this.checkBox2.setOnCheckedChangeListener(mBcVieModelRightOnCheckedChangeListener);
-            this.controlBtn1.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener);
-            this.controlBtn2.setOnClickListener(mBcVieModelOnSportClickAndroidViewViewOnClickListener);
-            this.controlBtn3.setOnClickListener(mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener);
-        }
-        if ((dirtyFlags & 196) != 0) {
-            CompoundButtonBindingAdapter.setChecked(this.checkBox, mBcVieModelControlBeanLeftBrightnessAdjusGet);
-        }
-        if ((dirtyFlags & 208) != 0) {
-            CompoundButtonBindingAdapter.setChecked(this.checkBox2, mBcVieModelControlBeanRightBrightnessAdjusGet);
-        }
-        if ((dirtyFlags & 193) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.controlBtn1, mBcVieModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff);
+            ObservableBoolean observableBoolean10 = launcherViewModelControlBeanRdarAssistance;
+            this.brightnessBtnLeft.setOnClickListener(launcherViewModelShowBrightnessDialogAndroidViewViewOnClickListener);
+            this.brightnessBtnRight.setOnClickListener(launcherViewModelShowBrightnessDialogAndroidViewViewOnClickListener);
+            this.checkBox.setOnCheckedChangeListener(launcherViewModelLeftOnCheckedChangeListener);
+            this.checkBox2.setOnCheckedChangeListener(launcherViewModelRightOnCheckedChangeListener);
+            this.controlBtn1.setOnClickListener(launcherViewModelOnHighChasssisClickAndroidViewViewOnClickListener);
+            this.controlBtn2.setOnClickListener(launcherViewModelOnSportClickAndroidViewViewOnClickListener);
+            this.controlBtn3.setOnClickListener(launcherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener);
         }
         if ((dirtyFlags & 200) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.controlBtn2, mBcVieModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff);
+            CompoundButtonBindingAdapter.setChecked(this.checkBox, launcherViewModelControlBeanLeftBrightnessAdjusGet);
+        }
+        if ((dirtyFlags & 193) != 0) {
+            CompoundButtonBindingAdapter.setChecked(this.checkBox2, launcherViewModelControlBeanRightBrightnessAdjusGet);
         }
         if ((dirtyFlags & 224) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.controlBtn3, mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff);
+            ImageViewBindingAdapter.setImageDrawable(this.controlBtn1, launcherViewModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelBtnOnControlBtn1AndroidDrawableNtg55CtrlpanelBtnOff);
         }
         if ((dirtyFlags & 194) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.imageView, mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff);
+            ImageViewBindingAdapter.setImageDrawable(this.controlBtn2, launcherViewModelControlBeanSportControlBtn2AndroidDrawableNtg55CtrlpanelBtnOnControlBtn2AndroidDrawableNtg55CtrlpanelBtnOff);
+        }
+        if ((dirtyFlags & 196) != 0) {
+            ImageViewBindingAdapter.setImageDrawable(this.controlBtn3, launcherViewModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelBtnOnControlBtn3AndroidDrawableNtg55CtrlpanelBtnOff);
+        }
+        if ((dirtyFlags & 208) != 0) {
+            ImageViewBindingAdapter.setImageDrawable(this.imageView, launcherViewModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff);
         }
     }
 
     public static class OnClickListenerImpl implements View.OnClickListener {
-        private BcVieModel value;
+        private LauncherViewModel value;
 
-        public OnClickListenerImpl setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
-                return null;
-            }
-            return this;
-        }
-
-        public void onClick(View arg0) {
-            this.value.onAuxiliaryRadarClick(arg0);
-        }
-    }
-
-    public static class OnClickListenerImpl1 implements View.OnClickListener {
-        private BcVieModel value;
-
-        public OnClickListenerImpl1 setValue(BcVieModel value2) {
+        public OnClickListenerImpl setValue(LauncherViewModel value2) {
             this.value = value2;
             if (value2 == null) {
                 return null;
@@ -489,26 +444,10 @@ public class BenzControlBindImpl extends BenzControlBind {
         }
     }
 
-    public static class OnClickListenerImpl2 implements View.OnClickListener {
-        private BcVieModel value;
+    public static class OnClickListenerImpl1 implements View.OnClickListener {
+        private LauncherViewModel value;
 
-        public OnClickListenerImpl2 setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
-                return null;
-            }
-            return this;
-        }
-
-        public void onClick(View arg0) {
-            this.value.onHighChasssisClick(arg0);
-        }
-    }
-
-    public static class OnClickListenerImpl3 implements View.OnClickListener {
-        private BcVieModel value;
-
-        public OnClickListenerImpl3 setValue(BcVieModel value2) {
+        public OnClickListenerImpl1 setValue(LauncherViewModel value2) {
             this.value = value2;
             if (value2 == null) {
                 return null;
@@ -518,6 +457,38 @@ public class BenzControlBindImpl extends BenzControlBind {
 
         public void onClick(View arg0) {
             this.value.showBrightnessDialog(arg0);
+        }
+    }
+
+    public static class OnClickListenerImpl2 implements View.OnClickListener {
+        private LauncherViewModel value;
+
+        public OnClickListenerImpl2 setValue(LauncherViewModel value2) {
+            this.value = value2;
+            if (value2 == null) {
+                return null;
+            }
+            return this;
+        }
+
+        public void onClick(View arg0) {
+            this.value.onAuxiliaryRadarClick(arg0);
+        }
+    }
+
+    public static class OnClickListenerImpl3 implements View.OnClickListener {
+        private LauncherViewModel value;
+
+        public OnClickListenerImpl3 setValue(LauncherViewModel value2) {
+            this.value = value2;
+            if (value2 == null) {
+                return null;
+            }
+            return this;
+        }
+
+        public void onClick(View arg0) {
+            this.value.onHighChasssisClick(arg0);
         }
     }
 }

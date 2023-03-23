@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -14,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.settings.TxzMessage;
 import com.wits.ksw.settings.utlis_view.DialogViews;
 import com.wits.ksw.settings.utlis_view.McuUtil;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
@@ -47,6 +49,7 @@ public class LandroverSetSystemInfoLayout extends RelativeLayout implements View
     /* access modifiers changed from: private */
     public TextView tv_infoMcuv;
     private TextView tv_infoSysRest;
+    private TextView tv_infoSysUpDate;
     private TextView tv_infoSysv;
     private TextView tv_systemInfo;
     private TextView tv_systemInfo2;
@@ -107,6 +110,9 @@ public class LandroverSetSystemInfoLayout extends RelativeLayout implements View
         TextView textView7 = (TextView) view.findViewById(R.id.tv_systemInfo);
         this.tv_systemInfo = textView7;
         textView7.setText(allROM);
+        TextView textView8 = (TextView) view.findViewById(R.id.tv_infoSysUpDate);
+        this.tv_infoSysUpDate = textView8;
+        textView8.setOnClickListener(this);
     }
 
     private String getVersion() {
@@ -121,11 +127,14 @@ public class LandroverSetSystemInfoLayout extends RelativeLayout implements View
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_infoMcuUp /*2131297579*/:
+            case R.id.tv_infoMcuUp /*2131297875*/:
                 this.dialogViews.updateMcu(this.context.getString(R.string.update_mcu_file));
                 return;
-            case R.id.tv_infoSysRest /*2131297582*/:
+            case R.id.tv_infoSysRest /*2131297878*/:
                 this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
+                return;
+            case R.id.tv_infoSysUpDate /*2131297879*/:
+                new TxzMessage(2070, "system.ota.check", (Bundle) null).sendBroadCast(this.context);
                 return;
             default:
                 return;

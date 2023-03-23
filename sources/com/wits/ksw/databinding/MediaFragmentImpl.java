@@ -102,7 +102,7 @@ public class MediaFragmentImpl extends MediaFragment {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (6 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
@@ -114,7 +114,7 @@ public class MediaFragmentImpl extends MediaFragment {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(6);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 

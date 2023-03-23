@@ -93,7 +93,7 @@ public class LandroverMainBinding1920x660Impl extends LandroverMainBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (4 != variableId) {
+        if (7 != variableId) {
             return false;
         }
         setLauncherViewModel((LandroverViewModel) variable);
@@ -105,7 +105,7 @@ public class LandroverMainBinding1920x660Impl extends LandroverMainBinding {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(4);
+        notifyPropertyChanged(7);
         super.requestRebind();
     }
 

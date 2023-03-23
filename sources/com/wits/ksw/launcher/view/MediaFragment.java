@@ -20,14 +20,14 @@ import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class MediaFragment extends Fragment {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private com.wits.ksw.databinding.MediaFragment binding;
     private MainActivity mainActivity;
     private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() {
         public void onChange() throws RemoteException {
             try {
                 String topApp = PowerManagerApp.getStatusString("topApp");
-                Log.i("KSWLauncher", "onChange: topApp=" + topApp);
+                Log.i("KswApplication", "onChange: topApp=" + topApp);
                 if (TextUtils.equals(topApp, BuildConfig.APPLICATION_ID)) {
                     MediaImpl.getInstance().initData();
                 }
@@ -59,12 +59,12 @@ public class MediaFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         this.binding.setMediaViewModel(this.viewModel);
         PowerManagerApp.registerIContentObserver("topApp", this.topAppContentObserver);
-        Log.i("KSWLauncher", "onActivityCreated: registerIContentObserver topApp ");
+        Log.i("KswApplication", "onActivityCreated: registerIContentObserver topApp ");
     }
 
     public void onDestroy() {
         super.onDestroy();
         PowerManagerApp.unRegisterIContentObserver(this.topAppContentObserver);
-        Log.i("KSWLauncher", "onDestroy: unRegisterIContentObserver topApp");
+        Log.i("KswApplication", "onDestroy: unRegisterIContentObserver topApp");
     }
 }

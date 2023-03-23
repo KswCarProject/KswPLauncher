@@ -15,10 +15,12 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KswUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.launcher.view.lexusls.LexusLsConfig;
 import com.wits.ksw.launcher.view.lexusls.drag.DragListener;
 import com.wits.ksw.launcher.view.lexusls.drag.DraggableLayout;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
+import com.wits.pms.statuscontrol.WitsCommand;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +106,16 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         }
     }
 
+    public void sendMcuCommand() {
+        try {
+            Log.d(TAG, "sendMcuCommand: 发送MCU发指令");
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "sendMcuCommand: " + e.toString());
+        }
+    }
+
     class mItemOnclick implements View.OnClickListener {
         View mView;
         int pos;
@@ -114,47 +126,91 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
         }
 
         public void onClick(View v) {
+            View view = v;
             Log.e(LexusLsDragItemAdapter.TAG, "pos = " + this.pos);
             KswUtils.saveLexusLsLastPosition(LexusLsDragItemAdapter.this.mContext, this.pos);
             LexusLsDragItemAdapter.this.setSelectPosition(this.pos);
             LexusLsAppSelBean appItem = (LexusLsAppSelBean) LexusLsDragItemAdapter.this.mList.get(this.pos);
-            if (!LexusLsDragItemAdapter.isMenu(appItem)) {
-                ComponentName componentName = new ComponentName(appItem.getAppPkg(), appItem.getAppMainAty());
-                Intent intent = new Intent();
-                intent.addFlags(270532608);
-                intent.setComponent(componentName);
-                LexusLsDragItemAdapter.this.mContext.startActivity(intent);
-                return;
-            }
-            String pkgName = appItem.getAppPkg();
-            String[] menuPkgs = LexusLsConfig.PKG_MENU_STRS;
-            LOGE.E("LexusLsDragItemAdapter pkgName = " + pkgName);
-            if (menuPkgs[0].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openNaviApp(v);
-            } else if (menuPkgs[1].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openMusicMulti(v);
-            } else if (menuPkgs[2].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openBtApp(v);
-            } else if (menuPkgs[3].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openApps(v);
-            } else if (menuPkgs[4].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openVideoMulti(v);
-            } else if (menuPkgs[5].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openLexusCar(v);
-            } else if (menuPkgs[6].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openSettings(v);
-            } else if (menuPkgs[7].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openAirControl(v);
-            } else if (menuPkgs[8].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openDvr(v);
-            } else if (menuPkgs[9].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openDashboard(v);
-            } else if (menuPkgs[10].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openShouJiHuLian(v);
-            } else if (menuPkgs[11].equals(pkgName)) {
-                LexusLsDragItemAdapter.this.viewModel.openFileManager(v);
-            } else if (menuPkgs[12].equals(pkgName) && LexusLsDragItemAdapter.this.mAddAppListener != null) {
-                LexusLsDragItemAdapter.this.mAddAppListener.onClick(v);
+            if (UiThemeUtils.isLEXUS_LS_UI(LexusLsDragItemAdapter.this.mContext)) {
+                if (!LexusLsDragItemAdapter.isMenu(appItem)) {
+                    ComponentName componentName = new ComponentName(appItem.getAppPkg(), appItem.getAppMainAty());
+                    Intent intent = new Intent();
+                    intent.addFlags(270532608);
+                    intent.setComponent(componentName);
+                    LexusLsDragItemAdapter.this.mContext.startActivity(intent);
+                    LexusLsDragItemAdapter.this.sendMcuCommand();
+                    return;
+                }
+                String pkgName = appItem.getAppPkg();
+                String[] menuPkgs = LexusLsConfig.PKG_MENU_STRS;
+                LOGE.E("LexusLsDragItemAdapter pkgName = " + pkgName);
+                if (menuPkgs[0].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openNaviApp(view);
+                } else if (menuPkgs[1].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openMusicMulti(view);
+                } else if (menuPkgs[2].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openBtApp(view);
+                } else if (menuPkgs[3].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openApps(view);
+                } else if (menuPkgs[4].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openVideoMulti(view);
+                } else if (menuPkgs[5].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openLexusCar(view);
+                } else if (menuPkgs[6].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openSettings(view);
+                } else if (menuPkgs[7].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openAirControl(view);
+                } else if (menuPkgs[8].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openDvr(view);
+                } else if (menuPkgs[9].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openDashboard(view);
+                } else if (menuPkgs[10].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openShouJiHuLian(view);
+                } else if (menuPkgs[11].equals(pkgName)) {
+                    LexusLsDragItemAdapter.this.viewModel.openFileManager(view);
+                } else if (menuPkgs[12].equals(pkgName) && LexusLsDragItemAdapter.this.mAddAppListener != null) {
+                    LexusLsDragItemAdapter.this.mAddAppListener.onClick(view);
+                }
+            } else if (!LexusLsDragItemAdapter.isMenu_V2(appItem)) {
+                ComponentName componentName2 = new ComponentName(appItem.getAppPkg(), appItem.getAppMainAty());
+                Intent intent2 = new Intent();
+                intent2.addFlags(270532608);
+                intent2.setComponent(componentName2);
+                LexusLsDragItemAdapter.this.mContext.startActivity(intent2);
+                LexusLsDragItemAdapter.this.sendMcuCommand();
+            } else {
+                String pkgName2 = appItem.getAppPkg();
+                String[] menuPkgs2 = LexusLsConfig.PKG_MENU_STRS_V2;
+                LOGE.E("LexusLsDragItemAdapter pkgName = " + pkgName2);
+                if (menuPkgs2[0].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openNaviApp(view);
+                } else if (menuPkgs2[1].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openMusicMulti(view);
+                } else if (menuPkgs2[2].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openBtApp(view);
+                } else if (menuPkgs2[3].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openApps(view);
+                } else if (menuPkgs2[4].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openVideoMulti(view);
+                } else if (menuPkgs2[5].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openLexusCar(view);
+                } else if (menuPkgs2[6].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openSettings(view);
+                } else if (menuPkgs2[7].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openAirControl(view);
+                } else if (menuPkgs2[8].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openDvr(view);
+                } else if (menuPkgs2[9].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openDashboard(view);
+                } else if (menuPkgs2[10].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openShouJiHuLian(view);
+                } else if (menuPkgs2[11].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openFileManager(view);
+                } else if (menuPkgs2[12].equals(pkgName2)) {
+                    LexusLsDragItemAdapter.this.viewModel.openWeatherApp(view);
+                } else if (menuPkgs2[13].equals(pkgName2) && LexusLsDragItemAdapter.this.mAddAppListener != null) {
+                    LexusLsDragItemAdapter.this.mAddAppListener.onClick(view);
+                }
             }
         }
     }
@@ -237,6 +293,13 @@ public class LexusLsDragItemAdapter extends RecyclerView.Adapter<mBaseViewHolder
 
     public static boolean isMenu(LexusLsAppSelBean bean) {
         if (bean.getAppPkg().contains(LexusLsConfig.PKG_DEFINED_MENU_LEXUSLS)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isMenu_V2(LexusLsAppSelBean bean) {
+        if (bean.getAppPkg().contains(LexusLsConfig.PKG_DEFINED_MENU_LEXUSLS_V2)) {
             return true;
         }
         return false;

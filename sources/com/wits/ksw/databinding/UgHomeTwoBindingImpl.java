@@ -10,9 +10,9 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback28;
-    private final View.OnClickListener mCallback29;
-    private final View.OnClickListener mCallback30;
+    private final View.OnClickListener mCallback22;
+    private final View.OnClickListener mCallback23;
+    private final View.OnClickListener mCallback24;
     private long mDirtyFlags;
 
     public UgHomeTwoBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -20,16 +20,16 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
     }
 
     private UgHomeTwoBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 0, bindings[0], bindings[3], bindings[2], bindings[1]);
+        super(bindingComponent, root, 0, bindings[0], bindings[2], bindings[3], bindings[1]);
         this.mDirtyFlags = -1;
         this.carConstraintLayout.setTag((Object) null);
         this.ugHomeAppVaiw.setTag((Object) null);
         this.ugHomeEasyVaiw.setTag((Object) null);
         this.ugHomeHdvideoVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback28 = new OnClickListener(this, 1);
-        this.mCallback30 = new OnClickListener(this, 3);
-        this.mCallback29 = new OnClickListener(this, 2);
+        this.mCallback23 = new OnClickListener(this, 2);
+        this.mCallback24 = new OnClickListener(this, 3);
+        this.mCallback22 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -50,7 +50,7 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -62,7 +62,7 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -80,9 +80,9 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeAppVaiw.setOnClickListener(this.mCallback30);
-            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback29);
-            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback28);
+            this.ugHomeAppVaiw.setOnClickListener(this.mCallback23);
+            this.ugHomeEasyVaiw.setOnClickListener(this.mCallback24);
+            this.ugHomeHdvideoVaiw.setOnClickListener(this.mCallback22);
         }
     }
 
@@ -105,7 +105,7 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
                     viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
-                    viewModel2.openShouJiHuLian(callbackArg_0);
+                    viewModel2.openApps(callbackArg_0);
                     return;
                 }
                 return;
@@ -115,7 +115,7 @@ public class UgHomeTwoBindingImpl extends UgHomeTwoBinding implements OnClickLis
                     viewModelJavaLangObjectNull = false;
                 }
                 if (viewModelJavaLangObjectNull) {
-                    viewModel3.openApps(callbackArg_0);
+                    viewModel3.openShouJiHuLian(callbackArg_0);
                     return;
                 }
                 return;

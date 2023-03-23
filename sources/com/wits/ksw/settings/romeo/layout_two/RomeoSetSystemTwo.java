@@ -37,7 +37,7 @@ import java.text.NumberFormat;
 
 public class RomeoSetSystemTwo extends RelativeLayout {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + RomeoSetSystemTwo.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + RomeoSetSystemTwo.class.getSimpleName());
     private int aux_index1;
     private int aux_index2;
     private int beiguangValue;
@@ -202,13 +202,13 @@ public class RomeoSetSystemTwo extends RelativeLayout {
         this.rdg_shext.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_shext1 /*2131297192*/:
+                    case R.id.rdb_shext1:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 0);
                         return;
-                    case R.id.rdb_shext2 /*2131297193*/:
+                    case R.id.rdb_shext2:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 1);
                         return;
-                    case R.id.rdb_shext3 /*2131297194*/:
+                    case R.id.rdb_shext3:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 2);
                         return;
                     default:

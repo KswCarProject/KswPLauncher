@@ -65,7 +65,7 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiSystemViewModel) variable);
@@ -77,7 +77,7 @@ public class AudiAuxBindingSw600dpLandImpl extends AudiAuxBinding {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

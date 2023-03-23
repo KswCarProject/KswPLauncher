@@ -54,7 +54,7 @@ public class ActivityMainLandRoverBinding1280x660Impl extends ActivityMainLandRo
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (4 != variableId) {
+        if (7 != variableId) {
             return false;
         }
         setLauncherViewModel((LauncherViewModel) variable);

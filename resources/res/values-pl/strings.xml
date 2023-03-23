@@ -27,6 +27,7 @@
     <string name="abc_shareactionprovider_share_with">Udostępnij dla</string>
     <string name="abc_shareactionprovider_share_with_application">Udostępnij przez: %s</string>
     <string name="abc_toolbar_collapse_description">Zwiń</string>
+    <string name="als_id7_wranning">Operacja jest zbyt częsta.</string>
     <string name="app_aux">AUX</string>
     <string name="app_cancel">Anuluj</string>
     <string name="app_dtv">DTV</string>
@@ -49,6 +50,8 @@
     <string name="benz_mbux_2021_style_classical_tip">klasyczny</string>
     <string name="benz_mbux_2021_style_modern_tip">Nowoczesny</string>
     <string name="benz_mbux_2021_theme_settings">Ustawienia motywu</string>
+    <string name="benz_mbux_2021_weather">Globalna pogoda</string>
+    <string name="benz_mbux_2021_weather_content">Przełącz interfejs pogody</string>
     <string name="benz_ntg6_fy_theme_settings">temat</string>
     <string name="boot_record_mode">Zapamiętaj ostatni tryb</string>
     <string name="boot_record_mode_radio1">Włącz</string>
@@ -101,6 +104,7 @@
     <string name="factory_danwei">Wybór biegów</string>
     <string name="factory_danwei1">Automatyczne</string>
     <string name="factory_danwei2">Ręczne</string>
+    <string name="factory_front_view_mirror_setting">Ustawienie lusterka przedniego</string>
     <string name="factory_gears1">Typ przekładni 1</string>
     <string name="factory_gears2">Typ przekładni 2</string>
     <string name="factory_gears3">Typ przekładni 3</string>
@@ -117,6 +121,10 @@
     <string name="factory_nbt0">Automatyczne przełączanie AUX</string>
     <string name="factory_nbt1">Alpine</string>
     <string name="factory_nbt2">Harman</string>
+    <string name="factory_phone">Wybór klucza telefonu</string>
+    <string name="factory_phone1">Pierwotna funkcja pojazdu</string>
+    <string name="factory_phone2">Funkcja Bluetooth Android</string>
+    <string name="factory_phone3">Niezdefiniowane</string>
     <string name="factory_restart">Uruchom ponownie</string>
     <string name="factory_text">Ustawienia fabryczne</string>
     <string name="factory_text0">Moduły przełączania AUX</string>
@@ -180,6 +188,7 @@
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
     <string name="id7_browser">@string/id6_browser</string>
+    <string name="installing">Instalacja aplikacji w toku</string>
     <string name="item1">System</string>
     <string name="item2">Nawigacja</string>
     <string name="item3">Głośności</string>
@@ -211,6 +220,22 @@
     <string name="ksw_id7_setting">Ustawienia</string>
     <string name="ksw_id7_switch_to_carinfo_window">Pokaż informacje o pojeździe</string>
     <string name="ksw_id7_system_app_not_uninstall">Nie można odinstalować aplikacji systemowych</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">aplikacja</string>
+    <string name="ksw_id8_current">aktualnie wybrany</string>
+    <string name="ksw_id8_efficient">oszczędzanie energii</string>
+    <string name="ksw_id8_modus">Model</string>
+    <string name="ksw_id8_personal">domyślna</string>
+    <string name="ksw_id8_settings_title_audio">efekt dźwiękowy</string>
+    <string name="ksw_id8_settings_title_info">Informacja</string>
+    <string name="ksw_id8_sport">Sporty</string>
+    <string name="ksw_id8_tel">Telefon</string>
+    <string name="ksw_id8_trd_desc">użycie stron trzecich</string>
+    <string name="ksw_id8_weather">pogoda</string>
     <string name="ksw_idf7_unknow_artis">Nieznany artysta</string>
     <string name="ksw_idf7_unkonw_album">Nieznany album</string>
     <string name="ksw_idf7_unkonw_soung">Nieznana piosenka</string>
@@ -226,6 +251,8 @@
     <string name="oil_size">Paliwo: %s</string>
     <string name="raw_car_text1">Pełny ekran</string>
     <string name="raw_car_text2">Aktualny wybór:</string>
+    <string name="reverse_exit_time_agreement">Wyjazd zgodnie z pierwotną umową pojazdu</string>
+    <string name="reverse_exit_time_custom">Niestandardowy czas wyjścia</string>
     <string name="romeo_id7_dashboard_lable">Dashboard</string>
     <string name="search_menu_title">Szukaj</string>
     <string name="sele_navi_map">Wybierz map ę nawigacyjną</string>
@@ -254,6 +281,7 @@
     <string name="shext_1">Kamera po wprowadzeniu</string>
     <string name="shext_2">OEM Kamera</string>
     <string name="shext_3">360 Kamera</string>
+    <string name="shext_4">Wbudowany system 360 z systemem Android</string>
     <string name="show_msg_one">Ustawienia systemu Androida</string>
     <string name="show_msg_two">Do instalacji i debugowania</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -269,6 +297,7 @@
     <string name="text_13">Jasność</string>
     <string name="text_14">DDR: %s</string>
     <string name="text_15">Flash: %s</string>
+    <string name="text_16">Aktualizacja sprawdzania systemu</string>
     <string name="text_2">Synchronizacja czasu</string>
     <string name="text_3">Format czasu</string>
     <string name="text_4">Oryginalny czas pojazdu</string>
@@ -285,6 +314,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_auto">Automatyczne wykrywanie</string>
     <string name="text_ahd_cam_select">Wybór aparatu AHD</string>
     <string name="text_flash">Flash: %s</string>
     <string name="text_logo_input">Import</string>
@@ -295,6 +325,9 @@
     <string name="text_logo_two">Strona 2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Dane dotykowe wysyłane w sposób ciągły</string>
+    <string name="txz_oil_text">Ustawienie alarmu objętości paliwa</string>
+    <string name="txz_speed_text">Ustawienie alarmu prędkości współpodróżnego</string>
+    <string name="txz_temp_text">Ustawienie alarmu temperatury otoczenia towarzyszącego</string>
     <string name="ug_apps_text">Więcej aplikacji</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Nawigacja</string>

@@ -2,6 +2,7 @@ package android.support.constraint.solver;
 
 import android.support.constraint.solver.LinearSystem;
 import android.support.constraint.solver.SolverVariable;
+import com.wits.ksw.settings.TxzMessage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -69,7 +70,7 @@ public class ArrayRow implements LinearSystem.Row {
         String s;
         String s2;
         if (this.variable == null) {
-            s = "" + "0";
+            s = "" + TxzMessage.TXZ_DISMISS;
         } else {
             s = "" + this.variable;
         }

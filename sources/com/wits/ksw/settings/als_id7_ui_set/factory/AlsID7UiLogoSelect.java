@@ -17,6 +17,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.settings.als_id7_ui_set.adapter.AlsID7UiUiSelectAdapter;
 import com.wits.ksw.settings.id7.bean.UiSelectBean;
 import com.wits.ksw.settings.utlis_view.DialogViews;
+import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.ToastUtils;
 import java.io.File;
 import java.util.ArrayList;
@@ -103,8 +104,8 @@ public class AlsID7UiLogoSelect extends FrameLayout {
     }
 
     private void initZhuanYong() {
-        this.logoFile = new File("/storage/emulated/0/mylogo/thumbnail");
-        this.filePath = new File("/storage/emulated/0/mylogo/" + this.imgFileName);
+        this.logoFile = new File(FileUtils.getLogoFilePath() + "/thumbnail");
+        this.filePath = new File(FileUtils.getLogoFilePath() + "/" + this.imgFileName);
         if (this.logoFile.exists() && this.filePath.exists()) {
             File[] logos = this.logoFile.listFiles();
             File[] files = this.filePath.listFiles();

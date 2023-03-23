@@ -5,8 +5,10 @@ import android.databinding.ObservableBoolean;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.ImageView;
+import com.wits.ksw.KswApplication;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.KswUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -90,7 +92,11 @@ public class DashboardViewModel extends LauncherViewModel {
     }
 
     public static void setSpeedRotation(ImageView imageView, int rota) {
-        setSpeedRotationBet(imageView, (float) rota);
+        if (KswUtils.ismph()) {
+            setSpeedRotationBet(imageView, new BigDecimal((((double) rota) / 0.621d) * 0.968d).floatValue());
+        } else {
+            setSpeedRotationBet(imageView, (float) rota);
+        }
     }
 
     public static void setAudiMib3SeepRotation(ImageView imageView, int rota) {
@@ -174,7 +180,34 @@ public class DashboardViewModel extends LauncherViewModel {
     }
 
     public static void setALSRotation(ImageView imageView, float rota) {
-        setSpeedRotationBet(imageView, -rota);
+        double mul;
+        Log.d(TAG, "setALSRotation: rota=" + rota);
+        if (!UiThemeUtils.isALS_ID7_UI(KswApplication.appContext) || carInfo.turnSpeed.get() > 8000) {
+            setSpeedRotationBet(imageView, -rota);
+            return;
+        }
+        if (carInfo.turnSpeed.get() <= 2000) {
+            mul = 30.2d;
+        } else if (carInfo.turnSpeed.get() > 2000 && carInfo.turnSpeed.get() <= 3000) {
+            mul = 31.1d;
+        } else if (carInfo.turnSpeed.get() > 3000 && carInfo.turnSpeed.get() < 4000) {
+            mul = 30.9d;
+        } else if (carInfo.turnSpeed.get() >= 4000 && carInfo.turnSpeed.get() < 5000) {
+            mul = 30.8d;
+        } else if (carInfo.turnSpeed.get() == 5000) {
+            mul = 30.6d;
+        } else if (carInfo.turnSpeed.get() > 5000 && carInfo.turnSpeed.get() <= 6000) {
+            mul = 30.5d;
+        } else if (carInfo.turnSpeed.get() > 6000 && carInfo.turnSpeed.get() < 7000) {
+            mul = 30.45d;
+        } else if (carInfo.turnSpeed.get() < 7000 || carInfo.turnSpeed.get() >= 8000) {
+            mul = 30.35d;
+        } else {
+            mul = 30.4d;
+        }
+        float angle = new BigDecimal(carInfo.turnSpeed.get()).divide(new BigDecimal(1000)).multiply(new BigDecimal(mul)).floatValue();
+        Log.i(TAG, "setALSRotation:  转速旋转角度为=" + angle);
+        setSpeedRotationBet(imageView, -angle);
     }
 
     /* access modifiers changed from: protected */

@@ -59,7 +59,7 @@ public class AppsListViewAdapter extends BaseAdapter {
             android.view.LayoutInflater r2 = r5.mInflater
             int r3 = r5.layoutRes
             android.view.View r7 = r2.inflate(r3, r1)
-            r2 = 2131297172(0x7f090394, float:1.8212281E38)
+            r2 = 2131297438(0x7f09049e, float:1.821282E38)
             android.view.View r2 = r7.findViewById(r2)
             com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r2 = (com.wits.ksw.settings.utlis_view.RtlNaviRadioButton) r2
             r0.rbt_apps = r2
@@ -105,7 +105,7 @@ public class AppsListViewAdapter extends BaseAdapter {
             r1.setEnabled(r3)
             com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps
             android.content.Context r3 = r5.context
-            r4 = 2131099696(0x7f060030, float:1.7811752E38)
+            r4 = 2131099707(0x7f06003b, float:1.7811775E38)
             int r3 = android.support.v4.content.ContextCompat.getColor(r3, r4)
             r1.setTextColor(r3)
             com.wits.ksw.settings.utlis_view.RtlNaviRadioButton r1 = r0.rbt_apps

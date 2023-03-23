@@ -490,7 +490,7 @@ public class RuleBasedBreakIterator extends BreakIterator {
     }
 
     /* access modifiers changed from: private */
-    /* JADX WARNING: Incorrect type for immutable var: ssa=short, code=int, for r13v2, types: [int, short] */
+    /* JADX WARNING: Incorrect type for immutable var: ssa=short, code=int, for r13v2, types: [short, int] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public int handleNext() {
         /*
@@ -733,7 +733,7 @@ public class RuleBasedBreakIterator extends BreakIterator {
     }
 
     /* access modifiers changed from: private */
-    /* JADX WARNING: Incorrect type for immutable var: ssa=short, code=int, for r6v3, types: [int, short] */
+    /* JADX WARNING: Incorrect type for immutable var: ssa=short, code=int, for r6v3, types: [short, int] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public int handleSafePrevious(int r13) {
         /*

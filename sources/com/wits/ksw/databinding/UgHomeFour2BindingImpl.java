@@ -10,9 +10,9 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class UgHomeFour2BindingImpl extends UgHomeFour2Binding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback52;
-    private final View.OnClickListener mCallback53;
-    private final View.OnClickListener mCallback54;
+    private final View.OnClickListener mCallback220;
+    private final View.OnClickListener mCallback221;
+    private final View.OnClickListener mCallback222;
     private long mDirtyFlags;
 
     public UgHomeFour2BindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,9 +27,9 @@ public class UgHomeFour2BindingImpl extends UgHomeFour2Binding implements OnClic
         this.ugHomeDvrVaiw.setTag((Object) null);
         this.ugHomeFileVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback54 = new OnClickListener(this, 3);
-        this.mCallback52 = new OnClickListener(this, 1);
-        this.mCallback53 = new OnClickListener(this, 2);
+        this.mCallback221 = new OnClickListener(this, 2);
+        this.mCallback222 = new OnClickListener(this, 3);
+        this.mCallback220 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -50,7 +50,7 @@ public class UgHomeFour2BindingImpl extends UgHomeFour2Binding implements OnClic
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -62,7 +62,7 @@ public class UgHomeFour2BindingImpl extends UgHomeFour2Binding implements OnClic
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -80,9 +80,9 @@ public class UgHomeFour2BindingImpl extends UgHomeFour2Binding implements OnClic
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeBrowserVaiw.setOnClickListener(this.mCallback52);
-            this.ugHomeDvrVaiw.setOnClickListener(this.mCallback53);
-            this.ugHomeFileVaiw.setOnClickListener(this.mCallback54);
+            this.ugHomeBrowserVaiw.setOnClickListener(this.mCallback220);
+            this.ugHomeDvrVaiw.setOnClickListener(this.mCallback221);
+            this.ugHomeFileVaiw.setOnClickListener(this.mCallback222);
         }
     }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:gravity="center" android:orientation="horizontal" android:tag="layout/ksw_id7_main_page1_0" android:focusable="false" android:focusableInTouchMode="false" android:clickable="false" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ksw_id7_main_card_left" android:layout_marginStart="14dp"/>
+    <LinearLayout android:id="@+id/ll_music_card" android:tag="binding_1" android:background="@drawable/ksw_id7_main_card_music_selector" android:nextFocusUp="@+id/ll_music_card" android:nextFocusDown="@+id/ll_navi_card" style="@style/ksw_id7_main_card_container">
+        <TextView android:text="@string/ksw_id7_music" style="@style/ksw_id7_main_card_title"/>
+        <TextView android:id="@+id/tv_music" android:tag="binding_2" style="@style/ksw_id7_main_card_content"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_navi_card" android:tag="binding_3" android:background="@drawable/ksw_id7_main_card_navi_selector" android:nextFocusUp="@+id/ll_music_card" android:nextFocusDown="@+id/ll_app_card" style="@style/ksw_id7_main_card_container">
+        <TextView android:text="@string/ksw_id7_navi" style="@style/ksw_id7_main_card_title"/>
+        <TextView android:text="@string/ksw_id7_real_time_navi" style="@style/ksw_id7_main_card_content"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_app_card" android:tag="binding_4" android:background="@drawable/ksw_id7_main_card_app_selector" android:nextFocusUp="@+id/ll_navi_card" android:nextFocusDown="@+id/ll_phone_card" style="@style/ksw_id7_main_card_container">
+        <TextView android:text="@string/ksw_id7_apps" style="@style/ksw_id7_main_card_title"/>
+        <TextView android:text="@string/id6_apps_mess" style="@style/ksw_id7_main_card_content"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_phone_card" android:tag="binding_5" android:background="@drawable/ksw_id7_main_card_phone_selector" android:nextFocusUp="@+id/ll_app_card" android:nextFocusDown="@+id/ll_set_card" style="@style/ksw_id7_main_card_container">
+        <TextView android:text="@string/ksw_id7_communication" style="@style/ksw_id7_main_card_title"/>
+        <TextView android:tag="binding_6" style="@style/ksw_id7_main_card_content"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/ll_set_card" android:tag="binding_7" android:background="@drawable/ksw_id7_main_card_set_selector" android:nextFocusRight="@+id/ll_video_card" android:nextFocusUp="@+id/ll_phone_card" android:nextFocusDown="@+id/ll_video_card" style="@style/ksw_id7_main_card_container">
+        <TextView android:text="@string/ksw_id7_setting" style="@style/ksw_id7_main_card_title"/>
+        <TextView android:text="@string/id6_setting_mess" style="@style/ksw_id7_main_card_content"/>
+    </LinearLayout>
+    <ImageView android:id="@+id/iv_arrow" android:layout_width="37dp" android:layout_height="58dp" android:src="@drawable/ksw_id7_main_card_right" android:layout_marginStart="14dp"/>
+</LinearLayout>

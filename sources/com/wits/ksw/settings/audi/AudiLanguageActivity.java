@@ -22,7 +22,7 @@ import java.util.List;
 
 public class AudiLanguageActivity extends AudiSubActivity {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AudiLanguageActivity.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AudiLanguageActivity.class.getSimpleName());
     /* access modifiers changed from: private */
     public LanguageAdpater adpater;
     private ListView audiLanguageListView;

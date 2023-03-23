@@ -33,6 +33,7 @@
     <string name="als_id7_music">Μουσική</string>
     <string name="als_id7_music_player">Αναπαραγωγή μουσικής</string>
     <string name="als_id7_phone">Τηλέφωνο</string>
+    <string name="als_id7_wranning">Η εγχείρησή σας είναι πολύ συχνή.</string>
     <string name="app_aux">AUX</string>
     <string name="app_cancel">Ακύρωση</string>
     <string name="app_dtv">DTV</string>
@@ -131,6 +132,8 @@
     <string name="benz_mbux_2021_style_classical_tip">κλασικός</string>
     <string name="benz_mbux_2021_style_modern_tip">Μοντέρνο</string>
     <string name="benz_mbux_2021_theme_settings">Ρυθμίσεις θέματος</string>
+    <string name="benz_mbux_2021_weather">Παγκόσμιος Καιρός</string>
+    <string name="benz_mbux_2021_weather_content">Εναλλαγή διεπαφής καιρού</string>
     <string name="benz_ntg6_fy_theme_settings">θέμα</string>
     <string name="bmw_evo_id6_gs_home_apps">@string/ug_apps_text</string>
     <string name="bmw_evo_id6_gs_home_apps_hint">@string/id6_apps_mess</string>
@@ -208,6 +211,7 @@
     <string name="factory_danwei">Επιλογή εργαλείων</string>
     <string name="factory_danwei1">Αυτόματο</string>
     <string name="factory_danwei2">Εγχειρίδιο</string>
+    <string name="factory_front_view_mirror_setting">Ρύθμιση καθρέφτη μπροστινής όψης</string>
     <string name="factory_gears1">Εργαλείο τύπου 1</string>
     <string name="factory_gears2">Εργαλείο τύπου 2</string>
     <string name="factory_gears3">Εργαλείο τύπου 3</string>
@@ -224,6 +228,10 @@
     <string name="factory_nbt0">Αυτόματη εναλλαγή AUX</string>
     <string name="factory_nbt1">Alpine</string>
     <string name="factory_nbt2">Harman</string>
+    <string name="factory_phone">Επιλογή κλειδιού τηλεφώνου</string>
+    <string name="factory_phone1">Αρχική λειτουργία οχήματος</string>
+    <string name="factory_phone2">Λειτουργία Bluetooth Android</string>
+    <string name="factory_phone3">Χωρίς ορισμό</string>
     <string name="factory_restart">Επανεκκίνηση</string>
     <string name="factory_text">Εργοστασιακές ρυθμίσεις</string>
     <string name="factory_text0">Λειτουργίες εναλλαγής AUX</string>
@@ -289,6 +297,7 @@
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
     <string name="id7_browser">Περιηγητής</string>
+    <string name="installing">Εγκατάσταση εφαρμογής σε εξέλιξη</string>
     <string name="item1">Σύστημα</string>
     <string name="item2">Πλοήγηση</string>
     <string name="item3">Ένταση</string>
@@ -321,6 +330,22 @@
     <string name="ksw_id7_setting">Ρυθμίσεις</string>
     <string name="ksw_id7_switch_to_carinfo_window">Εμφάνιση αρχικών πληροφοριών αυτοκινήτου</string>
     <string name="ksw_id7_system_app_not_uninstall">Δεν είναι δυνατή η απεγκατάσταση εφαρμογών συστήματος</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">εφαρμογή</string>
+    <string name="ksw_id8_current">επιλεγμένο αυτήν τη στιγμή</string>
+    <string name="ksw_id8_efficient">εξοικονόμησης ενέργειας</string>
+    <string name="ksw_id8_modus">μοντέλο</string>
+    <string name="ksw_id8_personal">Προκαθορισμένο</string>
+    <string name="ksw_id8_settings_title_audio">εφέ ήχου</string>
+    <string name="ksw_id8_settings_title_info">πληροφορίες</string>
+    <string name="ksw_id8_sport">Αθλητισμός</string>
+    <string name="ksw_id8_tel">Τηλέφωνο</string>
+    <string name="ksw_id8_trd_desc">χρήση τρίτων</string>
+    <string name="ksw_id8_weather">καιρός</string>
     <string name="ksw_idf7_unknow_artis">Άγνωστος καλλιτέχνης</string>
     <string name="ksw_idf7_unkonw_album">Άγνωστο άλμπουμ</string>
     <string name="ksw_idf7_unkonw_soung">Άγνωστο τραγούδι</string>
@@ -353,6 +378,8 @@
     <string name="phone_link_txt">Τηλεφωνικός σύνδεσμος</string>
     <string name="raw_car_text1">Εμφάνιση πλήρους οθόνης</string>
     <string name="raw_car_text2">Τρέχουσα επιλογή:</string>
+    <string name="reverse_exit_time_agreement">Έξοδος σύμφωνα με την αρχική συμφωνία οχήματος</string>
+    <string name="reverse_exit_time_custom">Έξοδος σύμφωνα με την αρχική συμφωνία οχήματος</string>
     <string name="romeo_id7_dashboard_lable">Πίνακας Οργάνων</string>
     <string name="search_menu_title">Αναζήτηση</string>
     <string name="sele_navi_map">Επιλογή χάρτη πλοήγησης</string>
@@ -381,6 +408,7 @@
     <string name="shext_1">Κάμερα Aftermarket</string>
     <string name="shext_2">Κάμερα OEM</string>
     <string name="shext_3">Κάμερα 360</string>
+    <string name="shext_4">Ενσωματωμένο 360 για Android</string>
     <string name="show_msg_one">Ρυθμίσεις συστήματος Android</string>
     <string name="show_msg_two">Για εγκατάσταση και εντοπισμό σφαλμάτων</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -396,6 +424,7 @@
     <string name="text_13">Φωτεινότητα</string>
     <string name="text_14">RAM: %s</string>
     <string name="text_15">Χώρος αποθήκευσης:%s</string>
+    <string name="text_16">Ενημέρωση ελέγχου συστήματος</string>
     <string name="text_2">Συγχρονισμός χρόνου</string>
     <string name="text_3">Σύστημα ώρας</string>
     <string name="text_4">Ώρα Αυτοκινήτου</string>
@@ -412,6 +441,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_auto">Aυτόματη Aνίχνευση</string>
     <string name="text_ahd_cam_select">Επιλογή κάμερας AHD</string>
     <string name="text_flash">Flash: %s</string>
     <string name="text_logo_input">Εισαγωγή</string>
@@ -424,6 +454,9 @@
     <string name="touch_continuous_send">Τα δεδομένα αφής αποστέλλονται συνεχώς</string>
     <string name="track_1">track1</string>
     <string name="track_2">track2</string>
+    <string name="txz_oil_text">Ρύθμιση συναγερμού όγκου καυσίμου</string>
+    <string name="txz_speed_text">Ρύθμιση συναγερμού ταχύτητας συναδέλφου ταξιδιώτη</string>
+    <string name="txz_temp_text">Ρύθμιση συναγερμού θερμοκρασίας περιβάλλοντος συνοδείας</string>
     <string name="ug_apps_text">Περισσότερες εφαρμογές</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Πλοήγηση</string>

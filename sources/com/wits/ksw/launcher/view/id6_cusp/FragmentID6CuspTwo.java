@@ -12,7 +12,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.databinding.ID6CuspFragmentTow;
 
 public class FragmentID6CuspTwo extends ID6CuspBaseFragment implements View.OnKeyListener {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private ID6CuspFragmentTow binding;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class FragmentID6CuspTwo extends ID6CuspBaseFragment implements View.OnKe
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == 0) {
-            Log.i("KSWLauncher", "Fragmentid6CuspTwo onKey: " + keyCode);
+            Log.i("KswApplication", "Fragmentid6CuspTwo onKey: " + keyCode);
             if (keyCode == 22) {
                 this.mainActivity.id6CuspMainViewPager.setCurrentItem(2);
                 return true;

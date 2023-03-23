@@ -12,7 +12,7 @@ import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 public class AlsId7SubPhoneViewBindingImpl extends AlsId7SubPhoneViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback37;
+    private final View.OnClickListener mCallback207;
     private long mDirtyFlags;
 
     static {
@@ -34,7 +34,7 @@ public class AlsId7SubPhoneViewBindingImpl extends AlsId7SubPhoneViewBinding imp
         this.phoneConstraintLayout.setTag((Object) null);
         this.phoneImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback37 = new OnClickListener(this, 1);
+        this.mCallback207 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -55,7 +55,7 @@ public class AlsId7SubPhoneViewBindingImpl extends AlsId7SubPhoneViewBinding imp
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setMusicPhoneViewModel((AlsID7ViewModel) variable);
@@ -67,7 +67,7 @@ public class AlsId7SubPhoneViewBindingImpl extends AlsId7SubPhoneViewBinding imp
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(7);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -219,7 +219,7 @@ public class AlsId7SubPhoneViewBindingImpl extends AlsId7SubPhoneViewBinding imp
             int r13 = (r13 > r4 ? 1 : (r13 == r4 ? 0 : -1))
             if (r13 == 0) goto L_0x00a3
             com.wits.ksw.launcher.view.CustomBmwImageView r13 = r1.phoneImageView
-            android.view.View$OnClickListener r14 = r1.mCallback37
+            android.view.View$OnClickListener r14 = r1.mCallback207
             r13.setOnClickListener(r14)
         L_0x00a3:
             long r13 = r2 & r18

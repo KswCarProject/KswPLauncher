@@ -3857,7 +3857,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
             holder.mOwnerRecyclerView = RecyclerView.this;
             int viewType = holder.getItemViewType();
             long startBindNs = RecyclerView.this.getNanoTime();
-            if (deadlineNs != RecyclerView.FOREVER_NS && !this.mRecyclerPool.willBindInTime(viewType, startBindNs, deadlineNs)) {
+            if (deadlineNs != Long.MAX_VALUE && !this.mRecyclerPool.willBindInTime(viewType, startBindNs, deadlineNs)) {
                 return false;
             }
             RecyclerView.this.mAdapter.bindViewHolder(holder, offsetPosition);
@@ -3878,7 +3878,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                 if (offsetPosition < 0 || offsetPosition >= RecyclerView.this.mAdapter.getItemCount()) {
                     throw new IndexOutOfBoundsException("Inconsistency detected. Invalid item position " + position + "(offset:" + offsetPosition + ")." + "state:" + RecyclerView.this.mState.getItemCount() + RecyclerView.this.exceptionLabel());
                 }
-                tryBindViewHolderByDeadline(holder, offsetPosition, position, RecyclerView.FOREVER_NS);
+                tryBindViewHolderByDeadline(holder, offsetPosition, position, Long.MAX_VALUE);
                 ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
                 if (lp == null) {
                     rvLayoutParams = (LayoutParams) RecyclerView.this.generateDefaultLayoutParams();
@@ -3917,7 +3917,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
 
         /* access modifiers changed from: package-private */
         public View getViewForPosition(int position, boolean dryRun) {
-            return tryGetViewHolderForPositionByDeadline(position, dryRun, RecyclerView.FOREVER_NS).itemView;
+            return tryGetViewHolderForPositionByDeadline(position, dryRun, Long.MAX_VALUE).itemView;
         }
 
         /* access modifiers changed from: package-private */
@@ -3983,7 +3983,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView, NestedScro
                 }
                 if (holder2 == null) {
                     long start = RecyclerView.this.getNanoTime();
-                    if (deadlineNs != RecyclerView.FOREVER_NS && !this.mRecyclerPool.willCreateInTime(type, start, deadlineNs)) {
+                    if (deadlineNs != Long.MAX_VALUE && !this.mRecyclerPool.willCreateInTime(type, start, deadlineNs)) {
                         return null;
                     }
                     ViewHolder holder3 = RecyclerView.this.mAdapter.createViewHolder(RecyclerView.this, type);

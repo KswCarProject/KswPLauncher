@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.Ntg630ControlPopupBinding;
-import com.wits.ksw.launcher.model.BcVieModel;
+import com.wits.ksw.launcher.model.LauncherViewModel;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.WitsCommand;
 
 public class Ntg630ControlView {
-    private static final String TAG = ("KSWLauncher." + Ntg630ControlView.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + Ntg630ControlView.class.getSimpleName());
     private static Ntg630ControlView instance;
     private Ntg630ControlPopupBinding binding;
     private PopupWindow brightnessPopupWindow;
@@ -35,19 +36,24 @@ public class Ntg630ControlView {
         return ntg630ControlView;
     }
 
-    public void showBenzControl(Context context, final BcVieModel bcVieModel, View view) {
+    public void showBenzControl(Context context, final LauncherViewModel launcherViewModel, View view) {
+        int width = UtilsInfo.dip2px(context, 175.0f);
+        int height = UtilsInfo.dip2px(context, 378.0f);
         Ntg630ControlPopupBinding ntg630ControlPopupBinding = (Ntg630ControlPopupBinding) DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.ntg630_control_popup, (ViewGroup) null, false);
         this.binding = ntg630ControlPopupBinding;
-        ntg630ControlPopupBinding.setMBcVieModel(bcVieModel);
-        PopupWindow popupWindow2 = new PopupWindow(this.binding.getRoot(), UtilsInfo.dip2px(context, 175.0f), UtilsInfo.dip2px(context, 378.0f), true);
-        this.popupWindow = popupWindow2;
-        popupWindow2.showAsDropDown(view, -view.getLeft(), -view.getTop());
+        ntg630ControlPopupBinding.setLauncherViewModel(launcherViewModel);
+        this.popupWindow = new PopupWindow(this.binding.getRoot(), width, height, true);
+        if (UiThemeUtils.isUI_KSW_ID7(context) || UiThemeUtils.isUI_KSW_MBUX_1024(context)) {
+            this.popupWindow.showAsDropDown(view, -view.getLeft(), (-view.getTop()) - view.getHeight());
+        } else {
+            this.popupWindow.showAsDropDown(view, -view.getLeft(), -view.getTop());
+        }
         this.popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
-                bcVieModel.controlBean.benzControlPanelState.set(false);
+                launcherViewModel.controlBean.benzControlPanelState.set(false);
             }
         });
-        bcVieModel.controlBean.benzControlPanelState.set(true);
+        launcherViewModel.controlBean.benzControlPanelState.set(true);
     }
 
     public void dismiss() {
@@ -63,7 +69,7 @@ public class Ntg630ControlView {
         return popupWindow2 != null && popupWindow2.isShowing();
     }
 
-    public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final BcVieModel bcVieModel, int light) {
+    public void showBenzBrightnessDailog(Context context, McuStatus.BenzData benzData, final LauncherViewModel launcherViewModel, int light) {
         Log.d(TAG, " showBenzBrightnessDailog light " + light);
         View layout = LayoutInflater.from(context).inflate(R.layout.ntg6_brightness_control_popup, (ViewGroup) null);
         View closeImage = layout.findViewById(R.id.closeImage);
@@ -75,11 +81,11 @@ public class Ntg630ControlView {
         this.brightnessPopupWindow.showAsDropDown(this.binding.controlBtn1, (this.binding.controlBtn1.getRight() / 2) + 20, this.binding.controlBtn1.getTop() - 20);
         this.brightnessPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             public void onDismiss() {
-                Log.i("", "onDismiss: " + bcVieModel.controlBean.leftBrightnessAdjus.get());
-                if (bcVieModel.controlBean.leftBrightnessAdjus.get()) {
-                    bcVieModel.controlBean.leftBrightnessAdjus.set(false);
-                } else if (bcVieModel.controlBean.rightBrightnessAdjus.get()) {
-                    bcVieModel.controlBean.rightBrightnessAdjus.set(false);
+                Log.i("", "onDismiss: " + launcherViewModel.controlBean.leftBrightnessAdjus.get());
+                if (launcherViewModel.controlBean.leftBrightnessAdjus.get()) {
+                    launcherViewModel.controlBean.leftBrightnessAdjus.set(false);
+                } else if (launcherViewModel.controlBean.rightBrightnessAdjus.get()) {
+                    launcherViewModel.controlBean.rightBrightnessAdjus.set(false);
                 }
             }
         });

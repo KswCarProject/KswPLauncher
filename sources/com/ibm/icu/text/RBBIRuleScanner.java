@@ -613,16 +613,16 @@ class RBBIRuleScanner {
         L_0x00d3:
             short r5 = r2.fCharClass
             r6 = 128(0x80, float:1.794E-43)
-            if (r5 < r6) goto L_0x0200
+            if (r5 < r6) goto L_0x0201
             short r5 = r2.fCharClass
             r9 = 240(0xf0, float:3.36E-43)
-            if (r5 >= r9) goto L_0x0200
+            if (r5 >= r9) goto L_0x0201
             com.ibm.icu.text.RBBIRuleScanner$RBBIRuleChar r5 = r10.fC
             boolean r5 = r5.fEscaped
-            if (r5 != 0) goto L_0x0200
+            if (r5 != 0) goto L_0x0201
             com.ibm.icu.text.RBBIRuleScanner$RBBIRuleChar r5 = r10.fC
             int r5 = r5.fChar
-            if (r5 == r8) goto L_0x0200
+            if (r5 == r8) goto L_0x0201
             com.ibm.icu.text.UnicodeSet[] r5 = r10.fRuleSets
             short r8 = r2.fCharClass
             int r8 = r8 - r6
@@ -630,7 +630,7 @@ class RBBIRuleScanner {
             com.ibm.icu.text.RBBIRuleScanner$RBBIRuleChar r6 = r10.fC
             int r6 = r6.fChar
             boolean r6 = r5.contains((int) r6)
-            if (r6 == 0) goto L_0x0200
+            if (r6 == 0) goto L_0x0201
         L_0x00fd:
             com.ibm.icu.text.RBBIRuleBuilder r3 = r10.fRB
             java.lang.String r3 = r3.fDebugEnv
@@ -645,7 +645,7 @@ class RBBIRuleScanner {
         L_0x0114:
             short r3 = r2.fAction
             boolean r3 = r10.doParseActions(r3)
-            if (r3 != 0) goto L_0x01b6
+            if (r3 != 0) goto L_0x01b7
         L_0x011d:
             com.ibm.icu.text.RBBIRuleBuilder r2 = r10.fRB
             com.ibm.icu.text.RBBINode[] r2 = r2.fTreeRoots
@@ -657,23 +657,23 @@ class RBBIRuleScanner {
         L_0x012c:
             com.ibm.icu.text.RBBIRuleBuilder r2 = r10.fRB
             java.lang.String r2 = r2.fDebugEnv
-            if (r2 == 0) goto L_0x0143
+            if (r2 == 0) goto L_0x0144
             com.ibm.icu.text.RBBIRuleBuilder r2 = r10.fRB
             java.lang.String r2 = r2.fDebugEnv
             java.lang.String r4 = "symbols"
             int r2 = r2.indexOf(r4)
-            if (r2 < 0) goto L_0x0143
+            if (r2 < 0) goto L_0x0144
             com.ibm.icu.text.RBBISymbolTable r2 = r10.fSymbolTable
             r2.rbbiSymtablePrint()
-        L_0x0143:
+        L_0x0144:
             com.ibm.icu.text.RBBIRuleBuilder r2 = r10.fRB
             java.lang.String r2 = r2.fDebugEnv
-            if (r2 == 0) goto L_0x01b5
+            if (r2 == 0) goto L_0x01b6
             com.ibm.icu.text.RBBIRuleBuilder r2 = r10.fRB
             java.lang.String r2 = r2.fDebugEnv
             java.lang.String r4 = "ptree"
             int r2 = r2.indexOf(r4)
-            if (r2 < 0) goto L_0x01b5
+            if (r2 < 0) goto L_0x01b6
             java.io.PrintStream r2 = java.lang.System.out
             java.lang.String r4 = "Completed Forward Rules Parse Tree..."
             r2.println(r4)
@@ -696,16 +696,16 @@ class RBBIRuleScanner {
             r3 = 2
             r2 = r2[r3]
             java.lang.String r4 = "  -- null -- "
-            if (r2 != 0) goto L_0x018d
+            if (r2 != 0) goto L_0x018e
             java.io.PrintStream r2 = java.lang.System.out
             r2.println(r4)
-            goto L_0x0196
-        L_0x018d:
+            goto L_0x0197
+        L_0x018e:
             com.ibm.icu.text.RBBIRuleBuilder r2 = r10.fRB
             com.ibm.icu.text.RBBINode[] r2 = r2.fTreeRoots
             r2 = r2[r3]
             r2.printTree(r1)
-        L_0x0196:
+        L_0x0197:
             java.io.PrintStream r2 = java.lang.System.out
             java.lang.String r3 = "\nCompleted Safe Point Reverse Rules Parse Tree..."
             r2.println(r3)
@@ -713,46 +713,46 @@ class RBBIRuleScanner {
             com.ibm.icu.text.RBBINode[] r2 = r2.fTreeRoots
             r3 = 3
             r2 = r2[r3]
-            if (r2 != 0) goto L_0x01ac
+            if (r2 != 0) goto L_0x01ad
             java.io.PrintStream r1 = java.lang.System.out
             r1.println(r4)
-            goto L_0x01b5
-        L_0x01ac:
+            goto L_0x01b6
+        L_0x01ad:
             com.ibm.icu.text.RBBIRuleBuilder r2 = r10.fRB
             com.ibm.icu.text.RBBINode[] r2 = r2.fTreeRoots
             r2 = r2[r3]
             r2.printTree(r1)
-        L_0x01b5:
-            return
         L_0x01b6:
+            return
+        L_0x01b7:
             short r3 = r2.fPushState
             r4 = 66049(0x10201, float:9.2554E-41)
-            if (r3 == 0) goto L_0x01d8
+            if (r3 == 0) goto L_0x01d9
             int r3 = r10.fStackPtr
             int r3 = r3 + r1
             r10.fStackPtr = r3
             r5 = 100
-            if (r3 < r5) goto L_0x01d0
+            if (r3 < r5) goto L_0x01d1
             java.io.PrintStream r3 = java.lang.System.out
             java.lang.String r5 = "RBBIRuleScanner.parse() - state stack overflow."
             r3.println(r5)
             r10.error(r4)
-        L_0x01d0:
+        L_0x01d1:
             short[] r3 = r10.fStack
             int r5 = r10.fStackPtr
             short r6 = r2.fPushState
             r3[r5] = r6
-        L_0x01d8:
+        L_0x01d9:
             boolean r3 = r2.fNextChar
-            if (r3 == 0) goto L_0x01e1
+            if (r3 == 0) goto L_0x01e2
             com.ibm.icu.text.RBBIRuleScanner$RBBIRuleChar r3 = r10.fC
             r10.nextChar(r3)
-        L_0x01e1:
+        L_0x01e2:
             short r3 = r2.fNextState
-            if (r3 == r7) goto L_0x01e9
+            if (r3 == r7) goto L_0x01ea
             short r0 = r2.fNextState
             goto L_0x0006
-        L_0x01e9:
+        L_0x01ea:
             short[] r3 = r10.fStack
             int r5 = r10.fStackPtr
             short r0 = r3[r5]
@@ -764,7 +764,7 @@ class RBBIRuleScanner {
             r1.println(r3)
             r10.error(r4)
             goto L_0x0006
-        L_0x0200:
+        L_0x0201:
             int r3 = r3 + 1
             goto L_0x0063
         */

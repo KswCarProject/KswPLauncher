@@ -33,7 +33,7 @@ public final class Excluder implements TypeAdapterFactory, Cloneable {
         try {
             return (Excluder) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
+            throw new AssertionError(e);
         }
     }
 
@@ -46,10 +46,9 @@ public final class Excluder implements TypeAdapterFactory, Cloneable {
     public Excluder withModifiers(int... modifiers2) {
         Excluder result = clone();
         result.modifiers = 0;
-        int[] arr$ = modifiers2;
-        int len$ = arr$.length;
-        for (int i$ = 0; i$ < len$; i$++) {
-            result.modifiers |= arr$[i$];
+        int length = modifiers2.length;
+        for (int i = 0; i < length; i++) {
+            result.modifiers |= modifiers2[i];
         }
         return result;
     }
@@ -83,8 +82,12 @@ public final class Excluder implements TypeAdapterFactory, Cloneable {
 
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
         Class<? super T> rawType = type.getRawType();
-        boolean skipSerialize = excludeClass(rawType, true);
-        boolean skipDeserialize = excludeClass(rawType, false);
+        boolean excludeClass = excludeClassChecks(rawType);
+        boolean skipDeserialize = false;
+        boolean skipSerialize = excludeClass || excludeClassInStrategy(rawType, true);
+        if (excludeClass || excludeClassInStrategy(rawType, false)) {
+            skipDeserialize = true;
+        }
         if (!skipSerialize && !skipDeserialize) {
             return null;
         }
@@ -150,13 +153,21 @@ public final class Excluder implements TypeAdapterFactory, Cloneable {
         return false;
     }
 
-    public boolean excludeClass(Class<?> clazz, boolean serialize) {
+    private boolean excludeClassChecks(Class<?> clazz) {
         if (this.version != IGNORE_VERSIONS && !isValidVersion((Since) clazz.getAnnotation(Since.class), (Until) clazz.getAnnotation(Until.class))) {
             return true;
         }
-        if ((!this.serializeInnerClasses && isInnerClass(clazz)) || isAnonymousOrLocal(clazz)) {
-            return true;
+        if ((this.serializeInnerClasses || !isInnerClass(clazz)) && !isAnonymousOrLocal(clazz)) {
+            return false;
         }
+        return true;
+    }
+
+    public boolean excludeClass(Class<?> clazz, boolean serialize) {
+        return excludeClassChecks(clazz) || excludeClassInStrategy(clazz, serialize);
+    }
+
+    private boolean excludeClassInStrategy(Class<?> clazz, boolean serialize) {
         for (ExclusionStrategy exclusionStrategy : serialize ? this.serializationStrategies : this.deserializationStrategies) {
             if (exclusionStrategy.shouldSkipClass(clazz)) {
                 return true;

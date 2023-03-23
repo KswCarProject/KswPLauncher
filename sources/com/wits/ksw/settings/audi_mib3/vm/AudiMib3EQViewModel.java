@@ -19,7 +19,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class AudiMib3EQViewModel extends AndroidViewModel {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + EQViewModel.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + EQViewModel.class.getSimpleName());
     private static Context context;
     public ObservableInt bassProgress = new ObservableInt();
     public ObservableField<String> bassStr = new ObservableField<>();

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import kotlin.text.Typography;
 
 final class ViewInjector {
     private final String className;
@@ -188,14 +189,14 @@ final class ViewInjector {
                 if (needsCast2) {
                     sb.append("((").append(listener2.targetType());
                     if (listener2.genericArguments() > 0) {
-                        sb.append('<');
+                        sb.append(Typography.less);
                         for (int i = 0; i < listener2.genericArguments(); i++) {
                             if (i > 0) {
                                 sb.append(", ");
                             }
                             sb.append('?');
                         }
-                        sb.append('>');
+                        sb.append(Typography.greater);
                     }
                     sb.append(") ");
                 }

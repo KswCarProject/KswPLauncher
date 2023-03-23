@@ -102,7 +102,7 @@ public class AlsId7UiCarInfoBindingImpl extends AlsId7UiCarInfoBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (2 != variableId) {
+        if (3 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
@@ -114,7 +114,7 @@ public class AlsId7UiCarInfoBindingImpl extends AlsId7UiCarInfoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(2);
+        notifyPropertyChanged(3);
         super.requestRebind();
     }
 

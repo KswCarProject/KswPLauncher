@@ -11,7 +11,7 @@ import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 public class AlsId7SubNaviViewBindingImpl extends AlsId7SubNaviViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback39;
+    private final View.OnClickListener mCallback208;
     private long mDirtyFlags;
 
     static {
@@ -31,7 +31,7 @@ public class AlsId7SubNaviViewBindingImpl extends AlsId7SubNaviViewBinding imple
         this.naviConstraintLayout.setTag((Object) null);
         this.naviImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback39 = new OnClickListener(this, 1);
+        this.mCallback208 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -52,7 +52,7 @@ public class AlsId7SubNaviViewBindingImpl extends AlsId7SubNaviViewBinding imple
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (8 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setNaviCarViewModel((AlsID7ViewModel) variable);
@@ -64,7 +64,7 @@ public class AlsId7SubNaviViewBindingImpl extends AlsId7SubNaviViewBinding imple
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 
@@ -82,7 +82,7 @@ public class AlsId7SubNaviViewBindingImpl extends AlsId7SubNaviViewBinding imple
         }
         AlsID7ViewModel alsID7ViewModel = this.mNaviCarViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.naviImageView.setOnClickListener(this.mCallback39);
+            this.naviImageView.setOnClickListener(this.mCallback208);
         }
     }
 

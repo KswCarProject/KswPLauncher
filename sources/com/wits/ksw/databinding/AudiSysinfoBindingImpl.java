@@ -23,15 +23,16 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
         sparseIntArray.put(R.id.audiSysInfParentPanel, 6);
         sparseIntArray.put(R.id.audioSysInfoMcuUpdata, 7);
         sparseIntArray.put(R.id.audioSysInfoRestoreFactory, 8);
+        sparseIntArray.put(R.id.audioSysInfoUpDateFactory, 9);
     }
 
     public AudiSysinfoBindingImpl(DataBindingComponent bindingComponent, View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 10, sIncludes, sViewsWithIds));
     }
 
     /* JADX INFO: super call moved to the top of the method (can break code semantics) */
     private AudiSysinfoBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 5, bindings[6], bindings[2], bindings[1], bindings[3], bindings[4], bindings[7], bindings[5], bindings[8]);
+        super(bindingComponent, root, 5, bindings[6], bindings[2], bindings[1], bindings[3], bindings[4], bindings[7], bindings[5], bindings[8], bindings[9]);
         this.mDirtyFlags = -1;
         this.audiSysInfoAppVer.setTag((Object) null);
         this.audiSysInfoMcuVer.setTag((Object) null);
@@ -41,7 +42,6 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
         ScrollView scrollView = bindings[0];
         this.mboundView0 = scrollView;
         scrollView.setTag((Object) null);
-        View view = root;
         setRootTag(root);
         invalidateAll();
     }
@@ -63,7 +63,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiSettingViewModel) variable);
@@ -75,7 +75,7 @@ public class AudiSysinfoBindingImpl extends AudiSysinfoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

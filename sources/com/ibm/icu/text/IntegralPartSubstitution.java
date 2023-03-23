@@ -1,5 +1,7 @@
 package com.ibm.icu.text;
 
+import kotlin.text.Typography;
+
 /* compiled from: NFSubstitution */
 class IntegralPartSubstitution extends NFSubstitution {
     IntegralPartSubstitution(int pos, NFRuleSet ruleSet, String description) {
@@ -24,6 +26,6 @@ class IntegralPartSubstitution extends NFSubstitution {
 
     /* access modifiers changed from: package-private */
     public char tokenChar() {
-        return '<';
+        return Typography.less;
     }
 }

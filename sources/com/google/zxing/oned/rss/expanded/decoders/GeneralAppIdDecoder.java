@@ -3,7 +3,7 @@ package com.google.zxing.oned.rss.expanded.decoders;
 import com.google.zxing.FormatException;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.common.BitArray;
-import com.ibm.icu.text.SymbolTable;
+import kotlin.text.Typography;
 
 final class GeneralAppIdDecoder {
     private final StringBuilder buffer = new StringBuilder();
@@ -226,7 +226,7 @@ final class GeneralAppIdDecoder {
         int extractNumericValueFromBitArray = extractNumericValueFromBitArray(pos, 5);
         int fiveBitValue = extractNumericValueFromBitArray;
         if (extractNumericValueFromBitArray == 15) {
-            return new DecodedChar(pos + 5, SymbolTable.SYMBOL_REF);
+            return new DecodedChar(pos + 5, '$');
         }
         if (fiveBitValue >= 5 && fiveBitValue < 15) {
             return new DecodedChar(pos + 5, (char) ((fiveBitValue + 48) - 5));
@@ -244,13 +244,13 @@ final class GeneralAppIdDecoder {
                 c = '!';
                 break;
             case SCSU.UDEFINE1 /*233*/:
-                c = '\"';
+                c = Typography.quote;
                 break;
             case SCSU.UDEFINE2 /*234*/:
                 c = '%';
                 break;
             case SCSU.UDEFINE3 /*235*/:
-                c = '&';
+                c = Typography.amp;
                 break;
             case SCSU.UDEFINE4 /*236*/:
                 c = '\'';
@@ -286,13 +286,13 @@ final class GeneralAppIdDecoder {
                 c = ';';
                 break;
             case 247:
-                c = '<';
+                c = Typography.less;
                 break;
             case 248:
                 c = '=';
                 break;
             case SCSU.LATININDEX /*249*/:
-                c = '>';
+                c = Typography.greater;
                 break;
             case 250:
                 c = '?';
@@ -334,7 +334,7 @@ final class GeneralAppIdDecoder {
         int extractNumericValueFromBitArray = extractNumericValueFromBitArray(pos, 5);
         int fiveBitValue = extractNumericValueFromBitArray;
         if (extractNumericValueFromBitArray == 15) {
-            return new DecodedChar(pos + 5, SymbolTable.SYMBOL_REF);
+            return new DecodedChar(pos + 5, '$');
         }
         if (fiveBitValue >= 5 && fiveBitValue < 15) {
             return new DecodedChar(pos + 5, (char) ((fiveBitValue + 48) - 5));

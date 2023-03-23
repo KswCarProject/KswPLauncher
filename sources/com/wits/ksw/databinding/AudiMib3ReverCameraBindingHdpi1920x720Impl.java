@@ -61,7 +61,7 @@ public class AudiMib3ReverCameraBindingHdpi1920x720Impl extends AudiMib3ReverCam
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SystemViewModel) variable);
@@ -73,7 +73,7 @@ public class AudiMib3ReverCameraBindingHdpi1920x720Impl extends AudiMib3ReverCam
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

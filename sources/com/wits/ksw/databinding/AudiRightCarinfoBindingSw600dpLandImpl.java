@@ -63,7 +63,7 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiViewModel) variable);
@@ -75,7 +75,7 @@ public class AudiRightCarinfoBindingSw600dpLandImpl extends AudiRightCarinfoBind
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

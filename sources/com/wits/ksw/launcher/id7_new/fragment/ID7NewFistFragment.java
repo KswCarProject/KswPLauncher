@@ -238,19 +238,19 @@ public class ID7NewFistFragment extends RelativeLayout implements View.OnClickLi
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rel_firtNav:
+            case R.id.rel_firtNav /*2131297569*/:
                 oncheckID(2);
                 return;
-            case R.id.rel_firtaps:
+            case R.id.rel_firtaps /*2131297570*/:
                 oncheckID(4);
                 return;
-            case R.id.rel_firtbt:
+            case R.id.rel_firtbt /*2131297571*/:
                 oncheckID(3);
                 return;
-            case R.id.rel_firtci:
+            case R.id.rel_firtci /*2131297572*/:
                 oncheckID(0);
                 return;
-            case R.id.rel_firtxc:
+            case R.id.rel_firtxc /*2131297577*/:
                 oncheckID(1);
                 return;
             default:

@@ -71,7 +71,7 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SystemViewModel) variable);
@@ -83,7 +83,7 @@ public class AudiMib3SystemSetBindingImpl extends AudiMib3SystemSetBinding {
         synchronized (this) {
             this.mDirtyFlags |= 64;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

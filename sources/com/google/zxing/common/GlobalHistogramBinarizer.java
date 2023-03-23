@@ -3,6 +3,7 @@ package com.google.zxing.common;
 import com.google.zxing.Binarizer;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.NotFoundException;
+import kotlin.UByte;
 
 public class GlobalHistogramBinarizer extends Binarizer {
     private static final byte[] EMPTY = new byte[0];
@@ -29,13 +30,13 @@ public class GlobalHistogramBinarizer extends Binarizer {
         byte[] localLuminances = source.getRow(y, this.luminances);
         int[] localBuckets = this.buckets;
         for (int x = 0; x < width; x++) {
-            int i = (localLuminances[x] & 255) >> 3;
+            int i = (localLuminances[x] & UByte.MAX_VALUE) >> 3;
             localBuckets[i] = localBuckets[i] + 1;
         }
         int blackPoint = estimateBlackPoint(localBuckets);
         if (width < 3) {
             for (int x2 = 0; x2 < width; x2++) {
-                if ((localLuminances[x2] & 255) < blackPoint) {
+                if ((localLuminances[x2] & UByte.MAX_VALUE) < blackPoint) {
                     row.set(x2);
                 }
             }
@@ -75,7 +76,7 @@ public class GlobalHistogramBinarizer extends Binarizer {
         for (int y3 = 0; y3 < height; y3++) {
             int offset = y3 * width;
             for (int x2 = 0; x2 < width; x2++) {
-                if ((localLuminances2[offset + x2] & 255) < y2) {
+                if ((localLuminances2[offset + x2] & UByte.MAX_VALUE) < y2) {
                     matrix.set(x2, y3);
                 }
             }

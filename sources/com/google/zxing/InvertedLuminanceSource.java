@@ -1,5 +1,7 @@
 package com.google.zxing;
 
+import kotlin.UByte;
+
 public final class InvertedLuminanceSource extends LuminanceSource {
     private final LuminanceSource delegate;
 
@@ -12,7 +14,7 @@ public final class InvertedLuminanceSource extends LuminanceSource {
         byte[] row2 = this.delegate.getRow(y, row);
         int width = getWidth();
         for (int i = 0; i < width; i++) {
-            row2[i] = (byte) (255 - (row2[i] & 255));
+            row2[i] = (byte) (255 - (row2[i] & UByte.MAX_VALUE));
         }
         return row2;
     }
@@ -23,7 +25,7 @@ public final class InvertedLuminanceSource extends LuminanceSource {
         int length = width;
         byte[] invertedMatrix = new byte[width];
         for (int i = 0; i < length; i++) {
-            invertedMatrix[i] = (byte) (255 - (matrix[i] & 255));
+            invertedMatrix[i] = (byte) (255 - (matrix[i] & UByte.MAX_VALUE));
         }
         return invertedMatrix;
     }

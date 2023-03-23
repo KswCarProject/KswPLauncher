@@ -16,7 +16,6 @@ import butterknife.OnTouch;
 import butterknife.Optional;
 import butterknife.internal.ListenerClass;
 import com.ibm.icu.text.PluralRules;
-import com.ibm.icu.text.SymbolTable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -48,6 +47,7 @@ import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
+import kotlin.text.Typography;
 
 public final class ButterKnifeProcessor extends AbstractProcessor {
     static final /* synthetic */ boolean $assertionsDisabled = false;
@@ -516,14 +516,14 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
         List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
         if (typeArguments.size() > 0) {
             StringBuilder typeString = new StringBuilder(declaredType.asElement().toString());
-            typeString.append('<');
+            typeString.append(Typography.less);
             for (int i = 0; i < typeArguments.size(); i++) {
                 if (i > 0) {
                     typeString.append(',');
                 }
                 typeString.append('?');
             }
-            typeString.append('>');
+            typeString.append(Typography.greater);
             if (typeString.toString().equals(otherType)) {
                 return true;
             }
@@ -557,7 +557,7 @@ public final class ButterKnifeProcessor extends AbstractProcessor {
     }
 
     private static String getClassName(TypeElement type, String packageName) {
-        return type.getQualifiedName().toString().substring(packageName.length() + 1).replace('.', SymbolTable.SYMBOL_REF);
+        return type.getQualifiedName().toString().substring(packageName.length() + 1).replace('.', '$');
     }
 
     private String findParentFqcn(TypeElement typeElement, Set<String> parents) {

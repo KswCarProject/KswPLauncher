@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/iv_theme_sel_bg" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/benz_mbux_2021_ksw_coat_bg_src_selector" android:scaleType="fitCenter" android:contentDescription="@null"/>
+</LinearLayout>

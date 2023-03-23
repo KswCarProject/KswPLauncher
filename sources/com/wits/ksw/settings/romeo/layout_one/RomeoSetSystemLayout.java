@@ -239,26 +239,26 @@ public class RomeoSetSystemLayout extends RelativeLayout implements View.OnClick
         }
         resetTextColor();
         switch (v.getId()) {
-            case R.id.tv_music_app:
+            case R.id.tv_music_app /*2131297900*/:
                 this.tv_music_app.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(1, 6);
                 return;
-            case R.id.tv_sysBgld:
+            case R.id.tv_sysBgld /*2131297929*/:
                 this.tv_sysBgld.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(1, 2);
                 return;
-            case R.id.tv_sysCaux:
+            case R.id.tv_sysCaux /*2131297930*/:
                 this.updateTwoLayout.updateTwoLayout(1, 3);
                 return;
-            case R.id.tv_sysDcsxt:
+            case R.id.tv_sysDcsxt /*2131297931*/:
                 this.tv_sysDcsxt.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(1, 1);
                 return;
-            case R.id.tv_sysTempUnit:
+            case R.id.tv_sysTempUnit /*2131297933*/:
                 this.tempUnitView.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(1, 4);
                 return;
-            case R.id.tv_video_app:
+            case R.id.tv_video_app /*2131297951*/:
                 this.tv_video_app.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(1, 7);
                 return;
@@ -269,19 +269,19 @@ public class RomeoSetSystemLayout extends RelativeLayout implements View.OnClick
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cbox_sysDcgj:
+            case R.id.cbox_sysDcgj /*2131296728*/:
                 FileUtils.savaData(KeyConfig.DAO_CHE_GJ, isChecked);
                 return;
-            case R.id.cbox_sysDcjy:
+            case R.id.cbox_sysDcjy /*2131296729*/:
                 FileUtils.savaData(KeyConfig.DAO_CHE_JY, isChecked);
                 return;
-            case R.id.cbox_sysDcld:
+            case R.id.cbox_sysDcld /*2131296730*/:
                 FileUtils.savaData(KeyConfig.DAO_CHE_LD, isChecked);
                 return;
-            case R.id.cbox_sysHjs:
+            case R.id.cbox_sysHjs /*2131296731*/:
                 FileUtils.savaData(KeyConfig.HOU_SHI_SX, isChecked);
                 return;
-            case R.id.cbox_sysXcjz:
+            case R.id.cbox_sysXcjz /*2131296732*/:
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
                 return;
             default:

@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AudiConstraintLayout extends ConstraintLayout {
-    private static final String TAG = ("KSWLauncher." + AudiConstraintLayout.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + AudiConstraintLayout.class.getSimpleName());
     private List<View> childViews;
 
     public AudiConstraintLayout(Context context) {

@@ -34,7 +34,7 @@ public final class UnicodeDecompressor implements SCSU {
      */
     /* JADX WARNING: Code restructure failed: missing block: B:22:0x0063, code lost:
         r0 = r14 + 1;
-        r3 = r9[r14] & 255;
+        r3 = r9[r14] & kotlin.UByte.MAX_VALUE;
      */
     /* JADX WARNING: Code restructure failed: missing block: B:23:0x0069, code lost:
         switch(r3) {
@@ -86,7 +86,7 @@ public final class UnicodeDecompressor implements SCSU {
         r0 = r9[r0] & 255;
         r3 = (r0 & 224) >> 5;
         r8.fCurrentWindow = r3;
-        r8.fOffsets[r3] = (((r9[r4] & 255) | ((r0 & 31) << 8)) * com.ibm.icu.text.Bidi.LEVEL_OVERRIDE) + 65536;
+        r8.fOffsets[r3] = (((r9[r4] & kotlin.UByte.MAX_VALUE) | ((r0 & 31) << 8)) * 128) + 65536;
         r8.fMode = r10;
         r16 = r0;
         r14 = r4 + 1;
@@ -105,7 +105,7 @@ public final class UnicodeDecompressor implements SCSU {
     /* JADX WARNING: Code restructure failed: missing block: B:33:0x00d3, code lost:
         r4 = r0 + 1;
         r14 = r4 + 1;
-        r12[r15] = (char) ((r9[r0] << 8) | (r9[r4] & 255));
+        r12[r15] = (char) ((r9[r0] << 8) | (r9[r4] & kotlin.UByte.MAX_VALUE));
         r15 = r15 + 1;
      */
     /* JADX WARNING: Code restructure failed: missing block: B:34:0x00e8, code lost:
@@ -122,7 +122,7 @@ public final class UnicodeDecompressor implements SCSU {
     /* JADX WARNING: Code restructure failed: missing block: B:36:0x00fd, code lost:
         r1 = r3 - 232;
         r8.fCurrentWindow = r1;
-        r8.fOffsets[r1] = sOffsetTable[r9[r0] & 255];
+        r8.fOffsets[r1] = sOffsetTable[r9[r0] & kotlin.UByte.MAX_VALUE];
         r8.fMode = r10;
         r16 = r3;
         r14 = r0 + 1;
@@ -135,7 +135,7 @@ public final class UnicodeDecompressor implements SCSU {
      */
     /* JADX WARNING: Code restructure failed: missing block: B:38:0x0121, code lost:
         r14 = r0 + 1;
-        r12[r15] = (char) ((r9[r0] & 255) | (r3 << 8));
+        r12[r15] = (char) ((r9[r0] & kotlin.UByte.MAX_VALUE) | (r3 << 8));
         r16 = r3;
         r15 = r15 + 1;
      */
@@ -147,7 +147,7 @@ public final class UnicodeDecompressor implements SCSU {
      */
     /* JADX WARNING: Code restructure failed: missing block: B:41:0x0138, code lost:
         r0 = r14 + 1;
-        r3 = r9[r14] & 255;
+        r3 = r9[r14] & kotlin.UByte.MAX_VALUE;
      */
     /* JADX WARNING: Code restructure failed: missing block: B:42:0x013e, code lost:
         switch(r3) {
@@ -438,7 +438,7 @@ public final class UnicodeDecompressor implements SCSU {
         r4 = r4[r5] - 65536;
         r5 = r15 + 1;
         r12[r15] = (char) ((r4 >> 10) + 55296);
-        r12[r5] = (char) (((r4 & com.wits.ksw.settings.BrightnessUtils.GAMMA_SPACE_MAX) + com.ibm.icu.text.UTF16.TRAIL_SURROGATE_MIN_VALUE) + (r3 & com.ibm.icu.text.Bidi.LEVEL_DEFAULT_RTL));
+        r12[r5] = (char) (((r4 & com.wits.ksw.settings.BrightnessUtils.GAMMA_SPACE_MAX) + com.ibm.icu.text.UTF16.TRAIL_SURROGATE_MIN_VALUE) + (r3 & Byte.MAX_VALUE));
         r14 = r0;
         r16 = r3;
         r15 = r5 + 1;
@@ -457,7 +457,7 @@ public final class UnicodeDecompressor implements SCSU {
     /* JADX WARNING: Code restructure failed: missing block: B:52:0x01ab, code lost:
         r4 = r3 - 24;
         r8.fCurrentWindow = r4;
-        r8.fOffsets[r4] = sOffsetTable[r9[r0] & 255];
+        r8.fOffsets[r4] = sOffsetTable[r9[r0] & kotlin.UByte.MAX_VALUE];
         r16 = r3;
         r14 = r0 + 1;
      */
@@ -483,7 +483,7 @@ public final class UnicodeDecompressor implements SCSU {
     /* JADX WARNING: Code restructure failed: missing block: B:58:0x01e7, code lost:
         r4 = r0 + 1;
         r0 = r9[r0];
-        r12[r15] = (char) ((r9[r4] & 255) | (r0 << 8));
+        r12[r15] = (char) ((r9[r4] & kotlin.UByte.MAX_VALUE) | (r0 << 8));
         r16 = r0;
         r15 = r15 + 1;
         r14 = r4 + 1;
@@ -504,7 +504,7 @@ public final class UnicodeDecompressor implements SCSU {
         r0 = r9[r0] & 255;
         r3 = (r0 & 224) >> 5;
         r8.fCurrentWindow = r3;
-        r8.fOffsets[r3] = (((r9[r4] & 255) | ((r0 & 31) << 8)) * com.ibm.icu.text.Bidi.LEVEL_OVERRIDE) + 65536;
+        r8.fOffsets[r3] = (((r9[r4] & kotlin.UByte.MAX_VALUE) | ((r0 & 31) << 8)) * 128) + 65536;
         r16 = r0;
         r14 = r4 + 1;
      */

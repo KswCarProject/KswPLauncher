@@ -8,6 +8,7 @@ import com.ibm.icu.text.RuleBasedTransliterator;
 import java.text.ParsePosition;
 import java.util.List;
 import java.util.Map;
+import kotlin.text.Typography;
 
 class TransliteratorParser {
     private static final char ALT_FORWARD_RULE_OP = '→';
@@ -1740,7 +1741,7 @@ class TransliteratorParser {
     }
 
     static final void syntaxError(String msg, String rule, int start) {
-        throw new IllegalIcuArgumentException(msg + " in \"" + Utility.escape(rule.substring(start, ruleEnd(rule, start, rule.length()))) + '\"');
+        throw new IllegalIcuArgumentException(msg + " in \"" + Utility.escape(rule.substring(start, ruleEnd(rule, start, rule.length()))) + Typography.quote);
     }
 
     static final int ruleEnd(String rule, int start, int limit) {

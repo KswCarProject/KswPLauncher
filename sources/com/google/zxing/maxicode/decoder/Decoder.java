@@ -9,6 +9,7 @@ import com.google.zxing.common.reedsolomon.GenericGF;
 import com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
 import com.google.zxing.common.reedsolomon.ReedSolomonException;
 import java.util.Map;
+import kotlin.UByte;
 
 public final class Decoder {
     private static final int ALL = 0;
@@ -55,7 +56,7 @@ public final class Decoder {
         int[] iArr = new int[(i5 / i6)];
         for (int i7 = 0; i7 < i5; i7++) {
             if (i4 == 0 || i7 % 2 == i4 - 1) {
-                iArr[i7 / i6] = bArr[i7 + i] & 255;
+                iArr[i7 / i6] = bArr[i7 + i] & UByte.MAX_VALUE;
             }
         }
         try {

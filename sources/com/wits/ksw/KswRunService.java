@@ -10,11 +10,13 @@ import android.util.Log;
 import com.wits.ksw.launcher.model.McuImpl;
 import com.wits.ksw.launcher.model.MediaImpl;
 import com.wits.ksw.launcher.utils.ExceptionPrint;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.pms.ICmdListener;
 import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.MusicStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
+import com.wits.pms.statuscontrol.VideoStatus;
 import com.wits.pms.statuscontrol.WitsStatus;
 
 public class KswRunService extends Service {
@@ -27,26 +29,44 @@ public class KswRunService extends Service {
 
         public void updateStatusInfo(String mcuMssage) throws RemoteException {
             if (TextUtils.isEmpty(mcuMssage)) {
-                Log.e(KswRunService.TAG, "updateStatusInfo: mcuMssage:" + mcuMssage);
+                Log.e(KswRunService.TAG, "updateStatusInfo: mcuMssage is null");
                 return;
             }
             WitsStatus status1 = WitsStatus.getWitsStatusFormJson(mcuMssage);
             if (status1 == null) {
-                Log.e(KswRunService.TAG, "updateStatusInfo: WitsStatusFormJson:" + status1);
+                Log.e(KswRunService.TAG, "updateStatusInfo: WitsStatus is null");
                 return;
             }
+            Log.i(KswRunService.TAG, "updateStatusInfo: WitsStatus:" + status1.type + " , type : " + status1.jsonArg);
             switch (status1.getType()) {
                 case 5:
+                    Log.i(KswRunService.TAG, "updateStatusInfo: TYPE_MCU_STATUS");
                     KswRunService.this.handleCarinfo(McuStatus.getStatusFromJson(status1.jsonArg), 0);
                     return;
                 case 21:
+                    Log.i(KswRunService.TAG, "updateStatusInfo: TYPE_MUSIC_STATUS");
                     MusicStatus musicStatus = MusicStatus.getStatusFromJson(status1.jsonArg);
                     if (musicStatus == null) {
-                        Log.e(KswRunService.TAG, "updateStatusInfo: MusicStatusFromJson:" + musicStatus);
+                        Log.e(KswRunService.TAG, "updateStatusInfo: MusicStatus is null");
                         return;
                     }
-                    MediaImpl.getInstance().handleMediaPlaySeekbarAndCurrentime(musicStatus.position);
+                    int postion = musicStatus.position;
+                    String path = musicStatus.path;
+                    MediaImpl.getInstance().handleMediaPlaySeekbarAndCurrentime(postion);
+                    MediaImpl.getInstance().handleMediaInfo(path);
                     return;
+                case 22:
+                    Log.e(KswRunService.TAG, "updateStatusInfo: TYPE_VIDEO_STATUS json : " + status1.jsonArg);
+                    VideoStatus videoStatus = VideoStatus.getStatusFromJson(status1.jsonArg);
+                    if (TextUtils.isEmpty(videoStatus.getPath())) {
+                        Log.i(KswRunService.TAG, "updateStatusInfo: videoStatus getPath == null");
+                        return;
+                    } else if (UiThemeUtils.isUI_GS_ID8(KswApplication.appContext)) {
+                        MediaImpl.getInstance().handleVideoInfoSetPlayStatus(videoStatus, videoStatus.getPath());
+                        return;
+                    } else {
+                        return;
+                    }
                 default:
                     return;
             }
@@ -54,13 +74,15 @@ public class KswRunService extends Service {
     };
     private IContentObserver.Stub musicContentObserver = new IContentObserver.Stub() {
         public void onChange() throws RemoteException {
-            try {
-                String path = PowerManagerApp.getManager().getStatusString("path");
-                Log.i(KswRunService.TAG, "musicContentObserver onChange: " + path);
-                MediaImpl.getInstance().handleMediaInfo(path);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(KswRunService.TAG, "musicContentObserver: " + e.getMessage());
+            if (!UiThemeUtils.isBMW_ID8_UI(KswRunService.this) && !UiThemeUtils.isUI_GS_ID8(KswRunService.this)) {
+                try {
+                    String path = PowerManagerApp.getManager().getStatusString("path");
+                    Log.i(KswRunService.TAG, "musicContentObserver onChange: " + path);
+                    MediaImpl.getInstance().handleMediaInfo(path);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(KswRunService.TAG, "musicContentObserver: " + e.getMessage());
+                }
             }
         }
     };

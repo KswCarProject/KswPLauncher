@@ -10,9 +10,9 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class UgHomeOne2BindingImpl extends UgHomeOne2Binding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback120;
-    private final View.OnClickListener mCallback121;
-    private final View.OnClickListener mCallback122;
+    private final View.OnClickListener mCallback71;
+    private final View.OnClickListener mCallback72;
+    private final View.OnClickListener mCallback73;
     private long mDirtyFlags;
 
     public UgHomeOne2BindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,9 +27,9 @@ public class UgHomeOne2BindingImpl extends UgHomeOne2Binding implements OnClickL
         this.ugHomeMusicVaiw.setTag((Object) null);
         this.ugHomeNaviVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback122 = new OnClickListener(this, 3);
-        this.mCallback120 = new OnClickListener(this, 1);
-        this.mCallback121 = new OnClickListener(this, 2);
+        this.mCallback72 = new OnClickListener(this, 2);
+        this.mCallback73 = new OnClickListener(this, 3);
+        this.mCallback71 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -50,7 +50,7 @@ public class UgHomeOne2BindingImpl extends UgHomeOne2Binding implements OnClickL
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -62,7 +62,7 @@ public class UgHomeOne2BindingImpl extends UgHomeOne2Binding implements OnClickL
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -80,9 +80,9 @@ public class UgHomeOne2BindingImpl extends UgHomeOne2Binding implements OnClickL
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeBtVaiw.setOnClickListener(this.mCallback121);
-            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback122);
-            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback120);
+            this.ugHomeBtVaiw.setOnClickListener(this.mCallback72);
+            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback73);
+            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback71);
         }
     }
 

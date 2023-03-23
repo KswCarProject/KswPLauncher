@@ -11,7 +11,7 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class ControlBean {
-    private static final String TAG = ("KSWLauncher." + ControlBean.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + ControlBean.class.getSimpleName());
     public ObservableBoolean benzControlPanelState = new ObservableBoolean();
     public final ObservableInt brightness = new ObservableInt();
     public final ObservableBoolean chassis = new ObservableBoolean();

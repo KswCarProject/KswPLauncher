@@ -33,6 +33,7 @@
     <string name="als_id7_music">เพลง</string>
     <string name="als_id7_music_player">เครื่องเล่นเพลง</string>
     <string name="als_id7_phone">โทรศัพท์</string>
+    <string name="als_id7_wranning">การดำเนินงานของคุณบ่อยเกินไปโปรดปล่อยหลังจากการผ่าตัด</string>
     <string name="app_aux">เพื่อ</string>
     <string name="app_cancel">ยกเลิก</string>
     <string name="app_dtv">dtv</string>
@@ -131,6 +132,8 @@
     <string name="benz_mbux_2021_style_classical_tip">คลาสสิค</string>
     <string name="benz_mbux_2021_style_modern_tip">ทันสมัย</string>
     <string name="benz_mbux_2021_theme_settings">ตั้งค่าชุดตก แต่ง</string>
+    <string name="benz_mbux_2021_weather">สภาพอากาศทั่วโลก</string>
+    <string name="benz_mbux_2021_weather_content">สลับอินเทอร์เฟซสภาพอากาศ</string>
     <string name="benz_ntg6_fy_theme_settings">ชุดตก แต่ง</string>
     <string name="bmw_evo_id6_gs_home_apps">@string/ug_apps_text</string>
     <string name="bmw_evo_id6_gs_home_apps_hint">@string/id6_apps_mess</string>
@@ -208,6 +211,7 @@
     <string name="factory_danwei">การเลือกเกียร์</string>
     <string name="factory_danwei1">อัตโนมัติ</string>
     <string name="factory_danwei2">คู่มือ</string>
+    <string name="factory_front_view_mirror_setting">การตั้งค่ากระจกมองภาพด้านหน้า</string>
     <string name="factory_gears1">เกียร์ประเภท 1</string>
     <string name="factory_gears2">เกียร์ประเภท 2</string>
     <string name="factory_gears3">เกียร์ประเภท 3</string>
@@ -224,6 +228,10 @@
     <string name="factory_nbt0">AUX Auto Switching</string>
     <string name="factory_nbt1">อัลไพน์</string>
     <string name="factory_nbt2">ฮัสตา</string>
+    <string name="factory_phone">เลือกปุ่มโทรศัพท์</string>
+    <string name="factory_phone1">ฟังก์ชันรถเดิม</string>
+    <string name="factory_phone2">ฟังก์ชันบลูทูธ</string>
+    <string name="factory_phone3">ยังไม่ได้กำหนด</string>
     <string name="factory_restart">รีสตาร์ท</string>
     <string name="factory_text">การตั้งค่าจากโรงงาน</string>
     <string name="factory_text0">โหมดการสลับ AUX</string>
@@ -289,6 +297,7 @@
     <string name="id7_als_item_three">กีฬา</string>
     <string name="id7_als_item_two">ความสบายใจ</string>
     <string name="id7_browser">@string/id6_browser</string>
+    <string name="installing">การติดตั้งโปรแกรม</string>
     <string name="item1">ระบบ</string>
     <string name="item2">การนำทาง</string>
     <string name="item3">ปริมาณ</string>
@@ -321,6 +330,22 @@
     <string name="ksw_id7_setting">การตั้งค่า</string>
     <string name="ksw_id7_switch_to_carinfo_window">แสดงข้อมูลรถต้นฉบับ</string>
     <string name="ksw_id7_system_app_not_uninstall">แอประบบสามารถถอนการติดตั้งได้</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">แอปพลิเคชัน</string>
+    <string name="ksw_id8_current">ที่เลือกในปัจจุบัน</string>
+    <string name="ksw_id8_efficient">การประหยัดพลังงาน</string>
+    <string name="ksw_id8_modus">แบบอย่าง</string>
+    <string name="ksw_id8_personal">ค่าเริ่มต้น</string>
+    <string name="ksw_id8_settings_title_audio">เสียงประกอบ</string>
+    <string name="ksw_id8_settings_title_info">ข้อมูล</string>
+    <string name="ksw_id8_sport">กีฬา</string>
+    <string name="ksw_id8_tel">โทรศัพท์</string>
+    <string name="ksw_id8_trd_desc">การใช้งานบุคคลที่สาม</string>
+    <string name="ksw_id8_weather">สภาพอากาศ</string>
     <string name="ksw_idf7_unknow_artis">ศิลปินที่ไม่รู้จัก</string>
     <string name="ksw_idf7_unkonw_album">อัลบั้มที่ไม่รู้จัก</string>
     <string name="ksw_idf7_unkonw_soung">เพลงที่ไม่รู้จัก</string>
@@ -354,6 +379,8 @@
     <string name="phone_link_txt">ลิงค์โทรศัพท์</string>
     <string name="raw_car_text1">จอแสดงผลแบบเต็มหน้าจอ</string>
     <string name="raw_car_text2">การเลือกปัจจุบัน:</string>
+    <string name="reverse_exit_time_agreement">ถอนตัวตามข้อตกลงเดิม</string>
+    <string name="reverse_exit_time_custom">เวลาออกเอง</string>
     <string name="romeo_id7_dashboard_lable">แผงควบคุม</string>
     <string name="search_menu_title">ค้นหา</string>
     <string name="sele_navi_map">เลือกแผนที่นำทาง</string>
@@ -382,6 +409,7 @@
     <string name="shext_1">กล้องหลังการขาย</string>
     <string name="shext_2">กล้อง OEM</string>
     <string name="shext_3">กล้อง 360</string>
+    <string name="shext_4">สร้างขึ้นใน</string>
     <string name="show_msg_one">การตั้งค่าระบบ Android</string>
     <string name="show_msg_two">สำหรับการติดตั้งและการดีบัก</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -397,6 +425,7 @@
     <string name="text_13">ความสว่าง</string>
     <string name="text_14">RAM: %s</string>
     <string name="text_15">การเก็บรักษา: %s</string>
+    <string name="text_16">ตรวจสอบระบบการปรับปรุง</string>
     <string name="text_2">การซิงโครไนซ์เวลา</string>
     <string name="text_3">ระบบเวลา</string>
     <string name="text_4">เวลาในรถยนต์</string>
@@ -413,6 +442,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">cvbs-pal</string>
+    <string name="text_ahd_cam_auto">ตรวจจับอัตโนมัติ</string>
     <string name="text_ahd_cam_select">การเลือกกล้อง AHD</string>
     <string name="text_flash">แฟลช: %s</string>
     <string name="text_logo_input">นำเข้า</string>
@@ -425,6 +455,9 @@
     <string name="touch_continuous_send">ส่งข้อมูลอย่างต่อเนื่องส่ง</string>
     <string name="track_1">track1</string>
     <string name="track_2">track2</string>
+    <string name="txz_oil_text">การตั้งค่าการแจ้งเตือนปริมาณน้ำมัน</string>
+    <string name="txz_speed_text">การตั้งค่าความเร็วเตือนภัยเดียวกัน</string>
+    <string name="txz_temp_text">การตั้งค่าการแจ้งเตือนอุณหภูมิสิ่งแวดล้อม</string>
     <string name="ug_apps_text">แอพเพิ่มเติม</string>
     <string name="ug_bluetooth">บลูทู ธ</string>
     <string name="ug_navigation">การนำทาง</string>

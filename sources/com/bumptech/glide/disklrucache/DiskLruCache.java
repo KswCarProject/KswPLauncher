@@ -142,7 +142,7 @@ public final class DiskLruCache implements Closeable {
             String appVersionString = reader.readLine();
             String valueCountString = reader.readLine();
             String blank = reader.readLine();
-            if (!MAGIC.equals(magic) || !VERSION_1.equals(version) || !Integer.toString(this.appVersion).equals(appVersionString) || !Integer.toString(this.valueCount).equals(valueCountString) || !"".equals(blank)) {
+            if (!MAGIC.equals(magic) || !"1".equals(version) || !Integer.toString(this.appVersion).equals(appVersionString) || !Integer.toString(this.valueCount).equals(valueCountString) || !"".equals(blank)) {
                 throw new IOException("unexpected journal header: [" + magic + ", " + version + ", " + valueCountString + ", " + blank + "]");
             }
             lineCount = 0;
@@ -230,7 +230,7 @@ public final class DiskLruCache implements Closeable {
         try {
             writer2.write(MAGIC);
             writer2.write("\n");
-            writer2.write(VERSION_1);
+            writer2.write("1");
             writer2.write("\n");
             writer2.write(Integer.toString(this.appVersion));
             writer2.write("\n");

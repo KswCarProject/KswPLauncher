@@ -266,7 +266,7 @@ public class PagerTitleStrip extends ViewGroup {
         }
         int currLeft = ((stripWidth - textPaddedRight) - ((int) (((float) contentWidth) * currOffset))) - (currWidth / 2);
         int i2 = halfCurrWidth;
-        int currRight = currLeft + currWidth;
+        int halfCurrWidth2 = currLeft + currWidth;
         int i3 = currWidth;
         int prevBaseline = this.mPrevText.getBaseline();
         int i4 = textPaddedLeft;
@@ -316,13 +316,13 @@ public class PagerTitleStrip extends ViewGroup {
         int paddedHeight = paddingTop;
         TextView textView = this.mCurrText;
         int i13 = paddingBottom;
-        textView.layout(currLeft, stripHeight, currRight, stripHeight + textView.getMeasuredHeight());
+        textView.layout(currLeft, stripHeight, halfCurrWidth2, stripHeight + textView.getMeasuredHeight());
         int prevLeft = Math.min(paddingLeft, (currLeft - this.mScaledTextSpacing) - prevWidth);
         TextView textView2 = this.mPrevText;
         int i14 = currLeft;
         int i15 = prevWidth;
         textView2.layout(prevLeft, prevTop, prevLeft + prevWidth, prevTop + textView2.getMeasuredHeight());
-        int nextLeft = Math.max((stripWidth - paddingRight) - nextWidth, this.mScaledTextSpacing + currRight);
+        int nextLeft = Math.max((stripWidth - paddingRight) - nextWidth, this.mScaledTextSpacing + halfCurrWidth2);
         TextView textView3 = this.mNextText;
         int i16 = nextWidth;
         textView3.layout(nextLeft, vgrav, nextLeft + nextWidth, vgrav + textView3.getMeasuredHeight());

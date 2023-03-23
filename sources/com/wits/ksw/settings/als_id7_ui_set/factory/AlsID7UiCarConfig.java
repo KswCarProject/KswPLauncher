@@ -21,7 +21,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheckedChangeListener {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AlsID7UiCarConfig.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AlsID7UiCarConfig.class.getSimpleName());
     /* access modifiers changed from: private */
     public RadioGroup audiHomeLeftRadioGroup;
     /* access modifiers changed from: private */
@@ -446,99 +446,99 @@ public class AlsID7UiCarConfig extends FrameLayout implements RadioGroup.OnCheck
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_Nbtauxsw1 /*2131297174*/:
+            case R.id.rdb_Nbtauxsw1 /*2131297440*/:
                 FileUtils.savaIntData(KeyConfig.NBT_AUX_SW, 1);
                 return;
-            case R.id.rdb_Nbtauxsw2 /*2131297175*/:
+            case R.id.rdb_Nbtauxsw2 /*2131297441*/:
                 FileUtils.savaIntData(KeyConfig.NBT_AUX_SW, 2);
                 return;
-            case R.id.rdb_Nbtauxsw3 /*2131297176*/:
+            case R.id.rdb_Nbtauxsw3 /*2131297442*/:
                 FileUtils.savaIntData(KeyConfig.NBT_AUX_SW, 3);
                 return;
-            case R.id.rdb_auxsw1 /*2131297177*/:
+            case R.id.rdb_auxsw1 /*2131297443*/:
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_SW, 0);
                 return;
-            case R.id.rdb_auxsw2 /*2131297178*/:
+            case R.id.rdb_auxsw2 /*2131297444*/:
                 FileUtils.savaIntData(KeyConfig.CAR_AUX_SW, 1);
                 return;
-            case R.id.rdb_ccciD1 /*2131297179*/:
+            case R.id.rdb_ccciD1 /*2131297445*/:
                 FileUtils.savaIntData(KeyConfig.CCC_ID, 0);
                 return;
-            case R.id.rdb_ccciD2 /*2131297180*/:
+            case R.id.rdb_ccciD2 /*2131297446*/:
                 FileUtils.savaIntData(KeyConfig.CCC_ID, 1);
                 return;
-            case R.id.rdg_can1 /*2131297226*/:
+            case R.id.rdg_can1 /*2131297492*/:
                 FileUtils.savaIntData(KeyConfig.CAN_BUS_TYPE, 1);
                 return;
-            case R.id.rdg_can2 /*2131297227*/:
+            case R.id.rdg_can2 /*2131297493*/:
                 FileUtils.savaIntData(KeyConfig.CAN_BUS_TYPE, 2);
                 return;
-            case R.id.rdg_cardoor1 /*2131297229*/:
+            case R.id.rdg_cardoor1 /*2131297495*/:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_SELECT, 0);
                 return;
-            case R.id.rdg_cardoor2 /*2131297230*/:
+            case R.id.rdg_cardoor2 /*2131297496*/:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_SELECT, 1);
                 return;
-            case R.id.rdg_cardoor3 /*2131297231*/:
+            case R.id.rdg_cardoor3 /*2131297497*/:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_NUM, 2);
                 return;
-            case R.id.rdg_factory_carseep1 /*2131297237*/:
+            case R.id.rdg_factory_carseep1 /*2131297503*/:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 0);
                 return;
-            case R.id.rdg_factory_carseep2 /*2131297238*/:
+            case R.id.rdg_factory_carseep2 /*2131297504*/:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 1);
                 return;
-            case R.id.rdg_factory_carseep3 /*2131297239*/:
+            case R.id.rdg_factory_carseep3 /*2131297505*/:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 2);
                 return;
-            case R.id.rdg_factory_carseep4 /*2131297240*/:
+            case R.id.rdg_factory_carseep4 /*2131297506*/:
                 FileUtils.savaIntData(KeyConfig.DASH_MAX_SPEED, 3);
                 return;
-            case R.id.rdg_factory_gear1 /*2131297242*/:
+            case R.id.rdg_factory_gear1 /*2131297511*/:
                 FileUtils.savaIntData(KeyConfig.HAND_SET_AUTOMATIC, 0);
                 return;
-            case R.id.rdg_factory_gear2 /*2131297243*/:
+            case R.id.rdg_factory_gear2 /*2131297512*/:
                 FileUtils.savaIntData(KeyConfig.HAND_SET_AUTOMATIC, 1);
                 return;
-            case R.id.rdg_factory_gear3 /*2131297244*/:
+            case R.id.rdg_factory_gear3 /*2131297513*/:
                 FileUtils.savaIntData(KeyConfig.HAND_SET_AUTOMATIC, 2);
                 return;
-            case R.id.rdg_factory_mapkey1 /*2131297246*/:
+            case R.id.rdg_factory_mapkey1 /*2131297515*/:
                 FileUtils.savaIntData(KeyConfig.MAP_KEY, 0);
                 Log.d("CarConfig", "mapkey====sava==0000===>");
                 return;
-            case R.id.rdg_factory_mapkey2 /*2131297247*/:
+            case R.id.rdg_factory_mapkey2 /*2131297516*/:
                 FileUtils.savaIntData(KeyConfig.MAP_KEY, 1);
                 Log.d("CarConfig", "mapkey====sava===1111===>");
                 return;
-            case R.id.rdg_factory_modekey1 /*2131297249*/:
+            case R.id.rdg_factory_modekey1 /*2131297518*/:
                 FileUtils.savaIntData(KeyConfig.MODE_KEY, 0);
                 return;
-            case R.id.rdg_factory_modekey2 /*2131297250*/:
+            case R.id.rdg_factory_modekey2 /*2131297519*/:
                 FileUtils.savaIntData(KeyConfig.MODE_KEY, 1);
                 return;
-            case R.id.rdg_factory_yuyinkey1 /*2131297252*/:
+            case R.id.rdg_factory_yuyinkey1 /*2131297528*/:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 0);
                 return;
-            case R.id.rdg_factory_yuyinkey2 /*2131297253*/:
+            case R.id.rdg_factory_yuyinkey2 /*2131297529*/:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 1);
                 return;
-            case R.id.rdg_factory_yuyinkey3 /*2131297254*/:
+            case R.id.rdg_factory_yuyinkey3 /*2131297530*/:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 2);
                 return;
-            case R.id.rdg_factory_yuyinkey4 /*2131297255*/:
+            case R.id.rdg_factory_yuyinkey4 /*2131297531*/:
                 FileUtils.savaIntData(KeyConfig.VOICE_KEY, 3);
                 return;
-            case R.id.rdg_numdoor1 /*2131297272*/:
+            case R.id.rdg_numdoor1 /*2131297548*/:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_NUM, 0);
                 return;
-            case R.id.rdg_numdoor2 /*2131297273*/:
+            case R.id.rdg_numdoor2 /*2131297549*/:
                 FileUtils.savaIntData(KeyConfig.CAR_DOOR_NUM, 1);
                 return;
-            case R.id.rdg_track1 /*2131297284*/:
+            case R.id.rdg_track1 /*2131297560*/:
                 FileUtils.savaIntData(KeyConfig.DRIVE_TRACK, 0);
                 return;
-            case R.id.rdg_track2 /*2131297285*/:
+            case R.id.rdg_track2 /*2131297561*/:
                 FileUtils.savaIntData(KeyConfig.DRIVE_TRACK, 1);
                 return;
             default:

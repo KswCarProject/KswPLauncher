@@ -74,7 +74,7 @@ public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiSettingViewModel) variable);
@@ -86,7 +86,7 @@ public class ActivityAudiTimeBindingImpl extends ActivityAudiTimeBinding {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

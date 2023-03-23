@@ -1,16 +1,20 @@
 package com.wits.ksw.launcher.model;
 
 import android.animation.ObjectAnimator;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -25,12 +29,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 import com.ibm.icu.text.ArabicShaping;
+import com.txznet.weatherquery.TXZWeather;
+import com.txznet.weatherquery.WeatherQueryManager;
 import com.wits.ksw.BuildConfig;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
@@ -38,21 +45,42 @@ import com.wits.ksw.launcher.adpater.AppsGridAdapter;
 import com.wits.ksw.launcher.base.BaseViewModel;
 import com.wits.ksw.launcher.bean.CarInfo;
 import com.wits.ksw.launcher.bean.MediaInfo;
+import com.wits.ksw.launcher.bean.WeatherInfo;
 import com.wits.ksw.launcher.bean.lexusls.LexusLsAppSelBean;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8EditActivity;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8GsEditActivity;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8GsModusActivity;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8ModusActivity;
+import com.wits.ksw.launcher.bmw_id8_ui.listener.OnID8SkinChangeListener;
 import com.wits.ksw.launcher.utils.AppInfoUtils;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.utils.NaviInfo;
 import com.wits.ksw.launcher.utils.ScreenUtil;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
+import com.wits.ksw.launcher.view.AppsActivity;
+import com.wits.ksw.launcher.view.Ntg630ControlView;
+import com.wits.ksw.launcher.view.Ntg6ControlView;
+import com.wits.ksw.launcher.view.ug.WiewFocusUtils;
+import com.wits.ksw.settings.TxzMessage;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
+import com.wits.pms.IContentObserver;
+import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import com.wits.pms.statuscontrol.WitsCommand;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import skin.support.content.res.SkinCompatResources;
 
 public class LauncherViewModel extends BaseViewModel {
     public static final String CLS_CHROME = "com.google.android.apps.chrome.Main";
@@ -64,6 +92,7 @@ public class LauncherViewModel extends BaseViewModel {
     public static final String KEY_SHORTCUT_PKG_1 = "KEY_SHORTCUT_PKG_1";
     public static final String KEY_SHORTCUT_PKG_2 = "KEY_SHORTCUT_PKG_2";
     public static final String KEY_SHORTCUT_PKG_3 = "KEY_SHORTCUT_PKG_3";
+    private static final long LONG_CLICK_TIME = 1000;
     /* access modifiers changed from: protected */
     public static final String TAG = LauncherViewModel.class.getSimpleName();
     public static final int WIDTH_IMG_BIG = 64;
@@ -72,6 +101,7 @@ public class LauncherViewModel extends BaseViewModel {
     public static ObservableField<Boolean> bThirdMusic = new ObservableField<>();
     public static ObservableField<Boolean> bThirdVideo = new ObservableField<>();
     public static CarInfo carInfo = McuImpl.getInstance().getCarInfo();
+    private static long mCurrentTime = 0;
     public static MediaInfo mediaInfo = MediaImpl.getInstance().getMediaInfo();
     public static ObservableField<Drawable> musicBG = new ObservableField<>();
     public static ObservableField<Integer> screenHeight = new ObservableField<>();
@@ -79,9 +109,11 @@ public class LauncherViewModel extends BaseViewModel {
     public static ObservableField<Integer> screenWidth = new ObservableField<>();
     public static ObservableField<Drawable> videoBG = new ObservableField<>();
     public static volatile View viewLastSel;
+    public static WeatherInfo weatherInfo = new WeatherInfo();
     public static int width = 0;
     public final ObservableBoolean acControl = new ObservableBoolean();
     public List<View> alsID7UIViewList = new ArrayList();
+    public McuStatus.BenzData benzData;
     public ObservableField<String> btState = new ObservableField<>();
     public View.OnFocusChangeListener carViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
@@ -90,13 +122,48 @@ public class LauncherViewModel extends BaseViewModel {
             }
         }
     };
+    public ControlBean controlBean = new ControlBean(this.context);
+    public ObservableField<Boolean> dashBoardMusicShow = new ObservableField<>();
     public final ObservableField<String> day = new ObservableField<>();
     public int dialogHeight;
     public int dialogWidth;
+    private BitmapDrawable efficientBitmapDrawable;
     public final ObservableField<Boolean> hicar = new ObservableField<>();
+    public ObservableField<BitmapDrawable> id8ModusDrawable = new ObservableField<>();
+    public ObservableField<Integer> id8TextColor = new ObservableField<>();
+    public ObservableField<Boolean> isChangeModusStatusID8 = new ObservableField<>();
+    public ObservableField<Boolean> isEfficientModus = new ObservableField<>();
+    public ObservableField<Boolean> isPersonalModus = new ObservableField<>();
+    public ObservableField<Boolean> isSportModus = new ObservableField<>();
+    public View.OnFocusChangeListener kswId7SetCardFocusChangeListener = new View.OnFocusChangeListener() {
+        public void onFocusChange(View v, boolean hasFocus) {
+            Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener hasFocus：" + hasFocus);
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(0);
+            }
+        }
+    };
+    public View.OnFocusChangeListener kswId7VideoCardFocusChangeListener = new View.OnFocusChangeListener() {
+        public void onFocusChange(View v, boolean hasFocus) {
+            Log.i(LauncherViewModel.TAG, "onFocusChange: kswId7VideoCardFocusChangeListener hasFocus：" + hasFocus);
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(1);
+            }
+        }
+    };
     public View lastViewFocused;
+    public final CompoundButton.OnCheckedChangeListener leftOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
+            LauncherViewModel.this.controlBean.leftBrightnessAdjus.set(isChecked);
+            if (isChecked) {
+                Ntg6ControlView.getInstance().showBenzBrightnessControl(buttonView.getContext(), LauncherViewModel.this.benzData, LauncherViewModel.this);
+            }
+        }
+    };
     public PopupWindow mAppsPopupWindow;
     public final ObservableField<String> month = new ObservableField<>();
+    private boolean musicId;
     public View.OnFocusChangeListener musicViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
@@ -108,6 +175,7 @@ public class LauncherViewModel extends BaseViewModel {
         }
     };
     public NaviInfo naviInfo = new NaviInfo();
+    private OnID8SkinChangeListener onID8SkinChangeListener;
     protected BroadcastReceiver otherReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             if (NaviInfo.AUTONAVI_STANDARD_BROADCAST_SEND.equalsIgnoreCase(intent.getAction()) && LauncherViewModel.this.naviInfo.isGuideEnable()) {
@@ -115,6 +183,7 @@ public class LauncherViewModel extends BaseViewModel {
             }
         }
     };
+    private BitmapDrawable personalBitmapDrawable;
     public final ObservableInt phoneConState = new ObservableInt();
     public View.OnFocusChangeListener phoneViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
@@ -124,23 +193,63 @@ public class LauncherViewModel extends BaseViewModel {
             }
         }
     };
+    public View.OnFocusChangeListener phoneViewFocusChangeListenerV2 = new View.OnFocusChangeListener() {
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(1);
+                Log.i(LauncherViewModel.TAG, "onFocusChange: phoneViewFocusChangeListener");
+            }
+        }
+    };
+    public final CompoundButton.OnCheckedChangeListener rightOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            Log.i(LauncherViewModel.TAG, "onCheckedChanged: " + isChecked);
+            LauncherViewModel.this.controlBean.rightBrightnessAdjus.set(isChecked);
+            if (isChecked) {
+                Ntg6ControlView.getInstance().showBenzBrightnessControl(buttonView.getContext(), LauncherViewModel.this.benzData, LauncherViewModel.this);
+            }
+        }
+    };
     public ObservableField<Drawable> shortCutIcon1 = new ObservableField<>();
     public ObservableField<Drawable> shortCutIcon2 = new ObservableField<>();
     public ObservableField<Drawable> shortCutIcon3 = new ObservableField<>();
     public ObservableField<String> shortCutName1 = new ObservableField<>();
     public ObservableField<String> shortCutName2 = new ObservableField<>();
     public ObservableField<String> shortCutName3 = new ObservableField<>();
+    private BitmapDrawable sportBitmapDrawable;
     private BroadcastReceiver timeReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             LauncherViewModel.this.setMonthDay(new Date());
         }
     };
+    private boolean videoId;
     public View.OnFocusChangeListener videoViewFocusChangeListener = new View.OnFocusChangeListener() {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
                 Log.i(LauncherViewModel.TAG, "onFocusChange: videoViewFocusChangeListener");
                 if (MainActivity.mainActivity != null) {
                     MainActivity.mainActivity.setCurrentItem(1);
+                }
+            }
+        }
+    };
+    public View.OnFocusChangeListener videoViewFocusChangeListenerv2 = new View.OnFocusChangeListener() {
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                Log.i(LauncherViewModel.TAG, "onFocusChange: videoViewFocusChangeListener");
+                if (MainActivity.mainActivity != null) {
+                    MainActivity.mainActivity.setCurrentItem(2);
+                }
+            }
+        }
+    };
+    private Disposable weatherSubscribe;
+    public View.OnFocusChangeListener weatherViewFocusChangeListener = new View.OnFocusChangeListener() {
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                Log.i(LauncherViewModel.TAG, "onFocusChange: musicViewFocusChangeListener");
+                if (MainActivity.mainActivity != null) {
+                    MainActivity.mainActivity.setCurrentItem(0);
                 }
             }
         }
@@ -180,6 +289,42 @@ public class LauncherViewModel extends BaseViewModel {
         if (UiThemeUtils.isALS_ID7_UI(this.context)) {
             refreshMusicIconOrName();
         }
+    }
+
+    public void initControl() {
+        try {
+            this.benzData = McuStatus.BenzData.getStatusFromJson(PowerManagerApp.getStatusString("benzData"));
+            this.controlBean.chassis.set(this.benzData.highChassisSwitch);
+            boolean z = false;
+            this.controlBean.sport.set(this.benzData.airMaticStatus == 1);
+            this.controlBean.rdarAssistance.set(this.benzData.auxiliaryRadar);
+            this.controlBean.passairbar.set(this.benzData.airBagSystem);
+            StringBuilder append = new StringBuilder().append("initData: 底盘开关：").append(this.benzData.highChassisSwitch).append(",运动模式：");
+            if (this.benzData.airMaticStatus == 1) {
+                z = true;
+            }
+            Log.i("控制面板", append.append(z).append(",雷达辅助开关：").append(this.benzData.auxiliaryRadar).append(" light1:").append(this.benzData.light1).append(" light2:").append(this.benzData.light2).append(" 安全气囊 ").append(this.benzData.airBagSystem).toString());
+        } catch (Exception e) {
+            this.benzData = new McuStatus.BenzData();
+        }
+    }
+
+    public void registerIContentObserver() {
+        PowerManagerApp.registerIContentObserver("benzData", new IContentObserver.Stub() {
+            public void onChange() throws RemoteException {
+                McuStatus.BenzData benzData = McuStatus.BenzData.getStatusFromJson(PowerManagerApp.getStatusString("benzData"));
+                Log.i(LauncherViewModel.TAG, "benzData onChange: " + benzData.getJson());
+                LauncherViewModel.this.controlBean.chassis.set(benzData.highChassisSwitch);
+                ObservableBoolean observableBoolean = LauncherViewModel.this.controlBean.sport;
+                boolean z = true;
+                if (benzData.airMaticStatus != 1) {
+                    z = false;
+                }
+                observableBoolean.set(z);
+                LauncherViewModel.this.controlBean.rdarAssistance.set(benzData.auxiliaryRadar);
+                LauncherViewModel.this.controlBean.passairbar.set(benzData.airBagSystem);
+            }
+        });
     }
 
     private void refreshMusicIconOrName() {
@@ -244,8 +389,75 @@ public class LauncherViewModel extends BaseViewModel {
         registerBtContentObserver();
         MediaImpl.getInstance().initData();
         McuImpl.getInstance().init();
+        if (UiThemeUtils.isUI_KSW_ID7(this.context) || UiThemeUtils.isUI_KSW_MBUX_1024(this.context)) {
+            initControl();
+            registerIContentObserver();
+        }
         initThirdApps();
         width = this.context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    /* access modifiers changed from: private */
+    public void refreshWeather() {
+        String str = TAG;
+        Log.i(str, "TXZWeather loading: ");
+        Log.i(str, "TXZWeather language: " + Locale.getDefault().getLanguage());
+        try {
+            sendWeatherRequest();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendWeatherRequest() {
+        WeatherQueryManager.getInstance().sendWeatherRequest(this.context, new WeatherQueryManager.WeatherCallback() {
+            public void onSuccess(TXZWeather result, Bundle texts) {
+                Log.i(LauncherViewModel.TAG, "TXZWeather onSuccess: " + result.toString());
+                String[] details = null;
+                if (texts != null) {
+                    details = texts.getStringArray("details");
+                }
+                try {
+                    LauncherViewModel.weatherInfo.loadSuccess(LauncherViewModel.this.context, result, details);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailed(int errorCode) {
+                Log.i(LauncherViewModel.TAG, "TXZWeather onFailed: " + errorCode);
+                if (errorCode != 6) {
+                    try {
+                        LauncherViewModel.weatherInfo.loadFailed(errorCode);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void startWeatherLooper() {
+        weatherInfo.loading();
+        this.weatherSubscribe = Observable.interval(0, 30, TimeUnit.MINUTES).subscribe(new Consumer<Long>() {
+            public void accept(Long aLong) throws Exception {
+                LauncherViewModel.this.refreshWeather();
+            }
+        });
+        addWeatherSettingListener();
+    }
+
+    public void onResumeRefreshWeather() {
+        Log.i(TAG, "TXZWeather onResumeRefreshWeather: ");
+        refreshWeather();
+    }
+
+    public void addWeatherSettingListener() {
+        WeatherQueryManager.getInstance().setUserSettingListener(this.activity, new WeatherQueryManager.UserSettingListener() {
+            public final void noticeChange() {
+                LauncherViewModel.this.refreshWeather();
+            }
+        });
     }
 
     public void onItemClick(View view, String pkg, String cls) {
@@ -308,6 +520,80 @@ public class LauncherViewModel extends BaseViewModel {
         openApp(new ComponentName("com.android.chrome", CLS_CHROME));
     }
 
+    public void onControlClick(View view) {
+        int benzpane = KswUtils.getBenzpaneVersion();
+        Log.i(TAG, "onControlClick: benzpane = " + benzpane);
+        if (benzpane == 1) {
+            if (Ntg6ControlView.getInstance().isShowing()) {
+                Ntg6ControlView.getInstance().dismiss();
+            } else {
+                Ntg6ControlView.getInstance().showBenzControl(this.context, this, view);
+            }
+        } else if (benzpane != 2) {
+        } else {
+            if (Ntg630ControlView.getInstance().isShowing()) {
+                Ntg630ControlView.getInstance().dismiss();
+            } else {
+                Ntg630ControlView.getInstance().showBenzControl(this.context, this, view);
+            }
+        }
+    }
+
+    public void onFoldLeftClick(View view) {
+        this.benzData.key3 = 6;
+        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
+        Log.d(TAG, "onFoldLeftClick: " + this.benzData.getJson());
+    }
+
+    public void onFoldRigtClick(View view) {
+        this.benzData.key3 = 7;
+        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
+        Log.d(TAG, "onFoldRigtClick: " + this.benzData.getJson());
+    }
+
+    public void onEspClick(View view) {
+        this.benzData.key3 = 5;
+        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.BENZ_CONTROL, this.benzData.getJson());
+        Log.d(TAG, "onEspClick: " + this.benzData.getJson());
+    }
+
+    public void onAuxiliaryRadarClick(View view) {
+        this.benzData.key3 = 0;
+        this.benzData.pressButton(3);
+        Log.i(TAG, "onCheckedChanged_AUX: 辅助雷达开关:" + this.benzData.getJson());
+    }
+
+    public void onSportClick(View view) {
+        this.benzData.key3 = 0;
+        this.benzData.pressButton(2);
+        Log.i(TAG, "onCheckedChanged_AIR: 辅助雷达开关:" + this.benzData.getJson());
+    }
+
+    public void onHighChasssisClick(View view) {
+        this.benzData.key3 = 0;
+        this.benzData.pressButton(1);
+        Log.i(TAG, "onCheckedChanged: 底盘升降开关:" + this.benzData.getJson());
+    }
+
+    public void showBrightnessDialog(View view) {
+        int benzpane = KswUtils.getBenzpaneVersion();
+        if (benzpane == 1) {
+            if (view.getId() == R.id.brightnessBtn_left) {
+                Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
+            }
+            if (view.getId() == R.id.brightnessBtn_right) {
+                Ntg6ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
+            }
+        } else if (benzpane == 2) {
+            if (view.getId() == R.id.brightnessBtn_left) {
+                Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 1);
+            }
+            if (view.getId() == R.id.brightnessBtn_right) {
+                Ntg630ControlView.getInstance().showBenzBrightnessDailog(view.getContext(), this.benzData, this, 2);
+            }
+        }
+    }
+
     public void openAirControl(View view) {
         addLastViewFocused(view);
         openApp(new ComponentName("com.wits.ksw.airc", "com.wits.ksw.airc.LexusAirControl"));
@@ -357,9 +643,132 @@ public class LauncherViewModel extends BaseViewModel {
         addLastViewFocused(view);
     }
 
+    public void addWidget(View view) {
+        Log.w(TAG, "addWidget: ");
+        Intent intent = new Intent(this.activity, AppsActivity.class);
+        intent.putExtra("isEdit", true);
+        addLastViewFocused(view);
+        this.activity.startActivityForResult(intent, 120);
+    }
+
+    public void setMusicPlayState(boolean play) {
+        mediaInfo.setMusicPlay(play);
+    }
+
+    public void setMusicPlayStop(boolean stop) {
+        mediaInfo.setMusicStop(stop);
+    }
+
+    public void setVideoPlayState(boolean play) {
+        mediaInfo.setVideoPlay(play);
+    }
+
+    public void initSkinData(OnID8SkinChangeListener listener) {
+        Log.e(TAG, "initSkinData: ");
+        this.onID8SkinChangeListener = listener;
+        String skinName = ID8LauncherConstants.loadCurrentSkin();
+        Resources resources = this.context.getResources();
+        this.personalBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, R.drawable.id8_main_icon_modus_personal));
+        this.sportBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, R.drawable.id8_main_icon_modus_sport));
+        this.efficientBitmapDrawable = new BitmapDrawable(resources, BitmapFactory.decodeResource(resources, R.drawable.id8_main_icon_modus_efficient));
+        if (skinName.equals(ID8LauncherConstants.ID8_SKIN_PERSONAL)) {
+            displayPersonalModus();
+        } else if (skinName.equals(ID8LauncherConstants.ID8_SKIN_SPORT)) {
+            displaySportModus();
+        } else if (skinName.equals(ID8LauncherConstants.ID8_SKIN_EFFICIENT)) {
+            displayEfficientModus();
+        }
+    }
+
+    private void displayPersonalModus() {
+        this.isPersonalModus.set(true);
+        this.id8ModusDrawable.set(this.personalBitmapDrawable);
+        this.isSportModus.set(false);
+        this.isEfficientModus.set(false);
+        this.onID8SkinChangeListener.onSkinChangeLeftBar(R.drawable.bmw_id8_main_left_btn_yellow);
+        this.onID8SkinChangeListener.onSkinChangeCardBGSelector(ID8LauncherConstants.ID8_SKIN_PERSONAL);
+        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(R.drawable.id8_main_icon_music_album_yellow);
+    }
+
+    private void displaySportModus() {
+        this.isSportModus.set(true);
+        this.id8ModusDrawable.set(this.sportBitmapDrawable);
+        this.isPersonalModus.set(false);
+        this.isEfficientModus.set(false);
+        this.onID8SkinChangeListener.onSkinChangeLeftBar(R.drawable.bmw_id8_main_left_btn_red);
+        this.onID8SkinChangeListener.onSkinChangeCardBGSelector(ID8LauncherConstants.ID8_SKIN_SPORT);
+        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(R.drawable.id8_main_icon_music_album_red);
+    }
+
+    private void displayEfficientModus() {
+        this.isEfficientModus.set(true);
+        this.id8ModusDrawable.set(this.efficientBitmapDrawable);
+        this.isPersonalModus.set(false);
+        this.isSportModus.set(false);
+        this.onID8SkinChangeListener.onSkinChangeLeftBar(R.drawable.bmw_id8_main_left_btn_blue);
+        this.onID8SkinChangeListener.onSkinChangeCardBGSelector(ID8LauncherConstants.ID8_SKIN_EFFICIENT);
+        this.onID8SkinChangeListener.onSkinChangeMusicAlbum(R.drawable.id8_main_icon_music_album_blue);
+    }
+
+    public void enterChangeModus(View view) {
+        Log.e(TAG, "enterChangeModus");
+        Intent intent = new Intent(this.activity, ID8ModusActivity.class);
+        this.isChangeModusStatusID8.set(true);
+        this.id8TextColor.set(Integer.valueOf(SkinCompatResources.getColor(this.context, R.color.id8_main_style_color)));
+        addLastViewFocused(view);
+        this.activity.startActivity(intent);
+    }
+
+    public void enterGsChangeModus(View view) {
+        Intent intent = new Intent(this.activity, ID8GsModusActivity.class);
+        this.id8TextColor.set(Integer.valueOf(SkinCompatResources.getColor(this.context, R.color.id8_main_style_color)));
+        addLastViewFocused(view);
+        this.activity.startActivity(intent);
+    }
+
+    private void enterID8MainActivity() {
+        if (UiThemeUtils.isUI_GS_ID8(this.context) || UiThemeUtils.isBMW_ID8_UI(this.context)) {
+            this.activity.startActivity(new Intent(this.activity, MainActivity.class));
+        }
+    }
+
+    public void exitChangeModus() {
+        this.isChangeModusStatusID8.set(false);
+    }
+
+    public void changeModusToPersonal(View view) {
+        if (ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_PERSONAL)) {
+            displayPersonalModus();
+            reloadSkinResources();
+        }
+        exitChangeModus();
+        enterID8MainActivity();
+    }
+
+    public void changeModusToSport(View view) {
+        if (ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_SPORT)) {
+            displaySportModus();
+            reloadSkinResources();
+        }
+        exitChangeModus();
+        enterID8MainActivity();
+    }
+
+    public void changeModusToEfficient(View view) {
+        if (ID8LauncherConstants.checkModusHasChanged(ID8LauncherConstants.ID8_SKIN_EFFICIENT)) {
+            displayEfficientModus();
+            reloadSkinResources();
+        }
+        exitChangeModus();
+        enterID8MainActivity();
+    }
+
+    private void reloadSkinResources() {
+    }
+
     public void openChoseMusic(View view) {
         addLastViewFocused(view);
-        if (UiThemeUtils.isBMW_EVO_ID7(this.context) || UiThemeUtils.isBMW_EVO_ID7_HiCar(this.context) || UiThemeUtils.isCommon_UI_GS_UG(this.context) || UiThemeUtils.isCommon_UI_GS_UG_1024(this.context) || UiThemeUtils.isAudi_mib3(this.context) || UiThemeUtils.isAudi_mib3_FY(this.context) || UiThemeUtils.isALS_ID7_UI(this.context) || ((UiThemeUtils.isBMW_EVO_ID6_CUSP(this.context) && !ClientManager.getInstance().isCUSP_210407()) || UiThemeUtils.isID7_ALS(this.context))) {
+        if (UiThemeUtils.isBMW_EVO_ID7(this.context) || UiThemeUtils.isUI_KSW_ID7(this.context) || UiThemeUtils.isBMW_EVO_ID7_HiCar(this.context) || UiThemeUtils.isCommon_UI_GS_UG(this.context) || UiThemeUtils.isCommon_UI_GS_UG_1024(this.context) || UiThemeUtils.isUI_KSW_MBUX_1024(this.context) || UiThemeUtils.isAudi_mib3(this.context) || UiThemeUtils.isUI_mib3_V2(this.context) || UiThemeUtils.isAudi_mib3_FY(this.context) || UiThemeUtils.isAudi_mib3_FY_V2(this.context) || UiThemeUtils.isAudi_mib3_ty(this.context) || UiThemeUtils.isALS_ID7_UI(this.context) || ((UiThemeUtils.isBMW_EVO_ID6_CUSP(this.context) && !ClientManager.getInstance().isCUSP_210407()) || UiThemeUtils.isID7_ALS(this.context) || UiThemeUtils.isID7_ALS_V2(this.context))) {
             String pkg = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_PKG);
             String cls = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_MUSIC_CLS);
             Log.i(TAG, "openMusic: pkg=" + pkg);
@@ -422,6 +831,139 @@ public class LauncherViewModel extends BaseViewModel {
         }
     }
 
+    public static boolean isContinuityClick() {
+        long currentTime = System.currentTimeMillis();
+        Log.i(TAG, "isContinuityClick: mCurrentTime " + mCurrentTime + " currentTime " + currentTime);
+        if (currentTime - mCurrentTime < LONG_CLICK_TIME) {
+            return true;
+        }
+        mCurrentTime = currentTime;
+        return false;
+    }
+
+    public boolean isMediaServiceLived() {
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList) ((ActivityManager) this.context.getSystemService("activity")).getRunningServices(100);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString().equals("com.wits.ksw.media.MyService")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void handleMusicOperator(final View view, final int subCommand, final int keyCode) {
+        Log.e(TAG, "id8GsOpenPauseMusic: " + getLastMode());
+        if (!isMediaServiceLived()) {
+            Intent serviceIntent = new Intent();
+            serviceIntent.setComponent(new ComponentName("com.wits.ksw.media", "com.wits.ksw.media.MyService"));
+            serviceIntent.putExtra("mediaType", subCommand == 130 ? 11 : 12);
+            this.context.startService(serviceIntent);
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    LauncherViewModel.this.handleRealMusicOperator(view, subCommand, keyCode);
+                }
+            }, 100);
+            return;
+        }
+        handleRealMusicOperator(view, subCommand, keyCode);
+    }
+
+    /* access modifiers changed from: private */
+    public void handleRealMusicOperator(View view, int subCommand, int keyCode) {
+        if (!isContinuityClick()) {
+            if (subCommand == 130) {
+                if (getLastMode() == 1) {
+                    KswUtils.sendKeyDownUpSync(keyCode);
+                } else {
+                    setLastMode(1);
+                    onSendCommand(2, subCommand);
+                }
+            } else if (subCommand == 131) {
+                if (getLastMode() == 2) {
+                    KswUtils.sendKeyDownUpSync(keyCode);
+                } else {
+                    setLastMode(2);
+                    onSendCommand(2, subCommand);
+                }
+            }
+        }
+        WiewFocusUtils.setViewRequestFocus(((View) view.getParent()).findViewById(R.id.iv_mask));
+    }
+
+    public void id8GsOpenPauseMusic(View view) {
+        handleMusicOperator(view, 130, 85);
+    }
+
+    public void id8GsPreMusic(View view) {
+        handleMusicOperator(view, 130, 88);
+    }
+
+    public void id8GsNextMusic(View view) {
+        handleMusicOperator(view, 130, 87);
+    }
+
+    public int getLastMode() {
+        int mode = -1;
+        try {
+            mode = PowerManagerApp.getStatusInt("lastMode");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, "getLastMode: " + mode);
+        return mode;
+    }
+
+    public void setLastMode(int value) {
+        try {
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "" + value);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "setLastMode filed");
+        }
+    }
+
+    public void id8GsOpenPauseVideo(View view) {
+        handleMusicOperator(view, 131, 85);
+    }
+
+    public void id8GsPreVideo(View view) {
+        Log.e(TAG, "id8GsPreVideo: " + getLastMode());
+        handleMusicOperator(view, 131, 88);
+    }
+
+    public void id8GsNextVideo(View view) {
+        Log.e(TAG, "id8GsNextVideo: " + getLastMode());
+        handleMusicOperator(view, 131, 87);
+    }
+
+    public void startVideo(View view) {
+        Log.w(TAG, "startVideo: ");
+        try {
+            if (PowerManagerApp.getManager().getStatusBoolean("video_stop")) {
+                openApp(new Intent("com.wits.media.VIDEO"));
+            } else {
+                KswUtils.sendKeyDownUpSync(126);
+            }
+        } catch (RemoteException e) {
+            Log.e(TAG, "startVdeo: " + e.getMessage());
+            openApp(new Intent("com.wits.media.VIDEO"));
+        }
+    }
+
+    public void pauseVideo(View view) {
+        Log.w(TAG, "pauseVideo: ");
+        try {
+            if (PowerManagerApp.getManager().getStatusBoolean("video_stop")) {
+                openApp(new Intent("com.wits.media.VIDEO"));
+            } else {
+                KswUtils.sendKeyDownUpSync(127);
+            }
+        } catch (RemoteException e) {
+            Log.e(TAG, "startVdeo: " + e.getMessage());
+            openApp(new Intent("com.wits.media.VIDEO"));
+        }
+    }
+
     public void openVideoMulti(View view) {
         String pkg = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_PKG);
         String cls = Settings.System.getString(this.context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
@@ -454,6 +996,16 @@ public class LauncherViewModel extends BaseViewModel {
         openApp(new Intent("com.wits.media.VIDEO"));
     }
 
+    public void sendMcuCommand() {
+        try {
+            Log.d(TAG, "sendMcuCommand: 发送MCU发指令");
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.OPEN_MODE, "13");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "sendMcuCommand: " + e.toString());
+        }
+    }
+
     public void openShortCutApp(View view, int index) {
         Log.d("openShortCutApp", index + "   ");
         String pkg1 = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), KEY_SHORTCUT_PKG_1);
@@ -474,6 +1026,7 @@ public class LauncherViewModel extends BaseViewModel {
                         return;
                     } else {
                         openAppByCls(new ComponentName(pkg1, cls1));
+                        sendMcuCommand();
                         return;
                     }
                 } else if (UiThemeUtils.isALS_ID7_UI(this.context)) {
@@ -481,6 +1034,7 @@ public class LauncherViewModel extends BaseViewModel {
                     return;
                 } else {
                     openBrowser(view);
+                    sendMcuCommand();
                     return;
                 }
             case 2:
@@ -494,6 +1048,7 @@ public class LauncherViewModel extends BaseViewModel {
                         return;
                     } else {
                         openAppByCls(new ComponentName(pkg2, cls2));
+                        sendMcuCommand();
                         return;
                     }
                 } else if (UiThemeUtils.isALS_ID7_UI(this.context)) {
@@ -517,6 +1072,7 @@ public class LauncherViewModel extends BaseViewModel {
                     return;
                 } else {
                     openAppByCls(new ComponentName(pkg3, cls3));
+                    sendMcuCommand();
                     return;
                 }
             default:
@@ -638,6 +1194,8 @@ public class LauncherViewModel extends BaseViewModel {
         new ArrayList();
         if (UiThemeUtils.isID7_ALS(this.context) && ClientManager.getInstance().isAls6208Client()) {
             list = AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ID7_ALS_DISMISS_DESK, 0, this.context);
+        } else if (UiThemeUtils.isID7_ALS_V2(this.context) && ClientManager.getInstance().isAls6208Client()) {
+            list = AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ID7_ALS_DISMISS_DESK, 0, this.context);
         } else if (UiThemeUtils.isALS_ID7_UI(this.context)) {
             list = AppInfoUtils.findAllAppsByExclude(AppInfoUtils.ALS_ID7_UI_ATYS_DISMISS_DESK, 0, this.context);
         } else {
@@ -746,10 +1304,30 @@ public class LauncherViewModel extends BaseViewModel {
         openNaviApp();
     }
 
+    public void openWeatherApp(View view) {
+        addLastViewFocused(view);
+        openWeatherApp();
+    }
+
+    private void openWeatherApp() {
+        Log.i(TAG, "openWeatherApp: ");
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.txznet.weather", "com.txznet.weather.MainActivity"));
+        intent.setFlags(268435488);
+        openApp(intent);
+    }
+
     public void openNaviApp() {
         String naiPackge = Settings.System.getString(this.contentResolver, KeyConfig.NAVI_DEFUAL);
-        openApp(this.context.getPackageManager().getLaunchIntentForPackage(naiPackge));
-        Log.i(TAG, "openNaviApp: " + naiPackge);
+        boolean isVersion12 = Build.VERSION.RELEASE.contains("12");
+        String str = TAG;
+        Log.w(str, "isVersion12 :" + isVersion12);
+        if (!isVersion12 || !AppInfoUtils.isContainFreedomMap(naiPackge) || !UiThemeUtils.isUI_GS_ID8(this.activity)) {
+            openMapApp(this.context.getPackageManager().getLaunchIntentForPackage(naiPackge));
+        } else {
+            launchApp(naiPackge, 1);
+        }
+        Log.i(str, "openNaviApp: " + naiPackge);
     }
 
     public void openBtApp(View view) {
@@ -776,6 +1354,7 @@ public class LauncherViewModel extends BaseViewModel {
             this.alsID7UIViewList.add(this.lastViewFocused);
         }
         KswUtils.saveLastViewId(this.context, view);
+        Log.e(TAG, "addLastViewFocused: view:" + view);
     }
 
     private void setSelected(View view) {
@@ -811,29 +1390,40 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public void refreshLastViewFocused() {
-        if (!UiThemeUtils.isALS_ID7_UI(this.context)) {
+        if (UiThemeUtils.isALS_ID7_UI(this.context)) {
             View view = this.lastViewFocused;
-            if (view == null || view.isSelected()) {
-                Log.i(TAG, "refreshLastViewFocused: lastViewFocused null  ");
-                return;
-            }
-            this.lastViewFocused.setFocusableInTouchMode(true);
-            this.lastViewFocused.requestFocus();
-            this.lastViewFocused.setFocusableInTouchMode(false);
-            Log.i(TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
-        } else if (this.lastViewFocused != null && MainActivity.alsId7UiMainBinding != null) {
-            if (this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton1.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton2.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton3.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton4.getId() && this.lastViewFocused.getId() != MainActivity.alsId7UiMainBinding.menuButton5.getId()) {
+            if (view != null && !view.isSelected() && MainActivity.alsId7UiMainBinding != null) {
+                if (this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton1.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton2.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton3.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton4.getId() || this.lastViewFocused.getId() == MainActivity.alsId7UiMainBinding.menuButton5.getId()) {
+                    String str = TAG;
+                    Log.d(str, "refreshLastViewFocused: 不等于null哦！else");
+                    setClearViewState();
+                    this.lastViewFocused.setFocusableInTouchMode(true);
+                    this.lastViewFocused.requestFocus();
+                    this.lastViewFocused.setFocusableInTouchMode(false);
+                    Log.i(str, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
+                    return;
+                }
+                Log.d(TAG, "refreshLastViewFocused: 不等于null哦！");
+                MainActivity.alsId7UiMainBinding.menuButton1.clearFocus();
+                MainActivity.alsId7UiMainBinding.menuButton2.clearFocus();
+                MainActivity.alsId7UiMainBinding.menuButton3.clearFocus();
+                MainActivity.alsId7UiMainBinding.menuButton4.clearFocus();
+                MainActivity.alsId7UiMainBinding.menuButton5.clearFocus();
                 setClearViewState();
                 this.lastViewFocused.setSelected(true);
-            } else if (!this.lastViewFocused.isSelected()) {
-                this.lastViewFocused.setFocusableInTouchMode(true);
-                this.lastViewFocused.requestFocus();
-                this.lastViewFocused.setFocusableInTouchMode(false);
-                Log.i(TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
-            } else {
-                Log.i(TAG, "refreshLastViewFocused: lastViewFocused null  ");
+                return;
             }
+            return;
         }
+        View view2 = this.lastViewFocused;
+        if (view2 == null || view2.isSelected()) {
+            Log.i(TAG, "refreshLastViewFocused: lastViewFocused null  ");
+            return;
+        }
+        this.lastViewFocused.setFocusableInTouchMode(true);
+        this.lastViewFocused.requestFocus();
+        this.lastViewFocused.setFocusableInTouchMode(false);
+        Log.i(TAG, "refreshLastViewFocused: lastViewFocused=" + this.lastViewFocused.getId());
     }
 
     public void refreshLastSel() {
@@ -899,7 +1489,7 @@ public class LauncherViewModel extends BaseViewModel {
         String btOff = Settings.System.getString(this.contentResolver, KeyConfig.Android_Bt_Switch);
         String str = TAG;
         Log.d(str, "setBtState:android_Bt_Switch===" + btOff);
-        if (TextUtils.equals(btOff, "0")) {
+        if (TextUtils.equals(btOff, TxzMessage.TXZ_DISMISS)) {
             this.btState.set(this.context.getString(R.string.bt_text_bt_closed));
             return;
         }
@@ -991,7 +1581,11 @@ public class LauncherViewModel extends BaseViewModel {
     }
 
     public static void setSpeedRotation(ImageView imageView, int rota) {
-        setSpeedRotationBet(imageView, (float) rota);
+        if (KswUtils.ismph()) {
+            setSpeedRotationBet(imageView, new BigDecimal((((double) rota) / 0.621d) * 0.968d).floatValue());
+        } else {
+            setSpeedRotationBet(imageView, (float) rota);
+        }
     }
 
     public static void setSpeedRotationBet(ImageView imageView, float rota) {
@@ -1056,5 +1650,27 @@ public class LauncherViewModel extends BaseViewModel {
     public void onCleared() {
         super.onCleared();
         Log.i(TAG, "onCleared: ");
+        Disposable disposable = this.weatherSubscribe;
+        if (disposable != null && !disposable.isDisposed()) {
+            this.weatherSubscribe.dispose();
+        }
+    }
+
+    public void openID8Edit(View view) {
+        Log.i(TAG, "openID8Edit: ");
+        openApp(new Intent(this.activity, ID8EditActivity.class));
+    }
+
+    public void openID8GsEdit(View view) {
+        Log.i(TAG, "openID8GsEdit: ");
+        openApp(new Intent(this.activity, ID8GsEditActivity.class));
+    }
+
+    public void dashboardMusicLay(View view) {
+        this.dashBoardMusicShow.set(false);
+    }
+
+    public void dashboardWeatherLay(View view) {
+        this.dashBoardMusicShow.set(true);
     }
 }

@@ -183,22 +183,22 @@ public class LandroverSetSystemLayout extends RelativeLayout implements View.OnC
         }
         resetTextColor();
         switch (v.getId()) {
-            case R.id.tv_music_app /*2131297598*/:
+            case R.id.tv_music_app /*2131297900*/:
                 this.updateTwoLayout.updateTwoLayout(1, 6);
                 return;
-            case R.id.tv_sysBgld /*2131297618*/:
+            case R.id.tv_sysBgld /*2131297929*/:
                 this.updateTwoLayout.updateTwoLayout(1, 2);
                 return;
-            case R.id.tv_sysCaux /*2131297619*/:
+            case R.id.tv_sysCaux /*2131297930*/:
                 this.updateTwoLayout.updateTwoLayout(1, 3);
                 return;
-            case R.id.tv_sysDcsxt /*2131297620*/:
+            case R.id.tv_sysDcsxt /*2131297931*/:
                 this.updateTwoLayout.updateTwoLayout(1, 1);
                 return;
-            case R.id.tv_sysTempUnit /*2131297622*/:
+            case R.id.tv_sysTempUnit /*2131297933*/:
                 this.updateTwoLayout.updateTwoLayout(1, 4);
                 return;
-            case R.id.tv_video_app /*2131297637*/:
+            case R.id.tv_video_app /*2131297951*/:
                 this.updateTwoLayout.updateTwoLayout(1, 7);
                 return;
             default:
@@ -208,19 +208,19 @@ public class LandroverSetSystemLayout extends RelativeLayout implements View.OnC
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cbox_sysDcgj /*2131296571*/:
+            case R.id.cbox_sysDcgj /*2131296728*/:
                 FileUtils.savaData(KeyConfig.DAO_CHE_GJ, isChecked);
                 return;
-            case R.id.cbox_sysDcjy /*2131296572*/:
+            case R.id.cbox_sysDcjy /*2131296729*/:
                 FileUtils.savaData(KeyConfig.DAO_CHE_JY, isChecked);
                 return;
-            case R.id.cbox_sysDcld /*2131296573*/:
+            case R.id.cbox_sysDcld /*2131296730*/:
                 FileUtils.savaData(KeyConfig.DAO_CHE_LD, isChecked);
                 return;
-            case R.id.cbox_sysHjs /*2131296574*/:
+            case R.id.cbox_sysHjs /*2131296731*/:
                 FileUtils.savaData(KeyConfig.HOU_SHI_SX, isChecked);
                 return;
-            case R.id.cbox_sysXcjz /*2131296575*/:
+            case R.id.cbox_sysXcjz /*2131296732*/:
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
                 return;
             default:

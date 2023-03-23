@@ -8,9 +8,8 @@ import com.wits.ksw.MainActivity;
 import com.wits.ksw.launcher.model.BcVieModel;
 
 public class BenzMbux2021BaseFragment extends Fragment {
-    protected static final String TAG = "KSWLauncher";
-    /* access modifiers changed from: protected */
-    public MainActivity mainActivity;
+    protected static final String TAG = "KswApplication";
+    protected MainActivity mainActivity;
     protected BcVieModel viewModel;
 
     public void onAttach(Activity activity) {

@@ -94,7 +94,7 @@ public class CircleIndicator extends View {
                 return size;
             case 0:
                 return defaultSize;
-            case BasicMeasure.EXACTLY:
+            case BasicMeasure.EXACTLY /*1073741824*/:
                 return size;
             default:
                 return mySize;

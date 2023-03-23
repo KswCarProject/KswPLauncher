@@ -24,7 +24,7 @@ import com.wits.ksw.launcher.view.lexus.LexusUiParams;
 public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback240;
+    private final View.OnClickListener mCallback153;
     private long mDirtyFlags;
     private long mDirtyFlags_1;
     private final RelativeLayout mboundView0;
@@ -178,7 +178,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         this.usbMusicTime.setTag((Object) null);
         this.windSpeedLevel.setTag((Object) null);
         setRootTag(root);
-        this.mCallback240 = new OnClickListener(this, 1);
+        this.mCallback153 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -202,10 +202,10 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (13 == variableId) {
+        if (22 == variableId) {
             setMUiParams((LexusUiParams) variable);
             return true;
-        } else if (17 != variableId) {
+        } else if (26 != variableId) {
             return false;
         } else {
             setVm((LexusOEMFMViewModel) variable);
@@ -218,7 +218,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         synchronized (this) {
             this.mDirtyFlags |= 70368744177664L;
         }
-        notifyPropertyChanged(13);
+        notifyPropertyChanged(22);
         super.requestRebind();
     }
 
@@ -227,7 +227,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         synchronized (this) {
             this.mDirtyFlags |= 140737488355328L;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 
@@ -865,8 +865,8 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         String vmChGet3;
         int vmFmViewVISIBLEViewGONE3;
         int vmShowVolumeViewVISIBLEViewGONE2;
-        int vmShowVolumeViewVISIBLEViewGONE3;
-        int vmRptViewVISIBLEViewGONE2;
+        int vmRandViewVISIBLEViewGONE2;
+        int vmRandViewVISIBLEViewGONE3;
         String vmUsbStatusGet;
         int vmScanViewVISIBLEViewGONE2;
         int vmScanViewVISIBLEViewGONE3;
@@ -991,7 +991,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         String mUiParamsRightTempStrGet3 = null;
         int vmAuxViewVISIBLEViewGONE2 = 0;
         int vmAslViewVISIBLEViewGONE4 = 0;
-        int vmRptViewVISIBLEViewGONE3 = 0;
+        int vmRptViewVISIBLEViewGONE2 = 0;
         int vmBtViewVISIBLEViewGONE3 = 0;
         int mUiParamsWindSpeedGet3 = 0;
         int vmScanViewVISIBLEViewGONE4 = 0;
@@ -1000,8 +1000,8 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         boolean vmFmGet = false;
         int vmBtPlayViewVISIBLEViewVISIBLE2 = 0;
         String vmIndexGet3 = null;
-        int vmRandViewVISIBLEViewGONE2 = 0;
-        int vmShowVolumeViewVISIBLEViewGONE4 = 0;
+        int vmRandViewVISIBLEViewGONE4 = 0;
+        int vmShowVolumeViewVISIBLEViewGONE3 = 0;
         int vmAudioOffViewGONEViewVISIBLE2 = 0;
         String vmBtSetUpGet2 = null;
         Boolean vmRptGet = null;
@@ -1125,7 +1125,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
                     }
                 }
                 ObservableField<Boolean> observableField5 = vmRand;
-                vmRandViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxVmRandGet ? 0 : 8;
+                vmRandViewVISIBLEViewGONE4 = androidDatabindingViewDataBindingSafeUnboxVmRandGet ? 0 : 8;
             } else {
                 vmCd6Get = null;
             }
@@ -1259,7 +1259,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
                     }
                 }
                 ObservableField<Boolean> observableField13 = vmRpt;
-                vmRptViewVISIBLEViewGONE3 = androidDatabindingViewDataBindingSafeUnboxVmRptGet ? 0 : 8;
+                vmRptViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxVmRptGet ? 0 : 8;
             }
             if ((422212465070080L & dirtyFlags) != 0) {
                 if (vm != null) {
@@ -1597,7 +1597,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
                     }
                 }
                 ObservableBoolean observableBoolean7 = vmShowVolume;
-                vmShowVolumeViewVISIBLEViewGONE4 = vmShowVolumeGet ? 0 : 8;
+                vmShowVolumeViewVISIBLEViewGONE3 = vmShowVolumeGet ? 0 : 8;
             }
             if ((422349904019456L & dirtyFlags) != 0) {
                 if (vm != null) {
@@ -1780,13 +1780,13 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
                     vmStViewVISIBLEViewGONE = vmStViewVISIBLEViewGONE2;
                     vmAuxViewVISIBLEViewGONE = vmAuxViewVISIBLEViewGONE2;
                     vmAslViewVISIBLEViewGONE = vmAslViewVISIBLEViewGONE4;
-                    vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE3;
+                    vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE2;
                     vmBtViewVISIBLEViewGONE = vmBtViewVISIBLEViewGONE3;
                     vmScanViewVISIBLEViewGONE = vmScanViewVISIBLEViewGONE4;
                     vmBtPlayViewVISIBLEViewVISIBLE = vmBtPlayViewVISIBLEViewVISIBLE2;
                     vmIndexGet = vmIndexGet3;
-                    vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE2;
-                    vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE4;
+                    vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE4;
+                    vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE3;
                     vmBtSetUpGet = vmBtSetUpGet2;
                     vmTrackGet = vmTrackGet2;
                     vmTimeGet = vmTimeGet4;
@@ -1827,13 +1827,13 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
                     vmStViewVISIBLEViewGONE = vmStViewVISIBLEViewGONE2;
                     vmAuxViewVISIBLEViewGONE = vmAuxViewVISIBLEViewGONE2;
                     vmAslViewVISIBLEViewGONE = vmAslViewVISIBLEViewGONE4;
-                    vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE3;
+                    vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE2;
                     vmBtViewVISIBLEViewGONE = vmBtViewVISIBLEViewGONE3;
                     vmScanViewVISIBLEViewGONE = vmScanViewVISIBLEViewGONE4;
                     vmBtPlayViewVISIBLEViewVISIBLE = vmBtPlayViewVISIBLEViewVISIBLE2;
                     vmIndexGet = vmIndexGet3;
-                    vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE2;
-                    vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE4;
+                    vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE4;
+                    vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE3;
                     vmBtSetUpGet = vmBtSetUpGet2;
                     vmTrackGet = vmTrackGet2;
                     vmTimeGet = vmTimeGet4;
@@ -1874,13 +1874,13 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
                 vmStViewVISIBLEViewGONE = vmStViewVISIBLEViewGONE2;
                 vmAuxViewVISIBLEViewGONE = vmAuxViewVISIBLEViewGONE2;
                 vmAslViewVISIBLEViewGONE = vmAslViewVISIBLEViewGONE4;
-                vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE3;
+                vmRptViewVISIBLEViewGONE = vmRptViewVISIBLEViewGONE2;
                 vmBtViewVISIBLEViewGONE = vmBtViewVISIBLEViewGONE3;
                 vmScanViewVISIBLEViewGONE = vmScanViewVISIBLEViewGONE4;
                 vmBtPlayViewVISIBLEViewVISIBLE = vmBtPlayViewVISIBLEViewVISIBLE2;
                 vmIndexGet = vmIndexGet3;
-                vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE2;
-                vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE4;
+                vmRandViewVISIBLEViewGONE = vmRandViewVISIBLEViewGONE4;
+                vmShowVolumeViewVISIBLEViewGONE = vmShowVolumeViewVISIBLEViewGONE3;
                 vmBtSetUpGet = vmBtSetUpGet2;
                 vmTrackGet = vmTrackGet2;
                 vmTimeGet = vmTimeGet4;
@@ -2131,7 +2131,7 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         if ((dirtyFlags & 281474976710656L) != 0) {
             vmDiscGet3 = vmDiscGet2;
             vmAudioOffViewVISIBLEViewGONE = vmCd4ViewVISIBLEViewGONE;
-            this.acLayout.setOnClickListener(this.mCallback240);
+            this.acLayout.setOnClickListener(this.mCallback153);
         } else {
             vmDiscGet3 = vmDiscGet2;
             vmAudioOffViewVISIBLEViewGONE = vmCd4ViewVISIBLEViewGONE;
@@ -2231,30 +2231,30 @@ public class ActivityLexusOemFmBindingImpl extends ActivityLexusOemFmBinding imp
         }
         if ((dirtyFlags & 422212465065985L) != 0) {
             int i5 = vmShowVolumeViewVISIBLEViewGONE2;
-            vmShowVolumeViewVISIBLEViewGONE3 = vmRandViewVISIBLEViewGONE;
-            this.mboundView18.setVisibility(vmShowVolumeViewVISIBLEViewGONE3);
-            this.mboundView32.setVisibility(vmShowVolumeViewVISIBLEViewGONE3);
-            this.mboundView43.setVisibility(vmShowVolumeViewVISIBLEViewGONE3);
+            vmRandViewVISIBLEViewGONE2 = vmRandViewVISIBLEViewGONE;
+            this.mboundView18.setVisibility(vmRandViewVISIBLEViewGONE2);
+            this.mboundView32.setVisibility(vmRandViewVISIBLEViewGONE2);
+            this.mboundView43.setVisibility(vmRandViewVISIBLEViewGONE2);
         } else {
-            vmShowVolumeViewVISIBLEViewGONE3 = vmRandViewVISIBLEViewGONE;
+            vmRandViewVISIBLEViewGONE2 = vmRandViewVISIBLEViewGONE;
         }
         if ((dirtyFlags & 422212465067008L) != 0) {
-            int i6 = vmShowVolumeViewVISIBLEViewGONE3;
-            vmRptViewVISIBLEViewGONE2 = vmRptViewVISIBLEViewGONE;
-            this.mboundView19.setVisibility(vmRptViewVISIBLEViewGONE2);
-            this.mboundView33.setVisibility(vmRptViewVISIBLEViewGONE2);
-            this.mboundView44.setVisibility(vmRptViewVISIBLEViewGONE2);
+            int i6 = vmRandViewVISIBLEViewGONE2;
+            vmRandViewVISIBLEViewGONE3 = vmRptViewVISIBLEViewGONE;
+            this.mboundView19.setVisibility(vmRandViewVISIBLEViewGONE3);
+            this.mboundView33.setVisibility(vmRandViewVISIBLEViewGONE3);
+            this.mboundView44.setVisibility(vmRandViewVISIBLEViewGONE3);
         } else {
-            int vmRandViewVISIBLEViewGONE3 = vmShowVolumeViewVISIBLEViewGONE3;
-            vmRptViewVISIBLEViewGONE2 = vmRptViewVISIBLEViewGONE;
+            vmRandViewVISIBLEViewGONE3 = vmRptViewVISIBLEViewGONE;
         }
         if ((dirtyFlags & 422212465066112L) != 0) {
-            int i7 = vmRptViewVISIBLEViewGONE2;
+            int i7 = vmRandViewVISIBLEViewGONE3;
             vmUsbStatusGet = vmUsbStatusGet2;
             TextViewBindingAdapter.setText(this.mboundView20, vmUsbStatusGet);
             TextViewBindingAdapter.setText(this.mboundView34, vmUsbStatusGet);
             TextViewBindingAdapter.setText(this.mboundView45, vmUsbStatusGet);
         } else {
+            int vmRptViewVISIBLEViewGONE3 = vmRandViewVISIBLEViewGONE3;
             vmUsbStatusGet = vmUsbStatusGet2;
         }
         if ((dirtyFlags & 422212481843200L) != 0) {

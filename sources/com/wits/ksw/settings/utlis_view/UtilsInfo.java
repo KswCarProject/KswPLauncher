@@ -90,7 +90,7 @@ public class UtilsInfo {
         String version;
         String pingtai;
         String str = Build.VERSION.RELEASE;
-        String realVer = changeVersion() ? "11" : Build.VERSION.RELEASE;
+        String realVer = changeVersion();
         if (!TextUtils.isEmpty(getBaseband_Ver())) {
             String substring = getBaseband_Ver().substring(0, 4);
             int index_NA = getBaseband_Ver().indexOf("NA");
@@ -141,8 +141,7 @@ public class UtilsInfo {
 
     public static String getSettingsVersion(Context context) {
         String pingtai;
-        String settingsVer = "11";
-        String realVer = changeVersion() ? settingsVer : Build.VERSION.RELEASE;
+        String realVer = changeVersion();
         if (!TextUtils.isEmpty(getBaseband_Ver())) {
             String substring = getBaseband_Ver().substring(0, 4);
             int index_NA = getBaseband_Ver().indexOf("NA");
@@ -186,15 +185,19 @@ public class UtilsInfo {
             }
         } else {
             Context context2 = context;
-            if (!changeVersion()) {
-                settingsVer = Build.VERSION.RELEASE;
-            }
-            return settingsVer;
+            return changeVersion();
         }
     }
 
-    public static boolean changeVersion() {
-        return TextUtils.equals(SystemProperties.get("ksw_android11"), "1");
+    public static String changeVersion() {
+        String targetVer = SystemProperties.get("ksw_android11");
+        if (targetVer == null || targetVer.isEmpty()) {
+            return Build.VERSION.RELEASE;
+        }
+        if (Integer.parseInt(targetVer) > Integer.parseInt(Build.VERSION.RELEASE)) {
+            return targetVer;
+        }
+        return Build.VERSION.RELEASE;
     }
 
     public static String getDate() {

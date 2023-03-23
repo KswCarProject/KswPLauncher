@@ -72,7 +72,7 @@ public class Benz2021FragmentThreeHdpi1920x720Impl extends Benz2021FragmentThree
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);
@@ -84,7 +84,7 @@ public class Benz2021FragmentThreeHdpi1920x720Impl extends Benz2021FragmentThree
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 

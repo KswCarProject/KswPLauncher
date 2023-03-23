@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
+import com.wits.ksw.settings.TxzMessage;
 
 public class BenzNtg6FyThemeActivity extends Activity {
     private String bgIndex = "8";
@@ -18,42 +19,42 @@ public class BenzNtg6FyThemeActivity extends Activity {
         public void onClick(View v) {
             LOGE.E("v.getId() = " + v.getId());
             switch (v.getId()) {
-                case R.id.rb_benz_fy_bg1 /*2131297155*/:
+                case R.id.rb_benz_fy_bg1 /*2131297421*/:
                     BenzNtg6FyConfigs.bg_sel = 1;
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 1);
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
                     return;
-                case R.id.rb_benz_fy_bg2 /*2131297156*/:
+                case R.id.rb_benz_fy_bg2 /*2131297422*/:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 2);
                     BenzNtg6FyConfigs.bg_sel = 2;
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
                     return;
-                case R.id.rb_benz_fy_bg3 /*2131297157*/:
+                case R.id.rb_benz_fy_bg3 /*2131297423*/:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 3);
                     BenzNtg6FyConfigs.bg_sel = 3;
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
                     return;
-                case R.id.rb_benz_fy_bg4 /*2131297158*/:
+                case R.id.rb_benz_fy_bg4 /*2131297424*/:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 4);
                     BenzNtg6FyConfigs.bg_sel = 4;
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
                     return;
-                case R.id.rb_benz_fy_bg5 /*2131297159*/:
+                case R.id.rb_benz_fy_bg5 /*2131297425*/:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 5);
                     BenzNtg6FyConfigs.bg_sel = 5;
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
                     return;
-                case R.id.rb_benz_fy_bg6 /*2131297160*/:
+                case R.id.rb_benz_fy_bg6 /*2131297426*/:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 6);
                     BenzNtg6FyConfigs.bg_sel = 6;
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
                     return;
-                case R.id.rb_benz_fy_bg7 /*2131297161*/:
+                case R.id.rb_benz_fy_bg7 /*2131297427*/:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 7);
                     BenzNtg6FyConfigs.bg_sel = 7;
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
                     return;
-                case R.id.rb_benz_fy_bg8 /*2131297162*/:
+                case R.id.rb_benz_fy_bg8 /*2131297428*/:
                     Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzNtg6FyConfigs.BG_SAVE, 8);
                     BenzNtg6FyConfigs.bg_sel = 8;
                     MainActivity.benzNtg6FyBinding.layoutMainNtgFy.setBackgroundResource(BenzNtg6FyConfigs.BG_ONE[BenzNtg6FyConfigs.bg_sel - 1]);
@@ -71,7 +72,7 @@ public class BenzNtg6FyThemeActivity extends Activity {
     private RadioButton rb_benz_fy_bg6;
     private RadioButton rb_benz_fy_bg7;
     private RadioButton rb_benz_fy_bg8;
-    private String styleIndex = "1";
+    private String styleIndex = TxzMessage.TXZ_SHOW;
     private TextView tv_bg1;
     private TextView tv_bg2;
     private TextView tv_bg3;

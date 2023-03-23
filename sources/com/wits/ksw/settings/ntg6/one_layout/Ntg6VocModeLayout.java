@@ -111,22 +111,22 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
         this.rdg_vocmd.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_vocmd1 /*2131297197*/:
+                    case R.id.rdb_vocmd1:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(0);
                         return;
-                    case R.id.rdb_vocmd2 /*2131297198*/:
+                    case R.id.rdb_vocmd2:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(1);
                         return;
-                    case R.id.rdb_vocmd3 /*2131297199*/:
+                    case R.id.rdb_vocmd3:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(2);
                         return;
-                    case R.id.rdb_vocmd4 /*2131297200*/:
+                    case R.id.rdb_vocmd4:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(3);
                         return;
-                    case R.id.rdb_vocmd5 /*2131297201*/:
+                    case R.id.rdb_vocmd5:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(4);
                         return;
-                    case R.id.rdb_vocmd6 /*2131297202*/:
+                    case R.id.rdb_vocmd6:
                         Ntg6VocModeLayout.this.setUpdateTwoLayout(5);
                         return;
                     default:
@@ -230,7 +230,7 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
 
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
-            case R.id.seekbar_mdi /*2131297411*/:
+            case R.id.seekbar_mdi:
                 this.tv_mdiSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.di = progress;
@@ -239,7 +239,7 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
                     return;
                 }
                 return;
-            case R.id.seekbar_mgo /*2131297412*/:
+            case R.id.seekbar_mgo:
                 this.tv_mgoSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.ga = progress;
@@ -248,7 +248,7 @@ public class Ntg6VocModeLayout extends RelativeLayout implements SeekBar.OnSeekB
                     return;
                 }
                 return;
-            case R.id.seekbar_mzh /*2131297413*/:
+            case R.id.seekbar_mzh:
                 this.tv_mzhSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.zo = progress;

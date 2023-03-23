@@ -9,6 +9,15 @@ import android.os.RemoteException;
 public interface IContentObserver extends IInterface {
     void onChange() throws RemoteException;
 
+    public static class Default implements IContentObserver {
+        public void onChange() throws RemoteException {
+        }
+
+        public IBinder asBinder() {
+            return null;
+        }
+    }
+
     public static abstract class Stub extends Binder implements IContentObserver {
         private static final String DESCRIPTOR = "com.wits.pms.IContentObserver";
         static final int TRANSACTION_onChange = 1;
@@ -48,6 +57,7 @@ public interface IContentObserver extends IInterface {
         }
 
         private static class Proxy implements IContentObserver {
+            public static IContentObserver sDefaultImpl;
             private IBinder mRemote;
 
             Proxy(IBinder remote) {
@@ -67,13 +77,33 @@ public interface IContentObserver extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(1, _data, _reply, 0);
-                    _reply.readException();
+                    if (this.mRemote.transact(1, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().onChange();
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
+        }
+
+        public static boolean setDefaultImpl(IContentObserver impl) {
+            if (Proxy.sDefaultImpl != null) {
+                throw new IllegalStateException("setDefaultImpl() called twice");
+            } else if (impl == null) {
+                return false;
+            } else {
+                Proxy.sDefaultImpl = impl;
+                return true;
+            }
+        }
+
+        public static IContentObserver getDefaultImpl() {
+            return Proxy.sDefaultImpl;
         }
     }
 }

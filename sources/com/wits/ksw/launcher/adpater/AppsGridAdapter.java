@@ -58,11 +58,11 @@ public class AppsGridAdapter extends BaseAdapter {
             int r2 = r4.layoutRes
             r3 = 0
             android.view.View r6 = r1.inflate(r2, r3)
-            r1 = 2131296881(0x7f090271, float:1.8211691E38)
+            r1 = 2131297066(0x7f09032a, float:1.8212066E38)
             android.view.View r1 = r6.findViewById(r1)
             android.widget.ImageView r1 = (android.widget.ImageView) r1
             r0.iv_app_icon = r1
-            r1 = 2131297526(0x7f0904f6, float:1.8213E38)
+            r1 = 2131297817(0x7f090619, float:1.821359E38)
             android.view.View r1 = r6.findViewById(r1)
             android.widget.TextView r1 = (android.widget.TextView) r1
             r0.tv_app_name = r1

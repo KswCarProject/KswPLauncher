@@ -25,7 +25,9 @@ import android.view.View;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.view.benzmbux2021.BenzMbux2021Configs;
+import com.wits.ksw.launcher.view.benzmbux2021ksw.bean.BenzMbux2021KswConfigs;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
+import com.wits.ksw.settings.TxzMessage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,22 +42,38 @@ public class BitmapUtil {
     }
 
     public static Drawable getDefaultMBUX2021BG_OTHER() {
-        String bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_INDEX);
+        String bgIndex;
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+            bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
+        } else {
+            bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
+        }
         if (TextUtils.isEmpty(bgIndex)) {
-            bgIndex = "1";
+            bgIndex = TxzMessage.TXZ_SHOW;
         }
         int iBgIndex = Integer.parseInt(bgIndex);
         LOGE.D("liuhaoMedia____________________getDefaultMBUX2021BG_OTHER_______________ iBgIndex = " + iBgIndex);
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+            return MainActivity.mainActivity.getDrawable(BenzMbux2021KswConfigs.BG_OTHER[iBgIndex - 1]);
+        }
         return MainActivity.mainActivity.getDrawable(BenzMbux2021Configs.BG_OTHER[iBgIndex - 1]);
     }
 
     public static Drawable getDefaultMBUX2021BG_ONE() {
-        String bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_INDEX);
+        String bgIndex;
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+            bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
+        } else {
+            bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
+        }
         if (TextUtils.isEmpty(bgIndex)) {
-            bgIndex = "1";
+            bgIndex = TxzMessage.TXZ_SHOW;
         }
         int iBgIndex = Integer.parseInt(bgIndex);
         LOGE.D("liuhaoMedia____________________getDefaultMBUX2021BG_ONE_______________ iBgIndex = " + iBgIndex);
+        if (UiThemeUtils.isBenz_MBUX_2021_KSW(MainActivity.mainActivity) || UiThemeUtils.isBenz_MBUX_2021_KSW_V2(MainActivity.mainActivity)) {
+            return MainActivity.mainActivity.getDrawable(BenzMbux2021KswConfigs.BG_ONE[iBgIndex - 1]);
+        }
         return MainActivity.mainActivity.getDrawable(BenzMbux2021Configs.BG_ONE[iBgIndex - 1]);
     }
 
@@ -95,8 +113,14 @@ public class BitmapUtil {
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap.Config config;
+        if (drawable == null) {
+            return BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.color.transparent);
+        }
         int w = drawable.getIntrinsicWidth();
         int h = drawable.getIntrinsicHeight();
+        if (w <= 0 || h <= 0) {
+            return BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.color.transparent);
+        }
         if (drawable.getOpacity() != -1) {
             config = Bitmap.Config.ARGB_8888;
         } else {
@@ -627,5 +651,18 @@ public class BitmapUtil {
             origin.recycle();
         }
         return newBM;
+    }
+
+    public static Bitmap getScaleAndRotateBitmap(Drawable drawable, int w, int h, float angle) {
+        if (drawable == null) {
+            return null;
+        }
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        Bitmap oldbmp = drawableToBitmap(drawable);
+        Matrix matrix = new Matrix();
+        matrix.preScale(((float) w) / ((float) width), ((float) h) / ((float) height));
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true);
     }
 }

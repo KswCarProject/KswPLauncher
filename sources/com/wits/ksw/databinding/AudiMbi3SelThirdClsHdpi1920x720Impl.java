@@ -60,7 +60,7 @@ public class AudiMbi3SelThirdClsHdpi1920x720Impl extends AudiMbi3SelThirdCls {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SystemViewModel) variable);

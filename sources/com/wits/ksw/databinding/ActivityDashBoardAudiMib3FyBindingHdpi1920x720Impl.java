@@ -75,7 +75,7 @@ public class ActivityDashBoardAudiMib3FyBindingHdpi1920x720Impl extends Activity
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);
@@ -87,7 +87,7 @@ public class ActivityDashBoardAudiMib3FyBindingHdpi1920x720Impl extends Activity
         synchronized (this) {
             this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 

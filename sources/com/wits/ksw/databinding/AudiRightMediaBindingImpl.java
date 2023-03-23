@@ -18,10 +18,10 @@ import com.wits.ksw.launcher.model.AudiViewModel;
 public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback69;
-    private final View.OnClickListener mCallback70;
-    private final View.OnClickListener mCallback71;
-    private final View.OnClickListener mCallback72;
+    private final View.OnClickListener mCallback235;
+    private final View.OnClickListener mCallback236;
+    private final View.OnClickListener mCallback237;
+    private final View.OnClickListener mCallback238;
     private long mDirtyFlags;
 
     static {
@@ -45,10 +45,10 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
         this.btnMusicPrev.setTag((Object) null);
         this.tvMusicTitleInfor.setTag((Object) null);
         setRootTag(root);
-        this.mCallback69 = new OnClickListener(this, 1);
-        this.mCallback72 = new OnClickListener(this, 4);
-        this.mCallback70 = new OnClickListener(this, 2);
-        this.mCallback71 = new OnClickListener(this, 3);
+        this.mCallback238 = new OnClickListener(this, 4);
+        this.mCallback236 = new OnClickListener(this, 2);
+        this.mCallback237 = new OnClickListener(this, 3);
+        this.mCallback235 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -69,7 +69,7 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiViewModel) variable);
@@ -81,7 +81,7 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 
@@ -149,10 +149,10 @@ public class AudiRightMediaBindingImpl extends AudiRightMediaBinding implements 
             }
         }
         if ((8 & dirtyFlags) != 0) {
-            this.IvRightMusicIcon.setOnClickListener(this.mCallback69);
-            this.btnMusicNext.setOnClickListener(this.mCallback72);
-            this.btnMusicPlayPause.setOnClickListener(this.mCallback71);
-            this.btnMusicPrev.setOnClickListener(this.mCallback70);
+            this.IvRightMusicIcon.setOnClickListener(this.mCallback235);
+            this.btnMusicNext.setOnClickListener(this.mCallback238);
+            this.btnMusicPlayPause.setOnClickListener(this.mCallback237);
+            this.btnMusicPrev.setOnClickListener(this.mCallback236);
         }
         if ((dirtyFlags & 13) != 0) {
             ((RelativeLayout) this.KSWA4LRightShowMedia).setVisibility(vmMediaViewGet);

@@ -13,6 +13,21 @@ public interface OnMcuUpdateProgressListener extends IInterface {
 
     void success() throws RemoteException;
 
+    public static class Default implements OnMcuUpdateProgressListener {
+        public void success() throws RemoteException {
+        }
+
+        public void failed(int errorCode) throws RemoteException {
+        }
+
+        public void progress(int pg) throws RemoteException {
+        }
+
+        public IBinder asBinder() {
+            return null;
+        }
+    }
+
     public static abstract class Stub extends Binder implements OnMcuUpdateProgressListener {
         private static final String DESCRIPTOR = "com.wits.pms.ksw.OnMcuUpdateProgressListener";
         static final int TRANSACTION_failed = 2;
@@ -64,6 +79,7 @@ public interface OnMcuUpdateProgressListener extends IInterface {
         }
 
         private static class Proxy implements OnMcuUpdateProgressListener {
+            public static OnMcuUpdateProgressListener sDefaultImpl;
             private IBinder mRemote;
 
             Proxy(IBinder remote) {
@@ -83,8 +99,13 @@ public interface OnMcuUpdateProgressListener extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(1, _data, _reply, 0);
-                    _reply.readException();
+                    if (this.mRemote.transact(1, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().success();
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -97,8 +118,13 @@ public interface OnMcuUpdateProgressListener extends IInterface {
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
                     _data.writeInt(errorCode);
-                    this.mRemote.transact(2, _data, _reply, 0);
-                    _reply.readException();
+                    if (this.mRemote.transact(2, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().failed(errorCode);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -111,13 +137,33 @@ public interface OnMcuUpdateProgressListener extends IInterface {
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
                     _data.writeInt(pg);
-                    this.mRemote.transact(3, _data, _reply, 0);
-                    _reply.readException();
+                    if (this.mRemote.transact(3, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().progress(pg);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
+        }
+
+        public static boolean setDefaultImpl(OnMcuUpdateProgressListener impl) {
+            if (Proxy.sDefaultImpl != null) {
+                throw new IllegalStateException("setDefaultImpl() called twice");
+            } else if (impl == null) {
+                return false;
+            } else {
+                Proxy.sDefaultImpl = impl;
+                return true;
+            }
+        }
+
+        public static OnMcuUpdateProgressListener getDefaultImpl() {
+            return Proxy.sDefaultImpl;
         }
     }
 }

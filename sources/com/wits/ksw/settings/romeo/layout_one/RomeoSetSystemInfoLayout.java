@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.settings.TxzMessage;
 import com.wits.ksw.settings.romeo.interfaces.IUpdateListBg;
 import com.wits.ksw.settings.utlis_view.DialogViews;
 import com.wits.ksw.settings.utlis_view.McuUtil;
@@ -52,6 +54,7 @@ public class RomeoSetSystemInfoLayout extends RelativeLayout implements View.OnC
     /* access modifiers changed from: private */
     public TextView tv_infoMcuv;
     private TextView tv_infoSysRest;
+    private TextView tv_infoSysUpDate;
     private TextView tv_infoSysv;
     private TextView tv_systemInfo;
     private TextView tv_systemInfo2;
@@ -118,6 +121,9 @@ public class RomeoSetSystemInfoLayout extends RelativeLayout implements View.OnC
         this.tv_systemInfo = textView7;
         textView7.setText(allROM);
         changeItemBg(this.romeo_sys_info_ll, getContext());
+        TextView textView8 = (TextView) view.findViewById(R.id.tv_infoSysUpDate);
+        this.tv_infoSysUpDate = textView8;
+        textView8.setOnClickListener(this);
     }
 
     private void changeItemBg(final ViewGroup viewGroup, Context context2) {
@@ -164,13 +170,16 @@ public class RomeoSetSystemInfoLayout extends RelativeLayout implements View.OnC
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_infoMcuUp:
+            case R.id.tv_infoMcuUp /*2131297875*/:
                 this.dialogViews.updateMcu(this.context.getString(R.string.update_mcu_file));
                 return;
-            case R.id.tv_infoSysRest:
+            case R.id.tv_infoSysRest /*2131297878*/:
                 this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
                 return;
-            case R.id.tv_infoSysv:
+            case R.id.tv_infoSysUpDate /*2131297879*/:
+                new TxzMessage(2070, "system.ota.check", (Bundle) null).sendBroadCast(this.context);
+                return;
+            case R.id.tv_infoSysv /*2131297880*/:
                 UtilsInfo.showQRCode(this.context);
                 return;
             default:

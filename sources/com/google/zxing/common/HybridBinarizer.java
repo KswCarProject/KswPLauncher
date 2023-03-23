@@ -4,6 +4,7 @@ import com.google.zxing.Binarizer;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.NotFoundException;
 import java.lang.reflect.Array;
+import kotlin.UByte;
 
 public final class HybridBinarizer extends GlobalHistogramBinarizer {
     private static final int BLOCK_SIZE = 8;
@@ -109,7 +110,7 @@ public final class HybridBinarizer extends GlobalHistogramBinarizer {
         int offset = (yoffset * stride) + xoffset;
         while (y < 8) {
             for (int x = 0; x < 8; x++) {
-                if ((luminances[offset + x] & 255) <= threshold) {
+                if ((luminances[offset + x] & UByte.MAX_VALUE) <= threshold) {
                     matrix2.set(xoffset + x, yoffset + y);
                 }
             }
@@ -177,7 +178,7 @@ public final class HybridBinarizer extends GlobalHistogramBinarizer {
                         }
                         int xx2 = 0;
                         for (int i6 = 8; xx2 < i6; i6 = 8) {
-                            sum += luminances[offset + xx2] & 255;
+                            sum += luminances[offset + xx2] & UByte.MAX_VALUE;
                             xx2++;
                         }
                     }

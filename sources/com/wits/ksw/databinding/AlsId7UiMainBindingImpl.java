@@ -83,7 +83,7 @@ public class AlsId7UiMainBindingImpl extends AlsId7UiMainBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (4 != variableId) {
+        if (7 != variableId) {
             return false;
         }
         setLauncherViewModel((LauncherViewModel) variable);
@@ -95,7 +95,7 @@ public class AlsId7UiMainBindingImpl extends AlsId7UiMainBinding {
         synchronized (this) {
             this.mDirtyFlags |= 16;
         }
-        notifyPropertyChanged(4);
+        notifyPropertyChanged(7);
         super.requestRebind();
     }
 

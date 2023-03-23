@@ -1,5 +1,7 @@
 package com.ibm.icu.text;
 
+import kotlin.UByte;
+
 abstract class CharsetRecog_Unicode extends CharsetRecognizer {
     /* access modifiers changed from: package-private */
     public abstract String getName();
@@ -11,7 +13,7 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
     }
 
     static int codeUnit16FromBytes(byte hi, byte lo) {
-        return ((hi & 255) << 8) | (lo & 255);
+        return ((hi & UByte.MAX_VALUE) << 8) | (lo & UByte.MAX_VALUE);
     }
 
     static int adjustConfidence(int codeUnit, int confidence) {
@@ -167,7 +169,7 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
 
         /* access modifiers changed from: package-private */
         public int getChar(byte[] input, int index) {
-            return ((input[index + 0] & 255) << 24) | ((input[index + 1] & 255) << 16) | ((input[index + 2] & 255) << 8) | (input[index + 3] & 255);
+            return ((input[index + 0] & UByte.MAX_VALUE) << 24) | ((input[index + 1] & UByte.MAX_VALUE) << 16) | ((input[index + 2] & UByte.MAX_VALUE) << 8) | (input[index + 3] & UByte.MAX_VALUE);
         }
 
         /* access modifiers changed from: package-private */
@@ -182,7 +184,7 @@ abstract class CharsetRecog_Unicode extends CharsetRecognizer {
 
         /* access modifiers changed from: package-private */
         public int getChar(byte[] input, int index) {
-            return ((input[index + 3] & 255) << 24) | ((input[index + 2] & 255) << 16) | ((input[index + 1] & 255) << 8) | (input[index + 0] & 255);
+            return ((input[index + 3] & UByte.MAX_VALUE) << 24) | ((input[index + 2] & UByte.MAX_VALUE) << 16) | ((input[index + 1] & UByte.MAX_VALUE) << 8) | (input[index + 0] & UByte.MAX_VALUE);
         }
 
         /* access modifiers changed from: package-private */

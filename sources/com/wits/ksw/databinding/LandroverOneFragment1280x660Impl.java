@@ -11,12 +11,12 @@ import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 public class LandroverOneFragment1280x660Impl extends LandroverOneFragment implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback74;
-    private final View.OnClickListener mCallback75;
-    private final View.OnClickListener mCallback76;
-    private final View.OnClickListener mCallback77;
-    private final View.OnClickListener mCallback78;
-    private final View.OnClickListener mCallback79;
+    private final View.OnClickListener mCallback45;
+    private final View.OnClickListener mCallback46;
+    private final View.OnClickListener mCallback47;
+    private final View.OnClickListener mCallback48;
+    private final View.OnClickListener mCallback49;
+    private final View.OnClickListener mCallback50;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
 
@@ -38,12 +38,12 @@ public class LandroverOneFragment1280x660Impl extends LandroverOneFragment imple
         this.mboundView0 = relativeLayout;
         relativeLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback78 = new OnClickListener(this, 5);
-        this.mCallback79 = new OnClickListener(this, 6);
-        this.mCallback76 = new OnClickListener(this, 3);
-        this.mCallback77 = new OnClickListener(this, 4);
-        this.mCallback74 = new OnClickListener(this, 1);
-        this.mCallback75 = new OnClickListener(this, 2);
+        this.mCallback49 = new OnClickListener(this, 5);
+        this.mCallback47 = new OnClickListener(this, 3);
+        this.mCallback48 = new OnClickListener(this, 4);
+        this.mCallback45 = new OnClickListener(this, 1);
+        this.mCallback46 = new OnClickListener(this, 2);
+        this.mCallback50 = new OnClickListener(this, 6);
         invalidateAll();
     }
 
@@ -64,7 +64,7 @@ public class LandroverOneFragment1280x660Impl extends LandroverOneFragment imple
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (10 != variableId) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LandroverViewModel) variable);
@@ -76,7 +76,7 @@ public class LandroverOneFragment1280x660Impl extends LandroverOneFragment imple
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(10);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
@@ -98,12 +98,12 @@ public class LandroverOneFragment1280x660Impl extends LandroverOneFragment imple
             viewModelSettingsViewFocusChangeListener = viewModel.settingsViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.landroverMainIconCar.setOnClickListener(this.mCallback77);
-            this.landroverMainIconDvr.setOnClickListener(this.mCallback78);
-            this.landroverMainIconGps.setOnClickListener(this.mCallback74);
-            this.landroverMainIconMusic.setOnClickListener(this.mCallback76);
-            this.landroverMainIconSettings.setOnClickListener(this.mCallback79);
-            this.landroverMainIconVideo.setOnClickListener(this.mCallback75);
+            this.landroverMainIconCar.setOnClickListener(this.mCallback48);
+            this.landroverMainIconDvr.setOnClickListener(this.mCallback49);
+            this.landroverMainIconGps.setOnClickListener(this.mCallback45);
+            this.landroverMainIconMusic.setOnClickListener(this.mCallback47);
+            this.landroverMainIconSettings.setOnClickListener(this.mCallback50);
+            this.landroverMainIconVideo.setOnClickListener(this.mCallback46);
         }
         if ((3 & dirtyFlags) != 0) {
             this.landroverMainIconSettings.setOnFocusChangeListener(viewModelSettingsViewFocusChangeListener);

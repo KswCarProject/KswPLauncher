@@ -24,6 +24,7 @@ import com.wits.ksw.launcher.utils.BitmapUtil;
 import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
 import com.wits.pms.statuscontrol.PowerManagerApp;
+import com.wits.pms.statuscontrol.VideoStatus;
 
 public class MediaImpl {
     private static final String TAG = MediaImpl.class.getName();
@@ -33,6 +34,7 @@ public class MediaImpl {
     private MediaMetadataRetriever metadataRetriever;
     private String musicPath;
     private Handler uiHandler = new Handler(Looper.getMainLooper());
+    private String videoPath;
 
     public static MediaImpl getInstance() {
         if (singleton == null) {
@@ -70,6 +72,14 @@ public class MediaImpl {
         return PowerManagerApp.getManager().getStatusString("path");
     }
 
+    private String getVideoPathString() throws Exception {
+        return PowerManagerApp.getManager().getStatusString("videoPath");
+    }
+
+    private boolean getVideoPlayState() throws Exception {
+        return PowerManagerApp.getManager().getStatusBoolean("videoPlay");
+    }
+
     public boolean getMusicPlayState() throws Exception {
         return PowerManagerApp.getManager().getStatusBoolean("play");
     }
@@ -96,6 +106,10 @@ public class MediaImpl {
         this.mediaInfo.setCurrentTime("0:00");
         this.mediaInfo.setTotalTime("0:00");
         this.mediaInfo.setMusicPlay(false);
+        this.mediaInfo.setMaxProgressVideo(0);
+        this.mediaInfo.setCurrentTimeVideo("0:00");
+        this.mediaInfo.setTotalTimeVideo("0:00");
+        this.mediaInfo.setVideoPlay(false);
         getInstance().setMediaInfo(this.mediaInfo);
     }
 
@@ -130,73 +144,114 @@ public class MediaImpl {
     }
 
     public void handleMediaInfo(String path) {
-        this.musicPath = path;
-        try {
-            String str = TAG;
-            Log.i(str, "handleMediaInfo: path:" + path);
-            MediaMetadataRetriever metadataRetriever2 = initMediaMetadataRetriever(path);
-            if (metadataRetriever2 == null) {
-                Log.i(str, "handleMediaInfo: initMediaMetadataRetriever null");
-                updataNull();
-                return;
-            }
-            BitmapDrawable icon = null;
-            String title = metadataRetriever2.extractMetadata(7);
-            String album = metadataRetriever2.extractMetadata(1);
-            String artist = metadataRetriever2.extractMetadata(2);
-            String duration = metadataRetriever2.extractMetadata(9);
-            byte[] pictur = metadataRetriever2.getEmbeddedPicture();
-            if (pictur != null) {
-                icon = new BitmapDrawable(BitmapFactory.decodeByteArray(pictur, 0, pictur.length));
-            }
-            final MediaInfo mediaInfo2 = getInstance().getMediaInfo();
-            mediaInfo2.setMaxProgress(Integer.valueOf(duration).intValue());
-            if (TextUtils.isEmpty(title)) {
-                title = KswUtils.splitPathMusicName(path);
-            }
-            mediaInfo2.setMusicName(title);
-            mediaInfo2.setMusicAlbum(album);
-            mediaInfo2.setMusicAtist(artist);
-            if (!TextUtils.isEmpty(artist)) {
-                mediaInfo2.songInfo.set(title + " - " + artist);
-            } else {
-                mediaInfo2.songInfo.set(title);
-            }
-            mediaInfo2.setPic(icon);
-            if (icon == null) {
-                LOGE.D("liuhaoMedia ____________________aaa BitmapUtil.isBenzMbux2021()&&icon==null__________________________________");
-                mediaInfo2.setPicBg((BitmapDrawable) BitmapUtil.getDefaultMBUX2021BG_OTHER());
-                mediaInfo2.setPicZoom((BitmapDrawable) null);
-            } else {
-                mediaInfo2.setPicZoom((BitmapDrawable) zoomDrawable(icon, 100, 100));
-                Bitmap bmp = BitmapUtil.drawableToBitmap(icon);
-                if (bmp == null) {
-                    bmp = BitmapUtil.drawableToBitmap(BitmapUtil.getDefaultMBUX2021BG_OTHER());
+        if (!path.equals(this.musicPath)) {
+            this.musicPath = path;
+            try {
+                String str = TAG;
+                Log.i(str, "handleMediaInfo: path:" + path);
+                MediaMetadataRetriever metadataRetriever2 = initMediaMetadataRetriever(path);
+                if (metadataRetriever2 == null) {
+                    Log.i(str, "handleMediaInfo: initMediaMetadataRetriever null");
+                    updataNull();
+                    return;
                 }
-                mediaInfo2.setPicBg(new BitmapDrawable(bmp));
-            }
-            mediaInfo2.setPageIndex(mediaInfo2.pageIndex.get());
-            if (TextUtils.isEmpty(duration)) {
-                mediaInfo2.setTotalTime(KswUtils.formatMusicPlayTime(0));
-            } else {
-                mediaInfo2.setTotalTime(KswUtils.formatMusicPlayTime(Long.valueOf(duration).longValue()));
-            }
-            this.uiHandler.post(new Runnable() {
-                public void run() {
-                    MediaImpl.this.mediaInfoMutableLiveData.setValue(mediaInfo2);
+                BitmapDrawable icon = null;
+                String title = metadataRetriever2.extractMetadata(7);
+                String album = metadataRetriever2.extractMetadata(1);
+                String artist = metadataRetriever2.extractMetadata(2);
+                String duration = metadataRetriever2.extractMetadata(9);
+                byte[] pictur = metadataRetriever2.getEmbeddedPicture();
+                if (pictur != null) {
+                    icon = new BitmapDrawable(BitmapFactory.decodeByteArray(pictur, 0, pictur.length));
                 }
-            });
-            Log.i(str, "handleMediaInfo: title:" + title + " album:" + album + " artist:" + artist + " totalTime:" + duration);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "onChange:" + e.getMessage());
+                final MediaInfo mediaInfo2 = getInstance().getMediaInfo();
+                mediaInfo2.setMaxProgress(Integer.valueOf(duration).intValue());
+                if (TextUtils.isEmpty(title)) {
+                    title = KswUtils.splitPathMusicName(path);
+                }
+                mediaInfo2.setMusicName(title);
+                mediaInfo2.setMusicAlbum(album);
+                mediaInfo2.setMusicAtist(artist);
+                if (!TextUtils.isEmpty(artist)) {
+                    mediaInfo2.songInfo.set(title + " - " + artist);
+                } else {
+                    mediaInfo2.songInfo.set(title);
+                }
+                mediaInfo2.setPic(icon);
+                if (icon == null) {
+                    LOGE.D("liuhaoMedia ____________________aaa BitmapUtil.isBenzMbux2021()&&icon==null__________________________________");
+                    mediaInfo2.setPicBg((BitmapDrawable) BitmapUtil.getDefaultMBUX2021BG_OTHER());
+                    mediaInfo2.setPicZoom((BitmapDrawable) null);
+                } else {
+                    mediaInfo2.setPicZoom((BitmapDrawable) zoomDrawable(icon, 100, 100));
+                    Bitmap bmp = BitmapUtil.drawableToBitmap(icon);
+                    if (bmp == null) {
+                        bmp = BitmapUtil.drawableToBitmap(BitmapUtil.getDefaultMBUX2021BG_OTHER());
+                    }
+                    mediaInfo2.setPicBg(new BitmapDrawable(bmp));
+                }
+                mediaInfo2.setPageIndex(mediaInfo2.pageIndex.get());
+                if (TextUtils.isEmpty(duration)) {
+                    mediaInfo2.setTotalTime(KswUtils.formatMusicPlayTime(0));
+                } else {
+                    mediaInfo2.setTotalTime(KswUtils.formatMusicPlayTime(Long.valueOf(duration).longValue()));
+                }
+                this.uiHandler.post(new Runnable() {
+                    public void run() {
+                        MediaImpl.this.mediaInfoMutableLiveData.setValue(mediaInfo2);
+                    }
+                });
+                Log.i(str, "handleMediaInfo: title:" + title + " album:" + album + " artist:" + artist + " totalTime:" + duration);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "onChange:" + e.getMessage());
+            }
+        }
+    }
+
+    public void handleVideoInfoSetPlayStatus(VideoStatus videoStatus, String path) {
+        if (videoStatus != null) {
+            Log.w(TAG, "handleVideoInfoSetPlayStatus:" + videoStatus.getTotalTime());
+            MediaInfo mediaInfo2 = getInstance().getMediaInfo();
+            mediaInfo2.setVideoPlay(videoStatus.isPlay());
+            mediaInfo2.setMaxProgressVideo(videoStatus.getTotalTime());
+            mediaInfo2.setProgressVideo(videoStatus.getPosition());
+            String title = KswUtils.splitPathMusicName(path);
+            mediaInfo2.setVideoName(title);
+            Log.d("TAG", "VideoTitle:" + title);
+            if (videoStatus.getTotalTime() <= 0) {
+                mediaInfo2.progressPercentVideo.set(0);
+            } else {
+                mediaInfo2.progressPercentVideo.set(Math.round(100.0f * ((((float) videoStatus.getPosition()) * 1.0f) / ((float) videoStatus.getTotalTime()))));
+            }
+            mediaInfo2.setTotalTimeVideo(KswUtils.formatMusicPlayTime((long) videoStatus.getTotalTime()));
+            mediaInfo2.setCurrentTimeVideo(KswUtils.formatMusicPlayTime((long) videoStatus.getPosition()));
         }
     }
 
     public void handleMediaPlaySeekbarAndCurrentime(int currentTime) {
-        MediaInfo mediaInfo2 = getInstance().getMediaInfo();
-        mediaInfo2.setProgress(currentTime);
-        mediaInfo2.setCurrentTime(KswUtils.formatMusicPlayTime((long) currentTime));
+        try {
+            MediaInfo mediaInfo2 = getInstance().getMediaInfo();
+            mediaInfo2.setProgress(currentTime);
+            mediaInfo2.setCurrentTime(KswUtils.formatMusicPlayTime((long) currentTime));
+            setProgressPercent(mediaInfo2);
+            mediaInfo2.setRemainTime("-" + KswUtils.formatMusicPlayTimeRemain(currentTime, mediaInfo2.maxProgress.get()));
+            String hightLrcRow = PowerManagerApp.getManager().getStatusString("LrcRow_HighLightContent");
+            mediaInfo2.setHightLrcRow(hightLrcRow);
+            Log.e("lixin_test", "handleMediaPlaySeekbarAndCurrentime: hightLrcRow " + hightLrcRow);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setProgressPercent(MediaInfo mediaInfo2) {
+        if (mediaInfo2 != null) {
+            if (mediaInfo2.maxProgress.get() <= 0) {
+                mediaInfo2.progressPercent.set(0);
+                return;
+            }
+            mediaInfo2.progressPercent.set(Math.round(100.0f * ((((float) mediaInfo2.progress.get()) * 1.0f) / ((float) mediaInfo2.maxProgress.get()))));
+        }
     }
 
     public static Bitmap zoomImage(Bitmap bgimage, double newWidth, double newHeight) {

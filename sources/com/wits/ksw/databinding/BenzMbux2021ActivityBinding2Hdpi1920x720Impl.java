@@ -74,7 +74,7 @@ public class BenzMbux2021ActivityBinding2Hdpi1920x720Impl extends BenzMbux2021Ac
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (15 != variableId) {
+        if (24 != variableId) {
             return false;
         }
         setVieModel((BcVieModel) variable);
@@ -86,7 +86,7 @@ public class BenzMbux2021ActivityBinding2Hdpi1920x720Impl extends BenzMbux2021Ac
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(24);
         super.requestRebind();
     }
 

@@ -2,17 +2,18 @@ package com.google.gson.internal;
 
 import com.google.gson.InstanceCreator;
 import com.google.gson.JsonIOException;
+import com.google.gson.internal.reflect.ReflectionAccessor;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -20,8 +21,13 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public final class ConstructorConstructor {
+    private final ReflectionAccessor accessor = ReflectionAccessor.getInstance();
     private final Map<Type, InstanceCreator<?>> instanceCreators;
 
     public ConstructorConstructor(Map<Type, InstanceCreator<?>> instanceCreators2) {
@@ -62,7 +68,7 @@ public final class ConstructorConstructor {
         try {
             final Constructor<? super T> constructor = rawType.getDeclaredConstructor(new Class[0]);
             if (!constructor.isAccessible()) {
-                constructor.setAccessible(true);
+                this.accessor.makeAccessible(constructor);
             }
             return new ObjectConstructor<T>() {
                 public T construct() {
@@ -116,7 +122,7 @@ public final class ConstructorConstructor {
             if (Queue.class.isAssignableFrom(rawType)) {
                 return new ObjectConstructor<T>() {
                     public T construct() {
-                        return new LinkedList();
+                        return new ArrayDeque();
                     }
                 };
             }
@@ -128,6 +134,20 @@ public final class ConstructorConstructor {
         } else if (!Map.class.isAssignableFrom(rawType)) {
             return null;
         } else {
+            if (ConcurrentNavigableMap.class.isAssignableFrom(rawType)) {
+                return new ObjectConstructor<T>() {
+                    public T construct() {
+                        return new ConcurrentSkipListMap();
+                    }
+                };
+            }
+            if (ConcurrentMap.class.isAssignableFrom(rawType)) {
+                return new ObjectConstructor<T>() {
+                    public T construct() {
+                        return new ConcurrentHashMap();
+                    }
+                };
+            }
             if (SortedMap.class.isAssignableFrom(rawType)) {
                 return new ObjectConstructor<T>() {
                     public T construct() {
@@ -158,7 +178,7 @@ public final class ConstructorConstructor {
                 try {
                     return this.unsafeAllocator.newInstance(rawType);
                 } catch (Exception e) {
-                    throw new RuntimeException("Unable to invoke no-args constructor for " + type + ". " + "Register an InstanceCreator with Gson for this type may fix this problem.", e);
+                    throw new RuntimeException("Unable to invoke no-args constructor for " + type + ". Registering an InstanceCreator with Gson for this type may fix this problem.", e);
                 }
             }
         };

@@ -2,6 +2,7 @@ package com.google.zxing.datamatrix.encoder;
 
 import com.google.zxing.Dimension;
 import java.nio.charset.StandardCharsets;
+import kotlin.UByte;
 
 final class EncoderContext {
     private final StringBuilder codewords;
@@ -20,7 +21,7 @@ final class EncoderContext {
         int i = 0;
         int c = msgBinary.length;
         while (i < c) {
-            char c2 = (char) (msgBinary[i] & 255);
+            char c2 = (char) (msgBinary[i] & UByte.MAX_VALUE);
             char ch = c2;
             if (c2 != '?' || msg2.charAt(i) == '?') {
                 sb.append(ch);

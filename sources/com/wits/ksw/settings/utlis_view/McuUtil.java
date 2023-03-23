@@ -5,7 +5,7 @@ import com.wits.ksw.launcher.utils.KswUtils;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class McuUtil {
-    private static final String TAG = ("KSWLauncher." + KswUtils.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + KswUtils.class.getSimpleName());
 
     public static String getMcuVersion() {
         try {

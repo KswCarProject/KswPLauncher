@@ -315,7 +315,7 @@ public class Bidi {
     }
 
     static final byte NoOverride(byte level) {
-        return (byte) (level & LEVEL_DEFAULT_RTL);
+        return (byte) (level & Byte.MAX_VALUE);
     }
 
     static byte GetLRFromLevel(byte level) {
@@ -1182,7 +1182,7 @@ public class Bidi {
                         pLastIsoRun.contextDir = newProp2;
                         pLastIsoRun.contextPos = position;
                         byte level = this.levels[position];
-                        if ((level & LEVEL_OVERRIDE) != 0) {
+                        if ((level & Byte.MIN_VALUE) != 0) {
                             byte newProp3 = (byte) (level & 1);
                             pLastIsoRun.lastStrong = newProp3;
                             short flag = (short) DirPropFlag(newProp3);
@@ -1191,11 +1191,11 @@ public class Bidi {
                                 opening.flags = (short) (opening.flags | flag);
                             }
                             byte[] bArr = this.levels;
-                            bArr[position] = (byte) (bArr[position] & LEVEL_DEFAULT_RTL);
+                            bArr[position] = (byte) (bArr[position] & Byte.MAX_VALUE);
                         }
                         byte[] bArr2 = this.levels;
                         int i2 = bd.openings[idx].position;
-                        bArr2[i2] = (byte) (bArr2[i2] & LEVEL_DEFAULT_RTL);
+                        bArr2[i2] = (byte) (bArr2[i2] & Byte.MAX_VALUE);
                         return;
                     }
                 }
@@ -1215,7 +1215,7 @@ public class Bidi {
             }
         }
         byte level2 = this.levels[position];
-        if ((level2 & LEVEL_OVERRIDE) != 0) {
+        if ((level2 & Byte.MIN_VALUE) != 0) {
             newProp = (byte) (level2 & 1);
             if (!(dirProp == 8 || dirProp == 9 || dirProp == 10)) {
                 this.dirProps[position] = newProp;
@@ -1800,7 +1800,7 @@ public class Bidi {
                 currentParaLimit = this.paras_limit[currentParaIndex];
             }
             int overrideFlag = level & -128;
-            byte level2 = (byte) (level & LEVEL_DEFAULT_RTL);
+            byte level2 = (byte) (level & Byte.MAX_VALUE);
             if (level2 < currentParaLevel || 125 < level2) {
                 if (level2 != 0) {
                     throw new IllegalArgumentException("level " + level2 + " out of bounds at " + i);
@@ -2800,17 +2800,17 @@ public class Bidi {
                 int j2 = start2;
                 while (j2 != limit) {
                     int logicalStart4 = logicalStart3;
-                    int index3 = visualMap[j2];
+                    int logicalStart5 = visualMap[j2];
                     int index12 = visualMap[j2 + step];
                     int oldRunCount3 = oldRunCount2;
                     int saveTrailingWSStart3 = saveTrailingWSStart2;
-                    if (Bidi_Abs(index3 - index12) == 1 && saveLevels[index3] == saveLevels[index12]) {
-                        int i10 = index3;
+                    if (Bidi_Abs(logicalStart5 - index12) == 1 && saveLevels[logicalStart5] == saveLevels[index12]) {
+                        int i10 = logicalStart5;
                         saveDirection2 = saveDirection3;
                     } else {
-                        int logicalPos2 = Bidi_Min(visualMap[start2], index3);
+                        int logicalPos2 = Bidi_Min(visualMap[start2], logicalStart5);
                         this.runs[newI4].start = logicalPos2;
-                        int i11 = index3;
+                        int i11 = logicalStart5;
                         this.runs[newI4].level = (byte) (saveLevels[logicalPos2] ^ indexOddBit);
                         BidiRun[] bidiRunArr3 = this.runs;
                         bidiRunArr3[newI4].limit = bidiRunArr3[i7].limit;
@@ -3011,13 +3011,13 @@ public class Bidi {
                         } else {
                             eor2 = (short) GetLRFromLevel(level2);
                         }
-                        if ((level2 & LEVEL_OVERRIDE) == 0) {
+                        if ((level2 & Byte.MIN_VALUE) == 0) {
                             resolveImplicitLevels(start2, limit, sor, eor);
                         } else {
                             do {
                                 byte[] bArr = this.levels;
                                 start = start2 + 1;
-                                bArr[start2] = (byte) (bArr[start2] & LEVEL_DEFAULT_RTL);
+                                bArr[start2] = (byte) (bArr[start2] & Byte.MAX_VALUE);
                                 start2 = start;
                             } while (start < limit);
                         }
@@ -3335,7 +3335,7 @@ public class Bidi {
                 paraLvl = LEVEL_DEFAULT_LTR;
                 break;
             case 127:
-                paraLvl = LEVEL_DEFAULT_RTL;
+                paraLvl = Byte.MAX_VALUE;
                 break;
             default:
                 paraLvl = 0;

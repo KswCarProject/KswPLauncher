@@ -1,5 +1,6 @@
 package com.wits.ksw.settings.id7;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import com.wits.ksw.settings.id7.layout_factory.FunctionConfig;
 import com.wits.ksw.settings.id7.layout_factory.LogoSelect;
 import com.wits.ksw.settings.id7.layout_factory.MicConfig;
 import com.wits.ksw.settings.id7.layout_factory.RawCarShow;
+import com.wits.ksw.settings.id7.layout_factory.ReverseExitTimeSelect;
 import com.wits.ksw.settings.utlis_view.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +45,7 @@ public class FactoryActivity extends BaseActivity {
     private LogoSelect logoSelect;
     private MicConfig micConfig;
     private RawCarShow rawCarShow;
+    private ReverseExitTimeSelect reverseExitTimeSelect;
 
     /* access modifiers changed from: protected */
     public void onCreate(Bundle savedInstanceState) {
@@ -91,14 +94,8 @@ public class FactoryActivity extends BaseActivity {
     }
 
     private void initData() {
-        deleteAllByPath(new File("/storage/emulated/0/mylogo"));
-        try {
-            FileUtils.upZipFile(new File("/mnt/vendor/persist/mylogo.zip"), "/storage/emulated/0");
-        } catch (IOException e) {
-            Log.d("unzip", e.getLocalizedMessage());
-        } catch (IllegalArgumentException e2) {
-            Log.d("unzip", e2.getLocalizedMessage());
-        }
+        deleteAllByPath(new File(FileUtils.getLogoFilePath()));
+        new TestAsyncTask().execute(new Void[0]);
         this.data = new ArrayList();
         String[] functions = getResources().getStringArray(R.array.set_factory);
         for (String title : functions) {
@@ -115,6 +112,7 @@ public class FactoryActivity extends BaseActivity {
         this.rawCarShow = new RawCarShow(this);
         this.canBusSelect = new CanBusSelect(this);
         this.micConfig = new MicConfig(this);
+        this.reverseExitTimeSelect = new ReverseExitTimeSelect(this);
         this.factoryInput = new FactoryInput(this);
         this.carUiConfig = new CarUiConfig(this);
         this.logoSelect = new LogoSelect(this);
@@ -167,16 +165,38 @@ public class FactoryActivity extends BaseActivity {
                 this.factory_Frame.addView(this.micConfig);
                 return;
             case 5:
-                this.factory_Frame.addView(this.carUiConfig);
+                this.factory_Frame.addView(this.reverseExitTimeSelect);
                 return;
             case 6:
-                this.factory_Frame.addView(this.factoryInput);
+                this.factory_Frame.addView(this.carUiConfig);
                 return;
             case 7:
+                this.factory_Frame.addView(this.factoryInput);
+                return;
+            case 8:
                 this.factory_Frame.addView(this.logoSelect);
                 return;
             default:
                 return;
+        }
+    }
+
+    public class TestAsyncTask extends AsyncTask<Void, Integer, Integer> {
+        public TestAsyncTask() {
+        }
+
+        /* access modifiers changed from: protected */
+        public Integer doInBackground(Void... voids) {
+            try {
+                FileUtils.upZipFile(new File(FileUtils.getUpZipPath()), FileUtils.folderPath);
+                return null;
+            } catch (IOException e) {
+                Log.d("unzip", e.getLocalizedMessage());
+                return null;
+            } catch (IllegalArgumentException e2) {
+                Log.d("unzip", e2.getLocalizedMessage());
+                return null;
+            }
         }
     }
 }

@@ -10,9 +10,9 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback93;
-    private final View.OnClickListener mCallback94;
-    private final View.OnClickListener mCallback95;
+    private final View.OnClickListener mCallback251;
+    private final View.OnClickListener mCallback252;
+    private final View.OnClickListener mCallback253;
     private long mDirtyFlags;
 
     public UgHomeThreeBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,9 +27,9 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
         this.ugHomeDashboradVaiw.setTag((Object) null);
         this.ugHomeSettingVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback94 = new OnClickListener(this, 2);
-        this.mCallback95 = new OnClickListener(this, 3);
-        this.mCallback93 = new OnClickListener(this, 1);
+        this.mCallback252 = new OnClickListener(this, 2);
+        this.mCallback253 = new OnClickListener(this, 3);
+        this.mCallback251 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -50,7 +50,7 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -62,7 +62,7 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -80,9 +80,9 @@ public class UgHomeThreeBindingImpl extends UgHomeThreeBinding implements OnClic
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeCarVaiw.setOnClickListener(this.mCallback93);
-            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback94);
-            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback95);
+            this.ugHomeCarVaiw.setOnClickListener(this.mCallback251);
+            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback252);
+            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback253);
         }
     }
 

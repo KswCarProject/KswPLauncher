@@ -14,7 +14,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback73;
+    private final View.OnClickListener mCallback240;
     private long mDirtyFlags;
 
     static {
@@ -34,7 +34,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
         this.carImageView.setTag((Object) null);
         this.phoneConnectionTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback73 = new OnClickListener(this, 1);
+        this.mCallback240 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -55,7 +55,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (9 != variableId) {
+        if (14 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
@@ -67,7 +67,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 
@@ -115,7 +115,7 @@ public class Id7SubPhoneViewHicarBindingImpl extends Id7SubPhoneViewHicarBinding
             }
         }
         if ((4 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback73);
+            this.carImageView.setOnClickListener(this.mCallback240);
         }
         if ((dirtyFlags & 6) != 0) {
             this.carImageView.setOnFocusChangeListener(naviViewModelCarViewFocusChangeListener);

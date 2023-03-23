@@ -132,12 +132,12 @@ public class MenuPopupHelper implements MenuHelper {
             r2.<init>()
             int r3 = android.os.Build.VERSION.SDK_INT
             r4 = 17
-            if (r3 < r4) goto L_0x001d
+            if (r3 < r4) goto L_0x001e
             r1.getRealSize(r2)
-            goto L_0x0020
-        L_0x001d:
+            goto L_0x0021
+        L_0x001e:
             r1.getSize(r2)
-        L_0x0020:
+        L_0x0021:
             int r3 = r2.x
             int r4 = r2.y
             int r3 = java.lang.Math.min(r3, r4)
@@ -145,13 +145,13 @@ public class MenuPopupHelper implements MenuHelper {
             android.content.res.Resources r4 = r4.getResources()
             int r5 = android.support.v7.appcompat.R.dimen.abc_cascading_menus_min_smallest_width
             int r4 = r4.getDimensionPixelSize(r5)
-            if (r3 < r4) goto L_0x0038
+            if (r3 < r4) goto L_0x0039
             r5 = 1
-            goto L_0x0039
-        L_0x0038:
-            r5 = 0
+            goto L_0x003a
         L_0x0039:
-            if (r5 == 0) goto L_0x004c
+            r5 = 0
+        L_0x003a:
+            if (r5 == 0) goto L_0x004d
             android.support.v7.view.menu.CascadingMenuPopup r12 = new android.support.v7.view.menu.CascadingMenuPopup
             android.content.Context r7 = r14.mContext
             android.view.View r8 = r14.mAnchorView
@@ -160,8 +160,8 @@ public class MenuPopupHelper implements MenuHelper {
             boolean r11 = r14.mOverflowOnly
             r6 = r12
             r6.<init>(r7, r8, r9, r10, r11)
-            goto L_0x005e
-        L_0x004c:
+            goto L_0x005f
+        L_0x004d:
             android.support.v7.view.menu.StandardMenuPopup r6 = new android.support.v7.view.menu.StandardMenuPopup
             android.content.Context r8 = r14.mContext
             android.support.v7.view.menu.MenuBuilder r9 = r14.mMenu
@@ -171,7 +171,7 @@ public class MenuPopupHelper implements MenuHelper {
             boolean r13 = r14.mOverflowOnly
             r7 = r6
             r7.<init>(r8, r9, r10, r11, r12, r13)
-        L_0x005e:
+        L_0x005f:
             android.support.v7.view.menu.MenuBuilder r7 = r14.mMenu
             r6.addMenu(r7)
             android.widget.PopupWindow$OnDismissListener r7 = r14.mInternalOnDismissListener

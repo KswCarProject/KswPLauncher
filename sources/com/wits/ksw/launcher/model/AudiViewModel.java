@@ -114,34 +114,34 @@ public class AudiViewModel extends LauncherViewModel {
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rl_apps /*2131297325*/:
+            case R.id.rl_apps /*2131297605*/:
                 openApps(view);
                 break;
-            case R.id.rl_bt /*2131297326*/:
+            case R.id.rl_bt /*2131297606*/:
                 openBtApp(view);
                 break;
-            case R.id.rl_car /*2131297327*/:
+            case R.id.rl_car /*2131297607*/:
                 openCar(view);
                 break;
-            case R.id.rl_dashboard /*2131297329*/:
+            case R.id.rl_dashboard /*2131297609*/:
                 openDashboard(view);
                 break;
-            case R.id.rl_dvr /*2131297330*/:
+            case R.id.rl_dvr /*2131297610*/:
                 openDvr(view);
                 break;
-            case R.id.rl_easyconnection /*2131297331*/:
+            case R.id.rl_easyconnection /*2131297611*/:
                 openShouJiHuLian(view);
                 break;
-            case R.id.rl_music /*2131297332*/:
+            case R.id.rl_music /*2131297613*/:
                 openMusicMulti(view);
                 break;
-            case R.id.rl_navi /*2131297333*/:
+            case R.id.rl_navi /*2131297614*/:
                 openNaviApp(view);
                 break;
-            case R.id.rl_settings /*2131297334*/:
+            case R.id.rl_settings /*2131297615*/:
                 openSettings(view);
                 break;
-            case R.id.rl_video /*2131297335*/:
+            case R.id.rl_video /*2131297616*/:
                 openVideoMulti(view);
                 break;
         }
@@ -151,32 +151,32 @@ public class AudiViewModel extends LauncherViewModel {
     /* access modifiers changed from: private */
     public void refreshCarBgPic(View view) {
         switch (view.getId()) {
-            case R.id.rl_apps /*2131297325*/:
+            case R.id.rl_apps /*2131297605*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_app);
                 return;
-            case R.id.rl_bt /*2131297326*/:
+            case R.id.rl_bt /*2131297606*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_bt);
                 return;
-            case R.id.rl_car /*2131297327*/:
+            case R.id.rl_car /*2131297607*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_car);
                 return;
-            case R.id.rl_dashboard /*2131297329*/:
+            case R.id.rl_dashboard /*2131297609*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_dashboard);
                 return;
-            case R.id.rl_dvr /*2131297330*/:
+            case R.id.rl_dvr /*2131297610*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_dvr);
                 return;
-            case R.id.rl_easyconnection /*2131297331*/:
+            case R.id.rl_easyconnection /*2131297611*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_easyconnection);
                 return;
-            case R.id.rl_music /*2131297332*/:
+            case R.id.rl_music /*2131297613*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_music);
                 return;
-            case R.id.rl_navi /*2131297333*/:
-            case R.id.rl_video /*2131297335*/:
+            case R.id.rl_navi /*2131297614*/:
+            case R.id.rl_video /*2131297616*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_navi);
                 return;
-            case R.id.rl_settings /*2131297334*/:
+            case R.id.rl_settings /*2131297615*/:
                 this.carBgPicId.set(R.drawable.audi_left_bk_settings);
                 return;
             default:

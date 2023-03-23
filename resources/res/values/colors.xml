@@ -14,6 +14,16 @@
     <color name="background_floating_material_light">@android:color/white</color>
     <color name="background_material_dark">@color/material_grey_850</color>
     <color name="background_material_light">@color/material_grey_50</color>
+    <color name="bmw_id8_dashboard_music_content">#ccffffff</color>
+    <color name="bmw_id8_dashboard_music_title">#f9a255</color>
+    <color name="bmw_id8_dashboard_oil_text">#e4e4e4</color>
+    <color name="bmw_id8_factory_textcolor">#4de7e7e7</color>
+    <color name="bmw_id8_textcolor_blue">#d492e2ff</color>
+    <color name="bmw_id8_textcolor_red">#d4ff624d</color>
+    <color name="bmw_id8_white_33">#33ffffff</color>
+    <color name="bmw_id8_white_4d">#4dffffff</color>
+    <color name="bmw_id8_white_8a">#8affffff</color>
+    <color name="bmw_id8_white_half">#80ffffff</color>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
     <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light</color>
@@ -43,6 +53,7 @@
     <color name="color_phonelink_audi_mib3">#eaff39</color>
     <color name="color_set_audi_mib3">#fff000</color>
     <color name="color_video_audi_mib3">#ff7139</color>
+    <color name="color_weather_audi_mib3">#39ff88</color>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>
@@ -54,6 +65,14 @@
     <color name="gray">#929292</color>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
+    <color name="id8_font_warning">#ff6d6d</color>
+    <color name="id8_font_white">#ffffff</color>
+    <color name="id8_font_white1">#80ffffff</color>
+    <color name="id8_font_white2">#4dffffff</color>
+    <color name="id8_main_style_color">#92e2ff</color>
+    <color name="id8_main_style_color_blue">#92e2ff</color>
+    <color name="id8_main_style_color_red">#ff624d</color>
+    <color name="id8_main_style_color_yellow">#f9a255</color>
     <color name="ids6_status_color">#23313c</color>
     <color name="land_rover_setting_color">#b3ffffff</color>
     <color name="land_rover_text_bule">#00e2fd</color>
@@ -98,4 +117,5 @@
     <color name="tooltip_background_light">#e6ffffff</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="transparent_half">#58000000</color>
+    <color name="white">#ffffff</color>
 </resources>

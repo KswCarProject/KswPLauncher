@@ -7,7 +7,6 @@ import java.util.Set;
 public final class JsonObject extends JsonElement {
     private final LinkedTreeMap<String, JsonElement> members = new LinkedTreeMap<>();
 
-    /* access modifiers changed from: package-private */
     public JsonObject deepCopy() {
         JsonObject result = new JsonObject();
         for (Map.Entry<String, JsonElement> entry : this.members.entrySet()) {
@@ -17,10 +16,7 @@ public final class JsonObject extends JsonElement {
     }
 
     public void add(String property, JsonElement value) {
-        if (value == null) {
-            value = JsonNull.INSTANCE;
-        }
-        this.members.put(property, value);
+        this.members.put(property, value == null ? JsonNull.INSTANCE : value);
     }
 
     public JsonElement remove(String property) {
@@ -28,27 +24,31 @@ public final class JsonObject extends JsonElement {
     }
 
     public void addProperty(String property, String value) {
-        add(property, createJsonElement(value));
+        add(property, value == null ? JsonNull.INSTANCE : new JsonPrimitive(value));
     }
 
     public void addProperty(String property, Number value) {
-        add(property, createJsonElement(value));
+        add(property, value == null ? JsonNull.INSTANCE : new JsonPrimitive(value));
     }
 
     public void addProperty(String property, Boolean value) {
-        add(property, createJsonElement(value));
+        add(property, value == null ? JsonNull.INSTANCE : new JsonPrimitive(value));
     }
 
     public void addProperty(String property, Character value) {
-        add(property, createJsonElement(value));
-    }
-
-    private JsonElement createJsonElement(Object value) {
-        return value == null ? JsonNull.INSTANCE : new JsonPrimitive(value);
+        add(property, value == null ? JsonNull.INSTANCE : new JsonPrimitive(value));
     }
 
     public Set<Map.Entry<String, JsonElement>> entrySet() {
         return this.members.entrySet();
+    }
+
+    public Set<String> keySet() {
+        return this.members.keySet();
+    }
+
+    public int size() {
+        return this.members.size();
     }
 
     public boolean has(String memberName) {

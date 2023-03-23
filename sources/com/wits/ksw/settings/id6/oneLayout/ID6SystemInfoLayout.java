@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -16,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.settings.TxzMessage;
 import com.wits.ksw.settings.utlis_view.DialogViews;
 import com.wits.ksw.settings.utlis_view.McuUtil;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
@@ -54,6 +56,7 @@ public class ID6SystemInfoLayout extends RelativeLayout implements View.OnClickL
     private TextView tv_infoRam;
     private TextView tv_infoSysFlash;
     private TextView tv_infoSysRest;
+    private TextView tv_infoSysUpDate;
     private TextView tv_infoSysv;
 
     public ID6SystemInfoLayout(Context context2) {
@@ -114,6 +117,9 @@ public class ID6SystemInfoLayout extends RelativeLayout implements View.OnClickL
         TextView textView7 = (TextView) view.findViewById(R.id.tv_infoSysRest);
         this.tv_infoSysRest = textView7;
         textView7.setOnClickListener(this);
+        TextView textView8 = (TextView) view.findViewById(R.id.tv_infoSysUpDate);
+        this.tv_infoSysUpDate = textView8;
+        textView8.setOnClickListener(this);
     }
 
     private String getVersion() {
@@ -133,6 +139,9 @@ public class ID6SystemInfoLayout extends RelativeLayout implements View.OnClickL
                 return;
             case R.id.tv_infoSysRest:
                 this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
+                return;
+            case R.id.tv_infoSysUpDate:
+                new TxzMessage(2070, "system.ota.check", (Bundle) null).sendBroadCast(this.context);
                 return;
             default:
                 return;

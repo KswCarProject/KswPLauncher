@@ -9,11 +9,12 @@ import com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
 import com.google.zxing.common.reedsolomon.ReedSolomonException;
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.PluralRules;
+import com.wits.ksw.settings.TxzMessage;
 import java.util.Arrays;
 import java.util.List;
 
 public final class Decoder {
-    private static final String[] DIGIT_TABLE = {"CTRL_PS", " ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".", "CTRL_UL", "CTRL_US"};
+    private static final String[] DIGIT_TABLE = {"CTRL_PS", " ", TxzMessage.TXZ_DISMISS, TxzMessage.TXZ_SHOW, "2", "3", "4", "5", "6", "7", "8", "9", ",", ".", "CTRL_UL", "CTRL_US"};
     private static final String[] LOWER_TABLE = {"CTRL_PS", " ", "a", "b", "c", DateFormat.DAY, "e", "f", "g", "h", "i", DateFormat.HOUR, "k", "l", DateFormat.MINUTE, "n", "o", "p", "q", "r", DateFormat.SECOND, "t", "u", DateFormat.ABBR_GENERIC_TZ, "w", "x", DateFormat.YEAR, DateFormat.ABBR_SPECIFIC_TZ, "CTRL_US", "CTRL_ML", "CTRL_DL", "CTRL_BS"};
     private static final String[] MIXED_TABLE = {"CTRL_PS", " ", "\u0001", "\u0002", "\u0003", "\u0004", "\u0005", "\u0006", "\u0007", "\b", "\t", "\n", "\u000b", "\f", "\r", "\u001b", "\u001c", "\u001d", "\u001e", "\u001f", "@", "\\", "^", "_", "`", "|", "~", "", "CTRL_LL", "CTRL_UL", "CTRL_PL", "CTRL_BS"};
     private static final String[] PUNCT_TABLE = {"", "\r", "\r\n", ". ", ", ", PluralRules.KEYWORD_RULE_SEPARATOR, "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "[", "]", "{", "}", "CTRL_UL"};

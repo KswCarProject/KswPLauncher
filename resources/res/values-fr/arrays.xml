@@ -68,6 +68,7 @@
         <item>Affichage de la voiture</item>
         <item>Protocole de bus CAN</item>
         <item>MIC Gagner</item>
+        <item>Configuration du temps de sortie inverse</item>
         <item>Configuration UI</item>
         <item>Import de configuration</item>
         <item>Boot Logo</item>

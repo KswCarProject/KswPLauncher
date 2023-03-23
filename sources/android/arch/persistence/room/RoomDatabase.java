@@ -28,9 +28,11 @@ public abstract class RoomDatabase {
     private static final String DB_IMPL_SUFFIX = "_Impl";
     public static final int MAX_BIND_PARAMETER_CNT = 999;
     private boolean mAllowMainThreadQueries;
-    protected List<Callback> mCallbacks;
+    /* access modifiers changed from: protected */
+    public List<Callback> mCallbacks;
     private final ReentrantLock mCloseLock = new ReentrantLock();
-    protected volatile SupportSQLiteDatabase mDatabase;
+    /* access modifiers changed from: protected */
+    public volatile SupportSQLiteDatabase mDatabase;
     private final InvalidationTracker mInvalidationTracker = createInvalidationTracker();
     private SupportSQLiteOpenHelper mOpenHelper;
     boolean mWriteAheadLoggingEnabled;

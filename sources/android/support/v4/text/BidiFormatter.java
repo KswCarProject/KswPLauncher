@@ -2,6 +2,7 @@ package android.support.v4.text;
 
 import android.text.SpannableStringBuilder;
 import java.util.Locale;
+import kotlin.text.Typography;
 
 public final class BidiFormatter {
     private static final int DEFAULT_FLAGS = 2;
@@ -447,7 +448,7 @@ public final class BidiFormatter {
                     }
                 } else {
                     this.charIndex = initialCharIndex;
-                    this.lastChar = '<';
+                    this.lastChar = Typography.less;
                     return 13;
                 }
             }
@@ -487,7 +488,7 @@ public final class BidiFormatter {
                 }
             }
             this.charIndex = initialCharIndex;
-            this.lastChar = '>';
+            this.lastChar = Typography.greater;
             return 13;
         }
 

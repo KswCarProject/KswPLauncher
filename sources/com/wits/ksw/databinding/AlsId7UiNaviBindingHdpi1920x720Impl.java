@@ -75,12 +75,12 @@ public class AlsId7UiNaviBindingHdpi1920x720Impl extends AlsId7UiNaviBinding {
             return r1
         L_0x000c:
             monitor-exit(r4)     // Catch:{ all -> 0x0021 }
-            com.wits.ksw.databinding.AlsId7UiNaviSubViewBinding r0 = r4.naviLayout
+            com.wits.ksw.databinding.AlsId7UiSubNaviViewBinding r0 = r4.naviLayout
             boolean r0 = r0.hasPendingBindings()
             if (r0 == 0) goto L_0x0016
             return r1
         L_0x0016:
-            com.wits.ksw.databinding.AlsId7UiPhoneSubViewBinding r0 = r4.phoneLayout
+            com.wits.ksw.databinding.AlsId7UiSubPhoneViewBinding r0 = r4.phoneLayout
             boolean r0 = r0.hasPendingBindings()
             if (r0 == 0) goto L_0x001f
             return r1
@@ -96,7 +96,7 @@ public class AlsId7UiNaviBindingHdpi1920x720Impl extends AlsId7UiNaviBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (9 != variableId) {
+        if (14 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
@@ -108,7 +108,7 @@ public class AlsId7UiNaviBindingHdpi1920x720Impl extends AlsId7UiNaviBinding {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 
@@ -122,15 +122,15 @@ public class AlsId7UiNaviBindingHdpi1920x720Impl extends AlsId7UiNaviBinding {
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeNaviLayout((AlsId7UiNaviSubViewBinding) object, fieldId);
+                return onChangeNaviLayout((AlsId7UiSubNaviViewBinding) object, fieldId);
             case 1:
-                return onChangePhoneLayout((AlsId7UiPhoneSubViewBinding) object, fieldId);
+                return onChangePhoneLayout((AlsId7UiSubPhoneViewBinding) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeNaviLayout(AlsId7UiNaviSubViewBinding NaviLayout, int fieldId) {
+    private boolean onChangeNaviLayout(AlsId7UiSubNaviViewBinding NaviLayout, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -140,7 +140,7 @@ public class AlsId7UiNaviBindingHdpi1920x720Impl extends AlsId7UiNaviBinding {
         return true;
     }
 
-    private boolean onChangePhoneLayout(AlsId7UiPhoneSubViewBinding PhoneLayout, int fieldId) {
+    private boolean onChangePhoneLayout(AlsId7UiSubPhoneViewBinding PhoneLayout, int fieldId) {
         if (fieldId != 0) {
             return false;
         }

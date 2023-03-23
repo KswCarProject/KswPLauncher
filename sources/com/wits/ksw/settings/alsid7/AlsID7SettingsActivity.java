@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.wits.ksw.R;
-import com.wits.ksw.settings.BaseActivity;
+import com.wits.ksw.settings.BaseSkinActivity;
 import com.wits.ksw.settings.alsid7.adapter.AlsID7FunctionAdapter;
 import com.wits.ksw.settings.alsid7.interfaces.IUpdateTwoLayout;
 import com.wits.ksw.settings.alsid7.layout_one.AlsID7SetFactoryLayout;
@@ -40,7 +40,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlsID7SettingsActivity extends BaseActivity implements IUpdateTwoLayout, ScanNaviList.OnMapListScanListener {
+public class AlsID7SettingsActivity extends BaseSkinActivity implements IUpdateTwoLayout, ScanNaviList.OnMapListScanListener {
     private ImageView Img_SetBack;
     /* access modifiers changed from: private */
     public AlsID7FunctionAdapter adapter;

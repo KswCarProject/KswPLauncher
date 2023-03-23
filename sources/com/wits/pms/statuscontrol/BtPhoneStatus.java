@@ -113,6 +113,20 @@ public class BtPhoneStatus {
         return callStatus2 >= 4 && callStatus2 <= 6;
     }
 
+    public static List<PhoneBookBean> getContactsByJson(String json) {
+        try {
+            List<PhoneBookBean> contacts = new ArrayList<>();
+            JSONArray jsonArray = new JSONArray(json);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                contacts.add(new PhoneBookBean(jsonObject.getString("name"), jsonObject.getString("number")));
+            }
+            return contacts;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public static class PhoneBookBean {
         private String name;
         private String number;
@@ -136,20 +150,6 @@ public class BtPhoneStatus {
 
         public void setNumber(String number2) {
             this.number = number2;
-        }
-    }
-
-    public static List<PhoneBookBean> getContactsByJson(String json) {
-        try {
-            List<PhoneBookBean> contacts = new ArrayList<>();
-            JSONArray jsonArray = new JSONArray(json);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                contacts.add(new PhoneBookBean(jsonObject.getString("name"), jsonObject.getString("number")));
-            }
-            return contacts;
-        } catch (Exception e) {
-            return null;
         }
     }
 }

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Set;
+import kotlin.text.Typography;
 
 public abstract class NumberFormat extends UFormat {
     static final /* synthetic */ boolean $assertionsDisabled = false;
@@ -147,7 +148,7 @@ public abstract class NumberFormat extends UFormat {
         if (parsePosition.getIndex() != 0) {
             return result;
         }
-        throw new ParseException("Unparseable number: \"" + text + '\"', parsePosition.getErrorIndex());
+        throw new ParseException("Unparseable number: \"" + text + Typography.quote, parsePosition.getErrorIndex());
     }
 
     public CurrencyAmount parseCurrency(CharSequence text, ParsePosition pos) {
@@ -545,26 +546,26 @@ public abstract class NumberFormat extends UFormat {
             if (r5 == 0) goto L_0x0021
             r0 = r5
         L_0x0021:
-            if (r13 != r3) goto L_0x002b
+            if (r13 != r3) goto L_0x002c
             java.lang.String r3 = doubleCurrencyStr
             java.lang.String r5 = "¤"
             java.lang.String r0 = r0.replace(r5, r3)
-        L_0x002b:
+        L_0x002c:
             com.ibm.icu.text.NumberingSystem r3 = com.ibm.icu.text.NumberingSystem.getInstance((com.ibm.icu.util.ULocale) r12)
-            if (r3 != 0) goto L_0x0033
+            if (r3 != 0) goto L_0x0034
             r2 = 0
             return r2
-        L_0x0033:
+        L_0x0034:
             r5 = 0
-            if (r3 == 0) goto L_0x0078
+            if (r3 == 0) goto L_0x0079
             boolean r6 = r3.isAlgorithmic()
-            if (r6 == 0) goto L_0x0078
+            if (r6 == 0) goto L_0x0079
             r2 = 4
             java.lang.String r4 = r3.getDescription()
             java.lang.String r6 = "/"
             int r7 = r4.indexOf(r6)
             int r6 = r4.lastIndexOf(r6)
-            if (r6 <= r7) goto L_0x006c
+            if (r6 <= r7) goto L_0x006d
             java.lang.String r5 = r4.substring(r5, r7)
             int r8 = r7 + 1
             java.lang.String r8 = r4.substring(r8, r6)
@@ -574,39 +575,39 @@ public abstract class NumberFormat extends UFormat {
             r10.<init>(r5)
             java.lang.String r11 = "SpelloutRules"
             boolean r11 = r8.equals(r11)
-            if (r11 == 0) goto L_0x006b
+            if (r11 == 0) goto L_0x006c
             r2 = 1
-        L_0x006b:
-            goto L_0x006e
         L_0x006c:
+            goto L_0x006f
+        L_0x006d:
             r10 = r12
             r9 = r4
-        L_0x006e:
+        L_0x006f:
             com.ibm.icu.text.RuleBasedNumberFormat r5 = new com.ibm.icu.text.RuleBasedNumberFormat
             r5.<init>((com.ibm.icu.util.ULocale) r10, (int) r2)
             r5.setDefaultRuleSet(r9)
             r2 = r5
-            goto L_0x009b
-        L_0x0078:
+            goto L_0x009c
+        L_0x0079:
             com.ibm.icu.text.DecimalFormat r6 = new com.ibm.icu.text.DecimalFormat
             r6.<init>(r0, r1, r13)
             r7 = 4
-            if (r13 != r7) goto L_0x0089
+            if (r13 != r7) goto L_0x008a
             r6.setMaximumFractionDigits(r5)
             r6.setDecimalSeparatorAlwaysShown(r5)
             r6.setParseIntegerOnly(r4)
-        L_0x0089:
-            if (r13 != r2) goto L_0x0090
+        L_0x008a:
+            if (r13 != r2) goto L_0x0091
             com.ibm.icu.util.Currency$CurrencyUsage r2 = com.ibm.icu.util.Currency.CurrencyUsage.CASH
             r6.setCurrencyUsage(r2)
-        L_0x0090:
+        L_0x0091:
             r2 = 6
-            if (r13 != r2) goto L_0x009a
+            if (r13 != r2) goto L_0x009b
             com.ibm.icu.text.CurrencyPluralInfo r2 = com.ibm.icu.text.CurrencyPluralInfo.getInstance((com.ibm.icu.util.ULocale) r12)
             r6.setCurrencyPluralInfo(r2)
-        L_0x009a:
-            r2 = r6
         L_0x009b:
+            r2 = r6
+        L_0x009c:
             com.ibm.icu.util.ULocale$Type r4 = com.ibm.icu.util.ULocale.VALID_LOCALE
             com.ibm.icu.util.ULocale r4 = r1.getLocale(r4)
             com.ibm.icu.util.ULocale$Type r5 = com.ibm.icu.util.ULocale.ACTUAL_LOCALE
@@ -691,7 +692,7 @@ public abstract class NumberFormat extends UFormat {
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         int i = this.maximumIntegerDigits;
-        byte b = Bidi.LEVEL_DEFAULT_RTL;
+        byte b = Byte.MAX_VALUE;
         this.maxIntegerDigits = i > 127 ? Byte.MAX_VALUE : (byte) i;
         int i2 = this.minimumIntegerDigits;
         this.minIntegerDigits = i2 > 127 ? Byte.MAX_VALUE : (byte) i2;

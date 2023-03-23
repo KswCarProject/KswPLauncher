@@ -99,7 +99,7 @@ public class AlsId7UiMediaBindingHdpi1920x720Impl extends AlsId7UiMediaBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (6 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
@@ -111,7 +111,7 @@ public class AlsId7UiMediaBindingHdpi1920x720Impl extends AlsId7UiMediaBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(6);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 

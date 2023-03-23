@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.settings.TxzMessage;
 
 public class AlsID7SetFactoryLayout extends RelativeLayout implements View.OnClickListener {
     private Context context;
@@ -99,74 +100,74 @@ public class AlsID7SetFactoryLayout extends RelativeLayout implements View.OnCli
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_btn0 /*2131296844*/:
+            case R.id.img_btn0:
                 if (this.pwdInput.length() <= 8) {
-                    this.pwdInput.append("0");
+                    this.pwdInput.append(TxzMessage.TXZ_DISMISS);
                     break;
                 }
                 break;
-            case R.id.img_btn1 /*2131296845*/:
+            case R.id.img_btn1:
                 if (this.pwdInput.length() <= 8) {
-                    this.pwdInput.append("1");
+                    this.pwdInput.append(TxzMessage.TXZ_SHOW);
                     break;
                 }
                 break;
-            case R.id.img_btn2 /*2131296846*/:
+            case R.id.img_btn2:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("2");
                     break;
                 }
                 break;
-            case R.id.img_btn3 /*2131296847*/:
+            case R.id.img_btn3:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("3");
                     break;
                 }
                 break;
-            case R.id.img_btn4 /*2131296848*/:
+            case R.id.img_btn4:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("4");
                     break;
                 }
                 break;
-            case R.id.img_btn5 /*2131296849*/:
+            case R.id.img_btn5:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("5");
                     break;
                 }
                 break;
-            case R.id.img_btn6 /*2131296850*/:
+            case R.id.img_btn6:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("6");
                     break;
                 }
                 break;
-            case R.id.img_btn7 /*2131296851*/:
+            case R.id.img_btn7:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("7");
                     break;
                 }
                 break;
-            case R.id.img_btn8 /*2131296852*/:
+            case R.id.img_btn8:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("8");
                     break;
                 }
                 break;
-            case R.id.img_btn9 /*2131296853*/:
+            case R.id.img_btn9:
                 if (this.pwdInput.length() <= 8) {
                     this.pwdInput.append("9");
                     break;
                 }
                 break;
-            case R.id.img_del /*2131296854*/:
+            case R.id.img_del:
                 if (this.pwdInput.length() > 0) {
                     StringBuffer stringBuffer = this.pwdInput;
                     stringBuffer.deleteCharAt(stringBuffer.length() - 1);
                     break;
                 }
                 break;
-            case R.id.img_enter /*2131296855*/:
+            case R.id.img_enter:
                 Message message = new Message();
                 message.obj = this.pwdInput.toString();
                 message.what = 2;

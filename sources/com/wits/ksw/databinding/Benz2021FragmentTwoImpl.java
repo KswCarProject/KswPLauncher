@@ -88,7 +88,7 @@ public class Benz2021FragmentTwoImpl extends Benz2021FragmentTwo {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);
@@ -100,7 +100,7 @@ public class Benz2021FragmentTwoImpl extends Benz2021FragmentTwo {
         synchronized (this) {
             this.mDirtyFlags |= 16;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 

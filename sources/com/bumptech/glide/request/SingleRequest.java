@@ -542,106 +542,106 @@ public final class SingleRequest<R> implements Request, SizeReadyCallback, Resou
     }
 
     /* JADX INFO: finally extract failed */
-    /* JADX WARNING: Removed duplicated region for block: B:23:0x00b7 A[Catch:{ all -> 0x00ca }] */
+    /* JADX WARNING: Removed duplicated region for block: B:23:0x00b8 A[Catch:{ all -> 0x00cb }] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     private synchronized void onResourceReady(com.bumptech.glide.load.engine.Resource<R> r12, R r13, com.bumptech.glide.load.DataSource r14) {
         /*
             r11 = this;
             monitor-enter(r11)
-            boolean r0 = r11.isFirstReadyResource()     // Catch:{ all -> 0x00ce }
-            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.COMPLETE     // Catch:{ all -> 0x00ce }
-            r11.status = r1     // Catch:{ all -> 0x00ce }
-            r11.resource = r12     // Catch:{ all -> 0x00ce }
-            com.bumptech.glide.GlideContext r1 = r11.glideContext     // Catch:{ all -> 0x00ce }
-            int r1 = r1.getLogLevel()     // Catch:{ all -> 0x00ce }
+            boolean r0 = r11.isFirstReadyResource()     // Catch:{ all -> 0x00cf }
+            com.bumptech.glide.request.SingleRequest$Status r1 = com.bumptech.glide.request.SingleRequest.Status.COMPLETE     // Catch:{ all -> 0x00cf }
+            r11.status = r1     // Catch:{ all -> 0x00cf }
+            r11.resource = r12     // Catch:{ all -> 0x00cf }
+            com.bumptech.glide.GlideContext r1 = r11.glideContext     // Catch:{ all -> 0x00cf }
+            int r1 = r1.getLogLevel()     // Catch:{ all -> 0x00cf }
             r2 = 3
-            if (r1 > r2) goto L_0x0078
+            if (r1 > r2) goto L_0x0079
             java.lang.String r1 = "Glide"
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder     // Catch:{ all -> 0x00ce }
-            r2.<init>()     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = new java.lang.StringBuilder     // Catch:{ all -> 0x00cf }
+            r2.<init>()     // Catch:{ all -> 0x00cf }
             java.lang.String r3 = "Finished loading "
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
-            java.lang.Class r3 = r13.getClass()     // Catch:{ all -> 0x00ce }
-            java.lang.String r3 = r3.getSimpleName()     // Catch:{ all -> 0x00ce }
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
+            java.lang.Class r3 = r13.getClass()     // Catch:{ all -> 0x00cf }
+            java.lang.String r3 = r3.getSimpleName()     // Catch:{ all -> 0x00cf }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
             java.lang.String r3 = " from "
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
-            java.lang.StringBuilder r2 = r2.append(r14)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
+            java.lang.StringBuilder r2 = r2.append(r14)     // Catch:{ all -> 0x00cf }
             java.lang.String r3 = " for "
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
-            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00ce }
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
+            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00cf }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
             java.lang.String r3 = " with size ["
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
-            int r3 = r11.width     // Catch:{ all -> 0x00ce }
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
+            int r3 = r11.width     // Catch:{ all -> 0x00cf }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
             java.lang.String r3 = "x"
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
-            int r3 = r11.height     // Catch:{ all -> 0x00ce }
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
+            int r3 = r11.height     // Catch:{ all -> 0x00cf }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
             java.lang.String r3 = "] in "
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
-            long r3 = r11.startTime     // Catch:{ all -> 0x00ce }
-            double r3 = com.bumptech.glide.util.LogTime.getElapsedMillis(r3)     // Catch:{ all -> 0x00ce }
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
+            long r3 = r11.startTime     // Catch:{ all -> 0x00cf }
+            double r3 = com.bumptech.glide.util.LogTime.getElapsedMillis(r3)     // Catch:{ all -> 0x00cf }
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
             java.lang.String r3 = " ms"
-            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00ce }
-            java.lang.String r2 = r2.toString()     // Catch:{ all -> 0x00ce }
-            android.util.Log.d(r1, r2)     // Catch:{ all -> 0x00ce }
-        L_0x0078:
+            java.lang.StringBuilder r2 = r2.append(r3)     // Catch:{ all -> 0x00cf }
+            java.lang.String r2 = r2.toString()     // Catch:{ all -> 0x00cf }
+            android.util.Log.d(r1, r2)     // Catch:{ all -> 0x00cf }
+        L_0x0079:
             r7 = 1
-            r11.isCallingCallbacks = r7     // Catch:{ all -> 0x00ce }
+            r11.isCallingCallbacks = r7     // Catch:{ all -> 0x00cf }
             r1 = 0
             r8 = 0
-            java.util.List<com.bumptech.glide.request.RequestListener<R>> r2 = r11.requestListeners     // Catch:{ all -> 0x00ca }
-            if (r2 == 0) goto L_0x009f
-            java.util.Iterator r9 = r2.iterator()     // Catch:{ all -> 0x00ca }
+            java.util.List<com.bumptech.glide.request.RequestListener<R>> r2 = r11.requestListeners     // Catch:{ all -> 0x00cb }
+            if (r2 == 0) goto L_0x00a0
+            java.util.Iterator r9 = r2.iterator()     // Catch:{ all -> 0x00cb }
             r10 = r1
-        L_0x0086:
-            boolean r1 = r9.hasNext()     // Catch:{ all -> 0x00ca }
-            if (r1 == 0) goto L_0x00a0
-            java.lang.Object r1 = r9.next()     // Catch:{ all -> 0x00ca }
-            com.bumptech.glide.request.RequestListener r1 = (com.bumptech.glide.request.RequestListener) r1     // Catch:{ all -> 0x00ca }
-            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00ca }
-            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00ca }
+        L_0x0087:
+            boolean r1 = r9.hasNext()     // Catch:{ all -> 0x00cb }
+            if (r1 == 0) goto L_0x00a1
+            java.lang.Object r1 = r9.next()     // Catch:{ all -> 0x00cb }
+            com.bumptech.glide.request.RequestListener r1 = (com.bumptech.glide.request.RequestListener) r1     // Catch:{ all -> 0x00cb }
+            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00cb }
+            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00cb }
             r2 = r13
             r5 = r14
             r6 = r0
-            boolean r2 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00ca }
+            boolean r2 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00cb }
             r10 = r10 | r2
-            goto L_0x0086
-        L_0x009f:
-            r10 = r1
+            goto L_0x0087
         L_0x00a0:
-            com.bumptech.glide.request.RequestListener<R> r1 = r11.targetListener     // Catch:{ all -> 0x00ca }
-            if (r1 == 0) goto L_0x00b2
-            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00ca }
-            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00ca }
+            r10 = r1
+        L_0x00a1:
+            com.bumptech.glide.request.RequestListener<R> r1 = r11.targetListener     // Catch:{ all -> 0x00cb }
+            if (r1 == 0) goto L_0x00b3
+            java.lang.Object r3 = r11.model     // Catch:{ all -> 0x00cb }
+            com.bumptech.glide.request.target.Target<R> r4 = r11.target     // Catch:{ all -> 0x00cb }
             r2 = r13
             r5 = r14
             r6 = r0
-            boolean r1 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00ca }
-            if (r1 == 0) goto L_0x00b2
-            goto L_0x00b3
-        L_0x00b2:
-            r7 = r8
+            boolean r1 = r1.onResourceReady(r2, r3, r4, r5, r6)     // Catch:{ all -> 0x00cb }
+            if (r1 == 0) goto L_0x00b3
+            goto L_0x00b4
         L_0x00b3:
+            r7 = r8
+        L_0x00b4:
             r1 = r10 | r7
-            if (r1 != 0) goto L_0x00c2
-            com.bumptech.glide.request.transition.TransitionFactory<? super R> r2 = r11.animationFactory     // Catch:{ all -> 0x00ca }
-            com.bumptech.glide.request.transition.Transition r2 = r2.build(r14, r0)     // Catch:{ all -> 0x00ca }
-            com.bumptech.glide.request.target.Target<R> r3 = r11.target     // Catch:{ all -> 0x00ca }
-            r3.onResourceReady(r13, r2)     // Catch:{ all -> 0x00ca }
-        L_0x00c2:
-            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00ce }
-            r11.notifyLoadSuccess()     // Catch:{ all -> 0x00ce }
+            if (r1 != 0) goto L_0x00c3
+            com.bumptech.glide.request.transition.TransitionFactory<? super R> r2 = r11.animationFactory     // Catch:{ all -> 0x00cb }
+            com.bumptech.glide.request.transition.Transition r2 = r2.build(r14, r0)     // Catch:{ all -> 0x00cb }
+            com.bumptech.glide.request.target.Target<R> r3 = r11.target     // Catch:{ all -> 0x00cb }
+            r3.onResourceReady(r13, r2)     // Catch:{ all -> 0x00cb }
+        L_0x00c3:
+            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00cf }
+            r11.notifyLoadSuccess()     // Catch:{ all -> 0x00cf }
             monitor-exit(r11)
             return
-        L_0x00ca:
+        L_0x00cb:
             r1 = move-exception
-            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00ce }
-            throw r1     // Catch:{ all -> 0x00ce }
-        L_0x00ce:
+            r11.isCallingCallbacks = r8     // Catch:{ all -> 0x00cf }
+            throw r1     // Catch:{ all -> 0x00cf }
+        L_0x00cf:
             r12 = move-exception
             monitor-exit(r11)
             throw r12

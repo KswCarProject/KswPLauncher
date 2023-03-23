@@ -21,6 +21,7 @@ import com.wits.ksw.KswApplication;
 import com.wits.ksw.MainActivity;
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.AlsId7UiMediaBinding;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.model.MediaImpl;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
@@ -35,13 +36,13 @@ public class AlsId7UiMediaFragment extends Fragment {
     public AlsId7UiMediaBinding binding;
     public ContentObserver contentObserver = new ContentObserver(new Handler()) {
         public void onChange(boolean selfChange, Uri uri) {
-            Log.d(AlsId7UiMediaFragment.TAG, "onChange: 11111111111");
-            if (uri.equals(Settings.System.getUriFor("SkinName"))) {
-                String skinName = Settings.System.getString(KswApplication.appContext.getContentResolver(), "SkinName");
-                if ("red".equals(skinName)) {
+            Log.d(AlsId7UiMediaFragment.TAG, "onChange:");
+            if (uri.equals(Settings.System.getUriFor(KswApplication.SKIN_NAME))) {
+                String skinName = Settings.System.getString(KswApplication.appContext.getContentResolver(), KswApplication.SKIN_NAME);
+                if (ID8LauncherConstants.ID8_SKIN_SPORT.equals(skinName)) {
                     AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(R.drawable.als_sp_id7_main_btn_music_red_progress_bar_slider));
                     AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(R.color.als_id7_ui_status_red_text_color));
-                } else if ("yellow".equals(skinName)) {
+                } else if (ID8LauncherConstants.ID8_SKIN_PERSONAL.equals(skinName)) {
                     AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setThumb(KswApplication.appContext.getDrawable(R.drawable.als_sp_id7_main_btn_music_yellow_progress_bar_slider));
                     AlsId7UiMediaFragment.this.binding.musicInclude.alsProcess.setCircleProgressColor(KswApplication.appContext.getColor(R.color.als_id7_ui_status_yellow_text_color));
                 } else {
@@ -76,20 +77,50 @@ public class AlsId7UiMediaFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate: MediaFragment");
         this.viewModel = (LauncherViewModel) ViewModelProviders.of(getActivity()).get(LauncherViewModel.class);
-        getActivity().getContentResolver().registerContentObserver(Settings.System.getUriFor("SkinName"), true, this.contentObserver);
+        getActivity().getContentResolver().registerContentObserver(Settings.System.getUriFor(KswApplication.SKIN_NAME), true, this.contentObserver);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.binding = (AlsId7UiMediaBinding) DataBindingUtil.inflate(inflater, R.layout.fragment_als_id7_ui_media, (ViewGroup) null, false);
-        initProcess();
+        String skinName = Settings.System.getString(KswApplication.appContext.getContentResolver(), KswApplication.SKIN_NAME);
+        if (skinName == null || "".equals(skinName)) {
+            skinName = ID8LauncherConstants.ID8_SKIN_EFFICIENT;
+        }
+        initProcess(skinName);
         return this.binding.getRoot();
     }
 
-    private void initProcess() {
-        AlsId7UiMediaBinding alsId7UiMediaBinding = this.binding;
-        if (alsId7UiMediaBinding != null) {
-            alsId7UiMediaBinding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), R.drawable.als_sp_id7_main_btn_music_progress_bar_slider));
-            this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), R.color.als_id7_ui_text_color));
+    private void initProcess(String skin2) {
+        if (this.binding != null) {
+            char c = 65535;
+            switch (skin2.hashCode()) {
+                case -734239628:
+                    if (skin2.equals(ID8LauncherConstants.ID8_SKIN_PERSONAL)) {
+                        c = 1;
+                        break;
+                    }
+                    break;
+                case 112785:
+                    if (skin2.equals(ID8LauncherConstants.ID8_SKIN_SPORT)) {
+                        c = 0;
+                        break;
+                    }
+                    break;
+            }
+            switch (c) {
+                case 0:
+                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), R.drawable.als_sp_id7_main_btn_music_red_progress_bar_slider));
+                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), R.color.als_id7_ui_status_red_text_color));
+                    return;
+                case 1:
+                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), R.drawable.als_sp_id7_main_btn_music_yellow_progress_bar_slider));
+                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), R.color.als_id7_ui_status_yellow_text_color));
+                    return;
+                default:
+                    this.binding.musicInclude.alsProcess.setThumb(SkinCompatResources.getDrawable(getActivity(), R.drawable.als_sp_id7_main_btn_music_progress_bar_slider));
+                    this.binding.musicInclude.alsProcess.setCircleProgressColor(SkinCompatResources.getColor(getActivity(), R.color.als_id7_ui_text_color));
+                    return;
+            }
         }
     }
 

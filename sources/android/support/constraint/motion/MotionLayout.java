@@ -1522,14 +1522,14 @@ public class MotionLayout extends ConstraintLayout implements NestedScrollingPar
                         return;
                     }
                 }
-                float dir2 = this.mTransitionPosition;
+                float progress = this.mTransitionPosition;
                 long time = getNanoTime();
                 this.mScrollTargetDX = (float) dx;
                 this.mScrollTargetDY = (float) dy;
                 this.mScrollTargetDT = (float) (((double) (time - this.mScrollTargetTime)) * 1.0E-9d);
                 this.mScrollTargetTime = time;
                 this.mScene.processScrollMove((float) dx, (float) dy);
-                if (dir2 != this.mTransitionPosition) {
+                if (progress != this.mTransitionPosition) {
                     consumed[0] = dx;
                     consumed[1] = dy;
                 }

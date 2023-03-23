@@ -56,7 +56,7 @@ public class AppThirdItemEvoId7BindingImpl extends AppThirdItemEvoId7Binding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 != variableId) {
+        if (20 != variableId) {
             return false;
         }
         setListItem((LexusLsAppSelBean) variable);
@@ -68,7 +68,7 @@ public class AppThirdItemEvoId7BindingImpl extends AppThirdItemEvoId7Binding {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(20);
         super.requestRebind();
     }
 

@@ -60,7 +60,7 @@ public class ID6FragmentTowSw600dpLandImpl extends ID6FragmentTow {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);

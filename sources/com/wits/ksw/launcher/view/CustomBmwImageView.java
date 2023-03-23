@@ -22,7 +22,7 @@ public class CustomBmwImageView extends ImageView {
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getKeyCode() == 21) {
+        if (event.getKeyCode() == 21 && event.getAction() == 0) {
             try {
                 Log.i(TAG, "dispatchKeyEvent: KeyEvent.KEYCODE_DPAD_LEFT,  MainActivity.mainActivity.refreshLastViewFocused()");
                 MainActivity.mainActivity.refreshLastViewFocused();
@@ -30,12 +30,10 @@ public class CustomBmwImageView extends ImageView {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            if (event.getKeyCode() == 22) {
-                Log.i(TAG, "dispatchKeyEvent: KeyEvent.KEYCODE_DPAD_RIGHT,---------------------------");
-                return true;
-            }
-            return super.dispatchKeyEvent(event);
+        } else if (event.getKeyCode() == 22) {
+            Log.i(TAG, "dispatchKeyEvent: KeyEvent.KEYCODE_DPAD_RIGHT,---------------------------");
+            return true;
         }
+        return super.dispatchKeyEvent(event);
     }
 }

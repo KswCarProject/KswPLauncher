@@ -18,13 +18,13 @@ import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class FragmentID6CuspOne extends ID6CuspBaseFragment implements View.OnKeyListener {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private ID6CuspFragmentOne binding;
     private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() {
         public void onChange() throws RemoteException {
             try {
                 String topApp = PowerManagerApp.getStatusString("topApp");
-                Log.i("KSWLauncher", "onChange: topApp=" + topApp);
+                Log.i("KswApplication", "onChange: topApp=" + topApp);
                 if (TextUtils.equals(topApp, BuildConfig.APPLICATION_ID)) {
                     MediaImpl.getInstance().initData();
                 }
@@ -99,7 +99,7 @@ public class FragmentID6CuspOne extends ID6CuspBaseFragment implements View.OnKe
         if (event.getAction() != 0) {
             return false;
         }
-        Log.i("KSWLauncher", "FragmentID6CuspOne onKey: " + keyCode);
+        Log.i("KswApplication", "FragmentID6CuspOne onKey: " + keyCode);
         if (keyCode == 22) {
             this.mainActivity.id6CuspMainViewPager.setCurrentItem(1);
             return true;

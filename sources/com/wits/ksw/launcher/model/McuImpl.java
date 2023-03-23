@@ -17,10 +17,9 @@ import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.McuStatus;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 public class McuImpl {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private static volatile McuImpl singleton;
     /* access modifiers changed from: private */
     public McuStatus.CarData carData;
@@ -40,10 +39,10 @@ public class McuImpl {
         }
         KswApplication.appContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.TempUnit), false, new ContentObserver(new Handler()) {
             public void onChange(boolean selfChange) {
-                Log.d("KSWLauncher", " tempUnit change()");
+                Log.d("KswApplication", " tempUnit change()");
                 try {
                     McuImpl.this.tempUnit = PowerManagerApp.getSettingsInt(KeyConfig.TempUnit);
-                    Log.d("KSWLauncher", " tempUnit " + McuImpl.this.tempUnit);
+                    Log.d("KswApplication", " tempUnit " + McuImpl.this.tempUnit);
                     McuImpl mcuImpl = McuImpl.this;
                     mcuImpl.setTemperature(mcuImpl.carData);
                 } catch (RemoteException e) {
@@ -53,10 +52,10 @@ public class McuImpl {
         });
         KswApplication.appContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(KeyConfig.FUEL_UNIT), false, new ContentObserver(new Handler()) {
             public void onChange(boolean selfChange) {
-                Log.d("KSWLauncher", " fuelUnit change");
+                Log.d("KswApplication", " fuelUnit change");
                 try {
                     McuImpl.this.fuelUnit = PowerManagerApp.getSettingsInt(KeyConfig.FUEL_UNIT);
-                    Log.d("KSWLauncher", " fuelUnit " + McuImpl.this.fuelUnit);
+                    Log.d("KswApplication", " fuelUnit " + McuImpl.this.fuelUnit);
                     McuImpl mcuImpl = McuImpl.this;
                     mcuImpl.setOilValue(mcuImpl.carData);
                 } catch (RemoteException e) {
@@ -83,7 +82,7 @@ public class McuImpl {
         try {
             this.carData = (McuStatus.CarData) new Gson().fromJson(PowerManagerApp.getStatusString("carData"), McuStatus.CarData.class);
             int carDoor = PowerManagerApp.getManager().getStatusInt("carDoor");
-            Log.i("KSWLauncher", "onChange: carDoor=" + carDoor);
+            Log.i("KswApplication", "onChange: carDoor=" + carDoor);
             McuStatus mcuStatus = new McuStatus();
             mcuStatus.carData = this.carData;
             mcuStatus.carData.carDoor = carDoor;
@@ -124,11 +123,11 @@ public class McuImpl {
         if (KswUtils.ismph()) {
             int reslut = new BigDecimal(((double) mileage) * 0.621d).intValue();
             this.carInfo.mileage.set(reslut + "mile");
-            Log.i("KSWLauncher", "setMileage 英制续航：" + reslut);
+            Log.i("KswApplication", "setMileage 英制续航：" + reslut);
             return;
         }
         this.carInfo.mileage.set(mileage + "km");
-        Log.i("KSWLauncher", "setMileage 公制续航：" + mileage);
+        Log.i("KswApplication", "setMileage 公制续航：" + mileage);
     }
 
     public void setSpeed(McuStatus.CarData carDatam) {
@@ -137,16 +136,29 @@ public class McuImpl {
             return;
         }
         int speed = carDatam.getSpeed();
-        Log.i("KSWLauncher", "onMcuMessageChange 公制速度：" + speed);
+        Log.i("KswApplication", "onMcuMessageChange 公制速度：" + speed);
         if (KswUtils.ismph()) {
             int reslut = new BigDecimal(((double) speed) * 0.621d).intValue();
             this.carInfo.speed.set(reslut);
-            Log.i("KSWLauncher", "onMcuMessageChange 英制速度：" + reslut);
+            this.carInfo.unitEnImg.set(true);
+            Log.i("KswApplication", "onMcuMessageChange 英制速度：" + reslut);
         } else {
             this.carInfo.speed.set(speed);
+            this.carInfo.unitEnImg.set(false);
         }
+        this.carInfo.speedLevel.set(getSpeedLevel(this.carInfo.speed.get()));
         this.carInfo.delay.set(Integer.valueOf(this.carDataPackHz));
         this.carInfoMutableLiveData.postValue(this.carInfo);
+    }
+
+    private int getSpeedLevel(int speed) {
+        int[] array = this.carInfo.speedArray;
+        for (int i = array.length - 1; i > 0; i--) {
+            if (speed >= array[i]) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     public void setTurnSpeed(McuStatus.CarData carDatam) {
@@ -156,11 +168,22 @@ public class McuImpl {
         }
         int turnSpeed = carDatam.getEngineTurnS();
         this.carInfo.turnSpeed.set(turnSpeed);
-        Log.i("KSWLauncher", "setTurnSpeed:  转速：" + turnSpeed);
+        this.carInfo.rotateLevel.set(getRotateLevel(this.carInfo.turnSpeed.get()));
+        Log.i("KswApplication", "setTurnSpeed:  转速：" + turnSpeed);
         float angle = new BigDecimal(turnSpeed).divide(new BigDecimal(100)).multiply(new BigDecimal(3)).floatValue();
-        Log.i("KSWLauncher", "setTurnSpeed:  转速旋转角度" + angle);
+        Log.i("KswApplication", "setTurnSpeed:  转速旋转角度" + angle);
         this.carInfo.turnSpeedAnge.set(angle);
         this.carInfoMutableLiveData.postValue(this.carInfo);
+    }
+
+    private int getRotateLevel(int speed) {
+        int[] array = this.carInfo.rotateArray;
+        for (int i = array.length - 1; i > 0; i--) {
+            if (speed >= array[i] * 1000) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     public void setUint() {
@@ -170,7 +193,7 @@ public class McuImpl {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.i("KSWLauncher", "setUint: " + unit);
+        Log.i("KswApplication", "setUint: " + unit);
         this.carInfo.unit.set(unit);
         this.carInfo.unitStr.set("rpm");
         this.carInfoMutableLiveData.postValue(this.carInfo);
@@ -191,7 +214,7 @@ public class McuImpl {
         }
         boolean isSafetyBelt = carDatam.isSafetyBelt();
         this.carInfo.seatBeltpValue.set(Boolean.valueOf(isSafetyBelt));
-        Log.i("KSWLauncher", "setSafetyBelt:  安全带:" + isSafetyBelt);
+        Log.i("KswApplication", "setSafetyBelt:  安全带:" + isSafetyBelt);
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
 
@@ -202,7 +225,7 @@ public class McuImpl {
         }
         float temperature = carDatam.getAirTemperature();
         this.carInfo.tempValue.set(Float.valueOf(temperature));
-        Log.i("KSWLauncher", "setWaterTemp: 温度:" + temperature);
+        Log.i("KswApplication", "setWaterTemp: 温度:" + temperature);
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
 
@@ -217,22 +240,19 @@ public class McuImpl {
         } else {
             this.carInfo.oilValue.set(l2Gal(oilSum, this.fuelUnit));
         }
-        Log.i("KSWLauncher", "setOilValue: 油量:" + oilSum);
+        Log.i("KswApplication", "setOilValue: 油量:" + oilSum);
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
 
     private String l2Gal(int l, int type) {
-        Double d;
+        BigDecimal doubleStr;
+        BigDecimal intStr = BigDecimal.valueOf((long) l);
         if (type == 1) {
-            d = Double.valueOf(((double) l) / 3.78541178d);
+            doubleStr = BigDecimal.valueOf(3.78541178d);
         } else {
-            d = Double.valueOf(((double) l) / 4.54609188d);
+            doubleStr = BigDecimal.valueOf(4.54609188d);
         }
-        DecimalFormat df = new DecimalFormat("#.0");
-        if (df.format(d).startsWith(".")) {
-            return "0.0gal";
-        }
-        return df.format(d) + "gal";
+        return intStr.divide(doubleStr, 1, 2).toString() + "gal";
     }
 
     public void setBrakeValue(McuStatus.CarData carDatam) {
@@ -242,7 +262,7 @@ public class McuImpl {
         }
         boolean isHandbrake = carDatam.isHandbrake();
         this.carInfo.brakeValue.set(Boolean.valueOf(isHandbrake));
-        Log.i("KSWLauncher", "onMcuMessageChange: 手刹:" + isHandbrake);
+        Log.i("KswApplication", "onMcuMessageChange: 手刹:" + isHandbrake);
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
 
@@ -252,11 +272,11 @@ public class McuImpl {
             return;
         }
         float airTemperature = carDatam.getAirTemperature();
-        Log.i("KSWLauncher", "setTemperature():  temperature=" + airTemperature);
-        Log.i("KSWLauncher", "setTemperature(): tempUnit=" + this.tempUnit);
+        Log.i("KswApplication", "setTemperature():  temperature=" + airTemperature);
+        Log.i("KswApplication", "setTemperature(): tempUnit=" + this.tempUnit);
         if (this.tempUnit == 1) {
             int tempToF = KswUtils.tempToF(airTemperature);
-            Log.i("KSWLauncher", "setTemperature: F " + tempToF);
+            Log.i("KswApplication", "setTemperature: F " + tempToF);
             this.carInfo.tempStr.set(tempToF + "°F");
         } else {
             this.carInfo.tempStr.set(airTemperature + "℃");
@@ -277,32 +297,32 @@ public class McuImpl {
             if (carManufacturer == 0 || carManufacturer > 3) {
                 carManufacturer = UiThemeUtils.getCarManufacturer(KswApplication.appContext);
             }
-            Log.d("KSWLauncher", "initCarManufacturer: " + carManufacturer);
-            Log.i("KSWLauncher", "speedWatch: 车速表选项=" + Dashboard_MaxSpeed + " 单位选项=" + unit);
+            Log.d("KswApplication", "initCarManufacturer: " + carManufacturer);
+            Log.i("KswApplication", "speedWatch: 车速表选项=" + Dashboard_MaxSpeed + " 单位选项=" + unit);
             if (Dashboard_MaxSpeed == 1 && unit == 1) {
                 this.carInfo.speedWatch.set(0);
-                Log.i("KSWLauncher", "speedWatch: 表盘 160mph");
+                Log.i("KswApplication", "speedWatch: 表盘 160mph");
             } else if (Dashboard_MaxSpeed == 3 && unit == 1) {
                 this.carInfo.speedWatch.set(1);
-                Log.i("KSWLauncher", "speedWatch: 表盘 180mph");
+                Log.i("KswApplication", "speedWatch: 表盘 180mph");
             } else if (Dashboard_MaxSpeed == 1 && unit == 0) {
                 this.carInfo.speedWatch.set(2);
-                Log.i("KSWLauncher", "speedWatch: 表盘 280km/h");
+                Log.i("KswApplication", "speedWatch: 表盘 280km/h");
             } else if (Dashboard_MaxSpeed == 3 && unit == 0) {
                 this.carInfo.speedWatch.set(3);
-                Log.i("KSWLauncher", "speedWatch: 表盘 260km/h");
+                Log.i("KswApplication", "speedWatch: 表盘 260km/h");
             } else if (Dashboard_MaxSpeed == 2 && unit == 0 && carManufacturer == 3) {
                 this.carInfo.speedWatch.set(2);
-                Log.i("KSWLauncher", "speedWatch: 表盘 300km/h");
+                Log.i("KswApplication", "speedWatch: 表盘 300km/h");
             } else {
                 this.carInfo.speedWatch.set(1);
-                Log.i("KSWLauncher", "speedWatch: 组合不存在  默认表盘 260km/h");
+                Log.i("KswApplication", "speedWatch: 组合不存在  默认表盘 260km/h");
             }
-            Log.i("KSWLauncher", "speedWatch: Dashboard_MaxSpeed=" + Dashboard_MaxSpeed);
+            Log.i("KswApplication", "speedWatch: Dashboard_MaxSpeed=" + Dashboard_MaxSpeed);
         } catch (Exception e2) {
             e2.printStackTrace();
             this.carInfo.speedWatch.set(1);
-            Log.i("KSWLauncher", "speedWatch: Exception 默认表盘 280km/h");
+            Log.i("KswApplication", "speedWatch: Exception 默认表盘 280km/h");
         }
         this.carInfoMutableLiveData.postValue(this.carInfo);
     }
@@ -347,7 +367,11 @@ public class McuImpl {
             }
             observableField.set(Boolean.valueOf(z));
             this.carInfo.bDoorState.set(Boolean.valueOf(BACK_COVER));
-            this.carInfo.carImage.set(true);
+            if (UiThemeUtils.isBMW_ID8_UI(KswApplication.appContext) || UiThemeUtils.isUI_GS_ID8(KswApplication.appContext)) {
+                setBmwId8DoorState();
+            } else {
+                this.carInfo.carImage.set(true);
+            }
         } else {
             this.carInfo.flDoorState.set(Boolean.valueOf(LEFT_AHEAD));
             this.carInfo.frDoorState.set(Boolean.valueOf(RIGHT_AHEAD));
@@ -358,9 +382,21 @@ public class McuImpl {
             }
             observableField2.set(Boolean.valueOf(z));
             this.carInfo.bDoorState.set(Boolean.valueOf(BACK_COVER));
-            this.carInfo.carImage.set(true);
+            if (UiThemeUtils.isBMW_ID8_UI(KswApplication.appContext) || UiThemeUtils.isUI_GS_ID8(KswApplication.appContext)) {
+                setBmwId8DoorState();
+            } else {
+                this.carInfo.carImage.set(true);
+            }
         }
         this.carInfoMutableLiveData.postValue(this.carInfo);
-        Log.i("KSWLauncher", "setDoor: jsDoor=" + jsDoor + " doorCount=" + doorCount + " : 驾驶门:" + LEFT_AHEAD + " 副驾驶门:" + RIGHT_AHEAD + " 驾驶员后门:" + LEFT_BACK + " 副驾驶员后门:" + RIGHT_BACK + " 后备箱门:" + BACK_COVER);
+        Log.i("KswApplication", "setDoor: jsDoor=" + jsDoor + " doorCount=" + doorCount + " : 驾驶门:" + LEFT_AHEAD + " 副驾驶门:" + RIGHT_AHEAD + " 驾驶员后门:" + LEFT_BACK + " 副驾驶员后门:" + RIGHT_BACK + " 后备箱门:" + BACK_COVER);
+    }
+
+    private void setBmwId8DoorState() {
+        if (this.carInfo.flDoorState.get().booleanValue() || this.carInfo.frDoorState.get().booleanValue() || this.carInfo.rlDoorState.get().booleanValue() || this.carInfo.rlDoorState.get().booleanValue() || this.carInfo.bDoorState.get().booleanValue()) {
+            this.carInfo.carImage.set(true);
+        } else {
+            this.carInfo.carImage.set(false);
+        }
     }
 }

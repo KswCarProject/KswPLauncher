@@ -107,19 +107,19 @@ public class Ntg6VoiceLayout extends RelativeLayout implements SeekBar.OnSeekBar
 
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
-            case R.id.seek_daohvoicb /*2131297403*/:
+            case R.id.seek_daohvoicb:
                 this.tv_daohvoicsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_NAVI_VOL, progress);
                 return;
-            case R.id.seek_mtb /*2131297405*/:
+            case R.id.seek_mtb:
                 this.tv_mtsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.ANDROID_MEDIA_VOL, progress);
                 return;
-            case R.id.seek_tonghb /*2131297406*/:
+            case R.id.seek_tonghb:
                 this.tv_tonghsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.ANDROID_PHONE_VOL, progress);
                 return;
-            case R.id.seek_yuancthb /*2131297407*/:
+            case R.id.seek_yuancthb:
                 this.tv_yuancthsize.setText(progress + "");
                 FileUtils.savaIntData(KeyConfig.CAR_PHONE_VOL, progress);
                 return;

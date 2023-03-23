@@ -53,6 +53,14 @@ public class AlsID7ViewModel extends LauncherViewModel {
             }
         }
     };
+    public View.OnFocusChangeListener zlinkViewFocusChangeListener = new View.OnFocusChangeListener() {
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus && MainActivity.mainActivity != null) {
+                MainActivity.mainActivity.setCurrentItem(3);
+                Log.i(AlsID7ViewModel.this.TAG, "onFocusChange: zlinkViewFocusChangeListener activity =" + MainActivity.mainActivity);
+            }
+        }
+    };
 
     public void addLastViewFocused(View view) {
         int id = view.getId();

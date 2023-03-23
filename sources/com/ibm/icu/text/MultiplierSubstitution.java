@@ -1,5 +1,7 @@
 package com.ibm.icu.text;
 
+import kotlin.text.Typography;
+
 /* compiled from: NFSubstitution */
 class MultiplierSubstitution extends NFSubstitution {
     long divisor;
@@ -46,6 +48,6 @@ class MultiplierSubstitution extends NFSubstitution {
 
     /* access modifiers changed from: package-private */
     public char tokenChar() {
-        return '<';
+        return Typography.less;
     }
 }

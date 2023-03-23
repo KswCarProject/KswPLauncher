@@ -85,52 +85,67 @@ public class BenzMbux2021FragmentThree extends BenzMbux2021BaseFragment implemen
     }
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (event.getAction() != 0) {
-            return false;
-        }
-        Log.i(TAG, "benz2021 onKey: " + keyCode);
-        if (keyCode == 20 || keyCode == 22) {
-            if (v == this.binding.phonelinkItemview) {
-                setItemSelected(this.binding.appItemview);
-                return false;
-            } else if (v != this.binding.appItemview) {
+        if (event.getAction() == 0) {
+            Log.i(TAG, "benz2021 onKey: " + keyCode);
+            if (keyCode == 20 || keyCode == 22) {
+                if (v == this.binding.phonelinkItemview) {
+                    setItemSelected(this.binding.appItemview);
+                    return false;
+                } else if (v != this.binding.appItemview) {
+                    return false;
+                } else {
+                    setItemSelected(this.binding.dashboardItemview);
+                    return false;
+                }
+            } else if (keyCode != 19 && keyCode != 21) {
                 return false;
             } else {
-                setItemSelected(this.binding.dashboardItemview);
-                return false;
+                if (v == this.binding.dashboardItemview) {
+                    setItemSelected(this.binding.appItemview);
+                    return false;
+                } else if (v != this.binding.appItemview) {
+                    return false;
+                } else {
+                    setItemSelected(this.binding.phonelinkItemview);
+                    return false;
+                }
             }
-        } else if (keyCode != 19 && keyCode != 21) {
+        } else if (keyCode == 66) {
             return false;
         } else {
-            if (v == this.binding.dashboardItemview) {
-                setItemSelected(this.binding.appItemview);
-                return false;
-            } else if (v != this.binding.appItemview) {
-                return false;
-            } else {
+            Log.i(TAG, "benz2021 onKey: " + keyCode);
+            if (v == this.binding.phonelinkItemview) {
                 setItemSelected(this.binding.phonelinkItemview);
-                return false;
+                return true;
+            } else if (v == this.binding.appItemview) {
+                setItemSelected(this.binding.appItemview);
+                return true;
+            } else if (v != this.binding.dashboardItemview) {
+                return true;
+            } else {
+                setItemSelected(this.binding.dashboardItemview);
+                return true;
             }
         }
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.app_itemview /*2131296335*/:
-            case R.id.iv_apps1 /*2131296883*/:
-            case R.id.iv_apps2 /*2131296884*/:
+            case R.id.app_itemview /*2131296342*/:
+            case R.id.iv_apps1 /*2131297068*/:
+            case R.id.iv_apps2 /*2131297069*/:
                 this.viewModel.openApps(v);
                 setItemSelected(this.binding.appItemview);
                 return;
-            case R.id.dashboard_itemview /*2131296616*/:
-            case R.id.iv_dash1 /*2131296903*/:
-            case R.id.iv_dash2 /*2131296904*/:
+            case R.id.dashboard_itemview /*2131296776*/:
+            case R.id.iv_dash1 /*2131297092*/:
+            case R.id.iv_dash2 /*2131297093*/:
                 this.viewModel.openDashboard(v);
                 setItemSelected(this.binding.dashboardItemview);
                 return;
-            case R.id.iv_phone1 /*2131296941*/:
-            case R.id.iv_phone2 /*2131296942*/:
-            case R.id.phonelink_itemview /*2131297141*/:
+            case R.id.iv_phone1 /*2131297143*/:
+            case R.id.iv_phone2 /*2131297144*/:
+            case R.id.phonelink_itemview /*2131297405*/:
                 if (!Build.DISPLAY.contains("8937")) {
                     this.viewModel.openApp(this.mainActivity.getPackageManager().getLaunchIntentForPackage("com.zjinnova.zlink"));
                 } else if (Settings.System.getInt(this.mainActivity.getContentResolver(), "speed_play_switch", 1) == 2) {

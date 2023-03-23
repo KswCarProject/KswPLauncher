@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BenzGsFrametOne extends Fragment {
-    private static final String TAG = ("KSWLauncher." + BenzGsFrametOne.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + BenzGsFrametOne.class.getSimpleName());
     private FraBenzgsOneBinding binding;
     private List<View> childViews = null;
     /* access modifiers changed from: private */

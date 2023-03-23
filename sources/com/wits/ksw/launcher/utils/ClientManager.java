@@ -10,7 +10,7 @@ public class ClientManager {
     public static final String CLIENT_LC_3208 = "LC_3208";
     public static final String CLIENT_yc_2306 = "yc_2306";
     public static final String CUSP_210407 = "CUSP_210407";
-    private static final String TAG = ("KSWLauncher." + ClientManager.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + ClientManager.class.getSimpleName());
     private static ClientManager instance;
 
     private ClientManager() {

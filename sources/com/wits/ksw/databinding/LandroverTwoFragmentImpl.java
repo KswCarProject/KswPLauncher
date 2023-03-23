@@ -11,12 +11,12 @@ import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback31;
-    private final View.OnClickListener mCallback32;
-    private final View.OnClickListener mCallback33;
-    private final View.OnClickListener mCallback34;
-    private final View.OnClickListener mCallback35;
-    private final View.OnClickListener mCallback36;
+    private final View.OnClickListener mCallback25;
+    private final View.OnClickListener mCallback26;
+    private final View.OnClickListener mCallback27;
+    private final View.OnClickListener mCallback28;
+    private final View.OnClickListener mCallback29;
+    private final View.OnClickListener mCallback30;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
 
@@ -38,12 +38,12 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
         this.mboundView0 = relativeLayout;
         relativeLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback36 = new OnClickListener(this, 6);
-        this.mCallback34 = new OnClickListener(this, 4);
-        this.mCallback35 = new OnClickListener(this, 5);
-        this.mCallback32 = new OnClickListener(this, 2);
-        this.mCallback33 = new OnClickListener(this, 3);
-        this.mCallback31 = new OnClickListener(this, 1);
+        this.mCallback27 = new OnClickListener(this, 3);
+        this.mCallback28 = new OnClickListener(this, 4);
+        this.mCallback25 = new OnClickListener(this, 1);
+        this.mCallback26 = new OnClickListener(this, 2);
+        this.mCallback29 = new OnClickListener(this, 5);
+        this.mCallback30 = new OnClickListener(this, 6);
         invalidateAll();
     }
 
@@ -64,7 +64,7 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (10 != variableId) {
+        if (16 != variableId) {
             return false;
         }
         setViewModel((LandroverViewModel) variable);
@@ -76,7 +76,7 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(10);
+        notifyPropertyChanged(16);
         super.requestRebind();
     }
 
@@ -98,12 +98,12 @@ public class LandroverTwoFragmentImpl extends LandroverTwoFragment implements On
             viewModelBtViewFocusChangeListener = viewModel.btViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.landroverMainIconApp.setOnClickListener(this.mCallback35);
-            this.landroverMainIconBrowser.setOnClickListener(this.mCallback36);
-            this.landroverMainIconBt.setOnClickListener(this.mCallback31);
-            this.landroverMainIconDashboard.setOnClickListener(this.mCallback33);
-            this.landroverMainIconFile.setOnClickListener(this.mCallback32);
-            this.landroverMainIconPhonelink.setOnClickListener(this.mCallback34);
+            this.landroverMainIconApp.setOnClickListener(this.mCallback29);
+            this.landroverMainIconBrowser.setOnClickListener(this.mCallback30);
+            this.landroverMainIconBt.setOnClickListener(this.mCallback25);
+            this.landroverMainIconDashboard.setOnClickListener(this.mCallback27);
+            this.landroverMainIconFile.setOnClickListener(this.mCallback26);
+            this.landroverMainIconPhonelink.setOnClickListener(this.mCallback28);
         }
         if ((3 & dirtyFlags) != 0) {
             this.landroverMainIconBt.setOnFocusChangeListener(viewModelBtViewFocusChangeListener);

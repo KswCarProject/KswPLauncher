@@ -26,7 +26,7 @@ import java.util.List;
 
 public class AudiNaviActivity extends AudiSubActivity {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AudiNaviActivity.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AudiNaviActivity.class.getSimpleName());
     /* access modifiers changed from: private */
     public NaviAdpater adpater;
     private AudiNaviBinding binding;
@@ -116,17 +116,17 @@ public class AudiNaviActivity extends AudiSubActivity {
                 r0 = 0
                 if (r7 != 0) goto L_0x002d
                 android.view.LayoutInflater r1 = r5.layoutInflater
-                r2 = 2131427520(0x7f0b00c0, float:1.8476659E38)
+                r2 = 2131427542(0x7f0b00d6, float:1.8476703E38)
                 r3 = 0
                 android.view.View r7 = r1.inflate(r2, r3)
                 com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder r1 = new com.wits.ksw.settings.audi.AudiNaviActivity$NaviAdpater$ViewHolder
                 r1.<init>()
                 r0 = r1
-                r1 = 2131297097(0x7f090349, float:1.821213E38)
+                r1 = 2131297355(0x7f09044b, float:1.8212653E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.RadioButton r1 = (android.widget.RadioButton) r1
                 r0.radioButton = r1
-                r1 = 2131297096(0x7f090348, float:1.8212127E38)
+                r1 = 2131297354(0x7f09044a, float:1.821265E38)
                 android.view.View r1 = r7.findViewById(r1)
                 android.widget.ImageView r1 = (android.widget.ImageView) r1
                 r0.icon = r1

@@ -10,6 +10,7 @@ import com.google.zxing.common.detector.WhiteRectangleDetector;
 import com.google.zxing.common.reedsolomon.GenericGF;
 import com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
 import com.google.zxing.common.reedsolomon.ReedSolomonException;
+import kotlin.text.Typography;
 
 public final class Detector {
     private static final int[] EXPECTED_CORNER_BITS = {3808, 476, 2107, 1799};
@@ -376,7 +377,7 @@ public final class Detector {
         }
 
         public String toString() {
-            return "<" + this.x + ' ' + this.y + '>';
+            return "<" + this.x + ' ' + this.y + Typography.greater;
         }
     }
 }

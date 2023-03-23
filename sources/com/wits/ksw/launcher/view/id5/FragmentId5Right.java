@@ -245,27 +245,27 @@ public class FragmentId5Right extends Fragment implements View.OnKeyListener, Vi
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.id5_item_apps:
+            case R.id.id5_item_apps /*2131296897*/:
                 setSelected(v);
                 this.viewModel.openApps(v);
                 return;
-            case R.id.id5_item_dash:
+            case R.id.id5_item_dash /*2131296905*/:
                 setSelected(v);
                 this.viewModel.openDashboard(v);
                 return;
-            case R.id.id5_item_jly:
+            case R.id.id5_item_jly /*2131296908*/:
                 setSelected(v);
                 this.viewModel.openDvr(v);
                 return;
-            case R.id.id5_item_set:
+            case R.id.id5_item_set /*2131296914*/:
                 setSelected(v);
                 this.viewModel.openSettings(v);
                 return;
-            case R.id.id5_item_sjhl:
+            case R.id.id5_item_sjhl /*2131296916*/:
                 setSelected(v);
                 this.viewModel.openShouJiHuLian(v);
                 return;
-            case R.id.id5_item_video:
+            case R.id.id5_item_video /*2131296918*/:
                 setSelected(v);
                 this.viewModel.openVideoMulti(v);
                 return;

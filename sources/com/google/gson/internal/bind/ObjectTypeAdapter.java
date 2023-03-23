@@ -24,7 +24,7 @@ public final class ObjectTypeAdapter extends TypeAdapter<Object> {
     };
     private final Gson gson;
 
-    private ObjectTypeAdapter(Gson gson2) {
+    ObjectTypeAdapter(Gson gson2) {
         this.gson = gson2;
     }
 

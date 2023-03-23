@@ -70,7 +70,7 @@ public class ActivityNtg6DashBoardBindingSw600dpLandImpl extends ActivityNtg6Das
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);

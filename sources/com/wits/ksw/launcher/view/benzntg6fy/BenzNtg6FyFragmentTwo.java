@@ -129,33 +129,33 @@ public class BenzNtg6FyFragmentTwo extends BenzMbux2021BaseFragment implements V
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.app_itemview /*2131296335*/:
-            case R.id.app_iv1 /*2131296337*/:
-            case R.id.app_iv2 /*2131296338*/:
+            case R.id.app_itemview /*2131296342*/:
+            case R.id.app_iv1 /*2131296344*/:
+            case R.id.app_iv2 /*2131296345*/:
                 this.viewModel.openApps(v);
                 setItemSelected(this.binding.appItemview);
                 return;
-            case R.id.dashboard_itemview /*2131296616*/:
-            case R.id.dashboard_iv1 /*2131296618*/:
-            case R.id.dashboard_iv2 /*2131296619*/:
+            case R.id.dashboard_itemview /*2131296776*/:
+            case R.id.dashboard_iv1 /*2131296778*/:
+            case R.id.dashboard_iv2 /*2131296779*/:
                 this.viewModel.openDashboard(v);
                 setItemSelected(this.binding.dashboardItemview);
                 return;
-            case R.id.drv_iv1 /*2131296656*/:
-            case R.id.drv_iv2 /*2131296657*/:
-            case R.id.dvr_itemview /*2131296658*/:
+            case R.id.drv_iv1 /*2131296817*/:
+            case R.id.drv_iv2 /*2131296818*/:
+            case R.id.dvr_itemview /*2131296820*/:
                 this.viewModel.openDvr(v);
                 setItemSelected(this.binding.dvrItemview);
                 return;
-            case R.id.phone_iv1 /*2131297138*/:
-            case R.id.phone_iv2 /*2131297139*/:
-            case R.id.phonelink_itemview /*2131297141*/:
+            case R.id.phone_iv1 /*2131297400*/:
+            case R.id.phone_iv2 /*2131297401*/:
+            case R.id.phonelink_itemview /*2131297405*/:
                 this.viewModel.openPhoneLink2021(v);
                 setItemSelected(this.binding.phonelinkItemview);
                 return;
-            case R.id.video_itemview /*2131297672*/:
-            case R.id.video_iv1 /*2131297674*/:
-            case R.id.video_iv2 /*2131297675*/:
+            case R.id.video_itemview /*2131297999*/:
+            case R.id.video_iv1 /*2131298001*/:
+            case R.id.video_iv2 /*2131298002*/:
                 this.viewModel.openVideoMulti(v);
                 setItemSelected(this.binding.videoItemview);
                 return;

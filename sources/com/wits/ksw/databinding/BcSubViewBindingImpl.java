@@ -40,7 +40,7 @@ public class BcSubViewBindingImpl extends BcSubViewBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 != variableId) {
+        if (20 != variableId) {
             return false;
         }
         setListItem((BcItem) variable);

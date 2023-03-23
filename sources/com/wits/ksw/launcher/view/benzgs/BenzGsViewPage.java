@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 public class BenzGsViewPage extends ViewPager {
-    private static final String TAG = ("KSWLauncher." + BenzGsViewPage.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + BenzGsViewPage.class.getSimpleName());
     /* access modifiers changed from: private */
     public Context mContext;
     /* access modifiers changed from: private */

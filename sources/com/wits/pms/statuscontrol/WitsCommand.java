@@ -246,8 +246,8 @@ public class WitsCommand {
     public static void sendCommand(int command2, int subCommand2, String arg) {
         try {
             PowerManagerApp.getManager().sendCommand(new Gson().toJson((Object) new WitsCommand(command2, subCommand2, arg)));
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } catch (RemoteException var4) {
+            var4.printStackTrace();
         }
     }
 
@@ -274,8 +274,8 @@ public class WitsCommand {
         try {
             PowerManagerApp.getManager().sendCommand(new Gson().toJson((Object) new WitsCommand(command2, subCommand2, arg)));
             return false;
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } catch (RemoteException var4) {
+            var4.printStackTrace();
             return false;
         }
     }
@@ -283,8 +283,8 @@ public class WitsCommand {
     public static void sendCommand(int command2, int subCommand2) {
         try {
             PowerManagerApp.getManager().sendCommand(new Gson().toJson((Object) new WitsCommand(command2, subCommand2, "")));
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } catch (RemoteException var3) {
+            var3.printStackTrace();
         }
     }
 

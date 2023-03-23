@@ -84,7 +84,7 @@ public class ALSDasoardBindSw600dpLandImpl extends ALSDasoardBind {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);
@@ -96,7 +96,7 @@ public class ALSDasoardBindSw600dpLandImpl extends ALSDasoardBind {
         synchronized (this) {
             this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 

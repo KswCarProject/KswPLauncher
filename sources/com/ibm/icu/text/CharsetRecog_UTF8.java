@@ -1,6 +1,7 @@
 package com.ibm.icu.text;
 
 import com.bumptech.glide.load.Key;
+import kotlin.UByte;
 
 class CharsetRecog_UTF8 extends CharsetRecognizer {
     CharsetRecog_UTF8() {
@@ -18,13 +19,13 @@ class CharsetRecog_UTF8 extends CharsetRecognizer {
         int numValid = 0;
         int numInvalid = 0;
         byte[] input = det.fRawInput;
-        if (det.fRawLength >= 3 && (input[0] & 255) == 239 && (input[1] & 255) == 187 && (input[2] & 255) == 191) {
+        if (det.fRawLength >= 3 && (input[0] & UByte.MAX_VALUE) == 239 && (input[1] & UByte.MAX_VALUE) == 187 && (input[2] & UByte.MAX_VALUE) == 191) {
             hasBOM = true;
         }
         int i = 0;
         while (i < det.fRawLength) {
             byte b = input[i];
-            if ((b & Bidi.LEVEL_OVERRIDE) != 0) {
+            if ((b & 128) != 0) {
                 if ((b & 224) == 192) {
                     trailBytes = 1;
                 } else if ((b & 240) == 224) {

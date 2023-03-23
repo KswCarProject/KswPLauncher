@@ -73,18 +73,18 @@ public class LexusSetVoiceLayout extends RelativeLayout implements View.OnClickL
         }
         resetTextColor();
         switch (v.getId()) {
-            case R.id.tv_eq:
+            case R.id.tv_eq /*2131297848*/:
                 this.tv_eq.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(5, 2);
                 Intent intent = new Intent();
                 intent.setClassName("com.wits.csp.eq", "com.wits.csp.eq.lexus.activity.LexusActivity");
                 this.context.startActivity(intent);
                 return;
-            case R.id.tv_houzvoc:
+            case R.id.tv_houzvoc /*2131297864*/:
                 this.tv_houzvoc.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(5, 0);
                 return;
-            case R.id.tv_yuancvoc:
+            case R.id.tv_yuancvoc /*2131297956*/:
                 this.tv_yuancvoc.setTextColor(Color.argb(255, 172, 216, 255));
                 this.updateTwoLayout.updateTwoLayout(5, 1);
                 return;

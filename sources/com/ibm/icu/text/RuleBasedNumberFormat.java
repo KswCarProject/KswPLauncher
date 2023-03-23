@@ -22,11 +22,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
+import kotlin.jvm.internal.LongCompanionObject;
 
 public class RuleBasedNumberFormat extends NumberFormat {
     private static final boolean DEBUG = ICUDebug.enabled("rbnf");
     public static final int DURATION = 3;
-    private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(Long.MAX_VALUE);
+    private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(LongCompanionObject.MAX_VALUE);
     private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(Long.MIN_VALUE);
     public static final int NUMBERING_SYSTEM = 4;
     public static final int ORDINAL = 2;

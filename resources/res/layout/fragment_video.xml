@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/ll_container" android:tag="layout/fragment_video_0" style="@style/id8_main_card_container">
+    <FrameLayout android:background="@drawable/id8_main_icon_video_bg" style="@style/id8_main_small_card_size"/>
+    <ImageView android:src="@drawable/id8_main_icon_video" style="@style/id8_main_small_card_size"/>
+    <ImageView android:id="@+id/iv_mask" android:tag="binding_1" style="@style/id8_main_small_card_size"/>
+    <LinearLayout style="@style/id8_main_small_card_container">
+        <TextView android:text="@string/ksw_id8_hd_video" style="@style/id8_main_card_title"/>
+        <ImageView android:background="@drawable/id8_main_icon_weather_line" style="@style/id8_main_card_divider"/>
+        <TextView android:textSize="19sp" android:textColor="@color/id8_font_warning" android:text="@string/ksw_id8_video_desc" style="@style/id8_main_card_desc"/>
+    </LinearLayout>
+</RelativeLayout>

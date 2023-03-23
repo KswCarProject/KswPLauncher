@@ -27,6 +27,7 @@
     <string name="abc_shareactionprovider_share_with">Открыть доступ</string>
     <string name="abc_shareactionprovider_share_with_application">Открыть доступ приложению \"%s\"</string>
     <string name="abc_toolbar_collapse_description">Свернуть</string>
+    <string name="als_id7_wranning">ваша операция слишком часто, пожалуйста, отпустите после операции!</string>
     <string name="app_aux">AUX</string>
     <string name="app_cancel">Отмена</string>
     <string name="app_dtv">DTV</string>
@@ -49,6 +50,8 @@
     <string name="benz_mbux_2021_style_classical_tip">классический</string>
     <string name="benz_mbux_2021_style_modern_tip">Современный</string>
     <string name="benz_mbux_2021_theme_settings">Настройки темы</string>
+    <string name="benz_mbux_2021_weather">Глабальнае надвор\'е</string>
+    <string name="benz_mbux_2021_weather_content">Пераключыць інтэрфейс надвор\'я</string>
     <string name="benz_ntg6_fy_theme_settings">тем</string>
     <string name="boot_record_mode">Помните последний режим</string>
     <string name="boot_record_mode_radio1">Включить</string>
@@ -101,6 +104,7 @@
     <string name="factory_danwei">Выбор передач</string>
     <string name="factory_danwei1">Автоматическая</string>
     <string name="factory_danwei2">Ручная</string>
+    <string name="factory_front_view_mirror_setting">Настройка зеркала переднего вида</string>
     <string name="factory_gears1">Тип шестерни 1</string>
     <string name="factory_gears2">Тип шестерни 2</string>
     <string name="factory_gears3">Тип шестерни 3</string>
@@ -117,6 +121,10 @@
     <string name="factory_nbt0">Автоматическое переключение AUX</string>
     <string name="factory_nbt1">Alpine</string>
     <string name="factory_nbt2">Harman</string>
+    <string name="factory_phone">выбор телефонной связи</string>
+    <string name="factory_phone1">первичная функция вагона</string>
+    <string name="factory_phone2">функция Andro Bluetooth</string>
+    <string name="factory_phone3">не определено</string>
     <string name="factory_restart">Перезагрузка</string>
     <string name="factory_text">Заводские настройки</string>
     <string name="factory_text0">Схема переключения AUX</string>
@@ -179,6 +187,7 @@
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">КОМФОРТ</string>
     <string name="id7_browser">@string/id6_browser</string>
+    <string name="installing">прикладная установка</string>
     <string name="item1">Система</string>
     <string name="item2">Навигация</string>
     <string name="item3">Громкость</string>
@@ -210,6 +219,22 @@
     <string name="ksw_id7_setting">Настройки</string>
     <string name="ksw_id7_switch_to_carinfo_window">Штатная информация автомобиля</string>
     <string name="ksw_id7_system_app_not_uninstall">Системное приложение не может быть удалено</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">Приложения</string>
+    <string name="ksw_id8_current">в настоящее время выбрано</string>
+    <string name="ksw_id8_efficient">сохранение энергии</string>
+    <string name="ksw_id8_modus">модель</string>
+    <string name="ksw_id8_personal">дефолт</string>
+    <string name="ksw_id8_settings_title_audio">звуковой эффект</string>
+    <string name="ksw_id8_settings_title_info">Информация</string>
+    <string name="ksw_id8_sport">спортивный</string>
+    <string name="ksw_id8_tel">Телефон</string>
+    <string name="ksw_id8_trd_desc">стороннее использование</string>
+    <string name="ksw_id8_weather">погода</string>
     <string name="ksw_idf7_unknow_artis">Неизвестный исполнитель</string>
     <string name="ksw_idf7_unkonw_album">Неизвестный альбом</string>
     <string name="ksw_idf7_unkonw_soung">Неизвестная песня</string>
@@ -225,6 +250,8 @@
     <string name="oil_size">Масло: %s</string>
     <string name="raw_car_text1">Полный экран</string>
     <string name="raw_car_text2">Текущий выбор:</string>
+    <string name="reverse_exit_time_agreement">выход по протокольному соглашению</string>
+    <string name="reverse_exit_time_custom">Пользовательское время выхода</string>
     <string name="romeo_id7_dashboard_lable">Панель</string>
     <string name="search_menu_title">Поиск</string>
     <string name="sele_navi_map">Выбрать карту навигации</string>
@@ -253,6 +280,7 @@
     <string name="shext_1">Не оригинальная камера</string>
     <string name="shext_2">Оригинальная камера</string>
     <string name="shext_3">Круговой обзор 360</string>
+    <string name="shext_4">Andro Gear 360</string>
     <string name="show_msg_one">Системные настройки Android</string>
     <string name="show_msg_two">Для установки и отладки</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -268,6 +296,7 @@
     <string name="text_13">Яркость</string>
     <string name="text_14">ОЗУ:%s</string>
     <string name="text_15">Хранилище:%s</string>
+    <string name="text_16">Бозсозии санҷиши система</string>
     <string name="text_2">Синхронизация времени</string>
     <string name="text_3">Формат времени</string>
     <string name="text_4">Время машины</string>
@@ -284,6 +313,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_auto">Aвтоматическое Oпределение</string>
     <string name="text_ahd_cam_select">AHD Выбор камеры</string>
     <string name="text_flash">Flash:%s</string>
     <string name="text_logo_input">Импорт</string>
@@ -294,6 +324,9 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">ОЗУ:%s</string>
     <string name="touch_continuous_send">Сенсорные данные непрерывно отправляются</string>
+    <string name="txz_oil_text">Настройка оповещения о дозах топлива</string>
+    <string name="txz_speed_text">Настройка оповещения о скорости</string>
+    <string name="txz_temp_text">установка оповещения о температуре окружающей среды</string>
     <string name="ug_apps_text">Мои приложения</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Навигация</string>
@@ -310,4 +343,8 @@
     <string name="voic_4">Штатная громкость</string>
     <string name="voic_5">Навигация</string>
     <string name="voice_set_show">Настройки звука</string>
+    <string name="weather_error_failed">Ошибка запроса</string>
+    <string name="weather_error_no_gps">Нет GPS</string>
+    <string name="weather_error_unactivated">Неактивировано</string>
+    <string name="weather_loading">Загрузка</string>
 </resources>

@@ -45,6 +45,74 @@ public interface IPowerManagerAppService extends IInterface {
 
     void unregisterObserver(IContentObserver iContentObserver) throws RemoteException;
 
+    public static class Default implements IPowerManagerAppService {
+        public boolean sendCommand(String var1) throws RemoteException {
+            return false;
+        }
+
+        public boolean sendStatus(String var1) throws RemoteException {
+            return false;
+        }
+
+        public void registerCmdListener(ICmdListener var1) throws RemoteException {
+        }
+
+        public void unregisterCmdListener(ICmdListener var1) throws RemoteException {
+        }
+
+        public void registerObserver(String var1, IContentObserver var2) throws RemoteException {
+        }
+
+        public void unregisterObserver(IContentObserver var1) throws RemoteException {
+        }
+
+        public boolean getStatusBoolean(String var1) throws RemoteException {
+            return false;
+        }
+
+        public int getStatusInt(String var1) throws RemoteException {
+            return 0;
+        }
+
+        public String getStatusString(String var1) throws RemoteException {
+            return null;
+        }
+
+        public int getSettingsInt(String var1) throws RemoteException {
+            return 0;
+        }
+
+        public String getSettingsString(String var1) throws RemoteException {
+            return null;
+        }
+
+        public void setSettingsInt(String var1, int var2) throws RemoteException {
+        }
+
+        public void setSettingsString(String var1, String var2) throws RemoteException {
+        }
+
+        public void addIntStatus(String var1, int var2) throws RemoteException {
+        }
+
+        public void addBooleanStatus(String var1, boolean var2) throws RemoteException {
+        }
+
+        public void addStringStatus(String var1, String var2) throws RemoteException {
+        }
+
+        public void saveJsonConfig(String var1, String var2) throws RemoteException {
+        }
+
+        public String getJsonConfig(String var1) throws RemoteException {
+            return null;
+        }
+
+        public IBinder asBinder() {
+            return null;
+        }
+    }
+
     public static abstract class Stub extends Binder implements IPowerManagerAppService {
         private static final String DESCRIPTOR = "com.wits.pms.IPowerManagerAppService";
         static final int TRANSACTION_addBooleanStatus = 15;
@@ -194,6 +262,7 @@ public interface IPowerManagerAppService extends IInterface {
         }
 
         private static class Proxy implements IPowerManagerAppService {
+            public static IPowerManagerAppService sDefaultImpl;
             private IBinder mRemote;
 
             Proxy(IBinder remote) {
@@ -208,18 +277,168 @@ public interface IPowerManagerAppService extends IInterface {
                 return Stub.DESCRIPTOR;
             }
 
-            public boolean sendCommand(String jsonMsg) throws RemoteException {
+            public boolean sendCommand(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(jsonMsg);
-                    boolean _result = false;
-                    this.mRemote.transact(1, _data, _reply, 0);
+                    _data.writeString(var1);
+                    boolean z = false;
+                    if (!this.mRemote.transact(1, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().sendCommand(var1);
+                    }
                     _reply.readException();
                     if (_reply.readInt() != 0) {
-                        _result = true;
+                        z = true;
                     }
+                    boolean _status = z;
+                    _reply.recycle();
+                    _data.recycle();
+                    return _status;
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public boolean sendStatus(String var1) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(var1);
+                    boolean z = false;
+                    if (!this.mRemote.transact(2, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().sendStatus(var1);
+                    }
+                    _reply.readException();
+                    if (_reply.readInt() != 0) {
+                        z = true;
+                    }
+                    boolean _status = z;
+                    _reply.recycle();
+                    _data.recycle();
+                    return _status;
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void registerCmdListener(ICmdListener var1) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    if (this.mRemote.transact(3, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().registerCmdListener(var1);
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void unregisterCmdListener(ICmdListener var1) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    if (this.mRemote.transact(4, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().unregisterCmdListener(var1);
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void registerObserver(String var1, IContentObserver var2) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(var1);
+                    _data.writeStrongBinder(var2 != null ? var2.asBinder() : null);
+                    if (this.mRemote.transact(5, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().registerObserver(var1, var2);
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public void unregisterObserver(IContentObserver var1) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    if (this.mRemote.transact(6, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().unregisterObserver(var1);
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public boolean getStatusBoolean(String var1) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(var1);
+                    boolean z = false;
+                    if (!this.mRemote.transact(7, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getStatusBoolean(var1);
+                    }
+                    _reply.readException();
+                    if (_reply.readInt() != 0) {
+                        z = true;
+                    }
+                    boolean _status = z;
+                    _reply.recycle();
+                    _data.recycle();
+                    return _status;
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public int getStatusInt(String var1) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(var1);
+                    if (!this.mRemote.transact(8, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getStatusInt(var1);
+                    }
+                    _reply.readException();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
                     return _result;
                 } finally {
                     _reply.recycle();
@@ -227,18 +446,19 @@ public interface IPowerManagerAppService extends IInterface {
                 }
             }
 
-            public boolean sendStatus(String json) throws RemoteException {
+            public String getStatusString(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(json);
-                    boolean _result = false;
-                    this.mRemote.transact(2, _data, _reply, 0);
-                    _reply.readException();
-                    if (_reply.readInt() != 0) {
-                        _result = true;
+                    _data.writeString(var1);
+                    if (!this.mRemote.transact(9, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getStatusString(var1);
                     }
+                    _reply.readException();
+                    String _result = _reply.readString();
+                    _reply.recycle();
+                    _data.recycle();
                     return _result;
                 } finally {
                     _reply.recycle();
@@ -246,75 +466,19 @@ public interface IPowerManagerAppService extends IInterface {
                 }
             }
 
-            public void registerCmdListener(ICmdListener listener) throws RemoteException {
+            public int getSettingsInt(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeStrongBinder(listener != null ? listener.asBinder() : null);
-                    this.mRemote.transact(3, _data, _reply, 0);
-                    _reply.readException();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
-            }
-
-            public void unregisterCmdListener(ICmdListener listener) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeStrongBinder(listener != null ? listener.asBinder() : null);
-                    this.mRemote.transact(4, _data, _reply, 0);
-                    _reply.readException();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
-            }
-
-            public void registerObserver(String key, IContentObserver observer) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeStrongBinder(observer != null ? observer.asBinder() : null);
-                    this.mRemote.transact(5, _data, _reply, 0);
-                    _reply.readException();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
-            }
-
-            public void unregisterObserver(IContentObserver observer) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeStrongBinder(observer != null ? observer.asBinder() : null);
-                    this.mRemote.transact(6, _data, _reply, 0);
-                    _reply.readException();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
-            }
-
-            public boolean getStatusBoolean(String key) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    boolean _result = false;
-                    this.mRemote.transact(7, _data, _reply, 0);
-                    _reply.readException();
-                    if (_reply.readInt() != 0) {
-                        _result = true;
+                    _data.writeString(var1);
+                    if (!this.mRemote.transact(10, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getSettingsInt(var1);
                     }
+                    _reply.readException();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
                     return _result;
                 } finally {
                     _reply.recycle();
@@ -322,170 +486,180 @@ public interface IPowerManagerAppService extends IInterface {
                 }
             }
 
-            public int getStatusInt(String key) throws RemoteException {
+            public String getSettingsString(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    this.mRemote.transact(8, _data, _reply, 0);
+                    _data.writeString(var1);
+                    if (!this.mRemote.transact(11, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getSettingsString(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    String _result = _reply.readString();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public String getStatusString(String key) throws RemoteException {
+            public void setSettingsInt(String var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    this.mRemote.transact(9, _data, _reply, 0);
-                    _reply.readException();
-                    return _reply.readString();
+                    _data.writeString(var1);
+                    _data.writeInt(var2);
+                    if (this.mRemote.transact(12, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().setSettingsInt(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int getSettingsInt(String key) throws RemoteException {
+            public void setSettingsString(String var1, String var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    this.mRemote.transact(10, _data, _reply, 0);
-                    _reply.readException();
-                    return _reply.readInt();
+                    _data.writeString(var1);
+                    _data.writeString(var2);
+                    if (this.mRemote.transact(13, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().setSettingsString(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public String getSettingsString(String key) throws RemoteException {
+            public void addIntStatus(String var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    this.mRemote.transact(11, _data, _reply, 0);
-                    _reply.readException();
-                    return _reply.readString();
+                    _data.writeString(var1);
+                    _data.writeInt(var2);
+                    if (this.mRemote.transact(14, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().addIntStatus(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void setSettingsInt(String key, int value) throws RemoteException {
+            public void addBooleanStatus(String var1, boolean var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeInt(value);
-                    this.mRemote.transact(12, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    _data.writeInt(var2 ? 1 : 0);
+                    if (this.mRemote.transact(15, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().addBooleanStatus(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void setSettingsString(String key, String value) throws RemoteException {
+            public void addStringStatus(String var1, String var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeString(value);
-                    this.mRemote.transact(13, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    _data.writeString(var2);
+                    if (this.mRemote.transact(16, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().addStringStatus(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void addIntStatus(String key, int value) throws RemoteException {
+            public void saveJsonConfig(String var1, String var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeInt(value);
-                    this.mRemote.transact(14, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    _data.writeString(var2);
+                    if (this.mRemote.transact(17, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().saveJsonConfig(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void addBooleanStatus(String key, boolean value) throws RemoteException {
+            public String getJsonConfig(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeInt(value ? 1 : 0);
-                    this.mRemote.transact(15, _data, _reply, 0);
+                    _data.writeString(var1);
+                    if (!this.mRemote.transact(18, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getJsonConfig(var1);
+                    }
                     _reply.readException();
+                    String _result = _reply.readString();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
+        }
 
-            public void addStringStatus(String key, String value) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeString(value);
-                    this.mRemote.transact(16, _data, _reply, 0);
-                    _reply.readException();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
+        public static boolean setDefaultImpl(IPowerManagerAppService impl) {
+            if (Proxy.sDefaultImpl != null) {
+                throw new IllegalStateException("setDefaultImpl() called twice");
+            } else if (impl == null) {
+                return false;
+            } else {
+                Proxy.sDefaultImpl = impl;
+                return true;
             }
+        }
 
-            public void saveJsonConfig(String pkgName, String json) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(pkgName);
-                    _data.writeString(json);
-                    this.mRemote.transact(17, _data, _reply, 0);
-                    _reply.readException();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
-            }
-
-            public String getJsonConfig(String pkgName) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(pkgName);
-                    this.mRemote.transact(18, _data, _reply, 0);
-                    _reply.readException();
-                    return _reply.readString();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
-            }
+        public static IPowerManagerAppService getDefaultImpl() {
+            return Proxy.sDefaultImpl;
         }
     }
 }

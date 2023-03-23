@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="horizontal" android:tag="layout/include_near_weather_0" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_1" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_2" style="@style/id8_main_weather_card_small_text_clock_unit"/>
+        </LinearLayout>
+        <ImageView android:tag="binding_3" style="@style/id8_main_weather_card_small_pic"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_4" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_5" style="@style/id8_main_weather_card_small_text_temp_unit"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_6" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_7" style="@style/id8_main_weather_card_small_text_clock_unit"/>
+        </LinearLayout>
+        <ImageView android:tag="binding_8" style="@style/id8_main_weather_card_small_pic"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_9" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_10" style="@style/id8_main_weather_card_small_text_temp_unit"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_11" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_12" style="@style/id8_main_weather_card_small_text_clock_unit"/>
+        </LinearLayout>
+        <ImageView android:tag="binding_13" style="@style/id8_main_weather_card_small_pic"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_14" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_15" style="@style/id8_main_weather_card_small_text_temp_unit"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_16" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_17" style="@style/id8_main_weather_card_small_text_clock_unit"/>
+        </LinearLayout>
+        <ImageView android:tag="binding_18" style="@style/id8_main_weather_card_small_pic"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_19" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_20" style="@style/id8_main_weather_card_small_text_temp_unit"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_21" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_22" style="@style/id8_main_weather_card_small_text_clock_unit"/>
+        </LinearLayout>
+        <ImageView android:tag="binding_23" style="@style/id8_main_weather_card_small_pic"/>
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:tag="binding_24" style="@style/id8_main_weather_card_small_text"/>
+            <TextView android:tag="binding_25" style="@style/id8_main_weather_card_small_text_temp_unit"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

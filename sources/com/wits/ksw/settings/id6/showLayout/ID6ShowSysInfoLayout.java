@@ -77,12 +77,17 @@ public class ID6ShowSysInfoLayout extends RelativeLayout {
         TextView textView2 = (TextView) view.findViewById(R.id.tv_infoAppv);
         this.tv_infoAppv = textView2;
         textView2.setText(avformat);
-        if (UtilsInfo.changeVersion()) {
-            svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"11.0"});
+        String targetVer = UtilsInfo.changeVersion();
+        if (!targetVer.equals(Build.VERSION.RELEASE)) {
+            svformat = String.format(getResources().getString(R.string.text_10), new Object[]{targetVer});
         } else if (Build.VERSION.SDK_INT == 29) {
             svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"10.0"});
         } else if (Build.VERSION.SDK_INT == 30) {
             svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"11.0"});
+        } else if (Build.VERSION.SDK_INT == 31 || Build.VERSION.SDK_INT == 32) {
+            svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"12.0"});
+        } else if (Build.VERSION.SDK_INT == 33) {
+            svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"13.0"});
         } else {
             svformat = String.format(getResources().getString(R.string.text_10), new Object[]{"9.0"});
         }

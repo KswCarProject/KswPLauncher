@@ -27,6 +27,7 @@
     <string name="abc_shareactionprovider_share_with">Condividi con</string>
     <string name="abc_shareactionprovider_share_with_application">Condividi tramite %s</string>
     <string name="abc_toolbar_collapse_description">Comprimi</string>
+    <string name="als_id7_wranning">La vostra operazione è troppo frequente, lasciate andare e operate!</string>
     <string name="app_aux">AUX</string>
     <string name="app_cancel">Annulla</string>
     <string name="app_dtv">DTV</string>
@@ -49,6 +50,8 @@
     <string name="benz_mbux_2021_style_classical_tip">Un classico</string>
     <string name="benz_mbux_2021_style_modern_tip">Moderno</string>
     <string name="benz_mbux_2021_theme_settings">Impostazione tematica</string>
+    <string name="benz_mbux_2021_weather">Global Weather</string>
+    <string name="benz_mbux_2021_weather_content">Attiva/disattiva l\'interfaccia meteo</string>
     <string name="benz_ntg6_fy_theme_settings">oggetto</string>
     <string name="boot_record_mode">Ricorda l\'ultima modalità</string>
     <string name="boot_record_mode_radio1">Abilitare</string>
@@ -101,6 +104,7 @@
     <string name="factory_danwei">Selezione dell\'ingranaggio</string>
     <string name="factory_danwei1">Automatico</string>
     <string name="factory_danwei2">Manual gear</string>
+    <string name="factory_front_view_mirror_setting">Impostazione dello specchietto retrovisore anteriore</string>
     <string name="factory_gears1">Tipo di ingranaggio 1</string>
     <string name="factory_gears2">Tipo di ingranaggio 2</string>
     <string name="factory_gears3">Tipo di ingranaggio 3</string>
@@ -117,6 +121,10 @@
     <string name="factory_nbt0">Commutazione automatica AUX</string>
     <string name="factory_nbt1">Alpine</string>
     <string name="factory_nbt2">Harman</string>
+    <string name="factory_phone">Selezione del tasto telefonico</string>
+    <string name="factory_phone1">Funzione originale del veicolo</string>
+    <string name="factory_phone2">Funzione Bluetooth Android</string>
+    <string name="factory_phone3">Non definito</string>
     <string name="factory_restart">nuovo inizio</string>
     <string name="factory_text">Impostazioni di fabbrica</string>
     <string name="factory_text0">Schema di commutazione AUX</string>
@@ -129,7 +137,7 @@
     <string name="factory_yuyinkey3">Pressione breve significa VOCE, Pressione lunga significa NAVI</string>
     <string name="factory_yuyinkey4">Breve pressione significa NAVI, premere a lungo inutile</string>
     <string name="factory_yuyinkey5">HiCar chiave di funzione vocale</string>
-    <string name="fuel_unit">Unité de carburant</string>
+    <string name="fuel_unit">Unità del carburante</string>
     <string name="function_text1">USB HOST</string>
     <string name="function_text10">DVR CVBS</string>
     <string name="function_text11">USB DVR</string>
@@ -179,6 +187,7 @@
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
     <string name="id7_browser">@string/id6_browser</string>
+    <string name="installing">Installazione dell\'applicazione in corso</string>
     <string name="item1">Sistema</string>
     <string name="item2">Navigazione</string>
     <string name="item3">Volume</string>
@@ -210,6 +219,22 @@
     <string name="ksw_id7_setting">Impostazioni</string>
     <string name="ksw_id7_switch_to_carinfo_window">Un clic per passare alla finestra della vettura originale</string>
     <string name="ksw_id7_system_app_not_uninstall">l\'applicazione di sistema non può essere cancellata</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">applicazione</string>
+    <string name="ksw_id8_current">attualmente selezionato</string>
+    <string name="ksw_id8_efficient">risparmio energetico</string>
+    <string name="ksw_id8_modus">modello</string>
+    <string name="ksw_id8_personal">predefinito</string>
+    <string name="ksw_id8_settings_title_audio">effetto sonoro</string>
+    <string name="ksw_id8_settings_title_info">informazione</string>
+    <string name="ksw_id8_sport">gli sport</string>
+    <string name="ksw_id8_tel">Telefono</string>
+    <string name="ksw_id8_trd_desc">utilizzo di terze parti</string>
+    <string name="ksw_id8_weather">tempo atmosferico</string>
     <string name="ksw_idf7_unknow_artis">Artista sconosciuto</string>
     <string name="ksw_idf7_unkonw_album">Album sconosciuto</string>
     <string name="ksw_idf7_unkonw_soung">Canzone sconosciuta</string>
@@ -225,6 +250,8 @@
     <string name="oil_size">Olio: %s</string>
     <string name="raw_car_text1">Display a schermo intero</string>
     <string name="raw_car_text2">Selezione corrente:</string>
+    <string name="reverse_exit_time_agreement">Uscita secondo il contratto originale del veicolo</string>
+    <string name="reverse_exit_time_custom">Tempo di uscita personalizzato</string>
     <string name="romeo_id7_dashboard_lable">Dashboard</string>
     <string name="search_menu_title">Ricerca</string>
     <string name="sele_navi_map">Seleziona mappa di navigazione</string>
@@ -253,6 +280,7 @@
     <string name="shext_1">Aggiungi videocamera</string>
     <string name="shext_2">Camera OEM</string>
     <string name="shext_3">Videocamera panoramica 360</string>
+    <string name="shext_4">Android integrato 360</string>
     <string name="show_msg_one">Impostazioni di sistema Android</string>
     <string name="show_msg_two">Per l\'installazione e il debug</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -268,6 +296,7 @@
     <string name="text_13">Luminosità</string>
     <string name="text_14">RAM:%s</string>
     <string name="text_15">Memoria:%s</string>
+    <string name="text_16">Aggiornamento del controllo di sistema</string>
     <string name="text_2">Sincronizzazione del tempo</string>
     <string name="text_3">Time system</string>
     <string name="text_4">Tempo auto originale</string>
@@ -284,6 +313,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_auto">Rilevamento automatico</string>
     <string name="text_ahd_cam_select">AHD telecamera</string>
     <string name="text_flash">Flash: %s</string>
     <string name="text_logo_input">Importare</string>
@@ -294,6 +324,9 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Tocca i dati inviati continuamente</string>
+    <string name="txz_oil_text">Impostazione dell\'allarme del volume di carburante</string>
+    <string name="txz_speed_text">Impostazione dell\'allarme di velocità del compagno viaggiatore</string>
+    <string name="txz_temp_text">Impostazione dell\'allarme della temperatura ambiente del compagno</string>
     <string name="ug_apps_text">Più app</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Navigazione</string>
@@ -310,4 +343,8 @@
     <string name="voic_4">Volume auto originale</string>
     <string name="voic_5">Navigazione</string>
     <string name="voice_set_show">Impostazioni audio</string>
+    <string name="weather_error_failed">Richiesta non riuscita</string>
+    <string name="weather_error_no_gps">Nessun GPS</string>
+    <string name="weather_error_unactivated">Non attivato</string>
+    <string name="weather_loading">Caricamento</string>
 </resources>

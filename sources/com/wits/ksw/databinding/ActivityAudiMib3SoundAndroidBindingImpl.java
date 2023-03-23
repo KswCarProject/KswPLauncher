@@ -75,7 +75,7 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3VolumeViewModel) variable);
@@ -87,7 +87,7 @@ public class ActivityAudiMib3SoundAndroidBindingImpl extends ActivityAudiMib3Sou
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

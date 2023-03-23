@@ -70,7 +70,7 @@ public class ActivityAudiMib3TimeBindingHdpi1920x720Impl extends ActivityAudiMib
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SettingViewModel) variable);
@@ -82,7 +82,7 @@ public class ActivityAudiMib3TimeBindingHdpi1920x720Impl extends ActivityAudiMib
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

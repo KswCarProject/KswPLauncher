@@ -132,10 +132,10 @@ public final class LocalBroadcastManager {
         }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:53:0x0176, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:53:0x0178, code lost:
         return true;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:56:0x017b, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:56:0x017d, code lost:
         return false;
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
@@ -146,15 +146,15 @@ public final class LocalBroadcastManager {
             r2 = r19
             java.util.HashMap<android.content.BroadcastReceiver, java.util.ArrayList<android.support.v4.content.LocalBroadcastManager$ReceiverRecord>> r3 = r1.mReceivers
             monitor-enter(r3)
-            java.lang.String r5 = r19.getAction()     // Catch:{ all -> 0x017d }
-            android.content.Context r0 = r1.mAppContext     // Catch:{ all -> 0x017d }
-            android.content.ContentResolver r0 = r0.getContentResolver()     // Catch:{ all -> 0x017d }
-            java.lang.String r0 = r2.resolveTypeIfNeeded(r0)     // Catch:{ all -> 0x017d }
-            android.net.Uri r8 = r19.getData()     // Catch:{ all -> 0x017d }
-            java.lang.String r4 = r19.getScheme()     // Catch:{ all -> 0x017d }
+            java.lang.String r5 = r19.getAction()     // Catch:{ all -> 0x017f }
+            android.content.Context r0 = r1.mAppContext     // Catch:{ all -> 0x017f }
+            android.content.ContentResolver r0 = r0.getContentResolver()     // Catch:{ all -> 0x017f }
+            java.lang.String r0 = r2.resolveTypeIfNeeded(r0)     // Catch:{ all -> 0x017f }
+            android.net.Uri r8 = r19.getData()     // Catch:{ all -> 0x017f }
+            java.lang.String r4 = r19.getScheme()     // Catch:{ all -> 0x017f }
             r11 = r4
-            java.util.Set r9 = r19.getCategories()     // Catch:{ all -> 0x017d }
-            int r4 = r19.getFlags()     // Catch:{ all -> 0x017d }
+            java.util.Set r9 = r19.getCategories()     // Catch:{ all -> 0x017f }
+            int r4 = r19.getFlags()     // Catch:{ all -> 0x017f }
             r4 = r4 & 8
             if (r4 == 0) goto L_0x002d
             r4 = 1
@@ -165,74 +165,74 @@ public final class LocalBroadcastManager {
             r14 = r4
             if (r14 == 0) goto L_0x005d
             java.lang.String r4 = "LocalBroadcastManager"
-            java.lang.StringBuilder r6 = new java.lang.StringBuilder     // Catch:{ all -> 0x017d }
-            r6.<init>()     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r6 = new java.lang.StringBuilder     // Catch:{ all -> 0x017f }
+            r6.<init>()     // Catch:{ all -> 0x017f }
             java.lang.String r7 = "Resolving type "
-            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017d }
-            java.lang.StringBuilder r6 = r6.append(r0)     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017f }
+            java.lang.StringBuilder r6 = r6.append(r0)     // Catch:{ all -> 0x017f }
             java.lang.String r7 = " scheme "
-            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017d }
-            java.lang.StringBuilder r6 = r6.append(r11)     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017f }
+            java.lang.StringBuilder r6 = r6.append(r11)     // Catch:{ all -> 0x017f }
             java.lang.String r7 = " of intent "
-            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017d }
-            java.lang.StringBuilder r6 = r6.append(r2)     // Catch:{ all -> 0x017d }
-            java.lang.String r6 = r6.toString()     // Catch:{ all -> 0x017d }
-            android.util.Log.v(r4, r6)     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017f }
+            java.lang.StringBuilder r6 = r6.append(r2)     // Catch:{ all -> 0x017f }
+            java.lang.String r6 = r6.toString()     // Catch:{ all -> 0x017f }
+            android.util.Log.v(r4, r6)     // Catch:{ all -> 0x017f }
         L_0x005d:
-            java.util.HashMap<java.lang.String, java.util.ArrayList<android.support.v4.content.LocalBroadcastManager$ReceiverRecord>> r4 = r1.mActions     // Catch:{ all -> 0x017d }
-            java.lang.String r6 = r19.getAction()     // Catch:{ all -> 0x017d }
-            java.lang.Object r4 = r4.get(r6)     // Catch:{ all -> 0x017d }
-            java.util.ArrayList r4 = (java.util.ArrayList) r4     // Catch:{ all -> 0x017d }
+            java.util.HashMap<java.lang.String, java.util.ArrayList<android.support.v4.content.LocalBroadcastManager$ReceiverRecord>> r4 = r1.mActions     // Catch:{ all -> 0x017f }
+            java.lang.String r6 = r19.getAction()     // Catch:{ all -> 0x017f }
+            java.lang.Object r4 = r4.get(r6)     // Catch:{ all -> 0x017f }
+            java.util.ArrayList r4 = (java.util.ArrayList) r4     // Catch:{ all -> 0x017f }
             r15 = r4
-            if (r15 == 0) goto L_0x0178
+            if (r15 == 0) goto L_0x017a
             if (r14 == 0) goto L_0x0086
             java.lang.String r4 = "LocalBroadcastManager"
-            java.lang.StringBuilder r6 = new java.lang.StringBuilder     // Catch:{ all -> 0x017d }
-            r6.<init>()     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r6 = new java.lang.StringBuilder     // Catch:{ all -> 0x017f }
+            r6.<init>()     // Catch:{ all -> 0x017f }
             java.lang.String r7 = "Action list: "
-            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017d }
-            java.lang.StringBuilder r6 = r6.append(r15)     // Catch:{ all -> 0x017d }
-            java.lang.String r6 = r6.toString()     // Catch:{ all -> 0x017d }
-            android.util.Log.v(r4, r6)     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r6 = r6.append(r7)     // Catch:{ all -> 0x017f }
+            java.lang.StringBuilder r6 = r6.append(r15)     // Catch:{ all -> 0x017f }
+            java.lang.String r6 = r6.toString()     // Catch:{ all -> 0x017f }
+            android.util.Log.v(r4, r6)     // Catch:{ all -> 0x017f }
         L_0x0086:
             r4 = 0
             r6 = 0
             r10 = r4
             r7 = r6
         L_0x008a:
-            int r4 = r15.size()     // Catch:{ all -> 0x017d }
-            if (r7 >= r4) goto L_0x0143
-            java.lang.Object r4 = r15.get(r7)     // Catch:{ all -> 0x017d }
-            android.support.v4.content.LocalBroadcastManager$ReceiverRecord r4 = (android.support.v4.content.LocalBroadcastManager.ReceiverRecord) r4     // Catch:{ all -> 0x017d }
+            int r4 = r15.size()     // Catch:{ all -> 0x017f }
+            if (r7 >= r4) goto L_0x0145
+            java.lang.Object r4 = r15.get(r7)     // Catch:{ all -> 0x017f }
+            android.support.v4.content.LocalBroadcastManager$ReceiverRecord r4 = (android.support.v4.content.LocalBroadcastManager.ReceiverRecord) r4     // Catch:{ all -> 0x017f }
             r6 = r4
             if (r14 == 0) goto L_0x00b3
             java.lang.String r4 = "LocalBroadcastManager"
-            java.lang.StringBuilder r12 = new java.lang.StringBuilder     // Catch:{ all -> 0x017d }
-            r12.<init>()     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r12 = new java.lang.StringBuilder     // Catch:{ all -> 0x017f }
+            r12.<init>()     // Catch:{ all -> 0x017f }
             java.lang.String r13 = "Matching against filter "
-            java.lang.StringBuilder r12 = r12.append(r13)     // Catch:{ all -> 0x017d }
-            android.content.IntentFilter r13 = r6.filter     // Catch:{ all -> 0x017d }
-            java.lang.StringBuilder r12 = r12.append(r13)     // Catch:{ all -> 0x017d }
-            java.lang.String r12 = r12.toString()     // Catch:{ all -> 0x017d }
-            android.util.Log.v(r4, r12)     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r12 = r12.append(r13)     // Catch:{ all -> 0x017f }
+            android.content.IntentFilter r13 = r6.filter     // Catch:{ all -> 0x017f }
+            java.lang.StringBuilder r12 = r12.append(r13)     // Catch:{ all -> 0x017f }
+            java.lang.String r12 = r12.toString()     // Catch:{ all -> 0x017f }
+            android.util.Log.v(r4, r12)     // Catch:{ all -> 0x017f }
         L_0x00b3:
-            boolean r4 = r6.broadcasting     // Catch:{ all -> 0x017d }
+            boolean r4 = r6.broadcasting     // Catch:{ all -> 0x017f }
             if (r4 == 0) goto L_0x00ce
             if (r14 == 0) goto L_0x00c7
             java.lang.String r4 = "LocalBroadcastManager"
             java.lang.String r12 = "  Filter's target already added"
-            android.util.Log.v(r4, r12)     // Catch:{ all -> 0x017d }
+            android.util.Log.v(r4, r12)     // Catch:{ all -> 0x017f }
             r17 = r0
             r16 = r7
             r0 = r10
-            goto L_0x013c
+            goto L_0x013e
         L_0x00c7:
             r17 = r0
             r16 = r7
             r0 = r10
-            goto L_0x013c
+            goto L_0x013e
         L_0x00ce:
-            android.content.IntentFilter r4 = r6.filter     // Catch:{ all -> 0x017d }
+            android.content.IntentFilter r4 = r6.filter     // Catch:{ all -> 0x017f }
             java.lang.String r12 = "LocalBroadcastManager"
             r13 = r6
             r6 = r0
@@ -241,108 +241,108 @@ public final class LocalBroadcastManager {
             r17 = r0
             r0 = r10
             r10 = r12
-            int r4 = r4.match(r5, r6, r7, r8, r9, r10)     // Catch:{ all -> 0x017d }
+            int r4 = r4.match(r5, r6, r7, r8, r9, r10)     // Catch:{ all -> 0x017f }
             if (r4 < 0) goto L_0x0110
             if (r14 == 0) goto L_0x00ff
             java.lang.String r6 = "LocalBroadcastManager"
-            java.lang.StringBuilder r7 = new java.lang.StringBuilder     // Catch:{ all -> 0x017d }
-            r7.<init>()     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r7 = new java.lang.StringBuilder     // Catch:{ all -> 0x017f }
+            r7.<init>()     // Catch:{ all -> 0x017f }
             java.lang.String r10 = "  Filter matched!  match=0x"
-            java.lang.StringBuilder r7 = r7.append(r10)     // Catch:{ all -> 0x017d }
-            java.lang.String r10 = java.lang.Integer.toHexString(r4)     // Catch:{ all -> 0x017d }
-            java.lang.StringBuilder r7 = r7.append(r10)     // Catch:{ all -> 0x017d }
-            java.lang.String r7 = r7.toString()     // Catch:{ all -> 0x017d }
-            android.util.Log.v(r6, r7)     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r7 = r7.append(r10)     // Catch:{ all -> 0x017f }
+            java.lang.String r10 = java.lang.Integer.toHexString(r4)     // Catch:{ all -> 0x017f }
+            java.lang.StringBuilder r7 = r7.append(r10)     // Catch:{ all -> 0x017f }
+            java.lang.String r7 = r7.toString()     // Catch:{ all -> 0x017f }
+            android.util.Log.v(r6, r7)     // Catch:{ all -> 0x017f }
         L_0x00ff:
             if (r0 != 0) goto L_0x0108
-            java.util.ArrayList r6 = new java.util.ArrayList     // Catch:{ all -> 0x017d }
-            r6.<init>()     // Catch:{ all -> 0x017d }
+            java.util.ArrayList r6 = new java.util.ArrayList     // Catch:{ all -> 0x017f }
+            r6.<init>()     // Catch:{ all -> 0x017f }
             r10 = r6
             goto L_0x0109
         L_0x0108:
             r10 = r0
         L_0x0109:
-            r10.add(r13)     // Catch:{ all -> 0x017d }
+            r10.add(r13)     // Catch:{ all -> 0x017f }
             r0 = 1
-            r13.broadcasting = r0     // Catch:{ all -> 0x017d }
-            goto L_0x013d
+            r13.broadcasting = r0     // Catch:{ all -> 0x017f }
+            goto L_0x013f
         L_0x0110:
-            if (r14 == 0) goto L_0x013c
+            if (r14 == 0) goto L_0x013e
             switch(r4) {
-                case -4: goto L_0x0121;
-                case -3: goto L_0x011e;
-                case -2: goto L_0x011b;
-                case -1: goto L_0x0118;
+                case -4: goto L_0x0123;
+                case -3: goto L_0x0120;
+                case -2: goto L_0x011d;
+                case -1: goto L_0x0119;
                 default: goto L_0x0115;
-            }     // Catch:{ all -> 0x017d }
+            }     // Catch:{ all -> 0x017f }
         L_0x0115:
             java.lang.String r6 = "unknown reason"
-            goto L_0x0124
-        L_0x0118:
+            goto L_0x0126
+        L_0x0119:
             java.lang.String r6 = "type"
-            goto L_0x0124
-        L_0x011b:
+            goto L_0x0126
+        L_0x011d:
             java.lang.String r6 = "data"
-            goto L_0x0124
-        L_0x011e:
+            goto L_0x0126
+        L_0x0120:
             java.lang.String r6 = "action"
-            goto L_0x0124
-        L_0x0121:
+            goto L_0x0126
+        L_0x0123:
             java.lang.String r6 = "category"
-        L_0x0124:
+        L_0x0126:
             java.lang.String r7 = "LocalBroadcastManager"
-            java.lang.StringBuilder r10 = new java.lang.StringBuilder     // Catch:{ all -> 0x017d }
-            r10.<init>()     // Catch:{ all -> 0x017d }
+            java.lang.StringBuilder r10 = new java.lang.StringBuilder     // Catch:{ all -> 0x017f }
+            r10.<init>()     // Catch:{ all -> 0x017f }
             java.lang.String r12 = "  Filter did not match: "
-            java.lang.StringBuilder r10 = r10.append(r12)     // Catch:{ all -> 0x017d }
-            java.lang.StringBuilder r10 = r10.append(r6)     // Catch:{ all -> 0x017d }
-            java.lang.String r10 = r10.toString()     // Catch:{ all -> 0x017d }
-            android.util.Log.v(r7, r10)     // Catch:{ all -> 0x017d }
-        L_0x013c:
+            java.lang.StringBuilder r10 = r10.append(r12)     // Catch:{ all -> 0x017f }
+            java.lang.StringBuilder r10 = r10.append(r6)     // Catch:{ all -> 0x017f }
+            java.lang.String r10 = r10.toString()     // Catch:{ all -> 0x017f }
+            android.util.Log.v(r7, r10)     // Catch:{ all -> 0x017f }
+        L_0x013e:
             r10 = r0
-        L_0x013d:
+        L_0x013f:
             int r7 = r16 + 1
             r0 = r17
             goto L_0x008a
-        L_0x0143:
+        L_0x0145:
             r17 = r0
             r16 = r7
             r0 = r10
-            if (r0 == 0) goto L_0x017a
+            if (r0 == 0) goto L_0x017c
             r4 = 0
-        L_0x014b:
-            int r6 = r0.size()     // Catch:{ all -> 0x017d }
-            if (r4 >= r6) goto L_0x015d
-            java.lang.Object r6 = r0.get(r4)     // Catch:{ all -> 0x017d }
-            android.support.v4.content.LocalBroadcastManager$ReceiverRecord r6 = (android.support.v4.content.LocalBroadcastManager.ReceiverRecord) r6     // Catch:{ all -> 0x017d }
+        L_0x014d:
+            int r6 = r0.size()     // Catch:{ all -> 0x017f }
+            if (r4 >= r6) goto L_0x015f
+            java.lang.Object r6 = r0.get(r4)     // Catch:{ all -> 0x017f }
+            android.support.v4.content.LocalBroadcastManager$ReceiverRecord r6 = (android.support.v4.content.LocalBroadcastManager.ReceiverRecord) r6     // Catch:{ all -> 0x017f }
             r7 = 0
-            r6.broadcasting = r7     // Catch:{ all -> 0x017d }
+            r6.broadcasting = r7     // Catch:{ all -> 0x017f }
             int r4 = r4 + 1
-            goto L_0x014b
-        L_0x015d:
-            java.util.ArrayList<android.support.v4.content.LocalBroadcastManager$BroadcastRecord> r4 = r1.mPendingBroadcasts     // Catch:{ all -> 0x017d }
-            android.support.v4.content.LocalBroadcastManager$BroadcastRecord r6 = new android.support.v4.content.LocalBroadcastManager$BroadcastRecord     // Catch:{ all -> 0x017d }
-            r6.<init>(r2, r0)     // Catch:{ all -> 0x017d }
-            r4.add(r6)     // Catch:{ all -> 0x017d }
-            android.os.Handler r4 = r1.mHandler     // Catch:{ all -> 0x017d }
+            goto L_0x014d
+        L_0x015f:
+            java.util.ArrayList<android.support.v4.content.LocalBroadcastManager$BroadcastRecord> r4 = r1.mPendingBroadcasts     // Catch:{ all -> 0x017f }
+            android.support.v4.content.LocalBroadcastManager$BroadcastRecord r6 = new android.support.v4.content.LocalBroadcastManager$BroadcastRecord     // Catch:{ all -> 0x017f }
+            r6.<init>(r2, r0)     // Catch:{ all -> 0x017f }
+            r4.add(r6)     // Catch:{ all -> 0x017f }
+            android.os.Handler r4 = r1.mHandler     // Catch:{ all -> 0x017f }
             r6 = 1
-            boolean r4 = r4.hasMessages(r6)     // Catch:{ all -> 0x017d }
-            if (r4 != 0) goto L_0x0175
-            android.os.Handler r4 = r1.mHandler     // Catch:{ all -> 0x017d }
-            r4.sendEmptyMessage(r6)     // Catch:{ all -> 0x017d }
-        L_0x0175:
-            monitor-exit(r3)     // Catch:{ all -> 0x017d }
+            boolean r4 = r4.hasMessages(r6)     // Catch:{ all -> 0x017f }
+            if (r4 != 0) goto L_0x0177
+            android.os.Handler r4 = r1.mHandler     // Catch:{ all -> 0x017f }
+            r4.sendEmptyMessage(r6)     // Catch:{ all -> 0x017f }
+        L_0x0177:
+            monitor-exit(r3)     // Catch:{ all -> 0x017f }
             r3 = 1
             return r3
-        L_0x0178:
-            r17 = r0
         L_0x017a:
-            monitor-exit(r3)     // Catch:{ all -> 0x017d }
+            r17 = r0
+        L_0x017c:
+            monitor-exit(r3)     // Catch:{ all -> 0x017f }
             r0 = 0
             return r0
-        L_0x017d:
+        L_0x017f:
             r0 = move-exception
-            monitor-exit(r3)     // Catch:{ all -> 0x017d }
+            monitor-exit(r3)     // Catch:{ all -> 0x017f }
             throw r0
         */
         throw new UnsupportedOperationException("Method not decompiled: android.support.v4.content.LocalBroadcastManager.sendBroadcast(android.content.Intent):boolean");

@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.wits.ksw.settings.TxzMessage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -309,7 +310,7 @@ class SuggestionsAdapter extends ResourceCursorAdapter implements View.OnClickLi
     }
 
     private Drawable getDrawableFromResourceValue(String drawableId) {
-        if (drawableId == null || drawableId.isEmpty() || "0".equals(drawableId)) {
+        if (drawableId == null || drawableId.isEmpty() || TxzMessage.TXZ_DISMISS.equals(drawableId)) {
             return null;
         }
         try {

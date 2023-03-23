@@ -27,6 +27,7 @@
     <string name="abc_shareactionprovider_share_with">Delen met</string>
     <string name="abc_shareactionprovider_share_with_application">Delen met %s</string>
     <string name="abc_toolbar_collapse_description">Samenvouwen</string>
+    <string name="als_id7_wranning">Uw operatie is te frequent. Laat los en opereer!</string>
     <string name="app_aux">AUX</string>
     <string name="app_cancel">Annuleren</string>
     <string name="app_dtv">DTV</string>
@@ -49,6 +50,8 @@
     <string name="benz_mbux_2021_style_classical_tip">klassiek</string>
     <string name="benz_mbux_2021_style_modern_tip">modern</string>
     <string name="benz_mbux_2021_theme_settings">onderwerp</string>
+    <string name="benz_mbux_2021_weather">Wereldwijd weer</string>
+    <string name="benz_mbux_2021_weather_content">Weerinterface wisselen</string>
     <string name="benz_ntg6_fy_theme_settings">onderwerp</string>
     <string name="boot_record_mode">Onthoud de laatste modus</string>
     <string name="boot_record_mode_radio1">Inschakelen</string>
@@ -101,6 +104,7 @@
     <string name="factory_danwei">Gear selectie</string>
     <string name="factory_danwei1">Automatische versnelling</string>
     <string name="factory_danwei2">Handmatige versnelling</string>
+    <string name="factory_front_view_mirror_setting">Instelling vooruitkijkspiegel</string>
     <string name="factory_gears1">Type versnelling 1</string>
     <string name="factory_gears2">Type versnelling 2</string>
     <string name="factory_gears3">Type versnelling 3</string>
@@ -117,6 +121,10 @@
     <string name="factory_nbt0">AUX automatische schakelmodus</string>
     <string name="factory_nbt1">Alpine</string>
     <string name="factory_nbt2">Harman</string>
+    <string name="factory_phone">Telefoonsleutel selecteren</string>
+    <string name="factory_phone1">Originele voertuigfunctie</string>
+    <string name="factory_phone2">Android Bluetooth-functie</string>
+    <string name="factory_phone3">Ongedefinieerd</string>
     <string name="factory_restart">Restart</string>
     <string name="factory_text">Fabrieksinstelling</string>
     <string name="factory_text0">AUX-schakelmodus</string>
@@ -179,6 +187,7 @@
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
     <string name="id7_browser">@string/id6_browser</string>
+    <string name="installing">Installatie van toepassing in uitvoering</string>
     <string name="item1">Systeem</string>
     <string name="item2">Navigatie</string>
     <string name="item3">Volume</string>
@@ -210,6 +219,22 @@
     <string name="ksw_id7_setting">Oprichten</string>
     <string name="ksw_id7_switch_to_carinfo_window">Ga naar het originele autoraam</string>
     <string name="ksw_id7_system_app_not_uninstall">Systeemapp kan niet worden verwijderd</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">sollicitatie</string>
+    <string name="ksw_id8_current">momenteel geselecteerd</string>
+    <string name="ksw_id8_efficient">energiebesparend</string>
+    <string name="ksw_id8_modus">model-</string>
+    <string name="ksw_id8_personal">standaard</string>
+    <string name="ksw_id8_settings_title_audio">Geluidseffect</string>
+    <string name="ksw_id8_settings_title_info">informatie</string>
+    <string name="ksw_id8_sport">sport-</string>
+    <string name="ksw_id8_tel">Telefoon</string>
+    <string name="ksw_id8_trd_desc">gebruik door derden</string>
+    <string name="ksw_id8_weather">het weer</string>
     <string name="ksw_idf7_unknow_artis">Onbekende zanger</string>
     <string name="ksw_idf7_unkonw_album">Onbekend album</string>
     <string name="ksw_idf7_unkonw_soung">Onbekend liedje</string>
@@ -225,6 +250,8 @@
     <string name="oil_size">olie: %s</string>
     <string name="raw_car_text1">Volledig scherm</string>
     <string name="raw_car_text2">Huidige selectie:</string>
+    <string name="reverse_exit_time_agreement">Uitstappen volgens de oorspronkelijke voertuigovereenkomst</string>
+    <string name="reverse_exit_time_custom">Aangepaste afsluittijd</string>
     <string name="romeo_id7_dashboard_lable">Dashboard</string>
     <string name="search_menu_title">Zoeken</string>
     <string name="sele_navi_map">Selecteer navigatiekaart</string>
@@ -253,6 +280,7 @@
     <string name="shext_1">Voeg camera toe</string>
     <string name="shext_2">Originele autocamera</string>
     <string name="shext_3">360 panoramische camera</string>
+    <string name="shext_4">Android ingebouwde 360</string>
     <string name="show_msg_one">Instellingen Android-systeem</string>
     <string name="show_msg_two">Voor installatie en debugging</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -268,6 +296,7 @@
     <string name="text_13">Helderheid</string>
     <string name="text_14">geheugen: %s</string>
     <string name="text_15">geheugen: %s</string>
+    <string name="text_16">Systeemcontrole update</string>
     <string name="text_2">Tijd synchronisatie</string>
     <string name="text_3">Tijd systeem</string>
     <string name="text_4">Oorspronkelijke autotijd</string>
@@ -284,6 +313,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_auto">Automatische Detectie</string>
     <string name="text_ahd_cam_select">AHD Camera</string>
     <string name="text_flash">Flash: %s</string>
     <string name="text_logo_input">Importeren</string>
@@ -294,6 +324,9 @@
     <string name="text_logo_two">P2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">Touch data continu verzonden</string>
+    <string name="txz_oil_text">Brandstofvolumealarminstelling</string>
+    <string name="txz_speed_text">Snelheidsalarm voor medereizigers</string>
+    <string name="txz_temp_text">Alarminstelling voor omgevingstemperatuur</string>
     <string name="ug_apps_text">Meer Apps</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">Navigatie</string>

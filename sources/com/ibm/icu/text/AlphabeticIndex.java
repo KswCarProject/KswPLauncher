@@ -566,8 +566,8 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:39:0x00ff  */
-    /* JADX WARNING: Removed duplicated region for block: B:54:0x0168  */
+    /* JADX WARNING: Removed duplicated region for block: B:39:0x0100  */
+    /* JADX WARNING: Removed duplicated region for block: B:54:0x016a  */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     private com.ibm.icu.text.AlphabeticIndex.BucketList<V> createBucketList() {
         /*
@@ -606,7 +606,7 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
         L_0x0043:
             boolean r15 = r12.hasNext()
             r5 = 1
-            if (r15 == 0) goto L_0x0177
+            if (r15 == 0) goto L_0x0179
             java.lang.Object r15 = r12.next()
             java.lang.String r15 = (java.lang.String) r15
             com.ibm.icu.text.RuleBasedCollator r14 = r0.collatorPrimaryOnly
@@ -662,65 +662,65 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
             int r4 = r15.length()
             java.lang.String r5 = "﷐"
             r14 = 1
-            if (r4 != r14) goto L_0x00ce
+            if (r4 != r14) goto L_0x00cf
             r4 = 0
             char r4 = r15.charAt(r4)
             r14 = r4
             r20 = r10
             r10 = 65
-            if (r10 > r4) goto L_0x00d0
+            if (r10 > r4) goto L_0x00d1
             r4 = 90
-            if (r14 > r4) goto L_0x00d0
+            if (r14 > r4) goto L_0x00d1
             int r4 = r14 + -65
             r6[r4] = r1
-            goto L_0x00f9
-        L_0x00ce:
+            goto L_0x00fa
+        L_0x00cf:
             r20 = r10
-        L_0x00d0:
+        L_0x00d1:
             int r4 = r15.length()
             int r10 = r5.length()
             r14 = 1
             int r10 = r10 + r14
-            if (r4 != r10) goto L_0x00f9
+            if (r4 != r10) goto L_0x00fa
             boolean r4 = r15.startsWith(r5)
-            if (r4 == 0) goto L_0x00f9
+            if (r4 == 0) goto L_0x00fa
             int r4 = r5.length()
             char r4 = r15.charAt(r4)
             r10 = r4
             r14 = 65
-            if (r14 > r4) goto L_0x00f9
+            if (r14 > r4) goto L_0x00fa
             r4 = 90
-            if (r10 > r4) goto L_0x00f9
+            if (r10 > r4) goto L_0x00fa
             int r4 = r10 + -65
             r7[r4] = r1
             r4 = 1
             r8 = r4
-        L_0x00f9:
+        L_0x00fa:
             boolean r4 = r15.startsWith(r5)
-            if (r4 != 0) goto L_0x0168
+            if (r4 != 0) goto L_0x016a
             com.ibm.icu.text.RuleBasedCollator r4 = r0.collatorPrimaryOnly
             boolean r4 = hasMultiplePrimaryWeights(r4, r2, r15)
-            if (r4 == 0) goto L_0x0165
+            if (r4 == 0) goto L_0x0167
             java.lang.String r4 = "￿"
             boolean r5 = r15.endsWith(r4)
-            if (r5 != 0) goto L_0x0162
+            if (r5 != 0) goto L_0x0164
             int r5 = r9.size()
             int r5 = r5 + -2
-        L_0x0115:
+        L_0x0117:
             java.lang.Object r10 = r9.get(r5)
             com.ibm.icu.text.AlphabeticIndex$Bucket r10 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r10
             com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r14 = r10.labelType
             r16 = r1
             com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r1 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.NORMAL
-            if (r14 == r1) goto L_0x0126
-            goto L_0x016a
-        L_0x0126:
+            if (r14 == r1) goto L_0x0128
+            goto L_0x016c
+        L_0x0128:
             com.ibm.icu.text.AlphabeticIndex$Bucket r1 = r10.displayBucket
-            if (r1 != 0) goto L_0x015b
+            if (r1 != 0) goto L_0x015d
             com.ibm.icu.text.RuleBasedCollator r1 = r0.collatorPrimaryOnly
             java.lang.String r14 = r10.lowerBoundary
             boolean r1 = hasMultiplePrimaryWeights(r1, r2, r14)
-            if (r1 != 0) goto L_0x015b
+            if (r1 != 0) goto L_0x015d
             com.ibm.icu.text.AlphabeticIndex$Bucket r1 = new com.ibm.icu.text.AlphabeticIndex$Bucket
             java.lang.StringBuilder r14 = new java.lang.StringBuilder
             r14.<init>()
@@ -735,115 +735,115 @@ public final class AlphabeticIndex<V> implements Iterable<Bucket<V>> {
             r9.add(r0)
             r1 = 1
             r4 = r1
-            goto L_0x016c
-        L_0x015b:
+            goto L_0x016e
+        L_0x015d:
             int r5 = r5 + -1
             r0 = r21
             r1 = r16
-            goto L_0x0115
-        L_0x0162:
+            goto L_0x0117
+        L_0x0164:
             r16 = r1
-            goto L_0x016a
-        L_0x0165:
+            goto L_0x016c
+        L_0x0167:
             r16 = r1
-            goto L_0x016a
-        L_0x0168:
-            r16 = r1
+            goto L_0x016c
         L_0x016a:
-            r4 = r18
+            r16 = r1
         L_0x016c:
+            r4 = r18
+        L_0x016e:
             r5 = 26
             r14 = 0
             r0 = r21
             r1 = r17
             r10 = r20
             goto L_0x0043
-        L_0x0177:
+        L_0x0179:
             r17 = r1
             r18 = r4
             int r0 = r9.size()
             r1 = 1
-            if (r0 != r1) goto L_0x0189
+            if (r0 != r1) goto L_0x018b
             com.ibm.icu.text.AlphabeticIndex$BucketList r0 = new com.ibm.icu.text.AlphabeticIndex$BucketList
             r1 = 0
             r0.<init>(r9, r9)
             return r0
-        L_0x0189:
+        L_0x018b:
             r1 = 0
             com.ibm.icu.text.AlphabeticIndex$Bucket r0 = new com.ibm.icu.text.AlphabeticIndex$Bucket
             java.lang.String r4 = r21.getOverflowLabel()
             com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r5 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.OVERFLOW
             r0.<init>(r4, r11, r5)
             r9.add(r0)
-            if (r8 == 0) goto L_0x01b7
+            if (r8 == 0) goto L_0x01b9
             r0 = 0
             r1 = 0
             r4 = r18
-        L_0x019e:
+        L_0x01a0:
             r5 = 26
-            if (r1 >= r5) goto L_0x01b9
+            if (r1 >= r5) goto L_0x01bb
             r12 = r6[r1]
-            if (r12 == 0) goto L_0x01a8
+            if (r12 == 0) goto L_0x01aa
             r0 = r6[r1]
-        L_0x01a8:
+        L_0x01aa:
             r12 = r7[r1]
-            if (r12 == 0) goto L_0x01b4
-            if (r0 == 0) goto L_0x01b4
+            if (r12 == 0) goto L_0x01b6
+            if (r0 == 0) goto L_0x01b6
             r12 = r7[r1]
             com.ibm.icu.text.AlphabeticIndex.Bucket unused = r12.displayBucket = r0
             r4 = 1
-        L_0x01b4:
+        L_0x01b6:
             int r1 = r1 + 1
-            goto L_0x019e
-        L_0x01b7:
-            r4 = r18
+            goto L_0x01a0
         L_0x01b9:
-            if (r4 != 0) goto L_0x01c2
+            r4 = r18
+        L_0x01bb:
+            if (r4 != 0) goto L_0x01c4
             com.ibm.icu.text.AlphabeticIndex$BucketList r0 = new com.ibm.icu.text.AlphabeticIndex$BucketList
             r1 = 0
             r0.<init>(r9, r9)
             return r0
-        L_0x01c2:
+        L_0x01c4:
             int r0 = r9.size()
             r1 = 1
             int r0 = r0 - r1
             java.lang.Object r1 = r9.get(r0)
             com.ibm.icu.text.AlphabeticIndex$Bucket r1 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r1
-        L_0x01ce:
+        L_0x01d0:
             int r0 = r0 + -1
-            if (r0 <= 0) goto L_0x01f5
+            if (r0 <= 0) goto L_0x01f7
             java.lang.Object r5 = r9.get(r0)
             com.ibm.icu.text.AlphabeticIndex$Bucket r5 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r5
             com.ibm.icu.text.AlphabeticIndex$Bucket r12 = r5.displayBucket
-            if (r12 == 0) goto L_0x01df
-            goto L_0x01ce
-        L_0x01df:
+            if (r12 == 0) goto L_0x01e1
+            goto L_0x01d0
+        L_0x01e1:
             com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r12 = r5.labelType
             com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r13 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.INFLOW
-            if (r12 != r13) goto L_0x01f3
+            if (r12 != r13) goto L_0x01f5
             com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r12 = r1.labelType
             com.ibm.icu.text.AlphabeticIndex$Bucket$LabelType r13 = com.ibm.icu.text.AlphabeticIndex.Bucket.LabelType.NORMAL
-            if (r12 == r13) goto L_0x01f3
+            if (r12 == r13) goto L_0x01f5
             com.ibm.icu.text.AlphabeticIndex.Bucket unused = r5.displayBucket = r1
-            goto L_0x01ce
-        L_0x01f3:
-            r1 = r5
-            goto L_0x01ce
+            goto L_0x01d0
         L_0x01f5:
+            r1 = r5
+            goto L_0x01d0
+        L_0x01f7:
             java.util.ArrayList r5 = new java.util.ArrayList
             r5.<init>()
             java.util.Iterator r12 = r9.iterator()
-        L_0x01fe:
+        L_0x0200:
             boolean r13 = r12.hasNext()
-            if (r13 == 0) goto L_0x0214
+            if (r13 == 0) goto L_0x0216
             java.lang.Object r13 = r12.next()
             com.ibm.icu.text.AlphabeticIndex$Bucket r13 = (com.ibm.icu.text.AlphabeticIndex.Bucket) r13
             com.ibm.icu.text.AlphabeticIndex$Bucket r14 = r13.displayBucket
-            if (r14 != 0) goto L_0x0213
+            if (r14 != 0) goto L_0x0215
             r5.add(r13)
-        L_0x0213:
-            goto L_0x01fe
-        L_0x0214:
+        L_0x0215:
+            goto L_0x0200
+        L_0x0216:
             com.ibm.icu.text.AlphabeticIndex$BucketList r12 = new com.ibm.icu.text.AlphabeticIndex$BucketList
             r13 = 0
             r12.<init>(r9, r5)

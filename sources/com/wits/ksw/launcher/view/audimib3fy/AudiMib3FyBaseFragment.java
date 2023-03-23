@@ -10,8 +10,10 @@ import com.wits.ksw.launcher.model.BcVieModel;
 public class AudiMib3FyBaseFragment extends Fragment {
     protected static final String TAG = AudiMib3FyBaseFragment.class.getSimpleName();
     protected static boolean isSmooth = false;
-    protected MainActivity mainActivity;
-    protected BcVieModel viewModel;
+    /* access modifiers changed from: protected */
+    public MainActivity mainActivity;
+    /* access modifiers changed from: protected */
+    public BcVieModel viewModel;
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);

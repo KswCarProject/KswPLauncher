@@ -37,7 +37,7 @@ import java.text.NumberFormat;
 
 public class Ntg6SetSystemTwo extends RelativeLayout {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + Ntg6SetSystemTwo.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + Ntg6SetSystemTwo.class.getSimpleName());
     private int aux_index1;
     private int aux_index2;
     private int beiguangValue;

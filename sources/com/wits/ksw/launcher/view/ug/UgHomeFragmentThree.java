@@ -18,7 +18,7 @@ import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 
 public class UgHomeFragmentThree extends Fragment implements View.OnFocusChangeListener {
-    private static final String TAG = ("KSWLauncher." + UgHomeFragmentThree.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + UgHomeFragmentThree.class.getSimpleName());
     /* access modifiers changed from: private */
     public UgHomeThreeBindingImpl binding;
     /* access modifiers changed from: private */

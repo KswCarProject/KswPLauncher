@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 import com.wits.ksw.MainActivity;
 
 public class UgHomeImageView extends AppCompatImageView {
-    private static final String TAG = ("KSWLauncher." + UgHomeImageView.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + UgHomeImageView.class.getSimpleName());
 
     public UgHomeImageView(Context context) {
         this(context, (AttributeSet) null);

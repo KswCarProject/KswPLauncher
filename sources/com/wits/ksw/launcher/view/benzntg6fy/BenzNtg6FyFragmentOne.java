@@ -152,39 +152,39 @@ public class BenzNtg6FyFragmentOne extends BenzMbux2021BaseFragment implements V
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bt_itemview /*2131296505*/:
-            case R.id.bt_iv1 /*2131296507*/:
-            case R.id.bt_iv2 /*2131296508*/:
+            case R.id.bt_itemview /*2131296659*/:
+            case R.id.bt_iv1 /*2131296661*/:
+            case R.id.bt_iv2 /*2131296662*/:
                 this.viewModel.openBtApp();
                 setItemSelected(this.binding.btItemview);
                 return;
-            case R.id.car_itemview /*2131296538*/:
-            case R.id.car_iv1 /*2131296540*/:
-            case R.id.car_iv2 /*2131296541*/:
+            case R.id.car_itemview /*2131296693*/:
+            case R.id.car_iv1 /*2131296695*/:
+            case R.id.car_iv2 /*2131296696*/:
                 this.viewModel.openCar(v);
                 setItemSelected(this.binding.carItemview);
                 return;
-            case R.id.music_itemview /*2131297079*/:
+            case R.id.music_itemview /*2131297337*/:
                 this.viewModel.openMusicMulti(v);
                 setItemSelected(this.binding.musicItemview);
                 return;
-            case R.id.music_iv1 /*2131297081*/:
+            case R.id.music_iv1 /*2131297339*/:
                 this.viewModel.btnMusicNext();
                 setItemSelected(this.binding.musicItemview);
                 return;
-            case R.id.music_iv2 /*2131297082*/:
+            case R.id.music_iv2 /*2131297340*/:
                 this.viewModel.btnMusicPrev();
                 setItemSelected(this.binding.musicItemview);
                 return;
-            case R.id.navi_itemview /*2131297101*/:
-            case R.id.navi_iv1 /*2131297103*/:
-            case R.id.navi_iv2 /*2131297104*/:
+            case R.id.navi_itemview /*2131297361*/:
+            case R.id.navi_iv1 /*2131297363*/:
+            case R.id.navi_iv2 /*2131297364*/:
                 this.viewModel.openNaviApp(v);
                 setItemSelected(this.binding.naviItemview);
                 return;
-            case R.id.set_itemview /*2131297415*/:
-            case R.id.set_iv1 /*2131297417*/:
-            case R.id.set_iv2 /*2131297418*/:
+            case R.id.set_itemview /*2131297701*/:
+            case R.id.set_iv1 /*2131297703*/:
+            case R.id.set_iv2 /*2131297704*/:
                 this.viewModel.openSettings(v);
                 setItemSelected(this.binding.setItemview);
                 return;

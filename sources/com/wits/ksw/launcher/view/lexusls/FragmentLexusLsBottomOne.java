@@ -18,13 +18,13 @@ import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class FragmentLexusLsBottomOne extends LexusLsBaseBottomFragment implements View.OnKeyListener {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private LexusLsBottomFragmentOne binding;
     private IContentObserver.Stub topAppContentObserver = new IContentObserver.Stub() {
         public void onChange() throws RemoteException {
             try {
                 String topApp = PowerManagerApp.getStatusString("topApp");
-                Log.i("KSWLauncher", "onChange: topApp=" + topApp);
+                Log.i("KswApplication", "onChange: topApp=" + topApp);
                 if (TextUtils.equals(topApp, BuildConfig.APPLICATION_ID)) {
                     MediaImpl.getInstance().initData();
                 }
@@ -138,7 +138,7 @@ public class FragmentLexusLsBottomOne extends LexusLsBaseBottomFragment implemen
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == 0) {
-            Log.i("KSWLauncher", "FragmentLexusLsBottomOne onKey: " + keyCode);
+            Log.i("KswApplication", "FragmentLexusLsBottomOne onKey: " + keyCode);
             if (keyCode == 22) {
                 this.mainActivity.lexusLsVpagerBottom.setCurrentItem(1);
                 return true;

@@ -68,11 +68,11 @@ public class SystemStatus {
     }
 
     public SystemStatus() {
+        this.screenSwitch = 2;
+        this.acc = 2;
         this.topApp = "";
         this.realCurrentApp = "";
         this.lastMode = -1;
-        this.acc = 2;
-        this.screenSwitch = 2;
         this.topApp = "";
     }
 

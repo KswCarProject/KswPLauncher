@@ -1,6 +1,7 @@
 package android.support.constraint.solver;
 
 import android.support.constraint.solver.ArrayRow;
+import io.reactivex.annotations.SchedulerSupport;
 import java.util.Arrays;
 
 public class SolverVariableValues implements ArrayRow.ArrayRowVariables {
@@ -129,13 +130,13 @@ public class SolverVariableValues implements ArrayRow.ArrayRowVariables {
                 if (this.previous[index] != -1) {
                     str = str4 + this.mCache.mIndexedVariables[this.variables[this.previous[index]]];
                 } else {
-                    str = str4 + "none";
+                    str = str4 + SchedulerSupport.NONE;
                 }
                 String str5 = str + ", n: ";
                 if (this.next[index] != -1) {
                     str2 = str5 + this.mCache.mIndexedVariables[this.variables[this.next[index]]];
                 } else {
-                    str2 = str5 + "none";
+                    str2 = str5 + SchedulerSupport.NONE;
                 }
                 str3 = str2 + "]";
             }

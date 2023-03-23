@@ -17,6 +17,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.settings.id7.adapter.UiSelectAdapter;
 import com.wits.ksw.settings.id7.bean.UiSelectBean;
 import com.wits.ksw.settings.utlis_view.DialogViews;
+import com.wits.ksw.settings.utlis_view.FileUtils;
 import com.wits.ksw.settings.utlis_view.ToastUtils;
 import java.io.File;
 import java.util.ArrayList;
@@ -103,8 +104,8 @@ public class LogoSelect extends FrameLayout {
     }
 
     private void initZhuanYong() {
-        this.logoFile = new File("/storage/emulated/0/mylogo/thumbnail");
-        this.filePath = new File("/storage/emulated/0/mylogo/" + this.imgFileName);
+        this.logoFile = new File(FileUtils.getLogoFilePath() + "/thumbnail");
+        this.filePath = new File(FileUtils.getLogoFilePath() + "/" + this.imgFileName);
         if (this.logoFile.exists() && this.filePath.exists()) {
             File[] logos = this.logoFile.listFiles();
             File[] files = this.filePath.listFiles();
@@ -118,7 +119,7 @@ public class LogoSelect extends FrameLayout {
                         int leng = fle.getName().length();
                         String fn = fle.getName().substring(leng - 7, leng - 4);
                         Log.d(TAG, "zhuanYong_logo: name " + fn);
-                        if (TextUtils.equals(name, fn) && !fle.getPath().endsWith("bmp")) {
+                        if (TextUtils.equals(name, fn) && (Build.VERSION.RELEASE.equals("12") || Build.VERSION.RELEASE.equals("13") || !fle.getPath().endsWith("bmp"))) {
                             uiSelectBean.setFilePath(fle.getPath());
                         }
                     }

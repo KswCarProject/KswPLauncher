@@ -2,6 +2,7 @@ package com.wits.ksw.launcher.utils;
 
 import android.app.Instrumentation;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
@@ -25,7 +26,7 @@ import java.util.Locale;
 
 public class KswUtils {
     public static final double RPH = 0.621d;
-    private static final String TAG = ("KSWLauncher." + KswUtils.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + KswUtils.class.getSimpleName());
     private static volatile KswUtils singleton;
 
     private KswUtils() {
@@ -97,6 +98,19 @@ public class KswUtils {
         }
     }
 
+    public static boolean isAppInstalled(Context context, String packagename) {
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+        }
+        if (packageInfo != null) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isSystemapp(String packageName) {
         try {
             if ((KswApplication.appContext.getPackageManager().getPackageInfo(packageName, 0).applicationInfo.flags & 1) > 0) {
@@ -111,6 +125,16 @@ public class KswUtils {
 
     public static String formatMusicPlayTime(long time) {
         return new SimpleDateFormat(time >= 3600000 ? "H:m:ss" : "m:ss").format(new Date(time));
+    }
+
+    public static String formatMusicPlayTimeRemain(int time, int max) {
+        int value;
+        if (max - time < 0) {
+            value = 0;
+        } else {
+            value = max - time;
+        }
+        return new SimpleDateFormat(value >= 3600000 ? "H:m:ss" : "m:ss").format(new Date((long) value));
     }
 
     public static String formatMonth(Date date) {

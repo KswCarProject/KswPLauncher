@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class BenzMbuxItemView extends ImageView implements View.OnFocusChangeListener {
-    private static final String TAG = ("KSWLauncher." + BenzMbuxItemView.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + BenzMbuxItemView.class.getSimpleName());
 
     public BenzMbuxItemView(Context context) {
         this(context, (AttributeSet) null);

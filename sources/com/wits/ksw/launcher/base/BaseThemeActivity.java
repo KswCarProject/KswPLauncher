@@ -11,10 +11,13 @@ import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 
 public abstract class BaseThemeActivity extends AppCompatActivity {
-    private static final String TAG = ("KSWLauncher." + BaseThemeActivity.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + BaseThemeActivity.class.getSimpleName());
 
     /* access modifiers changed from: protected */
     public abstract void initAlsId7UI();
+
+    /* access modifiers changed from: protected */
+    public abstract void initAlsId7UI_V2();
 
     /* access modifiers changed from: protected */
     public abstract void initAlsId7UiView();
@@ -26,10 +29,19 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initAudiMbi3View();
 
     /* access modifiers changed from: protected */
+    public abstract void initAudiMbi3ViewV2();
+
+    /* access modifiers changed from: protected */
+    public abstract void initAudiMib3Ty();
+
+    /* access modifiers changed from: protected */
     public abstract void initAudiView();
 
     /* access modifiers changed from: protected */
     public abstract void initAudi_mib3_FyUiView();
+
+    /* access modifiers changed from: protected */
+    public abstract void initAudi_mib3_Fy_V2_UiView();
 
     /* access modifiers changed from: protected */
     public abstract void initBcUiView();
@@ -44,6 +56,12 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initBenzNTG5View();
 
     /* access modifiers changed from: protected */
+    public abstract void initBenz_MBUX_2021_KSW_View();
+
+    /* access modifiers changed from: protected */
+    public abstract void initBenz_MBUX_2021_KSW_View_V2();
+
+    /* access modifiers changed from: protected */
     public abstract void initBenz_MBUX_2021_View();
 
     /* access modifiers changed from: protected */
@@ -54,6 +72,12 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
 
     /* access modifiers changed from: protected */
     public abstract void initBmwEvoId6GS();
+
+    /* access modifiers changed from: protected */
+    public abstract void initBmwId8GsUiView();
+
+    /* access modifiers changed from: protected */
+    public abstract void initBmwId8UiView();
 
     /* access modifiers changed from: protected */
     public abstract void initBmwid5UiView();
@@ -68,6 +92,9 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initBmwid7UiView();
 
     /* access modifiers changed from: protected */
+    public abstract void initBmwid7V2UiView();
+
+    /* access modifiers changed from: protected */
     public abstract void initBwmID7Hicar();
 
     /* access modifiers changed from: protected */
@@ -78,6 +105,9 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
 
     /* access modifiers changed from: protected */
     public abstract void initCommonUIGSUGView();
+
+    /* access modifiers changed from: protected */
+    public abstract void initCommonUIKSWMBUX1024View();
 
     /* access modifiers changed from: protected */
     public abstract void initGSUiView();
@@ -95,7 +125,16 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
     public abstract void initLexusLsDrag();
 
     /* access modifiers changed from: protected */
+    public abstract void initLexusLsDragV2();
+
+    /* access modifiers changed from: protected */
     public abstract void initRomeo();
+
+    /* access modifiers changed from: protected */
+    public abstract void initUIKSWID7View();
+
+    /* access modifiers changed from: protected */
+    public abstract void initUI_NTG6_FY_ViewV2();
 
     /* access modifiers changed from: protected */
     public void onCreate(Bundle savedInstanceState) {
@@ -119,14 +158,22 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initBenzMBUXView();
         } else if (UiThemeUtils.isBenz_MBUX_2021(this)) {
             initBenz_MBUX_2021_View2();
+        } else if (UiThemeUtils.isBenz_MBUX_2021_KSW(this)) {
+            initBenz_MBUX_2021_KSW_View();
+        } else if (UiThemeUtils.isBenz_MBUX_2021_KSW_V2(this)) {
+            initBenz_MBUX_2021_KSW_View_V2();
         } else if (UiThemeUtils.isBenz_NTG6_FY(this) && ClientManager.getInstance().isAls6208Client()) {
             initBenz_NTG6_FY_View();
+        } else if (UiThemeUtils.isUI_NTG6_FY_V2(this) && ClientManager.getInstance().isAls6208Client()) {
+            initUI_NTG6_FY_ViewV2();
         } else if (UiThemeUtils.isBenz_GS(this)) {
             initBenzGSView();
         } else if (UiThemeUtils.isAudi_MMI_4G(this)) {
             initAudiView();
         } else if (UiThemeUtils.isAudi_mib3(this)) {
             initAudiMbi3View();
+        } else if (UiThemeUtils.isUI_mib3_V2(this)) {
+            initAudiMbi3ViewV2();
         } else if (UiThemeUtils.isBenz_NTG5(this)) {
             initBenzNTG5View();
         } else if (UiThemeUtils.isALS_ID6(this)) {
@@ -137,6 +184,8 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initLexus();
         } else if (UiThemeUtils.isLEXUS_LS_UI(this)) {
             initLexusLsDrag();
+        } else if (UiThemeUtils.isLEXUS_LS_UI_V2(this)) {
+            initLexusLsDragV2();
         } else if (UiThemeUtils.isROMEO_UI(this)) {
             initRomeo();
         } else if (UiThemeUtils.isLAND_ROVER(this)) {
@@ -144,18 +193,38 @@ public abstract class BaseThemeActivity extends AppCompatActivity {
             initLandRover();
         } else if (UiThemeUtils.isCommon_UI_GS_UG_1024(this)) {
             initCommonUIGSUG1024View();
+        } else if (UiThemeUtils.isUI_KSW_MBUX_1024(this)) {
+            initCommonUIKSWMBUX1024View();
         } else if (UiThemeUtils.isID7_ALS(this)) {
             if (ClientManager.getInstance().isAls6208Client()) {
                 initAlsId7UI();
             } else {
                 initBmwid7UiView();
             }
+        } else if (UiThemeUtils.isID7_ALS_V2(this)) {
+            if (ClientManager.getInstance().isAls6208Client()) {
+                initAlsId7UI_V2();
+            } else {
+                initBmwid7UiView();
+            }
         } else if (UiThemeUtils.isALS_ID7_UI(this)) {
             initAlsId7UiView();
-        } else if (!UiThemeUtils.isAudi_mib3_FY(this) || !ClientManager.getInstance().isAls6208Client()) {
-            initBmwid7UiView();
-        } else {
+        } else if (UiThemeUtils.isAudi_mib3_FY(this) && ClientManager.getInstance().isAls6208Client()) {
             initAudi_mib3_FyUiView();
+        } else if (UiThemeUtils.isAudi_mib3_FY_V2(this) && ClientManager.getInstance().isAls6208Client()) {
+            initAudi_mib3_Fy_V2_UiView();
+        } else if (UiThemeUtils.isAudi_mib3_ty(this)) {
+            initAudiMib3Ty();
+        } else if (UiThemeUtils.isUI_KSW_ID7(this)) {
+            initUIKSWID7View();
+        } else if (UiThemeUtils.isBMW_ID8_UI(this)) {
+            initBmwId8UiView();
+        } else if (UiThemeUtils.isUI_GS_ID8(this)) {
+            initBmwId8GsUiView();
+        } else if (UiThemeUtils.isBMW_EVO_ID7_V2(this)) {
+            initBmwid7V2UiView();
+        } else {
+            initBmwid7UiView();
         }
         super.onCreate(savedInstanceState);
     }

@@ -49,6 +49,8 @@
     <string name="benz_mbux_2021_style_classical_tip">كلاسيكي</string>
     <string name="benz_mbux_2021_style_modern_tip">عصري</string>
     <string name="benz_mbux_2021_theme_settings">إعدادات الموضوع  </string>
+    <string name="benz_mbux_2021_weather">الطقس العالمي</string>
+    <string name="benz_mbux_2021_weather_content">تبديل واجهة الطقس</string>
     <string name="benz_ntg6_fy_theme_settings">موضوع</string>
     <string name="boot_record_mode">تذكر المصدر الأخير</string>
     <string name="boot_record_mode_radio1">تمكين</string>
@@ -101,6 +103,7 @@
     <string name="factory_danwei">جير</string>
     <string name="factory_danwei1">تلقائي</string>
     <string name="factory_danwei2">يدوي</string>
+    <string name="factory_front_view_mirror_setting">إعداد مرآة الرؤية الأمامية</string>
     <string name="factory_gears1">نوع العتاد 1</string>
     <string name="factory_gears2">نوع العتاد 2</string>
     <string name="factory_gears3">نوع العتاد 3</string>
@@ -117,6 +120,10 @@
     <string name="factory_nbt0">التبديل التلقائي AUX</string>
     <string name="factory_nbt1">Alpine</string>
     <string name="factory_nbt2">Harman</string>
+    <string name="factory_phone">اختيار مفتاح الهاتف</string>
+    <string name="factory_phone1">وظيفة السيارة الأصلية</string>
+    <string name="factory_phone2">الروبوت بلوتوث</string>
+    <string name="factory_phone3">غير محدد</string>
     <string name="factory_restart">اعادة البدء</string>
     <string name="factory_text">إعدادات متقدمة</string>
     <string name="factory_text0">أوضاع تبديل AUX</string>
@@ -180,6 +187,7 @@
     <string name="id7_als_item_three">SPORT</string>
     <string name="id7_als_item_two">COMFORT</string>
     <string name="id7_browser">@string/id6_browser</string>
+    <string name="installing">تركيب التطبيق</string>
     <string name="item1">النظام</string>
     <string name="item2">ملاحة</string>
     <string name="item3">مستوى الصوت</string>
@@ -211,6 +219,22 @@
     <string name="ksw_id7_setting">الإعدادات</string>
     <string name="ksw_id7_switch_to_carinfo_window">إظهار معلومات السيارة الأصلية</string>
     <string name="ksw_id7_system_app_not_uninstall">لا يمكن إلغاء تثبيت تطبيقات النظام</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">طلب</string>
+    <string name="ksw_id8_current">المحدد حاليا</string>
+    <string name="ksw_id8_efficient">توفير الطاقة</string>
+    <string name="ksw_id8_modus">نموذج</string>
+    <string name="ksw_id8_personal">إفتراضي</string>
+    <string name="ksw_id8_settings_title_audio">مؤثرات صوتيه</string>
+    <string name="ksw_id8_settings_title_info">معلومة</string>
+    <string name="ksw_id8_sport">رياضات</string>
+    <string name="ksw_id8_tel">الهاتف</string>
+    <string name="ksw_id8_trd_desc">طقس</string>
+    <string name="ksw_id8_weather">استخدام طرف ثالث</string>
     <string name="ksw_idf7_unknow_artis">فنان غير معروف</string>
     <string name="ksw_idf7_unkonw_album">ألبوم غير معروف</string>
     <string name="ksw_idf7_unkonw_soung">أغنية غير معروفة</string>
@@ -226,6 +250,8 @@
     <string name="oil_size">بنزين: %s</string>
     <string name="raw_car_text1">كامل الشاشة</string>
     <string name="raw_car_text2">الإختيار الحالي:</string>
+    <string name="reverse_exit_time_agreement">الخروج بموجب اتفاق السيارة الأصلي</string>
+    <string name="reverse_exit_time_custom">عرف وقت الخروج</string>
     <string name="romeo_id7_dashboard_lable">لوحة القيادة</string>
     <string name="search_menu_title">البحث</string>
     <string name="sele_navi_map">حدد خريطة الملاحة</string>
@@ -254,6 +280,7 @@
     <string name="shext_1">كاميرا ما بعد البيع</string>
     <string name="shext_2">كاميرا OEM</string>
     <string name="shext_3">كاميرا 360 درجة</string>
+    <string name="shext_4">بنيت في 360</string>
     <string name="show_msg_one">Android إعدادات نظام</string>
     <string name="show_msg_two">للتثبيت والتصحيح</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -269,6 +296,7 @@
     <string name="text_13">سطوع</string>
     <string name="text_14">RAM: %s</string>
     <string name="text_15">FLASH: %s</string>
+    <string name="text_16">التحقق من تحديث النظام</string>
     <string name="text_2">مزامنة الوقت</string>
     <string name="text_3">تنسيق الوقت</string>
     <string name="text_4">وقت السيارة</string>
@@ -285,6 +313,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_auto">الكشف التلقائي</string>
     <string name="text_ahd_cam_select">كاميرا AHD</string>
     <string name="text_flash">Flash: %s</string>
     <string name="text_logo_input">استيراد</string>
@@ -295,6 +324,9 @@
     <string name="text_logo_two">الصفحة 2</string>
     <string name="text_ram">RAM: %s</string>
     <string name="touch_continuous_send">اتصال البيانات المرسلة باستمرار</string>
+    <string name="txz_oil_text">نفس الكمية من النفط وضع تحذير</string>
+    <string name="txz_speed_text">سرعة التنبيه إعدادات المسافر</string>
+    <string name="txz_temp_text">درجة الحرارة المحيطة إنذار الإعداد</string>
     <string name="ug_apps_text">التطبيقات</string>
     <string name="ug_bluetooth">البلوتوث</string>
     <string name="ug_navigation">ملاحة</string>
@@ -311,4 +343,8 @@
     <string name="voic_4">OEM</string>
     <string name="voic_5">ملاحة</string>
     <string name="voice_set_show">الصوت</string>
+    <string name="weather_error_failed">فشل الاستعلام</string>
+    <string name="weather_error_no_gps">لا يوجد GPS</string>
+    <string name="weather_error_unactivated">غير نشط</string>
+    <string name="weather_loading">جار التحميل</string>
 </resources>

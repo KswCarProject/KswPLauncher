@@ -557,12 +557,12 @@ final class DecodedBitStreamParser {
         int[] numericCodewords = new int[15];
         while (code < codewords[0] && !end) {
             int codeIndex = code + 1;
-            int code2 = codewords[code];
+            int codeIndex2 = codewords[code];
             if (codeIndex == codewords[0]) {
                 end = true;
             }
-            if (code2 >= 900) {
-                switch (code2) {
+            if (codeIndex2 >= 900) {
+                switch (codeIndex2) {
                     case 900:
                     case BYTE_COMPACTION_MODE_LATCH /*901*/:
                     case MACRO_PDF417_TERMINATOR /*922*/:
@@ -574,10 +574,10 @@ final class DecodedBitStreamParser {
                         break;
                 }
             } else {
-                numericCodewords[count] = code2;
+                numericCodewords[count] = codeIndex2;
                 count++;
             }
-            if ((count % 15 == 0 || code2 == NUMERIC_COMPACTION_MODE_LATCH || end) && count > 0) {
+            if ((count % 15 == 0 || codeIndex2 == NUMERIC_COMPACTION_MODE_LATCH || end) && count > 0) {
                 result.append(decodeBase900toBase10(numericCodewords, count));
                 count = 0;
             }

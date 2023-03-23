@@ -19,7 +19,7 @@ import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.UiThemeUtils;
 
 public class UgHomeFragmentTwo extends Fragment implements View.OnFocusChangeListener {
-    private static final String TAG = ("KSWLauncher." + UgHomeFragmentTwo.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + UgHomeFragmentTwo.class.getSimpleName());
     /* access modifiers changed from: private */
     public UgHomeTwoBindingImpl binding;
     /* access modifiers changed from: private */
@@ -86,7 +86,7 @@ public class UgHomeFragmentTwo extends Fragment implements View.OnFocusChangeLis
         }
         this.binding.setViewModel(this.viewModel);
         this.binding.ugHomeHdvideoVaiw.setOnFocusChangeListener(this);
-        this.binding.ugHomeAppVaiw.setOnFocusChangeListener(this);
+        this.binding.ugHomeEasyVaiw.setOnFocusChangeListener(this);
         this.mainActivity.select.observe(getActivity(), new Observer<UgPager>() {
             public void onChanged(UgPager ugPager) {
                 if (ugPager.index != 1) {
@@ -95,7 +95,7 @@ public class UgHomeFragmentTwo extends Fragment implements View.OnFocusChangeLis
                 if (ugPager.left) {
                     WiewFocusUtils.setViewRequestFocus(UgHomeFragmentTwo.this.binding.ugHomeHdvideoVaiw);
                 } else if (ugPager.right) {
-                    WiewFocusUtils.setViewRequestFocus(UgHomeFragmentTwo.this.binding.ugHomeAppVaiw);
+                    WiewFocusUtils.setViewRequestFocus(UgHomeFragmentTwo.this.binding.ugHomeEasyVaiw);
                 }
             }
         });

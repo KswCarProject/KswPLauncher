@@ -59,7 +59,7 @@ public class AlsId7SubDashboardViewBindingImpl extends AlsId7SubDashboardViewBin
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (3 != variableId) {
+        if (4 != variableId) {
             return false;
         }
         setDashVideoViewModel((AlsID7ViewModel) variable);
@@ -71,7 +71,7 @@ public class AlsId7SubDashboardViewBindingImpl extends AlsId7SubDashboardViewBin
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(3);
+        notifyPropertyChanged(4);
         super.requestRebind();
     }
 
@@ -228,13 +228,13 @@ public class AlsId7SubDashboardViewBindingImpl extends AlsId7SubDashboardViewBin
             android.widget.TextView r0 = r1.brakeTextView
             android.content.res.Resources r0 = r0.getResources()
             r37 = r2
-            r2 = 2131558729(0x7f0d0149, float:1.8742782E38)
+            r2 = 2131558757(0x7f0d0165, float:1.8742839E38)
             goto L_0x0089
         L_0x007e:
             r37 = r2
             android.widget.TextView r0 = r1.brakeTextView
             android.content.res.Resources r0 = r0.getResources()
-            r2 = 2131558728(0x7f0d0148, float:1.874278E38)
+            r2 = 2131558756(0x7f0d0164, float:1.8742837E38)
         L_0x0089:
             java.lang.String r0 = r0.getString(r2)
             r16 = r0
@@ -295,14 +295,14 @@ public class AlsId7SubDashboardViewBindingImpl extends AlsId7SubDashboardViewBin
             android.widget.TextView r14 = r1.seatBeltTextView
             android.content.res.Resources r14 = r14.getResources()
             r17 = r0
-            r0 = 2131558746(0x7f0d015a, float:1.8742817E38)
+            r0 = 2131558774(0x7f0d0176, float:1.8742873E38)
             java.lang.String r0 = r14.getString(r0)
             goto L_0x0108
         L_0x00f9:
             r17 = r0
             android.widget.TextView r0 = r1.seatBeltTextView
             android.content.res.Resources r0 = r0.getResources()
-            r14 = 2131558745(0x7f0d0159, float:1.8742814E38)
+            r14 = 2131558773(0x7f0d0175, float:1.8742871E38)
             java.lang.String r0 = r0.getString(r14)
         L_0x0108:
             r12 = r0
@@ -349,14 +349,14 @@ public class AlsId7SubDashboardViewBindingImpl extends AlsId7SubDashboardViewBin
             com.wits.ksw.launcher.view.CustomBmwImageView r9 = r1.dashboardImageView
             android.content.Context r9 = r9.getContext()
             r25 = r0
-            r0 = 2131230966(0x7f0800f6, float:1.8078E38)
+            r0 = 2131230964(0x7f0800f4, float:1.8077996E38)
             android.graphics.drawable.Drawable r0 = android.support.v7.content.res.AppCompatResources.getDrawable(r9, r0)
             goto L_0x0162
         L_0x0153:
             r25 = r0
             com.wits.ksw.launcher.view.CustomBmwImageView r0 = r1.dashboardImageView
             android.content.Context r0 = r0.getContext()
-            r9 = 2131230965(0x7f0800f5, float:1.8077998E38)
+            r9 = 2131230963(0x7f0800f3, float:1.8077994E38)
             android.graphics.drawable.Drawable r0 = android.support.v7.content.res.AppCompatResources.getDrawable(r0, r9)
         L_0x0162:
             r6 = r0

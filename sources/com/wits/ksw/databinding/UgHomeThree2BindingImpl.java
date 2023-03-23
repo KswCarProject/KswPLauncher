@@ -10,9 +10,9 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback225;
-    private final View.OnClickListener mCallback226;
-    private final View.OnClickListener mCallback227;
+    private final View.OnClickListener mCallback128;
+    private final View.OnClickListener mCallback129;
+    private final View.OnClickListener mCallback130;
     private long mDirtyFlags;
 
     public UgHomeThree2BindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,9 +27,9 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
         this.ugHomeDashboradVaiw.setTag((Object) null);
         this.ugHomeSettingVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback227 = new OnClickListener(this, 3);
-        this.mCallback225 = new OnClickListener(this, 1);
-        this.mCallback226 = new OnClickListener(this, 2);
+        this.mCallback128 = new OnClickListener(this, 1);
+        this.mCallback129 = new OnClickListener(this, 2);
+        this.mCallback130 = new OnClickListener(this, 3);
         invalidateAll();
     }
 
@@ -50,7 +50,7 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -62,7 +62,7 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -80,9 +80,9 @@ public class UgHomeThree2BindingImpl extends UgHomeThree2Binding implements OnCl
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeCarVaiw.setOnClickListener(this.mCallback225);
-            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback226);
-            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback227);
+            this.ugHomeCarVaiw.setOnClickListener(this.mCallback128);
+            this.ugHomeDashboradVaiw.setOnClickListener(this.mCallback129);
+            this.ugHomeSettingVaiw.setOnClickListener(this.mCallback130);
         }
     }
 

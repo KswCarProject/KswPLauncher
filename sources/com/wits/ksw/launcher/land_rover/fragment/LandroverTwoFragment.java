@@ -14,7 +14,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 
 public class LandroverTwoFragment extends Fragment {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private com.wits.ksw.databinding.LandroverTwoFragment binding;
     private MainActivity mainActivity;
     private LandroverViewModel viewModel;
@@ -42,11 +42,11 @@ public class LandroverTwoFragment extends Fragment {
         if (landroverTwoFragment != null) {
             landroverTwoFragment.setViewModel(this.viewModel);
         }
-        Log.i("KSWLauncher", "onActivityCreated: registerIContentObserver topApp ");
+        Log.i("KswApplication", "onActivityCreated: registerIContentObserver topApp ");
     }
 
     public void onDestroy() {
         super.onDestroy();
-        Log.i("KSWLauncher", "onDestroy: unRegisterIContentObserver topApp");
+        Log.i("KswApplication", "onDestroy: unRegisterIContentObserver topApp");
     }
 }

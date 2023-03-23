@@ -37,7 +37,7 @@ import java.util.List;
 
 public class AlsID7UiSetSystemTwo extends RelativeLayout {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AlsID7UiSetSystemTwo.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AlsID7UiSetSystemTwo.class.getSimpleName());
     private int aux_index1;
     private int aux_index2;
     private int beiguangValue;
@@ -193,13 +193,13 @@ public class AlsID7UiSetSystemTwo extends RelativeLayout {
         this.rdg_shext.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdb_shext1:
+                    case R.id.rdb_shext1 /*2131297458*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 0);
                         return;
-                    case R.id.rdb_shext2:
+                    case R.id.rdb_shext2 /*2131297459*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 1);
                         return;
-                    case R.id.rdb_shext3:
+                    case R.id.rdb_shext3 /*2131297460*/:
                         FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, 2);
                         return;
                     default:

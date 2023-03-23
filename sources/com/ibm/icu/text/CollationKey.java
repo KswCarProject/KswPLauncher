@@ -1,5 +1,7 @@
 package com.ibm.icu.text;
 
+import kotlin.UByte;
+
 public final class CollationKey implements Comparable<CollationKey> {
     static final /* synthetic */ boolean $assertionsDisabled = false;
     private static final int MERGE_SEPERATOR_ = 2;
@@ -111,7 +113,7 @@ public final class CollationKey implements Comparable<CollationKey> {
                 while (true) {
                     bArr = this.m_key_;
                     if (bArr[i] != 0 && bArr[i + 1] != 0) {
-                        key.append((char) ((bArr[i + 1] & 255) | (bArr[i] << 8)));
+                        key.append((char) ((bArr[i + 1] & UByte.MAX_VALUE) | (bArr[i] << 8)));
                         i += 2;
                     }
                 }

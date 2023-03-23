@@ -53,7 +53,7 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_timeSync:
+            case R.id.tv_timeSync /*2131297941*/:
                 this.tv_timeSync.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.tv_timeZhis.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
@@ -62,7 +62,7 @@ public class SetTimeLayout extends RelativeLayout implements View.OnClickListene
                     return;
                 }
                 return;
-            case R.id.tv_timeZhis:
+            case R.id.tv_timeZhis /*2131297942*/:
                 this.tv_timeZhis.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.tv_timeSync.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;

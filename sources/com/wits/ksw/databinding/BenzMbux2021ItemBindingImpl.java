@@ -16,10 +16,10 @@ import com.wits.ksw.launcher.view.benzmbux2021.BenzMbux2021Bean;
 public class BenzMbux2021ItemBindingImpl extends BenzMbux2021ItemBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback48;
-    private final View.OnClickListener mCallback49;
-    private final View.OnClickListener mCallback50;
-    private final View.OnClickListener mCallback51;
+    private final View.OnClickListener mCallback216;
+    private final View.OnClickListener mCallback217;
+    private final View.OnClickListener mCallback218;
+    private final View.OnClickListener mCallback219;
     private long mDirtyFlags;
     private final ImageView mboundView4;
     private final ImageView mboundView5;
@@ -48,10 +48,10 @@ public class BenzMbux2021ItemBindingImpl extends BenzMbux2021ItemBinding impleme
         imageView2.setTag((Object) null);
         this.rlContain.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback49 = new OnClickListener(this, 2);
-        this.mCallback48 = new OnClickListener(this, 1);
-        this.mCallback50 = new OnClickListener(this, 3);
-        this.mCallback51 = new OnClickListener(this, 4);
+        this.mCallback216 = new OnClickListener(this, 1);
+        this.mCallback217 = new OnClickListener(this, 2);
+        this.mCallback218 = new OnClickListener(this, 3);
+        this.mCallback219 = new OnClickListener(this, 4);
         invalidateAll();
     }
 
@@ -72,10 +72,10 @@ public class BenzMbux2021ItemBindingImpl extends BenzMbux2021ItemBinding impleme
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 == variableId) {
+        if (20 == variableId) {
             setListItem((BenzMbux2021Bean) variable);
             return true;
-        } else if (15 != variableId) {
+        } else if (24 != variableId) {
             return false;
         } else {
             setVieModel((BcVieModel) variable);
@@ -88,7 +88,7 @@ public class BenzMbux2021ItemBindingImpl extends BenzMbux2021ItemBinding impleme
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(20);
         super.requestRebind();
     }
 
@@ -97,7 +97,7 @@ public class BenzMbux2021ItemBindingImpl extends BenzMbux2021ItemBinding impleme
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(24);
         super.requestRebind();
     }
 
@@ -128,10 +128,10 @@ public class BenzMbux2021ItemBindingImpl extends BenzMbux2021ItemBinding impleme
             listItemAppTip = listItem.getAppTip();
         }
         if ((4 & dirtyFlags) != 0) {
-            this.benzMbux2021ImageView.setOnClickListener(this.mCallback48);
-            this.benzMbux2021Tip.setOnClickListener(this.mCallback49);
-            this.mboundView4.setOnClickListener(this.mCallback50);
-            this.mboundView5.setOnClickListener(this.mCallback51);
+            this.benzMbux2021ImageView.setOnClickListener(this.mCallback216);
+            this.benzMbux2021Tip.setOnClickListener(this.mCallback217);
+            this.mboundView4.setOnClickListener(this.mCallback218);
+            this.mboundView5.setOnClickListener(this.mCallback219);
         }
         if ((5 & dirtyFlags) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.benzMbux2021ImageView, listItemAppIcon);

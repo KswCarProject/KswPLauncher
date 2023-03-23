@@ -1,5 +1,7 @@
 package com.ibm.icu.text;
 
+import kotlin.text.Typography;
+
 /* compiled from: NFSubstitution */
 class AbsoluteValueSubstitution extends NFSubstitution {
     AbsoluteValueSubstitution(int pos, NFRuleSet ruleSet, String description) {
@@ -24,6 +26,6 @@ class AbsoluteValueSubstitution extends NFSubstitution {
 
     /* access modifiers changed from: package-private */
     public char tokenChar() {
-        return '>';
+        return Typography.greater;
     }
 }

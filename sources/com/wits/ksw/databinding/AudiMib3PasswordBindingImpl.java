@@ -19,7 +19,7 @@ public class AudiMib3PasswordBindingImpl extends AudiMib3PasswordBinding impleme
     private final View.OnClickListener mCallback10;
     private final View.OnClickListener mCallback11;
     private final View.OnClickListener mCallback12;
-    private final View.OnClickListener mCallback3;
+    private final View.OnClickListener mCallback13;
     private final View.OnClickListener mCallback4;
     private final View.OnClickListener mCallback5;
     private final View.OnClickListener mCallback6;
@@ -65,16 +65,16 @@ public class AudiMib3PasswordBindingImpl extends AudiMib3PasswordBinding impleme
         this.mboundView1 = appCompatTextView;
         appCompatTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback11 = new OnClickListener(this, 9);
-        this.mCallback8 = new OnClickListener(this, 6);
-        this.mCallback6 = new OnClickListener(this, 4);
-        this.mCallback4 = new OnClickListener(this, 2);
-        this.mCallback12 = new OnClickListener(this, 10);
-        this.mCallback10 = new OnClickListener(this, 8);
-        this.mCallback9 = new OnClickListener(this, 7);
-        this.mCallback7 = new OnClickListener(this, 5);
-        this.mCallback5 = new OnClickListener(this, 3);
-        this.mCallback3 = new OnClickListener(this, 1);
+        this.mCallback13 = new OnClickListener(this, 10);
+        this.mCallback11 = new OnClickListener(this, 8);
+        this.mCallback8 = new OnClickListener(this, 5);
+        this.mCallback6 = new OnClickListener(this, 3);
+        this.mCallback4 = new OnClickListener(this, 1);
+        this.mCallback12 = new OnClickListener(this, 9);
+        this.mCallback10 = new OnClickListener(this, 7);
+        this.mCallback9 = new OnClickListener(this, 6);
+        this.mCallback7 = new OnClickListener(this, 4);
+        this.mCallback5 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -95,7 +95,7 @@ public class AudiMib3PasswordBindingImpl extends AudiMib3PasswordBinding impleme
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SettingViewModel) variable);
@@ -107,7 +107,7 @@ public class AudiMib3PasswordBindingImpl extends AudiMib3PasswordBinding impleme
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 
@@ -167,16 +167,16 @@ public class AudiMib3PasswordBindingImpl extends AudiMib3PasswordBinding impleme
             }
         }
         if ((4 & dirtyFlags) != 0) {
-            this.audiKey0.setOnClickListener(this.mCallback12);
-            this.audiKey1.setOnClickListener(this.mCallback3);
-            this.audiKey2.setOnClickListener(this.mCallback4);
-            this.audiKey3.setOnClickListener(this.mCallback5);
-            this.audiKey4.setOnClickListener(this.mCallback6);
-            this.audiKey5.setOnClickListener(this.mCallback7);
-            this.audiKey6.setOnClickListener(this.mCallback8);
-            this.audiKey7.setOnClickListener(this.mCallback9);
-            this.audiKey8.setOnClickListener(this.mCallback10);
-            this.audiKey9.setOnClickListener(this.mCallback11);
+            this.audiKey0.setOnClickListener(this.mCallback13);
+            this.audiKey1.setOnClickListener(this.mCallback4);
+            this.audiKey2.setOnClickListener(this.mCallback5);
+            this.audiKey3.setOnClickListener(this.mCallback6);
+            this.audiKey4.setOnClickListener(this.mCallback7);
+            this.audiKey5.setOnClickListener(this.mCallback8);
+            this.audiKey6.setOnClickListener(this.mCallback9);
+            this.audiKey7.setOnClickListener(this.mCallback10);
+            this.audiKey8.setOnClickListener(this.mCallback11);
+            this.audiKey9.setOnClickListener(this.mCallback12);
         }
         if ((dirtyFlags & 6) != 0) {
             this.audiKeyDelete.setOnClickListener(vmOnDeleteClickAndroidViewViewOnClickListener);

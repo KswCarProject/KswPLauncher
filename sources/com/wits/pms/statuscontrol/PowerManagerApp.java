@@ -96,8 +96,8 @@ public class PowerManagerApp {
         try {
             Class<?> serviceManager = Class.forName("android.os.ServiceManager");
             return (IBinder) serviceManager.getMethod("getService", new Class[]{String.class}).invoke(serviceManager, new Object[]{serviceName});
-        } catch (Exception e) {
-            Log.e(PowerManagerApp.class.getName(), "error service init - " + serviceName, e);
+        } catch (Exception var3) {
+            Log.e(PowerManagerApp.class.getName(), "error service init - " + serviceName, var3);
             return null;
         }
     }
@@ -105,8 +105,8 @@ public class PowerManagerApp {
     public static boolean sendCommand(String jsonMsg) {
         try {
             return getManager().sendCommand(jsonMsg);
-        } catch (RemoteException e) {
-            Log.i(getManager().getClass().getName(), "error sendCommand", e);
+        } catch (RemoteException var2) {
+            Log.i(getManager().getClass().getName(), "error sendCommand", var2);
             return false;
         }
     }

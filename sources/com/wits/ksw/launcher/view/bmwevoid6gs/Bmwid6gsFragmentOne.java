@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bmwid6gsFragmentOne extends Fragment {
-    private static final String TAG = ("KSWLauncher." + Bmwid6gsFragmentOne.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + Bmwid6gsFragmentOne.class.getSimpleName());
     private FraBmwEvoId6GsOneBinding binding;
     private List<View> childViews = null;
     /* access modifiers changed from: private */

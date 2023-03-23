@@ -31,6 +31,7 @@ import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
 import java.util.ArrayList;
 import java.util.List;
+import kotlin.jvm.internal.CharCompanionObject;
 
 public class DrawerLayout extends ViewGroup {
     private static final boolean ALLOW_EDGE_LOCK = false;
@@ -617,7 +618,7 @@ public class DrawerLayout extends ViewGroup {
         int heightMode2 = View.MeasureSpec.getMode(heightMeasureSpec);
         int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = View.MeasureSpec.getSize(heightMeasureSpec);
-        char c = 0;
+        char c = CharCompanionObject.MIN_VALUE;
         if (!(widthMode2 == 1073741824 && heightMode2 == 1073741824)) {
             if (isInEditMode()) {
                 if (widthMode2 == Integer.MIN_VALUE) {
@@ -729,7 +730,7 @@ public class DrawerLayout extends ViewGroup {
                         widthMode2 = widthMode;
                         heightMode2 = heightMode;
                         applyInsets2 = applyInsets;
-                        c = 0;
+                        c = CharCompanionObject.MIN_VALUE;
                     } else {
                         throw new IllegalStateException("Child drawer has absolute gravity " + gravityToString(childGravity) + " but this " + TAG + " already has a " + "drawer view along that edge");
                     }
@@ -746,7 +747,7 @@ public class DrawerLayout extends ViewGroup {
             widthMode2 = widthMode;
             heightMode2 = heightMode;
             applyInsets2 = applyInsets;
-            c = 0;
+            c = CharCompanionObject.MIN_VALUE;
         }
     }
 

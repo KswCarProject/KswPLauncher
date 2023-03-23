@@ -14,7 +14,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback86;
+    private final View.OnClickListener mCallback52;
     private long mDirtyFlags;
 
     static {
@@ -35,7 +35,7 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
         this.phoneConstraintLayout.setTag((Object) null);
         this.phoneImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback86 = new OnClickListener(this, 1);
+        this.mCallback52 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -56,7 +56,7 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (9 != variableId) {
+        if (14 != variableId) {
             return false;
         }
         setNaviViewModel((LauncherViewModel) variable);
@@ -68,7 +68,7 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(9);
+        notifyPropertyChanged(14);
         super.requestRebind();
     }
 
@@ -147,7 +147,7 @@ public class Id7SubHicarViewBindingImpl extends Id7SubHicarViewBinding implement
             TextViewBindingAdapter.setText(this.monthTextView, naviViewModelMonthGet);
         }
         if ((8 & dirtyFlags) != 0) {
-            this.phoneImageView.setOnClickListener(this.mCallback86);
+            this.phoneImageView.setOnClickListener(this.mCallback52);
         }
         if ((dirtyFlags & 12) != 0) {
             this.phoneImageView.setOnFocusChangeListener(naviViewModelPhoneViewFocusChangeListener);

@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import kotlin.UByte;
 
 public final class HighLevelEncoder {
     private static final int[][] CHAR_MAP;
@@ -132,7 +133,7 @@ public final class HighLevelEncoder {
     }
 
     private void updateStateForChar(State state, int index, Collection<State> result) {
-        char ch = (char) (this.text[index] & 255);
+        char ch = (char) (this.text[index] & UByte.MAX_VALUE);
         boolean charInCurrentTable = CHAR_MAP[state.getMode()][ch] > 0;
         State stateNoBinary = null;
         for (int mode = 0; mode <= 4; mode++) {

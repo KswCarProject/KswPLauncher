@@ -3,11 +3,13 @@ package com.google.zxing.pdf417.encoder;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.CharacterSetECI;
 import com.ibm.icu.text.Bidi;
+import com.wits.ksw.settings.TxzMessage;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import kotlin.UByte;
 
 final class PDF417HighLevelEncoder {
     private static final int BYTE_COMPACTION = 1;
@@ -359,7 +361,7 @@ final class PDF417HighLevelEncoder {
             while ((startpos + count) - idx >= 6) {
                 long t = 0;
                 for (int i = 0; i < 6; i++) {
-                    t = (t << 8) + ((long) (bytes[idx + i] & 255));
+                    t = (t << 8) + ((long) (bytes[idx + i] & UByte.MAX_VALUE));
                 }
                 for (int i2 = 0; i2 < 5; i2++) {
                     chars[i2] = (char) ((int) (t % 900));
@@ -385,7 +387,7 @@ final class PDF417HighLevelEncoder {
         while (idx < count) {
             tmp.setLength(0);
             int len = Math.min(44, count - idx);
-            BigInteger bigint = new BigInteger("1" + msg.substring(startpos + idx, startpos + idx + len));
+            BigInteger bigint = new BigInteger(TxzMessage.TXZ_SHOW + msg.substring(startpos + idx, startpos + idx + len));
             do {
                 tmp.append((char) bigint.mod(num900).intValue());
                 divide = bigint.divide(num900);

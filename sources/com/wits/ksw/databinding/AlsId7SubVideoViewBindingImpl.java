@@ -11,7 +11,7 @@ import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback136;
+    private final View.OnClickListener mCallback282;
     private long mDirtyFlags;
 
     static {
@@ -31,7 +31,7 @@ public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding imp
         this.videoConstraintLayout.setTag((Object) null);
         this.videoImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback136 = new OnClickListener(this, 1);
+        this.mCallback282 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -52,7 +52,7 @@ public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding imp
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (3 != variableId) {
+        if (4 != variableId) {
             return false;
         }
         setDashVideoViewModel((AlsID7ViewModel) variable);
@@ -64,7 +64,7 @@ public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding imp
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(3);
+        notifyPropertyChanged(4);
         super.requestRebind();
     }
 
@@ -82,7 +82,7 @@ public class AlsId7SubVideoViewBindingImpl extends AlsId7SubVideoViewBinding imp
         }
         AlsID7ViewModel alsID7ViewModel = this.mDashVideoViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.videoImageView.setOnClickListener(this.mCallback136);
+            this.videoImageView.setOnClickListener(this.mCallback282);
         }
     }
 

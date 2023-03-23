@@ -558,6 +558,14 @@
     </attr>
     <attr name="goIcon" format="reference">
     </attr>
+    <attr name="gradient_max_scale" format="integer">
+    </attr>
+    <attr name="gradient_orientate">
+        <enum name="left" value="0" />
+        <enum name="right" value="1" />
+    </attr>
+    <attr name="gradient_res" format="reference|color">
+    </attr>
     <attr name="height" format="dimension">
     </attr>
     <attr name="hideOnContentScroll" format="boolean">
@@ -581,6 +589,14 @@
         <enum name="add" value="16" />
     </attr>
     <attr name="iconifiedByDefault" format="boolean">
+    </attr>
+    <attr name="id8_audio_progress_bar_max" format="integer">
+    </attr>
+    <attr name="id8_audio_progress_bar_value" format="integer">
+    </attr>
+    <attr name="id8_progress_bar_max" format="integer">
+    </attr>
+    <attr name="id8_progress_bar_value" format="integer">
     </attr>
     <attr name="image" format="integer">
     </attr>
@@ -640,6 +656,8 @@
         <flag name="clip_horizontal" value="8" />
         <flag name="start" value="800003" />
         <flag name="end" value="800005" />
+    </attr>
+    <attr name="layout_background" format="reference">
     </attr>
     <attr name="layout_behavior" format="string">
     </attr>
@@ -782,6 +800,8 @@
     </attr>
     <attr name="layout_goneMarginTop" format="dimension">
     </attr>
+    <attr name="layout_indicator" format="reference">
+    </attr>
     <attr name="layout_insetEdge">
         <enum name="none" value="0" />
         <enum name="top" value="30" />
@@ -805,9 +825,13 @@
         <flag name="graph" value="64" />
         <flag name="graph_wrap" value="128" />
     </attr>
+    <attr name="layout_progress_bg" format="reference">
+    </attr>
     <attr name="limitBoundsTo" format="reference">
     </attr>
     <attr name="lineHeight" format="dimension">
+    </attr>
+    <attr name="linear_visible" format="boolean">
     </attr>
     <attr name="listChoiceBackgroundIndicator" format="reference">
     </attr>
@@ -841,6 +865,10 @@
     </attr>
     <attr name="mask" format="integer">
     </attr>
+    <attr name="mask_res" format="reference|color">
+    </attr>
+    <attr name="mask_visible" format="boolean">
+    </attr>
     <attr name="max" format="integer">
     </attr>
     <attr name="maxAcceleration" format="float">
@@ -852,6 +880,8 @@
     <attr name="maxVelocity" format="float">
     </attr>
     <attr name="maxWidth" format="dimension">
+    </attr>
+    <attr name="max_scale" format="integer">
     </attr>
     <attr name="max_value" format="float">
     </attr>
@@ -926,6 +956,8 @@
         <flag name="SYM" value="4" />
         <flag name="FUNCTION" value="8" />
     </attr>
+    <attr name="offset" format="boolean">
+    </attr>
     <attr name="onCross" format="string">
     </attr>
     <attr name="onHide" format="boolean">
@@ -943,6 +975,10 @@
         <enum name="stop" value="3" />
         <enum name="decelerate" value="4" />
         <enum name="decelerateAndComplete" value="5" />
+    </attr>
+    <attr name="orientate">
+        <enum name="vertical" value="0" />
+        <enum name="horizontal" value="1" />
     </attr>
     <attr name="orientation">
         <enum name="vertical" value="0" />
@@ -1048,7 +1084,19 @@
     </attr>
     <attr name="roundPercent" format="float">
     </attr>
+    <attr name="ruler_res" format="reference|color">
+    </attr>
+    <attr name="ruler_visible" format="boolean">
+    </attr>
     <attr name="saturation" format="float">
+    </attr>
+    <attr name="scae" format="integer">
+    </attr>
+    <attr name="scale" format="integer">
+    </attr>
+    <attr name="scale_res" format="reference|color">
+    </attr>
+    <attr name="scale_visible" format="boolean">
     </attr>
     <attr name="searchHintIcon" format="reference">
     </attr>
@@ -1226,6 +1274,8 @@
         <enum name="multiply" value="14" />
         <enum name="screen" value="15" />
         <enum name="add" value="16" />
+    </attr>
+    <attr name="tilt_width" format="dimension">
     </attr>
     <attr name="tint" format="color">
     </attr>

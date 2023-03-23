@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class UgViewPager extends ViewPager {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + UgViewPager.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + UgViewPager.class.getSimpleName());
     boolean isLeftScroll;
     boolean isScrolling;
     /* access modifiers changed from: private */

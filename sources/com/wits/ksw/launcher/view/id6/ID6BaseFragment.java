@@ -8,7 +8,7 @@ import com.wits.ksw.MainActivity;
 import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class ID6BaseFragment extends Fragment {
-    protected static final String TAG = "KSWLauncher";
+    protected static final String TAG = "KswApplication";
     protected MainActivity mainActivity;
     protected LauncherViewModel viewModel;
 

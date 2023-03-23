@@ -82,7 +82,7 @@ public class BenzNtg6FyFragmentOneCls1024x600Impl extends BenzNtg6FyFragmentOneC
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);
@@ -94,7 +94,7 @@ public class BenzNtg6FyFragmentOneCls1024x600Impl extends BenzNtg6FyFragmentOneC
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -207,7 +207,7 @@ public class BenzNtg6FyFragmentOneCls1024x600Impl extends BenzNtg6FyFragmentOneC
             if (r10 == 0) goto L_0x007b
             android.widget.TextView r4 = r1.musicTip
             android.content.res.Resources r4 = r4.getResources()
-            r5 = 2131558752(0x7f0d0160, float:1.8742829E38)
+            r5 = 2131558825(0x7f0d01a9, float:1.8742977E38)
             java.lang.String r4 = r4.getString(r5)
             goto L_0x007c
         L_0x007b:

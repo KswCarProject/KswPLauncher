@@ -16,7 +16,7 @@ import com.wits.ksw.databinding.ActivityAudiMib3Binding;
 import com.wits.ksw.settings.audi_mib3.vm.AudiMib3SystemViewModel;
 
 public class AudiMib3SettingMainActivity extends AudiMib3SubActivity implements View.OnClickListener {
-    private static final String TAG = ("KSWLauncher." + AudiMib3SettingMainActivity.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + AudiMib3SettingMainActivity.class.getSimpleName());
     public static AudiMib3SettingMainActivity getInstance;
     private ActivityAudiMib3Binding binding;
     public AudiMib3SystemViewModel viewModel;
@@ -57,31 +57,31 @@ public class AudiMib3SettingMainActivity extends AudiMib3SubActivity implements 
     public void onClick(View v) {
         this.binding.audiHomeParentPanel.setSeleted(v);
         switch (v.getId()) {
-            case R.id.au_set_eq_item:
+            case R.id.au_set_eq_item /*2131296357*/:
                 AudiMib3StartUtil.AudiEqActivity(this);
                 return;
-            case R.id.au_set_fac_item:
+            case R.id.au_set_fac_item /*2131296358*/:
                 AudiMib3StartUtil.AudiPasswordActivity(this);
                 return;
-            case R.id.au_set_lag_item:
+            case R.id.au_set_lag_item /*2131296359*/:
                 AudiMib3StartUtil.AudiLanguageActivity(this);
                 return;
-            case R.id.au_set_more_item:
+            case R.id.au_set_more_item /*2131296360*/:
                 AudiMib3StartUtil.SettingsActivity(this);
                 return;
-            case R.id.au_set_navi_item:
+            case R.id.au_set_navi_item /*2131296361*/:
                 AudiMib3StartUtil.AudiNaviActivity(this);
                 return;
-            case R.id.au_set_sound_item:
+            case R.id.au_set_sound_item /*2131296362*/:
                 AudiMib3StartUtil.AudiSoundActivity(this);
                 return;
-            case R.id.au_set_sys_item:
+            case R.id.au_set_sys_item /*2131296363*/:
                 AudiMib3StartUtil.AudioSystemActivity(this);
                 return;
-            case R.id.au_set_sysinfo_item:
+            case R.id.au_set_sysinfo_item /*2131296364*/:
                 AudiMib3StartUtil.AudiSysinfoActivity(this);
                 return;
-            case R.id.au_set_time_item:
+            case R.id.au_set_time_item /*2131296365*/:
                 AudiMib3StartUtil.AudiTimeActivity(this);
                 return;
             default:

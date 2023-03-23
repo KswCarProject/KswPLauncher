@@ -12,6 +12,7 @@ import com.ibm.icu.text.DisplayContext;
 import com.ibm.icu.util.ICUException;
 import com.ibm.icu.util.ULocale;
 import com.ibm.icu.util.UResourceBundle;
+import com.wits.ksw.settings.TxzMessage;
 import java.util.EnumMap;
 import java.util.Locale;
 
@@ -435,10 +436,10 @@ public final class RelativeDateTimeFormatter {
         if (key.contentEquals("-1")) {
             return Direction.LAST;
         }
-        if (key.contentEquals("0")) {
+        if (key.contentEquals(TxzMessage.TXZ_DISMISS)) {
             return Direction.THIS;
         }
-        if (key.contentEquals("1")) {
+        if (key.contentEquals(TxzMessage.TXZ_SHOW)) {
             return Direction.NEXT;
         }
         if (key.contentEquals("2")) {
@@ -583,7 +584,7 @@ public final class RelativeDateTimeFormatter {
                 if (value.getType() == 0) {
                     String valueString = value.getString();
                     EnumMap<AbsoluteUnit, EnumMap<Direction, String>> absMap = this.qualitativeUnitMap.get(this.style);
-                    if (this.unit.relUnit != RelativeUnit.SECONDS || !key.contentEquals("0")) {
+                    if (this.unit.relUnit != RelativeUnit.SECONDS || !key.contentEquals(TxzMessage.TXZ_DISMISS)) {
                         Direction keyDirection = RelativeDateTimeFormatter.keyToDirection(key);
                         if (!(keyDirection == null || (absUnit = this.unit.absUnit) == null)) {
                             if (absMap == null) {

@@ -70,7 +70,7 @@ public class AudiMib3OneDataClsHdpi1920x720Impl extends AudiMib3OneDataCls {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);

@@ -15,7 +15,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.utils.KswUtils;
 
 public class CustomBcImageView extends ImageView implements View.OnFocusChangeListener {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private int itemHalfWidth;
     private int itemRightPostionX;
     int leftX;
@@ -29,7 +29,7 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
         super(context, attrs);
         this.leftX = 0;
         this.itemHalfWidth = 0;
-        Log.i("KSWLauncher", "CustomBcImageView: " + getWidth());
+        Log.i("KswApplication", "CustomBcImageView: " + getWidth());
         setOnFocusChangeListener(this);
     }
 
@@ -48,11 +48,11 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
         } else if (event.getAction() == 1) {
             if (keyCode == 20) {
                 sendKeyDownUpSync(22);
-                Log.i("KSWLauncher", "dispatchKeyEvent: KEYCODE_DPAD_UP---->>>KEYCODE_DPAD_RIGHT");
+                Log.i("KswApplication", "dispatchKeyEvent: KEYCODE_DPAD_UP---->>>KEYCODE_DPAD_RIGHT");
                 return true;
             } else if (keyCode == 19) {
                 sendKeyDownUpSync(21);
-                Log.i("KSWLauncher", "dispatchKeyEvent: KEYCODE_DPAD_DOWN---->>>KEYCODE_DPAD_LEFT");
+                Log.i("KswApplication", "dispatchKeyEvent: KEYCODE_DPAD_DOWN---->>>KEYCODE_DPAD_LEFT");
                 return true;
             }
         }
@@ -80,11 +80,11 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
     }
 
     public void onFocusChange(View view, boolean hasFocus) {
-        Log.i("KSWLauncher", "onFocusChange: ");
+        Log.i("KswApplication", "onFocusChange: ");
         if (hasFocus) {
             scaleBig(view);
             int X = getItemLocationOnScreenX(view);
-            Log.i("KSWLauncher", "onFocusChange: view[" + X + "," + getItemLocationOnScreenY(view) + "]");
+            Log.i("KswApplication", "onFocusChange: view[" + X + "," + getItemLocationOnScreenY(view) + "]");
             translationX(view);
             return;
         }
@@ -95,18 +95,18 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
         int i = this.leftX;
         calculateRightPostionX(view);
         int itemLocationOnScreenX = getItemLocationOnScreenX(view);
-        Log.i("KSWLauncher", "translationX: itemLocationOnScreenX=" + itemLocationOnScreenX);
+        Log.i("KswApplication", "translationX: itemLocationOnScreenX=" + itemLocationOnScreenX);
         if (itemLocationOnScreenX <= this.leftX) {
-            Log.i("KSWLauncher", "translationX: 最左端");
+            Log.i("KswApplication", "translationX: 最左端");
             itemLocationOnScreenX = this.leftX;
         }
         int itemCenterPointX = itemCenterPoint(itemLocationOnScreenX);
-        Log.i("KSWLauncher", "translationX: itemCenterPoint=" + itemCenterPointX);
+        Log.i("KswApplication", "translationX: itemCenterPoint=" + itemCenterPointX);
         if (itemCenterPointX >= this.itemRightPostionX) {
-            Log.i("KSWLauncher", "translationX: 最右端");
+            Log.i("KswApplication", "translationX: 最右端");
             itemCenterPointX = this.itemRightPostionX;
         } else if (itemLocationOnScreenX <= this.leftX) {
-            Log.i("KSWLauncher", "translationX: 最左端");
+            Log.i("KswApplication", "translationX: 最左端");
             itemCenterPointX = itemCenterPoint(itemLocationOnScreenX);
         }
         try {
@@ -124,7 +124,7 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
 
     private void calculateRightPostionX(View view) {
         this.itemRightPostionX = KswUtils.screenWidth(view.getContext()) - this.itemHalfWidth;
-        Log.i("KSWLauncher", "calculateRightPostionX: calculateRightPostionX=" + this.itemRightPostionX);
+        Log.i("KswApplication", "calculateRightPostionX: calculateRightPostionX=" + this.itemRightPostionX);
     }
 
     private int getItemLocationOnScreenX(View view) {
@@ -137,7 +137,7 @@ public class CustomBcImageView extends ImageView implements View.OnFocusChangeLi
         int[] postion = new int[2];
         view.getLocationOnScreen(postion);
         int y = postion[1];
-        Log.i("KSWLauncher", "getItemLocationOnScreenY: " + y);
+        Log.i("KswApplication", "getItemLocationOnScreenY: " + y);
         return y;
     }
 }

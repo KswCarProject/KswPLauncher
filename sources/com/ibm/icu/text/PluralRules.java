@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
+import kotlin.time.DurationKt;
 
 public class PluralRules implements Serializable {
     static final UnicodeSet ALLOWED_ID = new UnicodeSet("[a-z]").freeze();
@@ -636,11 +637,11 @@ public class PluralRules implements Serializable {
         }
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:134:0x0254 A[SYNTHETIC] */
-    /* JADX WARNING: Removed duplicated region for block: B:50:0x00f8  */
-    /* JADX WARNING: Removed duplicated region for block: B:61:0x012a  */
-    /* JADX WARNING: Removed duplicated region for block: B:80:0x018a  */
-    /* JADX WARNING: Removed duplicated region for block: B:83:0x0197  */
+    /* JADX WARNING: Removed duplicated region for block: B:134:0x0255 A[SYNTHETIC] */
+    /* JADX WARNING: Removed duplicated region for block: B:50:0x00f9  */
+    /* JADX WARNING: Removed duplicated region for block: B:61:0x012b  */
+    /* JADX WARNING: Removed duplicated region for block: B:80:0x018b  */
+    /* JADX WARNING: Removed duplicated region for block: B:83:0x0198  */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     private static com.ibm.icu.text.PluralRules.Constraint parseConstraint(java.lang.String r39) throws java.text.ParseException {
         /*
@@ -653,7 +654,7 @@ public class PluralRules implements Serializable {
             r3 = r0
         L_0x000c:
             int r0 = r1.length
-            if (r4 >= r0) goto L_0x02cf
+            if (r4 >= r0) goto L_0x02d1
             r0 = 0
             java.util.regex.Pattern r5 = AND_SEPARATED
             r6 = r1[r4]
@@ -663,7 +664,7 @@ public class PluralRules implements Serializable {
             r6 = r0
         L_0x001b:
             int r0 = r5.length
-            if (r7 >= r0) goto L_0x02b0
+            if (r7 >= r0) goto L_0x02b2
             com.ibm.icu.text.PluralRules$Constraint r8 = NO_CONSTRAINT
             r0 = r5[r7]
             java.lang.String r9 = r0.trim()
@@ -679,9 +680,9 @@ public class PluralRules implements Serializable {
             int r1 = r0 + 1
             r2 = r10[r0]
             r20 = 0
-            com.ibm.icu.text.PluralRules$Operand r24 = com.ibm.icu.text.PluralRules.FixedDecimal.getOperand(r2)     // Catch:{ Exception -> 0x029b }
+            com.ibm.icu.text.PluralRules$Operand r24 = com.ibm.icu.text.PluralRules.FixedDecimal.getOperand(r2)     // Catch:{ Exception -> 0x029d }
             int r0 = r10.length
-            if (r1 >= r0) goto L_0x0272
+            if (r1 >= r0) goto L_0x0274
             int r0 = r1 + 1
             r1 = r10[r1]
             java.lang.String r2 = "mod"
@@ -733,65 +734,65 @@ public class PluralRules implements Serializable {
         L_0x00ac:
             java.lang.String r8 = "is"
             boolean r21 = r8.equals(r1)
-            if (r21 != 0) goto L_0x00da
+            if (r21 != 0) goto L_0x00db
             r21 = r13
             java.lang.String r13 = "in"
             boolean r13 = r13.equals(r1)
-            if (r13 != 0) goto L_0x00dc
+            if (r13 != 0) goto L_0x00dd
             boolean r5 = r5.equals(r1)
             if (r5 == 0) goto L_0x00c5
-            goto L_0x00dc
+            goto L_0x00dd
         L_0x00c5:
             java.lang.String r5 = "within"
             boolean r5 = r5.equals(r1)
-            if (r5 == 0) goto L_0x00d5
+            if (r5 == 0) goto L_0x00d6
             r13 = 0
             int r5 = r0 + 1
             java.lang.String r0 = nextToken(r10, r0, r9)
-            goto L_0x00f2
-        L_0x00d5:
+            goto L_0x00f3
+        L_0x00d6:
             java.text.ParseException r2 = unexpected(r1, r9)
             throw r2
-        L_0x00da:
+        L_0x00db:
             r21 = r13
-        L_0x00dc:
+        L_0x00dd:
             boolean r20 = r8.equals(r1)
-            if (r20 == 0) goto L_0x00ea
-            if (r12 == 0) goto L_0x00e5
-            goto L_0x00ea
-        L_0x00e5:
+            if (r20 == 0) goto L_0x00eb
+            if (r12 == 0) goto L_0x00e6
+            goto L_0x00eb
+        L_0x00e6:
             java.text.ParseException r2 = unexpected(r1, r9)
             throw r2
-        L_0x00ea:
+        L_0x00eb:
             int r5 = r0 + 1
             java.lang.String r0 = nextToken(r10, r0, r9)
             r13 = r21
-        L_0x00f2:
+        L_0x00f3:
             boolean r1 = r2.equals(r0)
-            if (r1 == 0) goto L_0x010f
-            if (r20 != 0) goto L_0x0102
-            if (r12 == 0) goto L_0x00fd
-            goto L_0x0102
-        L_0x00fd:
+            if (r1 == 0) goto L_0x0110
+            if (r20 != 0) goto L_0x0103
+            if (r12 == 0) goto L_0x00fe
+            goto L_0x0103
+        L_0x00fe:
             java.text.ParseException r1 = unexpected(r0, r9)
             throw r1
-        L_0x0102:
-            if (r12 != 0) goto L_0x0106
+        L_0x0103:
+            if (r12 != 0) goto L_0x0107
             r1 = 1
-            goto L_0x0107
-        L_0x0106:
-            r1 = 0
+            goto L_0x0108
         L_0x0107:
+            r1 = 0
+        L_0x0108:
             int r2 = r5 + 1
             java.lang.String r0 = nextToken(r10, r5, r9)
             r12 = r1
             r5 = r2
-        L_0x010f:
+        L_0x0110:
             java.util.ArrayList r1 = new java.util.ArrayList
             r1.<init>()
             r8 = r3
             r2 = r16
-        L_0x0117:
+        L_0x0118:
             r33 = r7
             r34 = r8
             long r7 = java.lang.Long.parseLong(r0)
@@ -800,71 +801,71 @@ public class PluralRules implements Serializable {
             int r0 = r10.length
             r35 = r4
             java.lang.String r4 = ","
-            if (r5 >= r0) goto L_0x018a
+            if (r5 >= r0) goto L_0x018b
             int r0 = r5 + 1
             java.lang.String r5 = nextToken(r10, r5, r9)
             r36 = r6
             java.lang.String r6 = "."
             boolean r21 = r5.equals(r6)
-            if (r21 == 0) goto L_0x0174
+            if (r21 == 0) goto L_0x0175
             r37 = r13
             int r13 = r0 + 1
             java.lang.String r0 = nextToken(r10, r0, r9)
             boolean r5 = r0.equals(r6)
-            if (r5 == 0) goto L_0x016f
+            if (r5 == 0) goto L_0x0170
             int r5 = r13 + 1
             java.lang.String r0 = nextToken(r10, r13, r9)
             long r16 = java.lang.Long.parseLong(r0)
             int r6 = r10.length
-            if (r5 >= r6) goto L_0x016b
+            if (r5 >= r6) goto L_0x016c
             int r6 = r5 + 1
             java.lang.String r0 = nextToken(r10, r5, r9)
             boolean r5 = r0.equals(r4)
-            if (r5 == 0) goto L_0x0166
+            if (r5 == 0) goto L_0x0167
             r5 = r6
             r6 = r12
             r12 = r16
-            goto L_0x0193
-        L_0x0166:
+            goto L_0x0194
+        L_0x0167:
             java.text.ParseException r4 = unexpected(r0, r9)
             throw r4
-        L_0x016b:
+        L_0x016c:
             r6 = r12
             r12 = r16
-            goto L_0x0193
-        L_0x016f:
+            goto L_0x0194
+        L_0x0170:
             java.text.ParseException r4 = unexpected(r0, r9)
             throw r4
-        L_0x0174:
+        L_0x0175:
             r37 = r13
             boolean r6 = r5.equals(r4)
-            if (r6 == 0) goto L_0x0185
+            if (r6 == 0) goto L_0x0186
             r6 = r12
             r12 = r16
             r38 = r5
             r5 = r0
             r0 = r38
-            goto L_0x0193
-        L_0x0185:
+            goto L_0x0194
+        L_0x0186:
             java.text.ParseException r4 = unexpected(r5, r9)
             throw r4
-        L_0x018a:
+        L_0x018b:
             r36 = r6
             r37 = r13
             r6 = r12
             r12 = r16
             r0 = r21
-        L_0x0193:
+        L_0x0194:
             int r16 = (r7 > r12 ? 1 : (r7 == r12 ? 0 : -1))
-            if (r16 > 0) goto L_0x0254
-            if (r11 == 0) goto L_0x01bf
+            if (r16 > 0) goto L_0x0255
+            if (r11 == 0) goto L_0x01c0
             r16 = r4
             r17 = r5
             long r4 = (long) r11
             int r4 = (r12 > r4 ? 1 : (r12 == r4 ? 0 : -1))
-            if (r4 >= 0) goto L_0x01a3
-            goto L_0x01c3
-        L_0x01a3:
+            if (r4 >= 0) goto L_0x01a4
+            goto L_0x01c4
+        L_0x01a4:
             java.lang.StringBuilder r4 = new java.lang.StringBuilder
             r4.<init>()
             java.lang.StringBuilder r4 = r4.append(r12)
@@ -874,10 +875,10 @@ public class PluralRules implements Serializable {
             java.lang.String r4 = r4.toString()
             java.text.ParseException r4 = unexpected(r4, r9)
             throw r4
-        L_0x01bf:
+        L_0x01c0:
             r16 = r4
             r17 = r5
-        L_0x01c3:
+        L_0x01c4:
             java.lang.Long r4 = java.lang.Long.valueOf(r7)
             r1.add(r4)
             java.lang.Long r4 = java.lang.Long.valueOf(r12)
@@ -888,42 +889,42 @@ public class PluralRules implements Serializable {
             double r2 = java.lang.Math.max(r2, r4)
             int r4 = r10.length
             r5 = r17
-            if (r5 < r4) goto L_0x0240
+            if (r5 < r4) goto L_0x0241
             r4 = r16
             boolean r4 = r0.equals(r4)
-            if (r4 != 0) goto L_0x023b
+            if (r4 != 0) goto L_0x023c
             int r4 = r1.size()
             r7 = 2
-            if (r4 != r7) goto L_0x01f4
+            if (r4 != r7) goto L_0x01f5
             r4 = 0
             r18 = r4
-            goto L_0x020f
-        L_0x01f4:
+            goto L_0x0210
+        L_0x01f5:
             int r4 = r1.size()
             long[] r4 = new long[r4]
             r7 = 0
-        L_0x01fb:
+        L_0x01fc:
             int r8 = r4.length
-            if (r7 >= r8) goto L_0x020d
+            if (r7 >= r8) goto L_0x020e
             java.lang.Object r8 = r1.get(r7)
             java.lang.Long r8 = (java.lang.Long) r8
             long r12 = r8.longValue()
             r4[r7] = r12
             int r7 = r7 + 1
-            goto L_0x01fb
-        L_0x020d:
+            goto L_0x01fc
+        L_0x020e:
             r18 = r4
-        L_0x020f:
+        L_0x0210:
             int r4 = (r14 > r2 ? 1 : (r14 == r2 ? 0 : -1))
-            if (r4 == 0) goto L_0x021f
-            if (r20 == 0) goto L_0x021f
-            if (r6 == 0) goto L_0x0218
-            goto L_0x021f
-        L_0x0218:
+            if (r4 == 0) goto L_0x0220
+            if (r20 == 0) goto L_0x0220
+            if (r6 == 0) goto L_0x0219
+            goto L_0x0220
+        L_0x0219:
             java.lang.String r4 = "is not <range>"
             java.text.ParseException r4 = unexpected(r4, r9)
             throw r4
-        L_0x021f:
+        L_0x0220:
             com.ibm.icu.text.PluralRules$RangeConstraint r4 = new com.ibm.icu.text.PluralRules$RangeConstraint
             r21 = r4
             r22 = r11
@@ -939,11 +940,11 @@ public class PluralRules implements Serializable {
             r12 = r6
             r13 = r37
             r2 = r0
-            goto L_0x0280
-        L_0x023b:
+            goto L_0x0282
+        L_0x023c:
             java.text.ParseException r4 = unexpected(r0, r9)
             throw r4
-        L_0x0240:
+        L_0x0241:
             int r4 = r5 + 1
             java.lang.String r0 = nextToken(r10, r5, r9)
             r5 = r4
@@ -953,8 +954,8 @@ public class PluralRules implements Serializable {
             r4 = r35
             r6 = r36
             r13 = r37
-            goto L_0x0117
-        L_0x0254:
+            goto L_0x0118
+        L_0x0255:
             java.lang.StringBuilder r4 = new java.lang.StringBuilder
             r4.<init>()
             java.lang.StringBuilder r4 = r4.append(r7)
@@ -965,7 +966,7 @@ public class PluralRules implements Serializable {
             java.lang.String r0 = r0.toString()
             java.text.ParseException r0 = unexpected(r0, r9)
             throw r0
-        L_0x0272:
+        L_0x0274:
             r34 = r3
             r35 = r4
             r31 = r5
@@ -973,17 +974,17 @@ public class PluralRules implements Serializable {
             r33 = r7
             r32 = r8
             r21 = r13
-        L_0x0280:
-            if (r36 != 0) goto L_0x0285
+        L_0x0282:
+            if (r36 != 0) goto L_0x0287
             r0 = r8
             r6 = r0
-            goto L_0x028d
-        L_0x0285:
+            goto L_0x028f
+        L_0x0287:
             com.ibm.icu.text.PluralRules$AndConstraint r0 = new com.ibm.icu.text.PluralRules$AndConstraint
             r3 = r36
             r0.<init>(r3, r8)
             r6 = r0
-        L_0x028d:
+        L_0x028f:
             int r7 = r33 + 1
             r2 = r39
             r1 = r19
@@ -991,7 +992,7 @@ public class PluralRules implements Serializable {
             r3 = r34
             r4 = r35
             goto L_0x001b
-        L_0x029b:
+        L_0x029d:
             r0 = move-exception
             r34 = r3
             r35 = r4
@@ -1004,27 +1005,27 @@ public class PluralRules implements Serializable {
             r0 = r4
             java.text.ParseException r4 = unexpected(r2, r9)
             throw r4
-        L_0x02b0:
+        L_0x02b2:
             r19 = r1
             r34 = r3
             r35 = r4
             r31 = r5
             r3 = r6
             r33 = r7
-            if (r34 != 0) goto L_0x02bf
+            if (r34 != 0) goto L_0x02c1
             r0 = r3
-            goto L_0x02c7
-        L_0x02bf:
+            goto L_0x02c9
+        L_0x02c1:
             com.ibm.icu.text.PluralRules$OrConstraint r0 = new com.ibm.icu.text.PluralRules$OrConstraint
             r1 = r34
             r0.<init>(r1, r3)
             r3 = r0
-        L_0x02c7:
+        L_0x02c9:
             int r4 = r35 + 1
             r2 = r39
             r1 = r19
             goto L_0x000c
-        L_0x02cf:
+        L_0x02d1:
             r19 = r1
             r1 = r3
             return r1
@@ -1690,7 +1691,7 @@ public class PluralRules implements Serializable {
                 while (i < 200 && addSample(keyword, Integer.valueOf(i), maxCount, result)) {
                     i++;
                 }
-                addSample(keyword, 1000000, maxCount, result);
+                addSample(keyword, Integer.valueOf(DurationKt.NANOS_IN_MILLIS), maxCount, result);
                 break;
             case 2:
                 int i2 = 0;

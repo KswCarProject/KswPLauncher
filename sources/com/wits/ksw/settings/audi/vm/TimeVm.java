@@ -13,7 +13,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class TimeVm extends AndroidViewModel {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + TimeVm.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + TimeVm.class.getSimpleName());
     public CompoundButton.OnCheckedChangeListener androiTimeCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);

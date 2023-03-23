@@ -12,12 +12,12 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public abstract class AlsId7UiNaviBinding extends ViewDataBinding {
     @Bindable
     protected LauncherViewModel mNaviViewModel;
-    public final AlsId7UiNaviSubViewBinding naviLayout;
-    public final AlsId7UiPhoneSubViewBinding phoneLayout;
+    public final AlsId7UiSubNaviViewBinding naviLayout;
+    public final AlsId7UiSubPhoneViewBinding phoneLayout;
 
     public abstract void setNaviViewModel(LauncherViewModel launcherViewModel);
 
-    protected AlsId7UiNaviBinding(Object _bindingComponent, View _root, int _localFieldCount, AlsId7UiNaviSubViewBinding naviLayout2, AlsId7UiPhoneSubViewBinding phoneLayout2) {
+    protected AlsId7UiNaviBinding(Object _bindingComponent, View _root, int _localFieldCount, AlsId7UiSubNaviViewBinding naviLayout2, AlsId7UiSubPhoneViewBinding phoneLayout2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.naviLayout = naviLayout2;
         this.phoneLayout = phoneLayout2;

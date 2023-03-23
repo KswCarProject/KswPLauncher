@@ -2,6 +2,7 @@ package com.ibm.icu.text;
 
 import com.ibm.icu.impl.number.DecimalQuantity_DualStorageBCD;
 import java.text.ParsePosition;
+import kotlin.text.Typography;
 
 /* compiled from: NFSubstitution */
 class FractionalPartSubstitution extends NFSubstitution {
@@ -87,6 +88,6 @@ class FractionalPartSubstitution extends NFSubstitution {
 
     /* access modifiers changed from: package-private */
     public char tokenChar() {
-        return '>';
+        return Typography.greater;
     }
 }

@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import kotlin.text.Typography;
 
 public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Comparable<UnicodeSet>, Freezable<UnicodeSet> {
     static final /* synthetic */ boolean $assertionsDisabled = false;
@@ -1013,9 +1014,9 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 if (startA < aLen) {
                     int[] iArr = this.list;
                     int aPtr2 = startA + 1;
-                    int startA2 = iArr[startA];
+                    int aPtr3 = iArr[startA];
                     limitA = iArr[aPtr2];
-                    aPtr = startA2;
+                    aPtr = aPtr3;
                     startA = aPtr2 + 1;
                 } else if (!needB || startB < bLen) {
                     return false;
@@ -1131,9 +1132,9 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
                 }
                 int[] iArr = this.list;
                 int aPtr2 = startA + 1;
-                int startA2 = iArr[startA];
+                int aPtr3 = iArr[startA];
                 limitA = iArr[aPtr2];
-                aPtr = startA2;
+                aPtr = aPtr3;
                 startA = aPtr2 + 1;
             }
             if (needB) {
@@ -2002,7 +2003,7 @@ public class UnicodeSet extends UnicodeFilter implements Iterable<String>, Compa
     }
 
     private static void syntaxError(RuleCharacterIterator chars, String msg) {
-        throw new IllegalArgumentException("Error: " + msg + " at \"" + Utility.escape(chars.toString()) + '\"');
+        throw new IllegalArgumentException("Error: " + msg + " at \"" + Utility.escape(chars.toString()) + Typography.quote);
     }
 
     public <T extends Collection<String>> T addAllTo(T target) {

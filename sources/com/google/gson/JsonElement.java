@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public abstract class JsonElement {
-    /* access modifiers changed from: package-private */
     public abstract JsonElement deepCopy();
 
     public boolean isJsonArray() {
@@ -38,29 +37,24 @@ public abstract class JsonElement {
         if (isJsonArray()) {
             return (JsonArray) this;
         }
-        throw new IllegalStateException("This is not a JSON Array.");
+        throw new IllegalStateException("Not a JSON Array: " + this);
     }
 
     public JsonPrimitive getAsJsonPrimitive() {
         if (isJsonPrimitive()) {
             return (JsonPrimitive) this;
         }
-        throw new IllegalStateException("This is not a JSON Primitive.");
+        throw new IllegalStateException("Not a JSON Primitive: " + this);
     }
 
     public JsonNull getAsJsonNull() {
         if (isJsonNull()) {
             return (JsonNull) this;
         }
-        throw new IllegalStateException("This is not a JSON Null.");
+        throw new IllegalStateException("Not a JSON Null: " + this);
     }
 
     public boolean getAsBoolean() {
-        throw new UnsupportedOperationException(getClass().getSimpleName());
-    }
-
-    /* access modifiers changed from: package-private */
-    public Boolean getAsBooleanWrapper() {
         throw new UnsupportedOperationException(getClass().getSimpleName());
     }
 
@@ -92,6 +86,7 @@ public abstract class JsonElement {
         throw new UnsupportedOperationException(getClass().getSimpleName());
     }
 
+    @Deprecated
     public char getAsCharacter() {
         throw new UnsupportedOperationException(getClass().getSimpleName());
     }

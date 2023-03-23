@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.app.SkinAppCompatDelegateImpl;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.wits.ksw.R;
-import com.wits.ksw.settings.BaseActivity;
+import com.wits.ksw.settings.BaseSkinActivity;
 import com.wits.ksw.settings.als_id7_ui_set.adapter.AlsID7UiFunctionAdapter;
 import com.wits.ksw.settings.als_id7_ui_set.interfaces.AlsID7UiIUpdateTwoLayout;
 import com.wits.ksw.settings.als_id7_ui_set.layout_one.AlsID7UiSetFactoryLayout;
@@ -42,7 +40,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlsId7UiSettingsActivity extends BaseActivity implements AlsID7UiIUpdateTwoLayout, ScanNaviList.OnMapListScanListener {
+public class AlsId7UiSettingsActivity extends BaseSkinActivity implements AlsID7UiIUpdateTwoLayout, ScanNaviList.OnMapListScanListener {
     private ImageView Img_SetBack;
     /* access modifiers changed from: private */
     public AlsID7UiFunctionAdapter adapter;
@@ -445,9 +443,5 @@ public class AlsId7UiSettingsActivity extends BaseActivity implements AlsID7UiIU
     }
 
     public void onPointerCaptureChanged(boolean hasCapture) {
-    }
-
-    public AppCompatDelegate getDelegate() {
-        return SkinAppCompatDelegateImpl.get(this, this);
     }
 }

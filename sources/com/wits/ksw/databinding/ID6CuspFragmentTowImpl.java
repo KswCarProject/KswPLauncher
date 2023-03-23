@@ -60,7 +60,7 @@ public class ID6CuspFragmentTowImpl extends ID6CuspFragmentTow {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/ll_container" android:tag="layout/fragment_music_0" style="@style/id8_main_card_container">
+    <ImageView android:background="@drawable/id8_main_icon_music" style="@style/id8_main_small_card_size"/>
+    <ImageView android:id="@+id/iv_mask" android:tag="binding_1" style="@style/id8_main_small_card_size"/>
+    <LinearLayout style="@style/id8_main_small_card_container">
+        <TextView android:text="@string/ksw_id8_music" style="@style/id8_main_card_title"/>
+        <ImageView android:background="@drawable/id8_main_icon_weather_line" style="@style/id8_main_card_divider"/>
+        <TextView android:textColor="@color/id8_font_white1" android:ellipsize="end" android:id="@+id/tv_singer" android:tag="binding_2" android:singleLine="true" style="@style/id8_main_card_desc"/>
+        <TextView android:ellipsize="end" android:id="@+id/tv_song_title" android:tag="binding_3" android:layout_marginTop="6dp" android:singleLine="true" style="@style/id8_main_card_desc"/>
+        <FrameLayout android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="30dp">
+            <ImageView android:layout_gravity="center_horizontal" android:id="@+id/iv_music_album" android:tag="binding_4" android:layout_width="162dp" android:layout_height="162dp" android:layout_marginTop="2px" android:scaleType="fitXY"/>
+            <ImageView android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/id8_main_icon_music_pic"/>
+        </FrameLayout>
+        <com.wits.ksw.launcher.view.CustomizeSeekBar android:layout_gravity="center_horizontal" android:tag="binding_6" android:background="@null" android:focusable="false" android:layout_width="211dp" android:layout_height="4dp" android:layout_marginTop="28dp" app:layout_background="@drawable/id8_main_icon_music_progress_n" app:layout_indicator="@drawable/id8_main_icon_music_progress_thumb" app:layout_progress_bg="@drawable/id8_main_icon_music_progress_d"/>
+    </LinearLayout>
+</RelativeLayout>

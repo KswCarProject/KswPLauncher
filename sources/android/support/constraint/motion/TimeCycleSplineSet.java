@@ -111,163 +111,163 @@ public abstract class TimeCycleSplineSet {
         /*
             int r0 = r1.hashCode()
             switch(r0) {
-                case -1249320806: goto L_0x007d;
-                case -1249320805: goto L_0x0073;
-                case -1225497657: goto L_0x0068;
-                case -1225497656: goto L_0x005d;
-                case -1225497655: goto L_0x0052;
-                case -1001078227: goto L_0x0047;
-                case -908189618: goto L_0x003d;
-                case -908189617: goto L_0x0033;
-                case -40300674: goto L_0x0029;
-                case -4379043: goto L_0x001f;
+                case -1249320806: goto L_0x0081;
+                case -1249320805: goto L_0x0077;
+                case -1225497657: goto L_0x006b;
+                case -1225497656: goto L_0x005f;
+                case -1225497655: goto L_0x0053;
+                case -1001078227: goto L_0x0048;
+                case -908189618: goto L_0x003e;
+                case -908189617: goto L_0x0034;
+                case -40300674: goto L_0x002a;
+                case -4379043: goto L_0x0020;
                 case 37232917: goto L_0x0014;
                 case 92909918: goto L_0x0009;
                 default: goto L_0x0007;
             }
         L_0x0007:
-            goto L_0x0087
+            goto L_0x008b
         L_0x0009:
             java.lang.String r0 = "alpha"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 0
-            goto L_0x0088
+            goto L_0x008c
         L_0x0014:
             java.lang.String r0 = "transitionPathRotate"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 5
-            goto L_0x0088
-        L_0x001f:
+            goto L_0x008c
+        L_0x0020:
             java.lang.String r0 = "elevation"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 1
-            goto L_0x0088
-        L_0x0029:
+            goto L_0x008c
+        L_0x002a:
             java.lang.String r0 = "rotation"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 2
-            goto L_0x0088
-        L_0x0033:
+            goto L_0x008c
+        L_0x0034:
             java.lang.String r0 = "scaleY"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 7
-            goto L_0x0088
-        L_0x003d:
+            goto L_0x008c
+        L_0x003e:
             java.lang.String r0 = "scaleX"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 6
-            goto L_0x0088
-        L_0x0047:
+            goto L_0x008c
+        L_0x0048:
             java.lang.String r0 = "progress"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 11
-            goto L_0x0088
-        L_0x0052:
+            goto L_0x008c
+        L_0x0053:
             java.lang.String r0 = "translationZ"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 10
-            goto L_0x0088
-        L_0x005d:
+            goto L_0x008c
+        L_0x005f:
             java.lang.String r0 = "translationY"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 9
-            goto L_0x0088
-        L_0x0068:
+            goto L_0x008c
+        L_0x006b:
             java.lang.String r0 = "translationX"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 8
-            goto L_0x0088
-        L_0x0073:
+            goto L_0x008c
+        L_0x0077:
             java.lang.String r0 = "rotationY"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 4
-            goto L_0x0088
-        L_0x007d:
+            goto L_0x008c
+        L_0x0081:
             java.lang.String r0 = "rotationX"
             boolean r0 = r1.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 3
-            goto L_0x0088
-        L_0x0087:
-            r0 = -1
-        L_0x0088:
-            switch(r0) {
-                case 0: goto L_0x00cf;
-                case 1: goto L_0x00c9;
-                case 2: goto L_0x00c3;
-                case 3: goto L_0x00bd;
-                case 4: goto L_0x00b7;
-                case 5: goto L_0x00b1;
-                case 6: goto L_0x00ab;
-                case 7: goto L_0x00a5;
-                case 8: goto L_0x009f;
-                case 9: goto L_0x0099;
-                case 10: goto L_0x0093;
-                case 11: goto L_0x008d;
-                default: goto L_0x008b;
-            }
+            goto L_0x008c
         L_0x008b:
+            r0 = -1
+        L_0x008c:
+            switch(r0) {
+                case 0: goto L_0x00d3;
+                case 1: goto L_0x00cd;
+                case 2: goto L_0x00c7;
+                case 3: goto L_0x00c1;
+                case 4: goto L_0x00bb;
+                case 5: goto L_0x00b5;
+                case 6: goto L_0x00af;
+                case 7: goto L_0x00a9;
+                case 8: goto L_0x00a3;
+                case 9: goto L_0x009d;
+                case 10: goto L_0x0097;
+                case 11: goto L_0x0091;
+                default: goto L_0x008f;
+            }
+        L_0x008f:
             r0 = 0
             return r0
-        L_0x008d:
+        L_0x0091:
             android.support.constraint.motion.TimeCycleSplineSet$ProgressSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$ProgressSet
             r0.<init>()
-            goto L_0x00d5
-        L_0x0093:
+            goto L_0x00d9
+        L_0x0097:
             android.support.constraint.motion.TimeCycleSplineSet$TranslationZset r0 = new android.support.constraint.motion.TimeCycleSplineSet$TranslationZset
             r0.<init>()
-            goto L_0x00d5
-        L_0x0099:
+            goto L_0x00d9
+        L_0x009d:
             android.support.constraint.motion.TimeCycleSplineSet$TranslationYset r0 = new android.support.constraint.motion.TimeCycleSplineSet$TranslationYset
             r0.<init>()
-            goto L_0x00d5
-        L_0x009f:
+            goto L_0x00d9
+        L_0x00a3:
             android.support.constraint.motion.TimeCycleSplineSet$TranslationXset r0 = new android.support.constraint.motion.TimeCycleSplineSet$TranslationXset
             r0.<init>()
-            goto L_0x00d5
-        L_0x00a5:
+            goto L_0x00d9
+        L_0x00a9:
             android.support.constraint.motion.TimeCycleSplineSet$ScaleYset r0 = new android.support.constraint.motion.TimeCycleSplineSet$ScaleYset
             r0.<init>()
-            goto L_0x00d5
-        L_0x00ab:
+            goto L_0x00d9
+        L_0x00af:
             android.support.constraint.motion.TimeCycleSplineSet$ScaleXset r0 = new android.support.constraint.motion.TimeCycleSplineSet$ScaleXset
             r0.<init>()
-            goto L_0x00d5
-        L_0x00b1:
+            goto L_0x00d9
+        L_0x00b5:
             android.support.constraint.motion.TimeCycleSplineSet$PathRotate r0 = new android.support.constraint.motion.TimeCycleSplineSet$PathRotate
             r0.<init>()
-            goto L_0x00d5
-        L_0x00b7:
+            goto L_0x00d9
+        L_0x00bb:
             android.support.constraint.motion.TimeCycleSplineSet$RotationYset r0 = new android.support.constraint.motion.TimeCycleSplineSet$RotationYset
             r0.<init>()
-            goto L_0x00d5
-        L_0x00bd:
+            goto L_0x00d9
+        L_0x00c1:
             android.support.constraint.motion.TimeCycleSplineSet$RotationXset r0 = new android.support.constraint.motion.TimeCycleSplineSet$RotationXset
             r0.<init>()
-            goto L_0x00d5
-        L_0x00c3:
+            goto L_0x00d9
+        L_0x00c7:
             android.support.constraint.motion.TimeCycleSplineSet$RotationSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$RotationSet
             r0.<init>()
-            goto L_0x00d5
-        L_0x00c9:
+            goto L_0x00d9
+        L_0x00cd:
             android.support.constraint.motion.TimeCycleSplineSet$ElevationSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$ElevationSet
             r0.<init>()
-            goto L_0x00d5
-        L_0x00cf:
+            goto L_0x00d9
+        L_0x00d3:
             android.support.constraint.motion.TimeCycleSplineSet$AlphaSet r0 = new android.support.constraint.motion.TimeCycleSplineSet$AlphaSet
             r0.<init>()
-        L_0x00d5:
+        L_0x00d9:
             r0.setStartTime(r2)
             return r0
         */

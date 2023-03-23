@@ -63,6 +63,17 @@ public class AlsID7UiVerRecyclerAdapter extends RecyclerView.Adapter<ViewHolder>
         } else {
             drawable.setBounds(0, 0, 45, 45);
         }
+        if (UiThemeUtils.isID7_ALS_V2(this.context)) {
+            Log.d("display", "LauncherViewModel.screenWidth.get() = " + LauncherViewModel.screenWidth.get());
+            if (LauncherViewModel.screenWidth.get().intValue() > 1280) {
+                Log.d("display", "LauncherViewModel.screenWidth.get() >1280");
+                drawable.setBounds(0, 0, 45, 45);
+            } else {
+                drawable.setBounds(0, 0, 35, 35);
+            }
+        } else {
+            drawable.setBounds(0, 0, 45, 45);
+        }
         holder.rbt_apps.setCompoundDrawables(drawable, (Drawable) null, (Drawable) null, (Drawable) null);
         holder.rbt_apps.setText(this.data.get(position).getAppName());
         holder.rbt_apps.setCompoundDrawablePadding(10);

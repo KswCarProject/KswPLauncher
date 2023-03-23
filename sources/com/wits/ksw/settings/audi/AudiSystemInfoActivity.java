@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.wits.ksw.R;
 import com.wits.ksw.databinding.AudiSysinfoBinding;
+import com.wits.ksw.settings.TxzMessage;
 import com.wits.ksw.settings.audi.vm.AudiSettingViewModel;
 import com.wits.ksw.settings.utlis_view.DialogViews;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
@@ -66,14 +67,17 @@ public class AudiSystemInfoActivity extends AudiSubActivity {
     public void onClick(View v) {
         this.binding.audiSysInfParentPanel.setSeleted(v);
         switch (v.getId()) {
-            case R.id.audiSysInfoSysVer:
+            case R.id.audiSysInfoSysVer /*2131296374*/:
                 UtilsInfo.showQRCode(this);
                 return;
-            case R.id.audioSysInfoMcuUpdata:
+            case R.id.audioSysInfoMcuUpdata /*2131296415*/:
                 this.dialogViews.updateMcu(getString(R.string.update_mcu_file));
                 return;
-            case R.id.audioSysInfoRestoreFactory:
+            case R.id.audioSysInfoRestoreFactory /*2131296417*/:
                 this.dialogViews.isQuestView(getString(R.string.update_reset_all), this.handler);
+                return;
+            case R.id.audioSysInfoUpDateFactory /*2131296418*/:
+                new TxzMessage(2070, "system.ota.check", (Bundle) null).sendBroadCast(this);
                 return;
             default:
                 return;

@@ -120,7 +120,7 @@ final class UPCEANExtension5Support {
                 default: goto L_0x000b;
             }
         L_0x000b:
-            goto L_0x0047
+            goto L_0x0048
         L_0x000c:
             r1 = -1
             int r4 = r5.hashCode()
@@ -159,7 +159,7 @@ final class UPCEANExtension5Support {
                 default: goto L_0x0036;
             }
         L_0x0036:
-            goto L_0x0047
+            goto L_0x0048
         L_0x0038:
             java.lang.String r5 = "Used"
             return r5
@@ -171,24 +171,24 @@ final class UPCEANExtension5Support {
             return r5
         L_0x0040:
             java.lang.String r3 = "$"
-            goto L_0x0047
+            goto L_0x0048
         L_0x0044:
             java.lang.String r3 = "£"
-        L_0x0047:
+        L_0x0048:
             java.lang.String r5 = r5.substring(r2)
             int r5 = java.lang.Integer.parseInt(r5)
             int r0 = r5 / 100
             java.lang.String r0 = java.lang.String.valueOf(r0)
             int r5 = r5 % 100
             r1 = 10
-            if (r5 >= r1) goto L_0x0066
+            if (r5 >= r1) goto L_0x0067
             java.lang.String r5 = java.lang.String.valueOf(r5)
             java.lang.String r1 = "0"
             java.lang.String r5 = r1.concat(r5)
-            goto L_0x006a
-        L_0x0066:
+            goto L_0x006b
+        L_0x0067:
             java.lang.String r5 = java.lang.String.valueOf(r5)
-        L_0x006a:
+        L_0x006b:
             java.lang.StringBuilder r1 = new java.lang.StringBuilder
             r1.<init>()
             java.lang.StringBuilder r1 = r1.append(r3)

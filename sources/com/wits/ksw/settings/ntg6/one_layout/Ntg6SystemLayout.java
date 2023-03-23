@@ -127,22 +127,22 @@ public class Ntg6SystemLayout extends RelativeLayout implements View.OnClickList
             return;
         }
         switch (v.getId()) {
-            case R.id.benz_sysTempUnit /*2131296463*/:
+            case R.id.benz_sysTempUnit:
                 this.updateTwoLayout.updateTwoLayout(1, 4);
                 return;
-            case R.id.tv_music_app /*2131297598*/:
+            case R.id.tv_music_app:
                 this.updateTwoLayout.updateTwoLayout(1, 5);
                 return;
-            case R.id.tv_sysBgld /*2131297618*/:
+            case R.id.tv_sysBgld:
                 this.updateTwoLayout.updateTwoLayout(1, 2);
                 return;
-            case R.id.tv_sysCaux /*2131297619*/:
+            case R.id.tv_sysCaux:
                 this.updateTwoLayout.updateTwoLayout(1, 3);
                 return;
-            case R.id.tv_sysDcsxt /*2131297620*/:
+            case R.id.tv_sysDcsxt:
                 this.updateTwoLayout.updateTwoLayout(1, 1);
                 return;
-            case R.id.tv_video_app /*2131297637*/:
+            case R.id.tv_video_app:
                 this.updateTwoLayout.updateTwoLayout(1, 6);
                 return;
             default:
@@ -152,19 +152,19 @@ public class Ntg6SystemLayout extends RelativeLayout implements View.OnClickList
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cbox_sysDcgj /*2131296571*/:
+            case R.id.cbox_sysDcgj:
                 FileUtils.savaData(KeyConfig.DAO_CHE_GJ, isChecked);
                 return;
-            case R.id.cbox_sysDcjy /*2131296572*/:
+            case R.id.cbox_sysDcjy:
                 FileUtils.savaData(KeyConfig.DAO_CHE_JY, isChecked);
                 return;
-            case R.id.cbox_sysDcld /*2131296573*/:
+            case R.id.cbox_sysDcld:
                 FileUtils.savaData(KeyConfig.DAO_CHE_LD, isChecked);
                 return;
-            case R.id.cbox_sysHjs /*2131296574*/:
+            case R.id.cbox_sysHjs:
                 FileUtils.savaData(KeyConfig.HOU_SHI_SX, isChecked);
                 return;
-            case R.id.cbox_sysXcjz /*2131296575*/:
+            case R.id.cbox_sysXcjz:
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
                 return;
             default:

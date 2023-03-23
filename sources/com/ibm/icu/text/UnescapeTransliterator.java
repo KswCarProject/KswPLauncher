@@ -2,6 +2,7 @@ package com.ibm.icu.text;
 
 import com.ibm.icu.impl.Utility;
 import com.ibm.icu.text.Transliterator;
+import kotlin.text.Typography;
 
 class UnescapeTransliterator extends Transliterator {
     private static final char END = '￿';
@@ -25,12 +26,12 @@ class UnescapeTransliterator extends Transliterator {
         });
         Transliterator.registerFactory("Hex-Any/XML", new Transliterator.Factory() {
             public Transliterator getInstance(String ID) {
-                return new UnescapeTransliterator("Hex-Any/XML", new char[]{3, 1, 16, 1, 6, '&', '#', 'x', ';', 65535});
+                return new UnescapeTransliterator("Hex-Any/XML", new char[]{3, 1, 16, 1, 6, Typography.amp, '#', 'x', ';', 65535});
             }
         });
         Transliterator.registerFactory("Hex-Any/XML10", new Transliterator.Factory() {
             public Transliterator getInstance(String ID) {
-                return new UnescapeTransliterator("Hex-Any/XML10", new char[]{2, 1, 10, 1, 7, '&', '#', ';', 65535});
+                return new UnescapeTransliterator("Hex-Any/XML10", new char[]{2, 1, 10, 1, 7, Typography.amp, '#', ';', 65535});
             }
         });
         Transliterator.registerFactory("Hex-Any/Perl", new Transliterator.Factory() {
@@ -40,7 +41,7 @@ class UnescapeTransliterator extends Transliterator {
         });
         Transliterator.registerFactory("Hex-Any", new Transliterator.Factory() {
             public Transliterator getInstance(String ID) {
-                return new UnescapeTransliterator("Hex-Any", new char[]{2, 0, 16, 4, 6, 'U', '+', 2, 0, 16, 4, 4, '\\', 'u', 2, 0, 16, 8, 8, '\\', 'U', 3, 1, 16, 1, 6, '&', '#', 'x', ';', 2, 1, 10, 1, 7, '&', '#', ';', 3, 1, 16, 1, 6, '\\', 'x', '{', '}', 65535});
+                return new UnescapeTransliterator("Hex-Any", new char[]{2, 0, 16, 4, 6, 'U', '+', 2, 0, 16, 4, 4, '\\', 'u', 2, 0, 16, 8, 8, '\\', 'U', 3, 1, 16, 1, 6, Typography.amp, '#', 'x', ';', 2, 1, 10, 1, 7, Typography.amp, '#', ';', 3, 1, 16, 1, 6, '\\', 'x', '{', '}', 65535});
             }
         });
     }

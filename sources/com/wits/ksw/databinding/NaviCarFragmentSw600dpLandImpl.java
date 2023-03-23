@@ -96,7 +96,7 @@ public class NaviCarFragmentSw600dpLandImpl extends NaviCarFragment {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (8 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setNaviCarViewModel((AlsID7ViewModel) variable);
@@ -108,7 +108,7 @@ public class NaviCarFragmentSw600dpLandImpl extends NaviCarFragment {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 

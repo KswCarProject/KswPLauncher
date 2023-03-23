@@ -47,7 +47,7 @@ public class LandroverSetNaviLayout extends RelativeLayout implements View.OnCli
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_naviapp /*2131297603*/:
+            case R.id.tv_naviapp /*2131297906*/:
                 this.tv_navihy.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
                 if (iUpdateTwoLayout != null) {
@@ -55,7 +55,7 @@ public class LandroverSetNaviLayout extends RelativeLayout implements View.OnCli
                     return;
                 }
                 return;
-            case R.id.tv_navihy /*2131297604*/:
+            case R.id.tv_navihy /*2131297907*/:
                 this.tv_naviapp.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;
                 if (iUpdateTwoLayout2 != null) {

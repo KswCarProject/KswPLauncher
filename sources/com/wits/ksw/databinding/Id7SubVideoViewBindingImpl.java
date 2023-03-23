@@ -11,7 +11,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback55;
+    private final View.OnClickListener mCallback43;
     private long mDirtyFlags;
 
     static {
@@ -31,7 +31,7 @@ public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implement
         this.videoConstraintLayout.setTag((Object) null);
         this.videoImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback55 = new OnClickListener(this, 1);
+        this.mCallback43 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -52,7 +52,7 @@ public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implement
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (6 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
@@ -64,7 +64,7 @@ public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implement
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(6);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 
@@ -86,7 +86,7 @@ public class Id7SubVideoViewBindingImpl extends Id7SubVideoViewBinding implement
             mediaViewModelVideoViewFocusChangeListener = mediaViewModel.videoViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.videoImageView.setOnClickListener(this.mCallback55);
+            this.videoImageView.setOnClickListener(this.mCallback43);
         }
         if ((3 & dirtyFlags) != 0) {
             this.videoImageView.setOnFocusChangeListener(mediaViewModelVideoViewFocusChangeListener);

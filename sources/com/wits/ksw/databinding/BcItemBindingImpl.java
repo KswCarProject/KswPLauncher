@@ -16,7 +16,7 @@ import com.wits.ksw.launcher.view.CustomBcImageView;
 public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback99;
+    private final View.OnClickListener mCallback59;
     private long mDirtyFlags;
     private final CustomBcImageView mboundView1;
     private final TextView mboundView2;
@@ -36,7 +36,7 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
         textView.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback99 = new OnClickListener(this, 1);
+        this.mCallback59 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -57,10 +57,10 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 == variableId) {
+        if (20 == variableId) {
             setListItem((BcItem) variable);
             return true;
-        } else if (12 != variableId) {
+        } else if (21 != variableId) {
             return false;
         } else {
             setMBcVieModel((BcVieModel) variable);
@@ -73,7 +73,7 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(20);
         super.requestRebind();
     }
 
@@ -82,7 +82,7 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(21);
         super.requestRebind();
     }
 
@@ -111,7 +111,7 @@ public class BcItemBindingImpl extends BcItemBinding implements OnClickListener.
             TextViewBindingAdapter.setText(this.mboundView2, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.mboundView1.setOnClickListener(this.mCallback99);
+            this.mboundView1.setOnClickListener(this.mCallback59);
         }
     }
 

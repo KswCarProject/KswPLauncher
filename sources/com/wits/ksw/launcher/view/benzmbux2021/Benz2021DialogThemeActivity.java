@@ -15,9 +15,10 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.bean.MediaInfo;
 import com.wits.ksw.launcher.model.BcVieModel;
 import com.wits.ksw.launcher.view.lexusls.drag.LOGE;
+import com.wits.ksw.settings.TxzMessage;
 
 public class Benz2021DialogThemeActivity extends Activity {
-    private String bgIndex = "1";
+    private String bgIndex = TxzMessage.TXZ_SHOW;
     private View.OnClickListener mThemeItemClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             Object obj;
@@ -29,9 +30,9 @@ public class Benz2021DialogThemeActivity extends Activity {
             Object obj7;
             LOGE.E("v.getId() = " + v.getId());
             switch (v.getId()) {
-                case R.id.rb_benz_mbux_2021_coat_bg_1 /*2131297163*/:
+                case R.id.rb_benz_mbux_2021_coat_bg_1 /*2131297429*/:
                     BenzMbux2021Configs.bg_sel = 1;
-                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_SAVE, 1);
+                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 1);
                     BcVieModel bcVieModel = MainActivity.mBcVieModel;
                     BcVieModel.mediaInfo.setPicOne((BitmapDrawable) Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_ONE[BenzMbux2021Configs.bg_sel - 1]));
                     BcVieModel bcVieModel2 = MainActivity.mBcVieModel;
@@ -64,8 +65,8 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_2 /*2131297164*/:
-                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_SAVE, 2);
+                case R.id.rb_benz_mbux_2021_coat_bg_2 /*2131297430*/:
+                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 2);
                     BenzMbux2021Configs.bg_sel = 2;
                     BcVieModel bcVieModel9 = MainActivity.mBcVieModel;
                     BcVieModel.mediaInfo.setPicOne((BitmapDrawable) Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_ONE[BenzMbux2021Configs.bg_sel - 1]));
@@ -99,8 +100,8 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_3 /*2131297165*/:
-                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_SAVE, 3);
+                case R.id.rb_benz_mbux_2021_coat_bg_3 /*2131297431*/:
+                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 3);
                     BenzMbux2021Configs.bg_sel = 3;
                     BcVieModel bcVieModel17 = MainActivity.mBcVieModel;
                     BcVieModel.mediaInfo.setPicOne((BitmapDrawable) Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_ONE[BenzMbux2021Configs.bg_sel - 1]));
@@ -134,8 +135,8 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_4 /*2131297166*/:
-                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_SAVE, 4);
+                case R.id.rb_benz_mbux_2021_coat_bg_4 /*2131297432*/:
+                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 4);
                     BenzMbux2021Configs.bg_sel = 4;
                     BcVieModel bcVieModel25 = MainActivity.mBcVieModel;
                     BcVieModel.mediaInfo.setPicOne((BitmapDrawable) Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_ONE[BenzMbux2021Configs.bg_sel - 1]));
@@ -169,8 +170,8 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_5 /*2131297167*/:
-                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_SAVE, 5);
+                case R.id.rb_benz_mbux_2021_coat_bg_5 /*2131297433*/:
+                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 5);
                     BenzMbux2021Configs.bg_sel = 5;
                     BcVieModel bcVieModel33 = MainActivity.mBcVieModel;
                     BcVieModel.mediaInfo.setPicOne((BitmapDrawable) Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_ONE[BenzMbux2021Configs.bg_sel - 1]));
@@ -204,8 +205,8 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_6 /*2131297168*/:
-                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_SAVE, 6);
+                case R.id.rb_benz_mbux_2021_coat_bg_6 /*2131297434*/:
+                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 6);
                     BenzMbux2021Configs.bg_sel = 6;
                     BcVieModel bcVieModel41 = MainActivity.mBcVieModel;
                     BcVieModel.mediaInfo.setPicOne((BitmapDrawable) Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_ONE[BenzMbux2021Configs.bg_sel - 1]));
@@ -239,8 +240,8 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_benz_mbux_2021_coat_bg_7 /*2131297169*/:
-                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_SAVE, 7);
+                case R.id.rb_benz_mbux_2021_coat_bg_7 /*2131297435*/:
+                    Settings.System.putInt(MainActivity.mainActivity.getContentResolver(), "BG_SAVE", 7);
                     BenzMbux2021Configs.bg_sel = 7;
                     BcVieModel bcVieModel49 = MainActivity.mBcVieModel;
                     BcVieModel.mediaInfo.setPicOne((BitmapDrawable) Benz2021DialogThemeActivity.this.getResources().getDrawable(BenzMbux2021Configs.BG_ONE[BenzMbux2021Configs.bg_sel - 1]));
@@ -274,7 +275,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     } else {
                         return;
                     }
-                case R.id.rb_icon_sel_classical /*2131297170*/:
+                case R.id.rb_icon_sel_classical /*2131297436*/:
                     BenzMbux2021Configs.style_sel = 1;
                     Benz2021DialogThemeActivity.this.tv_icon_sel_modern.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.color1));
                     Benz2021DialogThemeActivity.this.tv_icon_sel_classical.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.rb_text_color));
@@ -282,7 +283,7 @@ public class Benz2021DialogThemeActivity extends Activity {
                     Benz2021DialogThemeActivity.this.rb_icon_sel_classical.setSelected(true);
                     MainActivity.mBcVieModel.itemIconClassical.set(true);
                     return;
-                case R.id.rb_icon_sel_modern /*2131297171*/:
+                case R.id.rb_icon_sel_modern /*2131297437*/:
                     BenzMbux2021Configs.style_sel = 2;
                     Benz2021DialogThemeActivity.this.tv_icon_sel_modern.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.rb_text_color));
                     Benz2021DialogThemeActivity.this.tv_icon_sel_classical.setTextColor(Benz2021DialogThemeActivity.this.getColor(R.color.color1));
@@ -299,7 +300,7 @@ public class Benz2021DialogThemeActivity extends Activity {
     public RadioButton rb_icon_sel_classical;
     /* access modifiers changed from: private */
     public RadioButton rb_icon_sel_modern;
-    private String styleIndex = "1";
+    private String styleIndex = TxzMessage.TXZ_SHOW;
     /* access modifiers changed from: private */
     public TextView tv_icon_sel_classical;
     /* access modifiers changed from: private */
@@ -333,13 +334,13 @@ public class Benz2021DialogThemeActivity extends Activity {
         findViewById(R.id.rb_benz_mbux_2021_coat_bg_5).setOnClickListener(this.mThemeItemClickListener);
         findViewById(R.id.rb_benz_mbux_2021_coat_bg_6).setOnClickListener(this.mThemeItemClickListener);
         findViewById(R.id.rb_benz_mbux_2021_coat_bg_7).setOnClickListener(this.mThemeItemClickListener);
-        this.styleIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.STYLE_INDEX);
-        this.bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), BenzMbux2021Configs.BG_INDEX);
+        this.styleIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "STYLE_INDEX");
+        this.bgIndex = Settings.System.getString(MainActivity.mainActivity.getContentResolver(), "BG_INDEX");
         if (TextUtils.isEmpty(this.styleIndex)) {
-            this.styleIndex = "1";
+            this.styleIndex = TxzMessage.TXZ_SHOW;
         }
         if (TextUtils.isEmpty(this.bgIndex)) {
-            this.bgIndex = "1";
+            this.bgIndex = TxzMessage.TXZ_SHOW;
         }
         int iStyleIndex = Integer.parseInt(this.styleIndex);
         int iBgIndex = Integer.parseInt(this.bgIndex);

@@ -68,7 +68,7 @@ public class AudiMib3SpeedUnitBindingImpl extends AudiMib3SpeedUnitBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SystemViewModel) variable);
@@ -80,7 +80,7 @@ public class AudiMib3SpeedUnitBindingImpl extends AudiMib3SpeedUnitBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

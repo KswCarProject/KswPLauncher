@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.Writer;
 
 public final class Streams {
+    private Streams() {
+        throw new UnsupportedOperationException();
+    }
+
     public static JsonElement parse(JsonReader reader) throws JsonParseException {
         boolean isEmpty = true;
         try {
@@ -44,10 +48,9 @@ public final class Streams {
 
     private static final class AppendableWriter extends Writer {
         private final Appendable appendable;
-        private final CurrentWrite currentWrite;
+        private final CurrentWrite currentWrite = new CurrentWrite();
 
-        private AppendableWriter(Appendable appendable2) {
-            this.currentWrite = new CurrentWrite();
+        AppendableWriter(Appendable appendable2) {
             this.appendable = appendable2;
         }
 

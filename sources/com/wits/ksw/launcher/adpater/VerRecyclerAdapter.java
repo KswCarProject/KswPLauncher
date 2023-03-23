@@ -52,7 +52,7 @@ public class VerRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         } else {
             drawable = this.data.get(position).getAppIcon();
         }
-        if (UiThemeUtils.isID7_ALS(this.context)) {
+        if (UiThemeUtils.isID7_ALS(this.context) || UiThemeUtils.isID7_ALS_V2(this.context)) {
             Log.d("display", "LauncherViewModel.screenWidth.get() = " + LauncherViewModel.screenWidth.get());
             if (LauncherViewModel.screenWidth.get().intValue() > 1280) {
                 Log.d("display", "LauncherViewModel.screenWidth.get() >1280");

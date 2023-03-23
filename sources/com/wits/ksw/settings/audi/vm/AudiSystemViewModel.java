@@ -25,7 +25,7 @@ import java.text.NumberFormat;
 
 public class AudiSystemViewModel extends AndroidViewModel {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AudiSystemViewModel.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AudiSystemViewModel.class.getSimpleName());
     public ObservableBoolean autoBrightness = new ObservableBoolean(false);
     public SeekBar.OnSeekBarChangeListener aux1ChangeListener = new SeekBar.OnSeekBarChangeListener() {
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

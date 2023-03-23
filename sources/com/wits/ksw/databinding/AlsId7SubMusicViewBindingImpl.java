@@ -15,10 +15,10 @@ import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback192;
-    private final View.OnClickListener mCallback193;
-    private final View.OnClickListener mCallback194;
-    private final View.OnClickListener mCallback195;
+    private final View.OnClickListener mCallback113;
+    private final View.OnClickListener mCallback114;
+    private final View.OnClickListener mCallback115;
+    private final View.OnClickListener mCallback116;
     private long mDirtyFlags;
 
     static {
@@ -48,10 +48,10 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
         this.seekBar.setTag((Object) null);
         this.totalTimeTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback192 = new OnClickListener(this, 1);
-        this.mCallback193 = new OnClickListener(this, 2);
-        this.mCallback194 = new OnClickListener(this, 3);
-        this.mCallback195 = new OnClickListener(this, 4);
+        this.mCallback116 = new OnClickListener(this, 4);
+        this.mCallback113 = new OnClickListener(this, 1);
+        this.mCallback114 = new OnClickListener(this, 2);
+        this.mCallback115 = new OnClickListener(this, 3);
         invalidateAll();
     }
 
@@ -72,7 +72,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setMusicPhoneViewModel((AlsID7ViewModel) variable);
@@ -84,7 +84,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
         synchronized (this) {
             this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
         }
-        notifyPropertyChanged(7);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -319,14 +319,14 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
             android.widget.ImageView r5 = r1.btnMusicPause
             android.content.Context r5 = r5.getContext()
             r65 = r0
-            r0 = 2131230980(0x7f080104, float:1.8078028E38)
+            r0 = 2131230978(0x7f080102, float:1.8078024E38)
             android.graphics.drawable.Drawable r0 = android.support.v7.content.res.AppCompatResources.getDrawable(r5, r0)
             goto L_0x00c4
         L_0x00b5:
             r65 = r0
             android.widget.ImageView r0 = r1.btnMusicPause
             android.content.Context r0 = r0.getContext()
-            r5 = 2131230981(0x7f080105, float:1.807803E38)
+            r5 = 2131230979(0x7f080103, float:1.8078026E38)
             android.graphics.drawable.Drawable r0 = android.support.v7.content.res.AppCompatResources.getDrawable(r0, r5)
         L_0x00c4:
             r27 = r0
@@ -638,14 +638,14 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
             com.wits.ksw.launcher.view.CustomBmwMusicLayout r11 = r1.imageFrameLayout
             android.content.Context r11 = r11.getContext()
             r67 = r2
-            r2 = 2131230987(0x7f08010b, float:1.8078042E38)
+            r2 = 2131230985(0x7f080109, float:1.8078038E38)
             android.graphics.drawable.Drawable r2 = android.support.v7.content.res.AppCompatResources.getDrawable(r11, r2)
             goto L_0x02d5
         L_0x02c6:
             r67 = r2
             com.wits.ksw.launcher.view.CustomBmwMusicLayout r2 = r1.imageFrameLayout
             android.content.Context r2 = r2.getContext()
-            r3 = 2131230986(0x7f08010a, float:1.807804E38)
+            r3 = 2131230984(0x7f080108, float:1.8078036E38)
             android.graphics.drawable.Drawable r2 = android.support.v7.content.res.AppCompatResources.getDrawable(r2, r3)
         L_0x02d5:
             r33 = r2
@@ -676,7 +676,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
             android.widget.TextView r10 = r1.albumTextView
             android.content.res.Resources r10 = r10.getResources()
             r35 = r13
-            r13 = 2131558751(0x7f0d015f, float:1.8742827E38)
+            r13 = 2131558824(0x7f0d01a8, float:1.8742975E38)
             java.lang.String r10 = r10.getString(r13)
             goto L_0x0313
         L_0x030d:
@@ -699,7 +699,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
             android.widget.TextView r13 = r1.artistTextView
             android.content.res.Resources r13 = r13.getResources()
             r16 = r15
-            r15 = 2131558750(0x7f0d015e, float:1.8742825E38)
+            r15 = 2131558823(0x7f0d01a7, float:1.8742973E38)
             java.lang.String r13 = r13.getString(r15)
             goto L_0x033a
         L_0x0336:
@@ -720,7 +720,7 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
             android.widget.TextView r15 = r1.nameTextView
             android.content.res.Resources r15 = r15.getResources()
             r28 = r14
-            r14 = 2131558752(0x7f0d0160, float:1.8742829E38)
+            r14 = 2131558825(0x7f0d01a9, float:1.8742977E38)
             java.lang.String r14 = r15.getString(r14)
             goto L_0x035f
         L_0x035b:
@@ -779,16 +779,16 @@ public class AlsId7SubMusicViewBindingImpl extends AlsId7SubMusicViewBinding imp
             if (r15 == 0) goto L_0x03e4
             android.widget.ImageView r15 = r1.btnMusicNext
             r32 = r10
-            android.view.View$OnClickListener r10 = r1.mCallback195
+            android.view.View$OnClickListener r10 = r1.mCallback116
             r15.setOnClickListener(r10)
             android.widget.ImageView r10 = r1.btnMusicPause
-            android.view.View$OnClickListener r15 = r1.mCallback194
+            android.view.View$OnClickListener r15 = r1.mCallback115
             r10.setOnClickListener(r15)
             android.widget.ImageView r10 = r1.btnMusicPrev
-            android.view.View$OnClickListener r15 = r1.mCallback193
+            android.view.View$OnClickListener r15 = r1.mCallback114
             r10.setOnClickListener(r15)
             com.wits.ksw.launcher.view.CustomBmwMusicLayout r10 = r1.imageFrameLayout
-            android.view.View$OnClickListener r15 = r1.mCallback192
+            android.view.View$OnClickListener r15 = r1.mCallback113
             r10.setOnClickListener(r15)
             goto L_0x03e6
         L_0x03e4:

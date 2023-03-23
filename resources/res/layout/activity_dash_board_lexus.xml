@@ -13,4 +13,5 @@
     <ImageView android:gravity="center_vertical" android:id="@+id/seatBeltTextView" android:tag="binding_9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="679dp" android:layout_marginTop="56dp" android:src="@drawable/lexus_dashboard_brake"/>
     <TextView android:textSize="46sp" android:textStyle="normal|bold|italic" android:textColor="#fff" android:gravity="center" android:tag="binding_10" android:layout_width="112dp" android:layout_height="49dp" android:layout_marginLeft="210dp" android:layout_marginTop="177dp"/>
     <TextView android:textSize="46sp" android:textStyle="normal|bold|italic" android:textColor="#fff" android:gravity="center" android:tag="binding_11" android:layout_width="112dp" android:layout_height="49dp" android:layout_marginLeft="990dp" android:layout_marginTop="177dp"/>
+    <ImageView android:tag="binding_12" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="349px" android:layout_marginTop="360px" android:src="@drawable/lexus_dashboard_unit_en_img"/>
 </FrameLayout>

@@ -12,11 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import kotlin.time.DurationKt;
 
 @Deprecated
 public class PluralSamples {
     private static final int LIMIT_FRACTION_SAMPLES = 3;
-    private static final int[] TENS = {1, 10, 100, 1000, 10000, 100000, 1000000};
+    private static final int[] TENS = {1, 10, 100, 1000, 10000, 100000, DurationKt.NANOS_IN_MILLIS};
     private final Set<PluralRules.FixedDecimal> _fractionSamples;
     private final Map<String, Set<PluralRules.FixedDecimal>> _keyFractionSamplesMap;
     @Deprecated

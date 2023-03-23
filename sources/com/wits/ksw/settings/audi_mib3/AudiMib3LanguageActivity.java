@@ -23,7 +23,7 @@ import java.util.List;
 
 public class AudiMib3LanguageActivity extends AudiMib3SubActivity {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AudiMib3LanguageActivity.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AudiMib3LanguageActivity.class.getSimpleName());
     /* access modifiers changed from: private */
     public LanguageAdpater adpater;
     private ListView audiLanguageListView;

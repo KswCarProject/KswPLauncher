@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import com.wits.ksw.R;
-import com.wits.ksw.launcher.model.BcVieModel;
+import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public abstract class BenzControlBind extends ViewDataBinding {
     public final ImageView brightnessBtn;
@@ -24,10 +24,10 @@ public abstract class BenzControlBind extends ViewDataBinding {
     public final ImageView imageView;
     public final ConstraintLayout linearLayout;
     @Bindable
-    protected BcVieModel mMBcVieModel;
+    protected LauncherViewModel mLauncherViewModel;
     public final ImageView netgControlImageview;
 
-    public abstract void setMBcVieModel(BcVieModel bcVieModel);
+    public abstract void setLauncherViewModel(LauncherViewModel launcherViewModel);
 
     protected BenzControlBind(Object _bindingComponent, View _root, int _localFieldCount, ImageView brightnessBtn2, ImageView brightnessBtnLeft2, ImageView brightnessBtnRight2, CheckBox checkBox3, CheckBox checkBox22, ImageView controlBtn12, ImageView controlBtn22, ImageView controlBtn32, ImageView imageView2, ConstraintLayout linearLayout2, ImageView netgControlImageview2) {
         super(_bindingComponent, _root, _localFieldCount);
@@ -44,8 +44,8 @@ public abstract class BenzControlBind extends ViewDataBinding {
         this.netgControlImageview = netgControlImageview2;
     }
 
-    public BcVieModel getMBcVieModel() {
-        return this.mMBcVieModel;
+    public LauncherViewModel getLauncherViewModel() {
+        return this.mLauncherViewModel;
     }
 
     public static BenzControlBind inflate(LayoutInflater inflater, ViewGroup root, boolean attachToRoot) {

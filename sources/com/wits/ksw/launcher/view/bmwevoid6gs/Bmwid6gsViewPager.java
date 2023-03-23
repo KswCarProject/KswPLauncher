@@ -9,7 +9,7 @@ import android.view.View;
 
 public class Bmwid6gsViewPager extends ViewPager {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + Bmwid6gsViewPager.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + Bmwid6gsViewPager.class.getSimpleName());
     boolean isScrolling;
     /* access modifiers changed from: private */
     public boolean left;

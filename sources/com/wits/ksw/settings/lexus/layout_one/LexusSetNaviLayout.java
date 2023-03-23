@@ -53,7 +53,7 @@ public class LexusSetNaviLayout extends RelativeLayout implements View.OnClickLi
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_naviapp:
+            case R.id.tv_naviapp /*2131297906*/:
                 this.tv_naviapp.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.tv_navihy.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
@@ -62,7 +62,7 @@ public class LexusSetNaviLayout extends RelativeLayout implements View.OnClickLi
                     return;
                 }
                 return;
-            case R.id.tv_navihy:
+            case R.id.tv_navihy /*2131297907*/:
                 this.tv_navihy.setTextColor(SupportMenu.CATEGORY_MASK);
                 this.tv_naviapp.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;

@@ -69,22 +69,22 @@ public class AlsID7SetVocModeLayout extends RelativeLayout {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (AlsID7SetVocModeLayout.this.updateTwoLayout != null) {
                     switch (checkedId) {
-                        case R.id.rdb_vocmd1 /*2131297197*/:
+                        case R.id.rdb_vocmd1:
                             AlsID7SetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 0);
                             return;
-                        case R.id.rdb_vocmd2 /*2131297198*/:
+                        case R.id.rdb_vocmd2:
                             AlsID7SetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 1);
                             return;
-                        case R.id.rdb_vocmd3 /*2131297199*/:
+                        case R.id.rdb_vocmd3:
                             AlsID7SetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 2);
                             return;
-                        case R.id.rdb_vocmd4 /*2131297200*/:
+                        case R.id.rdb_vocmd4:
                             AlsID7SetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 3);
                             return;
-                        case R.id.rdb_vocmd5 /*2131297201*/:
+                        case R.id.rdb_vocmd5:
                             AlsID7SetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 4);
                             return;
-                        case R.id.rdb_vocmd6 /*2131297202*/:
+                        case R.id.rdb_vocmd6:
                             AlsID7SetVocModeLayout.this.updateTwoLayout.updateTwoLayout(3, 5);
                             return;
                         default:

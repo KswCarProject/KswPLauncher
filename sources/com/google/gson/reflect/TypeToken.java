@@ -177,4 +177,12 @@ public class TypeToken<T> {
     public static <T> TypeToken<T> get(Class<T> type2) {
         return new TypeToken<>(type2);
     }
+
+    public static TypeToken<?> getParameterized(Type rawType2, Type... typeArguments) {
+        return new TypeToken<>(C$Gson$Types.newParameterizedTypeWithOwner((Type) null, rawType2, typeArguments));
+    }
+
+    public static TypeToken<?> getArray(Type componentType) {
+        return new TypeToken<>(C$Gson$Types.arrayOf(componentType));
+    }
 }

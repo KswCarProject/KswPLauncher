@@ -388,25 +388,25 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
             int index3 = index + msgStartLength;
             while (index3 < this.msg.length()) {
                 int index4 = index3 + 1;
-                int index5 = this.msg.charAt(index3);
-                if (index5 == 39) {
+                char c = this.msg.charAt(index3);
+                if (c == '\'') {
                     if (index4 == this.msg.length()) {
                         addPart(Part.Type.INSERT_CHAR, index4, 0, 39);
                         this.needsAutoQuoting = true;
                     } else {
-                        char c = this.msg.charAt(index4);
-                        if (c == '\'') {
+                        char c2 = this.msg.charAt(index4);
+                        if (c2 == '\'') {
                             addPart(Part.Type.SKIP_SYNTAX, index4, 1, 0);
                             index3 = index4 + 1;
-                        } else if (this.aposMode == ApostropheMode.DOUBLE_REQUIRED || c == '{' || c == '}' || ((parentType == ArgType.CHOICE && c == '|') || (parentType.hasPluralStyle() && c == '#'))) {
+                        } else if (this.aposMode == ApostropheMode.DOUBLE_REQUIRED || c2 == '{' || c2 == '}' || ((parentType == ArgType.CHOICE && c2 == '|') || (parentType.hasPluralStyle() && c2 == '#'))) {
                             addPart(Part.Type.SKIP_SYNTAX, index4 - 1, 1, 0);
                             while (true) {
                                 index2 = this.msg.indexOf(39, index4 + 1);
                                 if (index2 < 0) {
-                                    int index6 = this.msg.length();
-                                    addPart(Part.Type.INSERT_CHAR, index6, 0, 39);
+                                    int index5 = this.msg.length();
+                                    addPart(Part.Type.INSERT_CHAR, index5, 0, 39);
                                     this.needsAutoQuoting = true;
-                                    index3 = index6;
+                                    index3 = index5;
                                     break;
                                 } else if (index2 + 1 >= this.msg.length() || this.msg.charAt(index2 + 1) != '\'') {
                                     addPart(Part.Type.SKIP_SYNTAX, index2, 1, 0);
@@ -423,12 +423,12 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
                             this.needsAutoQuoting = true;
                         }
                     }
-                } else if (parentType.hasPluralStyle() && index5 == 35) {
+                } else if (parentType.hasPluralStyle() && c == '#') {
                     addPart(Part.Type.REPLACE_NUMBER, index4 - 1, 1, 0);
-                } else if (index5 == 123) {
+                } else if (c == '{') {
                     index3 = parseArg(index4 - 1, 1, nestingLevel);
-                } else if ((nestingLevel > 0 && index5 == 125) || (parentType == ArgType.CHOICE && index5 == 124)) {
-                    addLimitPart(msgStart, Part.Type.MSG_LIMIT, index4 - 1, (parentType == ArgType.CHOICE && index5 == 125) ? 0 : 1, nestingLevel);
+                } else if ((nestingLevel > 0 && c == '}') || (parentType == ArgType.CHOICE && c == '|')) {
+                    addLimitPart(msgStart, Part.Type.MSG_LIMIT, index4 - 1, (parentType == ArgType.CHOICE && c == '}') ? 0 : 1, nestingLevel);
                     if (parentType == ArgType.CHOICE) {
                         return index4 - 1;
                     }
@@ -561,28 +561,28 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
         int nestedBraces = 0;
         while (index < this.msg.length()) {
             int index2 = index + 1;
-            int index3 = this.msg.charAt(index);
-            if (index3 == 39) {
-                int index4 = this.msg.indexOf(39, index2);
-                if (index4 >= 0) {
-                    index = index4 + 1;
+            char c = this.msg.charAt(index);
+            if (c == '\'') {
+                int index3 = this.msg.indexOf(39, index2);
+                if (index3 >= 0) {
+                    index = index3 + 1;
                 } else {
                     throw new IllegalArgumentException("Quoted literal argument style text reaches to the end of the message: " + prefix(start));
                 }
-            } else if (index3 == 123) {
+            } else if (c == '{') {
                 nestedBraces++;
                 index = index2;
-            } else if (index3 != 125) {
+            } else if (c != '}') {
                 index = index2;
             } else if (nestedBraces > 0) {
                 nestedBraces--;
                 index = index2;
             } else {
-                int index5 = index2 - 1;
-                int length = index5 - start;
+                int index4 = index2 - 1;
+                int length = index4 - start;
                 if (length <= 65535) {
                     addPart(Part.Type.ARG_STYLE, start, length, 0);
-                    return index5;
+                    return index4;
                 }
                 throw new IndexOutOfBoundsException("Argument style text too long: " + prefix(start));
             }
@@ -890,30 +890,30 @@ public final class MessagePattern implements Cloneable, Freezable<MessagePattern
             return -2;
         }
         int start2 = start + 1;
-        int start3 = s.charAt(start);
-        if (start3 == 48) {
+        char c = s.charAt(start);
+        if (c == '0') {
             if (start2 == limit) {
                 return 0;
             }
             number = 0;
             badNumber = true;
-        } else if (49 > start3 || start3 > 57) {
+        } else if ('1' > c || c > '9') {
             return -1;
         } else {
-            number = start3 - 48;
+            number = c - '0';
             badNumber = false;
         }
         while (start2 < limit) {
-            int start4 = start2 + 1;
-            char c = s.charAt(start2);
-            if ('0' > c || c > '9') {
+            int start3 = start2 + 1;
+            char c2 = s.charAt(start2);
+            if ('0' > c2 || c2 > '9') {
                 return -1;
             }
             if (number >= 214748364) {
                 badNumber = true;
             }
-            number = (number * 10) + (c - '0');
-            start2 = start4;
+            number = (number * 10) + (c2 - '0');
+            start2 = start3;
         }
         if (badNumber) {
             return -2;

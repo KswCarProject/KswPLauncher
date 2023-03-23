@@ -16,9 +16,9 @@ import com.wits.ksw.launcher.view.benzmbux.BenzMbuxBean;
 public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback204;
-    private final View.OnClickListener mCallback205;
-    private final View.OnClickListener mCallback206;
+    private final View.OnClickListener mCallback117;
+    private final View.OnClickListener mCallback118;
+    private final View.OnClickListener mCallback119;
     private long mDirtyFlags;
     private final ImageView mboundView3;
     private final ImageView mboundView4;
@@ -46,9 +46,9 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         imageView2.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback205 = new OnClickListener(this, 2);
-        this.mCallback206 = new OnClickListener(this, 3);
-        this.mCallback204 = new OnClickListener(this, 1);
+        this.mCallback117 = new OnClickListener(this, 1);
+        this.mCallback118 = new OnClickListener(this, 2);
+        this.mCallback119 = new OnClickListener(this, 3);
         invalidateAll();
     }
 
@@ -69,10 +69,10 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 == variableId) {
+        if (20 == variableId) {
             setListItem((BenzMbuxBean) variable);
             return true;
-        } else if (15 != variableId) {
+        } else if (24 != variableId) {
             return false;
         } else {
             setVieModel((BcVieModel) variable);
@@ -85,7 +85,7 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(20);
         super.requestRebind();
     }
 
@@ -94,7 +94,7 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(24);
         super.requestRebind();
     }
 
@@ -123,9 +123,9 @@ public class BenzMbuxItemBindingImpl extends BenzMbuxItemBinding implements OnCl
             listItemSubIcon2 = listItem.getSubIcon2();
         }
         if ((4 & dirtyFlags) != 0) {
-            this.benzMbuxImageView.setOnClickListener(this.mCallback204);
-            this.mboundView3.setOnClickListener(this.mCallback205);
-            this.mboundView4.setOnClickListener(this.mCallback206);
+            this.benzMbuxImageView.setOnClickListener(this.mCallback117);
+            this.mboundView3.setOnClickListener(this.mCallback118);
+            this.mboundView4.setOnClickListener(this.mCallback119);
         }
         if ((5 & dirtyFlags) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.benzMbuxImageView, listItemAppIcon);

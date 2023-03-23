@@ -70,7 +70,7 @@ public class ActivityNtg6DashBoardBindingHdpi1280x720Impl extends ActivityNtg6Da
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);

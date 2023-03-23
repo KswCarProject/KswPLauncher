@@ -126,121 +126,121 @@ public class KeyCycle extends Key {
             r2 = this;
             int r0 = r3.hashCode()
             switch(r0) {
-                case -1249320806: goto L_0x0089;
-                case -1249320805: goto L_0x007f;
-                case -1225497657: goto L_0x0074;
-                case -1225497656: goto L_0x0069;
-                case -1225497655: goto L_0x005e;
-                case -1001078227: goto L_0x0053;
-                case -908189618: goto L_0x0049;
-                case -908189617: goto L_0x003f;
-                case -40300674: goto L_0x0035;
-                case -4379043: goto L_0x002b;
-                case 37232917: goto L_0x0020;
-                case 92909918: goto L_0x0015;
+                case -1249320806: goto L_0x008e;
+                case -1249320805: goto L_0x0084;
+                case -1225497657: goto L_0x0078;
+                case -1225497656: goto L_0x006c;
+                case -1225497655: goto L_0x0060;
+                case -1001078227: goto L_0x0055;
+                case -908189618: goto L_0x004b;
+                case -908189617: goto L_0x0041;
+                case -40300674: goto L_0x0037;
+                case -4379043: goto L_0x002d;
+                case 37232917: goto L_0x0021;
+                case 92909918: goto L_0x0016;
                 case 156108012: goto L_0x0009;
                 default: goto L_0x0007;
             }
         L_0x0007:
-            goto L_0x0093
+            goto L_0x0098
         L_0x0009:
             java.lang.String r0 = "waveOffset"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 11
-            goto L_0x0094
-        L_0x0015:
+            goto L_0x0099
+        L_0x0016:
             java.lang.String r0 = "alpha"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 0
-            goto L_0x0094
-        L_0x0020:
+            goto L_0x0099
+        L_0x0021:
             java.lang.String r0 = "transitionPathRotate"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 5
-            goto L_0x0094
-        L_0x002b:
+            goto L_0x0099
+        L_0x002d:
             java.lang.String r0 = "elevation"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 1
-            goto L_0x0094
-        L_0x0035:
+            goto L_0x0099
+        L_0x0037:
             java.lang.String r0 = "rotation"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 2
-            goto L_0x0094
-        L_0x003f:
+            goto L_0x0099
+        L_0x0041:
             java.lang.String r0 = "scaleY"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 7
-            goto L_0x0094
-        L_0x0049:
+            goto L_0x0099
+        L_0x004b:
             java.lang.String r0 = "scaleX"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 6
-            goto L_0x0094
-        L_0x0053:
+            goto L_0x0099
+        L_0x0055:
             java.lang.String r0 = "progress"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 12
-            goto L_0x0094
-        L_0x005e:
+            goto L_0x0099
+        L_0x0060:
             java.lang.String r0 = "translationZ"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 10
-            goto L_0x0094
-        L_0x0069:
+            goto L_0x0099
+        L_0x006c:
             java.lang.String r0 = "translationY"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 9
-            goto L_0x0094
-        L_0x0074:
+            goto L_0x0099
+        L_0x0078:
             java.lang.String r0 = "translationX"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 8
-            goto L_0x0094
-        L_0x007f:
+            goto L_0x0099
+        L_0x0084:
             java.lang.String r0 = "rotationY"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 4
-            goto L_0x0094
-        L_0x0089:
+            goto L_0x0099
+        L_0x008e:
             java.lang.String r0 = "rotationX"
             boolean r0 = r3.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 3
-            goto L_0x0094
-        L_0x0093:
+            goto L_0x0099
+        L_0x0098:
             r0 = -1
-        L_0x0094:
+        L_0x0099:
             switch(r0) {
-                case 0: goto L_0x00d6;
-                case 1: goto L_0x00d3;
-                case 2: goto L_0x00d0;
-                case 3: goto L_0x00cd;
-                case 4: goto L_0x00ca;
-                case 5: goto L_0x00c7;
-                case 6: goto L_0x00c4;
-                case 7: goto L_0x00c1;
-                case 8: goto L_0x00be;
-                case 9: goto L_0x00bb;
-                case 10: goto L_0x00b8;
-                case 11: goto L_0x00b5;
-                case 12: goto L_0x00b2;
-                default: goto L_0x0097;
+                case 0: goto L_0x00db;
+                case 1: goto L_0x00d8;
+                case 2: goto L_0x00d5;
+                case 3: goto L_0x00d2;
+                case 4: goto L_0x00cf;
+                case 5: goto L_0x00cc;
+                case 6: goto L_0x00c9;
+                case 7: goto L_0x00c6;
+                case 8: goto L_0x00c3;
+                case 9: goto L_0x00c0;
+                case 10: goto L_0x00bd;
+                case 11: goto L_0x00ba;
+                case 12: goto L_0x00b7;
+                default: goto L_0x009c;
             }
-        L_0x0097:
+        L_0x009c:
             java.lang.StringBuilder r0 = new java.lang.StringBuilder
             r0.<init>()
             java.lang.String r1 = "  UNKNOWN  "
@@ -251,43 +251,43 @@ public class KeyCycle extends Key {
             android.util.Log.v(r1, r0)
             r0 = 2143289344(0x7fc00000, float:NaN)
             return r0
-        L_0x00b2:
+        L_0x00b7:
             float r0 = r2.mProgress
             return r0
-        L_0x00b5:
+        L_0x00ba:
             float r0 = r2.mWaveOffset
             return r0
-        L_0x00b8:
+        L_0x00bd:
             float r0 = r2.mTranslationZ
             return r0
-        L_0x00bb:
+        L_0x00c0:
             float r0 = r2.mTranslationY
             return r0
-        L_0x00be:
+        L_0x00c3:
             float r0 = r2.mTranslationX
             return r0
-        L_0x00c1:
+        L_0x00c6:
             float r0 = r2.mScaleY
             return r0
-        L_0x00c4:
+        L_0x00c9:
             float r0 = r2.mScaleX
             return r0
-        L_0x00c7:
+        L_0x00cc:
             float r0 = r2.mTransitionPathRotate
             return r0
-        L_0x00ca:
+        L_0x00cf:
             float r0 = r2.mRotationY
             return r0
-        L_0x00cd:
+        L_0x00d2:
             float r0 = r2.mRotationX
             return r0
-        L_0x00d0:
+        L_0x00d5:
             float r0 = r2.mRotation
             return r0
-        L_0x00d3:
+        L_0x00d8:
             float r0 = r2.mElevation
             return r0
-        L_0x00d6:
+        L_0x00db:
             float r0 = r2.mAlpha
             return r0
         */
@@ -582,210 +582,210 @@ public class KeyCycle extends Key {
             r1 = this;
             int r0 = r2.hashCode()
             switch(r0) {
-                case -1812823328: goto L_0x00ac;
-                case -1249320806: goto L_0x00a2;
-                case -1249320805: goto L_0x0098;
-                case -1225497657: goto L_0x008d;
-                case -1225497656: goto L_0x0082;
-                case -1001078227: goto L_0x0078;
-                case -908189618: goto L_0x006e;
-                case -908189617: goto L_0x0063;
-                case -40300674: goto L_0x0059;
-                case -4379043: goto L_0x004f;
-                case 37232917: goto L_0x0043;
-                case 92909918: goto L_0x0038;
-                case 156108012: goto L_0x002c;
+                case -1812823328: goto L_0x00b1;
+                case -1249320806: goto L_0x00a7;
+                case -1249320805: goto L_0x009d;
+                case -1225497657: goto L_0x0091;
+                case -1225497656: goto L_0x0085;
+                case -1001078227: goto L_0x007b;
+                case -908189618: goto L_0x0071;
+                case -908189617: goto L_0x0066;
+                case -40300674: goto L_0x005c;
+                case -4379043: goto L_0x0052;
+                case 37232917: goto L_0x0045;
+                case 92909918: goto L_0x003a;
+                case 156108012: goto L_0x002d;
                 case 184161818: goto L_0x0020;
                 case 579057826: goto L_0x0015;
                 case 1317633238: goto L_0x0009;
                 default: goto L_0x0007;
             }
         L_0x0007:
-            goto L_0x00b7
+            goto L_0x00bd
         L_0x0009:
             java.lang.String r0 = "mTranslationZ"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 13
-            goto L_0x00b8
+            goto L_0x00be
         L_0x0015:
             java.lang.String r0 = "curveFit"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 1
-            goto L_0x00b8
+            goto L_0x00be
         L_0x0020:
             java.lang.String r0 = "wavePeriod"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 14
-            goto L_0x00b8
-        L_0x002c:
+            goto L_0x00be
+        L_0x002d:
             java.lang.String r0 = "waveOffset"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 15
-            goto L_0x00b8
-        L_0x0038:
+            goto L_0x00be
+        L_0x003a:
             java.lang.String r0 = "alpha"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 0
-            goto L_0x00b8
-        L_0x0043:
+            goto L_0x00be
+        L_0x0045:
             java.lang.String r0 = "transitionPathRotate"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 10
-            goto L_0x00b8
-        L_0x004f:
+            goto L_0x00be
+        L_0x0052:
             java.lang.String r0 = "elevation"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 2
-            goto L_0x00b8
-        L_0x0059:
+            goto L_0x00be
+        L_0x005c:
             java.lang.String r0 = "rotation"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 4
-            goto L_0x00b8
-        L_0x0063:
+            goto L_0x00be
+        L_0x0066:
             java.lang.String r0 = "scaleY"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 8
-            goto L_0x00b8
-        L_0x006e:
+            goto L_0x00be
+        L_0x0071:
             java.lang.String r0 = "scaleX"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 7
-            goto L_0x00b8
-        L_0x0078:
+            goto L_0x00be
+        L_0x007b:
             java.lang.String r0 = "progress"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 3
-            goto L_0x00b8
-        L_0x0082:
+            goto L_0x00be
+        L_0x0085:
             java.lang.String r0 = "translationY"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 12
-            goto L_0x00b8
-        L_0x008d:
+            goto L_0x00be
+        L_0x0091:
             java.lang.String r0 = "translationX"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 11
-            goto L_0x00b8
-        L_0x0098:
+            goto L_0x00be
+        L_0x009d:
             java.lang.String r0 = "rotationY"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 6
-            goto L_0x00b8
-        L_0x00a2:
+            goto L_0x00be
+        L_0x00a7:
             java.lang.String r0 = "rotationX"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 5
-            goto L_0x00b8
-        L_0x00ac:
+            goto L_0x00be
+        L_0x00b1:
             java.lang.String r0 = "transitionEasing"
             boolean r0 = r2.equals(r0)
             if (r0 == 0) goto L_0x0007
             r0 = 9
-            goto L_0x00b8
-        L_0x00b7:
-            r0 = -1
-        L_0x00b8:
-            switch(r0) {
-                case 0: goto L_0x0127;
-                case 1: goto L_0x0120;
-                case 2: goto L_0x0119;
-                case 3: goto L_0x0112;
-                case 4: goto L_0x010b;
-                case 5: goto L_0x0104;
-                case 6: goto L_0x00fd;
-                case 7: goto L_0x00f6;
-                case 8: goto L_0x00ef;
-                case 9: goto L_0x00e8;
-                case 10: goto L_0x00e1;
-                case 11: goto L_0x00da;
-                case 12: goto L_0x00d3;
-                case 13: goto L_0x00cc;
-                case 14: goto L_0x00c5;
-                case 15: goto L_0x00bd;
-                default: goto L_0x00bb;
-            }
-        L_0x00bb:
-            goto L_0x012e
+            goto L_0x00be
         L_0x00bd:
+            r0 = -1
+        L_0x00be:
+            switch(r0) {
+                case 0: goto L_0x012d;
+                case 1: goto L_0x0126;
+                case 2: goto L_0x011f;
+                case 3: goto L_0x0118;
+                case 4: goto L_0x0111;
+                case 5: goto L_0x010a;
+                case 6: goto L_0x0103;
+                case 7: goto L_0x00fc;
+                case 8: goto L_0x00f5;
+                case 9: goto L_0x00ee;
+                case 10: goto L_0x00e7;
+                case 11: goto L_0x00e0;
+                case 12: goto L_0x00d9;
+                case 13: goto L_0x00d2;
+                case 14: goto L_0x00cb;
+                case 15: goto L_0x00c3;
+                default: goto L_0x00c1;
+            }
+        L_0x00c1:
+            goto L_0x0134
+        L_0x00c3:
             float r0 = r1.toFloat(r3)
             r1.mWaveOffset = r0
-            goto L_0x012e
-        L_0x00c5:
+            goto L_0x0134
+        L_0x00cb:
             float r0 = r1.toFloat(r3)
             r1.mWavePeriod = r0
-            goto L_0x012e
-        L_0x00cc:
+            goto L_0x0134
+        L_0x00d2:
             float r0 = r1.toFloat(r3)
             r1.mTranslationZ = r0
-            goto L_0x012e
-        L_0x00d3:
+            goto L_0x0134
+        L_0x00d9:
             float r0 = r1.toFloat(r3)
             r1.mTranslationY = r0
-            goto L_0x012e
-        L_0x00da:
+            goto L_0x0134
+        L_0x00e0:
             float r0 = r1.toFloat(r3)
             r1.mTranslationX = r0
-            goto L_0x012e
-        L_0x00e1:
+            goto L_0x0134
+        L_0x00e7:
             float r0 = r1.toFloat(r3)
             r1.mTransitionPathRotate = r0
-            goto L_0x012e
-        L_0x00e8:
+            goto L_0x0134
+        L_0x00ee:
             java.lang.String r0 = r3.toString()
             r1.mTransitionEasing = r0
-            goto L_0x012e
-        L_0x00ef:
+            goto L_0x0134
+        L_0x00f5:
             float r0 = r1.toFloat(r3)
             r1.mScaleY = r0
-            goto L_0x012e
-        L_0x00f6:
+            goto L_0x0134
+        L_0x00fc:
             float r0 = r1.toFloat(r3)
             r1.mScaleX = r0
-            goto L_0x012e
-        L_0x00fd:
+            goto L_0x0134
+        L_0x0103:
             float r0 = r1.toFloat(r3)
             r1.mRotationY = r0
-            goto L_0x012e
-        L_0x0104:
+            goto L_0x0134
+        L_0x010a:
             float r0 = r1.toFloat(r3)
             r1.mRotationX = r0
-            goto L_0x012e
-        L_0x010b:
+            goto L_0x0134
+        L_0x0111:
             float r0 = r1.toFloat(r3)
             r1.mRotation = r0
-            goto L_0x012e
-        L_0x0112:
+            goto L_0x0134
+        L_0x0118:
             float r0 = r1.toFloat(r3)
             r1.mProgress = r0
-            goto L_0x012e
-        L_0x0119:
+            goto L_0x0134
+        L_0x011f:
             float r0 = r1.toFloat(r3)
             r1.mElevation = r0
-            goto L_0x012e
-        L_0x0120:
+            goto L_0x0134
+        L_0x0126:
             int r0 = r1.toInt(r3)
             r1.mCurveFit = r0
-            goto L_0x012e
-        L_0x0127:
+            goto L_0x0134
+        L_0x012d:
             float r0 = r1.toFloat(r3)
             r1.mAlpha = r0
-        L_0x012e:
+        L_0x0134:
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: android.support.constraint.motion.KeyCycle.setValue(java.lang.String, java.lang.Object):void");

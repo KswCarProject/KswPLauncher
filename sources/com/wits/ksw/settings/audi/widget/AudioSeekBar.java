@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.wits.ksw.R;
 
 public class AudioSeekBar extends LinearLayout {
-    private static final String TAG = ("KSWLauncher." + AudioSeekBar.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + AudioSeekBar.class.getSimpleName());
     private static final int[] VISIBILITY_FLAGS = {0, 4, 8};
     private TextView ltextView;
     private TextView rtextView;

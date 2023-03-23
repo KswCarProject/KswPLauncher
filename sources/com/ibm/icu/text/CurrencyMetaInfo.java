@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import kotlin.jvm.internal.LongCompanionObject;
 
 public class CurrencyMetaInfo {
     @Deprecated
@@ -35,7 +36,7 @@ public class CurrencyMetaInfo {
     }
 
     public static final class CurrencyFilter {
-        private static final CurrencyFilter ALL = new CurrencyFilter((String) null, (String) null, Long.MIN_VALUE, Long.MAX_VALUE, false);
+        private static final CurrencyFilter ALL = new CurrencyFilter((String) null, (String) null, Long.MIN_VALUE, LongCompanionObject.MAX_VALUE, false);
         public final String currency;
         public final long from;
         public final String region;
@@ -100,7 +101,7 @@ public class CurrencyMetaInfo {
         }
 
         public CurrencyFilter withDateRange(Date from2, Date to2) {
-            return new CurrencyFilter(this.region, this.currency, from2 == null ? Long.MIN_VALUE : from2.getTime(), to2 == null ? Long.MAX_VALUE : to2.getTime(), this.tenderOnly);
+            return new CurrencyFilter(this.region, this.currency, from2 == null ? Long.MIN_VALUE : from2.getTime(), to2 == null ? LongCompanionObject.MAX_VALUE : to2.getTime(), this.tenderOnly);
         }
 
         public CurrencyFilter withDate(long date) {
@@ -227,7 +228,7 @@ public class CurrencyMetaInfo {
     }
 
     private static String dateString(long date) {
-        if (date == Long.MAX_VALUE || date == Long.MIN_VALUE) {
+        if (date == LongCompanionObject.MAX_VALUE || date == Long.MIN_VALUE) {
             return null;
         }
         return Grego.timeToString(date);

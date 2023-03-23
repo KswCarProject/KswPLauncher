@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:tag="layout/fragment_gs_video_edit_0" style="@style/id8_gs_edit_main_card_container_left_padding">
+    <ImageView android:id="@+id/id8_gs_video_edit" android:background="@drawable/gs_id8_main_icon_video" style="@style/id8_gs_main_big_card_size"/>
+    <ImageView android:tag="binding_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp" android:src="@drawable/gs_id8_main_icon_video_btn" android:layout_alignBottom="@+id/id8_gs_video_edit" android:layout_marginStart="6dp"/>
+    <ImageView android:id="@+id/video_id8_gs_prev" android:tag="binding_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:src="@drawable/gs_id8_main_icon_music_btn_prev_n" android:layout_alignBottom="@+id/id8_gs_video_edit" android:layout_marginStart="10dp"/>
+    <ImageView android:id="@+id/video_id8_gs_playPause" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:layout_alignBottom="@+id/id8_gs_video_edit" android:layout_centerHorizontal="true"/>
+    <ImageView android:id="@+id/video_id8_gs_next" android:tag="binding_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:src="@drawable/gs_id8_main_icon_music_btn_next_n" android:layout_alignRight="@+id/id8_gs_video_edit" android:layout_alignBottom="@+id/id8_gs_video_edit" android:layout_marginEnd="10dp"/>
+    <LinearLayout android:orientation="vertical" style="@style/id8_gs_main_big_card_size">
+        <TextView android:text="@string/ksw_id8_hd_video" style="@style/id8_gs_main_card_title"/>
+        <TextView android:textSize="17sp" android:textColor="@color/id8_font_white" android:ellipsize="end" android:id="@+id/tv_song_title" android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_marginStart="43dp"/>
+        <ProgressBar android:layout_gravity="center_horizontal" android:tag="binding_6" android:background="@null" android:focusable="false" android:layout_width="206dp" android:layout_height="4dp" android:layout_marginTop="183dp" android:indeterminate="false" android:progressDrawable="@drawable/bmw_id8_gs_main_icon_progress_bar" android:paddingStart="0dp" android:paddingEnd="0dp" style="?android:attr/progressBarStyleHorizontal"/>
+        <LinearLayout android:orientation="horizontal" android:tag="binding_7" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:layout_weight="1">
+            <TextView android:textSize="13sp" android:textColor="@color/id8_font_white1" android:id="@+id/tv_strTime" android:tag="binding_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="6dp"/>
+            <TextView android:textSize="13sp" android:textColor="@color/id8_font_white1" android:gravity="end" android:id="@+id/tv_totalTime" android:tag="binding_9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="6dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView android:id="@+id/gs_id8_icon_edit_bg" android:background="@drawable/gs_id8_main_icon_edit_bg" style="@style/id8_gs_main_big_card_size"/>
+</RelativeLayout>

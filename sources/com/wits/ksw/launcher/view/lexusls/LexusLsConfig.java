@@ -15,17 +15,24 @@ import java.util.List;
 
 public class LexusLsConfig {
     public static String AppPkgs = "";
+    public static String AppPkgs_V2 = "";
     public static int Height = 0;
     public static final String IS_FIRST = "IS_FIRST";
+    public static final String IS_FIRST_V2 = "IS_FIRST_V2";
     public static final String LEXUS_LS_SAVE_PKG = "LEXUS_LS_SAVE_PKG";
+    public static final String LEXUS_LS_SAVE_PKG_V2 = "LEXUS_LS_SAVE_PKG_V2";
     public static final int MORE = 99999;
     public static String MainAtys = "";
+    public static String MainAtys_V2 = "";
     public static final String PKG_DEFINED_MENU_LEXUSLS = "lexus.ls.defined.pkgname";
+    public static final String PKG_DEFINED_MENU_LEXUSLS_V2 = "lexus.ls.defined.pkgnamev2";
     public static final String[] PKG_MENU_STRS = {"lexus.ls.defined.pkgname.0", "lexus.ls.defined.pkgname.1", "lexus.ls.defined.pkgname.2", "lexus.ls.defined.pkgname.3", "lexus.ls.defined.pkgname.4", "lexus.ls.defined.pkgname.5", "lexus.ls.defined.pkgname.6", "lexus.ls.defined.pkgname.7", "lexus.ls.defined.pkgname.8", "lexus.ls.defined.pkgname.9", "lexus.ls.defined.pkgname.10", "lexus.ls.defined.pkgname.11", "lexus.ls.defined.pkgname.12"};
+    public static final String[] PKG_MENU_STRS_V2 = {"lexus.ls.defined.pkgnamev2.0", "lexus.ls.defined.pkgnamev2.1", "lexus.ls.defined.pkgnamev2.2", "lexus.ls.defined.pkgnamev2.3", "lexus.ls.defined.pkgnamev2.4", "lexus.ls.defined.pkgnamev2.5", "lexus.ls.defined.pkgnamev2.6", "lexus.ls.defined.pkgnamev2.7", "lexus.ls.defined.pkgnamev2.8", "lexus.ls.defined.pkgnamev2.9", "lexus.ls.defined.pkgnamev2.10", "lexus.ls.defined.pkgnamev2.11", "lexus.ls.defined.pkgnamev2.12", "lexus.ls.defined.pkgnamev2.13"};
     public static int Width;
     public static boolean isUpdateApp = false;
     public static String mAddAppAction = "wits.installapp.recevieraction";
     public static ArrayList<LexusLsAppSelBean> mAppList = new ArrayList<>();
+    public static ArrayList<LexusLsAppSelBean> mAppList_V2 = new ArrayList<>();
     public static String mRemoveAppAction = "wits.removeapp.recevieraction";
     public static String mReplaceAppAction = "wits.repalceapp.recevieraction";
 
@@ -33,14 +40,36 @@ public class LexusLsConfig {
         return new String[]{context.getResources().getString(R.string.ksw_id7_navi).trim(), context.getResources().getString(R.string.ksw_id7_music).trim(), context.getResources().getString(R.string.id6_phone).trim(), context.getResources().getString(R.string.gs_application).trim(), context.getResources().getString(R.string.video).trim(), context.getResources().getString(R.string.ksw_id7_car).trim(), context.getResources().getString(R.string.ksw_id7_setting).trim(), context.getResources().getString(R.string.lexus_ac).trim(), context.getResources().getString(R.string.function_text8).trim(), context.getResources().getString(R.string.ksw_id7_dashboard_lable).trim(), context.getResources().getString(R.string.id6_shouj_hulian).trim(), context.getResources().getString(R.string.id6_filemanager).trim(), context.getResources().getString(R.string.add_app).trim()};
     }
 
+    public static String[] getMenuNameList_V2(Context context) {
+        return new String[]{context.getResources().getString(R.string.ksw_id7_navi).trim(), context.getResources().getString(R.string.ksw_id7_music).trim(), context.getResources().getString(R.string.id6_phone).trim(), context.getResources().getString(R.string.gs_application).trim(), context.getResources().getString(R.string.video).trim(), context.getResources().getString(R.string.ksw_id7_car).trim(), context.getResources().getString(R.string.ksw_id7_setting).trim(), context.getResources().getString(R.string.lexus_ac).trim(), context.getResources().getString(R.string.function_text8).trim(), context.getResources().getString(R.string.ksw_id7_dashboard_lable).trim(), context.getResources().getString(R.string.id6_shouj_hulian).trim(), context.getResources().getString(R.string.id6_filemanager).trim(), firstLetterToUpperCase(LetterToLowerCase(context.getResources().getString(R.string.ksw_id8_weather).trim())), context.getResources().getString(R.string.add_app).trim()};
+    }
+
     public static Drawable[] getMenuDrawList(Context context) {
         return new Drawable[]{context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_gps), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_music), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_bt), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_app), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_video), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_car), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_settings), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_air), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_dvr), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_dashboard), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_phonelink), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_file), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_add)};
+    }
+
+    public static Drawable[] getMenuDrawList_V2(Context context) {
+        return new Drawable[]{context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_gps), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_music), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_bt), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_app), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_video), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_car), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_settings), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_air), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_dvr), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_dashboard), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_phonelink), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_file), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_weather), context.getResources().getDrawable(R.drawable.lexus_ls_main_icon_cut_add)};
     }
 
     public static boolean isMenu(String pkg) {
         int i = 0;
         while (true) {
             String[] strArr = PKG_MENU_STRS;
+            if (i >= strArr.length) {
+                return false;
+            }
+            if (pkg.equals(strArr[i])) {
+                return true;
+            }
+            i++;
+        }
+    }
+
+    public static boolean isMenu_V2(String pkg) {
+        int i = 0;
+        while (true) {
+            String[] strArr = PKG_MENU_STRS_V2;
             if (i >= strArr.length) {
                 return false;
             }
@@ -71,6 +100,23 @@ public class LexusLsConfig {
             bean.setAppMainAty("lexus.ls.defined.pkgname." + i);
             bean.setAppIcon(DRAWABLE_NAME_MENU[i]);
             bean.setAppPkg("lexus.ls.defined.pkgname." + i);
+            bean.setItemPos(i);
+            bean.setDeletable(false);
+            list.add(bean);
+        }
+        return list;
+    }
+
+    public static ArrayList<LexusLsAppSelBean> getMenuAppList_V2(Context context) {
+        String[] STR_NAME_MENU = getMenuNameList_V2(context);
+        Drawable[] DRAWABLE_NAME_MENU = getMenuDrawList_V2(context);
+        ArrayList<LexusLsAppSelBean> list = new ArrayList<>();
+        for (int i = 0; i < 14; i++) {
+            LexusLsAppSelBean bean = new LexusLsAppSelBean();
+            bean.setAppName(STR_NAME_MENU[i]);
+            bean.setAppMainAty("lexus.ls.defined.pkgnamev2." + i);
+            bean.setAppIcon(DRAWABLE_NAME_MENU[i]);
+            bean.setAppPkg("lexus.ls.defined.pkgnamev2." + i);
             bean.setItemPos(i);
             bean.setDeletable(false);
             list.add(bean);
@@ -129,5 +175,37 @@ public class LexusLsConfig {
         Settings.System.putString(context.getContentResolver(), LEXUS_LS_SAVE_PKG, AppPkgs);
         Settings.System.putString(context.getContentResolver(), IS_FIRST, "false");
         Log.e("ContentValues", "saveDataOrder =" + appCount);
+    }
+
+    public static void saveDataOrder_V2(Context context) {
+        int appCount = mAppList_V2.size();
+        AppPkgs_V2 = "";
+        MainAtys_V2 = "";
+        for (int i = 0; i < appCount; i++) {
+            LexusLsAppSelBean item = mAppList_V2.get(i);
+            AppPkgs_V2 += item.getAppPkg();
+            AppPkgs_V2 += ";";
+            MainAtys_V2 += item.getAppMainAty();
+            MainAtys_V2 += ";";
+        }
+        Settings.System.putString(context.getContentResolver(), LEXUS_LS_SAVE_PKG_V2, AppPkgs_V2);
+        Settings.System.putString(context.getContentResolver(), IS_FIRST_V2, "false");
+        Log.e("ContentValues", "saveDataOrder_V2 =" + appCount);
+    }
+
+    public static String firstLetterToUpperCase(String str) {
+        try {
+            if (TextUtils.isEmpty(str)) {
+                return "";
+            }
+            return str.substring(0, 1).toUpperCase() + str.substring(1, str.length());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String LetterToLowerCase(String str) {
+        return str.toLowerCase();
     }
 }

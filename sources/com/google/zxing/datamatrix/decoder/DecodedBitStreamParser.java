@@ -2,9 +2,9 @@ package com.google.zxing.datamatrix.decoder;
 
 import com.google.zxing.FormatException;
 import com.google.zxing.common.BitSource;
-import com.ibm.icu.text.SymbolTable;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
+import kotlin.text.Typography;
 
 final class DecodedBitStreamParser {
     private static final char[] C40_BASIC_SET_CHARS = {'*', '*', '*', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -24,7 +24,7 @@ final class DecodedBitStreamParser {
     }
 
     static {
-        char[] cArr = {'!', '\"', '#', SymbolTable.SYMBOL_REF, '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_'};
+        char[] cArr = {'!', Typography.quote, '#', '$', '%', Typography.amp, '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', Typography.less, '=', Typography.greater, '?', '@', '[', '\\', ']', '^', '_'};
         C40_SHIFT2_SET_CHARS = cArr;
         TEXT_SHIFT2_SET_CHARS = cArr;
     }
@@ -406,7 +406,7 @@ final class DecodedBitStreamParser {
                             result.append('*');
                             break;
                         case 2:
-                            result.append('>');
+                            result.append(Typography.greater);
                             break;
                         case 3:
                             result.append(' ');

@@ -69,7 +69,7 @@ public class ActivityDashBoardAudiMib3BindingHdpi1560x700Impl extends ActivityDa
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.UUID;
+import kotlin.text.Typography;
 
 public class SimpleDateFormat extends DateFormat {
     static final /* synthetic */ boolean $assertionsDisabled = false;
@@ -471,120 +472,120 @@ public class SimpleDateFormat extends DateFormat {
         r0 = r9.override;
      */
     /* JADX WARNING: Code restructure failed: missing block: B:310:0x0866, code lost:
-        if (r0 == null) goto L_0x0887;
+        if (r0 == null) goto L_0x0888;
      */
     /* JADX WARNING: Code restructure failed: missing block: B:312:0x086e, code lost:
-        if (r0.compareTo("hebr") == 0) goto L_0x087a;
+        if (r0.compareTo("hebr") == 0) goto L_0x087b;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:314:0x0878, code lost:
-        if (r9.override.indexOf("y=hebr") < 0) goto L_0x0887;
+    /* JADX WARNING: Code restructure failed: missing block: B:314:0x0879, code lost:
+        if (r9.override.indexOf("y=hebr") < 0) goto L_0x0888;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:316:0x087c, code lost:
-        if (r3 <= HEBREW_CAL_CUR_MILLENIUM_START_YEAR) goto L_0x0887;
+    /* JADX WARNING: Code restructure failed: missing block: B:316:0x087d, code lost:
+        if (r3 <= HEBREW_CAL_CUR_MILLENIUM_START_YEAR) goto L_0x0888;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:318:0x0880, code lost:
-        if (r3 >= HEBREW_CAL_CUR_MILLENIUM_END_YEAR) goto L_0x0887;
+    /* JADX WARNING: Code restructure failed: missing block: B:318:0x0881, code lost:
+        if (r3 >= HEBREW_CAL_CUR_MILLENIUM_END_YEAR) goto L_0x0888;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:319:0x0882, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:319:0x0883, code lost:
         r19 = r3 - 5000;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:320:0x0887, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:320:0x0888, code lost:
         r19 = r3;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:321:0x0889, code lost:
-        if (r12 != 2) goto L_0x089a;
+    /* JADX WARNING: Code restructure failed: missing block: B:321:0x088a, code lost:
+        if (r12 != 2) goto L_0x089b;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:322:0x088b, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:322:0x088c, code lost:
         zeroPaddingNumber(r18, r36, r19, 2, 2);
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:323:0x089a, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:323:0x089b, code lost:
         zeroPaddingNumber(r18, r36, r19, r38, Integer.MAX_VALUE);
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:336:0x090a, code lost:
-        if (r40 != 0) goto L_0x0978;
+    /* JADX WARNING: Code restructure failed: missing block: B:336:0x090b, code lost:
+        if (r40 != 0) goto L_0x0979;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:337:0x090c, code lost:
-        if (r14 == null) goto L_0x0978;
+    /* JADX WARNING: Code restructure failed: missing block: B:337:0x090d, code lost:
+        if (r14 == null) goto L_0x0979;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:338:0x090e, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:338:0x090f, code lost:
         r2 = r32;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:339:0x0918, code lost:
-        if (com.ibm.icu.lang.UCharacter.isLowerCase(r10.codePointAt(r2)) == false) goto L_0x0973;
+    /* JADX WARNING: Code restructure failed: missing block: B:339:0x0919, code lost:
+        if (com.ibm.icu.lang.UCharacter.isLowerCase(r10.codePointAt(r2)) == false) goto L_0x0974;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:340:0x091a, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:340:0x091b, code lost:
         r3 = false;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:341:0x0923, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:341:0x0924, code lost:
         switch(com.ibm.icu.text.SimpleDateFormat.AnonymousClass1.$SwitchMap$com$ibm$icu$text$DisplayContext[r41.ordinal()]) {
-            case 1: goto L_0x0944;
-            case 2: goto L_0x0927;
-            case 3: goto L_0x0927;
-            default: goto L_0x0926;
+            case 1: goto L_0x0945;
+            case 2: goto L_0x0928;
+            case 3: goto L_0x0928;
+            default: goto L_0x0927;
         };
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:343:0x092b, code lost:
-        if (r9.formatData.capitalization == null) goto L_0x0946;
+    /* JADX WARNING: Code restructure failed: missing block: B:343:0x092c, code lost:
+        if (r9.formatData.capitalization == null) goto L_0x0947;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:344:0x092d, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:344:0x092e, code lost:
         r4 = r9.formatData.capitalization.get(r0);
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:345:0x0939, code lost:
-        if (r14 != com.ibm.icu.text.DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU) goto L_0x093f;
+    /* JADX WARNING: Code restructure failed: missing block: B:345:0x093a, code lost:
+        if (r14 != com.ibm.icu.text.DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU) goto L_0x0940;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:346:0x093b, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:346:0x093c, code lost:
         r5 = r4[0];
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:347:0x093f, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:347:0x0940, code lost:
         r5 = r4[1];
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:348:0x0942, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:348:0x0943, code lost:
         r3 = r5;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:349:0x0944, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:349:0x0945, code lost:
         r3 = true;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:350:0x0946, code lost:
-        if (r3 == false) goto L_0x096e;
+    /* JADX WARNING: Code restructure failed: missing block: B:350:0x0947, code lost:
+        if (r3 == false) goto L_0x096f;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:352:0x094a, code lost:
-        if (r9.capitalizationBrkIter != null) goto L_0x0954;
+    /* JADX WARNING: Code restructure failed: missing block: B:352:0x094b, code lost:
+        if (r9.capitalizationBrkIter != null) goto L_0x0955;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:353:0x094c, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:353:0x094d, code lost:
         r9.capitalizationBrkIter = com.ibm.icu.text.BreakIterator.getSentenceInstance(r9.locale);
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:354:0x0954, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:354:0x0955, code lost:
         r19 = r0;
         r20 = r1;
         r10.replace(r2, r36.length(), com.ibm.icu.lang.UCharacter.toTitleCase(r9.locale, r10.substring(r2), r9.capitalizationBrkIter, 768));
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:355:0x096e, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:355:0x096f, code lost:
         r19 = r0;
         r20 = r1;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:356:0x0973, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:356:0x0974, code lost:
         r19 = r0;
         r20 = r1;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:357:0x0978, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:357:0x0979, code lost:
         r19 = r0;
         r20 = r1;
         r2 = r32;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:359:0x0986, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:359:0x0987, code lost:
         if (r42.getBeginIndex() != r42.getEndIndex()) goto L_?;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:361:0x0990, code lost:
-        if (r42.getField() != PATTERN_INDEX_TO_DATE_FORMAT_FIELD[r23]) goto L_0x099f;
+    /* JADX WARNING: Code restructure failed: missing block: B:361:0x0991, code lost:
+        if (r42.getField() != PATTERN_INDEX_TO_DATE_FORMAT_FIELD[r23]) goto L_0x09a0;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:362:0x0992, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:362:0x0993, code lost:
         r15.setBeginIndex(r13);
         r15.setEndIndex((r36.length() + r13) - r2);
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:364:0x09a7, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:364:0x09a8, code lost:
         if (r42.getFieldAttribute() != PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE[r23]) goto L_?;
      */
-    /* JADX WARNING: Code restructure failed: missing block: B:365:0x09a9, code lost:
+    /* JADX WARNING: Code restructure failed: missing block: B:365:0x09aa, code lost:
         r15.setBeginIndex(r13);
         r15.setEndIndex((r36.length() + r13) - r2);
      */
@@ -668,7 +669,7 @@ public class SimpleDateFormat extends DateFormat {
             r2 = 4
             r5 = 3
             switch(r3) {
-                case 0: goto L_0x08ab;
+                case 0: goto L_0x08ac;
                 case 1: goto L_0x085c;
                 case 2: goto L_0x0722;
                 case 3: goto L_0x0081;
@@ -721,7 +722,7 @@ public class SimpleDateFormat extends DateFormat {
             r3 = r19
             r4 = r38
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            goto L_0x0906
+            goto L_0x0907
         L_0x009c:
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String r0 = r0.getTimeSeparatorString()
@@ -731,7 +732,7 @@ public class SimpleDateFormat extends DateFormat {
             r32 = r7
             r11 = r8
             r7 = r25
-            goto L_0x0906
+            goto L_0x0907
         L_0x00b0:
             com.ibm.icu.util.ULocale r4 = r35.getLocale()
             com.ibm.icu.impl.DayPeriodRules r4 = com.ibm.icu.impl.DayPeriodRules.getInstance(r4)
@@ -759,7 +760,7 @@ public class SimpleDateFormat extends DateFormat {
             r7 = r28
             r19 = r30
             r6 = r31
-            goto L_0x0906
+            goto L_0x0907
         L_0x00e8:
             r30 = r1
             r27 = r3
@@ -883,7 +884,7 @@ public class SimpleDateFormat extends DateFormat {
             r7 = r28
             r19 = r30
             r6 = r31
-            goto L_0x0906
+            goto L_0x0907
         L_0x01b9:
             r2 = 97
             r0 = r35
@@ -903,7 +904,7 @@ public class SimpleDateFormat extends DateFormat {
             r7 = r28
             r19 = r30
             r6 = r31
-            goto L_0x0906
+            goto L_0x0907
         L_0x01e0:
             java.lang.AssertionError r1 = new java.lang.AssertionError
             r1.<init>()
@@ -986,7 +987,7 @@ public class SimpleDateFormat extends DateFormat {
             r7 = r28
             r1 = r30
             r6 = r31
-            goto L_0x090a
+            goto L_0x090b
         L_0x026f:
             r30 = r1
             r27 = r3
@@ -1042,7 +1043,7 @@ public class SimpleDateFormat extends DateFormat {
             r0 = r20
             r23 = r27
             r1 = r30
-            goto L_0x090a
+            goto L_0x090b
         L_0x02de:
             r30 = r1
             r27 = r3
@@ -1093,7 +1094,7 @@ public class SimpleDateFormat extends DateFormat {
             r0 = r20
             r23 = r27
             r1 = r30
-            goto L_0x090a
+            goto L_0x090b
         L_0x0343:
             r30 = r1
             r27 = r3
@@ -1122,7 +1123,7 @@ public class SimpleDateFormat extends DateFormat {
             r0 = r20
             r23 = r27
             r1 = r30
-            goto L_0x090a
+            goto L_0x090b
         L_0x037a:
             r30 = r1
             r27 = r3
@@ -1143,7 +1144,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppend(r0, r1, r10)
             r19 = r3
             r23 = r27
-            goto L_0x0906
+            goto L_0x0907
         L_0x03a1:
             r3 = r30
         L_0x03a3:
@@ -1192,7 +1193,7 @@ public class SimpleDateFormat extends DateFormat {
             r1 = r3
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x03fc:
             r27 = r3
             r32 = r7
@@ -1206,7 +1207,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppend(r0, r1, r10)
             r19 = r3
             r23 = r27
-            goto L_0x0906
+            goto L_0x0907
         L_0x0415:
             if (r12 != r5) goto L_0x0426
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
@@ -1215,7 +1216,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppend(r0, r1, r10)
             r19 = r3
             r23 = r27
-            goto L_0x0906
+            goto L_0x0907
         L_0x0426:
             int r1 = r3 / 3
             r0 = 1
@@ -1230,7 +1231,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r34
-            goto L_0x0906
+            goto L_0x0907
         L_0x0442:
             r34 = r1
             r27 = r3
@@ -1245,7 +1246,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppend(r0, r1, r10)
             r19 = r4
             r23 = r27
-            goto L_0x0906
+            goto L_0x0907
         L_0x045e:
             r4 = r34
             if (r12 != r5) goto L_0x0471
@@ -1255,7 +1256,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppend(r0, r1, r10)
             r19 = r4
             r23 = r27
-            goto L_0x0906
+            goto L_0x0907
         L_0x0471:
             int r1 = r4 / 3
             r0 = 1
@@ -1269,7 +1270,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r30
-            goto L_0x0906
+            goto L_0x0907
         L_0x048c:
             r30 = r1
             r27 = r3
@@ -1286,7 +1287,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r30
-            goto L_0x0906
+            goto L_0x0907
         L_0x04ac:
             r0 = 7
             int r1 = r11.get(r0)
@@ -1298,7 +1299,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_NARROW
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x04c3:
             if (r12 != r2) goto L_0x04d4
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
@@ -1307,7 +1308,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x04d4:
             r0 = 6
             if (r12 != r0) goto L_0x04ec
@@ -1320,7 +1321,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x04ec:
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String[] r0 = r0.standaloneShortWeekdays
@@ -1328,7 +1329,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_STANDALONE
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x04fb:
             r30 = r1
             r27 = r3
@@ -1359,7 +1360,7 @@ public class SimpleDateFormat extends DateFormat {
             r0 = r20
             r23 = r27
             r1 = r30
-            goto L_0x090a
+            goto L_0x090b
         L_0x0536:
             r30 = r1
             r27 = r3
@@ -1388,7 +1389,7 @@ public class SimpleDateFormat extends DateFormat {
             r0 = r20
             r23 = r27
             r1 = r30
-            goto L_0x090a
+            goto L_0x090b
         L_0x0571:
             r30 = r1
             r27 = r3
@@ -1405,7 +1406,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r30
-            goto L_0x0906
+            goto L_0x0907
         L_0x0592:
             r0 = 7
             int r1 = r11.get(r0)
@@ -1435,7 +1436,7 @@ public class SimpleDateFormat extends DateFormat {
             r0 = r20
             r23 = r27
             r1 = r30
-            goto L_0x090a
+            goto L_0x090b
         L_0x05ce:
             r30 = r1
             r27 = r3
@@ -1458,7 +1459,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r30
-            goto L_0x0906
+            goto L_0x0907
         L_0x05fd:
             r30 = r5
             r5 = 2147483647(0x7fffffff, float:NaN)
@@ -1470,7 +1471,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r30
-            goto L_0x0906
+            goto L_0x0907
         L_0x0615:
             r30 = r1
             r27 = r3
@@ -1491,7 +1492,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppend(r0, r3, r10)
             r19 = r3
             r23 = r27
-            goto L_0x0906
+            goto L_0x0907
         L_0x0639:
             r3 = r30
         L_0x063b:
@@ -1500,7 +1501,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppend(r0, r3, r10)
             r19 = r3
             r23 = r27
-            goto L_0x0906
+            goto L_0x0907
         L_0x0648:
             r27 = r3
             r32 = r7
@@ -1516,7 +1517,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_NARROW
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x0662:
             if (r12 != r2) goto L_0x0673
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
@@ -1525,7 +1526,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x0673:
             r0 = 6
             if (r12 != r0) goto L_0x068b
@@ -1538,7 +1539,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x068b:
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String[] r0 = r0.shortWeekdays
@@ -1546,7 +1547,7 @@ public class SimpleDateFormat extends DateFormat {
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.DAY_FORMAT
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x069a:
             r27 = r3
             r32 = r7
@@ -1586,7 +1587,7 @@ public class SimpleDateFormat extends DateFormat {
         L_0x06db:
             r0 = r20
             r23 = r27
-            goto L_0x090a
+            goto L_0x090b
         L_0x06e1:
             r27 = r3
             r32 = r7
@@ -1608,7 +1609,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r30
-            goto L_0x0906
+            goto L_0x0907
         L_0x070c:
             r30 = r3
             r5 = 2147483647(0x7fffffff, float:NaN)
@@ -1619,7 +1620,7 @@ public class SimpleDateFormat extends DateFormat {
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
             r23 = r27
             r19 = r30
-            goto L_0x0906
+            goto L_0x0907
         L_0x0722:
             r30 = r1
             r27 = r3
@@ -1709,7 +1710,7 @@ public class SimpleDateFormat extends DateFormat {
             r23 = r1
             r1 = r3
             r0 = r20
-            goto L_0x090a
+            goto L_0x090b
         L_0x07b3:
             r1 = r27
             if (r12 != r2) goto L_0x07ee
@@ -1728,7 +1729,7 @@ public class SimpleDateFormat extends DateFormat {
             r23 = r1
             r1 = r3
             r0 = r20
-            goto L_0x090a
+            goto L_0x090b
         L_0x07d4:
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String[] r0 = r0.standaloneMonths
@@ -1743,7 +1744,7 @@ public class SimpleDateFormat extends DateFormat {
             r23 = r1
             r1 = r3
             r0 = r20
-            goto L_0x090a
+            goto L_0x090b
         L_0x07ee:
             if (r12 != r5) goto L_0x0827
             if (r1 != r4) goto L_0x080d
@@ -1761,7 +1762,7 @@ public class SimpleDateFormat extends DateFormat {
             r23 = r1
             r1 = r3
             r0 = r20
-            goto L_0x090a
+            goto L_0x090b
         L_0x080d:
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String[] r0 = r0.standaloneShortMonths
@@ -1776,7 +1777,7 @@ public class SimpleDateFormat extends DateFormat {
             r23 = r1
             r1 = r3
             r0 = r20
-            goto L_0x090a
+            goto L_0x090b
         L_0x0827:
             java.lang.StringBuffer r2 = new java.lang.StringBuffer
             r2.<init>()
@@ -1803,7 +1804,7 @@ public class SimpleDateFormat extends DateFormat {
             safeAppendWithMonthPattern(r1, r3, r10, r0)
             r0 = r20
             r1 = r25
-            goto L_0x090a
+            goto L_0x090b
         L_0x085c:
             r23 = r3
             r32 = r7
@@ -1812,26 +1813,26 @@ public class SimpleDateFormat extends DateFormat {
             r3 = r1
         L_0x0864:
             java.lang.String r0 = r9.override
-            if (r0 == 0) goto L_0x0887
+            if (r0 == 0) goto L_0x0888
             java.lang.String r1 = "hebr"
             int r0 = r0.compareTo(r1)
-            if (r0 == 0) goto L_0x087a
+            if (r0 == 0) goto L_0x087b
             java.lang.String r0 = r9.override
             java.lang.String r1 = "y=hebr"
             int r0 = r0.indexOf(r1)
-            if (r0 < 0) goto L_0x0887
-        L_0x087a:
+            if (r0 < 0) goto L_0x0888
+        L_0x087b:
             r0 = 5000(0x1388, float:7.006E-42)
-            if (r3 <= r0) goto L_0x0887
+            if (r3 <= r0) goto L_0x0888
             r0 = 6000(0x1770, float:8.408E-42)
-            if (r3 >= r0) goto L_0x0887
+            if (r3 >= r0) goto L_0x0888
             int r1 = r3 + -5000
             r19 = r1
-            goto L_0x0889
-        L_0x0887:
+            goto L_0x088a
+        L_0x0888:
             r19 = r3
-        L_0x0889:
-            if (r12 != r4) goto L_0x089a
+        L_0x088a:
+            if (r12 != r4) goto L_0x089b
             r4 = 2
             r5 = 2
             r0 = r35
@@ -1839,8 +1840,8 @@ public class SimpleDateFormat extends DateFormat {
             r2 = r36
             r3 = r19
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            goto L_0x0906
-        L_0x089a:
+            goto L_0x0907
+        L_0x089b:
             r5 = 2147483647(0x7fffffff, float:NaN)
             r0 = r35
             r1 = r18
@@ -1848,8 +1849,8 @@ public class SimpleDateFormat extends DateFormat {
             r3 = r19
             r4 = r38
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-            goto L_0x0906
-        L_0x08ab:
+            goto L_0x0907
+        L_0x08ac:
             r23 = r3
             r32 = r7
             r11 = r8
@@ -1858,40 +1859,40 @@ public class SimpleDateFormat extends DateFormat {
             java.lang.String r0 = r43.getType()
             java.lang.String r1 = "chinese"
             boolean r0 = r0.equals(r1)
-            if (r0 != 0) goto L_0x08f8
+            if (r0 != 0) goto L_0x08f9
             java.lang.String r0 = r43.getType()
             java.lang.String r1 = "dangi"
             boolean r0 = r0.equals(r1)
-            if (r0 == 0) goto L_0x08cc
-            goto L_0x08f8
-        L_0x08cc:
+            if (r0 == 0) goto L_0x08cd
+            goto L_0x08f9
+        L_0x08cd:
             r0 = 5
-            if (r12 != r0) goto L_0x08dc
+            if (r12 != r0) goto L_0x08dd
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String[] r0 = r0.narrowEras
             safeAppend(r0, r3, r10)
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.ERA_NARROW
             r1 = r3
             r0 = r20
-            goto L_0x090a
-        L_0x08dc:
-            if (r12 != r2) goto L_0x08eb
+            goto L_0x090b
+        L_0x08dd:
+            if (r12 != r2) goto L_0x08ec
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String[] r0 = r0.eraNames
             safeAppend(r0, r3, r10)
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.ERA_WIDE
             r1 = r3
             r0 = r20
-            goto L_0x090a
-        L_0x08eb:
+            goto L_0x090b
+        L_0x08ec:
             com.ibm.icu.text.DateFormatSymbols r0 = r9.formatData
             java.lang.String[] r0 = r0.eras
             safeAppend(r0, r3, r10)
             com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage r20 = com.ibm.icu.text.DateFormatSymbols.CapitalizationContextUsage.ERA_ABBREV
             r1 = r3
             r0 = r20
-            goto L_0x090a
-        L_0x08f8:
+            goto L_0x090b
+        L_0x08f9:
             r4 = 1
             r5 = 9
             r0 = r35
@@ -1899,57 +1900,57 @@ public class SimpleDateFormat extends DateFormat {
             r2 = r36
             r19 = r3
             r0.zeroPaddingNumber(r1, r2, r3, r4, r5)
-        L_0x0906:
+        L_0x0907:
             r1 = r19
             r0 = r20
-        L_0x090a:
-            if (r40 != 0) goto L_0x0978
-            if (r14 == 0) goto L_0x0978
+        L_0x090b:
+            if (r40 != 0) goto L_0x0979
+            if (r14 == 0) goto L_0x0979
             r2 = r32
             int r3 = r10.codePointAt(r2)
             boolean r3 = com.ibm.icu.lang.UCharacter.isLowerCase(r3)
-            if (r3 == 0) goto L_0x0973
+            if (r3 == 0) goto L_0x0974
             r3 = 0
             int[] r4 = com.ibm.icu.text.SimpleDateFormat.AnonymousClass1.$SwitchMap$com$ibm$icu$text$DisplayContext
             int r5 = r41.ordinal()
             r4 = r4[r5]
             switch(r4) {
-                case 1: goto L_0x0944;
-                case 2: goto L_0x0927;
-                case 3: goto L_0x0927;
-                default: goto L_0x0926;
+                case 1: goto L_0x0945;
+                case 2: goto L_0x0928;
+                case 3: goto L_0x0928;
+                default: goto L_0x0927;
             }
-        L_0x0926:
-            goto L_0x0946
         L_0x0927:
+            goto L_0x0947
+        L_0x0928:
             com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
             java.util.Map<com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage, boolean[]> r4 = r4.capitalization
-            if (r4 == 0) goto L_0x0946
+            if (r4 == 0) goto L_0x0947
             com.ibm.icu.text.DateFormatSymbols r4 = r9.formatData
             java.util.Map<com.ibm.icu.text.DateFormatSymbols$CapitalizationContextUsage, boolean[]> r4 = r4.capitalization
             java.lang.Object r4 = r4.get(r0)
             boolean[] r4 = (boolean[]) r4
             com.ibm.icu.text.DisplayContext r5 = com.ibm.icu.text.DisplayContext.CAPITALIZATION_FOR_UI_LIST_OR_MENU
-            if (r14 != r5) goto L_0x093f
+            if (r14 != r5) goto L_0x0940
             r5 = 0
             boolean r5 = r4[r5]
-            goto L_0x0942
-        L_0x093f:
+            goto L_0x0943
+        L_0x0940:
             r5 = 1
             boolean r5 = r4[r5]
-        L_0x0942:
+        L_0x0943:
             r3 = r5
-            goto L_0x0946
-        L_0x0944:
+            goto L_0x0947
+        L_0x0945:
             r3 = 1
-        L_0x0946:
-            if (r3 == 0) goto L_0x096e
+        L_0x0947:
+            if (r3 == 0) goto L_0x096f
             com.ibm.icu.text.BreakIterator r4 = r9.capitalizationBrkIter
-            if (r4 != 0) goto L_0x0954
+            if (r4 != 0) goto L_0x0955
             com.ibm.icu.util.ULocale r4 = r9.locale
             com.ibm.icu.text.BreakIterator r4 = com.ibm.icu.text.BreakIterator.getSentenceInstance((com.ibm.icu.util.ULocale) r4)
             r9.capitalizationBrkIter = r4
-        L_0x0954:
+        L_0x0955:
             java.lang.String r4 = r10.substring(r2)
             com.ibm.icu.util.ULocale r5 = r9.locale
             r19 = r0
@@ -1959,44 +1960,44 @@ public class SimpleDateFormat extends DateFormat {
             java.lang.String r0 = com.ibm.icu.lang.UCharacter.toTitleCase(r5, r4, r0, r1)
             int r1 = r36.length()
             r10.replace(r2, r1, r0)
-            goto L_0x097e
-        L_0x096e:
+            goto L_0x097f
+        L_0x096f:
             r19 = r0
             r20 = r1
-            goto L_0x097e
-        L_0x0973:
+            goto L_0x097f
+        L_0x0974:
             r19 = r0
             r20 = r1
-            goto L_0x097e
-        L_0x0978:
+            goto L_0x097f
+        L_0x0979:
             r19 = r0
             r20 = r1
             r2 = r32
-        L_0x097e:
+        L_0x097f:
             int r0 = r42.getBeginIndex()
             int r1 = r42.getEndIndex()
-            if (r0 != r1) goto L_0x09b5
+            if (r0 != r1) goto L_0x09b6
             int r0 = r42.getField()
             int[] r1 = PATTERN_INDEX_TO_DATE_FORMAT_FIELD
             r1 = r1[r23]
-            if (r0 != r1) goto L_0x099f
+            if (r0 != r1) goto L_0x09a0
             r15.setBeginIndex(r13)
             int r0 = r36.length()
             int r0 = r0 + r13
             int r0 = r0 - r2
             r15.setEndIndex(r0)
-            goto L_0x09b5
-        L_0x099f:
+            goto L_0x09b6
+        L_0x09a0:
             java.text.Format$Field r0 = r42.getFieldAttribute()
             com.ibm.icu.text.DateFormat$Field[] r1 = PATTERN_INDEX_TO_DATE_FORMAT_ATTRIBUTE
             r1 = r1[r23]
-            if (r0 != r1) goto L_0x09b5
+            if (r0 != r1) goto L_0x09b6
             r15.setBeginIndex(r13)
             int r0 = r36.length()
             int r0 = r0 + r13
             int r0 = r0 - r2
             r15.setEndIndex(r0)
-        L_0x09b5:
+        L_0x09b6:
             return
         */
         throw new UnsupportedOperationException("Method not decompiled: com.ibm.icu.text.SimpleDateFormat.subFormat(java.lang.StringBuffer, char, int, int, int, com.ibm.icu.text.DisplayContext, java.text.FieldPosition, com.ibm.icu.util.Calendar):void");
@@ -3465,7 +3466,7 @@ public class SimpleDateFormat extends DateFormat {
             r3 = 5
             r2 = 3
             switch(r11) {
-                case 0: goto L_0x090e;
+                case 0: goto L_0x090f;
                 case 1: goto L_0x089d;
                 case 2: goto L_0x076f;
                 case 3: goto L_0x0155;
@@ -3514,10 +3515,10 @@ public class SimpleDateFormat extends DateFormat {
             r8 = r25
             r11 = r41
             r7 = r43
-            if (r38 == 0) goto L_0x0981
+            if (r38 == 0) goto L_0x0982
             int r0 = r15 + r14
             int r1 = r34.length()
-            if (r0 <= r1) goto L_0x096b
+            if (r0 <= r1) goto L_0x096c
             int r0 = -r15
             return r0
         L_0x016e:
@@ -4659,63 +4660,63 @@ public class SimpleDateFormat extends DateFormat {
             r11 = r41
             r7 = r43
             java.lang.String r1 = r12.override
-            if (r1 == 0) goto L_0x08c6
+            if (r1 == 0) goto L_0x08c7
             java.lang.String r2 = "hebr"
             int r1 = r1.compareTo(r2)
-            if (r1 == 0) goto L_0x08bf
+            if (r1 == 0) goto L_0x08c0
             java.lang.String r1 = r12.override
             java.lang.String r2 = "y=hebr"
             int r1 = r1.indexOf(r2)
-            if (r1 < 0) goto L_0x08c6
-        L_0x08bf:
+            if (r1 < 0) goto L_0x08c7
+        L_0x08c0:
             r1 = 1000(0x3e8, float:1.401E-42)
-            if (r6 >= r1) goto L_0x08c6
+            if (r6 >= r1) goto L_0x08c7
             int r6 = r6 + 5000
-            goto L_0x08f3
-        L_0x08c6:
-            if (r14 != r0) goto L_0x08f3
+            goto L_0x08f4
+        L_0x08c7:
+            if (r14 != r0) goto L_0x08f4
             int r1 = r10.getIndex()
             int r1 = countDigits(r13, r15, r1)
-            if (r1 != r0) goto L_0x08f3
+            if (r1 != r0) goto L_0x08f4
             boolean r1 = r41.haveDefaultCentury()
-            if (r1 == 0) goto L_0x08f3
+            if (r1 == 0) goto L_0x08f4
             int r1 = r33.getDefaultCenturyStartYear()
             r2 = 100
             int r1 = r1 % r2
-            if (r6 != r1) goto L_0x08e3
+            if (r6 != r1) goto L_0x08e4
             r3 = 1
-            goto L_0x08e4
-        L_0x08e3:
-            r3 = 0
+            goto L_0x08e5
         L_0x08e4:
+            r3 = 0
+        L_0x08e5:
             r4 = 0
             r40[r4] = r3
             int r3 = r33.getDefaultCenturyStartYear()
             int r3 = r3 / r2
             int r3 = r3 * r2
-            if (r6 >= r1) goto L_0x08f0
-            goto L_0x08f1
-        L_0x08f0:
-            r2 = 0
+            if (r6 >= r1) goto L_0x08f1
+            goto L_0x08f2
         L_0x08f1:
+            r2 = 0
+        L_0x08f2:
             int r3 = r3 + r2
             int r6 = r6 + r3
-        L_0x08f3:
+        L_0x08f4:
             r8 = r31
             r11.set(r8, r6)
             boolean r1 = DelayedHebrewMonthCheck
-            if (r1 == 0) goto L_0x0909
+            if (r1 == 0) goto L_0x090a
             boolean r1 = com.ibm.icu.util.HebrewCalendar.isLeapYear(r6)
-            if (r1 != 0) goto L_0x0906
+            if (r1 != 0) goto L_0x0907
             r1 = 1
             r11.add(r0, r1)
-        L_0x0906:
+        L_0x0907:
             r0 = 0
             DelayedHebrewMonthCheck = r0
-        L_0x0909:
+        L_0x090a:
             int r0 = r10.getIndex()
             return r0
-        L_0x090e:
+        L_0x090f:
             r35 = r5
             r15 = r7
             r10 = r8
@@ -4725,14 +4726,14 @@ public class SimpleDateFormat extends DateFormat {
             r1 = 4
             r11 = r41
             r7 = r43
-            if (r19 == 0) goto L_0x0925
+            if (r19 == 0) goto L_0x0926
             r11.set(r0, r6)
             int r0 = r10.getIndex()
             return r0
-        L_0x0925:
+        L_0x0926:
             r16 = 0
             r0 = 5
-            if (r14 != r0) goto L_0x093e
+            if (r14 != r0) goto L_0x093f
             r3 = 0
             com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
             java.lang.String[] r4 = r0.narrowEras
@@ -4743,10 +4744,10 @@ public class SimpleDateFormat extends DateFormat {
             r18 = r6
             r6 = r41
             int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            goto L_0x0965
-        L_0x093e:
+            goto L_0x0966
+        L_0x093f:
             r18 = r6
-            if (r14 != r1) goto L_0x0954
+            if (r14 != r1) goto L_0x0955
             r3 = 0
             com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
             java.lang.String[] r4 = r0.eraNames
@@ -4756,8 +4757,8 @@ public class SimpleDateFormat extends DateFormat {
             r2 = r15
             r6 = r41
             int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-            goto L_0x0965
-        L_0x0954:
+            goto L_0x0966
+        L_0x0955:
             r3 = 0
             com.ibm.icu.text.DateFormatSymbols r0 = r12.formatData
             java.lang.String[] r4 = r0.eras
@@ -4767,13 +4768,13 @@ public class SimpleDateFormat extends DateFormat {
             r2 = r15
             r6 = r41
             int r0 = r0.matchString(r1, r2, r3, r4, r5, r6)
-        L_0x0965:
+        L_0x0966:
             int r1 = ~r15
-            if (r0 != r1) goto L_0x096a
+            if (r0 != r1) goto L_0x096b
             r0 = -32000(0xffffffffffff8300, float:NaN)
-        L_0x096a:
-            return r0
         L_0x096b:
+            return r0
+        L_0x096c:
             r0 = r33
             r1 = r34
             r2 = r37
@@ -4785,26 +4786,26 @@ public class SimpleDateFormat extends DateFormat {
             r3 = r0
             r1 = r11
             r0 = r39
-            goto L_0x098a
-        L_0x0981:
+            goto L_0x098b
+        L_0x0982:
             r2 = r35
             r0 = r39
             r1 = r11
             java.lang.Number r3 = r12.parseInt(r13, r10, r0, r2)
-        L_0x098a:
-            if (r3 == 0) goto L_0x09a4
+        L_0x098b:
+            if (r3 == 0) goto L_0x09a5
             r4 = 34
-            if (r9 == r4) goto L_0x0998
+            if (r9 == r4) goto L_0x0999
             int r4 = r3.intValue()
             r1.set(r8, r4)
-            goto L_0x099f
-        L_0x0998:
+            goto L_0x09a0
+        L_0x0999:
             int r4 = r3.intValue()
             r1.setRelatedYear(r4)
-        L_0x099f:
+        L_0x09a0:
             int r4 = r10.getIndex()
             return r4
-        L_0x09a4:
+        L_0x09a5:
             int r4 = ~r15
             return r4
         */
@@ -5134,7 +5135,7 @@ public class SimpleDateFormat extends DateFormat {
                     char ch = ((PatternItem) items[i4]).type;
                     int patternCharIndex = getIndexFromChar(ch);
                     if (patternCharIndex == -1) {
-                        throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + '\"');
+                        throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
                     } else if (patternCharIndex < highestLevel2) {
                         highestLevel2 = patternCharIndex;
                     }
@@ -5260,7 +5261,7 @@ public class SimpleDateFormat extends DateFormat {
             }
             return true;
         }
-        throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + '\"');
+        throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
     }
 
     private boolean lowerLevel(Object[] items, int i, int level) throws IllegalArgumentException {
@@ -5270,7 +5271,7 @@ public class SimpleDateFormat extends DateFormat {
         char ch = items[i].type;
         int patternCharIndex = getLevelFromChar(ch);
         if (patternCharIndex == -1) {
-            throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + '\"');
+            throw new IllegalArgumentException("Illegal pattern character '" + ch + "' in \"" + this.pattern + Typography.quote);
         } else if (patternCharIndex >= level) {
             return true;
         } else {

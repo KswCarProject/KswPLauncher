@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:tag="layout/bmw_id8_settings_language_layout_0" android:background="@drawable/id8_settings_system_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/bmw_id8_settings_language_back" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:src="@drawable/id8_settings_system_left" android:layout_centerVertical="true"/>
+    <RelativeLayout android:background="@drawable/id8_settings_system_list" android:layout_width="462dp" android:layout_height="match_parent" android:layout_marginLeft="115dp">
+        <TextView android:textSize="24sp" android:textColor="@color/id8_main_style_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25dp" android:layout_marginTop="13dp" android:text="@string/ksw_id8_settings_title_language" android:textAllCaps="true" style="@style/bmw_id8_text_shadow"/>
+        <android.support.v7.widget.RecyclerView android:scrollbarSize="5dp" android:scrollbarThumbVertical="@drawable/bmw_id8_list_slider" android:scrollbarStyle="outsideOverlay" android:id="@+id/language_recycle" android:paddingLeft="8dp" android:focusable="true" android:scrollbars="vertical" android:descendantFocusability="afterDescendants" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="45dp" android:layout_marginBottom="45dp"/>
+    </RelativeLayout>
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="800dp" android:layout_marginTop="134dp" android:src="@drawable/id8_settings_language_icon"/>
+</RelativeLayout>

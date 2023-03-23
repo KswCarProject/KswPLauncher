@@ -14,7 +14,7 @@ import com.wits.ksw.launcher.model.BcNTG5ViewModel;
 public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback92;
+    private final View.OnClickListener mCallback54;
     private long mDirtyFlags;
 
     public BcNtg5ItemBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -28,7 +28,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
         this.appName.setTag((Object) null);
         this.naviCusLinearLayout.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback92 = new OnClickListener(this, 1);
+        this.mCallback54 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -49,10 +49,10 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 == variableId) {
+        if (20 == variableId) {
             setListItem((BcItem) variable);
             return true;
-        } else if (12 != variableId) {
+        } else if (21 != variableId) {
             return false;
         } else {
             setMBcVieModel((BcNTG5ViewModel) variable);
@@ -65,7 +65,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(20);
         super.requestRebind();
     }
 
@@ -74,7 +74,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(21);
         super.requestRebind();
     }
 
@@ -103,7 +103,7 @@ public class BcNtg5ItemBindingImpl extends BcNtg5ItemBinding implements OnClickL
             TextViewBindingAdapter.setText(this.appName, listItemAppLable);
         }
         if ((4 & dirtyFlags) != 0) {
-            this.appIcon.setOnClickListener(this.mCallback92);
+            this.appIcon.setOnClickListener(this.mCallback54);
         }
     }
 

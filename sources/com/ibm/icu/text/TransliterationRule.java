@@ -225,7 +225,7 @@ class TransliterationRule {
         }
         Utility.appendToRule(rule, this.postContext, escapeUnprintable, quoteBuf);
         if ((this.flags & 2) != 0) {
-            rule.append(SymbolTable.SYMBOL_REF);
+            rule.append('$');
         }
         Utility.appendToRule(rule, " > ", true, escapeUnprintable, quoteBuf);
         Utility.appendToRule(rule, this.output.toReplacerPattern(escapeUnprintable), true, escapeUnprintable, quoteBuf);

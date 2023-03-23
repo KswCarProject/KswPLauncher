@@ -11,17 +11,17 @@ import com.wits.ksw.launcher.land_rover.model.LandroverViewModel;
 public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBottomLayBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback179;
-    private final View.OnClickListener mCallback180;
-    private final View.OnClickListener mCallback181;
-    private final View.OnClickListener mCallback182;
-    private final View.OnClickListener mCallback183;
-    private final View.OnClickListener mCallback184;
-    private final View.OnClickListener mCallback185;
-    private final View.OnClickListener mCallback186;
-    private final View.OnClickListener mCallback187;
-    private final View.OnClickListener mCallback188;
-    private final View.OnClickListener mCallback189;
+    private final View.OnClickListener mCallback101;
+    private final View.OnClickListener mCallback102;
+    private final View.OnClickListener mCallback103;
+    private final View.OnClickListener mCallback104;
+    private final View.OnClickListener mCallback105;
+    private final View.OnClickListener mCallback106;
+    private final View.OnClickListener mCallback107;
+    private final View.OnClickListener mCallback108;
+    private final View.OnClickListener mCallback109;
+    private final View.OnClickListener mCallback110;
+    private final View.OnClickListener mCallback111;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
 
@@ -48,17 +48,17 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
         this.mboundView0 = relativeLayout;
         relativeLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback188 = new OnClickListener(this, 10);
-        this.mCallback186 = new OnClickListener(this, 8);
-        this.mCallback184 = new OnClickListener(this, 6);
-        this.mCallback182 = new OnClickListener(this, 4);
-        this.mCallback180 = new OnClickListener(this, 2);
-        this.mCallback179 = new OnClickListener(this, 1);
-        this.mCallback189 = new OnClickListener(this, 11);
-        this.mCallback187 = new OnClickListener(this, 9);
-        this.mCallback185 = new OnClickListener(this, 7);
-        this.mCallback183 = new OnClickListener(this, 5);
-        this.mCallback181 = new OnClickListener(this, 3);
+        this.mCallback106 = new OnClickListener(this, 6);
+        this.mCallback104 = new OnClickListener(this, 4);
+        this.mCallback102 = new OnClickListener(this, 2);
+        this.mCallback110 = new OnClickListener(this, 10);
+        this.mCallback108 = new OnClickListener(this, 8);
+        this.mCallback107 = new OnClickListener(this, 7);
+        this.mCallback105 = new OnClickListener(this, 5);
+        this.mCallback103 = new OnClickListener(this, 3);
+        this.mCallback111 = new OnClickListener(this, 11);
+        this.mCallback101 = new OnClickListener(this, 1);
+        this.mCallback109 = new OnClickListener(this, 9);
         invalidateAll();
     }
 
@@ -79,7 +79,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (4 != variableId) {
+        if (7 != variableId) {
             return false;
         }
         setLauncherViewModel((LandroverViewModel) variable);
@@ -91,7 +91,7 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(4);
+        notifyPropertyChanged(7);
         super.requestRebind();
     }
 
@@ -109,17 +109,17 @@ public class LandroverMainBottomLayBinding1280x660Impl extends LandroverMainBott
         }
         LandroverViewModel landroverViewModel = this.mLauncherViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.landroverMainBottomAirBtn.setOnClickListener(this.mCallback186);
-            this.landroverMainBottomBtBtn.setOnClickListener(this.mCallback184);
-            this.landroverMainBottomDvrBtn.setOnClickListener(this.mCallback182);
-            this.landroverMainBottomGpsBtn.setOnClickListener(this.mCallback183);
-            this.landroverMainBottomMenuBtn.setOnClickListener(this.mCallback180);
-            this.landroverMainBottomOffBtn.setOnClickListener(this.mCallback189);
-            this.landroverMainBottomParkassistBtn.setOnClickListener(this.mCallback188);
-            this.landroverMainBottomRadarBtn.setOnClickListener(this.mCallback187);
-            this.landroverMainBottomReturnBtn.setOnClickListener(this.mCallback179);
-            this.landroverMainBottomSetupBtn.setOnClickListener(this.mCallback181);
-            this.landroverMainBottomVideoBtn.setOnClickListener(this.mCallback185);
+            this.landroverMainBottomAirBtn.setOnClickListener(this.mCallback108);
+            this.landroverMainBottomBtBtn.setOnClickListener(this.mCallback106);
+            this.landroverMainBottomDvrBtn.setOnClickListener(this.mCallback104);
+            this.landroverMainBottomGpsBtn.setOnClickListener(this.mCallback105);
+            this.landroverMainBottomMenuBtn.setOnClickListener(this.mCallback102);
+            this.landroverMainBottomOffBtn.setOnClickListener(this.mCallback111);
+            this.landroverMainBottomParkassistBtn.setOnClickListener(this.mCallback110);
+            this.landroverMainBottomRadarBtn.setOnClickListener(this.mCallback109);
+            this.landroverMainBottomReturnBtn.setOnClickListener(this.mCallback101);
+            this.landroverMainBottomSetupBtn.setOnClickListener(this.mCallback103);
+            this.landroverMainBottomVideoBtn.setOnClickListener(this.mCallback107);
         }
     }
 

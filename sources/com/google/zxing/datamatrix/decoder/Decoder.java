@@ -7,6 +7,7 @@ import com.google.zxing.common.DecoderResult;
 import com.google.zxing.common.reedsolomon.GenericGF;
 import com.google.zxing.common.reedsolomon.ReedSolomonDecoder;
 import com.google.zxing.common.reedsolomon.ReedSolomonException;
+import kotlin.UByte;
 
 public final class Decoder {
     private final ReedSolomonDecoder rsDecoder = new ReedSolomonDecoder(GenericGF.DATA_MATRIX_FIELD_256);
@@ -41,7 +42,7 @@ public final class Decoder {
         int length = bArr.length;
         int[] iArr = new int[length];
         for (int i2 = 0; i2 < length; i2++) {
-            iArr[i2] = bArr[i2] & 255;
+            iArr[i2] = bArr[i2] & UByte.MAX_VALUE;
         }
         try {
             this.rsDecoder.decode(iArr, bArr.length - i);

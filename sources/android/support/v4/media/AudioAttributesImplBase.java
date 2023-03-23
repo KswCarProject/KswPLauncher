@@ -1,6 +1,7 @@
 package android.support.v4.media;
 
 import android.os.Bundle;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.Arrays;
 
 class AudioAttributesImplBase implements AudioAttributesImpl {
@@ -55,7 +56,7 @@ class AudioAttributesImplBase implements AudioAttributesImpl {
         } else if (legacyStream == 7) {
             flags |= 1;
         }
-        return flags & 273;
+        return flags & BaseQuickAdapter.HEADER_VIEW;
     }
 
     public Bundle toBundle() {

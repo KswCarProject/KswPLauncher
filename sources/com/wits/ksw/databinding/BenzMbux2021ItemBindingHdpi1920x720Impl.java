@@ -16,10 +16,10 @@ import com.wits.ksw.launcher.view.benzmbux2021.BenzMbux2021Bean;
 public class BenzMbux2021ItemBindingHdpi1920x720Impl extends BenzMbux2021ItemBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback207;
-    private final View.OnClickListener mCallback208;
-    private final View.OnClickListener mCallback209;
-    private final View.OnClickListener mCallback210;
+    private final View.OnClickListener mCallback329;
+    private final View.OnClickListener mCallback330;
+    private final View.OnClickListener mCallback331;
+    private final View.OnClickListener mCallback332;
     private long mDirtyFlags;
     private final ImageView mboundView4;
     private final ImageView mboundView5;
@@ -48,10 +48,10 @@ public class BenzMbux2021ItemBindingHdpi1920x720Impl extends BenzMbux2021ItemBin
         imageView2.setTag((Object) null);
         this.rlContain.setTag("naviCusLinearLayout");
         setRootTag(root);
-        this.mCallback210 = new OnClickListener(this, 4);
-        this.mCallback209 = new OnClickListener(this, 3);
-        this.mCallback207 = new OnClickListener(this, 1);
-        this.mCallback208 = new OnClickListener(this, 2);
+        this.mCallback332 = new OnClickListener(this, 4);
+        this.mCallback331 = new OnClickListener(this, 3);
+        this.mCallback330 = new OnClickListener(this, 2);
+        this.mCallback329 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -72,10 +72,10 @@ public class BenzMbux2021ItemBindingHdpi1920x720Impl extends BenzMbux2021ItemBin
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 == variableId) {
+        if (20 == variableId) {
             setListItem((BenzMbux2021Bean) variable);
             return true;
-        } else if (15 != variableId) {
+        } else if (24 != variableId) {
             return false;
         } else {
             setVieModel((BcVieModel) variable);
@@ -88,7 +88,7 @@ public class BenzMbux2021ItemBindingHdpi1920x720Impl extends BenzMbux2021ItemBin
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(11);
+        notifyPropertyChanged(20);
         super.requestRebind();
     }
 
@@ -97,7 +97,7 @@ public class BenzMbux2021ItemBindingHdpi1920x720Impl extends BenzMbux2021ItemBin
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(15);
+        notifyPropertyChanged(24);
         super.requestRebind();
     }
 
@@ -128,10 +128,10 @@ public class BenzMbux2021ItemBindingHdpi1920x720Impl extends BenzMbux2021ItemBin
             listItemAppTip = listItem.getAppTip();
         }
         if ((4 & dirtyFlags) != 0) {
-            this.benzMbux2021ImageView.setOnClickListener(this.mCallback207);
-            this.benzMbux2021Tip.setOnClickListener(this.mCallback208);
-            this.mboundView4.setOnClickListener(this.mCallback209);
-            this.mboundView5.setOnClickListener(this.mCallback210);
+            this.benzMbux2021ImageView.setOnClickListener(this.mCallback329);
+            this.benzMbux2021Tip.setOnClickListener(this.mCallback330);
+            this.mboundView4.setOnClickListener(this.mCallback331);
+            this.mboundView5.setOnClickListener(this.mCallback332);
         }
         if ((5 & dirtyFlags) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.benzMbux2021ImageView, listItemAppIcon);

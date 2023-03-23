@@ -34,9 +34,25 @@ public class AppInfoUtils {
     public static final String[] ALS_ID7_UI_ATYS_DISMISS_DESK = {"com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.wits.log.MainActivity"};
     public static final String[] ATYS_DISMISS = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.ksw.media.StartActivity", "com.wits.screencast.myapplication.MainActivity", "com.wits.log.MainActivity"};
     public static final String[] ATYS_DISMISS_DESK = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.wits.log.MainActivity"};
-    public static final String[] ATYS_DISMISS_MUSIC = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.android.vending.AssetBrowserActivity", "com.wits.ksw.MainActivity", "com.navngo.igo.javaclient.MainActivity", "com.estrongs.android.pop.view.FileExplorerActivity", "com.google.android.maps.MapsActivity", "com.autonavi.auto.remote.fill.UsbFillActivity", "com.android.settings.Settings", "com.wits.csp.eq.view.StartActivity", "com.wits.apk.MainActivity", LauncherViewModel.CLS_CHROME, "com.wits.log.MainActivity"};
+    public static final String[] ATYS_DISMISS_MUSIC = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.android.vending.AssetBrowserActivity", "com.wits.ksw.MainActivity", "com.navngo.igo.javaclient.MainActivity", "com.estrongs.android.pop.view.FileExplorerActivity", "com.google.android.maps.MapsActivity", "com.autonavi.auto.remote.fill.UsbFillActivity", "com.android.settings.Settings", "com.wits.csp.eq.view.StartActivity", "com.wits.apk.MainActivity", LauncherViewModel.CLS_CHROME, "com.wits.log.MainActivity", "com.wits.othersapp.activity.MainActivity", "com.txznet.weather.MainActivity", "com.android.stk.StkMain", "com.wits.logcat.MainActivity"};
     public static final String[] ID7_ALS_DISMISS_DESK = {"com.autonavi.auto.remote.fill.UsbFillActivity", "com.wits.ksw.bt.StartActivity", "com.android.deskclock.DeskClock", "com.iflytek.inputmethod.LauncherActivity", "com.wits.ksw.MainActivity", "com.wits.screencast.myapplication.MainActivity", "com.android.shell.ui.MainActivity", "com.suding.speedplay.ui.MainActivity", "com.wits.log.MainActivity"};
     public static final String[] PKGS_DISMISS = {"com.autonavi.amapauto", "com.wits.ksw.bt", "com.android.deskclock", "com.iflytek.inputmethod.google", BuildConfig.APPLICATION_ID, "com.wits.ksw.media"};
+    public static final String[] PKG_FREEDOM_MAP = {"com.autonavi.amapauto", "com.google.android.apps.maps", "com.kingwaytek.naviking3d", "com.nng.igo.primong.igoworld"};
+    private static final String TAG = AppInfoUtils.class.getSimpleName();
+
+    public static boolean isContainFreedomMap(String pkg) {
+        int i = 0;
+        while (true) {
+            String[] strArr = PKG_FREEDOM_MAP;
+            if (i >= strArr.length) {
+                return false;
+            }
+            if (strArr[i].equals(pkg)) {
+                return true;
+            }
+            i++;
+        }
+    }
 
     public static boolean isContainApp(String cls) {
         int i = 0;
@@ -57,7 +73,7 @@ public class AppInfoUtils {
             return false;
         }
         for (int i = 0; i < strings.length; i++) {
-            Log.i("liuhao AAAA ", strings[i]);
+            Log.i(TAG, strings[i]);
             if (strings[i].equals(cls)) {
                 return true;
             }
@@ -89,7 +105,7 @@ public class AppInfoUtils {
         List<LexusLsAppSelBean> beans = new ArrayList<>();
         int tmpAppIndex = 0;
         for (ResolveInfo info : infos) {
-            Log.e("liuhao", "findSelApps..name " + info.activityInfo.loadLabel(pm) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
+            Log.e(TAG, "findSelApps..name " + info.activityInfo.loadLabel(pm) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
             if (!isContainApp(info.activityInfo.name)) {
                 LexusLsAppSelBean bean = new LexusLsAppSelBean();
                 bean.setAppIcon(info.activityInfo.loadIcon(pm));
@@ -108,7 +124,7 @@ public class AppInfoUtils {
         Iterator<ResolveInfo> it;
         List<ResolveInfo> infos;
         int i = TYPE;
-        Log.i("AppInfoUtils", "TYPE = " + i);
+        Log.i(TAG, "TYPE = " + i);
         PackageManager pm = context.getPackageManager();
         List<ResolveInfo> infos2 = getAllApps(context);
         List<LexusLsAppSelBean> beans = new ArrayList<>();
@@ -118,7 +134,8 @@ public class AppInfoUtils {
         Iterator<ResolveInfo> it2 = infos2.iterator();
         while (it2.hasNext()) {
             ResolveInfo info = it2.next();
-            Log.e("liuhao", "findAllAppExclude..name " + info.activityInfo.loadLabel(pm) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
+            String str = TAG;
+            Log.e(str, "findAllAppExclude..name " + info.activityInfo.loadLabel(pm) + "  " + info.activityInfo.packageName + " mainAty:" + info.activityInfo.name);
             LexusLsAppSelBean bean = new LexusLsAppSelBean();
             if (!isContainCls(cls, info.activityInfo.name)) {
                 if ("com.wits.ksw.media.StartActivity".equals(info.activityInfo.name)) {
@@ -144,7 +161,7 @@ public class AppInfoUtils {
                             }
                         } else {
                             it = it2;
-                            Log.i("AppInfoUtils", "findAllAppsByExclude app music cls1 =" + appCls1);
+                            Log.i(str, "findAllAppsByExclude app music cls1 =" + appCls1);
                             bean_music.setChecked(true);
                         }
                     } else {
@@ -153,7 +170,7 @@ public class AppInfoUtils {
                     if (i == 2) {
                         String appCls2 = Settings.System.getString(context.getContentResolver(), KeyConfig.KEY_THIRD_APP_VIDEO_CLS);
                         if (!TextUtils.isEmpty(appCls2) && appCls2.equals(KeyConfig.CLS_LOCAL_VIDEO)) {
-                            Log.i("AppInfoUtils", "findAllAppsByExclude app video cls2 =" + appCls2);
+                            Log.i(str, "findAllAppsByExclude app video cls2 =" + appCls2);
                             bean_video.setChecked(true);
                         } else if (TextUtils.isEmpty(appCls2) || !KeyConfig.CLS_LOCAL_MUSIC.equals(appCls2)) {
                             bean_video.setChecked(false);
@@ -177,7 +194,7 @@ public class AppInfoUtils {
                         if (TextUtils.isEmpty(appCls12) || !appCls12.equals(info.activityInfo.name)) {
                             bean.setChecked(false);
                         } else {
-                            Log.i("AppInfoUtils", "TYPE == 1 findAllAppsByExclude app pkg =" + appCls12);
+                            Log.i(str, "TYPE == 1 findAllAppsByExclude app pkg =" + appCls12);
                             bean.setChecked(true);
                         }
                     } else if (i == 2) {
@@ -185,7 +202,7 @@ public class AppInfoUtils {
                         if (TextUtils.isEmpty(appCls22) || !appCls22.equals(info.activityInfo.name)) {
                             bean.setChecked(false);
                         } else {
-                            Log.i("AppInfoUtils", "TYPE == 2 findAllAppsByExclude app pkg =" + appCls22);
+                            Log.i(str, "TYPE == 2 findAllAppsByExclude app pkg =" + appCls22);
                             bean.setChecked(true);
                         }
                     }
@@ -295,12 +312,12 @@ public class AppInfoUtils {
         try {
             applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.i("liuhao", "isAppPakExist: app not installed, packageName" + packageName);
+            Log.i(TAG, "isAppPakExist: app not installed, packageName" + packageName);
         }
         if (applicationInfo != null) {
             isExist = true;
         }
-        Log.i("liuhao", "isAppPakExist: isExist = " + isExist);
+        Log.i(TAG, "isAppPakExist: isExist = " + isExist);
         return isExist;
     }
 

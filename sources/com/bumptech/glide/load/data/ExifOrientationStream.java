@@ -3,6 +3,7 @@ package com.bumptech.glide.load.data;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import kotlin.UByte;
 
 public final class ExifOrientationStream extends FilterInputStream {
     private static final byte[] EXIF_SEGMENT;
@@ -45,7 +46,7 @@ public final class ExifOrientationStream extends FilterInputStream {
         } else if (i2 == i) {
             result = this.orientation;
         } else {
-            result = EXIF_SEGMENT[i2 - 2] & 255;
+            result = EXIF_SEGMENT[i2 - 2] & UByte.MAX_VALUE;
         }
         if (result != -1) {
             this.position++;

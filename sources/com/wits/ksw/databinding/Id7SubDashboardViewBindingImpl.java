@@ -20,7 +20,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback143;
+    private final View.OnClickListener mCallback288;
     private long mDirtyFlags;
 
     static {
@@ -48,7 +48,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         this.speedTextView.setTag((Object) null);
         this.tempTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback143 = new OnClickListener(this, 1);
+        this.mCallback288 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -69,7 +69,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (2 != variableId) {
+        if (3 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
@@ -81,7 +81,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         synchronized (this) {
             this.mDirtyFlags |= 128;
         }
-        notifyPropertyChanged(2);
+        notifyPropertyChanged(3);
         super.requestRebind();
     }
 
@@ -360,7 +360,7 @@ public class Id7SubDashboardViewBindingImpl extends Id7SubDashboardViewBinding i
         }
         if ((dirtyFlags & 256) != 0) {
             ObservableInt observableInt = carViewModelCarInfoTurnSpeed;
-            this.dashboardImageView.setOnClickListener(this.mCallback143);
+            this.dashboardImageView.setOnClickListener(this.mCallback288);
         }
         if ((dirtyFlags & 288) != 0) {
             TextViewBindingAdapter.setText(this.oilTextView, carViewModelCarInfoOilValueGet);

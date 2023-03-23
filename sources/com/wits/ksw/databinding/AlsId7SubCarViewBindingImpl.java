@@ -12,7 +12,7 @@ import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback211;
+    private final View.OnClickListener mCallback333;
     private long mDirtyFlags;
 
     static {
@@ -34,7 +34,7 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
         this.dayTextView.setTag((Object) null);
         this.monthTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback211 = new OnClickListener(this, 1);
+        this.mCallback333 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -55,7 +55,7 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (8 != variableId) {
+        if (13 != variableId) {
             return false;
         }
         setNaviCarViewModel((AlsID7ViewModel) variable);
@@ -67,7 +67,7 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(8);
+        notifyPropertyChanged(13);
         super.requestRebind();
     }
 
@@ -171,7 +171,7 @@ public class AlsId7SubCarViewBindingImpl extends AlsId7SubCarViewBinding impleme
             int r11 = (r18 > r4 ? 1 : (r18 == r4 ? 0 : -1))
             if (r11 == 0) goto L_0x0068
             com.wits.ksw.launcher.view.CustomBmwImageView r11 = r1.carImageView
-            android.view.View$OnClickListener r12 = r1.mCallback211
+            android.view.View$OnClickListener r12 = r1.mCallback333
             r11.setOnClickListener(r12)
         L_0x0068:
             long r11 = r2 & r16

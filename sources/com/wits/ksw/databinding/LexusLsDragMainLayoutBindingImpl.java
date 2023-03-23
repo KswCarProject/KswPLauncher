@@ -57,7 +57,7 @@ public class LexusLsDragMainLayoutBindingImpl extends LexusLsDragMainLayoutBindi
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (5 != variableId) {
+        if (9 != variableId) {
             return false;
         }
         setLexusLsViewModel((LauncherViewModel) variable);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="als_id7_wranning">הניתוח שלך הוא יותר מדי תדיר בבקשה שחרר ולפעיל!</string>
     <string name="app_aux">AUX</string>
     <string name="app_cancel">בטל</string>
     <string name="app_dtv">DTV</string>
@@ -22,6 +23,8 @@
     <string name="benz_mbux_2021_style_classical_tip">קלאסי</string>
     <string name="benz_mbux_2021_style_modern_tip">מוֹדֶרנִי</string>
     <string name="benz_mbux_2021_theme_settings">הגדרות ערכת נושא</string>
+    <string name="benz_mbux_2021_weather">מזג אוויר גלובלי</string>
+    <string name="benz_mbux_2021_weather_content">החלף את ממשק מזג האוויר</string>
     <string name="benz_ntg6_fy_theme_settings">נושא</string>
     <string name="boot_record_mode">זכור את המצב האחרון</string>
     <string name="boot_record_mode_radio1">אפשר</string>
@@ -74,6 +77,7 @@
     <string name="factory_danwei">גלגל שיניים</string>
     <string name="factory_danwei1">אוטומטי</string>
     <string name="factory_danwei2">מדריך ל</string>
+    <string name="factory_front_view_mirror_setting">הגדרת מראה קדמית</string>
     <string name="factory_gears1">סוג הילוך 1</string>
     <string name="factory_gears2">סוג הילוך 2</string>
     <string name="factory_gears3">סוג הילוך 3</string>
@@ -90,6 +94,10 @@
     <string name="factory_nbt0">מיתוג אוטומטי של AUX</string>
     <string name="factory_nbt1">Alpine</string>
     <string name="factory_nbt2">Harman</string>
+    <string name="factory_phone">בחירת מפתח טלפון</string>
+    <string name="factory_phone1">פעילות רכב מקורית</string>
+    <string name="factory_phone2">תכונת אנדרואיד Bluetooth</string>
+    <string name="factory_phone3">לא מוגדר</string>
     <string name="factory_restart">איתחול</string>
     <string name="factory_text">הגדרות מפעל</string>
     <string name="factory_text0">מצבי מיתוג AUX</string>
@@ -155,6 +163,7 @@
     <string name="id7_als_item_three">ספורט</string>
     <string name="id7_als_item_two">נוחות</string>
     <string name="id7_browser">@string/id6_browser</string>
+    <string name="installing">התקנה התוכנית מתקדמת</string>
     <string name="item1">מערכת</string>
     <string name="item2">ניווט</string>
     <string name="item3">כרך</string>
@@ -186,6 +195,22 @@
     <string name="ksw_id7_setting">הגדרות</string>
     <string name="ksw_id7_switch_to_carinfo_window">הצגת מידע מקורי לרכב</string>
     <string name="ksw_id7_system_app_not_uninstall">לא ניתן להסיר את התקנת יישומי המערכת</string>
+    <string name="ksw_id8_abbr_car_info">@string/ksw_id7_car_info</string>
+    <string name="ksw_id8_abbr_hd_video">@string/ksw_id7_hd_video</string>
+    <string name="ksw_id8_abbr_setting">@string/ksw_id7_setting</string>
+    <string name="ksw_id8_abbr_tel">@string/ksw_id8_tel</string>
+    <string name="ksw_id8_abbr_tel_navigate">@string/ksw_id7_navi_left</string>
+    <string name="ksw_id8_apps">יישום</string>
+    <string name="ksw_id8_current">נבחר כעת</string>
+    <string name="ksw_id8_efficient">חיסכון באנרגיה</string>
+    <string name="ksw_id8_modus">דֶגֶם</string>
+    <string name="ksw_id8_personal">בְּרִירַת מֶחדָל</string>
+    <string name="ksw_id8_settings_title_audio">אפקט שמע</string>
+    <string name="ksw_id8_settings_title_info">מֵידָע</string>
+    <string name="ksw_id8_sport">ספורט</string>
+    <string name="ksw_id8_tel">טלפון</string>
+    <string name="ksw_id8_trd_desc">שימוש של צד שלישי</string>
+    <string name="ksw_id8_weather">מזג אוויר</string>
     <string name="ksw_idf7_unknow_artis">אמן לא ידוע</string>
     <string name="ksw_idf7_unkonw_album">אלבום לא ידוע</string>
     <string name="ksw_idf7_unkonw_soung">שיר לא ידוע</string>
@@ -201,6 +226,8 @@
     <string name="oil_size">דלק:%s</string>
     <string name="raw_car_text1">תצוגה במסך מלא</string>
     <string name="raw_car_text2">בחירה נוכחית:</string>
+    <string name="reverse_exit_time_agreement">יציאה לפי הסכם המקורי של הרכב</string>
+    <string name="reverse_exit_time_custom">זמן יציאה מתאים</string>
     <string name="romeo_id7_dashboard_lable">לוח מחוונים</string>
     <string name="sele_navi_map">בחר במפת ניווט</string>
     <string name="sele_navi_soft">בחר בתוכנת ניווט</string>
@@ -228,6 +255,7 @@
     <string name="shext_1">מצלמה אחרי שוק</string>
     <string name="shext_2">מצלמת OEM</string>
     <string name="shext_3">360 מצלמה</string>
+    <string name="shext_4">אנדרואיד נבנה 360</string>
     <string name="show_msg_one">הגדרות מערכת אנדרואיד</string>
     <string name="show_msg_two">להתקנה וניפוי באגים</string>
     <string name="string_is_this_logo">האם להשתמש בלוגו האתחול הזה?</string>
@@ -242,6 +270,7 @@
     <string name="text_13">בהירות</string>
     <string name="text_14">זיכרון RAM:%s</string>
     <string name="text_15">אחסון: %s</string>
+    <string name="text_16">עדכון בדיקת מערכת</string>
     <string name="text_2">סנכרון זמן</string>
     <string name="text_3">מערכת זמן</string>
     <string name="text_4">זמן רכב</string>
@@ -258,6 +287,7 @@
     <string name="text_ahd_cam5">AHD-720P-50HZ</string>
     <string name="text_ahd_cam6">CVBS-NTSC</string>
     <string name="text_ahd_cam7">CVBS-PAL</string>
+    <string name="text_ahd_cam_auto">גילוי אוטומטי</string>
     <string name="text_ahd_cam_select">בחירת מצלמה AHD</string>
     <string name="text_flash">פלאש:%s</string>
     <string name="text_logo_input">יבוא</string>
@@ -268,6 +298,9 @@
     <string name="text_logo_two">עמוד 2</string>
     <string name="text_ram">זיכרון RAM:%s</string>
     <string name="touch_continuous_send">נתוני מגע נשלחים ברציפות</string>
+    <string name="txz_oil_text">הגדרת אזעקת קול דלק</string>
+    <string name="txz_speed_text">תצוגת אזעקת מהירות הנוסעים חברים</string>
+    <string name="txz_temp_text">הגדרת אזעקת טמפרטורה סביבה משותפת</string>
     <string name="ug_apps_text">עוד אפליקציות</string>
     <string name="ug_bluetooth">Bluetooth</string>
     <string name="ug_navigation">ניווט</string>

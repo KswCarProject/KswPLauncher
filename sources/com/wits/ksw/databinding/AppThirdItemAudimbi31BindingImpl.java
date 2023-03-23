@@ -49,7 +49,7 @@ public class AppThirdItemAudimbi31BindingImpl extends AppThirdItemAudimbi31Bindi
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (11 != variableId) {
+        if (20 != variableId) {
             return false;
         }
         setListItem((LexusLsAppSelBean) variable);

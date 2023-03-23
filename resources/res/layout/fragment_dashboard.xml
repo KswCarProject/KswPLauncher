@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/ll_container" android:tag="layout/fragment_dashboard_0" style="@style/id8_main_card_container">
+    <ImageView android:background="@drawable/id8_main_icon_dashboard_bg" style="@style/id8_main_big_card_size"/>
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/id8_main_icon_dashboard_progress_bg"/>
+    <com.wits.ksw.launcher.view.LinearGradientProgressNew android:tag="binding_1" android:layout_width="156dp" android:layout_height="278dp" android:layout_marginLeft="67dp" android:layout_marginTop="157dp" app:gradient_max_scale="330" app:gradient_orientate="0" app:gradient_res="@drawable/id8_dashboard_progress_bg" app:offset="true" app:tilt_width="58dp"/>
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="67dp" android:layout_marginTop="126dp" android:src="@drawable/id8_main_icon_dashboard_progress_mask"/>
+    <ImageView android:id="@+id/iv_mask" android:tag="binding_2" style="@style/id8_main_big_card_size"/>
+    <RelativeLayout style="@style/id8_main_big_card_container">
+        <TextView android:text="@string/ksw_id8_dashboard" style="@style/id8_main_card_title"/>
+        <ImageView android:background="@drawable/id8_main_icon_navi_line" android:layout_width="304dp" android:layout_height="5dp" android:layout_marginLeft="19dp" android:layout_marginTop="91dp"/>
+        <TextView android:textSize="20sp" android:textColor="@color/color1" android:tag="binding_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="56dp" android:layout_marginTop="100dp" android:maxWidth="80dp" style="@style/bmw_id8_text_shadow"/>
+        <ImageView android:tag="binding_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="143dp"/>
+        <ImageView android:tag="binding_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="177dp"/>
+        <TextView android:textSize="69sp" android:textColor="@color/color1" android:gravity="center" android:tag="binding_6" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginLeft="180dp" android:layout_marginTop="242dp" android:singleLine="true" android:includeFontPadding="false" style="@style/bmw_id8_text_shadow"/>
+        <TextView android:textSize="13sp" android:textColor="@color/bmw_id8_white_half" android:gravity="center" android:tag="binding_7" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginLeft="180dp" android:layout_marginTop="312dp" android:singleLine="true" android:includeFontPadding="false" style="@style/bmw_id8_text_shadow"/>
+    </RelativeLayout>
+</RelativeLayout>

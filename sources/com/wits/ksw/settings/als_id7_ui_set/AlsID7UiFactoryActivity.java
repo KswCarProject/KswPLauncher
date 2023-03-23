@@ -2,8 +2,6 @@ package com.wits.ksw.settings.als_id7_ui_set;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.app.SkinAppCompatDelegateImpl;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -87,9 +85,9 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
     }
 
     private void initData() {
-        deleteAllByPath(new File("/storage/emulated/0/mylogo"));
+        deleteAllByPath(new File(FileUtils.getLogoFilePath()));
         try {
-            FileUtils.upZipFile(new File("/mnt/vendor/persist/mylogo.zip"), "/storage/emulated/0");
+            FileUtils.upZipFile(new File(FileUtils.getUpZipPath()), FileUtils.folderPath);
         } catch (IOException e) {
             Log.d("unzip", e.getLocalizedMessage());
         } catch (IllegalArgumentException e2) {
@@ -170,9 +168,5 @@ public class AlsID7UiFactoryActivity extends BaseActivity {
             default:
                 return;
         }
-    }
-
-    public AppCompatDelegate getDelegate() {
-        return SkinAppCompatDelegateImpl.get(this, this);
     }
 }

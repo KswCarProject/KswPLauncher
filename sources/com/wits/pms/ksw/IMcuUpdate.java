@@ -12,6 +12,18 @@ public interface IMcuUpdate extends IInterface {
 
     void setOnMcuUpdateProgressListener(OnMcuUpdateProgressListener onMcuUpdateProgressListener) throws RemoteException;
 
+    public static class Default implements IMcuUpdate {
+        public void mcuUpdate(String path) throws RemoteException {
+        }
+
+        public void setOnMcuUpdateProgressListener(OnMcuUpdateProgressListener listener) throws RemoteException {
+        }
+
+        public IBinder asBinder() {
+            return null;
+        }
+    }
+
     public static abstract class Stub extends Binder implements IMcuUpdate {
         private static final String DESCRIPTOR = "com.wits.pms.ksw.IMcuUpdate";
         static final int TRANSACTION_mcuUpdate = 1;
@@ -57,6 +69,7 @@ public interface IMcuUpdate extends IInterface {
         }
 
         private static class Proxy implements IMcuUpdate {
+            public static IMcuUpdate sDefaultImpl;
             private IBinder mRemote;
 
             Proxy(IBinder remote) {
@@ -77,8 +90,13 @@ public interface IMcuUpdate extends IInterface {
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
                     _data.writeString(path);
-                    this.mRemote.transact(1, _data, _reply, 0);
-                    _reply.readException();
+                    if (this.mRemote.transact(1, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().mcuUpdate(path);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -91,13 +109,33 @@ public interface IMcuUpdate extends IInterface {
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
                     _data.writeStrongBinder(listener != null ? listener.asBinder() : null);
-                    this.mRemote.transact(2, _data, _reply, 0);
-                    _reply.readException();
+                    if (this.mRemote.transact(2, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().setOnMcuUpdateProgressListener(listener);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
+        }
+
+        public static boolean setDefaultImpl(IMcuUpdate impl) {
+            if (Proxy.sDefaultImpl != null) {
+                throw new IllegalStateException("setDefaultImpl() called twice");
+            } else if (impl == null) {
+                return false;
+            } else {
+                Proxy.sDefaultImpl = impl;
+                return true;
+            }
+        }
+
+        public static IMcuUpdate getDefaultImpl() {
+            return Proxy.sDefaultImpl;
         }
     }
 }

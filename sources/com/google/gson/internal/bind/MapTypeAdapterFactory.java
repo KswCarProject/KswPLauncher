@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class MapTypeAdapterFactory implements TypeAdapterFactory {
-    /* access modifiers changed from: private */
-    public final boolean complexMapKeySerialization;
+    final boolean complexMapKeySerialization;
     private final ConstructorConstructor constructorConstructor;
 
     public MapTypeAdapterFactory(ConstructorConstructor constructorConstructor2, boolean complexMapKeySerialization2) {
@@ -43,7 +42,10 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
     }
 
     private TypeAdapter<?> getKeyAdapter(Gson context, Type keyType) {
-        return (keyType == Boolean.TYPE || keyType == Boolean.class) ? TypeAdapters.BOOLEAN_AS_STRING : context.getAdapter(TypeToken.get(keyType));
+        if (keyType == Boolean.TYPE || keyType == Boolean.class) {
+            return TypeAdapters.BOOLEAN_AS_STRING;
+        }
+        return context.getAdapter(TypeToken.get(keyType));
     }
 
     private final class Adapter<K, V> extends TypeAdapter<Map<K, V>> {
@@ -112,7 +114,8 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
                 }
                 if (hasComplexKeys) {
                     out.beginArray();
-                    for (int i = 0; i < keys.size(); i++) {
+                    int size = keys.size();
+                    for (int i = 0; i < size; i++) {
                         out.beginArray();
                         Streams.write(keys.get(i), out);
                         this.valueTypeAdapter.write(out, values.get(i));
@@ -122,7 +125,8 @@ public final class MapTypeAdapterFactory implements TypeAdapterFactory {
                     return;
                 }
                 out.beginObject();
-                for (int i2 = 0; i2 < keys.size(); i2++) {
+                int size2 = keys.size();
+                for (int i2 = 0; i2 < size2; i2++) {
                     out.name(keyToString(keys.get(i2)));
                     this.valueTypeAdapter.write(out, values.get(i2));
                 }

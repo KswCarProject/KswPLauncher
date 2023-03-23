@@ -12,7 +12,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.databinding.LexusLsBottomFragmentTwo;
 
 public class FragmentLexusLsBottomTwo extends LexusLsBaseBottomFragment implements View.OnKeyListener {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private LexusLsBottomFragmentTwo binding;
     IAddAppClickListener mAddAppListener;
 
@@ -99,7 +99,7 @@ public class FragmentLexusLsBottomTwo extends LexusLsBaseBottomFragment implemen
 
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (event.getAction() == 0) {
-            Log.i("KSWLauncher", "Fragmentid6CuspTwo onKey: " + keyCode);
+            Log.i("KswApplication", "Fragmentid6CuspTwo onKey: " + keyCode);
             if (keyCode == 22) {
                 this.mainActivity.id6CuspMainViewPager.setCurrentItem(2);
                 return true;

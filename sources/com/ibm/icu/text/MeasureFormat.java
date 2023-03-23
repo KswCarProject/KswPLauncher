@@ -34,6 +34,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.concurrent.ConcurrentHashMap;
+import kotlin.UByte;
 
 public class MeasureFormat extends UFormat {
     static final /* synthetic */ boolean $assertionsDisabled = false;
@@ -619,11 +620,11 @@ public class MeasureFormat extends UFormat {
         public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
             in.readByte();
             this.locale = ULocale.forLanguageTag(in.readUTF());
-            this.formatWidth = MeasureFormat.fromFormatWidthOrdinal(in.readByte() & 255);
+            this.formatWidth = MeasureFormat.fromFormatWidthOrdinal(in.readByte() & UByte.MAX_VALUE);
             NumberFormat numberFormat2 = (NumberFormat) in.readObject();
             this.numberFormat = numberFormat2;
             if (numberFormat2 != null) {
-                this.subClass = in.readByte() & 255;
+                this.subClass = in.readByte() & UByte.MAX_VALUE;
                 HashMap<Object, Object> hashMap = (HashMap) in.readObject();
                 this.keyValues = hashMap;
                 if (hashMap == null) {

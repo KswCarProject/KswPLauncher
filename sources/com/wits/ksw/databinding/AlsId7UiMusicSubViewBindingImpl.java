@@ -21,7 +21,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class AlsId7UiMusicSubViewBindingImpl extends AlsId7UiMusicSubViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback56;
+    private final View.OnClickListener mCallback44;
     private long mDirtyFlags;
 
     static {
@@ -60,7 +60,7 @@ public class AlsId7UiMusicSubViewBindingImpl extends AlsId7UiMusicSubViewBinding
         this.seekBar.setTag((Object) null);
         this.totalTimeTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback56 = new OnClickListener(this, 1);
+        this.mCallback44 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -81,7 +81,7 @@ public class AlsId7UiMusicSubViewBindingImpl extends AlsId7UiMusicSubViewBinding
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (6 != variableId) {
+        if (10 != variableId) {
             return false;
         }
         setMediaViewModel((LauncherViewModel) variable);
@@ -93,7 +93,7 @@ public class AlsId7UiMusicSubViewBindingImpl extends AlsId7UiMusicSubViewBinding
         synchronized (this) {
             this.mDirtyFlags |= 256;
         }
-        notifyPropertyChanged(6);
+        notifyPropertyChanged(10);
         super.requestRebind();
     }
 
@@ -442,7 +442,7 @@ public class AlsId7UiMusicSubViewBindingImpl extends AlsId7UiMusicSubViewBinding
         }
         if ((dirtyFlags & 512) != 0) {
             String str = mediaViewModelMediaInfoCurrentTimeGet;
-            this.imageFrameLayout.setOnClickListener(this.mCallback56);
+            this.imageFrameLayout.setOnClickListener(this.mCallback44);
         }
         if ((dirtyFlags & 768) != 0) {
             this.imageFrameLayout.setOnFocusChangeListener(mediaViewModelMusicViewFocusChangeListener);

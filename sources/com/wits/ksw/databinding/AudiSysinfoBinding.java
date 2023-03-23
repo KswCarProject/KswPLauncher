@@ -20,12 +20,13 @@ public abstract class AudiSysinfoBinding extends ViewDataBinding {
     public final TextView audioSysInfoMcuUpdata;
     public final TextView audioSysInfoRam;
     public final TextView audioSysInfoRestoreFactory;
+    public final TextView audioSysInfoUpDateFactory;
     @Bindable
     protected AudiSettingViewModel mVm;
 
     public abstract void setVm(AudiSettingViewModel audiSettingViewModel);
 
-    protected AudiSysinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, AudiConstraintLayout audiSysInfParentPanel2, TextView audiSysInfoAppVer2, TextView audiSysInfoMcuVer2, TextView audiSysInfoSysVer2, TextView audioSysInfoFlash2, TextView audioSysInfoMcuUpdata2, TextView audioSysInfoRam2, TextView audioSysInfoRestoreFactory2) {
+    protected AudiSysinfoBinding(Object _bindingComponent, View _root, int _localFieldCount, AudiConstraintLayout audiSysInfParentPanel2, TextView audiSysInfoAppVer2, TextView audiSysInfoMcuVer2, TextView audiSysInfoSysVer2, TextView audioSysInfoFlash2, TextView audioSysInfoMcuUpdata2, TextView audioSysInfoRam2, TextView audioSysInfoRestoreFactory2, TextView audioSysInfoUpDateFactory2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.audiSysInfParentPanel = audiSysInfParentPanel2;
         this.audiSysInfoAppVer = audiSysInfoAppVer2;
@@ -35,6 +36,7 @@ public abstract class AudiSysinfoBinding extends ViewDataBinding {
         this.audioSysInfoMcuUpdata = audioSysInfoMcuUpdata2;
         this.audioSysInfoRam = audioSysInfoRam2;
         this.audioSysInfoRestoreFactory = audioSysInfoRestoreFactory2;
+        this.audioSysInfoUpDateFactory = audioSysInfoUpDateFactory2;
     }
 
     public AudiSettingViewModel getVm() {

@@ -85,6 +85,166 @@ public interface IWitsAudioService extends IInterface {
 
     int setUserSpkEq(int[] iArr, int i) throws RemoteException;
 
+    public static class Default implements IWitsAudioService {
+        public int initSivit() throws RemoteException {
+            return 0;
+        }
+
+        public int closeSivit() throws RemoteException {
+            return 0;
+        }
+
+        public int setAudioMute(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setAudioMuteWithNoAlert(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setAudioVolume(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int getAudioVolume() throws RemoteException {
+            return 0;
+        }
+
+        public int getAudioMute() throws RemoteException {
+            return 0;
+        }
+
+        public int codecInit() throws RemoteException {
+            return 0;
+        }
+
+        public int setUserEq(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setDspHifiEqFilter(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setDspHifiEqBass(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setEQDspSpkVolumeInt(int var1, int var2) throws RemoteException {
+            return 0;
+        }
+
+        public int setUserSpkEq(int[] var1, int var2) throws RemoteException {
+            return 0;
+        }
+
+        public int setUserAudioSource(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setDspSpkEqAppForDebug(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setToneControlBass(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setDspMixVolumeForAll(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setUserDspSpkEqApp(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setDelay(int[] var1) throws RemoteException {
+            return 0;
+        }
+
+        public int RadioSetMute(long var1) throws RemoteException {
+            return 0;
+        }
+
+        public int AUXINSetMute(long var1) throws RemoteException {
+            return 0;
+        }
+
+        public int RadioChangeMode(long var1) throws RemoteException {
+            return 0;
+        }
+
+        public int RadioTune(long var1) throws RemoteException {
+            return 0;
+        }
+
+        public int getRadioST() throws RemoteException {
+            return 0;
+        }
+
+        public int getRadioRssi() throws RemoteException {
+            return 0;
+        }
+
+        public int RadioSetLongOrNear(long var1) throws RemoteException {
+            return 0;
+        }
+
+        public int RadioSetLongOrNearForAM(long var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setRadioMonoStereo(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setRadioMute(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setAudioVolumeForDigree(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setTargetVolume(float var1, int var2) throws RemoteException {
+            return 0;
+        }
+
+        public byte[] RadioGetRDS() throws RemoteException {
+            return null;
+        }
+
+        public int RadioRDSCfg(int var1) throws RemoteException {
+            return 0;
+        }
+
+        public int openBT(boolean var1) throws RemoteException {
+            return 0;
+        }
+
+        public int openTV(boolean var1) throws RemoteException {
+            return 0;
+        }
+
+        public int openDVD(boolean var1) throws RemoteException {
+            return 0;
+        }
+
+        public int setDspMixVolume(int var1, int var2) throws RemoteException {
+            return 0;
+        }
+
+        public void modeInCallSwitch(boolean var1) throws RemoteException {
+        }
+
+        public void muteOtherMedia(boolean var1, int var2) throws RemoteException {
+        }
+
+        public IBinder asBinder() {
+            return null;
+        }
+    }
+
     public static abstract class Stub extends Binder implements IWitsAudioService {
         private static final String DESCRIPTOR = "android.media.IWitsAudioService";
         static final int TRANSACTION_AUXINSetMute = 21;
@@ -199,15 +359,19 @@ public interface IWitsAudioService extends IInterface {
                     return true;
                 case 9:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result9 = setUserEq(data.createIntArray());
+                    int[] _arg02 = data.createIntArray();
+                    int _result9 = setUserEq(_arg02);
                     reply.writeNoException();
                     reply.writeInt(_result9);
+                    reply.writeIntArray(_arg02);
                     return true;
                 case 10:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result10 = setDspHifiEqFilter(data.createIntArray());
+                    int[] _arg03 = data.createIntArray();
+                    int _result10 = setDspHifiEqFilter(_arg03);
                     reply.writeNoException();
                     reply.writeInt(_result10);
+                    reply.writeIntArray(_arg03);
                     return true;
                 case 11:
                     data.enforceInterface(DESCRIPTOR);
@@ -223,45 +387,59 @@ public interface IWitsAudioService extends IInterface {
                     return true;
                 case 13:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result13 = setUserSpkEq(data.createIntArray(), data.readInt());
+                    int[] _arg04 = data.createIntArray();
+                    int _result13 = setUserSpkEq(_arg04, data.readInt());
                     reply.writeNoException();
                     reply.writeInt(_result13);
+                    reply.writeIntArray(_arg04);
                     return true;
                 case 14:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result14 = setUserAudioSource(data.createIntArray());
+                    int[] _arg05 = data.createIntArray();
+                    int _result14 = setUserAudioSource(_arg05);
                     reply.writeNoException();
                     reply.writeInt(_result14);
+                    reply.writeIntArray(_arg05);
                     return true;
                 case 15:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result15 = setDspSpkEqAppForDebug(data.createIntArray());
+                    int[] _arg06 = data.createIntArray();
+                    int _result15 = setDspSpkEqAppForDebug(_arg06);
                     reply.writeNoException();
                     reply.writeInt(_result15);
+                    reply.writeIntArray(_arg06);
                     return true;
                 case 16:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result16 = setToneControlBass(data.createIntArray());
+                    int[] _arg07 = data.createIntArray();
+                    int _result16 = setToneControlBass(_arg07);
                     reply.writeNoException();
                     reply.writeInt(_result16);
+                    reply.writeIntArray(_arg07);
                     return true;
                 case 17:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result17 = setDspMixVolumeForAll(data.createIntArray());
+                    int[] _arg08 = data.createIntArray();
+                    int _result17 = setDspMixVolumeForAll(_arg08);
                     reply.writeNoException();
                     reply.writeInt(_result17);
+                    reply.writeIntArray(_arg08);
                     return true;
                 case 18:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result18 = setUserDspSpkEqApp(data.createIntArray());
+                    int[] _arg09 = data.createIntArray();
+                    int _result18 = setUserDspSpkEqApp(_arg09);
                     reply.writeNoException();
                     reply.writeInt(_result18);
+                    reply.writeIntArray(_arg09);
                     return true;
                 case 19:
                     data.enforceInterface(DESCRIPTOR);
-                    int _result19 = setDelay(data.createIntArray());
+                    int[] _arg010 = data.createIntArray();
+                    int _result19 = setDelay(_arg010);
                     reply.writeNoException();
                     reply.writeInt(_result19);
+                    reply.writeIntArray(_arg010);
                     return true;
                 case 20:
                     data.enforceInterface(DESCRIPTOR);
@@ -405,6 +583,7 @@ public interface IWitsAudioService extends IInterface {
         }
 
         private static class Proxy implements IWitsAudioService {
+            public static IWitsAudioService sDefaultImpl;
             private IBinder mRemote;
 
             Proxy(IBinder remote) {
@@ -424,9 +603,14 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(1, _data, _reply, 0);
+                    if (!this.mRemote.transact(1, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().initSivit();
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -438,54 +622,74 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(2, _data, _reply, 0);
+                    if (!this.mRemote.transact(2, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().closeSivit();
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setAudioMute(int mute) throws RemoteException {
+            public int setAudioMute(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(mute);
-                    this.mRemote.transact(3, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(3, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setAudioMute(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setAudioMuteWithNoAlert(int mute) throws RemoteException {
+            public int setAudioMuteWithNoAlert(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(mute);
-                    this.mRemote.transact(4, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(4, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setAudioMuteWithNoAlert(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setAudioVolume(int vol) throws RemoteException {
+            public int setAudioVolume(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(vol);
-                    this.mRemote.transact(5, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(5, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setAudioVolume(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -497,9 +701,14 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(6, _data, _reply, 0);
+                    if (!this.mRemote.transact(6, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getAudioVolume();
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -511,9 +720,14 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(7, _data, _reply, 0);
+                    if (!this.mRemote.transact(7, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getAudioMute();
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -525,236 +739,325 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(8, _data, _reply, 0);
+                    if (!this.mRemote.transact(8, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().codecInit();
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setUserEq(int[] eq) throws RemoteException {
+            public int setUserEq(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(eq);
-                    this.mRemote.transact(9, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(9, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setUserEq(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setDspHifiEqFilter(int[] eq) throws RemoteException {
+            public int setDspHifiEqFilter(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(eq);
-                    this.mRemote.transact(10, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(10, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setDspHifiEqFilter(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setDspHifiEqBass(int bassVolume) throws RemoteException {
+            public int setDspHifiEqBass(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(bassVolume);
-                    this.mRemote.transact(11, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(11, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setDspHifiEqBass(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setEQDspSpkVolumeInt(int flag, int speakerInt) throws RemoteException {
+            public int setEQDspSpkVolumeInt(int var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(flag);
-                    _data.writeInt(speakerInt);
-                    this.mRemote.transact(12, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    _data.writeInt(var2);
+                    if (!this.mRemote.transact(12, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setEQDspSpkVolumeInt(var1, var2);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setUserSpkEq(int[] eq, int index) throws RemoteException {
+            public int setUserSpkEq(int[] var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(eq);
-                    _data.writeInt(index);
-                    this.mRemote.transact(13, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    _data.writeInt(var2);
+                    if (!this.mRemote.transact(13, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setUserSpkEq(var1, var2);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setUserAudioSource(int[] audioSourceVol) throws RemoteException {
+            public int setUserAudioSource(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(audioSourceVol);
-                    this.mRemote.transact(14, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(14, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setUserAudioSource(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setDspSpkEqAppForDebug(int[] eq) throws RemoteException {
+            public int setDspSpkEqAppForDebug(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(eq);
-                    this.mRemote.transact(15, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(15, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setDspSpkEqAppForDebug(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setToneControlBass(int[] eq) throws RemoteException {
+            public int setToneControlBass(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(eq);
-                    this.mRemote.transact(16, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(16, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setToneControlBass(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setDspMixVolumeForAll(int[] eq) throws RemoteException {
+            public int setDspMixVolumeForAll(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(eq);
-                    this.mRemote.transact(17, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(17, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setDspMixVolumeForAll(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setUserDspSpkEqApp(int[] eq) throws RemoteException {
+            public int setUserDspSpkEqApp(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(eq);
-                    this.mRemote.transact(18, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(18, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setUserDspSpkEqApp(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setDelay(int[] delay) throws RemoteException {
+            public int setDelay(int[] var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeIntArray(delay);
-                    this.mRemote.transact(19, _data, _reply, 0);
+                    _data.writeIntArray(var1);
+                    if (!this.mRemote.transact(19, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setDelay(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.readIntArray(var1);
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int RadioSetMute(long mute) throws RemoteException {
+            public int RadioSetMute(long var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeLong(mute);
-                    this.mRemote.transact(20, _data, _reply, 0);
+                    _data.writeLong(var1);
+                    if (!this.mRemote.transact(20, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().RadioSetMute(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int AUXINSetMute(long mute) throws RemoteException {
+            public int AUXINSetMute(long var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeLong(mute);
-                    this.mRemote.transact(21, _data, _reply, 0);
+                    _data.writeLong(var1);
+                    if (!this.mRemote.transact(21, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().AUXINSetMute(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int RadioChangeMode(long mode) throws RemoteException {
+            public int RadioChangeMode(long var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeLong(mode);
-                    this.mRemote.transact(22, _data, _reply, 0);
+                    _data.writeLong(var1);
+                    if (!this.mRemote.transact(22, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().RadioChangeMode(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int RadioTune(long freq) throws RemoteException {
+            public int RadioTune(long var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeLong(freq);
-                    this.mRemote.transact(23, _data, _reply, 0);
+                    _data.writeLong(var1);
+                    if (!this.mRemote.transact(23, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().RadioTune(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -766,9 +1069,14 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(24, _data, _reply, 0);
+                    if (!this.mRemote.transact(24, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getRadioST();
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -780,100 +1088,135 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(25, _data, _reply, 0);
+                    if (!this.mRemote.transact(25, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getRadioRssi();
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int RadioSetLongOrNear(long change) throws RemoteException {
+            public int RadioSetLongOrNear(long var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeLong(change);
-                    this.mRemote.transact(26, _data, _reply, 0);
+                    _data.writeLong(var1);
+                    if (!this.mRemote.transact(26, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().RadioSetLongOrNear(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int RadioSetLongOrNearForAM(long change) throws RemoteException {
+            public int RadioSetLongOrNearForAM(long var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeLong(change);
-                    this.mRemote.transact(27, _data, _reply, 0);
+                    _data.writeLong(var1);
+                    if (!this.mRemote.transact(27, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().RadioSetLongOrNearForAM(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setRadioMonoStereo(int valueInt) throws RemoteException {
+            public int setRadioMonoStereo(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(valueInt);
-                    this.mRemote.transact(28, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(28, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setRadioMonoStereo(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setRadioMute(int muteInt) throws RemoteException {
+            public int setRadioMute(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(muteInt);
-                    this.mRemote.transact(29, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(29, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setRadioMute(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setAudioVolumeForDigree(int volume) throws RemoteException {
+            public int setAudioVolumeForDigree(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(volume);
-                    this.mRemote.transact(30, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(30, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setAudioVolumeForDigree(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setTargetVolume(float volume, int pid) throws RemoteException {
+            public int setTargetVolume(float var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeFloat(volume);
-                    _data.writeInt(pid);
-                    this.mRemote.transact(31, _data, _reply, 0);
+                    _data.writeFloat(var1);
+                    _data.writeInt(var2);
+                    if (!this.mRemote.transact(31, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setTargetVolume(var1, var2);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
@@ -885,119 +1228,174 @@ public interface IWitsAudioService extends IInterface {
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    this.mRemote.transact(32, _data, _reply, 0);
+                    if (!this.mRemote.transact(32, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().RadioGetRDS();
+                    }
                     _reply.readException();
-                    return _reply.createByteArray();
+                    byte[] _result = _reply.createByteArray();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int RadioRDSCfg(int change) throws RemoteException {
+            public int RadioRDSCfg(int var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(change);
-                    this.mRemote.transact(33, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    if (!this.mRemote.transact(33, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().RadioRDSCfg(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int openBT(boolean open) throws RemoteException {
+            public int openBT(boolean var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(open ? 1 : 0);
-                    this.mRemote.transact(34, _data, _reply, 0);
+                    _data.writeInt(var1 ? 1 : 0);
+                    if (!this.mRemote.transact(34, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().openBT(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int openTV(boolean open) throws RemoteException {
+            public int openTV(boolean var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(open ? 1 : 0);
-                    this.mRemote.transact(35, _data, _reply, 0);
+                    _data.writeInt(var1 ? 1 : 0);
+                    if (!this.mRemote.transact(35, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().openTV(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int openDVD(boolean open) throws RemoteException {
+            public int openDVD(boolean var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(open ? 1 : 0);
-                    this.mRemote.transact(36, _data, _reply, 0);
+                    _data.writeInt(var1 ? 1 : 0);
+                    if (!this.mRemote.transact(36, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().openDVD(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public int setDspMixVolume(int arm, int other) throws RemoteException {
+            public int setDspMixVolume(int var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(arm);
-                    _data.writeInt(other);
-                    this.mRemote.transact(37, _data, _reply, 0);
+                    _data.writeInt(var1);
+                    _data.writeInt(var2);
+                    if (!this.mRemote.transact(37, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().setDspMixVolume(var1, var2);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void modeInCallSwitch(boolean open) throws RemoteException {
+            public void modeInCallSwitch(boolean var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(open ? 1 : 0);
-                    this.mRemote.transact(38, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeInt(var1 ? 1 : 0);
+                    if (this.mRemote.transact(38, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().modeInCallSwitch(var1);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void muteOtherMedia(boolean mute, int mediaType) throws RemoteException {
+            public void muteOtherMedia(boolean var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeInt(mute ? 1 : 0);
-                    _data.writeInt(mediaType);
-                    this.mRemote.transact(39, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeInt(var1 ? 1 : 0);
+                    _data.writeInt(var2);
+                    if (this.mRemote.transact(39, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().muteOtherMedia(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
+        }
+
+        public static boolean setDefaultImpl(IWitsAudioService impl) {
+            if (Proxy.sDefaultImpl != null) {
+                throw new IllegalStateException("setDefaultImpl() called twice");
+            } else if (impl == null) {
+                return false;
+            } else {
+                Proxy.sDefaultImpl = impl;
+                return true;
+            }
+        }
+
+        public static IWitsAudioService getDefaultImpl() {
+            return Proxy.sDefaultImpl;
         }
     }
 }

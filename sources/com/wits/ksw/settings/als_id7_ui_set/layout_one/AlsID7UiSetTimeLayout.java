@@ -53,7 +53,7 @@ public class AlsID7UiSetTimeLayout extends RelativeLayout implements View.OnClic
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_timeSync:
+            case R.id.tv_timeSync /*2131297941*/:
                 this.tv_timeSync.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
                 this.tv_timeZhis.setTextColor(-1);
                 AlsID7UiIUpdateTwoLayout alsID7UiIUpdateTwoLayout = this.updateTwoLayout;
@@ -62,7 +62,7 @@ public class AlsID7UiSetTimeLayout extends RelativeLayout implements View.OnClic
                     return;
                 }
                 return;
-            case R.id.tv_timeZhis:
+            case R.id.tv_timeZhis /*2131297942*/:
                 this.tv_timeZhis.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
                 this.tv_timeSync.setTextColor(-1);
                 AlsID7UiIUpdateTwoLayout alsID7UiIUpdateTwoLayout2 = this.updateTwoLayout;

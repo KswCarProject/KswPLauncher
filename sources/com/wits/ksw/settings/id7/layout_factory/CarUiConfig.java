@@ -24,6 +24,8 @@ import java.util.List;
 
 public class CarUiConfig extends FrameLayout {
     /* access modifiers changed from: private */
+    public String clickUiItem = "";
+    /* access modifiers changed from: private */
     public List<FunctionBean> data;
     /* access modifiers changed from: private */
     public DialogViews dialogViews;
@@ -32,14 +34,16 @@ public class CarUiConfig extends FrameLayout {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    Log.d("UiConfig", "===send ui index====:" + CarUiConfig.this.possint);
+                    Log.d("UiConfig", "    clickUiItem=" + CarUiConfig.this.clickUiItem);
                     for (FunctionBean fb : CarUiConfig.this.data) {
-                        fb.setIscheck(false);
+                        if (CarUiConfig.this.clickUiItem.equals(fb.getTitle())) {
+                            fb.setIscheck(true);
+                        } else {
+                            fb.setIscheck(false);
+                        }
                     }
-                    ((FunctionBean) CarUiConfig.this.data.get(CarUiConfig.this.possint)).setIscheck(true);
                     CarUiConfig.this.uiConfigAdapter.notifyDataSetChanged();
-                    Log.d("UiConfig", "===send ui name====:" + ((FunctionBean) CarUiConfig.this.data.get(CarUiConfig.this.possint)).getTitle());
-                    FileUtils.savaStringData(KeyConfig.SUPP_UI_TYPE, ((FunctionBean) CarUiConfig.this.data.get(CarUiConfig.this.possint)).getTitle());
+                    FileUtils.savaStringData(KeyConfig.SUPP_UI_TYPE, CarUiConfig.this.clickUiItem);
                     CarUiConfig.this.handler.sendEmptyMessageDelayed(1, 300);
                     return;
                 case 1:
@@ -53,8 +57,6 @@ public class CarUiConfig extends FrameLayout {
     private LinearLayoutManager layoutManager;
     private FrameLayout.LayoutParams layoutParams;
     private Context m_con;
-    /* access modifiers changed from: private */
-    public int possint = 0;
     private RecyclerView recyclerView;
     /* access modifiers changed from: private */
     public UiConfigAdapter uiConfigAdapter;
@@ -111,8 +113,10 @@ public class CarUiConfig extends FrameLayout {
         this.recyclerView.setAdapter(uiConfigAdapter2);
         this.uiConfigAdapter.registCheckListener(new UiConfigAdapter.OnItemClickLisen() {
             public void ItemClickLisen(int position) {
+                CarUiConfig carUiConfig = CarUiConfig.this;
+                String unused = carUiConfig.clickUiItem = ((FunctionBean) carUiConfig.data.get(position)).getTitle();
+                Log.d("clickUiItem", "clickUiItem=" + CarUiConfig.this.clickUiItem);
                 CarUiConfig.this.dialogViews.isSelecUi(CarUiConfig.this.getResources().getString(R.string.dialog_update9), CarUiConfig.this.handler);
-                int unused = CarUiConfig.this.possint = position;
             }
         });
     }

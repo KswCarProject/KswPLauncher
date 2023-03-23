@@ -45,7 +45,7 @@ public final class VCardResultParser extends ResultParser {
         List<List<String>> emails = matchVCardPrefixedField("EMAIL", rawText, true, false);
         List<String> note = matchSingleVCardPrefixedField("NOTE", rawText, false, false);
         List<List<String>> addresses = matchVCardPrefixedField("ADR", rawText, true, true);
-        List<String> org = matchSingleVCardPrefixedField("ORG", rawText, true, true);
+        List<String> org2 = matchSingleVCardPrefixedField("ORG", rawText, true, true);
         List<String> matchSingleVCardPrefixedField = matchSingleVCardPrefixedField("BDAY", rawText, true, false);
         List<String> birthday2 = matchSingleVCardPrefixedField;
         if (matchSingleVCardPrefixedField == null || isLikeVCardDate(birthday2.get(0))) {
@@ -64,7 +64,7 @@ public final class VCardResultParser extends ResultParser {
             geo = null;
         }
         List<String> list = geoString;
-        return new AddressBookParsedResult(toPrimaryValues(names), nicknames, (String) null, toPrimaryValues(phoneNumbers), toTypes(phoneNumbers), toPrimaryValues(emails), toTypes(emails), toPrimaryValue(instantMessenger), toPrimaryValue(note), toPrimaryValues(addresses), toTypes(addresses), toPrimaryValue(org), toPrimaryValue(birthday), toPrimaryValue(title), toPrimaryValues(urls), geo);
+        return new AddressBookParsedResult(toPrimaryValues(names), nicknames, (String) null, toPrimaryValues(phoneNumbers), toTypes(phoneNumbers), toPrimaryValues(emails), toTypes(emails), toPrimaryValue(instantMessenger), toPrimaryValue(note), toPrimaryValues(addresses), toTypes(addresses), toPrimaryValue(org2), toPrimaryValue(birthday), toPrimaryValue(title), toPrimaryValues(urls), geo);
     }
 
     static List<List<String>> matchVCardPrefixedField(CharSequence charSequence, String str, boolean z, boolean z2) {

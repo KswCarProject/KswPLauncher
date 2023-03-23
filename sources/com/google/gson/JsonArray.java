@@ -7,15 +7,41 @@ import java.util.Iterator;
 import java.util.List;
 
 public final class JsonArray extends JsonElement implements Iterable<JsonElement> {
-    private final List<JsonElement> elements = new ArrayList();
+    private final List<JsonElement> elements;
 
-    /* access modifiers changed from: package-private */
+    public JsonArray() {
+        this.elements = new ArrayList();
+    }
+
+    public JsonArray(int capacity) {
+        this.elements = new ArrayList(capacity);
+    }
+
     public JsonArray deepCopy() {
-        JsonArray result = new JsonArray();
+        if (this.elements.isEmpty()) {
+            return new JsonArray();
+        }
+        JsonArray result = new JsonArray(this.elements.size());
         for (JsonElement element : this.elements) {
             result.add(element.deepCopy());
         }
         return result;
+    }
+
+    public void add(Boolean bool) {
+        this.elements.add(bool == null ? JsonNull.INSTANCE : new JsonPrimitive(bool));
+    }
+
+    public void add(Character character) {
+        this.elements.add(character == null ? JsonNull.INSTANCE : new JsonPrimitive(character));
+    }
+
+    public void add(Number number) {
+        this.elements.add(number == null ? JsonNull.INSTANCE : new JsonPrimitive(number));
+    }
+
+    public void add(String string) {
+        this.elements.add(string == null ? JsonNull.INSTANCE : new JsonPrimitive(string));
     }
 
     public void add(JsonElement element) {
@@ -27,6 +53,22 @@ public final class JsonArray extends JsonElement implements Iterable<JsonElement
 
     public void addAll(JsonArray array) {
         this.elements.addAll(array.elements);
+    }
+
+    public JsonElement set(int index, JsonElement element) {
+        return this.elements.set(index, element);
+    }
+
+    public boolean remove(JsonElement element) {
+        return this.elements.remove(element);
+    }
+
+    public JsonElement remove(int index) {
+        return this.elements.remove(index);
+    }
+
+    public boolean contains(JsonElement element) {
+        return this.elements.contains(element);
     }
 
     public int size() {

@@ -62,7 +62,7 @@ public class ID6CuspFragmentThreeImpl extends ID6CuspFragmentThree {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);

@@ -20,7 +20,7 @@ import com.wits.ksw.launcher.model.ControlBean;
 public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback135;
+    private final View.OnClickListener mCallback281;
     private long mDirtyFlags;
     private OnClickListenerImpl mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
 
@@ -44,7 +44,7 @@ public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding 
         this.linearLayout3.setTag((Object) null);
         this.recyclerView2.setTag((Object) null);
         setRootTag(root);
-        this.mCallback135 = new OnClickListener(this, 1);
+        this.mCallback281 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -65,7 +65,7 @@ public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding 
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (12 != variableId) {
+        if (21 != variableId) {
             return false;
         }
         setMBcVieModel((BcVieModel) variable);
@@ -77,7 +77,7 @@ public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding 
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(21);
         super.requestRebind();
     }
 
@@ -202,7 +202,7 @@ public class ActivityMainBcBindingSw600dpLandImpl extends ActivityMainBcBinding 
             }
         }
         if ((16 & dirtyFlags) != 0) {
-            this.appsBtn.setOnClickListener(this.mCallback135);
+            this.appsBtn.setOnClickListener(this.mCallback281);
         }
         if ((dirtyFlags & 26) != 0) {
             this.controlBtn.setVisibility(mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE);

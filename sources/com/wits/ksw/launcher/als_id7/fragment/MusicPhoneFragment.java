@@ -14,7 +14,7 @@ import com.wits.ksw.R;
 import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 
 public class MusicPhoneFragment extends Fragment {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     private com.wits.ksw.databinding.MusicPhoneFragment binding;
     private MainActivity mainActivity;
     private AlsID7ViewModel viewModel;

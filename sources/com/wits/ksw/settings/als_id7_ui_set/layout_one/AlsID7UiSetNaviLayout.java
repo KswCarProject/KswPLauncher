@@ -53,7 +53,7 @@ public class AlsID7UiSetNaviLayout extends RelativeLayout implements View.OnClic
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_naviapp:
+            case R.id.tv_naviapp /*2131297906*/:
                 this.tv_naviapp.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
                 this.tv_navihy.setTextColor(-1);
                 AlsID7UiIUpdateTwoLayout alsID7UiIUpdateTwoLayout = this.updateTwoLayout;
@@ -62,7 +62,7 @@ public class AlsID7UiSetNaviLayout extends RelativeLayout implements View.OnClic
                     return;
                 }
                 return;
-            case R.id.tv_navihy:
+            case R.id.tv_navihy /*2131297907*/:
                 this.tv_navihy.setTextColor(SkinCompatResources.getColor(this.context, R.color.als_id7_ui_text_color));
                 this.tv_naviapp.setTextColor(-1);
                 AlsID7UiIUpdateTwoLayout alsID7UiIUpdateTwoLayout2 = this.updateTwoLayout;

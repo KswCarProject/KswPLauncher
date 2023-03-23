@@ -15,14 +15,14 @@ import com.wits.ksw.launcher.model.BwmNbtModel;
 public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback153;
-    private final View.OnClickListener mCallback154;
-    private final View.OnClickListener mCallback155;
-    private final View.OnClickListener mCallback156;
-    private final View.OnClickListener mCallback157;
-    private final View.OnClickListener mCallback158;
-    private final View.OnClickListener mCallback159;
-    private final View.OnClickListener mCallback160;
+    private final View.OnClickListener mCallback291;
+    private final View.OnClickListener mCallback292;
+    private final View.OnClickListener mCallback293;
+    private final View.OnClickListener mCallback294;
+    private final View.OnClickListener mCallback295;
+    private final View.OnClickListener mCallback296;
+    private final View.OnClickListener mCallback297;
+    private final View.OnClickListener mCallback298;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
     private final ImageView mboundView1;
@@ -62,14 +62,14 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
         this.rlSettings.setTag((Object) null);
         this.videoLl.setTag((Object) null);
         setRootTag(root);
-        this.mCallback158 = new OnClickListener(this, 6);
-        this.mCallback156 = new OnClickListener(this, 4);
-        this.mCallback154 = new OnClickListener(this, 2);
-        this.mCallback160 = new OnClickListener(this, 8);
-        this.mCallback159 = new OnClickListener(this, 7);
-        this.mCallback157 = new OnClickListener(this, 5);
-        this.mCallback155 = new OnClickListener(this, 3);
-        this.mCallback153 = new OnClickListener(this, 1);
+        this.mCallback297 = new OnClickListener(this, 7);
+        this.mCallback295 = new OnClickListener(this, 5);
+        this.mCallback293 = new OnClickListener(this, 3);
+        this.mCallback291 = new OnClickListener(this, 1);
+        this.mCallback298 = new OnClickListener(this, 8);
+        this.mCallback296 = new OnClickListener(this, 6);
+        this.mCallback294 = new OnClickListener(this, 4);
+        this.mCallback292 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -90,7 +90,7 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (14 != variableId) {
+        if (23 != variableId) {
             return false;
         }
         setNbtModel((BwmNbtModel) variable);
@@ -102,7 +102,7 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
         synchronized (this) {
             this.mDirtyFlags |= 16;
         }
-        notifyPropertyChanged(14);
+        notifyPropertyChanged(23);
         super.requestRebind();
     }
 
@@ -217,14 +217,14 @@ public class ActivityBmwNbtBindingImpl extends ActivityBmwNbtBinding implements 
             }
         }
         if ((dirtyFlags & 32) != 0) {
-            this.appLl.setOnClickListener(this.mCallback153);
-            this.dashbroadLl.setOnClickListener(this.mCallback159);
-            this.musicLl.setOnClickListener(this.mCallback155);
-            this.naviLl.setOnClickListener(this.mCallback154);
-            this.phoneLl.setOnClickListener(this.mCallback157);
-            this.rlCar.setOnClickListener(this.mCallback158);
-            this.rlSettings.setOnClickListener(this.mCallback160);
-            this.videoLl.setOnClickListener(this.mCallback156);
+            this.appLl.setOnClickListener(this.mCallback291);
+            this.dashbroadLl.setOnClickListener(this.mCallback297);
+            this.musicLl.setOnClickListener(this.mCallback293);
+            this.naviLl.setOnClickListener(this.mCallback292);
+            this.phoneLl.setOnClickListener(this.mCallback295);
+            this.rlCar.setOnClickListener(this.mCallback296);
+            this.rlSettings.setOnClickListener(this.mCallback298);
+            this.videoLl.setOnClickListener(this.mCallback294);
         }
         if ((dirtyFlags & 50) != 0) {
             BaseBindingModel.srcImage(this.mboundView1, nbtModelLeftBGIdGet);

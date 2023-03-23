@@ -9,6 +9,7 @@ import com.ibm.icu.util.Currency;
 import com.ibm.icu.util.ICUCloneNotSupportedException;
 import com.ibm.icu.util.ULocale;
 import com.ibm.icu.util.UResourceBundle;
+import com.wits.ksw.settings.TxzMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
     public static final int CURRENCY_SPC_SURROUNDING_MATCH = 1;
     private static final char DEF_DECIMAL_SEPARATOR = '.';
     private static final char[] DEF_DIGIT_CHARS_ARRAY = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-    private static final String[] DEF_DIGIT_STRINGS_ARRAY = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private static final String[] DEF_DIGIT_STRINGS_ARRAY = {TxzMessage.TXZ_DISMISS, TxzMessage.TXZ_SHOW, "2", "3", "4", "5", "6", "7", "8", "9"};
     private static final char DEF_GROUPING_SEPARATOR = ',';
     private static final char DEF_MINUS_SIGN = '-';
     private static final char DEF_PERCENT = '%';

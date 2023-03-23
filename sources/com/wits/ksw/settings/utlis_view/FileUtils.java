@@ -2,6 +2,7 @@ package com.wits.ksw.settings.utlis_view;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Environment;
 import android.os.LocaleList;
 import android.os.StatFs;
@@ -28,15 +29,59 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class FileUtils {
-    private static String factoryPath = "/mnt/vendor/persist/mylogo.zip";
+    private static String factoryPath = " ";
+    public static String folderPath = Environment.getExternalStorageDirectory().getPath();
+    public static String logoFilePath = " ";
     private static String persistPath = "/mnt/vendor/persist/";
+    public static String upZipPath = " ";
+
+    static {
+        getFilePath();
+    }
+
+    static void getFilePath() {
+        if (Build.VERSION.RELEASE.equals("12")) {
+            logoFilePath = folderPath + "/mylogo12";
+            upZipPath = persistPath + "mylogo12.zip";
+            factoryPath = "/mnt/vendor/persist/mylogo12.zip";
+        } else if (Build.VERSION.RELEASE.equals("13")) {
+            logoFilePath = folderPath + "/mylogo13";
+            upZipPath = persistPath + "mylogo13.zip";
+            factoryPath = "/mnt/vendor/persist/mylogo13.zip";
+        } else {
+            logoFilePath = folderPath + "/mylogo";
+            upZipPath = persistPath + "mylogo.zip";
+            factoryPath = "/mnt/vendor/persist/mylogo.zip";
+        }
+    }
+
+    public static String getLogoFilePath() {
+        if (logoFilePath == null) {
+            getFilePath();
+        }
+        return logoFilePath;
+    }
+
+    public static String getFactoryPath() {
+        if (factoryPath == null) {
+            getFilePath();
+        }
+        return factoryPath;
+    }
+
+    public static String getUpZipPath() {
+        if (upZipPath == null) {
+            getFilePath();
+        }
+        return upZipPath;
+    }
 
     public static boolean copyFile(String newPath, Context context) {
         int bytesum = 0;
         try {
             File oldfile = new File(newPath);
             if (oldfile.exists()) {
-                File file = new File(factoryPath);
+                File file = new File(getFactoryPath());
                 if (file.exists()) {
                     file.delete();
                 }
@@ -49,7 +94,7 @@ public class FileUtils {
                 }
                 file.createNewFile();
                 InputStream inStream = new FileInputStream(newPath);
-                FileOutputStream fs = new FileOutputStream(factoryPath);
+                FileOutputStream fs = new FileOutputStream(getFactoryPath());
                 byte[] buffer = new byte[1444];
                 while (true) {
                     int read = inStream.read(buffer);
@@ -139,7 +184,7 @@ public class FileUtils {
         }
     }
 
-    public static void upZipFile(File zipFile, String folderPath) throws IOException, IllegalArgumentException {
+    public static void upZipFile(File zipFile, String folderPath2) throws IOException, IllegalArgumentException {
         ZipFile zfile = new ZipFile(zipFile);
         Enumeration zList = zfile.entries();
         byte[] buf = new byte[1024];
@@ -147,12 +192,12 @@ public class FileUtils {
             ZipEntry ze = (ZipEntry) zList.nextElement();
             if (ze.isDirectory()) {
                 Log.d("unzip", "ze.getName() = " + ze.getName());
-                String dirstr = new String((folderPath + ze.getName()).getBytes("8859_1"), StringUtils.GB2312);
+                String dirstr = new String((folderPath2 + ze.getName()).getBytes("8859_1"), StringUtils.GB2312);
                 Log.d("unzip", "str = " + dirstr);
                 new File(dirstr).mkdir();
             } else {
                 Log.d("unzip", "ze.getName() = " + ze.getName());
-                OutputStream os = new BufferedOutputStream(new FileOutputStream(getRealFileName(folderPath, ze.getName())));
+                OutputStream os = new BufferedOutputStream(new FileOutputStream(getRealFileName(folderPath2, ze.getName())));
                 InputStream is = new BufferedInputStream(zfile.getInputStream(ze));
                 while (true) {
                     int read = is.read(buf, 0, 1024);

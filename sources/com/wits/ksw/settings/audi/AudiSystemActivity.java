@@ -39,25 +39,25 @@ public class AudiSystemActivity extends AudiSubActivity {
     public void onClick(View view) {
         this.binding.audiSystemSetParentPanel.setSeleted(view);
         switch (view.getId()) {
-            case R.id.audi_system_aux_postion:
+            case R.id.audi_system_aux_postion /*2131296399*/:
                 StartUtil.AudiAuxActivity(this);
                 return;
-            case R.id.audi_system_brightness:
+            case R.id.audi_system_brightness /*2131296400*/:
                 StartUtil.AudiBrightnessActivity(this);
                 return;
-            case R.id.audi_system_rever_camera:
+            case R.id.audi_system_rever_camera /*2131296402*/:
                 StartUtil.AudiReverCameraActivity(this);
                 return;
-            case R.id.audi_system_speed_unit:
+            case R.id.audi_system_speed_unit /*2131296407*/:
                 StartUtil.AudiSpeedUnitActivity(this);
                 return;
-            case R.id.audi_system_temp_unit:
+            case R.id.audi_system_temp_unit /*2131296408*/:
                 StartUtil.AudiTempActivity(this);
                 return;
-            case R.id.tv_music_app:
+            case R.id.tv_music_app /*2131297900*/:
                 StartUtil.toAudiSelMusicApp(this);
                 return;
-            case R.id.tv_video_app:
+            case R.id.tv_video_app /*2131297951*/:
                 StartUtil.toAudiSelVideoApp(this);
                 return;
             default:

@@ -14,7 +14,7 @@ import com.wits.ksw.launcher.als_id7.model.AlsID7ViewModel;
 public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashboardViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback174;
+    private final View.OnClickListener mCallback306;
     private long mDirtyFlags;
 
     static {
@@ -39,7 +39,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         this.seatBeltTextView.setTag((Object) null);
         this.speedTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback174 = new OnClickListener(this, 1);
+        this.mCallback306 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -60,7 +60,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (3 != variableId) {
+        if (4 != variableId) {
             return false;
         }
         setDashVideoViewModel((AlsID7ViewModel) variable);
@@ -72,7 +72,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
         synchronized (this) {
             this.mDirtyFlags |= 32;
         }
-        notifyPropertyChanged(3);
+        notifyPropertyChanged(4);
         super.requestRebind();
     }
 
@@ -245,14 +245,14 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
             android.widget.TextView r9 = r1.brakeTextView
             android.content.res.Resources r9 = r9.getResources()
             r34 = r0
-            r0 = 2131558729(0x7f0d0149, float:1.8742782E38)
+            r0 = 2131558757(0x7f0d0165, float:1.8742839E38)
             java.lang.String r0 = r9.getString(r0)
             goto L_0x00ab
         L_0x009c:
             r34 = r0
             android.widget.TextView r0 = r1.brakeTextView
             android.content.res.Resources r0 = r0.getResources()
-            r9 = 2131558728(0x7f0d0148, float:1.874278E38)
+            r9 = 2131558756(0x7f0d0164, float:1.8742837E38)
             java.lang.String r0 = r0.getString(r9)
         L_0x00ab:
             r14 = r0
@@ -309,14 +309,14 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
             android.widget.TextView r12 = r1.seatBeltTextView
             android.content.res.Resources r12 = r12.getResources()
             r34 = r0
-            r0 = 2131558746(0x7f0d015a, float:1.8742817E38)
+            r0 = 2131558774(0x7f0d0176, float:1.8742873E38)
             java.lang.String r0 = r12.getString(r0)
             goto L_0x0120
         L_0x0111:
             r34 = r0
             android.widget.TextView r0 = r1.seatBeltTextView
             android.content.res.Resources r0 = r0.getResources()
-            r12 = 2131558745(0x7f0d0159, float:1.8742814E38)
+            r12 = 2131558773(0x7f0d0175, float:1.8742871E38)
             java.lang.String r0 = r0.getString(r12)
         L_0x0120:
             r10 = r0
@@ -402,7 +402,7 @@ public class AlsId7SubDashboardViewBindingSw600dpLandImpl extends AlsId7SubDashb
             if (r4 == 0) goto L_0x01aa
             com.wits.ksw.launcher.view.CustomBmwImageView r4 = r1.dashboardImageView
             r32 = r7
-            android.view.View$OnClickListener r7 = r1.mCallback174
+            android.view.View$OnClickListener r7 = r1.mCallback306
             r4.setOnClickListener(r7)
             goto L_0x01ac
         L_0x01aa:

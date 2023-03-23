@@ -16,7 +16,7 @@ public class BenzMbux2021Configs {
 
     public static void saveStyleData(Context context) {
         LOGE.D("___________________saveStyleData()________________");
-        Settings.System.putString(context.getContentResolver(), STYLE_INDEX, style_sel + "");
-        Settings.System.putString(context.getContentResolver(), BG_INDEX, bg_sel + "");
+        Settings.System.putString(context.getContentResolver(), "STYLE_INDEX", style_sel + "");
+        Settings.System.putString(context.getContentResolver(), "BG_INDEX", bg_sel + "");
     }
 }

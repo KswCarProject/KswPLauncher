@@ -1,6 +1,7 @@
 package com.google.zxing.aztec.encoder;
 
 import com.google.zxing.common.BitArray;
+import kotlin.text.Typography;
 
 final class SimpleToken extends Token {
     private final short bitCount;
@@ -20,6 +21,6 @@ final class SimpleToken extends Token {
     public String toString() {
         int i = this.value;
         short s = this.bitCount;
-        return "<" + Integer.toBinaryString((1 << this.bitCount) | (i & ((1 << s) - 1)) | (1 << s)).substring(1) + '>';
+        return "<" + Integer.toBinaryString((1 << this.bitCount) | (i & ((1 << s) - 1)) | (1 << s)).substring(1) + Typography.greater;
     }
 }

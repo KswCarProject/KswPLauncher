@@ -25,6 +25,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
     private final ImageView mboundView1;
     private final TextView mboundView10;
     private final TextView mboundView11;
+    private final ImageView mboundView12;
     private final ImageView mboundView2;
     private final ImageView mboundView3;
     private final ImageView mboundView4;
@@ -35,16 +36,16 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
     static {
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
-        sparseIntArray.put(R.id.lexus_iv_left, 12);
-        sparseIntArray.put(R.id.lexus_iv_right, 13);
+        sparseIntArray.put(R.id.lexus_iv_left, 13);
+        sparseIntArray.put(R.id.lexus_iv_right, 14);
     }
 
     public ActivityDashBoardLexusBindingImpl(DataBindingComponent bindingComponent, View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 14, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 15, sIncludes, sViewsWithIds));
     }
 
     private ActivityDashBoardLexusBindingImpl(DataBindingComponent bindingComponent, View root, Object[] bindings) {
-        super(bindingComponent, root, 11, bindings[8], bindings[12], bindings[13], bindings[9]);
+        super(bindingComponent, root, 12, bindings[8], bindings[13], bindings[14], bindings[9]);
         this.mDirtyFlags = -1;
         this.brakeTextView.setTag((Object) null);
         FrameLayout frameLayout = bindings[0];
@@ -59,21 +60,24 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         TextView textView2 = bindings[11];
         this.mboundView11 = textView2;
         textView2.setTag((Object) null);
-        ImageView imageView2 = bindings[2];
-        this.mboundView2 = imageView2;
+        ImageView imageView2 = bindings[12];
+        this.mboundView12 = imageView2;
         imageView2.setTag((Object) null);
-        ImageView imageView3 = bindings[3];
-        this.mboundView3 = imageView3;
+        ImageView imageView3 = bindings[2];
+        this.mboundView2 = imageView3;
         imageView3.setTag((Object) null);
-        ImageView imageView4 = bindings[4];
-        this.mboundView4 = imageView4;
+        ImageView imageView4 = bindings[3];
+        this.mboundView3 = imageView4;
         imageView4.setTag((Object) null);
-        ImageView imageView5 = bindings[5];
-        this.mboundView5 = imageView5;
+        ImageView imageView5 = bindings[4];
+        this.mboundView4 = imageView5;
         imageView5.setTag((Object) null);
-        ImageView imageView6 = bindings[6];
-        this.mboundView6 = imageView6;
+        ImageView imageView6 = bindings[5];
+        this.mboundView5 = imageView6;
         imageView6.setTag((Object) null);
+        ImageView imageView7 = bindings[6];
+        this.mboundView6 = imageView7;
+        imageView7.setTag((Object) null);
         TextView textView3 = bindings[7];
         this.mboundView7 = textView3;
         textView3.setTag((Object) null);
@@ -84,7 +88,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
 
     public void invalidateAll() {
         synchronized (this) {
-            this.mDirtyFlags = PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+            this.mDirtyFlags = PlaybackStateCompat.ACTION_PLAY_FROM_URI;
         }
         requestRebind();
     }
@@ -99,7 +103,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((DashboardViewModel) variable);
@@ -120,20 +124,22 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
             case 2:
                 return onChangeViewModelCarInfoFrDoorState((ObservableField) object, fieldId);
             case 3:
-                return onChangeViewModelCarInfoRlDoorState((ObservableField) object, fieldId);
+                return onChangeViewModelCarInfoUnitEnImg((ObservableField) object, fieldId);
             case 4:
-                return onChangeViewModelCarInfoRrDoorState((ObservableField) object, fieldId);
+                return onChangeViewModelCarInfoRlDoorState((ObservableField) object, fieldId);
             case 5:
-                return onChangeViewModelCarInfoTempStr((ObservableField) object, fieldId);
+                return onChangeViewModelCarInfoRrDoorState((ObservableField) object, fieldId);
             case 6:
-                return onChangeViewModelCarInfoSeatBeltpValue((ObservableField) object, fieldId);
+                return onChangeViewModelCarInfoTempStr((ObservableField) object, fieldId);
             case 7:
-                return onChangeViewModelCarInfoFlDoorState((ObservableField) object, fieldId);
+                return onChangeViewModelCarInfoSeatBeltpValue((ObservableField) object, fieldId);
             case 8:
-                return onChangeViewModelCarInfoSpeed((ObservableInt) object, fieldId);
+                return onChangeViewModelCarInfoFlDoorState((ObservableField) object, fieldId);
             case 9:
-                return onChangeViewModelCarInfoBDoorState((ObservableField) object, fieldId);
+                return onChangeViewModelCarInfoSpeed((ObservableInt) object, fieldId);
             case 10:
+                return onChangeViewModelCarInfoBDoorState((ObservableField) object, fieldId);
+            case 11:
                 return onChangeViewModelCarInfoBrakeValue((ObservableField) object, fieldId);
             default:
                 return false;
@@ -170,7 +176,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoRlDoorState(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoUnitEnImg(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -180,7 +186,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoRrDoorState(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoRlDoorState(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -190,7 +196,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoTempStr(ObservableField<String> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoRrDoorState(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -200,7 +206,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoTempStr(ObservableField<String> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -210,7 +216,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoFlDoorState(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoSeatBeltpValue(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -220,7 +226,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoSpeed(ObservableInt ViewModelCarInfoSpeed, int fieldId) {
+    private boolean onChangeViewModelCarInfoFlDoorState(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -230,7 +236,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoBDoorState(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoSpeed(ObservableInt ViewModelCarInfoSpeed, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -240,7 +246,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
-    private boolean onChangeViewModelCarInfoBrakeValue(ObservableField<Boolean> observableField, int fieldId) {
+    private boolean onChangeViewModelCarInfoBDoorState(ObservableField<Boolean> observableField, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -250,20 +256,29 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         return true;
     }
 
+    private boolean onChangeViewModelCarInfoBrakeValue(ObservableField<Boolean> observableField, int fieldId) {
+        if (fieldId != 0) {
+            return false;
+        }
+        synchronized (this) {
+            this.mDirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH;
+        }
+        return true;
+    }
+
     /* access modifiers changed from: protected */
     public void executeBindings() {
         long dirtyFlags;
+        int viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE;
         int viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE;
         int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE;
         String stringValueOfViewModelCarInfoTurnSpeed;
         int viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE;
-        int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE;
+        int androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet;
         String viewModelCarInfoTempStrGet;
         String stringValueOfViewModelCarInfoSpeed;
         int viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE;
         int viewModelCarInfoBrakeValueViewVISIBLEViewGONE;
-        ObservableInt viewModelCarInfoTurnSpeed;
-        ObservableInt viewModelCarInfoTurnSpeed2;
         ObservableField<Boolean> viewModelCarInfoBrakeValue;
         ObservableField<Boolean> viewModelCarInfoBDoorState;
         ObservableInt viewModelCarInfoSpeed;
@@ -272,6 +287,8 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         ObservableField<String> viewModelCarInfoTempStr;
         ObservableField<Boolean> viewModelCarInfoRrDoorState;
         ObservableField<Boolean> viewModelCarInfoRlDoorState;
+        ObservableField<Boolean> viewModelCarInfoUnitEnImg;
+        ObservableInt viewModelCarInfoTurnSpeed;
         synchronized (this) {
             dirtyFlags = this.mDirtyFlags;
             this.mDirtyFlags = 0;
@@ -283,7 +300,7 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         int viewModelCarInfoBDoorStateViewVISIBLEViewINVISIBLE = 0;
         ObservableBoolean viewModelCarInfoCarImage = null;
         boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet = false;
-        boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet = false;
+        int androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet = false;
         ObservableField<Boolean> viewModelCarInfoFrDoorState = null;
         Boolean viewModelCarInfoSeatBeltpValueGet = null;
         Boolean viewModelCarInfoRlDoorStateGet = null;
@@ -294,16 +311,19 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
         Boolean viewModelCarInfoFlDoorStateGet = null;
         String viewModelCarInfoTempStrGet2 = null;
         Boolean viewModelCarInfoBrakeValueGet = null;
-        int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2 = 0;
+        Boolean viewModelCarInfoUnitEnImgGet = null;
+        int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = 0;
         int viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2 = 0;
         String stringValueOfViewModelCarInfoTurnSpeed2 = null;
         int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2 = 0;
         boolean viewModelCarInfoCarImageGet = false;
         Boolean viewModelCarInfoFrDoorStateGet = null;
         int viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2 = 0;
-        if ((dirtyFlags & 6143) != 0) {
+        int viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE2 = 0;
+        if ((dirtyFlags & 12287) != 0) {
             CarInfo viewModelCarInfo = DashboardViewModel.carInfo;
-            if ((dirtyFlags & 4097) != 0) {
+            ObservableInt viewModelCarInfoTurnSpeed2 = null;
+            if ((dirtyFlags & 8193) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoTurnSpeed = viewModelCarInfo.turnSpeed;
                 } else {
@@ -314,10 +334,9 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
                     viewModelCarInfoTurnSpeedGet = viewModelCarInfoTurnSpeed.get();
                 }
                 stringValueOfViewModelCarInfoTurnSpeed2 = String.valueOf(viewModelCarInfoTurnSpeedGet);
-            } else {
-                viewModelCarInfoTurnSpeed = null;
+                viewModelCarInfoTurnSpeed2 = viewModelCarInfoTurnSpeed;
             }
-            if ((dirtyFlags & 4098) != 0) {
+            if ((dirtyFlags & 8194) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoCarImage = viewModelCarInfo.carImage;
                 }
@@ -325,16 +344,16 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
                 if (viewModelCarInfoCarImage != null) {
                     viewModelCarInfoCarImageGet = viewModelCarInfoCarImage.get();
                 }
-                if ((dirtyFlags & 4098) != 0) {
+                if ((dirtyFlags & 8194) != 0) {
                     if (viewModelCarInfoCarImageGet) {
-                        dirtyFlags |= 268435456;
+                        dirtyFlags |= 536870912;
                     } else {
-                        dirtyFlags |= 134217728;
+                        dirtyFlags |= 268435456;
                     }
                 }
                 viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2 = viewModelCarInfoCarImageGet ? 0 : 4;
             }
-            if ((dirtyFlags & 4100) != 0) {
+            if ((dirtyFlags & 8196) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoFrDoorState = viewModelCarInfo.frDoorState;
                 }
@@ -343,186 +362,206 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
                     viewModelCarInfoFrDoorStateGet = viewModelCarInfoFrDoorState.get();
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFrDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoFrDoorStateGet);
-                if ((dirtyFlags & 4100) != 0) {
+                if ((dirtyFlags & 8196) != 0) {
                     if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFrDoorStateGet) {
-                        dirtyFlags |= 67108864;
+                        dirtyFlags |= 134217728;
                     } else {
-                        dirtyFlags |= 33554432;
+                        dirtyFlags |= 67108864;
                     }
                 }
                 viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFrDoorStateGet ? 0 : 4;
             }
-            if ((dirtyFlags & 4104) != 0) {
+            if ((dirtyFlags & 8200) != 0) {
+                if (viewModelCarInfo != null) {
+                    viewModelCarInfoUnitEnImg = viewModelCarInfo.unitEnImg;
+                } else {
+                    viewModelCarInfoUnitEnImg = null;
+                }
+                updateRegistration(3, (Observable) viewModelCarInfoUnitEnImg);
+                if (viewModelCarInfoUnitEnImg != null) {
+                    viewModelCarInfoUnitEnImgGet = viewModelCarInfoUnitEnImg.get();
+                }
+                boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoUnitEnImgGet = ViewDataBinding.safeUnbox(viewModelCarInfoUnitEnImgGet);
+                if ((dirtyFlags & 8200) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoUnitEnImgGet) {
+                        dirtyFlags |= 2147483648L;
+                    } else {
+                        dirtyFlags |= 1073741824;
+                    }
+                }
+                viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoUnitEnImgGet ? 0 : 4;
+                ObservableField<Boolean> observableField = viewModelCarInfoUnitEnImg;
+            }
+            if ((dirtyFlags & 8208) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoRlDoorState = viewModelCarInfo.rlDoorState;
                 } else {
                     viewModelCarInfoRlDoorState = null;
                 }
-                viewModelCarInfoTurnSpeed2 = viewModelCarInfoTurnSpeed;
-                updateRegistration(3, (Observable) viewModelCarInfoRlDoorState);
+                updateRegistration(4, (Observable) viewModelCarInfoRlDoorState);
                 if (viewModelCarInfoRlDoorState != null) {
                     viewModelCarInfoRlDoorStateGet = viewModelCarInfoRlDoorState.get();
                 }
                 androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoRlDoorStateGet);
-                if ((dirtyFlags & 4104) != 0) {
+                if ((dirtyFlags & 8208) != 0) {
                     if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet) {
-                        dirtyFlags |= 4194304;
+                        dirtyFlags |= 8388608;
                     } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE;
+                        dirtyFlags |= 4194304;
                     }
                 }
-                viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet ? 0 : 4;
-                ObservableField<Boolean> observableField = viewModelCarInfoRlDoorState;
-            } else {
-                viewModelCarInfoTurnSpeed2 = viewModelCarInfoTurnSpeed;
+                viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet ? 0 : 4;
+                ObservableField<Boolean> observableField2 = viewModelCarInfoRlDoorState;
             }
-            if ((dirtyFlags & 4112) != 0) {
+            if ((dirtyFlags & 8224) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoRrDoorState = viewModelCarInfo.rrDoorState;
                 } else {
                     viewModelCarInfoRrDoorState = null;
                 }
-                updateRegistration(4, (Observable) viewModelCarInfoRrDoorState);
+                updateRegistration(5, (Observable) viewModelCarInfoRrDoorState);
                 if (viewModelCarInfoRrDoorState != null) {
                     viewModelCarInfoRrDoorStateGet = viewModelCarInfoRrDoorState.get();
                 }
                 androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoRrDoorStateGet);
-                if ((dirtyFlags & 4112) != 0) {
+                if ((dirtyFlags & 8224) != 0) {
                     if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
                     } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
                     }
                 }
                 viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet ? 0 : 4;
-                ObservableField<Boolean> observableField2 = viewModelCarInfoRrDoorState;
+                ObservableField<Boolean> observableField3 = viewModelCarInfoRrDoorState;
             }
-            if ((dirtyFlags & 4128) != 0) {
+            if ((dirtyFlags & 8256) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoTempStr = viewModelCarInfo.tempStr;
                 } else {
                     viewModelCarInfoTempStr = null;
                 }
-                updateRegistration(5, (Observable) viewModelCarInfoTempStr);
+                updateRegistration(6, (Observable) viewModelCarInfoTempStr);
                 if (viewModelCarInfoTempStr != null) {
                     viewModelCarInfoTempStrGet2 = viewModelCarInfoTempStr.get();
-                    ObservableField<String> observableField3 = viewModelCarInfoTempStr;
-                } else {
                     ObservableField<String> observableField4 = viewModelCarInfoTempStr;
+                } else {
+                    ObservableField<String> observableField5 = viewModelCarInfoTempStr;
                 }
             }
-            if ((dirtyFlags & 4160) != 0) {
+            if ((dirtyFlags & 8320) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoSeatBeltpValue = viewModelCarInfo.seatBeltpValue;
                 } else {
                     viewModelCarInfoSeatBeltpValue = null;
                 }
-                updateRegistration(6, (Observable) viewModelCarInfoSeatBeltpValue);
+                updateRegistration(7, (Observable) viewModelCarInfoSeatBeltpValue);
                 if (viewModelCarInfoSeatBeltpValue != null) {
                     viewModelCarInfoSeatBeltpValueGet = viewModelCarInfoSeatBeltpValue.get();
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet = ViewDataBinding.safeUnbox(viewModelCarInfoSeatBeltpValueGet);
-                if ((dirtyFlags & 4160) != 0) {
+                if ((dirtyFlags & 8320) != 0) {
                     if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
                     } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_URI;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE;
                     }
                 }
                 viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoSeatBeltpValueGet ? 8 : 0;
-                ObservableField<Boolean> observableField5 = viewModelCarInfoSeatBeltpValue;
+                ObservableField<Boolean> observableField6 = viewModelCarInfoSeatBeltpValue;
             }
-            if ((dirtyFlags & 4224) != 0) {
+            if ((dirtyFlags & 8448) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoFlDoorState = viewModelCarInfo.flDoorState;
                 } else {
                     viewModelCarInfoFlDoorState = null;
                 }
-                updateRegistration(7, (Observable) viewModelCarInfoFlDoorState);
+                updateRegistration(8, (Observable) viewModelCarInfoFlDoorState);
                 if (viewModelCarInfoFlDoorState != null) {
                     viewModelCarInfoFlDoorStateGet = viewModelCarInfoFlDoorState.get();
                 }
                 boolean androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFlDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoFlDoorStateGet);
-                if ((dirtyFlags & 4224) != 0) {
+                if ((dirtyFlags & 8448) != 0) {
                     if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFlDoorStateGet) {
-                        dirtyFlags |= 16777216;
+                        dirtyFlags |= 33554432;
                     } else {
-                        dirtyFlags |= 8388608;
+                        dirtyFlags |= 16777216;
                     }
                 }
                 viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoFlDoorStateGet ? 0 : 4;
-                ObservableField<Boolean> observableField6 = viewModelCarInfoFlDoorState;
+                ObservableField<Boolean> observableField7 = viewModelCarInfoFlDoorState;
             }
-            if ((dirtyFlags & 4352) != 0) {
+            if ((dirtyFlags & 8704) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoSpeed = viewModelCarInfo.speed;
                 } else {
                     viewModelCarInfoSpeed = null;
                 }
-                updateRegistration(8, (Observable) viewModelCarInfoSpeed);
+                updateRegistration(9, (Observable) viewModelCarInfoSpeed);
                 if (viewModelCarInfoSpeed != null) {
                     viewModelCarInfoSpeedGet = viewModelCarInfoSpeed.get();
                 }
                 stringValueOfViewModelCarInfoSpeed2 = String.valueOf(viewModelCarInfoSpeedGet);
                 ObservableInt observableInt = viewModelCarInfoSpeed;
             }
-            if ((dirtyFlags & 4608) != 0) {
+            if ((dirtyFlags & 9216) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoBDoorState = viewModelCarInfo.bDoorState;
                 } else {
                     viewModelCarInfoBDoorState = null;
                 }
-                updateRegistration(9, (Observable) viewModelCarInfoBDoorState);
+                updateRegistration(10, (Observable) viewModelCarInfoBDoorState);
                 if (viewModelCarInfoBDoorState != null) {
                     viewModelCarInfoBDoorStateGet = viewModelCarInfoBDoorState.get();
                 }
                 androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet = ViewDataBinding.safeUnbox(viewModelCarInfoBDoorStateGet);
-                if ((dirtyFlags & 4608) != 0) {
+                if ((dirtyFlags & 9216) != 0) {
                     if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_URI;
                     } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH;
                     }
                 }
                 viewModelCarInfoBDoorStateViewVISIBLEViewINVISIBLE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet ? 0 : 4;
-                ObservableField<Boolean> observableField7 = viewModelCarInfoBDoorState;
+                ObservableField<Boolean> observableField8 = viewModelCarInfoBDoorState;
             }
-            if ((dirtyFlags & 5120) != 0) {
+            if ((dirtyFlags & 10240) != 0) {
                 if (viewModelCarInfo != null) {
                     viewModelCarInfoBrakeValue = viewModelCarInfo.brakeValue;
                 } else {
                     viewModelCarInfoBrakeValue = null;
                 }
-                updateRegistration(10, (Observable) viewModelCarInfoBrakeValue);
+                updateRegistration(11, (Observable) viewModelCarInfoBrakeValue);
                 if (viewModelCarInfoBrakeValue != null) {
                     viewModelCarInfoBrakeValueGet = viewModelCarInfoBrakeValue.get();
                 }
-                int androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
-                if ((dirtyFlags & 5120) != 0) {
-                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet == true) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED;
+                int androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 = ViewDataBinding.safeUnbox(viewModelCarInfoBrakeValueGet);
+                if ((dirtyFlags & 10240) != 0) {
+                    if (androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 == true) {
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE;
                     } else {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE_ENABLED;
+                        dirtyFlags |= PlaybackStateCompat.ACTION_SET_CAPTIONING_ENABLED;
                     }
                 }
-                ObservableField<Boolean> observableField8 = viewModelCarInfoBrakeValue;
+                ObservableField<Boolean> observableField9 = viewModelCarInfoBrakeValue;
                 CarInfo carInfo = viewModelCarInfo;
                 viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2;
                 stringValueOfViewModelCarInfoSpeed = stringValueOfViewModelCarInfoSpeed2;
-                viewModelCarInfoBrakeValueViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet != 0 ? 0 : 8;
+                viewModelCarInfoBrakeValueViewVISIBLEViewGONE = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2 != 0 ? 0 : 8;
                 ObservableInt observableInt2 = viewModelCarInfoTurnSpeed2;
                 boolean z = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet;
-                int viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet;
+                int viewModelCarInfoBrakeValueViewVISIBLEViewGONE2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet2;
                 viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet2;
-                viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2;
+                androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE;
                 Boolean bool = viewModelCarInfoBDoorStateGet;
-                int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE3 = viewModelCarInfoSpeedGet;
+                int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2 = viewModelCarInfoSpeedGet;
                 viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2;
                 stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
                 ObservableBoolean observableBoolean = viewModelCarInfoCarImage;
                 boolean z2 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet;
                 viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2;
                 viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2;
+                int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE3 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet;
+                viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE = viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE2;
             } else {
                 CarInfo carInfo2 = viewModelCarInfo;
                 viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE2;
@@ -531,59 +570,65 @@ public class ActivityDashBoardLexusBindingImpl extends ActivityDashBoardLexusBin
                 ObservableInt observableInt3 = viewModelCarInfoTurnSpeed2;
                 boolean z3 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBDoorStateGet;
                 viewModelCarInfoTempStrGet = viewModelCarInfoTempStrGet2;
-                viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE2;
+                androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE;
                 Boolean bool2 = viewModelCarInfoBDoorStateGet;
-                int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE4 = viewModelCarInfoSpeedGet;
+                int viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE3 = viewModelCarInfoSpeedGet;
                 viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE2;
                 stringValueOfViewModelCarInfoTurnSpeed = stringValueOfViewModelCarInfoTurnSpeed2;
                 ObservableBoolean observableBoolean2 = viewModelCarInfoCarImage;
                 boolean z4 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRlDoorStateGet;
                 viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE2;
                 viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE2;
+                int viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE4 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet;
+                viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE = viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE2;
             }
         } else {
             viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE = 0;
             stringValueOfViewModelCarInfoSpeed = null;
             viewModelCarInfoBrakeValueViewVISIBLEViewGONE = 0;
             viewModelCarInfoTempStrGet = null;
-            viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE = 0;
+            androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet = false;
             viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE = 0;
             stringValueOfViewModelCarInfoTurnSpeed = null;
             viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE = 0;
             viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE = 0;
+            viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE = 0;
         }
-        if ((dirtyFlags & 4160) != 0) {
-            boolean z5 = androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoRrDoorStateGet;
+        if ((dirtyFlags & 8320) != 0) {
+            ObservableField<Boolean> observableField10 = viewModelCarInfoFrDoorState;
             this.brakeTextView.setVisibility(viewModelCarInfoSeatBeltpValueViewGONEViewVISIBLE);
         }
-        if ((dirtyFlags & 4098) != 0) {
+        if ((dirtyFlags & 8194) != 0) {
             this.mboundView1.setVisibility(viewModelCarInfoCarImageViewVISIBLEViewINVISIBLE);
         }
-        if ((dirtyFlags & 4352) != 0) {
+        if ((dirtyFlags & 8704) != 0) {
             TextViewBindingAdapter.setText(this.mboundView10, stringValueOfViewModelCarInfoSpeed);
         }
-        if ((dirtyFlags & 4097) != 0) {
+        if ((dirtyFlags & 8193) != 0) {
             TextViewBindingAdapter.setText(this.mboundView11, stringValueOfViewModelCarInfoTurnSpeed);
         }
-        if ((dirtyFlags & 4224) != 0) {
+        if ((dirtyFlags & 8200) != 0) {
+            this.mboundView12.setVisibility(viewModelCarInfoUnitEnImgViewVISIBLEViewINVISIBLE);
+        }
+        if ((dirtyFlags & 8448) != 0) {
             this.mboundView2.setVisibility(viewModelCarInfoFlDoorStateViewVISIBLEViewINVISIBLE);
         }
-        if ((dirtyFlags & 4104) != 0) {
-            this.mboundView3.setVisibility(viewModelCarInfoRlDoorStateViewVISIBLEViewINVISIBLE);
+        if ((dirtyFlags & 8208) != 0) {
+            this.mboundView3.setVisibility(androidDatabindingViewDataBindingSafeUnboxViewModelCarInfoBrakeValueGet);
         }
-        if ((dirtyFlags & 4100) != 0) {
+        if ((dirtyFlags & 8196) != 0) {
             this.mboundView4.setVisibility(viewModelCarInfoFrDoorStateViewVISIBLEViewINVISIBLE);
         }
-        if ((dirtyFlags & 4112) != 0) {
+        if ((dirtyFlags & 8224) != 0) {
             this.mboundView5.setVisibility(viewModelCarInfoRrDoorStateViewVISIBLEViewINVISIBLE);
         }
-        if ((dirtyFlags & 4608) != 0) {
+        if ((dirtyFlags & 9216) != 0) {
             this.mboundView6.setVisibility(viewModelCarInfoBDoorStateViewVISIBLEViewINVISIBLE);
         }
-        if ((dirtyFlags & 4128) != 0) {
+        if ((dirtyFlags & 8256) != 0) {
             TextViewBindingAdapter.setText(this.mboundView7, viewModelCarInfoTempStrGet);
         }
-        if ((dirtyFlags & 5120) != 0) {
+        if ((dirtyFlags & 10240) != 0) {
             this.seatBeltTextView.setVisibility(viewModelCarInfoBrakeValueViewVISIBLEViewGONE);
         }
     }

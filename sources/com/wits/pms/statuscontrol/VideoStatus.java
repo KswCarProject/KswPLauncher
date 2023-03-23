@@ -9,6 +9,7 @@ public class VideoStatus {
     private String path;
     private boolean play;
     private int position;
+    private int totalTime;
 
     public String getPath() {
         return this.path;
@@ -32,6 +33,14 @@ public class VideoStatus {
 
     public void setPosition(int position2) {
         this.position = position2;
+    }
+
+    public int getTotalTime() {
+        return this.totalTime;
+    }
+
+    public void setTotalTime(int totalTime2) {
+        this.totalTime = totalTime2;
     }
 
     public boolean isPlay() {

@@ -60,7 +60,7 @@ public class AudiMbi3SelThirdClsImpl extends AudiMbi3SelThirdCls {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiMib3SystemViewModel) variable);

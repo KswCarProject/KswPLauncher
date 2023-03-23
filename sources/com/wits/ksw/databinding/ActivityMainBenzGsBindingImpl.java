@@ -20,8 +20,8 @@ import com.wits.ksw.launcher.view.benzgs.BenzGsViewMoel;
 public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback176;
-    private final View.OnClickListener mCallback177;
+    private final View.OnClickListener mCallback314;
+    private final View.OnClickListener mCallback315;
     private long mDirtyFlags;
     private OnClickListenerImpl mVmOnControlClickAndroidViewViewOnClickListener;
     private final RelativeLayout mboundView0;
@@ -41,8 +41,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         this.mboundView0 = relativeLayout;
         relativeLayout.setTag((Object) null);
         setRootTag(root);
-        this.mCallback176 = new OnClickListener(this, 1);
-        this.mCallback177 = new OnClickListener(this, 2);
+        this.mCallback314 = new OnClickListener(this, 1);
+        this.mCallback315 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -63,7 +63,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((BenzGsViewMoel) variable);
@@ -75,7 +75,7 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 
@@ -242,8 +242,8 @@ public class ActivityMainBenzGsBindingImpl extends ActivityMainBenzGsBinding imp
         if ((dirtyFlags & 16) != 0) {
             BenzGsViewMoel benzGsViewMoel = vm;
             boolean z2 = vmControlBeanBenzControlPanelStateGet;
-            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback176);
-            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback177);
+            this.benzgsHomeLeftBtn.setOnClickListener(this.mCallback314);
+            this.benzgsHomeRightBtn.setOnClickListener(this.mCallback315);
         } else {
             boolean z3 = vmControlBeanBenzControlPanelStateGet;
         }

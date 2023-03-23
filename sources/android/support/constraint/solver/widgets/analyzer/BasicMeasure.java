@@ -230,7 +230,7 @@ public class BasicMeasure {
                     } else {
                         int preWidth = widget.getWidth();
                         computations = computations2;
-                        int preHeight = widget.getHeight();
+                        int computations3 = widget.getHeight();
                         optimizations2 = optimizations3;
                         boolean needSolverPass3 = needSolverPass2 | measure(measurer2, widget, true);
                         if (constraintWidgetContainer2.mMetrics != null) {
@@ -241,10 +241,10 @@ public class BasicMeasure {
                             startingWidth2 = startingWidth3;
                             startingHeight2 = startingHeight3;
                         }
-                        int measuredWidth = widget.getWidth();
+                        int startingWidth4 = widget.getWidth();
                         int measuredHeight = widget.getHeight();
-                        if (measuredWidth != preWidth) {
-                            widget.setWidth(measuredWidth);
+                        if (startingWidth4 != preWidth) {
+                            widget.setWidth(startingWidth4);
                             if (!containerWrapWidth2 || widget.getRight() <= minWidth) {
                             } else {
                                 boolean z5 = needSolverPass3;
@@ -254,7 +254,7 @@ public class BasicMeasure {
                         } else {
                             boolean z6 = needSolverPass3;
                         }
-                        if (measuredHeight != preHeight) {
+                        if (measuredHeight != computations3) {
                             widget.setHeight(measuredHeight);
                             if (!containerWrapHeight || widget.getBottom() <= minHeight) {
                             } else {
@@ -275,7 +275,7 @@ public class BasicMeasure {
                     startingWidth3 = startingWidth2;
                     startingHeight3 = startingHeight2;
                 }
-                int startingWidth4 = startingWidth3;
+                int startingWidth5 = startingWidth3;
                 int startingHeight4 = startingHeight3;
                 int i7 = widthSize2;
                 int i8 = heightSize2;
@@ -288,7 +288,7 @@ public class BasicMeasure {
                         ConstraintWidget widget2 = this.mVariableDimensionsWidgets.get(i10);
                         if ((!(widget2 instanceof Helper) || (widget2 instanceof VirtualLayout)) && !(widget2 instanceof Guideline) && widget2.getVisibility() != 8 && ((!widget2.horizontalRun.dimension.resolved || !widget2.verticalRun.dimension.resolved) && !(widget2 instanceof VirtualLayout))) {
                             int preWidth2 = widget2.getWidth();
-                            int preHeight2 = widget2.getHeight();
+                            int preHeight = widget2.getHeight();
                             int preBaselineDistance = widget2.getBaselineDistance();
                             sizeDependentWidgetsCount = sizeDependentWidgetsCount2;
                             boolean needSolverPass4 = needSolverPass2 | measure(measurer2, widget2, true);
@@ -300,10 +300,10 @@ public class BasicMeasure {
                                 needSolverPass = needSolverPass4;
                                 measurer = measurer2;
                             }
-                            int measuredWidth2 = widget2.getWidth();
+                            int measuredWidth = widget2.getWidth();
                             int measuredHeight2 = widget2.getHeight();
-                            if (measuredWidth2 != preWidth2) {
-                                widget2.setWidth(measuredWidth2);
+                            if (measuredWidth != preWidth2) {
+                                widget2.setWidth(measuredWidth);
                                 if (!containerWrapWidth2 || widget2.getRight() <= minWidth) {
                                     containerWrapWidth = containerWrapWidth2;
                                 } else {
@@ -314,7 +314,7 @@ public class BasicMeasure {
                             } else {
                                 containerWrapWidth = containerWrapWidth2;
                             }
-                            if (measuredHeight2 != preHeight2) {
+                            if (measuredHeight2 != preHeight) {
                                 widget2.setHeight(measuredHeight2);
                                 if (containerWrapHeight && widget2.getBottom() > minHeight) {
                                     minHeight = Math.max(minHeight, widget2.getBottom() + widget2.getAnchor(ConstraintAnchor.Type.BOTTOM).getMargin());
@@ -340,16 +340,16 @@ public class BasicMeasure {
                     Measurer measurer3 = measurer2;
                     int sizeDependentWidgetsCount3 = sizeDependentWidgetsCount2;
                     if (needSolverPass2) {
-                        startingWidth = startingWidth4;
+                        startingWidth = startingWidth5;
                         startingHeight = startingHeight4;
                         solveLinearSystem(constraintWidgetContainer2, "intermediate pass", startingWidth, startingHeight);
                         needSolverPass2 = false;
                     } else {
-                        startingWidth = startingWidth4;
+                        startingWidth = startingWidth5;
                         startingHeight = startingHeight4;
                     }
                     j++;
-                    startingWidth4 = startingWidth;
+                    startingWidth5 = startingWidth;
                     startingHeight4 = startingHeight;
                     sizeDependentWidgetsCount2 = sizeDependentWidgetsCount3;
                     measurer2 = measurer3;
@@ -357,10 +357,10 @@ public class BasicMeasure {
                 }
                 Measurer measurer4 = measurer2;
                 int i11 = sizeDependentWidgetsCount2;
-                int startingWidth5 = startingWidth4;
+                int startingWidth6 = startingWidth5;
                 int sizeDependentWidgetsCount4 = startingHeight4;
                 if (needSolverPass2) {
-                    solveLinearSystem(constraintWidgetContainer2, "2nd pass", startingWidth5, sizeDependentWidgetsCount4);
+                    solveLinearSystem(constraintWidgetContainer2, "2nd pass", startingWidth6, sizeDependentWidgetsCount4);
                     boolean needSolverPass5 = false;
                     if (layout.getWidth() < minWidth) {
                         constraintWidgetContainer2.setWidth(minWidth);
@@ -371,7 +371,7 @@ public class BasicMeasure {
                         needSolverPass5 = true;
                     }
                     if (needSolverPass5) {
-                        solveLinearSystem(constraintWidgetContainer2, "3rd pass", startingWidth5, sizeDependentWidgetsCount4);
+                        solveLinearSystem(constraintWidgetContainer2, "3rd pass", startingWidth6, sizeDependentWidgetsCount4);
                     }
                 }
             } else {

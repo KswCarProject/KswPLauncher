@@ -64,7 +64,7 @@ public class BenzNtg6FyBindClsImpl extends BenzNtg6FyBindCls {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);
@@ -76,7 +76,7 @@ public class BenzNtg6FyBindClsImpl extends BenzNtg6FyBindCls {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 

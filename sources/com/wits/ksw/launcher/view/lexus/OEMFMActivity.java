@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -442,15 +443,23 @@ public class OEMFMActivity extends AppCompatActivity {
     /* access modifiers changed from: protected */
     public void onResume() {
         super.onResume();
-        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIR_DATA_REQ);
-        WitsCommand.sendMcuCommand(new McuStatus.KswMcuMsg(103, 14));
-        WitsCommand.sendCommand(1, WitsCommand.SystemCommand.CAR_MODE);
+        try {
+            WitsCommand.sendCommand(1, WitsCommand.SystemCommand.AIR_DATA_REQ);
+            WitsCommand.sendMcuCommand(new McuStatus.KswMcuMsg(103, 14));
+            if (Settings.System.getInt(getContentResolver(), KeyConfig.OEM_FM, 0) == 0) {
+                WitsCommand.sendCommand(1, WitsCommand.SystemCommand.CAR_MODE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /* access modifiers changed from: protected */
     public void onPause() {
         super.onPause();
-        WitsCommand.sendMcuCommand(new McuStatus.KswMcuMsg(103, 0));
+        if (Settings.System.getInt(getContentResolver(), KeyConfig.OEM_FM, 0) == 0) {
+            WitsCommand.sendMcuCommand(new McuStatus.KswMcuMsg(103, 0));
+        }
     }
 
     private void updateAudioOff() {

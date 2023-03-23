@@ -1,6 +1,7 @@
 package com.ibm.icu.text;
 
 import java.text.ParsePosition;
+import kotlin.text.Typography;
 
 /* compiled from: NFSubstitution */
 class NumeratorSubstitution extends NFSubstitution {
@@ -122,6 +123,6 @@ class NumeratorSubstitution extends NFSubstitution {
 
     /* access modifiers changed from: package-private */
     public char tokenChar() {
-        return '<';
+        return Typography.less;
     }
 }

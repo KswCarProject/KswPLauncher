@@ -443,7 +443,7 @@ public class MessageFormat extends UFormat {
         throw new ParseException("MessageFormat parse error!", pos.getErrorIndex());
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:77:0x01b5  */
+    /* JADX WARNING: Removed duplicated region for block: B:77:0x01b8  */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     private void parse(int r27, java.lang.String r28, java.text.ParsePosition r29, java.lang.Object[] r30, java.util.Map<java.lang.String, java.lang.Object> r31) {
         /*
@@ -488,16 +488,16 @@ public class MessageFormat extends UFormat {
             return
         L_0x0050:
             com.ibm.icu.text.MessagePattern$Part$Type r14 = com.ibm.icu.text.MessagePattern.Part.Type.SKIP_SYNTAX
-            if (r11 == r14) goto L_0x01ed
+            if (r11 == r14) goto L_0x01f0
             com.ibm.icu.text.MessagePattern$Part$Type r14 = com.ibm.icu.text.MessagePattern.Part.Type.INSERT_CHAR
             if (r11 != r14) goto L_0x0060
             r18 = r5
             r19 = r6
             r22 = r8
-            goto L_0x01f3
+            goto L_0x01f6
         L_0x0060:
             com.ibm.icu.text.MessagePattern$Part$Type r14 = com.ibm.icu.text.MessagePattern.Part.Type.ARG_START
-            if (r11 != r14) goto L_0x01cc
+            if (r11 != r14) goto L_0x01cf
             com.ibm.icu.text.MessagePattern r14 = r0.msgPattern
             int r14 = r14.getLimitPartIndex(r9)
             com.ibm.icu.text.MessagePattern$ArgType r15 = r10.getArgType()
@@ -558,12 +558,12 @@ public class MessageFormat extends UFormat {
             int r7 = r8.getIndex()
             r22 = r8
             r2 = r20
-            goto L_0x01b3
+            goto L_0x01b6
         L_0x00eb:
             r23 = r6
         L_0x00ed:
             com.ibm.icu.text.MessagePattern$ArgType r1 = com.ibm.icu.text.MessagePattern.ArgType.NONE
-            if (r15 == r1) goto L_0x0162
+            if (r15 == r1) goto L_0x0163
             java.util.Map<java.lang.Integer, java.text.Format> r1 = r0.cachedFormatters
             if (r1 == 0) goto L_0x0106
             int r22 = r9 + -2
@@ -572,7 +572,7 @@ public class MessageFormat extends UFormat {
             boolean r1 = r1.containsKey(r6)
             if (r1 == 0) goto L_0x0108
             r22 = r8
-            goto L_0x0166
+            goto L_0x0167
         L_0x0106:
             r23 = r6
         L_0x0108:
@@ -593,14 +593,14 @@ public class MessageFormat extends UFormat {
             r1 = r6
             r22 = r8
             r6 = r23
-            goto L_0x01b3
+            goto L_0x01b6
         L_0x0130:
             boolean r1 = r15.hasPluralStyle()
-            if (r1 != 0) goto L_0x0158
+            if (r1 != 0) goto L_0x0159
             com.ibm.icu.text.MessagePattern$ArgType r1 = com.ibm.icu.text.MessagePattern.ArgType.SELECT
             if (r15 != r1) goto L_0x013d
             r22 = r8
-            goto L_0x015a
+            goto L_0x015b
         L_0x013d:
             java.lang.IllegalStateException r1 = new java.lang.IllegalStateException
             java.lang.StringBuilder r6 = new java.lang.StringBuilder
@@ -612,29 +612,29 @@ public class MessageFormat extends UFormat {
             java.lang.String r6 = r6.toString()
             r1.<init>(r6)
             throw r1
-        L_0x0158:
+        L_0x0159:
             r22 = r8
-        L_0x015a:
+        L_0x015b:
             java.lang.UnsupportedOperationException r1 = new java.lang.UnsupportedOperationException
             java.lang.String r6 = "Parsing of plural/select/selectordinal argument is not supported."
             r1.<init>(r6)
             throw r1
-        L_0x0162:
+        L_0x0163:
             r23 = r6
             r22 = r8
-        L_0x0166:
+        L_0x0167:
             java.lang.String r1 = r0.getLiteralStringUntilNextArgument(r14)
             int r6 = r1.length()
-            if (r6 == 0) goto L_0x0175
+            if (r6 == 0) goto L_0x0176
             int r6 = r2.indexOf(r1, r7)
-            goto L_0x0179
-        L_0x0175:
+            goto L_0x017a
+        L_0x0176:
             int r6 = r28.length()
-        L_0x0179:
-            if (r6 >= 0) goto L_0x017f
+        L_0x017a:
+            if (r6 >= 0) goto L_0x0180
             r3.setErrorIndex(r7)
             return
-        L_0x017f:
+        L_0x0180:
             java.lang.String r8 = r2.substring(r7, r6)
             r24 = r1
             java.lang.StringBuilder r1 = new java.lang.StringBuilder
@@ -647,30 +647,30 @@ public class MessageFormat extends UFormat {
             java.lang.StringBuilder r1 = r1.append(r2)
             java.lang.String r1 = r1.toString()
             boolean r1 = r8.equals(r1)
-            if (r1 != 0) goto L_0x01ac
+            if (r1 != 0) goto L_0x01af
             r17 = 1
             r20 = r8
-        L_0x01ac:
+        L_0x01af:
             r7 = r6
             r1 = r17
             r2 = r20
             r6 = r23
-        L_0x01b3:
-            if (r1 == 0) goto L_0x01bf
-            if (r30 == 0) goto L_0x01ba
+        L_0x01b6:
+            if (r1 == 0) goto L_0x01c2
+            if (r30 == 0) goto L_0x01bd
             r30[r16] = r2
-            goto L_0x01bf
-        L_0x01ba:
-            if (r4 == 0) goto L_0x01bf
+            goto L_0x01c2
+        L_0x01bd:
+            if (r4 == 0) goto L_0x01c2
             r4.put(r5, r2)
-        L_0x01bf:
+        L_0x01c2:
             com.ibm.icu.text.MessagePattern r8 = r0.msgPattern
             com.ibm.icu.text.MessagePattern$Part r8 = r8.getPart(r14)
             int r8 = r8.getLimit()
             r9 = r14
             r6 = r8
-            goto L_0x01f8
-        L_0x01cc:
+            goto L_0x01fb
+        L_0x01cf:
             r18 = r5
             java.lang.AssertionError r1 = new java.lang.AssertionError
             java.lang.StringBuilder r2 = new java.lang.StringBuilder
@@ -683,14 +683,14 @@ public class MessageFormat extends UFormat {
             java.lang.String r2 = r2.toString()
             r1.<init>(r2)
             throw r1
-        L_0x01ed:
+        L_0x01f0:
             r18 = r5
             r19 = r6
             r22 = r8
-        L_0x01f3:
+        L_0x01f6:
             int r1 = r10.getLimit()
             r6 = r1
-        L_0x01f8:
+        L_0x01fb:
             int r9 = r9 + 1
             r1 = r27
             r2 = r28

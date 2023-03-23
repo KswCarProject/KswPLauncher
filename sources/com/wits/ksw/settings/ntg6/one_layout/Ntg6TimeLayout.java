@@ -102,7 +102,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_sync1 /*2131297195*/:
+            case R.id.rdb_sync1:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
                 onTimeListener ontimelistener = this.listener;
                 if (ontimelistener != null) {
@@ -110,7 +110,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
                     return;
                 }
                 return;
-            case R.id.rdb_sync2 /*2131297196*/:
+            case R.id.rdb_sync2:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
                 onTimeListener ontimelistener2 = this.listener;
                 if (ontimelistener2 != null) {
@@ -118,7 +118,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
                     return;
                 }
                 return;
-            case R.id.rdb_zhis1 /*2131297203*/:
+            case R.id.rdb_zhis1:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                 onTimeListener ontimelistener3 = this.listener;
                 if (ontimelistener3 != null) {
@@ -126,7 +126,7 @@ public class Ntg6TimeLayout extends RelativeLayout implements RadioGroup.OnCheck
                     return;
                 }
                 return;
-            case R.id.rdb_zhis2 /*2131297204*/:
+            case R.id.rdb_zhis2:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
                 onTimeListener ontimelistener4 = this.listener;
                 if (ontimelistener4 != null) {

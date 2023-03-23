@@ -109,7 +109,7 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_timeSync /*2131297628*/:
+            case R.id.tv_timeSync /*2131297941*/:
                 this.tv_timeSync.setTextColor(this.context.getColor(R.color.alsid7_text_bule));
                 this.tv_timeZhis.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
@@ -118,7 +118,7 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
                     return;
                 }
                 return;
-            case R.id.tv_timeZhis /*2131297629*/:
+            case R.id.tv_timeZhis /*2131297942*/:
                 this.tv_timeZhis.setTextColor(this.context.getColor(R.color.alsid7_text_bule));
                 this.tv_timeSync.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;
@@ -134,16 +134,16 @@ public class LandroverSetTimeLayout extends RelativeLayout implements View.OnCli
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rdb_sync1 /*2131297195*/:
+            case R.id.rdb_sync1 /*2131297461*/:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 1);
                 return;
-            case R.id.rdb_sync2 /*2131297196*/:
+            case R.id.rdb_sync2 /*2131297462*/:
                 FileUtils.savaIntData(KeyConfig.TIME_SOURCE, 0);
                 return;
-            case R.id.rdb_zhis1 /*2131297203*/:
+            case R.id.rdb_zhis1 /*2131297469*/:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 1);
                 return;
-            case R.id.rdb_zhis2 /*2131297204*/:
+            case R.id.rdb_zhis2 /*2131297470*/:
                 FileUtils.savaIntData(KeyConfig.TIME_FORMAT, 0);
                 return;
             default:

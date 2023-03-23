@@ -5,6 +5,7 @@ import com.ibm.icu.text.PluralRules;
 import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.util.Objects;
+import kotlin.text.Typography;
 
 final class NFRule {
     static final /* synthetic */ boolean $assertionsDisabled = false;
@@ -457,7 +458,7 @@ final class NFRule {
                 }
                 int numCarets = expectedExponent() - this.exponent;
                 for (int i = 0; i < numCarets; i++) {
-                    result.append('>');
+                    result.append(Typography.greater);
                 }
                 result.append(PluralRules.KEYWORD_RULE_SEPARATOR);
             }

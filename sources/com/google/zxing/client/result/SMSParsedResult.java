@@ -1,5 +1,7 @@
 package com.google.zxing.client.result;
 
+import kotlin.text.Typography;
+
 public final class SMSParsedResult extends ParsedResult {
     private final String body;
     private final String[] numbers;
@@ -53,7 +55,7 @@ public final class SMSParsedResult extends ParsedResult {
             }
             if (hasSubject) {
                 if (hasBody) {
-                    result.append('&');
+                    result.append(Typography.amp);
                 }
                 result.append("subject=");
                 result.append(this.subject);

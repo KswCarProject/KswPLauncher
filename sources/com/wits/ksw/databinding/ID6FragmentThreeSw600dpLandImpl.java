@@ -62,7 +62,7 @@ public class ID6FragmentThreeSw600dpLandImpl extends ID6FragmentThree {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);

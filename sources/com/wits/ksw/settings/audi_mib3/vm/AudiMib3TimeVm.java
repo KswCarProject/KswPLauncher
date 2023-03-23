@@ -13,7 +13,7 @@ import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class AudiMib3TimeVm extends AndroidViewModel {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AudiMib3TimeVm.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AudiMib3TimeVm.class.getSimpleName());
     public CompoundButton.OnCheckedChangeListener androiTimeCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.d(AudiMib3TimeVm.TAG, "onCheckedChanged: androiTimeCheckedChangeListener");

@@ -47,7 +47,7 @@ public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiSystemViewModel) variable);
@@ -59,7 +59,7 @@ public class AudiReverCameraBindingImpl extends AudiReverCameraBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

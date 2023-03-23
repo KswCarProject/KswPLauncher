@@ -159,7 +159,7 @@ public class LandroverSetVocModelTwo extends RelativeLayout implements SeekBar.O
 
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId()) {
-            case R.id.seekbar_mdi /*2131297411*/:
+            case R.id.seekbar_mdi /*2131297696*/:
                 this.tv_mdiSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.di = progress;
@@ -167,7 +167,7 @@ public class LandroverSetVocModelTwo extends RelativeLayout implements SeekBar.O
                     break;
                 }
                 break;
-            case R.id.seekbar_mgo /*2131297412*/:
+            case R.id.seekbar_mgo /*2131297697*/:
                 this.tv_mgoSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.ga = progress;
@@ -175,7 +175,7 @@ public class LandroverSetVocModelTwo extends RelativeLayout implements SeekBar.O
                     break;
                 }
                 break;
-            case R.id.seekbar_mzh /*2131297413*/:
+            case R.id.seekbar_mzh /*2131297698*/:
                 this.tv_mzhSize.setText((progress - 12) + "");
                 if (this.eqModel == 0) {
                     this.zo = progress;

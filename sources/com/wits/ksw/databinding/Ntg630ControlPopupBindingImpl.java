@@ -1,29 +1,22 @@
 package com.wits.ksw.databinding;
 
 import android.databinding.DataBindingComponent;
-import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ViewDataBinding;
-import android.databinding.adapters.ImageViewBindingAdapter;
-import android.graphics.drawable.Drawable;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.content.res.AppCompatResources;
 import android.util.SparseIntArray;
 import android.view.View;
-import com.wits.ksw.R;
-import com.wits.ksw.launcher.model.BcVieModel;
-import com.wits.ksw.launcher.model.ControlBean;
+import com.wits.ksw.launcher.model.LauncherViewModel;
 
 public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
     private long mDirtyFlags;
-    private OnClickListenerImpl1 mMBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl3 mMBcVieModelOnEspClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl2 mMBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl mMBcVieModelOnFoldRigtClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl4 mMBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener;
-    private OnClickListenerImpl5 mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
+    private OnClickListenerImpl3 mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl mLauncherViewModelOnEspClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl5 mLauncherViewModelOnFoldLeftClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl2 mLauncherViewModelOnFoldRigtClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl4 mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener;
+    private OnClickListenerImpl1 mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener;
 
     public Ntg630ControlPopupBindingImpl(DataBindingComponent bindingComponent, View root) {
         this(bindingComponent, root, mapBindings(bindingComponent, root, 9, sIncludes, sViewsWithIds));
@@ -63,19 +56,19 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (12 != variableId) {
+        if (19 != variableId) {
             return false;
         }
-        setMBcVieModel((BcVieModel) variable);
+        setLauncherViewModel((LauncherViewModel) variable);
         return true;
     }
 
-    public void setMBcVieModel(BcVieModel MBcVieModel) {
-        this.mMBcVieModel = MBcVieModel;
+    public void setLauncherViewModel(LauncherViewModel LauncherViewModel) {
+        this.mLauncherViewModel = LauncherViewModel;
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(19);
         super.requestRebind();
     }
 
@@ -83,17 +76,17 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
     public boolean onFieldChange(int localFieldId, Object object, int fieldId) {
         switch (localFieldId) {
             case 0:
-                return onChangeMBcVieModelControlBeanChassis((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanRdarAssistance((ObservableBoolean) object, fieldId);
             case 1:
-                return onChangeMBcVieModelControlBeanPassairbar((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanPassairbar((ObservableBoolean) object, fieldId);
             case 2:
-                return onChangeMBcVieModelControlBeanRdarAssistance((ObservableBoolean) object, fieldId);
+                return onChangeLauncherViewModelControlBeanChassis((ObservableBoolean) object, fieldId);
             default:
                 return false;
         }
     }
 
-    private boolean onChangeMBcVieModelControlBeanChassis(ObservableBoolean MBcVieModelControlBeanChassis, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanRdarAssistance(ObservableBoolean LauncherViewModelControlBeanRdarAssistance, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -103,7 +96,7 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanPassairbar(ObservableBoolean MBcVieModelControlBeanPassairbar, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanPassairbar(ObservableBoolean LauncherViewModelControlBeanPassairbar, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -113,7 +106,7 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
         return true;
     }
 
-    private boolean onChangeMBcVieModelControlBeanRdarAssistance(ObservableBoolean MBcVieModelControlBeanRdarAssistance, int fieldId) {
+    private boolean onChangeLauncherViewModelControlBeanChassis(ObservableBoolean LauncherViewModelControlBeanChassis, int fieldId) {
         if (fieldId != 0) {
             return false;
         }
@@ -124,256 +117,314 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
     }
 
     /* access modifiers changed from: protected */
+    /* JADX WARNING: Removed duplicated region for block: B:33:0x00ac  */
+    /* JADX WARNING: Removed duplicated region for block: B:34:0x00b1  */
+    /* JADX WARNING: Removed duplicated region for block: B:37:0x00bf  */
+    /* JADX WARNING: Removed duplicated region for block: B:53:0x010e  */
+    /* JADX WARNING: Removed duplicated region for block: B:69:0x015b  */
+    /* JADX WARNING: Removed duplicated region for block: B:84:0x01aa  */
+    /* Code decompiled incorrectly, please refer to instructions dump. */
     public void executeBindings() {
-        long dirtyFlags;
-        Drawable mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff;
-        View.OnClickListener mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
-        ObservableBoolean mBcVieModelControlBeanChassis;
-        ObservableBoolean mBcVieModelControlBeanChassis2;
-        ObservableBoolean mBcVieModelControlBeanChassis3;
-        ObservableBoolean mBcVieModelControlBeanRdarAssistance;
-        Drawable drawable;
-        Drawable drawable2;
-        ObservableBoolean mBcVieModelControlBeanChassis4;
-        ObservableBoolean mBcVieModelControlBeanChassis5;
-        Drawable drawable3;
-        synchronized (this) {
-            dirtyFlags = this.mDirtyFlags;
-            this.mDirtyFlags = 0;
-        }
-        Drawable mBcVieModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelNtg30BtnOnControlBtn1AndroidDrawableNtg55CtrlpanelNtg30BtnOffN = null;
-        View.OnClickListener mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = null;
-        View.OnClickListener mBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener = null;
-        ObservableBoolean mBcVieModelControlBeanPassairbar = null;
-        View.OnClickListener mBcVieModelOnEspClickAndroidViewViewOnClickListener = null;
-        View.OnClickListener mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener = null;
-        boolean mBcVieModelControlBeanChassisGet = false;
-        View.OnClickListener mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener2 = null;
-        boolean mBcVieModelControlBeanRdarAssistanceGet = false;
-        ControlBean mBcVieModelControlBean = null;
-        Drawable mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2 = null;
-        View.OnClickListener mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2 = null;
-        boolean mBcVieModelControlBeanPassairbarGet = false;
-        BcVieModel mBcVieModel = this.mMBcVieModel;
-        Drawable mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOnControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOffN = null;
-        if ((dirtyFlags & 31) != 0) {
-            if ((dirtyFlags & 24) == 0) {
-                mBcVieModelControlBeanChassis = null;
-            } else if (mBcVieModel != null) {
-                mBcVieModelControlBeanChassis = null;
-                OnClickListenerImpl onClickListenerImpl = this.mMBcVieModelOnFoldRigtClickAndroidViewViewOnClickListener;
-                if (onClickListenerImpl == null) {
-                    onClickListenerImpl = new OnClickListenerImpl();
-                    this.mMBcVieModelOnFoldRigtClickAndroidViewViewOnClickListener = onClickListenerImpl;
-                }
-                View.OnClickListener mBcVieModelOnFoldRigtClickAndroidViewViewOnClickListener = onClickListenerImpl.setValue(mBcVieModel);
-                OnClickListenerImpl1 onClickListenerImpl1 = this.mMBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener;
-                if (onClickListenerImpl1 == null) {
-                    onClickListenerImpl1 = new OnClickListenerImpl1();
-                    this.mMBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = onClickListenerImpl1;
-                }
-                View.OnClickListener mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener2 = onClickListenerImpl1.setValue(mBcVieModel);
-                OnClickListenerImpl2 onClickListenerImpl2 = this.mMBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener;
-                if (onClickListenerImpl2 == null) {
-                    onClickListenerImpl2 = new OnClickListenerImpl2();
-                    this.mMBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener = onClickListenerImpl2;
-                }
-                View.OnClickListener mBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener2 = onClickListenerImpl2.setValue(mBcVieModel);
-                OnClickListenerImpl3 onClickListenerImpl3 = this.mMBcVieModelOnEspClickAndroidViewViewOnClickListener;
-                if (onClickListenerImpl3 == null) {
-                    onClickListenerImpl3 = new OnClickListenerImpl3();
-                    this.mMBcVieModelOnEspClickAndroidViewViewOnClickListener = onClickListenerImpl3;
-                }
-                View.OnClickListener mBcVieModelOnEspClickAndroidViewViewOnClickListener2 = onClickListenerImpl3.setValue(mBcVieModel);
-                OnClickListenerImpl4 onClickListenerImpl4 = this.mMBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener;
-                if (onClickListenerImpl4 == null) {
-                    onClickListenerImpl4 = new OnClickListenerImpl4();
-                    this.mMBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener = onClickListenerImpl4;
-                }
-                View.OnClickListener mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener3 = onClickListenerImpl4.setValue(mBcVieModel);
-                OnClickListenerImpl5 onClickListenerImpl5 = this.mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener;
-                if (onClickListenerImpl5 == null) {
-                    onClickListenerImpl5 = new OnClickListenerImpl5();
-                    this.mMBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = onClickListenerImpl5;
-                }
-                mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2 = onClickListenerImpl5.setValue(mBcVieModel);
-                mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener2 = mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener3;
-                mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener = mBcVieModelOnEspClickAndroidViewViewOnClickListener2;
-                mBcVieModelOnEspClickAndroidViewViewOnClickListener = mBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener2;
-                mBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener = mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener2;
-                mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = mBcVieModelOnFoldRigtClickAndroidViewViewOnClickListener;
-            } else {
-                mBcVieModelControlBeanChassis = null;
-            }
-            if (mBcVieModel != null) {
-                mBcVieModelControlBean = mBcVieModel.controlBean;
-            }
-            BcVieModel bcVieModel = mBcVieModel;
-            if ((dirtyFlags & 25) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanChassis4 = mBcVieModelControlBean.chassis;
-                } else {
-                    mBcVieModelControlBeanChassis4 = mBcVieModelControlBeanChassis;
-                }
-                updateRegistration(0, (Observable) mBcVieModelControlBeanChassis4);
-                if (mBcVieModelControlBeanChassis4 != null) {
-                    mBcVieModelControlBeanChassisGet = mBcVieModelControlBeanChassis4.get();
-                }
-                if ((dirtyFlags & 25) != 0) {
-                    if (mBcVieModelControlBeanChassisGet) {
-                        dirtyFlags |= 64;
-                    } else {
-                        dirtyFlags |= 32;
-                    }
-                }
-                if (mBcVieModelControlBeanChassisGet) {
-                    mBcVieModelControlBeanChassis5 = mBcVieModelControlBeanChassis4;
-                    drawable3 = AppCompatResources.getDrawable(this.controlBtn1.getContext(), R.drawable.ntg55_ctrlpanel_ntg30_btn_on);
-                } else {
-                    mBcVieModelControlBeanChassis5 = mBcVieModelControlBeanChassis4;
-                    drawable3 = AppCompatResources.getDrawable(this.controlBtn1.getContext(), R.drawable.ntg55_ctrlpanel_ntg30_btn_off_n);
-                }
-                mBcVieModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelNtg30BtnOnControlBtn1AndroidDrawableNtg55CtrlpanelNtg30BtnOffN = drawable3;
-                mBcVieModelControlBeanChassis2 = mBcVieModelControlBeanChassis5;
-            } else {
-                mBcVieModelControlBeanChassis2 = mBcVieModelControlBeanChassis;
-            }
-            if ((dirtyFlags & 26) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanPassairbar = mBcVieModelControlBean.passairbar;
-                }
-                updateRegistration(1, (Observable) mBcVieModelControlBeanPassairbar);
-                if (mBcVieModelControlBeanPassairbar != null) {
-                    mBcVieModelControlBeanPassairbarGet = mBcVieModelControlBeanPassairbar.get();
-                }
-                if ((dirtyFlags & 26) != 0) {
-                    if (mBcVieModelControlBeanPassairbarGet) {
-                        dirtyFlags |= 256;
-                    } else {
-                        dirtyFlags |= 128;
-                    }
-                }
-                if (mBcVieModelControlBeanPassairbarGet) {
-                    mBcVieModelControlBeanChassis3 = mBcVieModelControlBeanChassis2;
-                    drawable2 = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_on);
-                } else {
-                    mBcVieModelControlBeanChassis3 = mBcVieModelControlBeanChassis2;
-                    drawable2 = AppCompatResources.getDrawable(this.imageView.getContext(), R.drawable.ntg55_ctrlpanel_airbag_off);
-                }
-                mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2 = drawable2;
-            } else {
-                mBcVieModelControlBeanChassis3 = mBcVieModelControlBeanChassis2;
-            }
-            if ((dirtyFlags & 28) != 0) {
-                if (mBcVieModelControlBean != null) {
-                    mBcVieModelControlBeanRdarAssistance = mBcVieModelControlBean.rdarAssistance;
-                } else {
-                    mBcVieModelControlBeanRdarAssistance = null;
-                }
-                updateRegistration(2, (Observable) mBcVieModelControlBeanRdarAssistance);
-                if (mBcVieModelControlBeanRdarAssistance != null) {
-                    mBcVieModelControlBeanRdarAssistanceGet = mBcVieModelControlBeanRdarAssistance.get();
-                }
-                if ((dirtyFlags & 28) != 0) {
-                    if (mBcVieModelControlBeanRdarAssistanceGet) {
-                        dirtyFlags |= PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
-                    } else {
-                        dirtyFlags |= 512;
-                    }
-                }
-                if (mBcVieModelControlBeanRdarAssistanceGet) {
-                    ObservableBoolean observableBoolean = mBcVieModelControlBeanRdarAssistance;
-                    drawable = AppCompatResources.getDrawable(this.controlBtn3.getContext(), R.drawable.ntg55_ctrlpanel_ntg30_btn_on);
-                } else {
-                    drawable = AppCompatResources.getDrawable(this.controlBtn3.getContext(), R.drawable.ntg55_ctrlpanel_ntg30_btn_off_n);
-                }
-                mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOnControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOffN = drawable;
-                mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2;
-                mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2;
-                ObservableBoolean observableBoolean2 = mBcVieModelControlBeanChassis3;
-            } else {
-                mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff2;
-                mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener2;
-                ObservableBoolean observableBoolean3 = mBcVieModelControlBeanChassis3;
-            }
-        } else {
-            BcVieModel bcVieModel2 = mBcVieModel;
-            mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff = null;
-            mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener = null;
-        }
-        if ((dirtyFlags & 24) != 0) {
-            ObservableBoolean observableBoolean4 = mBcVieModelControlBeanPassairbar;
-            this.brightnessBtnLeft.setOnClickListener(mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener);
-            this.brightnessBtnRight.setOnClickListener(mBcVieModelShowBrightnessDialogAndroidViewViewOnClickListener);
-            this.controlBtn1.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener2);
-            this.controlBtn2.setOnClickListener(mBcVieModelOnHighChasssisClickAndroidViewViewOnClickListener);
-            this.controlBtn3.setOnClickListener(mBcVieModelOnFoldLeftClickAndroidViewViewOnClickListener);
-            this.foldLeftBtn.setOnClickListener(mBcVieModelOnEspClickAndroidViewViewOnClickListener);
-            this.foldRightBtn.setOnClickListener(mBcVieModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener);
-        }
-        if ((dirtyFlags & 25) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.controlBtn1, mBcVieModelControlBeanChassisControlBtn1AndroidDrawableNtg55CtrlpanelNtg30BtnOnControlBtn1AndroidDrawableNtg55CtrlpanelNtg30BtnOffN);
-        }
-        if ((dirtyFlags & 28) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.controlBtn3, mBcVieModelControlBeanRdarAssistanceControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOnControlBtn3AndroidDrawableNtg55CtrlpanelNtg30BtnOffN);
-        }
-        if ((dirtyFlags & 26) != 0) {
-            ImageViewBindingAdapter.setImageDrawable(this.imageView, mBcVieModelControlBeanPassairbarImageViewAndroidDrawableNtg55CtrlpanelAirbagOnImageViewAndroidDrawableNtg55CtrlpanelAirbagOff);
-        }
+        /*
+            r36 = this;
+            r1 = r36
+            r2 = 0
+            monitor-enter(r36)
+            long r4 = r1.mDirtyFlags     // Catch:{ all -> 0x0204 }
+            r2 = r4
+            r4 = 0
+            r1.mDirtyFlags = r4     // Catch:{ all -> 0x0204 }
+            monitor-exit(r36)     // Catch:{ all -> 0x0204 }
+            r0 = 0
+            r6 = 0
+            r7 = 0
+            r8 = 0
+            r9 = 0
+            r10 = 0
+            r11 = 0
+            r12 = 0
+            r13 = 0
+            r14 = 0
+            r15 = 0
+            r16 = 0
+            r17 = 0
+            r18 = 0
+            com.wits.ksw.launcher.model.LauncherViewModel r4 = r1.mLauncherViewModel
+            r5 = 0
+            r21 = 0
+            r22 = 31
+            long r22 = r2 & r22
+            r19 = 0
+            int r22 = (r22 > r19 ? 1 : (r22 == r19 ? 0 : -1))
+            r23 = 24
+            r25 = 26
+            r27 = 25
+            r29 = 28
+            if (r22 == 0) goto L_0x01b1
+            long r31 = r2 & r23
+            int r22 = (r31 > r19 ? 1 : (r31 == r19 ? 0 : -1))
+            if (r22 == 0) goto L_0x00a6
+            if (r4 == 0) goto L_0x00a3
+            r22 = r0
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl r0 = r1.mLauncherViewModelOnEspClickAndroidViewViewOnClickListener
+            if (r0 != 0) goto L_0x004a
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl r0 = new com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl
+            r0.<init>()
+            r1.mLauncherViewModelOnEspClickAndroidViewViewOnClickListener = r0
+        L_0x004a:
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl r0 = r0.setValue(r4)
+            r22 = r0
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl1 r0 = r1.mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener
+            if (r0 != 0) goto L_0x005b
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl1 r0 = new com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl1
+            r0.<init>()
+            r1.mLauncherViewModelShowBrightnessDialogAndroidViewViewOnClickListener = r0
+        L_0x005b:
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl1 r0 = r0.setValue(r4)
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl2 r6 = r1.mLauncherViewModelOnFoldRigtClickAndroidViewViewOnClickListener
+            if (r6 != 0) goto L_0x006a
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl2 r6 = new com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl2
+            r6.<init>()
+            r1.mLauncherViewModelOnFoldRigtClickAndroidViewViewOnClickListener = r6
+        L_0x006a:
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl2 r6 = r6.setValue(r4)
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl3 r7 = r1.mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener
+            if (r7 != 0) goto L_0x0079
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl3 r7 = new com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl3
+            r7.<init>()
+            r1.mLauncherViewModelOnAuxiliaryRadarClickAndroidViewViewOnClickListener = r7
+        L_0x0079:
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl3 r7 = r7.setValue(r4)
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl4 r9 = r1.mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener
+            if (r9 != 0) goto L_0x0088
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl4 r9 = new com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl4
+            r9.<init>()
+            r1.mLauncherViewModelOnHighChasssisClickAndroidViewViewOnClickListener = r9
+        L_0x0088:
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl4 r9 = r9.setValue(r4)
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl5 r13 = r1.mLauncherViewModelOnFoldLeftClickAndroidViewViewOnClickListener
+            if (r13 != 0) goto L_0x0097
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl5 r13 = new com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl5
+            r13.<init>()
+            r1.mLauncherViewModelOnFoldLeftClickAndroidViewViewOnClickListener = r13
+        L_0x0097:
+            com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl$OnClickListenerImpl5 r13 = r13.setValue(r4)
+            r14 = r13
+            r13 = r9
+            r9 = r7
+            r7 = r6
+            r6 = r0
+            r0 = r22
+            goto L_0x00aa
+        L_0x00a3:
+            r22 = r0
+            goto L_0x00a8
+        L_0x00a6:
+            r22 = r0
+        L_0x00a8:
+            r0 = r22
+        L_0x00aa:
+            if (r4 == 0) goto L_0x00b1
+            r22 = r0
+            com.wits.ksw.launcher.model.ControlBean r0 = r4.controlBean
+            goto L_0x00b5
+        L_0x00b1:
+            r22 = r0
+            r0 = r16
+        L_0x00b5:
+            long r31 = r2 & r27
+            r19 = 0
+            int r16 = (r31 > r19 ? 1 : (r31 == r19 ? 0 : -1))
+            r31 = r4
+            if (r16 == 0) goto L_0x0106
+            if (r0 == 0) goto L_0x00c3
+            android.databinding.ObservableBoolean r11 = r0.rdarAssistance
+        L_0x00c3:
+            r4 = 0
+            r1.updateRegistration((int) r4, (android.databinding.Observable) r11)
+            if (r11 == 0) goto L_0x00cd
+            boolean r15 = r11.get()
+        L_0x00cd:
+            long r33 = r2 & r27
+            r19 = 0
+            int r4 = (r33 > r19 ? 1 : (r33 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x00e0
+            if (r15 == 0) goto L_0x00dc
+            r33 = 1024(0x400, double:5.06E-321)
+            long r2 = r2 | r33
+            goto L_0x00e0
+        L_0x00dc:
+            r33 = 512(0x200, double:2.53E-321)
+            long r2 = r2 | r33
+        L_0x00e0:
+            if (r15 == 0) goto L_0x00f2
+            android.widget.ImageView r4 = r1.controlBtn3
+            android.content.Context r4 = r4.getContext()
+            r33 = r2
+            r2 = 2131234637(0x7f080f4d, float:1.8085445E38)
+            android.graphics.drawable.Drawable r3 = android.support.v7.content.res.AppCompatResources.getDrawable(r4, r2)
+            goto L_0x0102
+        L_0x00f2:
+            r33 = r2
+            android.widget.ImageView r2 = r1.controlBtn3
+            android.content.Context r2 = r2.getContext()
+            r3 = 2131234636(0x7f080f4c, float:1.8085443E38)
+            android.graphics.drawable.Drawable r2 = android.support.v7.content.res.AppCompatResources.getDrawable(r2, r3)
+            r3 = r2
+        L_0x0102:
+            r2 = r3
+            r12 = r2
+            r2 = r33
+        L_0x0106:
+            long r33 = r2 & r25
+            r19 = 0
+            int r4 = (r33 > r19 ? 1 : (r33 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x0153
+            if (r0 == 0) goto L_0x0112
+            android.databinding.ObservableBoolean r5 = r0.passairbar
+        L_0x0112:
+            r4 = 1
+            r1.updateRegistration((int) r4, (android.databinding.Observable) r5)
+            if (r5 == 0) goto L_0x011c
+            boolean r17 = r5.get()
+        L_0x011c:
+            long r33 = r2 & r25
+            r19 = 0
+            int r4 = (r33 > r19 ? 1 : (r33 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x012f
+            if (r17 == 0) goto L_0x012b
+            r33 = 64
+            long r2 = r2 | r33
+            goto L_0x012f
+        L_0x012b:
+            r33 = 32
+            long r2 = r2 | r33
+        L_0x012f:
+            if (r17 == 0) goto L_0x0141
+            android.widget.ImageView r4 = r1.imageView
+            android.content.Context r4 = r4.getContext()
+            r33 = r2
+            r2 = 2131234606(0x7f080f2e, float:1.8085382E38)
+            android.graphics.drawable.Drawable r2 = android.support.v7.content.res.AppCompatResources.getDrawable(r4, r2)
+            goto L_0x0150
+        L_0x0141:
+            r33 = r2
+            android.widget.ImageView r2 = r1.imageView
+            android.content.Context r2 = r2.getContext()
+            r3 = 2131234605(0x7f080f2d, float:1.808538E38)
+            android.graphics.drawable.Drawable r2 = android.support.v7.content.res.AppCompatResources.getDrawable(r2, r3)
+        L_0x0150:
+            r8 = r2
+            r2 = r33
+        L_0x0153:
+            long r33 = r2 & r29
+            r19 = 0
+            int r4 = (r33 > r19 ? 1 : (r33 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x01aa
+            if (r0 == 0) goto L_0x0160
+            android.databinding.ObservableBoolean r4 = r0.chassis
+            goto L_0x0162
+        L_0x0160:
+            r4 = r21
+        L_0x0162:
+            r33 = r0
+            r0 = 2
+            r1.updateRegistration((int) r0, (android.databinding.Observable) r4)
+            if (r4 == 0) goto L_0x0170
+            boolean r0 = r4.get()
+            r18 = r0
+        L_0x0170:
+            long r34 = r2 & r29
+            r19 = 0
+            int r0 = (r34 > r19 ? 1 : (r34 == r19 ? 0 : -1))
+            if (r0 == 0) goto L_0x0183
+            if (r18 == 0) goto L_0x017f
+            r34 = 256(0x100, double:1.265E-321)
+            long r2 = r2 | r34
+            goto L_0x0183
+        L_0x017f:
+            r34 = 128(0x80, double:6.32E-322)
+            long r2 = r2 | r34
+        L_0x0183:
+            if (r18 == 0) goto L_0x0191
+            android.widget.ImageView r0 = r1.controlBtn1
+            android.content.Context r0 = r0.getContext()
+            r34 = r2
+            r2 = 2131234637(0x7f080f4d, float:1.8085445E38)
+            goto L_0x019c
+        L_0x0191:
+            r34 = r2
+            android.widget.ImageView r0 = r1.controlBtn1
+            android.content.Context r0 = r0.getContext()
+            r2 = 2131234636(0x7f080f4c, float:1.8085443E38)
+        L_0x019c:
+            android.graphics.drawable.Drawable r0 = android.support.v7.content.res.AppCompatResources.getDrawable(r0, r2)
+            r10 = r0
+            r21 = r4
+            r0 = r22
+            r16 = r33
+            r2 = r34
+            goto L_0x01b5
+        L_0x01aa:
+            r33 = r0
+            r0 = r22
+            r16 = r33
+            goto L_0x01b5
+        L_0x01b1:
+            r22 = r0
+            r31 = r4
+        L_0x01b5:
+            long r22 = r2 & r23
+            r19 = 0
+            int r4 = (r22 > r19 ? 1 : (r22 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x01e0
+            android.widget.ImageView r4 = r1.brightnessBtnLeft
+            r4.setOnClickListener(r6)
+            android.widget.ImageView r4 = r1.brightnessBtnRight
+            r4.setOnClickListener(r6)
+            android.widget.ImageView r4 = r1.controlBtn1
+            r4.setOnClickListener(r13)
+            android.widget.ImageView r4 = r1.controlBtn2
+            r4.setOnClickListener(r0)
+            android.widget.ImageView r4 = r1.controlBtn3
+            r4.setOnClickListener(r9)
+            android.widget.ImageView r4 = r1.foldLeftBtn
+            r4.setOnClickListener(r14)
+            android.widget.ImageView r4 = r1.foldRightBtn
+            r4.setOnClickListener(r7)
+        L_0x01e0:
+            long r22 = r2 & r29
+            r19 = 0
+            int r4 = (r22 > r19 ? 1 : (r22 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x01ed
+            android.widget.ImageView r4 = r1.controlBtn1
+            android.databinding.adapters.ImageViewBindingAdapter.setImageDrawable(r4, r10)
+        L_0x01ed:
+            long r22 = r2 & r27
+            int r4 = (r22 > r19 ? 1 : (r22 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x01f8
+            android.widget.ImageView r4 = r1.controlBtn3
+            android.databinding.adapters.ImageViewBindingAdapter.setImageDrawable(r4, r12)
+        L_0x01f8:
+            long r22 = r2 & r25
+            int r4 = (r22 > r19 ? 1 : (r22 == r19 ? 0 : -1))
+            if (r4 == 0) goto L_0x0203
+            android.widget.ImageView r4 = r1.imageView
+            android.databinding.adapters.ImageViewBindingAdapter.setImageDrawable(r4, r8)
+        L_0x0203:
+            return
+        L_0x0204:
+            r0 = move-exception
+            monitor-exit(r36)     // Catch:{ all -> 0x0204 }
+            throw r0
+        */
+        throw new UnsupportedOperationException("Method not decompiled: com.wits.ksw.databinding.Ntg630ControlPopupBindingImpl.executeBindings():void");
     }
 
     public static class OnClickListenerImpl implements View.OnClickListener {
-        private BcVieModel value;
+        private LauncherViewModel value;
 
-        public OnClickListenerImpl setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
-                return null;
-            }
-            return this;
-        }
-
-        public void onClick(View arg0) {
-            this.value.onFoldRigtClick(arg0);
-        }
-    }
-
-    public static class OnClickListenerImpl1 implements View.OnClickListener {
-        private BcVieModel value;
-
-        public OnClickListenerImpl1 setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
-                return null;
-            }
-            return this;
-        }
-
-        public void onClick(View arg0) {
-            this.value.onAuxiliaryRadarClick(arg0);
-        }
-    }
-
-    public static class OnClickListenerImpl2 implements View.OnClickListener {
-        private BcVieModel value;
-
-        public OnClickListenerImpl2 setValue(BcVieModel value2) {
-            this.value = value2;
-            if (value2 == null) {
-                return null;
-            }
-            return this;
-        }
-
-        public void onClick(View arg0) {
-            this.value.onFoldLeftClick(arg0);
-        }
-    }
-
-    public static class OnClickListenerImpl3 implements View.OnClickListener {
-        private BcVieModel value;
-
-        public OnClickListenerImpl3 setValue(BcVieModel value2) {
+        public OnClickListenerImpl setValue(LauncherViewModel value2) {
             this.value = value2;
             if (value2 == null) {
                 return null;
@@ -386,10 +437,58 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
         }
     }
 
-    public static class OnClickListenerImpl4 implements View.OnClickListener {
-        private BcVieModel value;
+    public static class OnClickListenerImpl1 implements View.OnClickListener {
+        private LauncherViewModel value;
 
-        public OnClickListenerImpl4 setValue(BcVieModel value2) {
+        public OnClickListenerImpl1 setValue(LauncherViewModel value2) {
+            this.value = value2;
+            if (value2 == null) {
+                return null;
+            }
+            return this;
+        }
+
+        public void onClick(View arg0) {
+            this.value.showBrightnessDialog(arg0);
+        }
+    }
+
+    public static class OnClickListenerImpl2 implements View.OnClickListener {
+        private LauncherViewModel value;
+
+        public OnClickListenerImpl2 setValue(LauncherViewModel value2) {
+            this.value = value2;
+            if (value2 == null) {
+                return null;
+            }
+            return this;
+        }
+
+        public void onClick(View arg0) {
+            this.value.onFoldRigtClick(arg0);
+        }
+    }
+
+    public static class OnClickListenerImpl3 implements View.OnClickListener {
+        private LauncherViewModel value;
+
+        public OnClickListenerImpl3 setValue(LauncherViewModel value2) {
+            this.value = value2;
+            if (value2 == null) {
+                return null;
+            }
+            return this;
+        }
+
+        public void onClick(View arg0) {
+            this.value.onAuxiliaryRadarClick(arg0);
+        }
+    }
+
+    public static class OnClickListenerImpl4 implements View.OnClickListener {
+        private LauncherViewModel value;
+
+        public OnClickListenerImpl4 setValue(LauncherViewModel value2) {
             this.value = value2;
             if (value2 == null) {
                 return null;
@@ -403,9 +502,9 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
     }
 
     public static class OnClickListenerImpl5 implements View.OnClickListener {
-        private BcVieModel value;
+        private LauncherViewModel value;
 
-        public OnClickListenerImpl5 setValue(BcVieModel value2) {
+        public OnClickListenerImpl5 setValue(LauncherViewModel value2) {
             this.value = value2;
             if (value2 == null) {
                 return null;
@@ -414,7 +513,7 @@ public class Ntg630ControlPopupBindingImpl extends Ntg630ControlPopupBinding {
         }
 
         public void onClick(View arg0) {
-            this.value.showBrightnessDialog(arg0);
+            this.value.onFoldLeftClick(arg0);
         }
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import com.wits.ksw.settings.TxzMessage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -51,7 +52,7 @@ public class Debug {
                 Object value = declaredField.get(obj);
                 if (declaredField.getName().startsWith("layout_constraint")) {
                     if (!(value instanceof Integer) || !value.toString().equals("-1")) {
-                        if (!(value instanceof Integer) || !value.toString().equals("0")) {
+                        if (!(value instanceof Integer) || !value.toString().equals(TxzMessage.TXZ_DISMISS)) {
                             if (!(value instanceof Float) || !value.toString().equals("1.0")) {
                                 if (!(value instanceof Float) || !value.toString().equals("0.5")) {
                                     System.out.println(loc + "    " + declaredField.getName() + " " + value);

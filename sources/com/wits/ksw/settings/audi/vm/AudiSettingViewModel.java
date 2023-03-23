@@ -24,7 +24,7 @@ import com.wits.pms.IContentObserver;
 import com.wits.pms.statuscontrol.PowerManagerApp;
 
 public class AudiSettingViewModel extends AndroidViewModel {
-    private static final String TAG = ("KSWLauncher." + AudiSettingViewModel.class.getSimpleName());
+    private static final String TAG = ("KswApplication." + AudiSettingViewModel.class.getSimpleName());
     public ObservableField<String> appVer = new ObservableField<>();
     private Context context;
     public ObservableBoolean is24Hour = new ObservableBoolean();

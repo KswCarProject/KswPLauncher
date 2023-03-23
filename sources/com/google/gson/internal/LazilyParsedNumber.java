@@ -45,4 +45,23 @@ public final class LazilyParsedNumber extends Number {
     private Object writeReplace() throws ObjectStreamException {
         return new BigDecimal(this.value);
     }
+
+    public int hashCode() {
+        return this.value.hashCode();
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof LazilyParsedNumber)) {
+            return false;
+        }
+        String str = this.value;
+        String str2 = ((LazilyParsedNumber) obj).value;
+        if (str == str2 || str.equals(str2)) {
+            return true;
+        }
+        return false;
+    }
 }

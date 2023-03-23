@@ -70,6 +70,30 @@
         <item>Dashboard</item>
         <item>DVR</item>
     </array>
+    <array name="bmw_id8_dashboard_linear_blue">
+        <item>#0c3d5a</item>
+        <item>#0d304f</item>
+        <item>#0d2a4d</item>
+        <item>#0e446d</item>
+        <item>#268ec0</item>
+        <item>#f5f8f8</item>
+    </array>
+    <array name="bmw_id8_dashboard_linear_red">
+        <item>#2b192e</item>
+        <item>#431a2e</item>
+        <item>#6b1c30</item>
+        <item>#a72c48</item>
+        <item>#f49998</item>
+        <item>#fffcfc</item>
+    </array>
+    <array name="bmw_id8_dashboard_linear_yellow">
+        <item>#391d29</item>
+        <item>#5d2027</item>
+        <item>#973b2d</item>
+        <item>#e38250</item>
+        <item>#e1b292</item>
+        <item>#f7f7f3</item>
+    </array>
     <array name="exclude_class_list">
         <item>com.wits.screencast</item>
     </array>
@@ -169,6 +193,7 @@
         <item>Car Display</item>
         <item>CAN Protocol</item>
         <item>MIC Gain</item>
+        <item>Reverse exit time configuration</item>
         <item>UI Configuration</item>
         <item>Profile Import</item>
         <item>Boot Logo</item>

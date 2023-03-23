@@ -10,9 +10,9 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds = null;
-    private final View.OnClickListener mCallback41;
-    private final View.OnClickListener mCallback42;
-    private final View.OnClickListener mCallback43;
+    private final View.OnClickListener mCallback209;
+    private final View.OnClickListener mCallback210;
+    private final View.OnClickListener mCallback211;
     private long mDirtyFlags;
 
     public UgHomeOneBindingImpl(DataBindingComponent bindingComponent, View root) {
@@ -27,9 +27,9 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         this.ugHomeMusicVaiw.setTag((Object) null);
         this.ugHomeNaviVaiw.setTag((Object) null);
         setRootTag(root);
-        this.mCallback43 = new OnClickListener(this, 3);
-        this.mCallback41 = new OnClickListener(this, 1);
-        this.mCallback42 = new OnClickListener(this, 2);
+        this.mCallback210 = new OnClickListener(this, 2);
+        this.mCallback211 = new OnClickListener(this, 3);
+        this.mCallback209 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -50,7 +50,7 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((LauncherViewModel) variable);
@@ -62,7 +62,7 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -80,9 +80,9 @@ public class UgHomeOneBindingImpl extends UgHomeOneBinding implements OnClickLis
         }
         LauncherViewModel launcherViewModel = this.mViewModel;
         if ((2 & dirtyFlags) != 0) {
-            this.ugHomeBtVaiw.setOnClickListener(this.mCallback42);
-            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback43);
-            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback41);
+            this.ugHomeBtVaiw.setOnClickListener(this.mCallback210);
+            this.ugHomeMusicVaiw.setOnClickListener(this.mCallback211);
+            this.ugHomeNaviVaiw.setOnClickListener(this.mCallback209);
         }
     }
 

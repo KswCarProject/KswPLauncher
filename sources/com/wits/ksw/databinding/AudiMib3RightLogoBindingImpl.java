@@ -49,7 +49,7 @@ public class AudiMib3RightLogoBindingImpl extends AudiMib3RightLogoBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiViewModel) variable);
@@ -61,7 +61,7 @@ public class AudiMib3RightLogoBindingImpl extends AudiMib3RightLogoBinding {
         synchronized (this) {
             this.mDirtyFlags |= 2;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

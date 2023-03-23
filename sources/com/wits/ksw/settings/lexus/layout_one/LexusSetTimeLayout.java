@@ -53,7 +53,7 @@ public class LexusSetTimeLayout extends RelativeLayout implements View.OnClickLi
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_timeSync:
+            case R.id.tv_timeSync /*2131297941*/:
                 this.tv_timeSync.setTextColor(Color.argb(255, 172, 216, 255));
                 this.tv_timeZhis.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
@@ -62,7 +62,7 @@ public class LexusSetTimeLayout extends RelativeLayout implements View.OnClickLi
                     return;
                 }
                 return;
-            case R.id.tv_timeZhis:
+            case R.id.tv_timeZhis /*2131297942*/:
                 this.tv_timeZhis.setTextColor(Color.argb(255, 172, 216, 255));
                 this.tv_timeSync.setTextColor(-1);
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;

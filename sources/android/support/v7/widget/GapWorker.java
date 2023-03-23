@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
+import kotlin.jvm.internal.LongCompanionObject;
 
 final class GapWorker implements Runnable {
     static final ThreadLocal<GapWorker> sGapWorker = new ThreadLocal<>();
@@ -267,7 +268,7 @@ final class GapWorker implements Runnable {
     }
 
     private void flushTaskWithDeadline(Task task, long deadlineNs) {
-        RecyclerView.ViewHolder holder = prefetchPositionWithDeadline(task.view, task.position, task.immediate ? Long.MAX_VALUE : deadlineNs);
+        RecyclerView.ViewHolder holder = prefetchPositionWithDeadline(task.view, task.position, task.immediate ? LongCompanionObject.MAX_VALUE : deadlineNs);
         if (holder != null && holder.mNestedRecyclerView != null && holder.isBound() && !holder.isInvalid()) {
             prefetchInnerRecyclerViewWithDeadline((RecyclerView) holder.mNestedRecyclerView.get(), deadlineNs);
         }

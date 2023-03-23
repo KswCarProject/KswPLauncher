@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.settings.TxzMessage;
 import com.wits.ksw.settings.utlis_view.DialogViews;
 import com.wits.ksw.settings.utlis_view.McuUtil;
 import com.wits.ksw.settings.utlis_view.UtilsInfo;
@@ -56,6 +58,7 @@ public class Ntg6SystemInfoLayout extends RelativeLayout implements View.OnClick
     /* access modifiers changed from: private */
     public TextView tv_infoMcuv;
     private TextView tv_infoSysRest;
+    private TextView tv_infoSysUpDate;
     private TextView tv_infoSysv;
 
     public Ntg6SystemInfoLayout(Context context2, Handler handler2) {
@@ -123,6 +126,9 @@ public class Ntg6SystemInfoLayout extends RelativeLayout implements View.OnClick
                 Ntg6SystemInfoLayout.this.fhandler.sendEmptyMessage(1);
             }
         });
+        TextView textView6 = (TextView) view.findViewById(R.id.tv_infoSysUpDate);
+        this.tv_infoSysUpDate = textView6;
+        textView6.setOnClickListener(this);
     }
 
     private String getVersion() {
@@ -137,11 +143,14 @@ public class Ntg6SystemInfoLayout extends RelativeLayout implements View.OnClick
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_infoMcuUp /*2131297579*/:
+            case R.id.tv_infoMcuUp:
                 this.dialogViews.updateMcu(this.context.getString(R.string.update_mcu_file));
                 return;
-            case R.id.tv_infoSysRest /*2131297582*/:
+            case R.id.tv_infoSysRest:
                 this.dialogViews.isQuestView(this.context.getString(R.string.update_reset_all), this.handler);
+                return;
+            case R.id.tv_infoSysUpDate:
+                new TxzMessage(2070, "system.ota.check", (Bundle) null).sendBroadCast(this.context);
                 return;
             default:
                 return;

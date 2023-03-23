@@ -87,7 +87,7 @@ public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBi
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((VolumeViewModel) variable);
@@ -99,7 +99,7 @@ public class ActivityAudiSoundBindingSw600dpLandImpl extends ActivityAudiSoundBi
         synchronized (this) {
             this.mDirtyFlags |= 16;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

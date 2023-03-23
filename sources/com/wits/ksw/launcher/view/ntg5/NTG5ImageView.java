@@ -16,6 +16,7 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
     public static final String TAG = "NTG5ImageView";
     private BenzNTG5RecyclerViewAdapter adapter;
     private TextView mTextView;
+    private int screenWidth;
 
     public NTG5ImageView(Context context) {
         this(context, (AttributeSet) null);
@@ -39,11 +40,13 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
 
     public NTG5ImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.screenWidth = 0;
         setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public final void onFocusChange(View view, boolean z) {
                 NTG5ImageView.this.onFocusChange(view, z);
             }
         });
+        this.screenWidth = getResources().getDisplayMetrics().widthPixels;
     }
 
     public void onFocusChange(View v, boolean hasFocus) {
@@ -60,7 +63,11 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
         if (textView != null) {
             textView.setTextSize(30.0f);
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.mTextView.getLayoutParams();
-            lp.setMargins(0, 0, 0, 144);
+            if (this.screenWidth == 1920) {
+                lp.setMargins(0, 0, 0, 211);
+            } else {
+                lp.setMargins(0, 0, 0, 144);
+            }
             this.mTextView.setLayoutParams(lp);
         }
         BenzNTG5RecyclerViewAdapter benzNTG5RecyclerViewAdapter = this.adapter;
@@ -72,9 +79,13 @@ public class NTG5ImageView extends AppCompatImageView implements View.OnFocusCha
     private void textViewUnFocus() {
         TextView textView = this.mTextView;
         if (textView != null) {
-            textView.setTextSize(24.0f);
+            textView.setTextSize(22.0f);
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) this.mTextView.getLayoutParams();
-            lp.setMargins(0, 0, 0, 155);
+            if (this.screenWidth == 1920) {
+                lp.setMargins(0, 0, 0, SCSU.UDEFINE1);
+            } else {
+                lp.setMargins(0, 0, 0, 155);
+            }
             this.mTextView.setLayoutParams(lp);
         }
     }

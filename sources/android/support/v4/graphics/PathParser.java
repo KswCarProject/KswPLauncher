@@ -617,7 +617,7 @@ public class PathParser {
                 double sinEta2 = Math.sin(eta2);
                 double cosEta2 = Math.cos(eta2);
                 double anglePerSegment2 = anglePerSegment;
-                double e2x = (cx + ((d * cosTheta) * cosEta2)) - ((b * sinTheta) * sinEta2);
+                double anglePerSegment3 = (cx + ((d * cosTheta) * cosEta2)) - ((b * sinTheta) * sinEta2);
                 double cosEta12 = cosEta1;
                 double sinEta12 = sinEta1;
                 double ep2x = (((-d) * cosTheta) * sinEta2) - ((b * sinTheta) * cosEta2);
@@ -629,15 +629,15 @@ public class PathParser {
                 int numSegments2 = numSegments;
                 double d2 = eta13;
                 double q1y = e1y2 + (alpha * ep1y);
-                double q2x = e2x - (alpha * ep2x);
+                double q2x = anglePerSegment3 - (alpha * ep2x);
                 double e2y2 = e2y;
                 p.rLineTo(0.0f, 0.0f);
                 double d3 = q1x;
                 double d4 = q1y;
                 double d5 = q2x;
-                p.cubicTo((float) q1x, (float) q1y, (float) q2x, (float) (e2y2 - (alpha * ep2y)), (float) e2x, (float) e2y2);
+                p.cubicTo((float) q1x, (float) q1y, (float) q2x, (float) (e2y2 - (alpha * ep2y)), (float) anglePerSegment3, (float) e2y2);
                 eta12 = eta2;
-                eta13 = e2x;
+                eta13 = anglePerSegment3;
                 e1y2 = e2y2;
                 ep1x = ep2x;
                 ep1y = ep2y;

@@ -85,6 +85,7 @@
     <dimen name="compat_control_corner_material">2dp</dimen>
     <dimen name="compat_notification_large_icon_max_height">320dp</dimen>
     <dimen name="compat_notification_large_icon_max_width">320dp</dimen>
+    <dimen name="def_height">50dp</dimen>
     <dimen name="dimen_lexus_ls_bottom_drag_height">110dp</dimen>
     <dimen name="dimen_lexus_ls_bottom_height">150dp</dimen>
     <dimen name="dimen_lexus_ls_bottom_iv_height">120dp</dimen>
@@ -92,6 +93,9 @@
     <dimen name="dimen_lexus_ls_pop_width">500dp</dimen>
     <dimen name="disabled_alpha_material_dark">0.3</dimen>
     <dimen name="disabled_alpha_material_light">0.26</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
     <dimen name="fastscroll_default_thickness">8dp</dimen>
     <dimen name="fastscroll_margin">0dp</dimen>
     <dimen name="fastscroll_minimum_range">50dp</dimen>
@@ -103,6 +107,19 @@
     <dimen name="hint_alpha_material_light">0.38</dimen>
     <dimen name="hint_pressed_alpha_material_dark">0.7</dimen>
     <dimen name="hint_pressed_alpha_material_light">0.54</dimen>
+    <dimen name="id8_big_card_layout_width">340dp</dimen>
+    <dimen name="id8_big_layout_width_edit">248dp</dimen>
+    <dimen name="id8_card_layout_height">480dp</dimen>
+    <dimen name="id8_card_layout_height_edit">352dp</dimen>
+    <dimen name="id8_card_left_margin">12dp</dimen>
+    <dimen name="id8_gs_big_card_layout_width">220dp</dimen>
+    <dimen name="id8_gs_card_layout_height">350dp</dimen>
+    <dimen name="id8_gs_card_left_margin">10dp</dimen>
+    <dimen name="id8_gs_card_name_width_edit">120dp</dimen>
+    <dimen name="id8_gs_card_right_margin">10dp</dimen>
+    <dimen name="id8_gs_card_right_padding">10dp</dimen>
+    <dimen name="id8_small_card_layout_width">290dp</dimen>
+    <dimen name="id8_small_card_layout_width_edit">211dp</dimen>
     <dimen name="item_touch_helper_max_drag_scroll_per_frame">20dp</dimen>
     <dimen name="item_touch_helper_swipe_escape_max_velocity">800dp</dimen>
     <dimen name="item_touch_helper_swipe_escape_velocity">120dp</dimen>
@@ -137,6 +154,7 @@
     <dimen name="skin_dialog_padding_top">18dp</dimen>
     <dimen name="skin_dialog_title_divider">8dp</dimen>
     <dimen name="skin_select_dialog_padding_start">20dp</dimen>
+    <dimen name="sp_14">14sp</dimen>
     <dimen name="subtitle_corner_radius">2dp</dimen>
     <dimen name="subtitle_outline_width">2dp</dimen>
     <dimen name="subtitle_shadow_offset">2dp</dimen>

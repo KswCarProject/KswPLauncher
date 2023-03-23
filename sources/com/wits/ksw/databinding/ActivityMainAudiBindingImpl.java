@@ -18,7 +18,7 @@ public class ActivityMainAudiBindingImpl extends ActivityMainAudiBinding {
     private static final SparseIntArray sViewsWithIds;
     private long mDirtyFlags;
     private final RelativeLayout mboundView0;
-    private final AudiRightLogoBinding mboundView01;
+    private final AudiRightWeatherBinding mboundView01;
     private final AudiRightCarinfoBinding mboundView02;
     private final AudiRightNaviBinding mboundView03;
     private final AudiRightMediaBinding mboundView04;
@@ -26,7 +26,7 @@ public class ActivityMainAudiBindingImpl extends ActivityMainAudiBinding {
     static {
         ViewDataBinding.IncludedLayouts includedLayouts = new ViewDataBinding.IncludedLayouts(38);
         sIncludes = includedLayouts;
-        includedLayouts.setIncludes(0, new String[]{"audi_right_logo", "audi_right_carinfo", "audi_right_navi", "audi_right_media"}, new int[]{4, 5, 6, 7}, new int[]{R.layout.audi_right_logo, R.layout.audi_right_carinfo, R.layout.audi_right_navi, R.layout.audi_right_media});
+        includedLayouts.setIncludes(0, new String[]{"audi_right_weather", "audi_right_carinfo", "audi_right_navi", "audi_right_media"}, new int[]{4, 5, 6, 7}, new int[]{R.layout.audi_right_weather, R.layout.audi_right_carinfo, R.layout.audi_right_navi, R.layout.audi_right_media});
         SparseIntArray sparseIntArray = new SparseIntArray();
         sViewsWithIds = sparseIntArray;
         sparseIntArray.put(R.id.rl_navi, 8);
@@ -74,9 +74,9 @@ public class ActivityMainAudiBindingImpl extends ActivityMainAudiBinding {
         RelativeLayout relativeLayout = bindings[0];
         this.mboundView0 = relativeLayout;
         relativeLayout.setTag((Object) null);
-        AudiRightLogoBinding audiRightLogoBinding = bindings[4];
-        this.mboundView01 = audiRightLogoBinding;
-        setContainedBinding(audiRightLogoBinding);
+        AudiRightWeatherBinding audiRightWeatherBinding = bindings[4];
+        this.mboundView01 = audiRightWeatherBinding;
+        setContainedBinding(audiRightWeatherBinding);
         AudiRightCarinfoBinding audiRightCarinfoBinding = bindings[5];
         this.mboundView02 = audiRightCarinfoBinding;
         setContainedBinding(audiRightCarinfoBinding);
@@ -142,7 +142,7 @@ public class ActivityMainAudiBindingImpl extends ActivityMainAudiBinding {
             return r1
         L_0x000c:
             monitor-exit(r4)     // Catch:{ all -> 0x0033 }
-            com.wits.ksw.databinding.AudiRightLogoBinding r0 = r4.mboundView01
+            com.wits.ksw.databinding.AudiRightWeatherBinding r0 = r4.mboundView01
             boolean r0 = r0.hasPendingBindings()
             if (r0 == 0) goto L_0x0016
             return r1
@@ -173,7 +173,7 @@ public class ActivityMainAudiBindingImpl extends ActivityMainAudiBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (17 != variableId) {
+        if (26 != variableId) {
             return false;
         }
         setVm((AudiViewModel) variable);
@@ -185,7 +185,7 @@ public class ActivityMainAudiBindingImpl extends ActivityMainAudiBinding {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(17);
+        notifyPropertyChanged(26);
         super.requestRebind();
     }
 

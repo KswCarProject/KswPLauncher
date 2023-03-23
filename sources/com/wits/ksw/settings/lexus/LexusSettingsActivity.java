@@ -178,7 +178,7 @@ public class LexusSettingsActivity extends BaseActivity implements IUpdateTwoLay
         this.handler.sendEmptyMessageDelayed(0, 1000);
         initSaveData();
         skipItem();
-        if (UiThemeUtils.isLEXUS_LS_UI(this)) {
+        if (UiThemeUtils.isLEXUS_LS_UI(this) || UiThemeUtils.isLEXUS_LS_UI_V2(this)) {
             this.screenHandler.sendEmptyMessageDelayed(666, 1800);
         }
     }

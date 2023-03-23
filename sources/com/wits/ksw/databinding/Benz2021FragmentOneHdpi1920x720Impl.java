@@ -69,7 +69,7 @@ public class Benz2021FragmentOneHdpi1920x720Impl extends Benz2021FragmentOne {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);
@@ -81,7 +81,7 @@ public class Benz2021FragmentOneHdpi1920x720Impl extends Benz2021FragmentOne {
         synchronized (this) {
             this.mDirtyFlags |= 4;
         }
-        notifyPropertyChanged(16);
+        notifyPropertyChanged(25);
         super.requestRebind();
     }
 
@@ -180,32 +180,32 @@ public class Benz2021FragmentOneHdpi1920x720Impl extends Benz2021FragmentOne {
             if (r6 == 0) goto L_0x0066
             com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView r13 = r1.btItemview
             android.content.Context r13 = r13.getContext()
-            r4 = 2131231922(0x7f0804b2, float:1.8079939E38)
+            r4 = 2131232022(0x7f080516, float:1.8080142E38)
             android.graphics.drawable.Drawable r4 = android.support.v7.content.res.AppCompatResources.getDrawable(r13, r4)
             goto L_0x0073
         L_0x0066:
             com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView r4 = r1.btItemview
             android.content.Context r4 = r4.getContext()
-            r5 = 2131231923(0x7f0804b3, float:1.807994E38)
+            r5 = 2131232023(0x7f080517, float:1.8080144E38)
             android.graphics.drawable.Drawable r4 = android.support.v7.content.res.AppCompatResources.getDrawable(r4, r5)
         L_0x0073:
             r0 = r4
             com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView r4 = r1.naviItemview
             android.content.Context r4 = r4.getContext()
             if (r6 == 0) goto L_0x0080
-            r5 = 2131231932(0x7f0804bc, float:1.8079959E38)
+            r5 = 2131232032(0x7f080520, float:1.8080162E38)
             goto L_0x0083
         L_0x0080:
-            r5 = 2131231933(0x7f0804bd, float:1.807996E38)
+            r5 = 2131232033(0x7f080521, float:1.8080164E38)
         L_0x0083:
             android.graphics.drawable.Drawable r4 = android.support.v7.content.res.AppCompatResources.getDrawable(r4, r5)
             com.wits.ksw.launcher.view.benzmbux.BenzMbuxItemView r5 = r1.carItemview
             android.content.Context r5 = r5.getContext()
             if (r6 == 0) goto L_0x0093
-            r9 = 2131231924(0x7f0804b4, float:1.8079943E38)
+            r9 = 2131232024(0x7f080518, float:1.8080146E38)
             goto L_0x0096
         L_0x0093:
-            r9 = 2131231925(0x7f0804b5, float:1.8079945E38)
+            r9 = 2131232025(0x7f080519, float:1.8080148E38)
         L_0x0096:
             android.graphics.drawable.Drawable r5 = android.support.v7.content.res.AppCompatResources.getDrawable(r5, r9)
             r9 = r4

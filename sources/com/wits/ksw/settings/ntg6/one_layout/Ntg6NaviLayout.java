@@ -54,17 +54,17 @@ public class Ntg6NaviLayout extends RelativeLayout implements View.OnClickListen
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_TwoBack /*2131296841*/:
+            case R.id.img_TwoBack:
                 this.handler.sendEmptyMessage(1);
                 return;
-            case R.id.tv_naviapp /*2131297603*/:
+            case R.id.tv_naviapp:
                 IUpdateTwoLayout iUpdateTwoLayout = this.updateTwoLayout;
                 if (iUpdateTwoLayout != null) {
                     iUpdateTwoLayout.updateTwoLayout(2, 1);
                     return;
                 }
                 return;
-            case R.id.tv_navihy /*2131297604*/:
+            case R.id.tv_navihy:
                 IUpdateTwoLayout iUpdateTwoLayout2 = this.updateTwoLayout;
                 if (iUpdateTwoLayout2 != null) {
                     iUpdateTwoLayout2.updateTwoLayout(2, 0);

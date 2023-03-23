@@ -25,7 +25,7 @@ import java.text.NumberFormat;
 
 public class AudiMib3SystemViewModel extends AndroidViewModel {
     /* access modifiers changed from: private */
-    public static final String TAG = ("KSWLauncher." + AudiMib3SystemViewModel.class.getSimpleName());
+    public static final String TAG = ("KswApplication." + AudiMib3SystemViewModel.class.getSimpleName());
     public ObservableBoolean autoBrightness = new ObservableBoolean(false);
     public SeekBar.OnSeekBarChangeListener aux1ChangeListener = new SeekBar.OnSeekBarChangeListener() {
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -126,6 +126,9 @@ public class AudiMib3SystemViewModel extends AndroidViewModel {
                             break;
                         case 4:
                             data = 2;
+                            break;
+                        case 6:
+                            data = 3;
                             break;
                     }
                     FileUtils.savaIntData(KeyConfig.DAO_CHE_SXT, data);

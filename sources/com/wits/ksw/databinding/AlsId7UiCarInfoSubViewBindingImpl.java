@@ -11,7 +11,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 public class AlsId7UiCarInfoSubViewBindingImpl extends AlsId7UiCarInfoSubViewBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback241;
+    private final View.OnClickListener mCallback154;
     private long mDirtyFlags;
 
     static {
@@ -32,7 +32,7 @@ public class AlsId7UiCarInfoSubViewBindingImpl extends AlsId7UiCarInfoSubViewBin
         this.carConstraintLayout.setTag((Object) null);
         this.carImageView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback241 = new OnClickListener(this, 1);
+        this.mCallback154 = new OnClickListener(this, 1);
         invalidateAll();
     }
 
@@ -53,7 +53,7 @@ public class AlsId7UiCarInfoSubViewBindingImpl extends AlsId7UiCarInfoSubViewBin
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (2 != variableId) {
+        if (3 != variableId) {
             return false;
         }
         setCarViewModel((LauncherViewModel) variable);
@@ -65,7 +65,7 @@ public class AlsId7UiCarInfoSubViewBindingImpl extends AlsId7UiCarInfoSubViewBin
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(2);
+        notifyPropertyChanged(3);
         super.requestRebind();
     }
 
@@ -87,7 +87,7 @@ public class AlsId7UiCarInfoSubViewBindingImpl extends AlsId7UiCarInfoSubViewBin
             carViewModelCarViewFocusChangeListener = carViewModel.carViewFocusChangeListener;
         }
         if ((2 & dirtyFlags) != 0) {
-            this.carImageView.setOnClickListener(this.mCallback241);
+            this.carImageView.setOnClickListener(this.mCallback154);
         }
         if ((3 & dirtyFlags) != 0) {
             this.carImageView.setOnFocusChangeListener(carViewModelCarViewFocusChangeListener);

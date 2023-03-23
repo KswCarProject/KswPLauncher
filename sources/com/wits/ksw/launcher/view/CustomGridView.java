@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 public class CustomGridView extends DragGridView {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     int column;
     int row;
 
@@ -20,7 +20,7 @@ public class CustomGridView extends DragGridView {
         super(context, attrs);
         setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.i("KSWLauncher", "onItemSelected: " + position);
+                Log.i("KswApplication", "onItemSelected: " + position);
                 int count = CustomGridView.this.getAdapter().getCount();
                 int maxIndex = count - 1;
                 if (position >= count) {
@@ -29,7 +29,7 @@ public class CustomGridView extends DragGridView {
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Log.i("KSWLauncher", "onNothingSelected: ");
+                Log.i("KswApplication", "onNothingSelected: ");
             }
         });
     }
@@ -40,8 +40,8 @@ public class CustomGridView extends DragGridView {
         int selectedpostion = getSelectedItemPosition();
         int maxIndex = count - 1;
         this.row = (int) Math.ceil((double) (count / this.column));
-        Log.i("KSWLauncher", "onKeyDown: column= " + this.column + " row = " + this.row);
-        Log.i("KSWLauncher", "onKeyDown: " + keyCode + "  SelectedPosition= " + selectedpostion + "   " + (this.column - 1));
+        Log.i("KswApplication", "onKeyDown: column= " + this.column + " row = " + this.row);
+        Log.i("KswApplication", "onKeyDown: " + keyCode + "  SelectedPosition= " + selectedpostion + "   " + (this.column - 1));
         switch (keyCode) {
             case 19:
             case 21:

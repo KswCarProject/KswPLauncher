@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.wits.ksw.R;
+import com.wits.ksw.settings.TxzMessage;
 
 public class ID6FactoryLayout extends RelativeLayout implements View.OnClickListener {
     private Context context;
@@ -101,13 +102,13 @@ public class ID6FactoryLayout extends RelativeLayout implements View.OnClickList
         switch (v.getId()) {
             case R.id.img_btn0:
                 if (this.pwdInput.length() <= 8) {
-                    this.pwdInput.append("0");
+                    this.pwdInput.append(TxzMessage.TXZ_DISMISS);
                     break;
                 }
                 break;
             case R.id.img_btn1:
                 if (this.pwdInput.length() <= 8) {
-                    this.pwdInput.append("1");
+                    this.pwdInput.append(TxzMessage.TXZ_SHOW);
                     break;
                 }
                 break;

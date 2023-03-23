@@ -55,7 +55,7 @@ public class AudiMib3FyMainLeftBindingImpl extends AudiMib3FyMainLeftBinding {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);

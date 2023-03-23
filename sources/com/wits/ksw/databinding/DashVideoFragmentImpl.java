@@ -102,7 +102,7 @@ public class DashVideoFragmentImpl extends DashVideoFragment {
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (3 != variableId) {
+        if (4 != variableId) {
             return false;
         }
         setDashVideoViewModel((AlsID7ViewModel) variable);
@@ -114,7 +114,7 @@ public class DashVideoFragmentImpl extends DashVideoFragment {
         synchronized (this) {
             this.mDirtyFlags |= 1;
         }
-        notifyPropertyChanged(3);
+        notifyPropertyChanged(4);
         super.requestRebind();
     }
 

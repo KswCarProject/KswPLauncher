@@ -81,7 +81,7 @@ public class BenzNtg6FyFragmentTwoClsHdpi1280x720Impl extends BenzNtg6FyFragment
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (16 != variableId) {
+        if (25 != variableId) {
             return false;
         }
         setViewModel((BcVieModel) variable);

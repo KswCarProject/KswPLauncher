@@ -5,6 +5,7 @@ import java.text.ParsePosition;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
+import kotlin.jvm.internal.LongCompanionObject;
 
 final class NFRuleSet {
     static final /* synthetic */ boolean $assertionsDisabled = false;
@@ -363,7 +364,7 @@ final class NFRuleSet {
             i++;
         }
         long numerator = Math.round(((double) leastCommonMultiple) * number);
-        long difference = Long.MAX_VALUE;
+        long difference = LongCompanionObject.MAX_VALUE;
         int winner = 0;
         int i2 = 0;
         while (true) {

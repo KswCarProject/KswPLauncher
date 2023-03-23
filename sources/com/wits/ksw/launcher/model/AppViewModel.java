@@ -11,6 +11,7 @@ import android.databinding.ObservableField;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -23,11 +24,15 @@ import com.wits.ksw.KswApplication;
 import com.wits.ksw.R;
 import com.wits.ksw.launcher.base.BaseListAdpater;
 import com.wits.ksw.launcher.bean.AppInfo;
+import com.wits.ksw.launcher.bmw_id8_ui.GSID8LauncherConstants;
+import com.wits.ksw.launcher.bmw_id8_ui.ID8LauncherConstants;
 import com.wits.ksw.launcher.dabebase.AppInfoRoomDatabase;
 import com.wits.ksw.launcher.dabebase.AppList;
+import com.wits.ksw.launcher.utils.AppInfoUtils;
 import com.wits.ksw.launcher.utils.ClientManager;
 import com.wits.ksw.launcher.utils.IconUtils;
 import com.wits.ksw.launcher.utils.KswUtils;
+import com.wits.ksw.launcher.utils.UiThemeUtils;
 import com.wits.ksw.launcher.view.DragGridView;
 import com.wits.ksw.settings.utlis_view.KeyConfig;
 import com.wits.pms.statuscontrol.PowerManagerApp;
@@ -39,14 +44,22 @@ import java.util.List;
 public final class AppViewModel extends LauncherViewModel {
     public static final String AUX_TYPE = "AUX_Type";
     private static final String DESKCLOCK_PKG = "com.android.deskclock";
+    private static final String DOCUMENTS_UI = "com.android.documentsui";
     public static final String DTV_TYPE = "DTV_Type";
     public static final String DVR_TYPE = "DVR_Type";
+    private static final String EQ_PKG = "com.wits.csp.eq";
+    private static final String E_CAR = "com.ecar.assistantnew";
     public static final String F_CAM_Type = "Front_view_camera";
     private static final String GAODE_MAP_PKG = "com.autonavi.amapauto";
     private static final String GN_TXZ = "com.txznet.adapter";
+    private static final String GOOGLE_ASSISTANT_PKG = "com.google.android.apps.googleassistant";
+    private static final String GOOGLE_MAP = "com.google.android.apps.maps";
+    private static final String GOOGLE_PLAY = "com.android.vending";
     private static final String GOOGLE_SEARCH_PKG = "com.google.android.googlequicksearchbox";
     private static final String HY_TXZ = "com.txznet.smartadapter";
     private static final String IFLYTEK_PKG = "com.iflytek.inputmethod.google";
+    private static final String SIM_APK = "com.android.stk";
+    private static final String SOUGOU_PKG = "com.sohu.inputmethod.sogou";
     private static final String SPEEDPLAY_PKG = "com.suding.speedplay";
     private static final String TS_TXZ = "com.txznet.aipal";
     private static final String WITS_LOG_PKG = "com.wits.log";
@@ -103,6 +116,7 @@ public final class AppViewModel extends LauncherViewModel {
     };
     public AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            boolean isEdit = AppViewModel.this.activity.getIntent().getBooleanExtra("isEdit", false);
             AppInfo appInfo = (AppInfo) parent.getItemAtPosition(position);
             if (TextUtils.equals(appInfo.getApppkg(), "AUX_Type")) {
                 AppViewModel.this.onSendCommand(1, WitsCommand.SystemCommand.OPEN_AUX);
@@ -112,8 +126,27 @@ public final class AppViewModel extends LauncherViewModel {
                 AppViewModel.this.onSendCommand(1, WitsCommand.SystemCommand.OPEN_CVBSDVR);
             } else if (TextUtils.equals(appInfo.getApppkg(), "Front_view_camera")) {
                 AppViewModel.this.onSendCommand(1, WitsCommand.SystemCommand.OPEN_F_CAM);
+            } else if (isEdit) {
+                String pkg = appInfo.getApppkg();
+                String cls = appInfo.getClassName();
+                Log.w(LauncherViewModel.TAG, "onItemClick: pkg :" + pkg);
+                Log.w(LauncherViewModel.TAG, "onItemClick: cls :" + cls);
+                if (!"com.android.settings".equals(pkg)) {
+                    if (UiThemeUtils.isBMW_ID8_UI(AppViewModel.this.context)) {
+                        ID8LauncherConstants.addTrdApp(pkg, cls);
+                    } else {
+                        GSID8LauncherConstants.addTrdApp(pkg, cls);
+                    }
+                    AppViewModel.this.activity.finish();
+                }
             } else {
-                AppViewModel.this.openAppTask(new ComponentName(appInfo.getApppkg(), appInfo.getClassName()));
+                boolean isVersion12 = Build.VERSION.RELEASE.contains("12");
+                Log.w(LauncherViewModel.TAG, "isVersion12 :" + isVersion12);
+                if (!isVersion12 || !AppInfoUtils.isContainFreedomMap(appInfo.getApppkg()) || !UiThemeUtils.isUI_GS_ID8(AppViewModel.this.activity)) {
+                    AppViewModel.this.openAppTask(new ComponentName(appInfo.getApppkg(), appInfo.getClassName()));
+                } else {
+                    AppViewModel.this.launchApp(appInfo.getApppkg(), 1);
+                }
             }
         }
     };
@@ -164,7 +197,7 @@ public final class AppViewModel extends LauncherViewModel {
                 for (ResolveInfo resolveInfo : resolveInfoList) {
                     String packageName = resolveInfo.activityInfo.packageName;
                     Log.d("AppViewModel", resolveInfo.activityInfo.loadLabel(AppViewModel.this.activity.getPackageManager()) + "  " + packageName + "  " + resolveInfo.activityInfo.name);
-                    if (!AppViewModel.this.isOutTXZ(packageName) && !AppViewModel.this.filterAppDisplay(packageName)) {
+                    if (!AppViewModel.this.isOutTXZ(packageName) && !AppViewModel.this.isFilterAllGoogleAPP(packageName) && !AppViewModel.this.isFilterSimCardAPP(packageName) && !AppViewModel.this.isOutECAR(packageName) && !AppViewModel.this.isOutEQ(packageName) && !AppViewModel.this.filterAppDisplay(packageName)) {
                         AppInfo appInfo = new AppInfo();
                         Drawable iconDrawable = resolveInfo.loadIcon(pm);
                         appInfo.setAppIcon(iconDrawable);
@@ -249,9 +282,52 @@ public final class AppViewModel extends LauncherViewModel {
         }
     }
 
+    public boolean isOutECAR(String packageName) {
+        try {
+            if (PowerManagerApp.getSettingsInt(KeyConfig.E_CAR) != 0 || !packageName.contains(E_CAR)) {
+                return false;
+            }
+            return true;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isOutEQ(String packageName) {
+        try {
+            if (PowerManagerApp.getSettingsInt(KeyConfig.EQ_APP) != 0 || !packageName.contains(EQ_PKG)) {
+                return false;
+            }
+            return true;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isFilterAllGoogleAPP(String packageName) {
+        try {
+            if (PowerManagerApp.getSettingsInt(KeyConfig.GOOGLE_APP) != 0) {
+                return false;
+            }
+            if (packageName.contains(GOOGLE_PLAY) || packageName.contains(GOOGLE_MAP) || packageName.contains(GOOGLE_SEARCH_PKG) || packageName.contains(GOOGLE_ASSISTANT_PKG)) {
+                return true;
+            }
+            return false;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean isFilterSimCardAPP(String packageName) {
+        return packageName.contains(SIM_APK);
+    }
+
     /* access modifiers changed from: private */
     public boolean filterAppDisplay(String packageName) {
-        if (packageName.contains(KswApplication.appContext.getPackageName()) || packageName.contains(getClass().getPackage().toString()) || packageName.contains(IFLYTEK_PKG) || packageName.contains(DESKCLOCK_PKG) || packageName.contains(WITS_LOG_PKG)) {
+        if (packageName.contains(KswApplication.appContext.getPackageName()) || packageName.contains(getClass().getPackage().toString()) || packageName.contains(IFLYTEK_PKG) || packageName.contains(DESKCLOCK_PKG) || packageName.contains(WITS_LOG_PKG) || packageName.contains(DOCUMENTS_UI) || packageName.contains(SOUGOU_PKG)) {
             return true;
         }
         int speed_play_switch = Settings.System.getInt(this.context.getContentResolver(), "speed_play_switch", 1);

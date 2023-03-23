@@ -20,7 +20,7 @@ import com.wits.ksw.launcher.model.LauncherViewModel;
 import com.wits.ksw.launcher.utils.KswUtils;
 
 public class FragmentId5Left extends Fragment implements View.OnKeyListener, View.OnClickListener {
-    private static final String TAG = "KSWLauncher";
+    private static final String TAG = "KswApplication";
     CheckBox id5ItemBrowser;
     ImageView id5ItemBrowserCursor;
     CheckBox id5ItemBt;
@@ -136,37 +136,37 @@ public class FragmentId5Left extends Fragment implements View.OnKeyListener, Vie
     private void setOnFocusChangeListener() {
         this.id5ItemMusic.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.i("KSWLauncher", "onFocusChange: id5ItemMusic " + hasFocus);
+                Log.i("KswApplication", "onFocusChange: id5ItemMusic " + hasFocus);
                 FragmentId5Left.this.setSelected(v);
             }
         });
         this.id5ItemBt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.i("KSWLauncher", "onFocusChange: id5ItemBt " + hasFocus);
+                Log.i("KswApplication", "onFocusChange: id5ItemBt " + hasFocus);
                 FragmentId5Left.this.setSelected(v);
             }
         });
         this.id5ItemNavi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.i("KSWLauncher", "onFocusChange: id5ItemNavi " + hasFocus);
+                Log.i("KswApplication", "onFocusChange: id5ItemNavi " + hasFocus);
                 FragmentId5Left.this.setSelected(v);
             }
         });
         this.id5ItemFile.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.i("KSWLauncher", "onFocusChange: id5ItemFile " + hasFocus);
+                Log.i("KswApplication", "onFocusChange: id5ItemFile " + hasFocus);
                 FragmentId5Left.this.setSelected(v);
             }
         });
         this.id5ItemCar.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.i("KSWLauncher", "onFocusChange: id5ItemCar " + hasFocus);
+                Log.i("KswApplication", "onFocusChange: id5ItemCar " + hasFocus);
                 FragmentId5Left.this.setSelected(v);
             }
         });
         this.id5ItemBrowser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.i("KSWLauncher", "onFocusChange: id5ItemBrowser " + hasFocus);
+                Log.i("KswApplication", "onFocusChange: id5ItemBrowser " + hasFocus);
                 FragmentId5Left.this.setSelected(v);
                 if (hasFocus) {
                     try {
@@ -258,27 +258,27 @@ public class FragmentId5Left extends Fragment implements View.OnKeyListener, Vie
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.id5_item_browser:
+            case R.id.id5_item_browser /*2131296899*/:
                 setSelected(v);
                 this.viewModel.openBrowser(v);
                 return;
-            case R.id.id5_item_bt:
+            case R.id.id5_item_bt /*2131296901*/:
                 setSelected(v);
                 this.viewModel.openBtApp(v);
                 return;
-            case R.id.id5_item_car:
+            case R.id.id5_item_car /*2131296903*/:
                 setSelected(v);
                 this.viewModel.openCar(v);
                 return;
-            case R.id.id5_item_file:
+            case R.id.id5_item_file /*2131296907*/:
                 setSelected(v);
                 this.viewModel.openFileManager(v);
                 return;
-            case R.id.id5_item_music:
+            case R.id.id5_item_music /*2131296910*/:
                 setSelected(v);
                 this.viewModel.openMusicMulti(v);
                 return;
-            case R.id.id5_item_navi:
+            case R.id.id5_item_navi /*2131296912*/:
                 setSelected(v);
                 this.viewModel.openNaviApp(v);
                 return;

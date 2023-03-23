@@ -20,14 +20,14 @@ public abstract class BenzMbux2021ActivityBinding2 extends ViewDataBinding {
     public final ImageView ivCoat2021;
     public final LinearLayout layoutCoatBenzMbux2021;
     public final ImageView layoutMain2021;
-    public final LinearLayout layoutMain20212;
+    public final View layoutMain20212;
     @Bindable
     protected BcVieModel mVieModel;
     public final TextView tvCoat2021Tip;
 
     public abstract void setVieModel(BcVieModel bcVieModel);
 
-    protected BenzMbux2021ActivityBinding2(Object _bindingComponent, View _root, int _localFieldCount, ViewPager benzMbux2021Viewpager2, ImageView controlBtn2, LinearLayout indicatorBenzMbux20212, ImageView ivCoat20212, LinearLayout layoutCoatBenzMbux20212, ImageView layoutMain20213, LinearLayout layoutMain202122, TextView tvCoat2021Tip2) {
+    protected BenzMbux2021ActivityBinding2(Object _bindingComponent, View _root, int _localFieldCount, ViewPager benzMbux2021Viewpager2, ImageView controlBtn2, LinearLayout indicatorBenzMbux20212, ImageView ivCoat20212, LinearLayout layoutCoatBenzMbux20212, ImageView layoutMain20213, View layoutMain202122, TextView tvCoat2021Tip2) {
         super(_bindingComponent, _root, _localFieldCount);
         this.benzMbux2021Viewpager = benzMbux2021Viewpager2;
         this.controlBtn = controlBtn2;

@@ -189,19 +189,19 @@ public class ID7NewTwoFragment extends RelativeLayout implements View.OnClickLis
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rel_firtMs:
+            case R.id.rel_firtMs /*2131297568*/:
                 oncheckID(5);
                 return;
-            case R.id.rel_firtfm:
+            case R.id.rel_firtfm /*2131297573*/:
                 oncheckID(8);
                 return;
-            case R.id.rel_firtie:
+            case R.id.rel_firtie /*2131297574*/:
                 oncheckID(7);
                 return;
-            case R.id.rel_firtset:
+            case R.id.rel_firtset /*2131297575*/:
                 oncheckID(9);
                 return;
-            case R.id.rel_firtvd:
+            case R.id.rel_firtvd /*2131297576*/:
                 oncheckID(6);
                 return;
             default:

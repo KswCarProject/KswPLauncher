@@ -339,43 +339,43 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.cbox_bt /*2131296557*/:
+            case R.id.cbox_bt /*2131296712*/:
                 FileUtils.savaData(KeyConfig.Android_Bt_Switch, isChecked);
                 return;
-            case R.id.cbox_function1 /*2131296560*/:
+            case R.id.cbox_function1 /*2131296717*/:
                 FileUtils.savaData(KeyConfig.USB_HOST, isChecked);
                 return;
-            case R.id.cbox_function3 /*2131296561*/:
+            case R.id.cbox_function3 /*2131296718*/:
                 FileUtils.savaData(KeyConfig.GOOGLE_APP, isChecked);
                 return;
-            case R.id.cbox_function4 /*2131296562*/:
+            case R.id.cbox_function4 /*2131296719*/:
                 FileUtils.savaData("AUX_Type", isChecked);
                 return;
-            case R.id.cbox_function5 /*2131296563*/:
+            case R.id.cbox_function5 /*2131296720*/:
                 FileUtils.savaData("DTV_Type", isChecked);
                 return;
-            case R.id.cbox_function6 /*2131296564*/:
+            case R.id.cbox_function6 /*2131296721*/:
                 FileUtils.savaData(KeyConfig.DISH_BOARD, isChecked);
                 return;
-            case R.id.cbox_function7 /*2131296565*/:
+            case R.id.cbox_function7 /*2131296722*/:
                 FileUtils.savaData(KeyConfig.TXZ, isChecked);
                 return;
-            case R.id.cbox_function_fcam /*2131296566*/:
+            case R.id.cbox_function_fcam /*2131296723*/:
                 FileUtils.savaData("Front_view_camera", isChecked);
                 return;
-            case R.id.cbox_function_google_off /*2131296567*/:
+            case R.id.cbox_function_google_off /*2131296724*/:
                 FileUtils.savaData(KeyConfig.ZLINK_AUTO_START, isChecked);
                 return;
-            case R.id.cbox_hicar /*2131296568*/:
+            case R.id.cbox_hicar /*2131296725*/:
                 FileUtils.savaIntData(KeyConfig.HiCar, isChecked);
                 return;
-            case R.id.cbox_sreencast /*2131296570*/:
+            case R.id.cbox_sreencast /*2131296727*/:
                 FileUtils.savaIntData(KeyConfig.SCAREEN_CAST, isChecked);
                 return;
-            case R.id.cbox_sysXcjz /*2131296575*/:
+            case R.id.cbox_sysXcjz /*2131296732*/:
                 FileUtils.savaData(KeyConfig.XING_CHE_JZSP, isChecked);
                 return;
-            case R.id.cbox_touch_send /*2131296576*/:
+            case R.id.cbox_touch_send /*2131296733*/:
                 FileUtils.savaData(KeyConfig.TOUCH_CONTINUOUS_SEND, isChecked);
                 return;
             default:
@@ -385,82 +385,82 @@ public class AlsID7UiFunctionConfig extends FrameLayout implements CompoundButto
 
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.boot_record_mode_radio1 /*2131296489*/:
+            case R.id.boot_record_mode_radio1 /*2131296638*/:
                 Log.i(TAG, "onCheckedChanged: set booMdode: 0");
                 FileUtils.savaIntData(KeyConfig.DEFAULT_POWER_BOOT, 0);
                 return;
-            case R.id.boot_record_mode_radio2 /*2131296490*/:
+            case R.id.boot_record_mode_radio2 /*2131296639*/:
                 Log.i(TAG, "onCheckedChanged: set booMdode: 1");
                 FileUtils.savaIntData(KeyConfig.DEFAULT_POWER_BOOT, 1);
                 return;
-            case R.id.boot_record_mode_radio3 /*2131296491*/:
+            case R.id.boot_record_mode_radio3 /*2131296640*/:
                 Log.i(TAG, "onCheckedChanged: set booMdode: 2");
                 FileUtils.savaIntData(KeyConfig.DEFAULT_POWER_BOOT, 2);
                 return;
-            case R.id.rdb_funbt1 /*2131297181*/:
+            case R.id.rdb_funbt1 /*2131297447*/:
                 FileUtils.savaIntData(KeyConfig.BT_TYPE, 1);
                 return;
-            case R.id.rdb_funbt2 /*2131297182*/:
+            case R.id.rdb_funbt2 /*2131297448*/:
                 FileUtils.savaIntData(KeyConfig.BT_TYPE, 0);
                 return;
-            case R.id.rdb_funxcjl1 /*2131297183*/:
+            case R.id.rdb_funxcjl1 /*2131297449*/:
                 FileUtils.savaIntData("DVR_Type", 0);
                 this.tv_seleAPk.setVisibility(8);
                 return;
-            case R.id.rdb_funxcjl2 /*2131297184*/:
+            case R.id.rdb_funxcjl2 /*2131297450*/:
                 FileUtils.savaIntData("DVR_Type", 1);
                 this.tv_seleAPk.setVisibility(8);
                 return;
-            case R.id.rdb_funxcjl3 /*2131297185*/:
+            case R.id.rdb_funxcjl3 /*2131297451*/:
                 FileUtils.savaIntData("DVR_Type", 2);
                 this.tv_seleAPk.setVisibility(0);
                 return;
-            case R.id.rdg_360sx1 /*2131297206*/:
+            case R.id.rdg_360sx1 /*2131297472*/:
                 FileUtils.savaIntData(KeyConfig.CAM360, 0);
                 return;
-            case R.id.rdg_360sx2 /*2131297207*/:
+            case R.id.rdg_360sx2 /*2131297473*/:
                 FileUtils.savaIntData(KeyConfig.CAM360, 1);
                 return;
-            case R.id.rdg_ahd0 /*2131297210*/:
+            case R.id.rdg_ahd0 /*2131297476*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 0);
                 return;
-            case R.id.rdg_ahd1 /*2131297211*/:
+            case R.id.rdg_ahd1 /*2131297477*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 1);
                 return;
-            case R.id.rdg_ahd2 /*2131297212*/:
+            case R.id.rdg_ahd2 /*2131297478*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 2);
                 return;
-            case R.id.rdg_ahd3 /*2131297213*/:
+            case R.id.rdg_ahd3 /*2131297479*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 3);
                 return;
-            case R.id.rdg_ahd4 /*2131297214*/:
+            case R.id.rdg_ahd4 /*2131297480*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 4);
                 return;
-            case R.id.rdg_ahd5 /*2131297215*/:
+            case R.id.rdg_ahd5 /*2131297481*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 5);
                 return;
-            case R.id.rdg_ahd6 /*2131297216*/:
+            case R.id.rdg_ahd6 /*2131297482*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 6);
                 return;
-            case R.id.rdg_ahd7 /*2131297217*/:
+            case R.id.rdg_ahd7 /*2131297483*/:
                 FileUtils.savaIntData(KeyConfig.AHD_Select, 7);
                 return;
-            case R.id.rdg_bgkz1 /*2131297223*/:
+            case R.id.rdg_bgkz1 /*2131297489*/:
                 FileUtils.savaIntData(KeyConfig.BACKLIGHT, 0);
                 return;
-            case R.id.rdg_bgkz2 /*2131297224*/:
+            case R.id.rdg_bgkz2 /*2131297490*/:
                 FileUtils.savaIntData(KeyConfig.BACKLIGHT, 1);
                 return;
-            case R.id.rdg_dawei1 /*2131297234*/:
+            case R.id.rdg_dawei1 /*2131297500*/:
                 FileUtils.savaIntData(KeyConfig.DASHBOARDUNIT, 0);
                 return;
-            case R.id.rdg_dawei2 /*2131297235*/:
+            case R.id.rdg_dawei2 /*2131297501*/:
                 FileUtils.savaIntData(KeyConfig.DASHBOARDUNIT, 1);
                 return;
-            case R.id.rdg_fungf1 /*2131297267*/:
+            case R.id.rdg_fungf1 /*2131297543*/:
                 FileUtils.savaIntData(KeyConfig.AMP_TYPE, 0);
                 return;
-            case R.id.rdg_fungf2 /*2131297268*/:
+            case R.id.rdg_fungf2 /*2131297544*/:
                 FileUtils.savaIntData(KeyConfig.AMP_TYPE, 1);
                 return;
             default:

@@ -11,6 +11,19 @@ public interface ICmdListener extends IInterface {
 
     void updateStatusInfo(String str) throws RemoteException;
 
+    public static class Default implements ICmdListener {
+        public boolean handleCommand(String var1) throws RemoteException {
+            return false;
+        }
+
+        public void updateStatusInfo(String var1) throws RemoteException {
+        }
+
+        public IBinder asBinder() {
+            return null;
+        }
+    }
+
     public static abstract class Stub extends Binder implements ICmdListener {
         private static final String DESCRIPTOR = "com.wits.pms.ICmdListener";
         static final int TRANSACTION_handleCommand = 1;
@@ -57,6 +70,7 @@ public interface ICmdListener extends IInterface {
         }
 
         private static class Proxy implements ICmdListener {
+            public static ICmdListener sDefaultImpl;
             private IBinder mRemote;
 
             Proxy(IBinder remote) {
@@ -71,38 +85,63 @@ public interface ICmdListener extends IInterface {
                 return Stub.DESCRIPTOR;
             }
 
-            public boolean handleCommand(String jsonMsg) throws RemoteException {
+            public boolean handleCommand(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(jsonMsg);
-                    boolean _result = false;
-                    this.mRemote.transact(1, _data, _reply, 0);
+                    _data.writeString(var1);
+                    boolean z = false;
+                    if (!this.mRemote.transact(1, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().handleCommand(var1);
+                    }
                     _reply.readException();
                     if (_reply.readInt() != 0) {
-                        _result = true;
+                        z = true;
                     }
-                    return _result;
+                    boolean _status = z;
+                    _reply.recycle();
+                    _data.recycle();
+                    return _status;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void updateStatusInfo(String jsonMsg) throws RemoteException {
+            public void updateStatusInfo(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(jsonMsg);
-                    this.mRemote.transact(2, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    if (this.mRemote.transact(2, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().updateStatusInfo(var1);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
+        }
+
+        public static boolean setDefaultImpl(ICmdListener impl) {
+            if (Proxy.sDefaultImpl != null) {
+                throw new IllegalStateException("setDefaultImpl() called twice");
+            } else if (impl == null) {
+                return false;
+            } else {
+                Proxy.sDefaultImpl = impl;
+                return true;
+            }
+        }
+
+        public static ICmdListener getDefaultImpl() {
+            return Proxy.sDefaultImpl;
         }
     }
 }

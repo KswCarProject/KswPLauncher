@@ -24,6 +24,39 @@ public interface IStatusService extends IInterface {
 
     void unregisterStatusListener(IStatusObserver iStatusObserver) throws RemoteException;
 
+    public static class Default implements IStatusService {
+        public void registerStatusListener(String var1, IStatusObserver var2) throws RemoteException {
+        }
+
+        public void unregisterStatusListener(IStatusObserver var1) throws RemoteException {
+        }
+
+        public void addIntStatus(String var1, int var2) throws RemoteException {
+        }
+
+        public void addBooleanStatus(String var1, boolean var2) throws RemoteException {
+        }
+
+        public void addStringStatus(String var1, String var2) throws RemoteException {
+        }
+
+        public boolean getStatusBoolean(String var1) throws RemoteException {
+            return false;
+        }
+
+        public int getStatusInt(String var1) throws RemoteException {
+            return 0;
+        }
+
+        public String getStatusString(String var1) throws RemoteException {
+            return null;
+        }
+
+        public IBinder asBinder() {
+            return null;
+        }
+    }
+
     public static abstract class Stub extends Binder implements IStatusService {
         private static final String DESCRIPTOR = "com.wits.pms.IStatusService";
         static final int TRANSACTION_addBooleanStatus = 4;
@@ -108,6 +141,7 @@ public interface IStatusService extends IInterface {
         }
 
         private static class Proxy implements IStatusService {
+            public static IStatusService sDefaultImpl;
             private IBinder mRemote;
 
             Proxy(IBinder remote) {
@@ -122,92 +156,142 @@ public interface IStatusService extends IInterface {
                 return Stub.DESCRIPTOR;
             }
 
-            public void registerStatusListener(String key, IStatusObserver listener) throws RemoteException {
+            public void registerStatusListener(String var1, IStatusObserver var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeStrongBinder(listener != null ? listener.asBinder() : null);
-                    this.mRemote.transact(1, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    _data.writeStrongBinder(var2 != null ? var2.asBinder() : null);
+                    if (this.mRemote.transact(1, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().registerStatusListener(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void unregisterStatusListener(IStatusObserver observer) throws RemoteException {
+            public void unregisterStatusListener(IStatusObserver var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeStrongBinder(observer != null ? observer.asBinder() : null);
-                    this.mRemote.transact(2, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeStrongBinder(var1 != null ? var1.asBinder() : null);
+                    if (this.mRemote.transact(2, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().unregisterStatusListener(var1);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void addIntStatus(String key, int value) throws RemoteException {
+            public void addIntStatus(String var1, int var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeInt(value);
-                    this.mRemote.transact(3, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    _data.writeInt(var2);
+                    if (this.mRemote.transact(3, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().addIntStatus(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void addBooleanStatus(String key, boolean value) throws RemoteException {
+            public void addBooleanStatus(String var1, boolean var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeInt(value ? 1 : 0);
-                    this.mRemote.transact(4, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    _data.writeInt(var2 ? 1 : 0);
+                    if (this.mRemote.transact(4, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().addBooleanStatus(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public void addStringStatus(String key, String value) throws RemoteException {
+            public void addStringStatus(String var1, String var2) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    _data.writeString(value);
-                    this.mRemote.transact(5, _data, _reply, 0);
-                    _reply.readException();
+                    _data.writeString(var1);
+                    _data.writeString(var2);
+                    if (this.mRemote.transact(5, _data, _reply, 0) || Stub.getDefaultImpl() == null) {
+                        _reply.readException();
+                        _reply.recycle();
+                        _data.recycle();
+                        return;
+                    }
+                    Stub.getDefaultImpl().addStringStatus(var1, var2);
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
 
-            public boolean getStatusBoolean(String key) throws RemoteException {
+            public boolean getStatusBoolean(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    boolean _result = false;
-                    this.mRemote.transact(6, _data, _reply, 0);
+                    _data.writeString(var1);
+                    boolean z = false;
+                    if (!this.mRemote.transact(6, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getStatusBoolean(var1);
+                    }
                     _reply.readException();
                     if (_reply.readInt() != 0) {
-                        _result = true;
+                        z = true;
                     }
+                    boolean _status = z;
+                    _reply.recycle();
+                    _data.recycle();
+                    return _status;
+                } finally {
+                    _reply.recycle();
+                    _data.recycle();
+                }
+            }
+
+            public int getStatusInt(String var1) throws RemoteException {
+                Parcel _data = Parcel.obtain();
+                Parcel _reply = Parcel.obtain();
+                try {
+                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
+                    _data.writeString(var1);
+                    if (!this.mRemote.transact(7, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getStatusInt(var1);
+                    }
+                    _reply.readException();
+                    int _result = _reply.readInt();
+                    _reply.recycle();
+                    _data.recycle();
                     return _result;
                 } finally {
                     _reply.recycle();
@@ -215,35 +299,40 @@ public interface IStatusService extends IInterface {
                 }
             }
 
-            public int getStatusInt(String key) throws RemoteException {
+            public String getStatusString(String var1) throws RemoteException {
                 Parcel _data = Parcel.obtain();
                 Parcel _reply = Parcel.obtain();
                 try {
                     _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    this.mRemote.transact(7, _data, _reply, 0);
+                    _data.writeString(var1);
+                    if (!this.mRemote.transact(8, _data, _reply, 0) && Stub.getDefaultImpl() != null) {
+                        return Stub.getDefaultImpl().getStatusString(var1);
+                    }
                     _reply.readException();
-                    return _reply.readInt();
+                    String _result = _reply.readString();
+                    _reply.recycle();
+                    _data.recycle();
+                    return _result;
                 } finally {
                     _reply.recycle();
                     _data.recycle();
                 }
             }
+        }
 
-            public String getStatusString(String key) throws RemoteException {
-                Parcel _data = Parcel.obtain();
-                Parcel _reply = Parcel.obtain();
-                try {
-                    _data.writeInterfaceToken(Stub.DESCRIPTOR);
-                    _data.writeString(key);
-                    this.mRemote.transact(8, _data, _reply, 0);
-                    _reply.readException();
-                    return _reply.readString();
-                } finally {
-                    _reply.recycle();
-                    _data.recycle();
-                }
+        public static boolean setDefaultImpl(IStatusService impl) {
+            if (Proxy.sDefaultImpl != null) {
+                throw new IllegalStateException("setDefaultImpl() called twice");
+            } else if (impl == null) {
+                return false;
+            } else {
+                Proxy.sDefaultImpl = impl;
+                return true;
             }
+        }
+
+        public static IStatusService getDefaultImpl() {
+            return Proxy.sDefaultImpl;
         }
     }
 }

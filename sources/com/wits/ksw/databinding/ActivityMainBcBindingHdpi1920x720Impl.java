@@ -18,8 +18,8 @@ import com.wits.ksw.launcher.model.ControlBean;
 public class ActivityMainBcBindingHdpi1920x720Impl extends ActivityMainBcBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback97;
-    private final View.OnClickListener mCallback98;
+    private final View.OnClickListener mCallback57;
+    private final View.OnClickListener mCallback58;
     private long mDirtyFlags;
     private OnClickListenerImpl1 mMBcVieModelOnControlClickAndroidViewViewOnClickListener;
     private OnClickListenerImpl mMBcVieModelOpenAppsAndroidViewViewOnClickListener;
@@ -46,8 +46,8 @@ public class ActivityMainBcBindingHdpi1920x720Impl extends ActivityMainBcBinding
         this.linearLayout3.setTag((Object) null);
         this.recyclerView2.setTag((Object) null);
         setRootTag(root);
-        this.mCallback98 = new OnClickListener(this, 2);
-        this.mCallback97 = new OnClickListener(this, 1);
+        this.mCallback57 = new OnClickListener(this, 1);
+        this.mCallback58 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -68,7 +68,7 @@ public class ActivityMainBcBindingHdpi1920x720Impl extends ActivityMainBcBinding
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (12 != variableId) {
+        if (21 != variableId) {
             return false;
         }
         setMBcVieModel((BcVieModel) variable);
@@ -80,7 +80,7 @@ public class ActivityMainBcBindingHdpi1920x720Impl extends ActivityMainBcBinding
         synchronized (this) {
             this.mDirtyFlags |= 8;
         }
-        notifyPropertyChanged(12);
+        notifyPropertyChanged(21);
         super.requestRebind();
     }
 
@@ -217,8 +217,8 @@ public class ActivityMainBcBindingHdpi1920x720Impl extends ActivityMainBcBinding
             this.controlBtn.setOnClickListener(mBcVieModelOnControlClickAndroidViewViewOnClickListener);
         }
         if ((16 & dirtyFlags) != 0) {
-            this.bcArrowLeftButton.setOnClickListener(this.mCallback97);
-            this.bcArrowRightButton.setOnClickListener(this.mCallback98);
+            this.bcArrowLeftButton.setOnClickListener(this.mCallback57);
+            this.bcArrowRightButton.setOnClickListener(this.mCallback58);
         }
         if ((dirtyFlags & 26) != 0) {
             this.controlBtn.setVisibility(mBcVieModelControlBeanControlPanelCloseViewGONEViewVISIBLE);

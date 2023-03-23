@@ -23,10 +23,10 @@ import com.wits.ksw.launcher.bean.MediaInfo;
 public class AlsId7SubMusicThirdLayoutBindingImpl extends AlsId7SubMusicThirdLayoutBinding implements OnClickListener.Listener {
     private static final ViewDataBinding.IncludedLayouts sIncludes = null;
     private static final SparseIntArray sViewsWithIds;
-    private final View.OnClickListener mCallback100;
-    private final View.OnClickListener mCallback101;
-    private final View.OnClickListener mCallback102;
-    private final View.OnClickListener mCallback103;
+    private final View.OnClickListener mCallback60;
+    private final View.OnClickListener mCallback61;
+    private final View.OnClickListener mCallback62;
+    private final View.OnClickListener mCallback63;
     private long mDirtyFlags;
 
     static {
@@ -56,10 +56,10 @@ public class AlsId7SubMusicThirdLayoutBindingImpl extends AlsId7SubMusicThirdLay
         this.seekBar.setTag((Object) null);
         this.totalTimeTextView.setTag((Object) null);
         setRootTag(root);
-        this.mCallback100 = new OnClickListener(this, 1);
-        this.mCallback101 = new OnClickListener(this, 2);
-        this.mCallback102 = new OnClickListener(this, 3);
-        this.mCallback103 = new OnClickListener(this, 4);
+        this.mCallback62 = new OnClickListener(this, 3);
+        this.mCallback63 = new OnClickListener(this, 4);
+        this.mCallback60 = new OnClickListener(this, 1);
+        this.mCallback61 = new OnClickListener(this, 2);
         invalidateAll();
     }
 
@@ -80,7 +80,7 @@ public class AlsId7SubMusicThirdLayoutBindingImpl extends AlsId7SubMusicThirdLay
     }
 
     public boolean setVariable(int variableId, Object variable) {
-        if (7 != variableId) {
+        if (12 != variableId) {
             return false;
         }
         setMusicPhoneViewModel((AlsID7ViewModel) variable);
@@ -92,7 +92,7 @@ public class AlsId7SubMusicThirdLayoutBindingImpl extends AlsId7SubMusicThirdLay
         synchronized (this) {
             this.mDirtyFlags |= 512;
         }
-        notifyPropertyChanged(7);
+        notifyPropertyChanged(12);
         super.requestRebind();
     }
 
@@ -476,10 +476,10 @@ public class AlsId7SubMusicThirdLayoutBindingImpl extends AlsId7SubMusicThirdLay
         }
         if ((dirtyFlags & PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID) != 0) {
             String str4 = musicPhoneViewModelMediaInfoMusicAtistJavaLangObjectNullArtistTextViewAndroidStringKswIdf7UnknowArtisMusicPhoneViewModelMediaInfoMusicAtist;
-            this.btnMusicNext.setOnClickListener(this.mCallback103);
-            this.btnMusicPause.setOnClickListener(this.mCallback102);
-            this.btnMusicPrev.setOnClickListener(this.mCallback101);
-            this.imageFrameLayout.setOnClickListener(this.mCallback100);
+            this.btnMusicNext.setOnClickListener(this.mCallback63);
+            this.btnMusicPause.setOnClickListener(this.mCallback62);
+            this.btnMusicPrev.setOnClickListener(this.mCallback61);
+            this.imageFrameLayout.setOnClickListener(this.mCallback60);
         }
         if ((dirtyFlags & 1025) != 0) {
             ImageViewBindingAdapter.setImageDrawable(this.btnMusicPause, musicPhoneViewModelMediaInfoMusicPlayBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPauseBtnMusicPauseAndroidDrawableAlsId7MainMusicBtnPlay);

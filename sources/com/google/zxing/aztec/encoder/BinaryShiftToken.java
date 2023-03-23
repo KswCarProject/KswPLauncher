@@ -1,6 +1,7 @@
 package com.google.zxing.aztec.encoder;
 
 import com.google.zxing.common.BitArray;
+import kotlin.text.Typography;
 
 final class BinaryShiftToken extends Token {
     private final short binaryShiftByteCount;
@@ -37,6 +38,6 @@ final class BinaryShiftToken extends Token {
     }
 
     public String toString() {
-        return "<" + this.binaryShiftStart + "::" + ((this.binaryShiftStart + this.binaryShiftByteCount) - 1) + '>';
+        return "<" + this.binaryShiftStart + "::" + ((this.binaryShiftStart + this.binaryShiftByteCount) - 1) + Typography.greater;
     }
 }
